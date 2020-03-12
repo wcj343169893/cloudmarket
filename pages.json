@@ -14,7 +14,7 @@
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
-							"placeholder": "请输入店铺或者菜品 如：鱼香肉丝",
+							"placeholder": "请输入店铺或者菜品",
 							"disabled": true,
 							"placeholderColor": "#606266"
 						},
