@@ -265,7 +265,7 @@
 			async loadData() {
 				let _this=this;
 				uniCloud.callFunction({
-				    name: 'home_ads',
+				    name: 'getHomeAds',
 				    data: { }
 				  })
 				  .then(res => {
@@ -276,6 +276,8 @@
 						_this.carouselList = carouselList;
 					  }
 					  console.log(res)
+				  }).catch(err=>{
+					  console.log(err)
 				  });
 				//let carouselList = await this.$api.json('carouselList');
 				
