@@ -48,7 +48,18 @@
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {}
-        }
+        },"safearea":{
+			/**iphone x 下巴收起来**/
+			"bottom":{
+				"offset":"none"
+			},
+			"left":{
+				"offset":"none"
+			},
+			"right":{
+				"offset":"none"
+			}
+		}
     },
     /* SDK配置 */
     "quickapp" : {},

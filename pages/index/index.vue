@@ -24,7 +24,7 @@
 			</view>
 		</view>
 		<!--常买店铺 -->
-		<view class="f-header m-t">
+		<view class="f-header m-t" v-if="oftenShopsList.length > 0">
 			<image src="/static/temp/h1.png"></image>
 			<view class="tit-box">
 				<text class="tit">常买店铺</text>
@@ -53,7 +53,7 @@
 		<view class="ad-1"><image src="/static/temp/ad1.jpg" mode="scaleToFill"></image></view>
 
 		<!-- 优选好店 -->
-		<view class="f-header m-t">
+		<view class="f-header m-t"  v-if="recommendShopList.length > 0">
 			<image src="/static/temp/h1.png"></image>
 			<view class="tit-box">
 				<text class="tit">优选好店</text>
@@ -61,7 +61,7 @@
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
-		<view :class="recommendShopClass">
+		<view :class="recommendShopClass" v-if="recommendShopList.length > 0">
 			<view v-for="(item,index) in recommendShopList" :key="index" class="rss-item">
 				<view class="imgs">
 					<image :src="item.goods.src" class="goods"></image>
@@ -70,100 +70,36 @@
 				<text class="clamp">{{item.name}}</text>
 			</view>
 		</view>
-
-		<!-- 分类推荐楼层 -->
+		<!-- 附近店铺 -->
 		<view class="f-header m-t">
 			<image src="/static/temp/h1.png"></image>
 			<view class="tit-box">
-				<text class="tit">分类精选</text>
-				<text class="tit2">Competitive Products For You</text>
+				<text class="tit">附近商家</text>
+				<text class="tit2">Nearby shops</text>
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image
-					class="floor-img"
-					src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"
-					mode="scaleToFill"
-				></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image" mode="aspectFill"></image>
-						<text class="title clamp">{{ item.title }}</text>
-						<text class="price">￥{{ item.price }}</text>
+		<view v-bind:class="{'fixed':nearbyHeaderPosition,'nearby-func-section':1}">
+			<text v-bind:class="{active:nearByShopIndex==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
+			<text v-bind:class="{active:nearByShopIndex==2,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
+			<text v-bind:class="{active:nearByShopIndex==3,'fast-btn':1}" @click="getNearbyShops(3,1)">减配送费</text>
+		</view>
+		<view class="nearby-section">
+			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item">
+				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
+				<view class="desc">
+					<view class="">
+						<text class="title clamp">{{ item.name }}</text>
 					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
+					<view class=""><text>评分{{ item.score}} 月售{{ item.monthSale}}</text></view>
+					<view class=""><text>起送￥{{ item.deliveryMin}} 配送￥{{ item.deliveryMoney}} 人均￥{{ item.perCapita}}</text></view>
+					<view class="youhui" v-if="item.hasManjian">
+						<text class="yh" v-for="(cou,ind) in item.manjians" :key="ind">{{cou.name}}</text>
 					</view>
 				</view>
-			</scroll-view>
-		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image
-					class="floor-img"
-					src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"
-					mode="scaleToFill"
-				></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image3" mode="aspectFill"></image>
-						<text class="title clamp">{{ item.title }}</text>
-						<text class="price">￥{{ item.price }}</text>
-					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-		<view class="hot-floor">
-			<view class="floor-img-box">
-				<image
-					class="floor-img"
-					src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"
-					mode="scaleToFill"
-				></image>
-			</view>
-			<scroll-view class="floor-list" scroll-x>
-				<view class="scoll-wrapper">
-					<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
-						<image :src="item.image2" mode="aspectFill"></image>
-						<text class="title clamp">{{ item.title }}</text>
-						<text class="price">￥{{ item.price }}</text>
-					</view>
-					<view class="more">
-						<text>查看全部</text>
-						<text>More+</text>
-					</view>
-				</view>
-			</scroll-view>
-		</view>
-
-		<!-- 猜你喜欢 -->
-		<view class="f-header m-t">
-			<image src="/static/temp/h1.png"></image>
-			<view class="tit-box">
-				<text class="tit">猜你喜欢</text>
-				<text class="tit2">Guess You Like It</text>
-			</view>
-			<text class="yticon icon-you"></text>
-		</view>
-
-		<view class="guess-section">
-			<view v-for="(item, index) in goodsList" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper"><image :src="item.image" mode="aspectFill"></image></view>
-				<text class="title clamp">{{ item.title }}</text>
-				<text class="price">￥{{ item.price }}</text>
 			</view>
 		</view>
+		<uni-load-more :status="loadingType"></uni-load-more>
 	</view>
 </template>
 
@@ -171,7 +107,11 @@
 	import {
 	    mapState 
 	} from 'vuex'; 
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
+	components: {
+		uniLoadMore	
+	},
 	data() {
 		return {
 			titleNViewBackground: '',
@@ -182,6 +122,13 @@ export default {
 			mainShopCategoriesList: [],
 			recommendShopList: [],
 			recommendShopClass:"recommend-shops-section",
+			nearbyShops:[],
+			nearByShopIndex:0,
+			nearByShopPage:1,
+			nearByHeadTop:200,
+			nearbyHeaderPosition:0,
+			loadingType: 'more', //加载更多状态
+			nearByShopMaxPage:3,
 			goodsList: []
 		};
 	},
@@ -189,8 +136,31 @@ export default {
 	onLoad() {
 		this.loadData();
 	},
+	onPageScroll(e){
+		//兼容iOS端下拉时顶部漂移
+		if(e.scrollTop>=this.nearByHeadTop){
+			this.nearbyHeaderPosition = 1;
+		}else{
+			this.nearbyHeaderPosition = 0;
+		}
+	},
+	//下拉刷新
+	onPullDownRefresh(){
+		//this.loadData('refresh');
+		console.log("刷新整页")
+		this.loadData();
+		uni.stopPullDownRefresh();
+	},
+	//加载更多
+	onReachBottom(){
+		///测试中，page不累加
+		console.log("onReachBottom")
+		if(this.loadingType !="nomore"){
+			this.getNearbyShops(this.nearByShopIndex,this.nearByShopPage);
+		}
+	},
 	computed: {
-		...mapState(['hasLogin', 'userInfo'])
+		...mapState(['hasLogin', 'userInfo','stationId'])
 	},
 	methods: {
 		/**
@@ -198,63 +168,81 @@ export default {
 		 * 分次请求未作整合
 		 */
 		async loadData() {
-			//广告
 			uniCloud
 				.callFunction({
-					name: 'getHomeAds',
-					data: {}
-				})
-				.then(res => {
-					let carouselList = res.result.data;
-					if (carouselList.length > 0) {
-						this.titleNViewBackground = carouselList[0].background;
-						this.swiperLength = carouselList.length;
-						this.carouselList = carouselList;
+					name: 'home',
+					data: {
+						id:this.userInfo.id,
+						shop_recommend_uid:this.userInfo.shop_recommend_uid,
+						stationId:this.stationId
 					}
 				})
-				.catch(err => {});
-			//let carouselList = await this.$api.json('carouselList');
-			//常买店铺oftenShopsList
-			uniCloud
-				.callFunction({
-					name: 'getOftenBuyShops',
-					data: { uid: 10000 }
-				})
 				.then(res => {
-					console.log(res.result);
-					if (res.result.data) {
-						this.oftenShopsList = res.result.data;
+					//广告
+					if(res.result.ads){
+						let ads = res.result.ads;
+						this.titleNViewBackground = ads[0].background;
+						this.swiperLength = ads.length;
+						this.carouselList = ads;
 					}
+					if(res.result.oftenShops){
+						this.oftenShopsList = res.result.oftenShops;
+					}
+					if(res.result.categories){
+						this.mainShopCategoriesList = res.result.categories;
+					}if(res.result.recommendShops){
+						this.recommendShopList = res.result.recommendShops;
+						this.recommendShopClass ="recommend-shops-section rss-numb-"+res.result.recommendShops.length;
+					}
+					console.log("加载数据完成。。。");
 				});
-			//店铺主分类
-			uniCloud
-				.callFunction({
-					name: 'getShopMainCategories',
-					data: {}
-				})
-				.then(res => {
-					console.log(res.result);
-					if (res.result.data) {
-						this.mainShopCategoriesList = res.result.data;
-					}
+				setTimeout(function(){
+					this.getNearbyShops(0,1);
+				}.bind(this),500);
+			//let goodsList = await this.$api.json('goodsList');
+			//this.goodsList = goodsList || [];
+		},
+		getNearbyShops(index,page){
+			if(index > 0){
+				uni.showLoading({
+					title:"加载中"
 				});
-			let shop_recommend_id = '';
-			if (this.hasLogin) {
-				shop_recommend_id = this.userInfo.shop_recommend_id;
 			}
-			uniCloud
-				.callFunction({
-					name: 'getMyRecommendShops',
-					data: { id: shop_recommend_id }
-				})
-				.then(res => {
-					console.log(res.result);
-					this.recommendShopList=res.result;
-					this.recommendShopClass ="recommend-shops-section rss-numb-"+res.result.length;
-					console.log(this.recommendShopClass)
-				});
-			let goodsList = await this.$api.json('goodsList');
-			this.goodsList = goodsList || [];
+			if(page >= this.nearByShopMaxPage){
+				this.loadingType = "nomore";
+				return;
+			}
+			this.nearByShopIndex=index;
+			this.nearByShopPage = page;
+			let limit=10;
+			uniCloud.callFunction({
+				name: 'getShops',
+				data: {
+					page:page,
+					limit:limit,
+					index:index,
+					stationId:this.stationId
+				}
+			}).then(res=>{
+				uni.hideLoading();
+				if(page == 1){
+					//清空原数据
+					this.nearbyShops =[];
+				}
+				if(res.result.affectedDocs > 0){
+					//累加到现有数组
+					this.nearbyShops = this.nearbyShops.concat(res.result.data)
+					//不足一页，肯定没有下一页了
+					if(res.result.affectedDocs < limit){
+						this.loadingType = "nomore";
+					}else{
+						//还有数据
+						this.loadingType = "more";
+					}
+				}else{
+					this.loadingType = "nomore";
+				} 
+			});
 		},
 		//轮播图切换修改背景色
 		swiperChange(e) {
@@ -432,7 +420,7 @@ page {
 		align-items: center;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
-		width: 20%;
+		width:150upx;
 		padding-bottom: 30upx;
 	}
 	/* 原图标颜色太深,不想改图了,所以加了透明度 */
@@ -520,12 +508,12 @@ page {
 	justify-content: space-around;
 	align-items: center;
 	flex-wrap: wrap;
-	padding: 0 22upx 0 22upx;
+	padding:0 22upx 22upx;
 	background: #fff;
 	.rss-item{
 		width: 48%;
 		text-align: center;
-		padding-bottom: 10upx;
+		padding:22upx 0 12upx;
 		.imgs{
 			position: relative;
 			.goods{
@@ -567,6 +555,68 @@ page {
 		}
 	}
 }
+.nearby-section{
+	padding: 10upx 22upx;
+	.shop-item {
+		background-color: #ffffff;
+		display: flex;
+		flex-direction: wrap;
+		padding:20upx 20upx 30upx;
+		border-radius: 20upx;
+		margin-bottom: 10upx;
+	}
+	.image-wrapper {
+		width: 140upx;
+		height: 140upx;
+		border-radius: 3px;
+		overflow: hidden;
+		margin-right: 22upx;
+		image {
+			width: 100%;
+			height: 100%;
+			opacity: 1;
+		}
+	}
+	.desc{
+		flex: 1;
+		font-size: $font-sm;
+		color: $font-color-light;
+		.title {
+			font-size: $font-lg;
+			color: $font-color-dark;
+			line-height: 60upx;
+			font-weight: 400;
+		}
+		.youhui{
+			padding-top: 8upx;
+			.yh{
+				margin-right: 10upx;
+				color: #F0AD4E;
+				border: 1px solid #F0AD4E;
+				font-size: 0.8em;
+				padding: 0upx 10upx;
+				line-height: 1;
+				border-radius: 8upx;
+			}
+		}
+	}
+}
+.nearby-func-section{
+	padding:0 20upx 20upx;
+	font-size: $font-sm;
+	background: #fff;
+	.fast-btn{
+		background-color: #F8F8F8;
+		color: $font-color-light;
+		padding: 6upx 30upx;
+		margin-right: 20upx;
+		border-radius: 8upx;
+		&.active{
+			background-color: #FA436A;
+			color: #ffffff;
+		}
+	}
+}
 .f-header {
 	display: flex;
 	align-items: center;
@@ -596,180 +646,6 @@ page {
 	.icon-you {
 		font-size: $font-lg + 2upx;
 		color: $font-color-light;
-	}
-}
-/* 团购楼层 */
-.group-section {
-	background: #fff;
-	.g-swiper {
-		height: 650upx;
-		padding-bottom: 30upx;
-	}
-	.g-swiper-item {
-		width: 100%;
-		padding: 0 30upx;
-		display: flex;
-	}
-	image {
-		width: 100%;
-		height: 460upx;
-		border-radius: 4px;
-	}
-	.g-item {
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-	}
-	.left {
-		flex: 1.2;
-		margin-right: 24upx;
-		.t-box {
-			padding-top: 20upx;
-		}
-	}
-	.right {
-		flex: 0.8;
-		flex-direction: column-reverse;
-		.t-box {
-			padding-bottom: 20upx;
-		}
-	}
-	.t-box {
-		height: 160upx;
-		font-size: $font-base + 2upx;
-		color: $font-color-dark;
-		line-height: 1.6;
-	}
-	.price {
-		color: $uni-color-primary;
-	}
-	.m-price {
-		font-size: $font-sm + 2upx;
-		text-decoration: line-through;
-		color: $font-color-light;
-		margin-left: 8upx;
-	}
-	.pro-box {
-		display: flex;
-		align-items: center;
-		margin-top: 10upx;
-		font-size: $font-sm;
-		color: $font-base;
-		padding-right: 10upx;
-	}
-	.progress-box {
-		flex: 1;
-		border-radius: 10px;
-		overflow: hidden;
-		margin-right: 8upx;
-	}
-}
-/* 分类推荐楼层 */
-.hot-floor {
-	width: 100%;
-	overflow: hidden;
-	margin-bottom: 20upx;
-	.floor-img-box {
-		width: 100%;
-		height: 320upx;
-		position: relative;
-		&:after {
-			content: '';
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(rgba(255, 255, 255, 0.06) 30%, #f8f8f8);
-		}
-	}
-	.floor-img {
-		width: 100%;
-		height: 100%;
-	}
-	.floor-list {
-		white-space: nowrap;
-		padding: 20upx;
-		padding-right: 50upx;
-		border-radius: 6upx;
-		margin-top: -140upx;
-		margin-left: 30upx;
-		background: #fff;
-		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-		position: relative;
-		z-index: 1;
-	}
-	.scoll-wrapper {
-		display: flex;
-		align-items: flex-start;
-	}
-	.floor-item {
-		width: 180upx;
-		margin-right: 20upx;
-		font-size: $font-sm + 2upx;
-		color: $font-color-dark;
-		line-height: 1.8;
-		image {
-			width: 180upx;
-			height: 180upx;
-			border-radius: 6upx;
-		}
-		.price {
-			color: $uni-color-primary;
-		}
-	}
-	.more {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		flex-shrink: 0;
-		width: 180upx;
-		height: 180upx;
-		border-radius: 6upx;
-		background: #f3f3f3;
-		font-size: $font-base;
-		color: $font-color-light;
-		text:first-child {
-			margin-bottom: 4upx;
-		}
-	}
-}
-/* 猜你喜欢 */
-.guess-section {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0 30upx;
-	background: #fff;
-	.guess-item {
-		display: flex;
-		flex-direction: column;
-		width: 48%;
-		padding-bottom: 40upx;
-		&:nth-child(2n + 1) {
-			margin-right: 4%;
-		}
-	}
-	.image-wrapper {
-		width: 100%;
-		height: 330upx;
-		border-radius: 3px;
-		overflow: hidden;
-		image {
-			width: 100%;
-			height: 100%;
-			opacity: 1;
-		}
-	}
-	.title {
-		font-size: $font-lg;
-		color: $font-color-dark;
-		line-height: 80upx;
-	}
-	.price {
-		font-size: $font-lg;
-		color: $uni-color-primary;
-		line-height: 1;
 	}
 }
 </style>

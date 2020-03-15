@@ -8,6 +8,7 @@
 				"navigationBarTitleText": "大鱼商城",
 				//"navigationStyle": "custom",
 				// #endif 
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",

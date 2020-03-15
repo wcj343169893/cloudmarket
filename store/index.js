@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
+		stationId: 0,//分站id
 		userInfo: {},
 	},
 	mutations: {
