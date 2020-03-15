@@ -27,7 +27,9 @@ exports.main = async (event, context) => {
 	}
 	//店铺主分类
 	const categoryCollection = db.collection(collectionNames['shop_categories']);
-	const categories = await categoryCollection.field({
+	const categories = await categoryCollection.where({
+		"pid": 0
+	}).field({
 		"id": 1,
 		"name": 1,
 		"src": 1

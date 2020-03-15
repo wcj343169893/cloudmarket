@@ -7,6 +7,7 @@ exports.main = async (event, context) => {
 	let limit = event.limit || 10;
 	let page = event.page || 1;
 	let index = event.index;
+	let cid = event.cid;
 	if (page < 1) {
 		page = 1;
 	}
@@ -33,6 +34,9 @@ exports.main = async (event, context) => {
 			break;
 		default:
 			break;
+	}
+	if(cid > 0){
+		where["categories.id"]=cid*1;
 	}
 	//根据前端需要，筛选field
 	let data = query.where(where).field({

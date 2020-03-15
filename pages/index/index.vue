@@ -12,7 +12,7 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="adNavToPage(item)">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
 					<image :src="item.src" />
 				</swiper-item>
 			</swiper>
@@ -35,7 +35,7 @@
 		<view class="seckill-section" v-if="oftenShopsList.length > 0">
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view v-for="(item, index) in oftenShopsList" :key="index" class="floor-item" @click="navToDetailPage(item)">
+					<view v-for="(item, index) in oftenShopsList" :key="index" class="floor-item" @click="navToShopPage(item)">
 						<image :src="item.src" mode="aspectFill"></image>
 						<text class="title clamp">{{ item.name }}</text>
 					</view>
@@ -44,7 +44,7 @@
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section m-t">
-			<view v-for="(item, index) in mainShopCategoriesList" :key="index" class="cate-item" @click="navToDetailPage(item)">
+			<view v-for="(item, index) in mainShopCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
 				<image :src="item.src"></image>
 				<text>{{ item.name }}</text>
 			</view>
@@ -62,9 +62,9 @@
 			<text class="yticon icon-you"></text>
 		</view>
 		<view :class="recommendShopClass" v-if="recommendShopList.length > 0">
-			<view v-for="(item,index) in recommendShopList" :key="index" class="rss-item">
+			<view v-for="(item,index) in recommendShopList" :key="index" class="rss-item" @click="navToShopPage(item)">
 				<view class="imgs">
-					<image :src="item.goods.src" class="goods"></image>
+					<image :src="item.goods.src" class="goods" mode="aspectFill"></image>
 					<image :src="item.src" class="logo"></image>
 				</view>
 				<text class="clamp">{{item.name}}</text>
@@ -85,7 +85,7 @@
 			<text v-bind:class="{active:nearByShopIndex==4,'fast-btn':1}" @click="getNearbyShops(4,1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
-			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item">
+			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item" @click="navToShopPage(item)">
 				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
 				<view class="desc">
 					<view class="">
@@ -153,8 +153,6 @@ export default {
 	},
 	//加载更多
 	onReachBottom(){
-		///测试中，page不累加
-		console.log("onReachBottom")
 		if(this.loadingType !="nomore"){
 			this.getNearbyShops(this.nearByShopIndex,this.nearByShopPage+1);
 		}
@@ -260,7 +258,7 @@ export default {
 			this.titleNViewBackground = this.carouselList[index].background;
 		},
 		//广告轮播跳转
-		adNavToPage(item){
+		navToAdPage(item){
 			//https://ask.dcloud.net.cn/article/35621
 			let link=item.link;
 			if(link.indexOf("/pages") === 0){
@@ -275,12 +273,18 @@ export default {
 				}); 
 			}
 		},
-		//详情页
-		navToDetailPage(item) {
-			//测试数据没有写id，用title代替
-			let id = item.title;
+		//主分类首页
+		navToCategoryPage(item){
 			uni.navigateTo({
-				url: `/pages/product/product?id=${id}`
+				url: `/pages/category/index?id=${item.id}&name=${item.name}`
+			});
+		},
+		//详情页
+		navToShopPage(item) {
+			//测试数据没有写id，用title代替
+			let id = item.id;
+			uni.navigateTo({
+				url: `/pages/shop/index?id=${id}`
 			});
 		}
 	},
@@ -538,7 +542,7 @@ page {
 	.rss-item{
 		width: 48%;
 		text-align: center;
-		padding:22upx 0 12upx;
+		padding-bottom:22upx;
 		.imgs{
 			position: relative;
 			.goods{

@@ -1,0 +1,34 @@
+'use strict';
+const db = uniCloud.database()
+exports.main = async (event, context) => {
+	let pid = event.id;
+	if (!pid) {
+		//return [];
+		pid=10000;
+	}
+	pid = pid * 1;
+	//获取所有集合名称，可能返回分站表名
+	let getCollectionNamesFunc = await uniCloud.callFunction({
+		name: "getCollectionNames",
+		data: event
+	});
+	let collectionNames = getCollectionNamesFunc.result;
+	const cmd = db.command;
+	const collection = db.collection(collectionNames['shop_categories']);
+	let data = await collection.where(cmd.or([{
+		pid: pid
+	}, {
+		id: pid
+	}])).field({
+		"id": 1,
+		"name": 1,
+		"src": 1
+	}).limit(10).orderBy("pid", "asc").orderBy("posid", "asc").get();
+	data.data.map(da=>{
+		if(da.id == pid){
+			da.name="全部";
+		}
+		return da;
+	});
+	return data;
+};
