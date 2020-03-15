@@ -12,7 +12,7 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({ title: '轮播广告' })">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="adNavToPage(item)">
 					<image :src="item.src" />
 				</swiper-item>
 			</swiper>
@@ -50,7 +50,7 @@
 			</view>
 		</view>
 
-		<view class="ad-1"><image src="/static/temp/ad1.jpg" mode="scaleToFill"></image></view>
+		<!-- <view class="ad-1"><image src="/static/temp/ad1.jpg" mode="scaleToFill"></image></view> -->
 
 		<!-- 优选好店 -->
 		<view class="f-header m-t"  v-if="recommendShopList.length > 0">
@@ -77,12 +77,12 @@
 				<text class="tit">附近商家</text>
 				<text class="tit2">Nearby shops</text>
 			</view>
-			<text class="yticon icon-you"></text>
 		</view>
 		<view v-bind:class="{'fixed':nearbyHeaderPosition,'nearby-func-section':1}">
 			<text v-bind:class="{active:nearByShopIndex==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
 			<text v-bind:class="{active:nearByShopIndex==2,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
 			<text v-bind:class="{active:nearByShopIndex==3,'fast-btn':1}" @click="getNearbyShops(3,1)">减配送费</text>
+			<text v-bind:class="{active:nearByShopIndex==4,'fast-btn':1}" @click="getNearbyShops(4,1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
 			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item">
@@ -91,8 +91,8 @@
 					<view class="">
 						<text class="title clamp">{{ item.name }}</text>
 					</view>
-					<view class=""><text>评分{{ item.score}} 月售{{ item.monthSale}}</text></view>
-					<view class=""><text>起送￥{{ item.deliveryMin}} 配送￥{{ item.deliveryMoney}} 人均￥{{ item.perCapita}}</text></view>
+					<view><text class="ops">评分{{ item.score}}</text> <text class="ops">月售{{ item.monthSale}}</text></view>
+					<view class=""><text class="ops">起送￥{{ item.deliveryMin}}</text> <text class="ops">配送￥{{ item.deliveryMoney}}</text><text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{item.deliveryMoneyBefore}}</text> <text class="ops">人均￥{{ item.perCapita}}</text></view>
 					<view class="youhui" v-if="item.hasManjian">
 						<text class="yh" v-for="(cou,ind) in item.manjians" :key="ind">{{cou.name}}</text>
 					</view>
@@ -156,7 +156,7 @@ export default {
 		///测试中，page不累加
 		console.log("onReachBottom")
 		if(this.loadingType !="nomore"){
-			this.getNearbyShops(this.nearByShopIndex,this.nearByShopPage);
+			this.getNearbyShops(this.nearByShopIndex,this.nearByShopPage+1);
 		}
 	},
 	computed: {
@@ -195,10 +195,13 @@ export default {
 						this.recommendShopClass ="recommend-shops-section rss-numb-"+res.result.recommendShops.length;
 					}
 					console.log("加载数据完成。。。");
+				}).catch(err=>{
+					uni.showToast({
+						icon:"none",
+						title:"网络异常"
+					})
 				});
-				setTimeout(function(){
-					this.getNearbyShops(0,1);
-				}.bind(this),500);
+				this.getNearbyShops(0,1);
 			//let goodsList = await this.$api.json('goodsList');
 			//this.goodsList = goodsList || [];
 		},
@@ -208,13 +211,13 @@ export default {
 					title:"加载中"
 				});
 			}
-			if(page >= this.nearByShopMaxPage){
+			if(page > this.nearByShopMaxPage){
 				this.loadingType = "nomore";
 				return;
 			}
 			this.nearByShopIndex=index;
 			this.nearByShopPage = page;
-			let limit=10;
+			let limit=5;
 			uniCloud.callFunction({
 				name: 'getShops',
 				data: {
@@ -229,6 +232,7 @@ export default {
 					//清空原数据
 					this.nearbyShops =[];
 				}
+				console.log(page+" "+res.result.affectedDocs);
 				if(res.result.affectedDocs > 0){
 					//累加到现有数组
 					this.nearbyShops = this.nearbyShops.concat(res.result.data)
@@ -242,6 +246,11 @@ export default {
 				}else{
 					this.loadingType = "nomore";
 				} 
+			}).catch(err=>{
+				uni.showToast({
+					icon:"none",
+					title:"网络异常"
+				})
 			});
 		},
 		//轮播图切换修改背景色
@@ -249,6 +258,22 @@ export default {
 			const index = e.detail.current;
 			this.swiperCurrent = index;
 			this.titleNViewBackground = this.carouselList[index].background;
+		},
+		//广告轮播跳转
+		adNavToPage(item){
+			//https://ask.dcloud.net.cn/article/35621
+			let link=item.link;
+			if(link.indexOf("/pages") === 0){
+				//跳转指定页面
+				uni.navigateTo({
+					url: `${link}`
+				});
+			}else if(link.indexOf("http") === 0){
+				//跳转网页
+				plus.runtime.openURL(link, function(res) {  
+					console.log(res);  
+				}); 
+			}
 		},
 		//详情页
 		navToDetailPage(item) {
@@ -586,6 +611,12 @@ page {
 			color: $font-color-dark;
 			line-height: 60upx;
 			font-weight: 400;
+		}
+		.ops{
+			margin-right: 12upx;
+		}
+		.del{
+			text-decoration: line-through;
 		}
 		.youhui{
 			padding-top: 8upx;

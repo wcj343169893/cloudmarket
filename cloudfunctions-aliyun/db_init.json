@@ -1,0 +1,99 @@
+// 在本文件中可配置云数据库初始化，数据格式见：https://uniapp.dcloud.io/uniCloud/quickstart?id=db-init
+
+// 编写完毕后对本文件点右键，可按配置规则创建表和添加数据
+
+{
+	// 系统管理员表
+	"managers": {
+		"data": [ // 数据
+			{
+				"password": "admin",
+				"role": "5e61e2e495ce1a004d848307",
+				"username": "admin"
+			},
+			{
+				"password": "123456",
+				"role": "5e6235c6ba9452004ddebebc",
+				"username": "test001"
+			}
+		],
+		"index": [{ // 索引
+			"IndexName": "index_username", // 索引名称
+			"MgoKeySchema": { // 索引规则
+				"MgoIndexKeys": [{
+					"Name": "username", // 索引字段
+					"Direction": "1" // 索引方向，1：ASC-升序，-1：DESC-降序
+				}],
+				"MgoIsUnique": false // 索引是否唯一
+			}
+		}]
+	},
+	// 公告数据
+	"notices": {
+		"data": [ // 数据
+			{
+				"content": "转朱阁，低绮户，照无眠。不应有恨，何事长向别时圆？",
+				"date": "20200228"
+			},
+			{
+				"content": "牵牛织女，莫是离中。甚霎儿晴，霎儿雨，霎儿风。",
+				"date": "20200228"
+			}
+		],
+		"index": [{ // 索引
+			"IndexName": "index_day", // 索引名称
+			"MgoKeySchema": { // 索引规则
+				"MgoIndexKeys": [{
+					"Name": "date", // 索引字段
+					"Direction": "1" // 索引方向，1：ASC-升序，-1：DESC-降序
+				}],
+				"MgoIsUnique": false // 索引是否唯一
+			}
+		}]
+	},
+	// 角色数据表
+	"roles": {
+		"data": [{
+				"_id": "5e61e2e495ce1a004d848307",
+				"name": "超级管理员",
+				"menus": ["pages/index/index"]
+			},
+			{
+				"_id": "5e6235c6ba9452004ddebebc",
+				"name": "测试员",
+				"menus": ["pages/index/index"]
+			}
+		]
+	},
+	//受限制的权限
+	"menus": {
+		"data": [{
+			"name": "系统首页",
+			"value": "pages/index/index"
+		}, {
+			"name": "角色管理",
+			"value": "pages/role/index",
+			"children": [{
+					"name": "添加角色",
+					"value": "pages/role/add"
+				},
+				{
+					"name": "删除角色",
+					"value": "pages/role/delete"
+				}
+			]
+		}, {
+			"name": "权限管理",
+			"value": "pages/menus/index",
+			"children": [{
+					"name": "添加权限",
+					"value": "pages/menus/add"
+				},
+				{
+					"name": "删除权限",
+					"value": "pages/menus/delete"
+				}
+			]
+		}]
+	}
+}

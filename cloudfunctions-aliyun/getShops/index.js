@@ -17,25 +17,36 @@ exports.main = async (event, context) => {
 	});
 	let collectionNames = getCollectionNamesFunc.result;
 	let query = db.collection(collectionNames["shops"]);
+	let where = {};
 	switch (index) {
 		case 1:
-			query = query.where({
-				hasManjian: 1
-			})
+			where["hasManjian"] = 1;
 			break;
 		case 2:
-			query = query.where({
-				deliveryTime: db.command.lte(30)
-			})
+			where["deliveryTime"] = db.command.lte(30);
 			break;
 		case 3:
-			query = query.where({
-				deliveryMoneyBefore: db.command.gt(1)
-			})
+			where["deliveryMoneyBefore"] = db.command.gt(1);
+			break;
+		case 4:
+			where["score"] = db.command.gt(4.0);
 			break;
 		default:
 			break;
 	}
-	let data = query.limit(limit).skip((page - 1) * limit).get();
+	//根据前端需要，筛选field
+	let data = query.where(where).field({
+		id: 1,
+		name: 1,
+		src: 1,
+		score: 1,
+		monthSale: 1,
+		deliveryMin: 1,
+		deliveryMoney: 1,
+		deliveryMoneyBefore:1,
+		perCapita: 1,
+		hasManjian: 1,
+		"manjians.name": 1
+	}).limit(limit).skip((page - 1) * limit).get();
 	return data;
 };
