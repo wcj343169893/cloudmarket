@@ -3,8 +3,7 @@ const db = uniCloud.database()
 exports.main = async (event, context) => {
 	let pid = event.id;
 	if (!pid) {
-		//return [];
-		pid=10000;
+		return [];
 	}
 	pid = pid * 1;
 	//获取所有集合名称，可能返回分站表名

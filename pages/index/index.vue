@@ -79,10 +79,10 @@
 			</view>
 		</view>
 		<view v-bind:class="{'fixed':nearbyHeaderPosition,'nearby-func-section':1}">
-			<text v-bind:class="{active:nearByShopIndex==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
-			<text v-bind:class="{active:nearByShopIndex==2,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
-			<text v-bind:class="{active:nearByShopIndex==3,'fast-btn':1}" @click="getNearbyShops(3,1)">减配送费</text>
-			<text v-bind:class="{active:nearByShopIndex==4,'fast-btn':1}" @click="getNearbyShops(4,1)">大众好评</text>
+			<text v-bind:class="{active:(nearByShopIndex&1)==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
+			<text v-bind:class="{active:(nearByShopIndex&2)>>1==1,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
+			<text v-bind:class="{active:(nearByShopIndex&4)>>2==1,'fast-btn':1}" @click="getNearbyShops(4,1)">减配送费</text>
+			<text v-bind:class="{active:(nearByShopIndex&8)>>3==1,'fast-btn':1}" @click="getNearbyShops(8,1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
 			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item" @click="navToShopPage(item)">
@@ -154,7 +154,7 @@ export default {
 	//加载更多
 	onReachBottom(){
 		if(this.loadingType !="nomore"){
-			this.getNearbyShops(this.nearByShopIndex,this.nearByShopPage+1);
+			this.getNearbyShops(0,this.nearByShopPage+1);
 		}
 	},
 	computed: {
@@ -208,12 +208,18 @@ export default {
 				uni.showLoading({
 					title:"加载中"
 				});
+				
+				if((this.nearByShopIndex & index)==index){
+					//已经存在，减少
+					this.nearByShopIndex=this.nearByShopIndex-index;
+				}else{
+					this.nearByShopIndex=this.nearByShopIndex+index;
+				}
 			}
 			if(page > this.nearByShopMaxPage){
 				this.loadingType = "nomore";
 				return;
 			}
-			this.nearByShopIndex=index;
 			this.nearByShopPage = page;
 			let limit=5;
 			uniCloud.callFunction({
@@ -221,7 +227,7 @@ export default {
 				data: {
 					page:page,
 					limit:limit,
-					index:index,
+					index:this.nearByShopIndex,
 					stationId:this.stationId
 				}
 			}).then(res=>{

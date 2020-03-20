@@ -18,13 +18,13 @@
 		</view>
 		<!-- 主分类下的店铺 -->
 		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
-			<text v-bind:class="{ active: currentIndex == 1, 'fast-btn': 1 }" @click="getShops(1, 1)">满减优惠</text>
-			<text v-bind:class="{ active: currentIndex == 2, 'fast-btn': 1 }" @click="getShops(2, 1)">30分钟内</text>
-			<text v-bind:class="{ active: currentIndex == 3, 'fast-btn': 1 }" @click="getShops(3, 1)">减配送费</text>
-			<text v-bind:class="{ active: currentIndex == 4, 'fast-btn': 1 }" @click="getShops(4, 1)">大众好评</text>
+			<text v-bind:class="{active:(nearByShopIndex&1)==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
+			<text v-bind:class="{active:(nearByShopIndex&2)>>1==1,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
+			<text v-bind:class="{active:(nearByShopIndex&4)>>2==1,'fast-btn':1}" @click="getNearbyShops(4,1)">减配送费</text>
+			<text v-bind:class="{active:(nearByShopIndex&8)>>3==1,'fast-btn':1}" @click="getNearbyShops(8,1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
-			<view v-for="(item, index) in shopList" :key="index" class="shop-item">
+			<view v-for="(item, index) in shopList" :key="index" class="shop-item" @click="navToShopPage(item)">
 				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
 				<view class="desc">
 					<view class="">
@@ -62,7 +62,7 @@ export default {
 			limit: 20,
 			cateId: 0,
 			catName: '',
-			currentIndex: 0,
+			nearByShopIndex: 0,
 			loadingType: 'more', //加载更多状态
 			nearbyHeaderPosition: 0,
 			nearByHeadTop: 100,
@@ -102,7 +102,7 @@ export default {
 	//加载更多
 	onReachBottom() {
 		if (this.loadingType != 'nomore') {
-			this.getShops(this.nearByShopIndex, this.nearByShopPage + 1);
+			this.getNearbyShops(0, this.nearByShopPage + 1);
 		}
 	},
 	computed: {
@@ -113,7 +113,7 @@ export default {
 			//加载子分类
 			this.getSubCategories();
 			//加载店铺
-			this.getShops(0, 1);
+			this.getNearbyShops(0, 1);
 		},
 		getSubCategories() {
 			console.log({
@@ -139,15 +139,21 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			});
-			this.getShops(this.currentIndex, 1);
+			this.getNearbyShops(0, 1);
 		},
-		getShops(index, page) {
+		getNearbyShops(index, page) {
 			if (index > 0) {
 				uni.showLoading({
 					title: '加载中'
 				});
+				
+				if((this.nearByShopIndex & index)==index){
+					//已经存在，减少
+					this.nearByShopIndex=this.nearByShopIndex-index;
+				}else{
+					this.nearByShopIndex=this.nearByShopIndex+index;
+				}
 			}
-			this.currentIndex = index;
 			this.page = page;
 			uniCloud
 				.callFunction({
@@ -155,7 +161,7 @@ export default {
 					data: {
 						page: page,
 						limit: this.limit,
-						index: index,
+						index: this.nearByShopIndex,
 						cid: this.cateId,
 						stationId: this.stationId
 					}
@@ -188,6 +194,14 @@ export default {
 					});
 					console.log(err);
 				});
+		},
+		//详情页
+		navToShopPage(item) {
+			//测试数据没有写id，用title代替
+			let id = item.id;
+			uni.navigateTo({
+				url: `/pages/shop/index?id=${id}`
+			});
 		}
 	}
 };

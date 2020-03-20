@@ -19,21 +19,21 @@ exports.main = async (event, context) => {
 	let collectionNames = getCollectionNamesFunc.result;
 	let query = db.collection(collectionNames["shops"]);
 	let where = {};
-	switch (index) {
-		case 1:
-			where["hasManjian"] = 1;
-			break;
-		case 2:
-			where["deliveryTime"] = db.command.lte(30);
-			break;
-		case 3:
-			where["deliveryMoneyBefore"] = db.command.gt(1);
-			break;
-		case 4:
-			where["score"] = db.command.gt(4.0);
-			break;
-		default:
-			break;
+	//有满减
+	if(index & 1 ==1){
+		where["hasManjian"] = 1;
+	}
+	//30分钟送达
+	if((index & 2) >> 1 == 1){
+		where["deliveryTime"] = db.command.lte(30);
+	}
+	//减配送费
+	if((index & 4) >> 2 == 1){
+		where["deliveryMoneyBefore"] = db.command.gt(1);
+	}
+	//评分
+	if((index & 8) >> 3 == 1){
+		where["score"] = db.command.gt(4.0);
 	}
 	if(cid > 0){
 		where["categories.id"]=cid*1;
