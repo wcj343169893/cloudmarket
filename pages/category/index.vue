@@ -18,10 +18,10 @@
 		</view>
 		<!-- 主分类下的店铺 -->
 		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
-			<text v-bind:class="{active:(nearByShopIndex&1)==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
-			<text v-bind:class="{active:(nearByShopIndex&2)>>1==1,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
-			<text v-bind:class="{active:(nearByShopIndex&4)>>2==1,'fast-btn':1}" @click="getNearbyShops(4,1)">减配送费</text>
-			<text v-bind:class="{active:(nearByShopIndex&8)>>3==1,'fast-btn':1}" @click="getNearbyShops(8,1)">大众好评</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">减配送费</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
 			<view v-for="(item, index) in shopList" :key="index" class="shop-item" @click="navToShopPage(item)">
@@ -73,10 +73,7 @@ export default {
 	async onLoad(options) {
 		console.log(options);
 		if (!options.id) {
-			uni.showToast({
-				icon: 'none',
-				title: '分类id错误'
-			});
+			this.$api.msg('分类不存在');
 			setTimeout(function() {
 				uni.navigateBack({
 					delta: 1
@@ -136,22 +133,17 @@ export default {
 		},
 		getShopsByCategory(id) {
 			this.cateId = id;
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.$api.loading();
 			this.getNearbyShops(0, 1);
 		},
 		getNearbyShops(index, page) {
 			if (index > 0) {
-				uni.showLoading({
-					title: '加载中'
-				});
-				
-				if((this.nearByShopIndex & index)==index){
+				this.$api.loading();
+				if ((this.nearByShopIndex & index) == index) {
 					//已经存在，减少
-					this.nearByShopIndex=this.nearByShopIndex-index;
-				}else{
-					this.nearByShopIndex=this.nearByShopIndex+index;
+					this.nearByShopIndex = this.nearByShopIndex - index;
+				} else {
+					this.nearByShopIndex = this.nearByShopIndex + index;
 				}
 			}
 			this.page = page;
@@ -188,10 +180,7 @@ export default {
 					}
 				})
 				.catch(err => {
-					uni.showToast({
-						icon: 'none',
-						title: '网络异常'
-					});
+					this.$api.msg('网络异常');
 					console.log(err);
 				});
 		},

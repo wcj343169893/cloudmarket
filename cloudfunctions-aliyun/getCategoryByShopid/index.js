@@ -4,8 +4,7 @@ exports.main = async (event, context) => {
 	//店铺id
 	let shopid = event.id;
 	if (!shopid) {
-		//return [];
-		shopid=12347;
+		return [];
 	}
 	shopid= parseInt(shopid);
 	//获取所有集合名称，可能返回分站表名
@@ -21,6 +20,6 @@ exports.main = async (event, context) => {
 		"name": 1,
 		"goodsCount":1,
 		"children": 1
-	}).orderBy("posid", "asc").orderBy("id", "asc").get();
+	}).orderBy("posid", "asc").get();
 	return data;
 };

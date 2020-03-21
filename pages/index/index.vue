@@ -12,9 +12,7 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
-					<image :src="item.src" />
-				</swiper-item>
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)"><image :src="item.src" /></swiper-item>
 			</swiper>
 			<!-- 自定义swiper指示器 -->
 			<view class="swiper-dots">
@@ -53,7 +51,7 @@
 		<!-- <view class="ad-1"><image src="/static/temp/ad1.jpg" mode="scaleToFill"></image></view> -->
 
 		<!-- 优选好店 -->
-		<view class="f-header m-t"  v-if="recommendShopList.length > 0">
+		<view class="f-header m-t" v-if="recommendShopList.length > 0">
 			<image src="/static/temp/h1.png"></image>
 			<view class="tit-box">
 				<text class="tit">优选好店</text>
@@ -62,12 +60,12 @@
 			<text class="yticon icon-you"></text>
 		</view>
 		<view :class="recommendShopClass" v-if="recommendShopList.length > 0">
-			<view v-for="(item,index) in recommendShopList" :key="index" class="rss-item" @click="navToShopPage(item)">
+			<view v-for="(item, index) in recommendShopList" :key="index" class="rss-item" @click="navToShopPage(item)">
 				<view class="imgs">
 					<image :src="item.goods.src" class="goods" mode="aspectFill"></image>
 					<image :src="item.src" class="logo"></image>
 				</view>
-				<text class="clamp">{{item.name}}</text>
+				<text class="clamp">{{ item.name }}</text>
 			</view>
 		</view>
 		<!-- 附近店铺 -->
@@ -78,23 +76,31 @@
 				<text class="tit2">Nearby shops</text>
 			</view>
 		</view>
-		<view v-bind:class="{'fixed':nearbyHeaderPosition,'nearby-func-section':1}">
-			<text v-bind:class="{active:(nearByShopIndex&1)==1,'fast-btn':1}" @click="getNearbyShops(1,1)">满减优惠</text>
-			<text v-bind:class="{active:(nearByShopIndex&2)>>1==1,'fast-btn':1}" @click="getNearbyShops(2,1)">30分钟内</text>
-			<text v-bind:class="{active:(nearByShopIndex&4)>>2==1,'fast-btn':1}" @click="getNearbyShops(4,1)">减配送费</text>
-			<text v-bind:class="{active:(nearByShopIndex&8)>>3==1,'fast-btn':1}" @click="getNearbyShops(8,1)">大众好评</text>
+		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
+			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">减配送费</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
-			<view v-for="(item,index) in nearbyShops" :key="index" class="shop-item" @click="navToShopPage(item)">
+			<view v-for="(item, index) in nearbyShops" :key="index" class="shop-item" @click="navToShopPage(item)">
 				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
 				<view class="desc">
 					<view class="">
 						<text class="title clamp">{{ item.name }}</text>
 					</view>
-					<view><text class="ops">评分{{ item.score}}</text> <text class="ops">月售{{ item.monthSale}}</text></view>
-					<view class=""><text class="ops">起送￥{{ item.deliveryMin}}</text> <text class="ops">配送￥{{ item.deliveryMoney}}</text><text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{item.deliveryMoneyBefore}}</text> <text class="ops">人均￥{{ item.perCapita}}</text></view>
+					<view>
+						<text class="ops">评分{{ item.score }}</text>
+						<text class="ops">月售{{ item.monthSale }}</text>
+					</view>
+					<view class="">
+						<text class="ops">起送￥{{ item.deliveryMin }}</text>
+						<text class="ops">配送￥{{ item.deliveryMoney }}</text>
+						<text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{ item.deliveryMoneyBefore }}</text>
+						<text class="ops">人均￥{{ item.perCapita }}</text>
+					</view>
 					<view class="youhui" v-if="item.hasManjian">
-						<text class="yh" v-for="(cou,ind) in item.manjians" :key="ind">{{cou.name}}</text>
+						<text class="yh" v-for="(cou, ind) in item.manjians" :key="ind">{{ cou.name }}</text>
 					</view>
 				</view>
 			</view>
@@ -104,13 +110,11 @@
 </template>
 
 <script>
-	import {
-	    mapState 
-	} from 'vuex'; 
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import { mapState } from 'vuex';
+import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 	components: {
-		uniLoadMore	
+		uniLoadMore
 	},
 	data() {
 		return {
@@ -121,14 +125,14 @@ export default {
 			carouselList: [],
 			mainShopCategoriesList: [],
 			recommendShopList: [],
-			recommendShopClass:"recommend-shops-section",
-			nearbyShops:[],
-			nearByShopIndex:0,
-			nearByShopPage:1,
-			nearByHeadTop:200,
-			nearbyHeaderPosition:0,
+			recommendShopClass: 'recommend-shops-section',
+			nearbyShops: [],
+			nearByShopIndex: 0,
+			nearByShopPage: 1,
+			nearByHeadTop: 200,
+			nearbyHeaderPosition: 0,
 			loadingType: 'more', //加载更多状态
-			nearByShopMaxPage:3,
+			nearByShopMaxPage: 3,
 			goodsList: []
 		};
 	},
@@ -136,126 +140,120 @@ export default {
 	onLoad() {
 		this.loadData();
 	},
-	onPageScroll(e){
+	onPageScroll(e) {
 		//兼容iOS端下拉时顶部漂移
-		if(e.scrollTop>=this.nearByHeadTop){
+		if (e.scrollTop >= this.nearByHeadTop) {
 			this.nearbyHeaderPosition = 1;
-		}else{
+		} else {
 			this.nearbyHeaderPosition = 0;
 		}
 	},
 	//下拉刷新
-	onPullDownRefresh(){
+	onPullDownRefresh() {
 		//this.loadData('refresh');
-		console.log("刷新整页")
+		console.log('刷新整页');
 		this.loadData();
 		uni.stopPullDownRefresh();
 	},
 	//加载更多
-	onReachBottom(){
-		if(this.loadingType !="nomore"){
-			this.getNearbyShops(0,this.nearByShopPage+1);
+	onReachBottom() {
+		if (this.loadingType != 'nomore') {
+			this.getNearbyShops(0, this.nearByShopPage + 1);
 		}
 	},
 	computed: {
-		...mapState(['hasLogin', 'userInfo','stationId'])
+		...mapState(['hasLogin', 'userInfo', 'stationId'])
 	},
 	methods: {
-		/**
-		 * 请求静态数据只是为了代码不那么乱
-		 * 分次请求未作整合
-		 */
 		async loadData() {
+			this.$api.loading()
 			uniCloud
 				.callFunction({
 					name: 'home',
 					data: {
-						id:this.userInfo.id,
-						shop_recommend_uid:this.userInfo.shop_recommend_uid,
-						stationId:this.stationId
+						id: this.userInfo.id,
+						shop_recommend_uid: this.userInfo.shop_recommend_uid,
+						stationId: this.stationId
 					}
 				})
 				.then(res => {
+					uni.hideLoading();
 					//广告
-					if(res.result.ads){
+					if (res.result.ads) {
 						let ads = res.result.ads;
 						this.titleNViewBackground = ads[0].background;
 						this.swiperLength = ads.length;
 						this.carouselList = ads;
 					}
-					if(res.result.oftenShops){
+					if (res.result.oftenShops) {
 						this.oftenShopsList = res.result.oftenShops;
 					}
-					if(res.result.categories){
+					if (res.result.categories) {
 						this.mainShopCategoriesList = res.result.categories;
-					}if(res.result.recommendShops){
-						this.recommendShopList = res.result.recommendShops;
-						this.recommendShopClass ="recommend-shops-section rss-numb-"+res.result.recommendShops.length;
 					}
-					console.log("加载数据完成。。。");
-				}).catch(err=>{
-					uni.showToast({
-						icon:"none",
-						title:"网络异常"
-					})
+					if (res.result.recommendShops) {
+						this.recommendShopList = res.result.recommendShops;
+						this.recommendShopClass = 'recommend-shops-section rss-numb-' + res.result.recommendShops.length;
+					}
+					console.log('加载数据完成。。。');
+				})
+				.catch(err => {
+					this.$api.msg('网络异常');
 				});
-				this.getNearbyShops(0,1);
+			this.getNearbyShops(0, 1);
 			//let goodsList = await this.$api.json('goodsList');
 			//this.goodsList = goodsList || [];
 		},
-		getNearbyShops(index,page){
-			if(index > 0){
-				uni.showLoading({
-					title:"加载中"
-				});
-				
-				if((this.nearByShopIndex & index)==index){
+		getNearbyShops(index, page) {
+			if (index > 0) {
+				this.$api.loading()
+				if ((this.nearByShopIndex & index) == index) {
 					//已经存在，减少
-					this.nearByShopIndex=this.nearByShopIndex-index;
-				}else{
-					this.nearByShopIndex=this.nearByShopIndex+index;
+					this.nearByShopIndex = this.nearByShopIndex - index;
+				} else {
+					this.nearByShopIndex = this.nearByShopIndex + index;
 				}
 			}
-			if(page > this.nearByShopMaxPage){
-				this.loadingType = "nomore";
+			if (page > this.nearByShopMaxPage) {
+				this.loadingType = 'nomore';
 				return;
 			}
 			this.nearByShopPage = page;
-			let limit=5;
-			uniCloud.callFunction({
-				name: 'getShops',
-				data: {
-					page:page,
-					limit:limit,
-					index:this.nearByShopIndex,
-					stationId:this.stationId
-				}
-			}).then(res=>{
-				uni.hideLoading();
-				if(page == 1){
-					//清空原数据
-					this.nearbyShops =[];
-				}
-				console.log(page+" "+res.result.affectedDocs);
-				if(res.result.affectedDocs > 0){
-					//累加到现有数组
-					this.nearbyShops = this.nearbyShops.concat(res.result.data)
-					//不足一页，肯定没有下一页了
-					if(res.result.affectedDocs < limit){
-						this.loadingType = "nomore";
-					}else{
-						//还有数据
-						this.loadingType = "more";
+			let limit = 5;
+			uniCloud
+				.callFunction({
+					name: 'getShops',
+					data: {
+						page: page,
+						limit: limit,
+						index: this.nearByShopIndex,
+						stationId: this.stationId
 					}
-				}else{
-					this.loadingType = "nomore";
-				} 
-			}).catch(err=>{
-				uni.showToast({
-					icon:"none",
-					title:"网络异常"
 				})
-			});
+				.then(res => {
+					uni.hideLoading();
+					if (page == 1) {
+						//清空原数据
+						this.nearbyShops = [];
+					}
+					console.log(page + ' ' + res.result.affectedDocs);
+					if (res.result.affectedDocs > 0) {
+						//累加到现有数组
+						this.nearbyShops = this.nearbyShops.concat(res.result.data);
+						//不足一页，肯定没有下一页了
+						if (res.result.affectedDocs < limit) {
+							this.loadingType = 'nomore';
+						} else {
+							//还有数据
+							this.loadingType = 'more';
+						}
+					} else {
+						this.loadingType = 'nomore';
+					}
+				})
+				.catch(err => {
+					this.$api.msg('网络异常');
+				});
 		},
 		//轮播图切换修改背景色
 		swiperChange(e) {
@@ -264,23 +262,23 @@ export default {
 			this.titleNViewBackground = this.carouselList[index].background;
 		},
 		//广告轮播跳转
-		navToAdPage(item){
+		navToAdPage(item) {
 			//https://ask.dcloud.net.cn/article/35621
-			let link=item.link;
-			if(link.indexOf("/pages") === 0){
+			let link = item.link;
+			if (link.indexOf('/pages') === 0) {
 				//跳转指定页面
 				uni.navigateTo({
 					url: `${link}`
 				});
-			}else if(link.indexOf("http") === 0){
+			} else if (link.indexOf('http') === 0) {
 				//跳转网页
-				plus.runtime.openURL(link, function(res) {  
-					console.log(res);  
-				}); 
+				plus.runtime.openURL(link, function(res) {
+					console.log(res);
+				});
 			}
 		},
 		//主分类首页
-		navToCategoryPage(item){
+		navToCategoryPage(item) {
 			uni.navigateTo({
 				url: `/pages/category/index?id=${item.id}&name=${item.name}`
 			});
@@ -455,7 +453,7 @@ page {
 		align-items: center;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
-		width:150upx;
+		width: 140upx;
 		padding-bottom: 30upx;
 	}
 	/* 原图标颜色太深,不想改图了,所以加了透明度 */
@@ -538,25 +536,25 @@ page {
 		}
 	}
 }
-.recommend-shops-section{
+.recommend-shops-section {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	flex-wrap: wrap;
-	padding:0 22upx 22upx;
+	padding: 0 22upx 22upx;
 	background: #fff;
-	.rss-item{
+	.rss-item {
 		width: 48%;
 		text-align: center;
-		padding-bottom:22upx;
-		.imgs{
+		padding-bottom: 22upx;
+		.imgs {
 			position: relative;
-			.goods{
+			.goods {
 				width: 100%;
 				height: 220upx;
 				border-radius: 20upx;
 			}
-			.logo{
+			.logo {
 				position: absolute;
 				right: 10upx;
 				bottom: 10upx;
@@ -564,20 +562,20 @@ page {
 				height: 50upx;
 			}
 		}
-		.clamp{
+		.clamp {
 			font-size: $font-sm + 2upx;
 		}
 		&:nth-child(2n + 1) {
 			margin-right: 4%;
 		}
 	}
-	&.rss-numb-1{
-		.rss-item{
+	&.rss-numb-1 {
+		.rss-item {
 			width: 100%;
 		}
 	}
-	&.rss-numb-3{
-		.rss-item{
+	&.rss-numb-3 {
+		.rss-item {
 			&:nth-child(1) {
 				width: 100%;
 			}
@@ -590,13 +588,13 @@ page {
 		}
 	}
 }
-.nearby-section{
+.nearby-section {
 	padding: 10upx 22upx;
 	.shop-item {
 		background-color: #ffffff;
 		display: flex;
 		flex-direction: wrap;
-		padding:20upx 20upx 30upx;
+		padding: 20upx 20upx 30upx;
 		border-radius: 20upx;
 		margin-bottom: 10upx;
 	}
@@ -612,7 +610,7 @@ page {
 			opacity: 1;
 		}
 	}
-	.desc{
+	.desc {
 		flex: 1;
 		font-size: $font-sm;
 		color: $font-color-light;
@@ -622,18 +620,18 @@ page {
 			line-height: 60upx;
 			font-weight: 400;
 		}
-		.ops{
+		.ops {
 			margin-right: 12upx;
 		}
-		.del{
+		.del {
 			text-decoration: line-through;
 		}
-		.youhui{
+		.youhui {
 			padding-top: 8upx;
-			.yh{
+			.yh {
 				margin-right: 10upx;
-				color: #F0AD4E;
-				border: 1px solid #F0AD4E;
+				color: #f0ad4e;
+				border: 1px solid #f0ad4e;
 				font-size: 0.8em;
 				padding: 0upx 10upx;
 				line-height: 1;
@@ -642,18 +640,18 @@ page {
 		}
 	}
 }
-.nearby-func-section{
-	padding:0 20upx 20upx;
+.nearby-func-section {
+	padding: 0 20upx 20upx;
 	font-size: $font-sm;
 	background: #fff;
-	.fast-btn{
-		background-color: #F8F8F8;
+	.fast-btn {
+		background-color: #f8f8f8;
 		color: $font-color-light;
 		padding: 6upx 30upx;
 		margin-right: 20upx;
 		border-radius: 8upx;
-		&.active{
-			background-color: #FA436A;
+		&.active {
+			background-color: #fa436a;
 			color: #ffffff;
 		}
 	}

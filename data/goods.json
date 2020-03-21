@@ -1,0 +1,58 @@
+{
+ 	"id": 10000,
+ 	"shopid": 123457,
+ 	"title": "酸菜鱼",
+ 	"price": 38.5,
+ 	"originPrice": 55,
+ 	"stock": 984,
+ 	"monthlySale": 50,
+ 	"score": 0.98,
+	"categories":[
+		{
+			"id":1004,
+			"name":"大分类一"
+		},{
+			"id":1006,
+			"name":"小分类二"
+		}
+	],
+ 	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/dac90eb0-6b40-11ea-9e8b-05a3242b26f2.jpg"
+ }
+ {
+  	"id": 10001,
+  	"shopid": 123457,
+  	"title": "酸菜鱼套餐",
+  	"price": 40.5,
+  	"originPrice": 55,
+  	"stock": 984,
+  	"monthlySale": 50,
+	"skuname":["规格","口味"],
+	"skus":[
+		{
+			"id":10000,
+			"name":"配可乐&gt;原味",
+			"price":43.5,
+			"stock":12
+		},
+		{
+			"id":10001,
+			"name":"配可乐&gt;草莓味",
+			"price":45.5,
+			"stock":33
+		},
+		{
+			"id":10002,
+			"name":"配牛奶&gt;原味",
+			"price":43.5,
+			"stock":12
+		},
+		{
+			"id":10003,
+			"name":"配牛奶&gt;草莓味",
+			"price":45.5,
+			"stock":33
+		}
+	],
+  	"score": 0.98,
+  	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/dac90eb0-6b40-11ea-9e8b-05a3242b26f2.jpg"
+  }

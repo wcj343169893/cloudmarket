@@ -22,6 +22,16 @@ const msg = (title, duration=1500, mask=false, icon='none')=>{
 		icon
 	});
 }
+/* 数据加载中 */
+const loading = (title, mask=true)=>{
+	//统一提示方便全局修改
+	if(Boolean(title) === false){
+		title="加载中...";
+	}
+	uni.showLoading({
+		title:title
+	})
+}
 const json = type=>{
 	//模拟异步请求数据
 	return new Promise(resolve=>{
@@ -44,7 +54,7 @@ const prePage = ()=>{
 Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
-Vue.prototype.$api = {msg, json, prePage};
+Vue.prototype.$api = {msg,loading, json, prePage};
 
 App.mpType = 'app'
 
