@@ -1,13 +1,14 @@
 'use strict';
 const db = uniCloud.database();
+const databaseNames = require('database_names')
 exports.main = async (event, context) => {
 	let dataOut = {};
 	//获取所有集合名称，可能返回分站表名
-	let getCollectionNamesFunc = await uniCloud.callFunction({
+	/* let getCollectionNamesFunc = await uniCloud.callFunction({
 		name: "getCollectionNames",
 		data: event
-	});
-	let collectionNames = getCollectionNamesFunc.result;
+	}); */
+	let collectionNames = databaseNames(event);
 
 	//查询广告
 	const adCollection = db.collection(collectionNames['ads']);
