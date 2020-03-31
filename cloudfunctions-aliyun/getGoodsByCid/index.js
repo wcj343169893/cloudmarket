@@ -1,5 +1,6 @@
 'use strict';
-const db = uniCloud.database()
+const db = uniCloud.database();
+const getCollectionNames = require('collection_names');
 exports.main = async (event, context) => {
 	//店铺id
 	let shopid = event.id;
@@ -10,11 +11,7 @@ exports.main = async (event, context) => {
 	shopid = parseInt(shopid);
 	cid = parseInt(cid);
 	//获取所有集合名称，可能返回分站表名
-	let getCollectionNamesFunc = await uniCloud.callFunction({
-		name: "getCollectionNames",
-		data: event
-	});
-	let collectionNames = getCollectionNamesFunc.result;
+	let collectionNames = getCollectionNames(event);
 	const cmd = db.command;
 	const collection = db.collection(collectionNames['goods']);
 	//一次性取完整个分类下的数据
@@ -22,5 +19,15 @@ exports.main = async (event, context) => {
 		shopid: shopid,
 		'categories.id': cid
 	}).get();
-	return data;
+	if(data.affectedDocs ==0){
+		return {
+			"code":404,
+			"message":"无数据",
+		};
+	}
+	return {
+		"code":200,
+		"message":"操作成功",
+		"data":data.data
+	};
 };

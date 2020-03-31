@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "database_names": "file:../common/database_names"
+    "collection_names": "file:../common/collection_names"
   },
   "devDependencies": {},
   "scripts": {

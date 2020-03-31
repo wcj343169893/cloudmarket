@@ -1,5 +1,5 @@
 {
-  "name": "database_names",
+  "name": "getShops",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "collection_names": "file:../common/collection_names"
+  }
 }

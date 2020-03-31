@@ -1,5 +1,6 @@
 'use strict';
 const db = uniCloud.database()
+const getCollectionNames = require('collection_names');
 exports.main = async (event, context) => {
 	//店铺id
 	let shopid = event.id;
@@ -8,11 +9,7 @@ exports.main = async (event, context) => {
 	}
 	shopid= parseInt(shopid);
 	//获取所有集合名称，可能返回分站表名
-	let getCollectionNamesFunc = await uniCloud.callFunction({
-		name: "getCollectionNames",
-		data: event
-	});
-	let collectionNames = getCollectionNamesFunc.result;
+	let collectionNames = getCollectionNames(event);
 	const cmd = db.command;
 	const collection = db.collection(collectionNames['goods_categories']);
 	let data = await collection.where({shopid: shopid}).field({

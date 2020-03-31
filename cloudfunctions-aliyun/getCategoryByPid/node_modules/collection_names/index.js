@@ -1,3 +1,7 @@
+/**
+ * 数据库集合分表处理公共函数
+ * @param {Object} event.stationId 站点名称
+ */
 module.exports = function(event) {
 	// 公用模块用法请参考 https://uniapp.dcloud.io/uniCloud/quickstart?id=common
 	//基础

@@ -1,5 +1,6 @@
 'use strict';
 const db = uniCloud.database();
+const getCollectionNames = require('collection_names');
 /**
  * 按条件查询店铺，理论上说，查询附近的店铺，可惜mongodb限制问题，无法查询地理位置，
  */
@@ -11,12 +12,8 @@ exports.main = async (event, context) => {
 	if (page < 1) {
 		page = 1;
 	}
-	//所以这里按店铺销量+评分排序，分页获取
-	let getCollectionNamesFunc = await uniCloud.callFunction({
-		name: "getCollectionNames",
-		data: event
-	});
-	let collectionNames = getCollectionNamesFunc.result;
+	//获取所有集合名称，可能返回分站表名
+	let collectionNames = getCollectionNames(event);
 	let query = db.collection(collectionNames["shops"]);
 	let where = {};
 	//有满减
