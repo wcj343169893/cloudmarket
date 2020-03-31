@@ -24,22 +24,22 @@ exports.main = async (event, context) => {
 		where["hasManjian"] = 1;
 	}
 	//30分钟送达
-	if((index & 2) >> 1 == 1){
+	if((index & 2) == 2){
 		where["deliveryTime"] = db.command.lte(30);
 	}
-	//减配送费
-	if((index & 4) >> 2 == 1){
-		where["deliveryMoneyBefore"] = db.command.gt(1);
+	//减配送费===>改为免配送费
+	if((index & 4) == 4){
+		where["deliveryMoney"] = db.command.gt(1);
 	}
 	//评分
-	if((index & 8) >> 3 == 1){
+	if((index & 8) == 8){
 		where["score"] = db.command.gt(4.0);
 	}
 	if(cid > 0){
 		where["categories.id"]=cid*1;
 	}
 	//根据前端需要，筛选field
-	let data = query.where(where).field({
+	let data =await query.where(where).field({
 		id: 1,
 		name: 1,
 		src: 1,
@@ -52,5 +52,15 @@ exports.main = async (event, context) => {
 		hasManjian: 1,
 		"manjians.name": 1
 	}).limit(limit).skip((page - 1) * limit).get();
-	return data;
+	if(data.affectedDocs ==0){
+		return {
+			"code":404,
+			"message":"无数据",
+		};
+	}
+	return {
+		"code":200,
+		"message":"操作成功",
+		"data":data.data
+	};
 };

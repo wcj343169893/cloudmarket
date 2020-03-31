@@ -79,7 +79,7 @@
 		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
 			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
 			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">减配送费</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">免配送费</text>
 			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
@@ -111,6 +111,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { getHomeData, getShopsByCid } from '@/common/request.js';
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 	components: {
@@ -167,38 +168,36 @@ export default {
 	methods: {
 		async loadData() {
 			this.$api.loading()
-			uniCloud
-				.callFunction({
-					name: 'home',
-					data: {
-						id: this.userInfo.id,
+			getHomeData({
 						shop_recommend_uid: this.userInfo.shop_recommend_uid,
 						stationId: this.stationId
-					}
-				})
+					})
 				.then(res => {
-					uni.hideLoading();
 					//广告
-					if (res.result.ads) {
-						let ads = res.result.ads;
+					if (res.ads) {
+						let ads = res.ads;
 						this.titleNViewBackground = ads[0].background;
 						this.swiperLength = ads.length;
 						this.carouselList = ads;
 					}
-					if (res.result.oftenShops) {
-						this.oftenShopsList = res.result.oftenShops;
+					//常买店铺
+					if (res.oftenShops) {
+						this.oftenShopsList = res.oftenShops;
 					}
-					if (res.result.categories) {
-						this.mainShopCategoriesList = res.result.categories;
+					//推荐分类
+					if (res.categories) {
+						this.mainShopCategoriesList = res.categories;
 					}
-					if (res.result.recommendShops) {
-						this.recommendShopList = res.result.recommendShops;
-						this.recommendShopClass = 'recommend-shops-section rss-numb-' + res.result.recommendShops.length;
+					//邀请者推荐店铺
+					if (res.recommendShops) {
+						this.recommendShopList = res.recommendShops;
+						this.recommendShopClass = 'recommend-shops-section rss-numb-' + res.recommendShops.length;
 					}
 					console.log('加载数据完成。。。');
 				})
 				.catch(err => {
 					this.$api.msg('网络异常');
+					console.log(err)
 				});
 			this.getNearbyShops(0, 1);
 			//let goodsList = await this.$api.json('goodsList');
@@ -220,40 +219,35 @@ export default {
 			}
 			this.nearByShopPage = page;
 			let limit = 5;
-			uniCloud
-				.callFunction({
-					name: 'getShops',
-					data: {
-						page: page,
-						limit: limit,
-						index: this.nearByShopIndex,
-						stationId: this.stationId
-					}
-				})
-				.then(res => {
-					uni.hideLoading();
-					if (page == 1) {
-						//清空原数据
-						this.nearbyShops = [];
-					}
-					console.log(page + ' ' + res.result.affectedDocs);
-					if (res.result.affectedDocs > 0) {
-						//累加到现有数组
-						this.nearbyShops = this.nearbyShops.concat(res.result.data);
+			getShopsByCid({
+				page: page,
+				limit: this.limit,
+				index: this.nearByShopIndex,
+				cid: this.cateId,
+				stationId: this.stationId
+			})
+				.then(
+					res => {
+						if (page == 1) {
+							//清空原数据
+							this.shopList = res;
+						} else {
+							//累加到现有数组
+							this.shopList = this.shopList.concat(res);
+						}
 						//不足一页，肯定没有下一页了
-						if (res.result.affectedDocs < limit) {
+						if (res.length < this.limit) {
 							this.loadingType = 'nomore';
 						} else {
 							//还有数据
 							this.loadingType = 'more';
 						}
-					} else {
+					},
+					err => {
+						//没有数据
 						this.loadingType = 'nomore';
 					}
-				})
-				.catch(err => {
-					this.$api.msg('网络异常');
-				});
+				)
 		},
 		//轮播图切换修改背景色
 		swiperChange(e) {

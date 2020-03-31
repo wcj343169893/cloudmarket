@@ -20,7 +20,7 @@
 		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
 			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
 			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">减配送费</text>
+			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">免配送费</text>
 			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
@@ -51,6 +51,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import { getCategoryByPid, getShopsByCid } from '@/common/request.js';
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 	components: {
@@ -117,19 +118,12 @@ export default {
 				id: this.cateId,
 				stationId: this.stationId
 			});
-			uniCloud
-				.callFunction({
-					name: 'getCategoryByPid',
-					data: {
-						id: this.cateId,
-						stationId: this.stationId
-					}
-				})
-				.then(res => {
-					if (res.result.affectedDocs > 0) {
-						this.shopCategoriesList = res.result.data;
-					}
-				});
+			getCategoryByPid({
+				id: this.cateId,
+				stationId: this.stationId
+			}).then(res => {
+				this.shopCategoriesList = res;
+			});
 		},
 		getShopsByCategory(id) {
 			this.cateId = id;
@@ -147,41 +141,38 @@ export default {
 				}
 			}
 			this.page = page;
-			uniCloud
-				.callFunction({
-					name: 'getShops',
-					data: {
-						page: page,
-						limit: this.limit,
-						index: this.nearByShopIndex,
-						cid: this.cateId,
-						stationId: this.stationId
-					}
-				})
-				.then(res => {
-					uni.hideLoading();
-					if (page == 1) {
-						//清空原数据
-						this.shopList = [];
-					}
-					console.log(page + ' ' + res.result.affectedDocs);
-					if (res.result.affectedDocs > 0) {
-						//累加到现有数组
-						this.shopList = this.shopList.concat(res.result.data);
+			getShopsByCid({
+				page: page,
+				limit: this.limit,
+				index: this.nearByShopIndex,
+				cid: this.cateId,
+				stationId: this.stationId
+			})
+				.then(
+					res => {
+						if (page == 1) {
+							//清空原数据
+							this.shopList = res;
+						} else {
+							//累加到现有数组
+							this.shopList = this.shopList.concat(res);
+						}
 						//不足一页，肯定没有下一页了
-						if (res.result.affectedDocs < this.limit) {
+						if (res.length < this.limit) {
 							this.loadingType = 'nomore';
 						} else {
 							//还有数据
 							this.loadingType = 'more';
 						}
-					} else {
+					},
+					err => {
+						//没有数据
 						this.loadingType = 'nomore';
 					}
-				})
+				)
 				.catch(err => {
+					console.log(err)
 					this.$api.msg('网络异常');
-					console.log(err);
 				});
 		},
 		//详情页

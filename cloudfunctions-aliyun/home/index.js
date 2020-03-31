@@ -18,10 +18,10 @@ exports.main = async (event, context) => {
 	}).limit(5).get();
 	dataOut["ads"] = ads.data;
 	//常购买店铺,必须有用户信息，才能显示
-	if (event.id > 0) {
+	if (event.uid > 0) {
 		const uobsCollection = db.collection(collectionNames['user_often_buy_shops']);
 		const oftenShops = await uobsCollection.where({
-			"uid": event.id
+			"uid": event.uid
 		}).orderBy("_id", "desc").get();
 		dataOut["oftenShops"] = oftenShops.data;
 	}
@@ -59,5 +59,9 @@ exports.main = async (event, context) => {
 		})
 		.end()
 	dataOut["recommendShops"] = recommendShops.data;
-	return dataOut
+	return {
+		"code":200,
+		"message":"操作成功",
+		"data":dataOut
+	};
 };

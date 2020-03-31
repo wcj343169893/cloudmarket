@@ -7,7 +7,7 @@
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
-		"usingComponents":true,
+        "usingComponents" : true,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
             "waiting" : true,
@@ -47,26 +47,29 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
-        },"safearea":{
-			/**iphone x 下巴收起来**/
-			"bottom":{
-				"offset":"none"
-			},
-			"left":{
-				"offset":"none"
-			},
-			"right":{
-				"offset":"none"
-			}
-		}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
+        },
+        "safearea" : {
+            /**iphone x 下巴收起来**/
+            "bottom" : {
+                "offset" : "none"
+            },
+            "left" : {
+                "offset" : "none"
+            },
+            "right" : {
+                "offset" : "none"
+            }
+        }
     },
     /* SDK配置 */
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-		"usingComponents":true,
+        "usingComponents" : true,
         "appid" : "",
         "setting" : {
             "urlCheck" : true

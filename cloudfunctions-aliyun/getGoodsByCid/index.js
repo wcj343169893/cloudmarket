@@ -4,8 +4,6 @@ exports.main = async (event, context) => {
 	//店铺id
 	let shopid = event.id;
 	let cid = event.cid;
-	let limit = event.limit || 10;
-	let page = event.page || 1;
 	if (!shopid || !cid) {
 		return [];
 	}
@@ -19,9 +17,10 @@ exports.main = async (event, context) => {
 	let collectionNames = getCollectionNamesFunc.result;
 	const cmd = db.command;
 	const collection = db.collection(collectionNames['goods']);
+	//一次性取完整个分类下的数据
 	let data = await collection.where({
 		shopid: shopid,
 		'categories.id': cid
-	}).orderBy("stock", "desc").orderBy("id", "asc").limit(limit).skip((page - 1) * limit).get();
+	}).get();
 	return data;
 };

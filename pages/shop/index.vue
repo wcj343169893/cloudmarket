@@ -6,7 +6,7 @@
 			<view class="image-wrapper"><image :src="shopinfo.src" mode="aspectFill"></image></view>
 			<view class="desc">
 				<view class="">
-					<text class="title clamp">{{ shopinfo.name }}</text>
+					<text class="title">{{ shopinfo.name }}</text>
 				</view>
 				<view>
 					<text class="ops">评分{{ shopinfo.score }}</text>
@@ -28,63 +28,74 @@
 				<view v-for="(item, index) in categoryList" :key="index" @click="changeCategory(index)" :class="{ 'cate-item': 1, selected: index == categorySelectIndex }">
 					<text>{{ item.name }}</text>
 				</view>
+				<view class="space"></view>
 			</scroll-view>
-			<scroll-view scroll-y="true" class="content-goods weui-flex__item" @scrolltolower="getMoreGoods()">
+			<view class="weui-flex__item" :style="contentStyleHeight">
 				<scroll-view class="floor-list" scroll-x>
 					<view class="scoll-wrapper">
 						<view
 							v-for="(item, index) in subCategoryList"
 							:key="index"
 							:class="{ 'floor-item': 1, selected: index == subCategorySelectIndex }"
-							@click="getGoodsByCid(index)"
+							@click="changeGoodsPosition(item.id, index)"
 						>
 							<text class="title clamp">{{ item.name }}</text>
 						</view>
 					</view>
 				</scroll-view>
-				<view class="space"></view>
-				<view v-for="(item, index) in goodsList" :key="index" class="goodsList weui-flex">
-					<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
-					<view class="desc weui-flex__item">
-						<view class="">
-							<text class="title">{{ item.title }}</text>
-						</view>
-						<view class="">
-							<text>月售{{item.monthlySale}}</text>
-							<text class="m-l">好评度{{item.score*100}}%</text>
-						</view>
-						<view class="price"><text class="unit">￥</text><text>{{ item.price }}</text><text class="del m-l" v-if="item.originPrice>0">￥{{ item.originPrice }}</text> </view>
-						<view class="buttons">
+				<scroll-view :scroll-top="scrollTop" :scroll-with-animation="true" scroll-y="true" class="content-goods" @scroll="getGoodsPosition">
+					<view class="space"></view>
+					<view v-for="(item, index) in goodsList" :key="index" class="goodsList">
+						<view class="sub-catename" v-if="item.subCategory" :id="'sub_cate_' + item.subCategory.id">{{ item.subCategory.name }}</view>
+						<view class="weui-flex">
+							<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
+							<view class="desc weui-flex__item">
+								<view class="">
+									<text class="title">{{ item.title }}</text>
+								</view>
+								<view class="">
+									<text>月售{{ item.monthlySale }}</text>
+									<text class="m-l">好评度{{ item.score * 100 }}%</text>
+								</view>
+								<view class="price">
+									<text class="unit">￥</text>
+									<text>{{ item.price }}</text>
+									<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+								</view>
+								<view class="buttons">
+									<uni-icons type="minus" size="22" color="#333333" @click="removeCart(item)"></uni-icons>
+									<input class="uni-input" maxlength="10" value="1"/>
+									<uni-icons type="plus" size="22" color="#ef5656" @click="addCart(item)"></uni-icons>
+								</view>
+							</view>
 						</view>
 					</view>
-				</view>
-				<uni-load-more :status="loadingType" :contentText="loadingContentText"></uni-load-more>
-			</scroll-view>
+					<text class="nomore">此分类已加载完成</text>
+				</scroll-view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import { uniIcons } from '@dcloudio/uni-ui';
 export default {
 	components: {
-		uniLoadMore
+		uniIcons
 	},
 	data() {
 		return {
+			scrollTop: 0,
+			old: {
+				scrollTop: 0
+			},
 			shopinfo: {},
 			categoryList: [],
 			categorySelectIndex: 0,
 			subCategorySelectIndex: 0,
-			subCategoryList:[],
-			page: 1,
-			loadingType: 'more', //加载更多状态
-			loadingContentText:{
-				contentdown: "上拉显示更多",
-				contentrefresh: "正在加载...",
-				contentnomore:"此分类已加载完成"
-			},
+			subCategoryList: [],
+			headHeight:100,
 			contentStyleHeight: 'height:500px',
 			goodsList: []
 		};
@@ -102,7 +113,6 @@ export default {
 		}
 		this.shopid = options.id;
 		this.loadData();
-		this.calculate();
 	},
 	computed: {
 		...mapState(['userInfo', 'stationId'])
@@ -132,6 +142,8 @@ export default {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
 					this.categoryList = res.result.goods_categories;
+					//计算高度
+					this.calculate();
 					this.changeCategory(0);
 				});
 		},
@@ -141,7 +153,8 @@ export default {
 			const { windowWidth, windowHeight } = uni.getSystemInfoSync();
 			let info = uni.createSelectorQuery().select('#shopinfo');
 			info.boundingClientRect(data => {
-				let height = windowHeight - data.height - data.top;
+				this.headHeight = data.height+data.top;
+				let height = windowHeight - this.headHeight;
 				this.contentStyleHeight = 'height:' + height + 'px';
 			}).exec();
 		},
@@ -149,27 +162,37 @@ export default {
 			this.categorySelectIndex = index;
 			this.subCategorySelectIndex = 0;
 			this.goodsList = [];
-			this.page = 1;
-			this.loadingType = 'more';
-			if(this.categoryList[index]['children']){
-				this.subCategoryList=this.categoryList[index]['children'];
-			}else{
-				this.subCategoryList=[];
+			if (this.categoryList[index]['children']) {
+				this.subCategoryList = this.categoryList[index]['children'];
+			} else {
+				this.subCategoryList = [];
 			}
 			this.getGoodsByCid(0);
 		},
-		getMoreGoods() {
-			if (this.loadingType != 'nomore') {
-				this.page++;
-				getGoodsByCid(this.subCategorySelectIndex);
-			}
+		changeGoodsPosition(id, index) {
+			//this.scrollTop = this.old.scrollTop;
+			this.subCategorySelectIndex = index;
+			let info = uni.createSelectorQuery().select('#sub_cate_' + id);
+			info.boundingClientRect(data => {
+				if (data) {
+					//this.scrollTop=data.top;
+					this.$nextTick(function() {
+						console.log(this.old.scrollTop,data.top)
+						this.scrollTop = this.old.scrollTop + 
+						data.top-this.headHeight-data.height*2+14;
+					});
+				}
+			}).exec();
+		},
+		getGoodsPosition(e) {
+			//e.detail.scrollTop
+			this.old.scrollTop = e.detail.scrollTop;
+			console.log(e.detail.scrollTop);
 		},
 		getGoodsByCid(index) {
 			this.subCategorySelectIndex = index;
 			let cate = this.categoryList[this.categorySelectIndex];
-			console.log(cate);
 			this.$api.loading();
-			let limit = 30;
 			uniCloud
 				.callFunction({
 					name: 'getGoodsByCid',
@@ -177,28 +200,52 @@ export default {
 						id: this.shopid,
 						stationId: this.stationId,
 						uid: this.userInfo.id,
-						cid: cate.id,
-						page: this.page,
-						limit: limit
+						cid: cate.id
 					}
 				})
 				.then(res => {
 					uni.hideLoading();
 					if (res.result.affectedDocs > 0) {
-						//累加到现有数组
-						this.goodsList = this.goodsList.concat(res.result.data);
-						//不足一页，肯定没有下一页了
-						if (res.result.affectedDocs < limit) {
-							this.loadingType = 'nomore';
+						if (this.subCategoryList && this.subCategoryList.length > 0) {
+							let subCids = [];
+							let goodsList = {};
+							let subCatMap = {};
+							for (let sc = 0; sc < this.subCategoryList.length; sc++) {
+								subCids.push(this.subCategoryList[sc].id);
+								goodsList[this.subCategoryList[sc].id] = [];
+								subCatMap[this.subCategoryList[sc].id] = this.subCategoryList[sc];
+							}
+							//按分组显示
+							for (let i = 0; i < res.result.data.length; i++) {
+								let goods = res.result.data[i];
+								//循环多分类
+								for (let c = 0; c < goods.categories.length; c++) {
+									if (subCids.includes(goods.categories[c].id)) {
+										goodsList[goods.categories[c].id].push(goods);
+										break;
+									}
+								}
+							}
+							let outGoodsList = [];
+							for (let var1 in goodsList) {
+								if (goodsList[var1].length > 0) {
+									goodsList[var1][0]['subCategory'] = subCatMap[var1];
+									outGoodsList = outGoodsList.concat(goodsList[var1]);
+								}
+							}
+							this.goodsList = outGoodsList;
 						} else {
-							//还有数据
-							this.loadingType = 'more';
+							this.goodsList = res.result.data;
 						}
-					} else {
-						this.loadingType = 'nomore';
 					}
 					console.log(res.result);
 				});
+		},
+		removeCart(item) {
+			console.log(item);
+		},
+		addCart(item) {
+			console.log(item);
 		}
 	}
 };
@@ -275,54 +322,66 @@ $border-color: #f5f5f5;
 	background: #ffffff;
 	font-size: 0.85rem;
 	.content-category {
-		width: 200upx;
+		width: 160upx;
 		border-right: 2upx solid $border-color;
 		height: 100%;
 		overflow-y: auto;
 		.cate-item {
 			padding: 20upx;
 			border-bottom: 2upx solid $border-color;
+			font-size: $font-sm + 2upx;
 			word-break: break-all;
 			text-overflow: ellipsis;
 			&.selected {
 				background-color: #f8f6fc;
 			}
 		}
+		.space {
+			padding-top: 180upx;
+		}
 	}
 	.content-goods {
 		height: 100%;
 		overflow-y: auto;
 		position: relative;
-		.floor-list {
-			white-space: nowrap;
-			position: fixed;
-			width: 540upx;
-			background-color: #ffffff;
-			z-index: 10;
-		}
-		.scoll-wrapper {
-			display: flex;
-			align-items: flex-start;
-		}
-		.floor-item {
-			width: 150upx;
-			margin-right: 20upx;
-			font-size: $font-sm + 2upx;
-			color: $font-color-dark;
-			line-height: 1.8;
-			padding: 5upx 16upx;
-			&.selected {
-				color: #ffffff;
-				background-color: #dd524d;
-			}
+	}
+	.floor-list {
+		white-space: nowrap;
+		position: absolute;
+		width: 580upx;
+		background-color: #ffffff;
+		z-index: 10;
+		border-bottom: 2upx solid $border-color;
+		height: 54upx;
+		overflow: hidden;
+	}
+	.scoll-wrapper {
+		display: flex;
+		align-items: flex-start;
+	}
+	.floor-item {
+		width: 150upx;
+		margin-right: 20upx;
+		font-size: $font-sm + 2upx;
+		color: $font-color-dark;
+		line-height: 1.8;
+		padding: 5upx 16upx;
+		&.selected {
+			color: #ffffff;
+			background-color: #dd524d;
 		}
 	}
-	.space{
+	.space {
 		padding-top: 60upx;
 	}
 	.goodsList {
-		align-items: flex-start;
 		padding: 20upx;
+		.weui-flex {
+			align-items: flex-start;
+		}
+		.sub-catename{
+			padding-bottom: 10upx;
+		}
 	}
 	.image-wrapper {
 		width: 180upx;
@@ -346,18 +405,29 @@ $border-color: #f5f5f5;
 			line-height: 1.1;
 			font-weight: 400;
 		}
-		.m-l{
+		.m-l {
 			margin-left: 20upx;
 		}
-		.price{
+		.price {
 			color: #ff0000;
 			font-size: 1.4em;
-			.unit{
+			.unit {
 				font-size: 0.8em;
 			}
-			.del{
+			.del {
 				font-size: 0.8em;
 				color: $font-color-light;
+			}
+		}
+		.buttons{
+			display: flex;
+			text-align: center;
+			width: 180upx;
+			float: right;
+			margin-right: 20upx;
+			.uni-input{
+				border: 1px solid $border-color;
+				border-radius: 6upx;
 			}
 		}
 	}

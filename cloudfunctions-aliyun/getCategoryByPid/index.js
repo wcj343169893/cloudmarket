@@ -23,11 +23,21 @@ exports.main = async (event, context) => {
 		"name": 1,
 		"src": 1
 	}).limit(10).orderBy("pid", "asc").orderBy("posid", "asc").get();
+	if(data.affectedDocs ==0){
+		return {
+			"code":404,
+			"message":"无数据",
+		};
+	}
 	data.data.map(da=>{
 		if(da.id == pid){
 			da.name="全部";
 		}
 		return da;
 	});
-	return data;
+	return {
+		"code":200,
+		"message":"操作成功",
+		"data":data.data
+	};
 };
