@@ -26,8 +26,23 @@ const getShopsByCid = function(data) {
 		data: data
 	})
 }
+//根据分类id，分页查询店铺
+const getShopHome = function(data) {
+	return network({
+		url: "shopHome",
+		data: data
+	})
+}
+const getGoodsByCid = function(data) {
+	return network({
+		url: "getGoodsByCid",
+		data: data
+	})
+}
 export {
 	getCategoryByPid,
 	getShopsByCid,
 	getHomeData,
+	getShopHome,
+	getGoodsByCid
 }

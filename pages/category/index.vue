@@ -180,7 +180,7 @@ export default {
 			//测试数据没有写id，用title代替
 			let id = item.id;
 			uni.navigateTo({
-				url: `/pages/shop/index?id=${id}`
+				url: `/pages/shop/simple?id=${id}`
 			});
 		}
 	}

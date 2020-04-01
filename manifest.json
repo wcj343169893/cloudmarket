@@ -74,5 +74,9 @@
         "setting" : {
             "urlCheck" : true
         }
+    },
+    "h5" : {
+        "title" : "cloudmarket",
+        "domain" : "market.cjblog.org"
     }
 }

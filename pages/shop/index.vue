@@ -64,7 +64,7 @@
 								</view>
 								<view class="buttons">
 									<uni-icons type="minus" size="22" color="#333333" @click="removeCart(item)"></uni-icons>
-									<input class="uni-input" maxlength="10" value="1"/>
+									<input class="uni-input" maxlength="10" value="1" />
 									<uni-icons type="plus" size="22" color="#ef5656" @click="addCart(item)"></uni-icons>
 								</view>
 							</view>
@@ -79,6 +79,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { getShopHome,getGoodsByCid } from '@/common/request.js';
 import { uniIcons } from '@dcloudio/uni-ui';
 export default {
 	components: {
@@ -95,7 +96,7 @@ export default {
 			categorySelectIndex: 0,
 			subCategorySelectIndex: 0,
 			subCategoryList: [],
-			headHeight:100,
+			headHeight: 100,
 			contentStyleHeight: 'height:500px',
 			goodsList: []
 		};
@@ -123,29 +124,29 @@ export default {
 			this.getShopInfo();
 		},
 		getShopInfo() {
-			uniCloud
-				.callFunction({
-					name: 'shopHome',
-					data: {
-						id: this.shopid,
-						stationId: this.stationId,
-						uid: this.userInfo.id
-					}
-				})
-				.then(res => {
-					console.log(res.result);
-					if (!res.result.id) {
+			getShopHome({
+				id: this.shopid,
+				stationId: this.stationId
+			}).then(
+				res => {
+					console.log(res);
+					if (!res.id) {
 						return;
 					}
-					this.shopinfo = res.result;
+					this.shopinfo = res;
 					if (this.shopinfo.banner) {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
-					this.categoryList = res.result.goods_categories;
+					this.categoryList = res.goods_categories;
 					//计算高度
 					this.calculate();
 					this.changeCategory(0);
-				});
+				},
+				err => {
+					console.log('店铺不存在');
+					this.$api.msg('店铺不存在');
+				}
+			);
 		},
 		//计算分类和商品列表高度
 		calculate() {
@@ -153,7 +154,7 @@ export default {
 			const { windowWidth, windowHeight } = uni.getSystemInfoSync();
 			let info = uni.createSelectorQuery().select('#shopinfo');
 			info.boundingClientRect(data => {
-				this.headHeight = data.height+data.top;
+				this.headHeight = data.height + data.top;
 				let height = windowHeight - this.headHeight;
 				this.contentStyleHeight = 'height:' + height + 'px';
 			}).exec();
@@ -177,9 +178,8 @@ export default {
 				if (data) {
 					//this.scrollTop=data.top;
 					this.$nextTick(function() {
-						console.log(this.old.scrollTop,data.top)
-						this.scrollTop = this.old.scrollTop + 
-						data.top-this.headHeight-data.height*2+14;
+						console.log(this.old.scrollTop, data.top);
+						this.scrollTop = this.old.scrollTop + data.top - this.headHeight - data.height * 2 + 14;
 					});
 				}
 			}).exec();
@@ -192,53 +192,45 @@ export default {
 		getGoodsByCid(index) {
 			this.subCategorySelectIndex = index;
 			let cate = this.categoryList[this.categorySelectIndex];
-			this.$api.loading();
-			uniCloud
-				.callFunction({
-					name: 'getGoodsByCid',
-					data: {
+			getGoodsByCid({
 						id: this.shopid,
 						stationId: this.stationId,
-						uid: this.userInfo.id,
 						cid: cate.id
-					}
-				})
+					})
 				.then(res => {
-					uni.hideLoading();
-					if (res.result.affectedDocs > 0) {
-						if (this.subCategoryList && this.subCategoryList.length > 0) {
-							let subCids = [];
-							let goodsList = {};
-							let subCatMap = {};
-							for (let sc = 0; sc < this.subCategoryList.length; sc++) {
-								subCids.push(this.subCategoryList[sc].id);
-								goodsList[this.subCategoryList[sc].id] = [];
-								subCatMap[this.subCategoryList[sc].id] = this.subCategoryList[sc];
-							}
-							//按分组显示
-							for (let i = 0; i < res.result.data.length; i++) {
-								let goods = res.result.data[i];
-								//循环多分类
-								for (let c = 0; c < goods.categories.length; c++) {
-									if (subCids.includes(goods.categories[c].id)) {
-										goodsList[goods.categories[c].id].push(goods);
-										break;
-									}
-								}
-							}
-							let outGoodsList = [];
-							for (let var1 in goodsList) {
-								if (goodsList[var1].length > 0) {
-									goodsList[var1][0]['subCategory'] = subCatMap[var1];
-									outGoodsList = outGoodsList.concat(goodsList[var1]);
-								}
-							}
-							this.goodsList = outGoodsList;
-						} else {
-							this.goodsList = res.result.data;
+					if (this.subCategoryList && this.subCategoryList.length > 0) {
+						let subCids = [];
+						let goodsList = {};
+						let subCatMap = {};
+						for (let sc = 0; sc < this.subCategoryList.length; sc++) {
+							subCids.push(this.subCategoryList[sc].id);
+							goodsList[this.subCategoryList[sc].id] = [];
+							subCatMap[this.subCategoryList[sc].id] = this.subCategoryList[sc];
 						}
+						//按分组显示
+						for (let i = 0; i < res.length; i++) {
+							let goods = res[i];
+							//循环多分类
+							for (let c = 0; c < goods.categories.length; c++) {
+								if (subCids.includes(goods.categories[c].id)) {
+									goodsList[goods.categories[c].id].push(goods);
+									break;
+								}
+							}
+						}
+						let outGoodsList = [];
+						for (let var1 in goodsList) {
+							if (goodsList[var1].length > 0) {
+								goodsList[var1][0]['subCategory'] = subCatMap[var1];
+								outGoodsList = outGoodsList.concat(goodsList[var1]);
+							}
+						}
+						this.goodsList = outGoodsList;
+					} else {
+						this.goodsList = res;
 					}
-					console.log(res.result);
+				},err=>{
+					//没有商品
 				});
 		},
 		removeCart(item) {
@@ -379,7 +371,7 @@ $border-color: #f5f5f5;
 		.weui-flex {
 			align-items: flex-start;
 		}
-		.sub-catename{
+		.sub-catename {
 			padding-bottom: 10upx;
 		}
 	}
@@ -419,13 +411,13 @@ $border-color: #f5f5f5;
 				color: $font-color-light;
 			}
 		}
-		.buttons{
+		.buttons {
 			display: flex;
 			text-align: center;
 			width: 180upx;
 			float: right;
 			margin-right: 20upx;
-			.uni-input{
+			.uni-input {
 				border: 1px solid $border-color;
 				border-radius: 6upx;
 			}

@@ -29,6 +29,7 @@ const network = function(options) {
 			data: options.data || {}
 		}).then(res => {
 			uni.hideLoading()
+			console.log(res)
 			if (res.result.code !== 200) {
 				if(res.result.code !== 404){
 					//没有数据

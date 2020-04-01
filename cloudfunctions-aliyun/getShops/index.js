@@ -26,7 +26,7 @@ exports.main = async (event, context) => {
 	}
 	//减配送费===>改为免配送费
 	if((index & 4) == 4){
-		where["deliveryMoney"] = db.command.gt(1);
+		where["deliveryMoney"] = 0;
 	}
 	//评分
 	if((index & 8) == 8){
@@ -48,7 +48,7 @@ exports.main = async (event, context) => {
 		perCapita: 1,
 		hasManjian: 1,
 		"manjians.name": 1
-	}).limit(limit).skip((page - 1) * limit).get();
+	}).limit(limit).skip((page - 1) * limit).orderBy("id","desc").get();
 	if(data.affectedDocs ==0){
 		return {
 			"code":404,

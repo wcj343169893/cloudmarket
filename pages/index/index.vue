@@ -83,7 +83,7 @@
 			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
 		</view>
 		<view class="nearby-section">
-			<view v-for="(item, index) in nearbyShops" :key="index" class="shop-item" @click="navToShopPage(item)">
+			<view v-for="(item, index) in shopList" :key="index" class="shop-item" @click="navToShopPage(item)">
 				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
 				<view class="desc">
 					<view class="">
@@ -127,7 +127,7 @@ export default {
 			mainShopCategoriesList: [],
 			recommendShopList: [],
 			recommendShopClass: 'recommend-shops-section',
-			nearbyShops: [],
+			shopList: [],
 			nearByShopIndex: 0,
 			nearByShopPage: 1,
 			nearByHeadTop: 200,
@@ -221,7 +221,7 @@ export default {
 			let limit = 5;
 			getShopsByCid({
 				page: page,
-				limit: this.limit,
+				limit: limit,
 				index: this.nearByShopIndex,
 				cid: this.cateId,
 				stationId: this.stationId
@@ -236,7 +236,7 @@ export default {
 							this.shopList = this.shopList.concat(res);
 						}
 						//不足一页，肯定没有下一页了
-						if (res.length < this.limit) {
+						if (res.length < limit) {
 							this.loadingType = 'nomore';
 						} else {
 							//还有数据
@@ -246,8 +246,11 @@ export default {
 					err => {
 						//没有数据
 						this.loadingType = 'nomore';
+						console.log("没有数据")
 					}
-				)
+				).catch(err=>{
+					console.log(err)
+				})
 		},
 		//轮播图切换修改背景色
 		swiperChange(e) {
@@ -277,12 +280,12 @@ export default {
 				url: `/pages/category/index?id=${item.id}&name=${item.name}`
 			});
 		},
-		//详情页
+		//店铺主页
 		navToShopPage(item) {
 			//测试数据没有写id，用title代替
 			let id = item.id;
 			uni.navigateTo({
-				url: `/pages/shop/index?id=${id}`
+				url: `/pages/shop/simple?id=${id}`
 			});
 		}
 	},
