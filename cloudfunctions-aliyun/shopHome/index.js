@@ -21,6 +21,7 @@ exports.main = async (event, context) => {
 		longitude: 1,
 		address: 1,
 		banner: 1,
+		notice:1,
 		deliveryTime: 1,
 		deliveryMin: 1,
 		deliveryMoney: 1,

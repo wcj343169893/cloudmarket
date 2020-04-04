@@ -1,26 +1,31 @@
 <template>
 	<view class="container" :style="shopinfo.bannerBackground">
-		<view class="space"></view>
+		<view class="space" id="headSpace"></view>
 		<!-- 店铺基本信息区域 -->
-		<view class="shopinfo weui-flex" id="shopinfo">
-			<view class="image-wrapper"><image :src="shopinfo.src" mode="aspectFill"></image></view>
-			<view class="desc">
-				<view class="">
-					<text class="title">{{ shopinfo.name }}</text>
+		<view class="shopinfo" id="shopinfo">
+			<view class="weui-flex">
+				<view class="image-wrapper"><image :src="shopinfo.src" mode="aspectFill"></image></view>
+				<view class="desc">
+					<view class="">
+						<text class="title">{{ shopinfo.name }}</text>
+					</view>
+					<view>
+						<text class="ops">评分{{ shopinfo.score }}</text>
+						<text class="ops">月售{{ shopinfo.monthSale }}</text>
+					</view>
+					<view class="">
+						<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
+						<text class="ops">配送￥{{ shopinfo.deliveryMoney }}</text>
+						<text v-if="shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
+						<text class="ops">人均￥{{ shopinfo.perCapita }}</text>
+					</view>
+					<view class="youhui" v-if="shopinfo.hasManjian">
+						<text class="yh" v-for="(cou, ind) in shopinfo.manjians" :key="ind">{{ cou.name }}</text>
+					</view>
 				</view>
-				<view>
-					<text class="ops">评分{{ shopinfo.score }}</text>
-					<text class="ops">月售{{ shopinfo.monthSale }}</text>
-				</view>
-				<view class="">
-					<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
-					<text class="ops">配送￥{{ shopinfo.deliveryMoney }}</text>
-					<text v-if="shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
-					<text class="ops">人均￥{{ shopinfo.perCapita }}</text>
-				</view>
-				<view class="youhui" v-if="shopinfo.hasManjian">
-					<text class="yh" v-for="(cou, ind) in shopinfo.manjians" :key="ind">{{ cou.name }}</text>
-				</view>
+			</view>
+			<view class="notice" v-if="shopinfo.notice && shopinfo.notice !='' ">
+				<text class="ops">温馨提示：{{ shopinfo.notice }}</text>
 			</view>
 		</view>
 		<view class="content" :style="contentStyleHeight">
@@ -82,7 +87,14 @@ export default {
 	},
 	data() {
 		return {
-			shopinfo: {},
+			shopinfo: {
+				name:" ",
+				perCapita:0,
+				score:0,
+				monthSale:0,
+				deliveryMoney:0,
+				deliveryMin:0
+			},
 			headHeight: 100,
 			contentStyleHeight: 'height:500px',
 			goodsList: [],
@@ -164,7 +176,6 @@ export default {
 								catIndex++;
 							}
 						});
-						this.calculateContentHeight();
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
 							res.goods.forEach((ele, index) => {
@@ -180,7 +191,12 @@ export default {
 							});
 						}
 					}
-
+					setTimeout(()=>{
+						//延时执行，防止数据未渲染
+						this.calculateContentHeight();
+						//延时计算联动效果
+						this.calcSize();
+					},100);
 					//this.goodsList = res.goods;
 					//计算高度
 					//this.calculate();
@@ -198,6 +214,7 @@ export default {
 			const { windowWidth, windowHeight } = uni.getSystemInfoSync();
 			let info = uni.createSelectorQuery().select('#shopinfo');
 			info.boundingClientRect(data => {
+				console.log(data)
 				this.headHeight = data.height + data.top;
 				let height = windowHeight - this.headHeight;
 				this.contentStyleHeight = 'height:' + height + 'px';
@@ -282,9 +299,12 @@ $border-color: #f5f5f5;
 	padding: 20upx;
 	background-color: #ffffff;
 	border-radius: 20upx 20upx 0 0;
+	.weui-flex{
+		align-items: flex-start;
+	}
 	.image-wrapper {
-		width: 180upx;
-		height: 180upx;
+		width: 120upx;
+		height: 120upx;
 		border-radius: 3px;
 		overflow: hidden;
 		margin-right: 22upx;
@@ -301,8 +321,9 @@ $border-color: #f5f5f5;
 		.title {
 			font-size: $font-lg;
 			color: $font-color-dark;
-			line-height: 60upx;
+			line-height:1;
 			font-weight: 400;
+			padding-bottom: 8upx;
 		}
 		.ops {
 			margin-right: 12upx;
@@ -322,6 +343,11 @@ $border-color: #f5f5f5;
 				border-radius: 8upx;
 			}
 		}
+	}
+	.notice{
+		font-size: $font-sm;
+		color: $font-color-light;
+		padding-top: 6upx;
 	}
 }
 .content {
