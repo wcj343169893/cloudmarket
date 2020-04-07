@@ -37,12 +37,12 @@
 					:class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId }"
 					@click="tabtap(item)"
 				>
-					{{ item.name }}
+					{{ item.name }} {{item.cart}}
 				</view>
 				<view class="space"></view>
 			</scroll-view>
 			<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop">
-				<view v-for="category in slist" :key="category.id" class="s-list" :id="'main-' + category.id">
+				<view v-for="(category,cindex) in slist" :key="category.id" class="s-list" :id="'main-' + category.id">
 					<text class="s-item">{{ category.name }}</text>
 					<view class="t-list">
 						<view v-for="(item, index) in category.goods" :key="index" class="goodsList">
@@ -62,9 +62,8 @@
 										<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
 									</view>
 									<view class="buttons">
-										<uni-icons type="minus" size="22" color="#333333" @click="removeCart(item)"></uni-icons>
-										<input class="uni-input" maxlength="10" value="1" />
-										<uni-icons type="plus" size="22" color="#ef5656" @click="addCart(item)"></uni-icons>
+										<view class="empty">&nbsp;</view>
+										<uni-number-box :min="0" :max="99" :id="category.pid+'_'+item.id" :value="item.cart" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -74,16 +73,27 @@
 				<view class="space"></view>
 			</scroll-view>
 		</view>
+		<uni-fab :pattern="pattern"
+		            :content="content"
+		            :horizontal="horizontal"
+		            :vertical="vertical"
+		            :direction="direction"
+		            @trigger="trigger"
+		        ></uni-fab>
+		<view class="cart"><text>{{sumCart}}</text> </view>
 	</view>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { getShopHome, getGoodsByCid } from '@/common/request.js';
-import { uniIcons } from '@dcloudio/uni-ui';
+import {uniBadge,uniFab } from "@dcloudio/uni-ui"
+import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
-		uniIcons
+		uniNumberBox,
+		uniBadge,
+		uniFab
 	},
 	data() {
 		return {
@@ -101,11 +111,14 @@ export default {
 			sizeCalcState: false,
 			tabScrollTop: 0,
 			currentId: 0,
+			nunn:1,
 			currentBeforeId: 0,
 			currentAfterId: 0,
 			categoryList: [],
 			slist: [],
-			tlist: []
+			tlist: [],
+			cartNumber:{},
+			sumCart:0
 		};
 	},
 	onLoad(options) {
@@ -148,16 +161,11 @@ export default {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
 					if (res.goods_categories.length > 0) {
-						this.categoryList = res.goods_categories;
-						//默认第一个选中
-						this.currentId = this.categoryList[0].id;
-						if (this.categoryList.length > 1) {
-							this.currentAfterId= this.categoryList[1].id;
-						}
 						//构造二级数据，如果没有，则为本身
 						let cateMap = {};
 						let catIndex = 0;
 						res.goods_categories.forEach((ele, index) => {
+							ele.cart=0;
 							if (ele.children && ele.children.length > 0) {
 								ele.children.forEach((ele2, ind2) => {
 									ele2.pid = ele.id;
@@ -176,9 +184,17 @@ export default {
 								catIndex++;
 							}
 						});
+						this.categoryList = res.goods_categories;
+						//默认第一个选中
+						this.currentId = this.categoryList[0].id;
+						if (this.categoryList.length > 1) {
+							this.currentAfterId= this.categoryList[1].id;
+						}
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
 							res.goods.forEach((ele, index) => {
+								//强转加入购物车数量
+								ele["cart"] = ele.cart?parseInt(ele.cart):0;
 								if (ele.categories) {
 									ele.categories.forEach((cate, cindex) => {
 										//判断是否存在与二级分类中
@@ -263,13 +279,37 @@ export default {
 						size: true
 					},
 					data => {
-						item.top = h;
-						h += data.height;
-						item.bottom = h;
+						if(data){
+							item.top = h;
+							h += data.height;
+							item.bottom = h;
+						}
 					}
 				).exec();
 			});
 			this.sizeCalcState = true;
+		},bindChange(number,id){
+			let ginfo=id.split("_");
+			//console.log(number,ginfo)
+			//console.log(this.slist[ginfo[0]])
+			//console.log(this.slist[ginfo[0]]["goods"])
+			//this.slist[ginfo[0]*1]["cart"]=number*1;
+			//this.slist[ginfo[0]*1]["goods"][ginfo[1]*1]["cart"]=number*1;
+			//this.nunn = number*3;
+			let pid = parseInt(ginfo[0]);
+			if(!this.cartNumber[pid]){
+				this.cartNumber[pid]={};
+			}
+			this.cartNumber[pid][ginfo[1]]=number*1;
+			let sum = 0;
+			//更新大分类数量
+			for(let i in this.cartNumber[pid]){
+				sum+=this.cartNumber[pid][i];
+			}
+			let index = this.categoryList.findIndex(sitem => sitem.id === pid);
+			console.log(sum)
+			this.categoryList[index]["cart"]=sum;
+			this.sumCart = sum
 		}
 	}
 };
@@ -467,16 +507,19 @@ $border-color: #f5f5f5;
 			}
 		}
 		.buttons {
+			margin-top: 6upx;
 			display: flex;
-			text-align: center;
-			width: 180upx;
-			float: right;
-			margin-right: 20upx;
-			.uni-input {
-				border: 1px solid $border-color;
-				border-radius: 6upx;
+			.empty{
+				flex: 1;
 			}
 		}
 	}
+}
+.cart{
+	position: fixed;
+	left: 40upx;
+	bottom: 60upx;
+	background: #fff;
+	z-index: 100;
 }
 </style>
