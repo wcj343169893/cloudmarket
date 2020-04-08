@@ -62,7 +62,8 @@
             "right" : {
                 "offset" : "none"
             }
-        }
+        },
+        "nativePlugins" : {}
     },
     /* SDK配置 */
     "quickapp" : {},

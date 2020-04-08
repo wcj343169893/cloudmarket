@@ -13,6 +13,7 @@ exports.main = async (event, context) => {
 	//查询广告
 	const adCollection = db.collection(collectionNames['ads']);
 	const ads = await adCollection.field({
+		"_id":0,
 		"background": 1,
 		"link": 1,
 		"src": 1
@@ -31,6 +32,7 @@ exports.main = async (event, context) => {
 	const categories = await categoryCollection.where({
 		"pid": 0
 	}).field({
+		"_id":0,
 		"id": 1,
 		"name": 1,
 		"src": 1

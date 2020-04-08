@@ -37,7 +37,8 @@
 					:class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId }"
 					@click="tabtap(item)"
 				>
-					{{ item.name }} {{item.cart}}
+					<text>{{ item.name }}</text>
+					<text class="sub_number" v-if="item.cart > 0">{{item.cart}}</text>
 				</view>
 				<view class="space"></view>
 			</scroll-view>
@@ -56,14 +57,17 @@
 										<text>月售{{ item.monthlySale }}</text>
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
 									</view>
-									<view class="price">
-										<text class="unit">￥</text>
-										<text>{{ item.price }}</text>
-										<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
-									</view>
 									<view class="buttons">
-										<view class="empty">&nbsp;</view>
-										<uni-number-box :min="0" :max="99" :id="category.pid+'_'+item.id" :value="item.cart" @change="bindChange"></uni-number-box>
+										<view class="price">
+											<text class="unit">￥</text>
+											<text>{{ item.price }}</text>
+											<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+										</view>
+										<view class="sku_button" v-if="item.hasSku">
+											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
+											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
+										</view>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :id="category.pid+'_'+item.id" :value="item.cart" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -73,27 +77,56 @@
 				<view class="space"></view>
 			</scroll-view>
 		</view>
-		<uni-fab :pattern="pattern"
-		            :content="content"
-		            :horizontal="horizontal"
-		            :vertical="vertical"
-		            :direction="direction"
-		            @trigger="trigger"
-		        ></uni-fab>
 		<view class="cart"><text>{{sumCart}}</text> </view>
+		<!-- 选规格 -->
+		<uni-popup ref="showsku" :type="skuDialogType" :mask-click="true" @change="change">
+			<view class="skuDialogPanel">
+				<view class="title">
+					<text>{{skuGoods.title}}</text>
+				</view>
+				<view v-for="(item,index) in skuGoods.skuNameMap" :key="index">
+					<view class="skuname">
+						<text>{{item.name}}</text>
+					</view>
+					<view class="skuoptions">
+						<view v-for="(sname,index2) in item.child" :key="index2" class="skuoptions__item" 
+						:class="{active:item.active== index2}" @click="selectSku(index,index2)">
+							<text>{{sname}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="sku_selected">
+					<text>已选择规格：{{skuGoodsSelected}}</text>
+				</view>
+				<view class="sku_prices_buttons">
+					<view class="sku_prices_buttons__price">
+						<text class="unit">￥</text>
+						<text>{{skuGoods.price}}</text>
+						<text class="del m-l" v-if="skuGoods.originPrice > 0">￥{{ skuGoods.originPrice }}</text>
+					</view>
+					<view class="sku_prices_buttons__btn">
+						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuGoods.cart" @change="bindChangeSku"></uni-number-box>
+					</view>
+				</view>
+			</view>
+			<view class="uni-image-close" @click="closeSkuDialog()">
+				<uni-icons type="clear" color="#fff" size="40" />
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { getShopHome, getGoodsByCid } from '@/common/request.js';
-import {uniBadge,uniFab } from "@dcloudio/uni-ui"
+import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
 		uniNumberBox,
-		uniBadge,
-		uniFab
+		uniFab,
+		uniPopup,
+		uniIcons
 	},
 	data() {
 		return {
@@ -118,7 +151,11 @@ export default {
 			slist: [],
 			tlist: [],
 			cartNumber:{},
-			sumCart:0
+			sumCart:0,
+			goodsCartNumber:{},
+			skuDialogType:"center",
+			skuGoods:{},
+			skuGoodsSelected:""
 		};
 	},
 	onLoad(options) {
@@ -195,6 +232,9 @@ export default {
 							res.goods.forEach((ele, index) => {
 								//强转加入购物车数量
 								ele["cart"] = ele.cart?parseInt(ele.cart):0;
+								this.goodsCartNumber[ele.id]=ele["cart"];
+								//是否存在多规格
+								ele["hasSku"]=ele.skus && ele.skus.length > 0;
 								if (ele.categories) {
 									ele.categories.forEach((cate, cindex) => {
 										//判断是否存在与二级分类中
@@ -230,6 +270,9 @@ export default {
 			const { windowWidth, windowHeight } = uni.getSystemInfoSync();
 			let info = uni.createSelectorQuery().select('#shopinfo');
 			info.boundingClientRect(data => {
+				if(!data){
+					return;
+				}
 				console.log(data)
 				this.headHeight = data.height + data.top;
 				let height = windowHeight - this.headHeight;
@@ -288,28 +331,114 @@ export default {
 				).exec();
 			});
 			this.sizeCalcState = true;
-		},bindChange(number,id){
+		},
+		/**单商品增减数量**/
+		bindChange(number,id){
+			console.log(number,id)
 			let ginfo=id.split("_");
-			//console.log(number,ginfo)
-			//console.log(this.slist[ginfo[0]])
-			//console.log(this.slist[ginfo[0]]["goods"])
-			//this.slist[ginfo[0]*1]["cart"]=number*1;
-			//this.slist[ginfo[0]*1]["goods"][ginfo[1]*1]["cart"]=number*1;
-			//this.nunn = number*3;
 			let pid = parseInt(ginfo[0]);
+			let gid = parseInt(ginfo[1]);
+			let num = parseInt(number);
+			this.changeGoodsCategoryCount(pid,gid,num);
+		},
+		/**多规格商品增减数量**/
+		bindChangeSku(number,id){
+			console.log("多规格",number,id,this.skuGoods.selectedSkuId)
+			let ginfo=id.split("_");
+			let pid = parseInt(ginfo[0]);
+			let gid = parseInt(ginfo[1]);
+			let num = parseInt(number);
+			//得到当前选中的skuid
+			
+		},
+		/**打开sku选择弹窗**/
+		openSkus(item,pid){
+			//规格弹窗点了加入购物车，再调用
+			/* this.goodsCartNumber[item.id]++;
+			this.changeGoodsCategoryCount(pid,item.id,this.goodsCartNumber[item.id]); */
+			//处理规格结构
+			let skus = item.skus;
+			let skuMap=[];
+			for(let n in item.skuname){
+				skuMap.push({
+					name:item.skuname[n],
+					active:0,
+					child:[]
+				});
+			}
+			console.log(skuMap);
+			let nameMap={};
+			skus.forEach(sku=>{
+				let names = sku.name.split("&gt;");
+				names.forEach((n,i)=>{
+					if(skuMap[i]["child"].indexOf(n) == -1){
+						skuMap[i]["child"].push(n)
+					}
+				});
+				nameMap[sku.name]=sku.id;
+			})
+			//默认第一个规格的选中次数
+			item["cart"]=0;
+			item["catPid"]=pid;
+			item["skuNameIds"]=nameMap;
+			item["skuNameMap"]=skuMap;
+			this.skuGoods = item;
+			//延时打开
+			this.$nextTick(() => {
+				this.$refs['showsku'].open();
+				//默认选中第一个
+				this.selectSku(0,0);
+			})
+		},
+		/**单商品和多规格商品统一更改数量统计**/
+		changeGoodsCategoryCount(pid,gid,number){
 			if(!this.cartNumber[pid]){
 				this.cartNumber[pid]={};
 			}
-			this.cartNumber[pid][ginfo[1]]=number*1;
+			this.cartNumber[pid][gid]=number;
 			let sum = 0;
 			//更新大分类数量
 			for(let i in this.cartNumber[pid]){
 				sum+=this.cartNumber[pid][i];
 			}
 			let index = this.categoryList.findIndex(sitem => sitem.id === pid);
+			if(index <0){
+				return;
+			}
 			console.log(sum)
 			this.categoryList[index]["cart"]=sum;
-			this.sumCart = sum
+			
+			//所有分类的数量
+			this.getSumCartNumber();
+		},
+		/**计算购物车总数量**/
+		getSumCartNumber(){
+			let allSum=0;
+			for(let b in this.cartNumber){
+				for(let c in this.cartNumber[b]){
+					allSum+=this.cartNumber[b][c];
+				}
+			}
+			this.sumCart = allSum;
+		},
+		/**关闭sku选择弹窗**/
+		closeSkuDialog(){
+			this.$refs['showsku'].close()
+		},
+		/**规格选择**/
+		selectSku(index,index2){
+			this.skuGoods.skuNameMap[index].active=index2;
+			//更新已选择规格
+			let names=[];
+			this.skuGoods.skuNameMap.forEach(skuname=>{
+				names.push(skuname["child"][skuname.active]);
+			});
+			this.skuGoodsSelected = names.join("、");
+			//匹配skuid
+			this.skuGoods["selectedSkuId"]=this.skuGoods["skuNameIds"][names.join("&gt;")];
+		},
+		change(e) {
+			console.log('是否打开:' + e.show)
 		}
 	}
 };
@@ -396,7 +525,7 @@ $border-color: #f5f5f5;
 }
 .left-aside {
 	flex-shrink: 0;
-	width: 200upx;
+	width: 160upx;
 	height: 100%;
 	.space {
 		padding-top: 80upx;
@@ -412,6 +541,9 @@ $border-color: #f5f5f5;
 	color: $font-color-base;
 	position: relative;
 	background: #fff;
+	.sub_number{
+		top: 6upx;
+	}
 	&.active {
 		color: $base-color;
 		background: #f8f8f8;
@@ -445,7 +577,7 @@ $border-color: #f5f5f5;
 .right-aside {
 	flex: 1;
 	overflow: hidden;
-	padding:2upx 20upx 0;
+	padding:2upx 18upx 0;
 	height: 100%;
 	.space {
 		padding-top: 120upx;
@@ -492,7 +624,7 @@ $border-color: #f5f5f5;
 			font-weight: 400;
 		}
 		.m-l {
-			margin-left: 20upx;
+			margin-left: 16upx;
 		}
 		.price {
 			color: $base-color;
@@ -514,6 +646,89 @@ $border-color: #f5f5f5;
 			}
 		}
 	}
+}
+/**选规格**/
+$box-height: 60upx;
+.sku_button{
+	width: 80upx;
+	height: $box-height;
+	line-height: 80upx;
+	flex: 1;
+	text-align: right;
+	position: relative;
+	.sku_btn{
+		background: #f5c454;
+		color: $font-color-dark;
+		padding: 12upx 16upx 12upx;
+		border-radius: 30upx;
+	}
+}
+.sub_number{
+	position: absolute;
+	right: 6upx;
+	top: -14upx;
+	background: $base-color;
+	line-height: 1;
+	font-size: $font-sm;
+	color: #ffffff;
+	padding: 4upx;
+	border-radius: 32upx;
+	width: 32upx;
+	text-align: center;
+	z-index: 10;
+}
+.skuDialogPanel{
+	background: #ffffff;
+	width: 670upx;
+	border-radius: 20upx;
+	padding: 20upx 40upx;
+	font-size: $font-base;
+	.title{
+		font-size: $font-lg;
+		color: $font-color-dark;
+	}
+	.skuname{
+		margin: 8upx 0;
+		color: $font-color-light;
+	}
+	.skuoptions{
+		flex-wrap: wrap;
+		text-align: center;
+		display: flex;
+	}
+	$yellow-color:#f8d889;
+	.skuoptions__item{
+		width: 200upx;
+		border: 1px solid $yellow-color;
+		border-radius: 8upx;
+		padding: 8upx;
+		margin-right: 20upx;
+		margin-bottom: 20upx;
+		&.active{
+			color: #f1a63b;
+			background: #fefbf2;
+		}
+	}
+	.sku_selected{
+		background: #fafafa;
+		margin: 20upx -40upx;
+		padding: 12upx 40upx;
+		border: 2upx solid #f3f3f3;
+		border-left: none;
+		border-right: none;
+	}
+	.sku_prices_buttons{
+		display: flex;
+	}
+	.sku_prices_buttons__price{
+		flex: 1;
+	}
+	.sku_prices_buttons__btn{
+	}
+}
+.uni-image-close {
+	margin-top: 20upx;
+	text-align: center;
 }
 .cart{
 	position: fixed;

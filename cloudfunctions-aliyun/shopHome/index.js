@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 	let data = await db.collection(collectionNames["shops"]).where({
 		id: shopid
 	}).field({
+		"_id":0,
 		id: 1,
 		name: 1,
 		src: 1,
@@ -41,6 +42,7 @@ exports.main = async (event, context) => {
 	let categories = await db.collection(collectionNames['goods_categories']).where({
 		shopid: shopid
 	}).field({
+		"_id":0,
 		"id": 1,
 		"name": 1,
 		"goodsCount": 1,
@@ -57,12 +59,15 @@ exports.main = async (event, context) => {
 		let goods = await db.collection(collectionNames['goods']).where({
 			shopid: shopid
 		}).field({
+			"_id":0,
 			"id": 1,
 			"title": 1,
 			"stock": 1,
 			"src": 1,
 			"score": 1,
 			"price": 1,
+			"skuname":1,
+			"skus":1,
 			"originPrice": 1,
 			"monthlySale": 1,
 			"categories": 1,

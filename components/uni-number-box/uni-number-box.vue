@@ -3,7 +3,7 @@
 		<view @click="_calcValue('minus')" :class="{'uni-numbox__minus':1,'uni-numbox__minus_show':isFocus || inputValue > 0}">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }">-</text>
 		</view>
-		<input :disabled="disabled" @blur="_onBlur" @focus="_onFocus" :class="{'uni-numbox__value':1,'uni-numbox__value_show':isFocus || inputValue > 0}" type="number" v-model="inputValue" />
+		<input :disabled="disabled" @blur="_onBlur" @focus="_onFocus" :class="{'uni-numbox__value':1,'uni-numbox__value_show':isFocus || inputValue > 0}" type="number" pattern="[0-9]{3}" v-model="inputValue" />
 		<view @click="_calcValue('plus')" :class="{'uni-numbox__plus':1,'uni-numbox__plus_left':inputValue == 0}">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }">+</text>
 		</view>
@@ -112,11 +112,11 @@
 			},
 			_onBlur(event) {
 				let value = event.detail.value;
+				this.isFocus=false;
 				if (!value) {
-					// this.inputValue = 0;
+					this.inputValue = 0;
 					return;
 				}
-				this.isFocus=false;
 				value = +value;
 				if (value > this.max) {
 					value = this.max;
@@ -129,12 +129,12 @@
 	};
 </script>
 <style lang="scss" scoped>
-	$box-height: 70upx;
+	$box-height: 60upx;
 	/* #ifdef APP-NVUE */
-	$box-line-height: 70upx;
+	$box-line-height: $box-height;
 	/* #endif */
-	$box-line-height: 70upx;
-	$box-width: 70upx;
+	$box-line-height: $box-height;
+	$box-width: $box-height;
 
 	.uni-numbox {
 		/* #ifndef APP-NVUE */
@@ -162,7 +162,7 @@
 		border-right-width: 0;
 	}
 	.uni-numbox__value_show{
-		width: 80upx;
+		width: $box-width;
 	}
 
 	.uni-numbox__minus {

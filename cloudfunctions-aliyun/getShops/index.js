@@ -37,6 +37,7 @@ exports.main = async (event, context) => {
 	}
 	//根据前端需要，筛选field
 	let data =await query.where(where).field({
+		"_id":0,
 		id: 1,
 		name: 1,
 		src: 1,
