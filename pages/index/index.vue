@@ -52,9 +52,9 @@
 
 		<!-- 优选好店 -->
 		<view class="f-header m-t" v-if="recommendShopList.length > 0">
-			<image src="/static/temp/h1.png"></image>
+			<image :src="recommendUser.portrait" mode="aspectFill"></image>
 			<view class="tit-box">
-				<text class="tit">优选好店</text>
+				<text class="tit">{{recommendUser.nickname}}·优选好店</text>
 				<text class="tit2">Recommendation store</text>
 			</view>
 			<text class="yticon icon-you"></text>
@@ -134,7 +134,8 @@ export default {
 			nearbyHeaderPosition: 0,
 			loadingType: 'more', //加载更多状态
 			nearByShopMaxPage: 3,
-			goodsList: []
+			goodsList: [],
+			recommendUser:{}
 		};
 	},
 
@@ -193,6 +194,10 @@ export default {
 						this.recommendShopList = res.recommendShops;
 						this.recommendShopClass = 'recommend-shops-section rss-numb-' + res.recommendShops.length;
 					}
+					if(res.recommendUser){
+						this.recommendUser = res.recommendUser;
+					}
+					//邀请者推荐店铺姓名
 					console.log('加载数据完成。。。');
 				})
 				.catch(err => {
@@ -218,7 +223,7 @@ export default {
 				return;
 			}
 			this.nearByShopPage = page;
-			let limit = 5;
+			let limit = 12;
 			getShopsByCid({
 				page: page,
 				limit: limit,
@@ -664,6 +669,7 @@ page {
 		width: 80upx;
 		height: 80upx;
 		margin-right: 20upx;
+		border-radius: 80upx;
 	}
 	.tit-box {
 		flex: 1;

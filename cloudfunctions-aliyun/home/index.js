@@ -56,12 +56,21 @@ exports.main = async (event, context) => {
 				as: 'item',
 				cond: $.lte(['$$item.hour', hours])
 			}), 0]),
+			"_id": 0,
 			id: 1,
 			name: 1,
 			src: 1
 		})
-		.end()
+		.end();
+	//查询推荐人姓名
+	let recommendUser = await db.collection(collectionNames["users"]).where({id:event.shop_recommend_uid}).field({
+		"_id":0,
+		"nickname":1,
+		"portrait":1
+	}).limit(1).get();
+	
 	dataOut["recommendShops"] = recommendShops.data;
+	dataOut["recommendUser"] = recommendUser.data[0];
 	return {
 		"code":200,
 		"message":"操作成功",

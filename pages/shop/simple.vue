@@ -99,13 +99,13 @@
 					<text>已选择规格：{{skuGoodsSelected}}</text>
 				</view>
 				<view class="sku_prices_buttons">
-					<view class="sku_prices_buttons__price">
+					<view class="sku_prices_buttons__price price">
 						<text class="unit">￥</text>
-						<text>{{skuGoods.price}}</text>
+						<text>{{skuGoods.showPrice}}</text>
 						<text class="del m-l" v-if="skuGoods.originPrice > 0">￥{{ skuGoods.originPrice }}</text>
 					</view>
-					<view class="sku_prices_buttons__btn">
-						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuGoods.cart" @change="bindChangeSku"></uni-number-box>
+					<view class="sku_prices_buttons__btn" v-if="skuCart[skuGoods.id]">
+						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
 					</view>
 				</view>
 			</view>
@@ -155,7 +155,8 @@ export default {
 			goodsCartNumber:{},
 			skuDialogType:"center",
 			skuGoods:{},
-			skuGoodsSelected:""
+			skuGoodsSelected:"",
+			skuCart:{}
 		};
 	},
 	onLoad(options) {
@@ -244,15 +245,25 @@ export default {
 										}
 									});
 								}
+								//多规格
+								if(ele.hasSku){
+									ele.skus.forEach(sku=>{
+										if(!this.skuCart[ele.id]){
+											this.skuCart[ele.id]={};
+										}
+										this.skuCart[ele.id][sku.id]= sku.cart?parseInt(sku.cart):0;
+									})
+								}
 							});
+							console.log("skuCart",this.skuCart)
 						}
 					}
-					setTimeout(()=>{
+					this.$nextTick(() => {
 						//延时执行，防止数据未渲染
 						this.calculateContentHeight();
 						//延时计算联动效果
 						this.calcSize();
-					},100);
+					})
 					//this.goodsList = res.goods;
 					//计算高度
 					//this.calculate();
@@ -348,8 +359,19 @@ export default {
 			let pid = parseInt(ginfo[0]);
 			let gid = parseInt(ginfo[1]);
 			let num = parseInt(number);
-			//得到当前选中的skuid
-			
+			//this.skuGoods.selectedSkuId
+			//得到当前选中的skuid，往下传递的num，应该是所有规格的总数
+			if(!this.skuCart[gid]){
+				this.skuCart[gid]={};
+			}
+			this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
+			//计算所有规格的总数
+			let gnumber=0;
+			for(let i in this.skuCart[gid]){
+				gnumber+=this.skuCart[gid][i];
+			}
+			//商品的总数量
+			this.changeGoodsCategoryCount(pid,gid,gnumber);
 		},
 		/**打开sku选择弹窗**/
 		openSkus(item,pid){
@@ -375,7 +397,7 @@ export default {
 						skuMap[i]["child"].push(n)
 					}
 				});
-				nameMap[sku.name]=sku.id;
+				nameMap[sku.name]=sku;
 			})
 			//默认第一个规格的选中次数
 			item["cart"]=0;
@@ -408,6 +430,8 @@ export default {
 			console.log(sum)
 			this.categoryList[index]["cart"]=sum;
 			
+			//商品总量
+			this.goodsCartNumber[gid]=number;
 			//所有分类的数量
 			this.getSumCartNumber();
 		},
@@ -435,7 +459,10 @@ export default {
 			});
 			this.skuGoodsSelected = names.join("、");
 			//匹配skuid
-			this.skuGoods["selectedSkuId"]=this.skuGoods["skuNameIds"][names.join("&gt;")];
+			let selectSku = this.skuGoods["skuNameIds"][names.join("&gt;")];
+			this.skuGoods["selectedSkuId"]=selectSku.id;
+			//更新商品价格
+			this.skuGoods["showPrice"] = selectSku.price;
 		},
 		change(e) {
 			console.log('是否打开:' + e.show)
@@ -623,21 +650,7 @@ $border-color: #f5f5f5;
 			line-height: 1.1;
 			font-weight: 400;
 		}
-		.m-l {
-			margin-left: 16upx;
-		}
-		.price {
-			color: $base-color;
-			font-size: 1.4em;
-			.unit {
-				font-size: 0.8em;
-			}
-			.del {
-				font-size: 0.8em;
-				color: $font-color-light;
-				text-decoration: line-through;
-			}
-		}
+		
 		.buttons {
 			margin-top: 6upx;
 			display: flex;
@@ -645,6 +658,21 @@ $border-color: #f5f5f5;
 				flex: 1;
 			}
 		}
+	}
+}
+.m-l {
+	margin-left: 16upx;
+}
+.price {
+	color: $base-color;
+	font-size: 1.4em;
+	.unit {
+		font-size: 0.8em;
+	}
+	.del {
+		font-size: 0.8em;
+		color: $font-color-light;
+		text-decoration: line-through;
 	}
 }
 /**选规格**/
