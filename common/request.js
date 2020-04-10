@@ -39,10 +39,28 @@ const getGoodsByCid = function(data) {
 		data: data
 	})
 }
+//单独获取购物车数据
+const getCartList = function(data) {
+	data["opt"]="list";
+	return network({
+		url: "carts",
+		data: data
+	})
+}
+//修改购物车数量，0为删除
+const editCart = function(data) {
+	data["opt"]="edit";
+	return network({
+		url: "carts",
+		data: data
+	})
+}
 export {
 	getCategoryByPid,
 	getShopsByCid,
 	getHomeData,
 	getShopHome,
-	getGoodsByCid
+	getGoodsByCid,
+	getCartList,
+	editCart
 }

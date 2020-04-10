@@ -51,6 +51,7 @@ exports.main = async (event, context) => {
 	//店铺默认分类
 	shopInfo["goods_categories"] = [];
 	shopInfo["goods"] = [];
+	shopInfo["carts"] = [];
 	if (categories.affectedDocs > 0) {
 		shopInfo["goods_categories"] = categories.data;
 	}
@@ -77,7 +78,18 @@ exports.main = async (event, context) => {
 		}
 		//如果存在用户id，需要查询购物车数量
 		if(uid > 0){
-			
+			let carts = await db.collection(collectionNames['carts']).where({
+				shopid: shopid,
+				uid:uid
+			}).field({
+				"_id":0,
+				"goods_id": 1,
+				"sku_id": 1,
+				"amount": 1,
+			}).get();
+			if (carts.affectedDocs > 0) {
+				shopInfo["carts"] = carts.data;
+			}
 		}
 	}
 	return {

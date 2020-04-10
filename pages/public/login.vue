@@ -95,7 +95,9 @@
 				const result = await this.$api.json('userInfo');
 				if(result.status === 1){
 					this.login(result.data);
-                    uni.navigateBack();  
+					setTimeout(()=>{
+						uni.navigateBack();
+					}, 200)
 				}else{
 					this.$api.msg(result.msg);
 					this.logining = false;

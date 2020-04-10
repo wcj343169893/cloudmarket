@@ -53,7 +53,7 @@
 									<view class="">
 										<text class="title">{{ item.title }}</text>
 									</view>
-									<view class="">
+									<view class="desc2">
 										<text>月售{{ item.monthlySale }}</text>
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
 									</view>
@@ -67,7 +67,7 @@
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :id="category.pid+'_'+item.id" :value="item.cart" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :id="category.pid+'_'+item.id" :value="item.cart" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -78,6 +78,23 @@
 			</scroll-view>
 		</view>
 		<view class="cart"><text>{{sumCart}}</text> </view>
+		<!-- 登录提示 -->
+		<uni-popup ref="showlogin" :type="skuDialogType" :mask-click="true" @change="change">
+			<view class="loginDialog">
+				<image :src="userInfo.portrait || '/static/missing-face.png'" mode=""></image>
+				<view class="notice">
+					<text>您还未登录</text>
+				</view>
+				<view class="weui-flex">
+					<view class="weui-flex__item">
+						<text class="btn btn_ok" @click="loginPage()">登录</text>
+					</view>
+					<view class="weui-flex__item" @click="closeLoginDialog()">
+						<text class="btn">取消</text>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 		<!-- 选规格 -->
 		<uni-popup ref="showsku" :type="skuDialogType" :mask-click="true" @change="change">
 			<view class="skuDialogPanel">
@@ -102,7 +119,7 @@
 					<view class="sku_prices_buttons__price price">
 						<text class="unit">￥</text>
 						<text>{{skuGoods.showPrice}}</text>
-						<text class="del m-l" v-if="skuGoods.originPrice > 0">￥{{ skuGoods.originPrice }}</text>
+						<text class="del m-l" v-if="skuGoods.showOriginPrice > 0">￥{{ skuGoods.showOriginPrice }}</text>
 					</view>
 					<view class="sku_prices_buttons__btn" v-if="skuCart[skuGoods.id]">
 						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
@@ -117,8 +134,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { getShopHome, getGoodsByCid } from '@/common/request.js';
+import { mapState,mapMutations } from 'vuex';
+import { getShopHome,editCart} from '@/common/request.js';
 import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -149,7 +166,6 @@ export default {
 			currentAfterId: 0,
 			categoryList: [],
 			slist: [],
-			tlist: [],
 			cartNumber:{},
 			sumCart:0,
 			goodsCartNumber:{},
@@ -158,6 +174,16 @@ export default {
 			skuGoodsSelected:"",
 			skuCart:{}
 		};
+	},
+	watch: {
+		hasLogin(){
+			console.log("watch 登录状态改变,刷新当前页面");
+			this.closeLoginDialog();
+			//数据初始化,暂时只重新刷新购物车是最省资源
+			setTimeout(()=>{
+				this.getShopInfo();
+			},100)
+		}
 	},
 	onLoad(options) {
 		console.log(options);
@@ -170,17 +196,19 @@ export default {
 			}, 3000);
 			return;
 		}
+		console.log("simple",this.userInfo)
 		this.shopid = options.id;
 		this.loadData();
 	},
 	computed: {
-		...mapState(['userInfo', 'stationId'])
+		...mapState(['hasLogin','userInfo', 'stationId'])
 	},
 	methods: {
 		async loadData() {
 			//加载店铺信息
 			this.getShopInfo();
 		},
+		...mapMutations(["loginPage"]),
 		getShopInfo() {
 			//一并查询所有商品
 			getShopHome({
@@ -198,6 +226,7 @@ export default {
 					if (this.shopinfo.banner) {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
+					this.slist=[];
 					if (res.goods_categories.length > 0) {
 						//构造二级数据，如果没有，则为本身
 						let cateMap = {};
@@ -228,32 +257,55 @@ export default {
 						if (this.categoryList.length > 1) {
 							this.currentAfterId= this.categoryList[1].id;
 						}
+						//处理购物车信息
+						let cartMap={};
+						let cartGoodsMap={};
+						if(res.carts.length > 0){
+							res.carts.forEach(ct=>{
+								cartMap[ct.goods_id+"_"+ct.sku_id]=ct.amount;
+								if(!cartGoodsMap[ct.goods_id]){
+									cartGoodsMap[ct.goods_id]=ct.amount;
+								}else{
+									cartGoodsMap[ct.goods_id] += ct.amount;
+								}
+							})
+						}
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
+							console.log("cartMap",cartMap);
 							res.goods.forEach((ele, index) => {
 								//强转加入购物车数量
-								ele["cart"] = ele.cart?parseInt(ele.cart):0;
-								this.goodsCartNumber[ele.id]=ele["cart"];
+								ele["cart"] = cartGoodsMap[ele.id]?parseInt(cartGoodsMap[ele.id]):0;//ele.cart?parseInt(ele.cart):0;
 								//是否存在多规格
 								ele["hasSku"]=ele.skus && ele.skus.length > 0;
+								//多规格
+								if(ele.hasSku){
+									ele["cart"] = 0;
+									ele.skus.forEach(sku=>{
+										if(!this.skuCart[ele.id]){
+											this.skuCart[ele.id]={};
+										}
+										//多规格购物车数量统计
+										ele["cart"] += this.skuCart[ele.id][sku.id]= cartMap[ele.id+"_"+sku.id]?parseInt(cartMap[ele.id+"_"+sku.id]):0;//sku.cart?parseInt(sku.cart):0;
+									})
+								}
+								//多分类
 								if (ele.categories) {
 									ele.categories.forEach((cate, cindex) => {
 										//判断是否存在与二级分类中
 										if (cate.id in cateMap) {
 											let cmIndex = cateMap[cate.id];
 											this.slist[cmIndex].goods.push(ele);
+											//计算大分类上的商品数量
+											if(!this.cartNumber[this.slist[cmIndex].pid]){
+												this.cartNumber[this.slist[cmIndex].pid]={};
+											}
+											this.cartNumber[this.slist[cmIndex].pid][ele.id]=ele.cart;
 										}
 									});
 								}
-								//多规格
-								if(ele.hasSku){
-									ele.skus.forEach(sku=>{
-										if(!this.skuCart[ele.id]){
-											this.skuCart[ele.id]={};
-										}
-										this.skuCart[ele.id][sku.id]= sku.cart?parseInt(sku.cart):0;
-									})
-								}
+								this.goodsCartNumber[ele.id]=ele["cart"];
+								console.log(this.goodsCartNumber[ele.id])
 							});
 							console.log("skuCart",this.skuCart)
 						}
@@ -345,12 +397,16 @@ export default {
 		},
 		/**单商品增减数量**/
 		bindChange(number,id){
-			console.log(number,id)
+			console.log("单规格",number,id)
 			let ginfo=id.split("_");
 			let pid = parseInt(ginfo[0]);
 			let gid = parseInt(ginfo[1]);
-			let num = parseInt(number);
-			this.changeGoodsCategoryCount(pid,gid,num);
+			let num = parseInt(number)*1;
+			//有修改数据，更新到服务器
+			if(this.goodsCartNumber[gid] != num){
+				this.saveCartAmount(gid,0,num);
+			}
+			this.changeGoodsCategoryCount(pid,gid,num,0);
 		},
 		/**多规格商品增减数量**/
 		bindChangeSku(number,id){
@@ -364,17 +420,25 @@ export default {
 			if(!this.skuCart[gid]){
 				this.skuCart[gid]={};
 			}
-			this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
+			//有修改数据，更新到服务器
+			if(this.skuCart[gid][this.skuGoods.selectedSkuId] != num){
+				this.saveCartAmount(gid,this.skuGoods.selectedSkuId,num);
+				this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
+			}
 			//计算所有规格的总数
 			let gnumber=0;
 			for(let i in this.skuCart[gid]){
 				gnumber+=this.skuCart[gid][i];
 			}
 			//商品的总数量
-			this.changeGoodsCategoryCount(pid,gid,gnumber);
+			this.changeGoodsCategoryCount(pid,gid,gnumber,this.skuGoods.selectedSkuId);
 		},
 		/**打开sku选择弹窗**/
 		openSkus(item,pid){
+			if(!this.hasLogin){
+				this.showLoginDialog();
+				return;
+			}
 			//规格弹窗点了加入购物车，再调用
 			/* this.goodsCartNumber[item.id]++;
 			this.changeGoodsCategoryCount(pid,item.id,this.goodsCartNumber[item.id]); */
@@ -405,11 +469,11 @@ export default {
 			item["skuNameIds"]=nameMap;
 			item["skuNameMap"]=skuMap;
 			this.skuGoods = item;
+			//默认选中第一个
+			this.selectSku(0,0);
 			//延时打开
 			this.$nextTick(() => {
 				this.$refs['showsku'].open();
-				//默认选中第一个
-				this.selectSku(0,0);
 			})
 		},
 		/**单商品和多规格商品统一更改数量统计**/
@@ -429,11 +493,22 @@ export default {
 			}
 			console.log(sum)
 			this.categoryList[index]["cart"]=sum;
-			
 			//商品总量
 			this.goodsCartNumber[gid]=number;
 			//所有分类的数量
 			this.getSumCartNumber();
+		},
+		//更新购物车数据到服务器
+		saveCartAmount(gid,sku,number){
+			editCart({
+				id:this.shopid,
+				stationId: this.stationId,
+				goods_id:gid,
+				sku_id:sku,
+				amount:number
+			}).then(res=>{
+				console.log(res)
+			});
 		},
 		/**计算购物车总数量**/
 		getSumCartNumber(){
@@ -451,21 +526,30 @@ export default {
 		},
 		/**规格选择**/
 		selectSku(index,index2){
+			console.log("selectSku")
 			this.skuGoods.skuNameMap[index].active=index2;
 			//更新已选择规格
 			let names=[];
 			this.skuGoods.skuNameMap.forEach(skuname=>{
 				names.push(skuname["child"][skuname.active]);
 			});
-			this.skuGoodsSelected = names.join("、");
 			//匹配skuid
 			let selectSku = this.skuGoods["skuNameIds"][names.join("&gt;")];
 			this.skuGoods["selectedSkuId"]=selectSku.id;
 			//更新商品价格
 			this.skuGoods["showPrice"] = selectSku.price;
+			this.skuGoods["showOriginPrice"] = selectSku.originPrice? selectSku.originPrice:0;
+			//console.log(this.skuGoods)
+			this.skuGoodsSelected = names.join("、");
 		},
 		change(e) {
 			console.log('是否打开:' + e.show)
+		},showLoginDialog(){
+			//登录提示框
+			console.log("showLoginDialog")
+			this.$refs['showlogin'].open();
+		},closeLoginDialog(){
+			this.$refs['showlogin'].close();
 		}
 	}
 };
@@ -634,6 +718,7 @@ $border-color: #f5f5f5;
 		border-radius: 3px;
 		overflow: hidden;
 		margin-right: 22upx;
+		flex-shrink: 0;
 		image {
 			width: 100%;
 			height: 100%;
@@ -650,10 +735,14 @@ $border-color: #f5f5f5;
 			line-height: 1.1;
 			font-weight: 400;
 		}
+		.desc2{
+			padding: 4upx 0 0;
+		}
 		
 		.buttons {
 			margin-top: 6upx;
 			display: flex;
+			justify-content: space-between;
 			.empty{
 				flex: 1;
 			}
@@ -661,7 +750,7 @@ $border-color: #f5f5f5;
 	}
 }
 .m-l {
-	margin-left: 16upx;
+	margin-left: 10upx;
 }
 .price {
 	color: $base-color;
@@ -680,7 +769,6 @@ $box-height: 60upx;
 .sku_button{
 	width: 80upx;
 	height: $box-height;
-	line-height: 80upx;
 	flex: 1;
 	text-align: right;
 	position: relative;
@@ -689,6 +777,8 @@ $box-height: 60upx;
 		color: $font-color-dark;
 		padding: 12upx 16upx 12upx;
 		border-radius: 30upx;
+		display: inline-block;
+		font-size: $font-ssm;
 	}
 }
 .sub_number{
@@ -709,7 +799,7 @@ $box-height: 60upx;
 	background: #ffffff;
 	width: 670upx;
 	border-radius: 20upx;
-	padding: 20upx 40upx;
+	padding: 30upx 20upx;
 	font-size: $font-base;
 	.title{
 		font-size: $font-lg;
@@ -739,8 +829,8 @@ $box-height: 60upx;
 	}
 	.sku_selected{
 		background: #fafafa;
-		margin: 20upx -40upx;
-		padding: 12upx 40upx;
+		margin: 20upx -20upx;
+		padding: 12upx 20upx;
 		border: 2upx solid #f3f3f3;
 		border-left: none;
 		border-right: none;
@@ -757,6 +847,29 @@ $box-height: 60upx;
 .uni-image-close {
 	margin-top: 20upx;
 	text-align: center;
+}
+.loginDialog{
+	background: #ffffff;
+	width: 520upx;
+	border-radius: 20upx;
+	padding: 30upx 20upx;
+	font-size: $font-base;
+	text-align: center;
+	image{
+		width: 200upx;
+		height: 200upx;
+	}
+	.notice{
+		padding: 20upx 0 40upx;
+	}
+	.btn{
+		padding: 10upx 30upx;
+		background: #ffffff;
+		border-radius: 20upx;
+	}
+	.btn_ok{
+		background: #f5c454;
+	}
 }
 .cart{
 	position: fixed;

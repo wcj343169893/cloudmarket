@@ -26,6 +26,10 @@ const store = new Vuex.Store({
 			uni.removeStorage({
 				key: 'userInfo'
 			})
+		},loginPage(){
+			uni.navigateTo({
+				url: '/pages/public/login'
+			});
 		}
 	},
 	actions: {

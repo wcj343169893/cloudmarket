@@ -166,6 +166,14 @@ export default {
 	computed: {
 		...mapState(['hasLogin', 'userInfo', 'stationId'])
 	},
+	watch: {
+		hasLogin(){
+			console.log("watch 登录状态改变,刷新当前页面");
+			setTimeout(()=>{
+				this.loadData();
+			},100)
+		}
+	},
 	methods: {
 		async loadData() {
 			this.$api.loading()
@@ -184,18 +192,26 @@ export default {
 					//常买店铺
 					if (res.oftenShops) {
 						this.oftenShopsList = res.oftenShops;
+					}else{
+						this.oftenShopsList = [];
 					}
 					//推荐分类
 					if (res.categories) {
 						this.mainShopCategoriesList = res.categories;
+					}else{
+						this.mainShopCategoriesList =[];
 					}
 					//邀请者推荐店铺
 					if (res.recommendShops) {
 						this.recommendShopList = res.recommendShops;
 						this.recommendShopClass = 'recommend-shops-section rss-numb-' + res.recommendShops.length;
+					}else{
+						this.recommendShopList =[];
 					}
 					if(res.recommendUser){
 						this.recommendUser = res.recommendUser;
+					}else{
+						this.recommendUser ={};
 					}
 					//邀请者推荐店铺姓名
 					console.log('加载数据完成。。。');

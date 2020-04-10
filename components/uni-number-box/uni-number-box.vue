@@ -1,11 +1,11 @@
 <template>
 	<view class="uni-numbox">
 		<view @click="_calcValue('minus')" :class="{'uni-numbox__minus':1,'uni-numbox__minus_show':isFocus || inputValue > 0}">
-			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }">-</text>
+			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }"><image src="../../static/icon/delete.png" mode=""></image></text>
 		</view>
 		<input :disabled="disabled" @blur="_onBlur" @focus="_onFocus" :class="{'uni-numbox__value':1,'uni-numbox__value_show':isFocus || inputValue > 0}" type="number" pattern="[0-9]{3}" v-model="inputValue" />
 		<view @click="_calcValue('plus')" :class="{'uni-numbox__plus':1,'uni-numbox__plus_left':inputValue == 0}">
-			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }">+</text>
+			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }"><image src="../../static/icon/new.png" mode=""></image> </text>
 		</view>
 	</view>
 </template>
@@ -33,7 +33,7 @@
 			},
 			value: {
 				type: [Number, String],
-				default: 1
+				default: 0
 			},
 			min: {
 				type: Number,
@@ -63,7 +63,8 @@
 				this.inputValue = +val;
 			},
 			inputValue(newVal, oldVal) {
-				if (newVal != "" && +newVal !== +oldVal) {
+				if (newVal != "" && !isNaN(newVal) && +newVal !== +oldVal) {
+					console.log("inputValue",newVal,oldVal)
 					this.$emit("change", newVal,this.id);
 				}
 			}
@@ -77,6 +78,7 @@
 			},
 			_calcValue(type) {
 				if (this.disabled) {
+					this.$emit("disabledEvent",this.id);
 					return;
 				}
 				const scale = this._getDecimalScale();
@@ -129,7 +131,7 @@
 	};
 </script>
 <style lang="scss" scoped>
-	$box-height: 60upx;
+	$box-height: 42upx;
 	/* #ifdef APP-NVUE */
 	$box-line-height: $box-height;
 	/* #endif */
@@ -143,10 +145,14 @@
 		flex-direction: row;
 		height: $box-height;
 		line-height: $box-height;
-		width: 120px;
+		width: 100px;
 		justify-content: flex-end;
 	}
-
+	image{
+		width: 20upx;
+		height: 20upx;
+		display: block;
+	}
 	.uni-numbox__value {
 		background-color: $uni-bg-color;
 		/* width: 40px; */
@@ -155,70 +161,35 @@
 		height: $box-height;
 		text-align: center;
 		font-size: $uni-font-size-lg;
-		border-width: 1rpx;
-		border-style: solid;
-		border-color: $uni-border-color;
-		border-left-width: 0;
-		border-right-width: 0;
 	}
 	.uni-numbox__value_show{
-		width: $box-width;
+		width: 60upx;
 	}
 
 	.uni-numbox__minus {
 		overflow: hidden;
-		/* #ifndef APP-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
 		width: 0;
 		height: $box-height;
-		// line-height: $box-line-height;
-		// text-align: center;
-		font-size: 40upx;
-		color: $uni-text-color;
 		background-color: $uni-bg-color-grey;
+		display: flex;
+		flex-direction: row;  /* 子元素横向排列 */
+		justify-content: center; /* 相对父元素水平居中 */
+		align-items: center; /*  子元素相对父元素垂直居中 */
 	}
 	.uni-numbox__minus_show{
 		width: $box-width;
-		border-width: 1rpx;
-		border-style: solid;
-		border-color: $uni-border-color;
-		border-top-left-radius: $uni-border-radius-base;
-		border-bottom-left-radius: $uni-border-radius-base;
-		border-right-width: 0;
+		border-radius: $box-width;
 	}
 
 	.uni-numbox__plus {
-		/* #ifndef APP-NVUE */
-		display: flex;
-		/* #endif */
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
 		width: $box-width;
 		height: $box-height;
-		border-width: 1rpx;
-		border-style: solid;
-		border-color: $uni-border-color;
-		border-top-right-radius: $uni-border-radius-base;
-		border-bottom-right-radius: $uni-border-radius-base;
-		background-color: $uni-bg-color-grey;
-		border-left-width: 0;
-	}
-	.uni-numbox__plus_left{
-		border-left-width: 1rpx;
-		border-radius: $uni-border-radius-base;
-	}
-
-	.uni-numbox--text {
-		font-size: 40upx;
-		color: $uni-text-color;
-	}
-
-	.uni-numbox--disabled {
-		color: $uni-text-color-disable;
+		border-radius: $box-width;
+		background: #f5c454;
+		text-align: center;
+		display: flex;
+		flex-direction: row;  /* 子元素横向排列 */
+		justify-content: center; /* 相对父元素水平居中 */
+		align-items: center; /*  子元素相对父元素垂直居中 */
 	}
 </style>
