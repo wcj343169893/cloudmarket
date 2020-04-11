@@ -185,7 +185,7 @@
 		width: $box-width;
 		height: $box-height;
 		border-radius: $box-width;
-		background: #f5c454;
+		background: $btn-color-light;
 		text-align: center;
 		display: flex;
 		flex-direction: row;  /* 子元素横向排列 */

@@ -29,7 +29,7 @@
 			</view>
 		</view>
 		<view class="content" :style="contentStyleHeight">
-			<scroll-view scroll-y class="left-aside">
+			<scroll-view scroll-y class="left-aside" :scroll-top="leftScrollTop">
 				<view
 					v-for="(item, index) in categoryList"
 					:key="item.id"
@@ -77,7 +77,33 @@
 				<view class="space"></view>
 			</scroll-view>
 		</view>
-		<view class="cart"><text>{{sumCart}}</text> </view>
+		<view class="cart" v-if="hasLogin">
+			<view class="weui-flex">
+				<view class="btn btn_tel">
+					<text>联系商家</text>
+				</view>
+				<view class="weui-flex__item settleMoney" @click="openCartDialog()">
+					<view class="weui-flex">
+						<view class="img">
+							<image src="../../static/cart.png" mode=""></image>
+							<text class="sub_number" v-if="cartInfo.sumCart > 0">{{cartInfo.sumCart}}</text>
+						</view>
+						<view class="weui-flex__item">
+							<view class="price">
+								<text>￥{{cartInfo.sumPrice}}</text>
+								<text class="del m-l" v-if="cartInfo.sumDiscount > 0">￥{{cartInfo.sumDiscount}}</text>
+							</view>
+							<view class="delivery" v-if="cartInfo.sumDeliveryMoney > 0">
+								<text>另需配送费￥{{cartInfo.sumDeliveryMoney}}</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="btn btn_ok">
+					<text>去结算</text>
+				</view>
+			</view>
+		</view>
 		<!-- 登录提示 -->
 		<uni-popup ref="showlogin" :type="skuDialogType" :mask-click="true" @change="change">
 			<view class="loginDialog">
@@ -130,12 +156,42 @@
 				<uni-icons type="clear" color="#fff" size="40" />
 			</view>
 		</uni-popup>
+		<!-- 购物车详细 -->
+		<uni-popup ref="showcart" :type="cartDialogType" :mask-click="true" @change="changeCartList">
+			<view class="cart-list-title">
+				<text class="btn btn_clearn" @click="cleanAllCart()">清空购物车</text>
+			</view>
+			<scroll-view scroll-y class="cart-list">
+				<view v-for="(item,index) in cartInfo.dataList" :key="index" class="goodsList">
+					<view class="weui-flex">
+						<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
+						<view class="desc weui-flex__item">
+							<view class="">
+								<text class="title">{{ item.title }}</text>
+							</view>
+							<view class="">
+								<text>{{ item.subName }}</text>
+							</view>
+							<view class="buttons">
+								<view class="price">
+									<text class="unit">￥</text>
+									<text>{{ item.price }}</text>
+									<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+								</view>
+								<uni-number-box  :min="0" :max="99"  :id="item.goods_id+'_'+item.sku_id" :value="item.cart"  @change="bindChangeCart"></uni-number-box>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="space"></view>
+			</scroll-view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 import { mapState,mapMutations } from 'vuex';
-import { getShopHome,editCart} from '@/common/request.js';
+import { getShopHome,editCart,cleanCart} from '@/common/request.js';
 import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -160,16 +216,27 @@ export default {
 			goodsList: [],
 			sizeCalcState: false,
 			tabScrollTop: 0,
+			leftScrollTop: 0,
 			currentId: 0,
 			nunn:1,
 			currentBeforeId: 0,
 			currentAfterId: 0,
 			categoryList: [],
 			slist: [],
+			mainCategoryMap:{},
 			cartNumber:{},
-			sumCart:0,
+			cartInfo:{
+				sumCart:0,
+				sumPrice:0,
+				sumDiscount:0,
+				sumDeliveryMoney:0,
+				dataList:[]
+			},
+			goodsSkusMap:{},//商品+规格map数据，用于购物车动态处理
 			goodsCartNumber:{},
 			skuDialogType:"center",
+			cartDialogType:"bottom",
+			isCartOpen:false,
 			skuGoods:{},
 			skuGoodsSelected:"",
 			skuCart:{}
@@ -227,12 +294,15 @@ export default {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
 					this.slist=[];
+					this.mainCategoryMap={};
 					if (res.goods_categories.length > 0) {
 						//构造二级数据，如果没有，则为本身
 						let cateMap = {};
 						let catIndex = 0;
 						res.goods_categories.forEach((ele, index) => {
 							ele.cart=0;
+							//主分类索引
+							this.mainCategoryMap[ele.id]=index;
 							if (ele.children && ele.children.length > 0) {
 								ele.children.forEach((ele2, ind2) => {
 									ele2.pid = ele.id;
@@ -251,43 +321,58 @@ export default {
 								catIndex++;
 							}
 						});
-						this.categoryList = res.goods_categories;
-						//默认第一个选中
-						this.currentId = this.categoryList[0].id;
-						if (this.categoryList.length > 1) {
-							this.currentAfterId= this.categoryList[1].id;
-						}
 						//处理购物车信息
 						let cartMap={};
-						let cartGoodsMap={};
+						this.cartInfo.dataList=[];
 						if(res.carts.length > 0){
 							res.carts.forEach(ct=>{
 								cartMap[ct.goods_id+"_"+ct.sku_id]=ct.amount;
-								if(!cartGoodsMap[ct.goods_id]){
-									cartGoodsMap[ct.goods_id]=ct.amount;
-								}else{
-									cartGoodsMap[ct.goods_id] += ct.amount;
-								}
-							})
+							});
 						}
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
 							console.log("cartMap",cartMap);
 							res.goods.forEach((ele, index) => {
-								//强转加入购物车数量
-								ele["cart"] = cartGoodsMap[ele.id]?parseInt(cartGoodsMap[ele.id]):0;//ele.cart?parseInt(ele.cart):0;
 								//是否存在多规格
 								ele["hasSku"]=ele.skus && ele.skus.length > 0;
 								//多规格
 								if(ele.hasSku){
 									ele["cart"] = 0;
 									ele.skus.forEach(sku=>{
+										let key=ele.id+"_"+sku.id;
+										let cartI=0;
 										if(!this.skuCart[ele.id]){
 											this.skuCart[ele.id]={};
 										}
 										//多规格购物车数量统计
-										ele["cart"] += this.skuCart[ele.id][sku.id]= cartMap[ele.id+"_"+sku.id]?parseInt(cartMap[ele.id+"_"+sku.id]):0;//sku.cart?parseInt(sku.cart):0;
-									})
+										ele["cart"] += cartI = this.skuCart[ele.id][sku.id]= cartMap[key]?parseInt(cartMap[key]):0;//sku.cart?parseInt(sku.cart):0;
+										this.goodsSkusMap[key]={
+											goods_id:ele.id,
+											sku_id:sku.id,
+											src:ele.src,
+											price:sku.price,
+											originPrice:sku.originPrice?sku.originPrice:0,
+											title:ele.title,
+											subName:sku.name.replace("&gt;"," "),
+											categories:ele.categories,
+											cart:cartI
+										}
+									});
+								}else{
+									let key=ele.id+"_0";
+									//单品购物车数量
+									ele["cart"] = cartMap[key]?parseInt(cartMap[key]):0;
+									this.goodsSkusMap[key]={
+										goods_id:ele.id,
+										sku_id:0,
+										src:ele.src,
+										price:ele.price,
+										originPrice:ele.originPrice?ele.originPrice:0,
+										title:ele.title,
+										subName:"",
+										categories:ele.categories,
+										cart:ele.cart
+									}
 								}
 								//多分类
 								if (ele.categories) {
@@ -304,11 +389,35 @@ export default {
 										}
 									});
 								}
-								this.goodsCartNumber[ele.id]=ele["cart"];
-								console.log(this.goodsCartNumber[ele.id])
+								this.goodsCartNumber[ele.id]=ele.cart;
+								//console.log(this.goodsCartNumber[ele.id])
 							});
-							console.log("skuCart",this.skuCart)
+							//console.log("skuCart",this.skuCart)
+							//初始化购物车详细列表
+							if(res.carts.length > 0){
+								res.carts.forEach(ct=>{
+									let key = ct.goods_id+"_"+ct.sku_id;
+									let goods = this.goodsSkusMap[key];
+									goods["key"]=key;
+									goods["cutPrice"]=0;
+									if(goods.price < ct.price){
+										goods["cutPrice"]=ct.price-goods.price;
+									}
+									this.cartInfo.dataList.push(goods);
+								});
+							}
 						}
+						
+						this.categoryList = res.goods_categories;
+						//默认第一个选中
+						this.currentId = this.categoryList[0].id;
+						if (this.categoryList.length > 1) {
+							this.currentAfterId= this.categoryList[1].id;
+						}
+						//统计所有主分类购物车数量
+						this.getAllMainCategoryNumber();
+						//计算购物车总数量
+						this.getSumCartNumber();
 					}
 					this.$nextTick(() => {
 						//延时执行，防止数据未渲染
@@ -354,11 +463,8 @@ export default {
 			this.cateIndex(this.currentId);
 			console.log("clicked")
 		},
-		//右侧栏滚动
+		/**右侧分类滚动**/
 		asideScroll(e) {
-			if (!this.sizeCalcState) {
-				this.calcSize();
-			}
 			let scrollTop = e.detail.scrollTop;
 			let tabs = this.slist.filter(item => item.top <= scrollTop).reverse();
 			if (tabs.length > 0) {
@@ -366,6 +472,7 @@ export default {
 				this.cateIndex(this.currentId);
 			}
 		},
+		/**选中左侧分类**/
 		cateIndex(id){
 			let index = this.categoryList.findIndex(sitem => sitem.id === id);
 			if (index > 0) {
@@ -374,6 +481,11 @@ export default {
 			if (index < this.categoryList.length) {
 				this.currentAfterId = this.categoryList[index + 1].id;
 			}
+			//没有作用，希望是滑动的分类小于4，能显示出来
+			/* if(index < 4){
+				this.leftScrollTop=1;
+				console.log("leftScrollTop 0")
+			} */
 		},
 		//计算右侧栏每个tab的高度等信息
 		calcSize() {
@@ -402,11 +514,15 @@ export default {
 			let pid = parseInt(ginfo[0]);
 			let gid = parseInt(ginfo[1]);
 			let num = parseInt(number)*1;
-			//有修改数据，更新到服务器
-			if(this.goodsCartNumber[gid] != num){
-				this.saveCartAmount(gid,0,num);
+			if(this.goodsCartNumber[gid] == num){
+				console.log("单规格商品数量没有改变")
+				return;
 			}
-			this.changeGoodsCategoryCount(pid,gid,num,0);
+			//有修改数据，更新到服务器
+			this.saveCartAmount(gid,0,num);
+			this.changeGoodsCategoryCount(pid,gid,num);
+			//更新购物车数据列表
+			this.updateCartDataList(gid,0,num);
 		},
 		/**多规格商品增减数量**/
 		bindChangeSku(number,id){
@@ -420,18 +536,60 @@ export default {
 			if(!this.skuCart[gid]){
 				this.skuCart[gid]={};
 			}
-			//有修改数据，更新到服务器
-			if(this.skuCart[gid][this.skuGoods.selectedSkuId] != num){
-				this.saveCartAmount(gid,this.skuGoods.selectedSkuId,num);
-				this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
+			if(this.skuCart[gid][this.skuGoods.selectedSkuId] == num){
+				console.log("多规格商品数量没有改变")
+				return;
 			}
+			//有修改数据，更新到服务器
+			this.saveCartAmount(gid,this.skuGoods.selectedSkuId,num);
+			this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
 			//计算所有规格的总数
 			let gnumber=0;
 			for(let i in this.skuCart[gid]){
 				gnumber+=this.skuCart[gid][i];
 			}
 			//商品的总数量
-			this.changeGoodsCategoryCount(pid,gid,gnumber,this.skuGoods.selectedSkuId);
+			this.changeGoodsCategoryCount(pid,gid,gnumber);
+			
+			//更新购物车数据列表
+			this.updateCartDataList(gid,this.skuGoods.selectedSkuId,num);
+		},
+		/**购物车商品增减数量**/
+		bindChangeCart(number,id){
+			console.log("购物车",number,id)
+			let ginfo=id.split("_");
+			//商品id
+			let gid = parseInt(ginfo[0]);
+			//型号id
+			let sid = parseInt(ginfo[1]);
+			//数量
+			let num = parseInt(number);
+			if(num == 0){
+				/* let index = this.cartInfo.dataList.findIndex(sitem => sitem.key == id);
+				//删除购物车
+				this.cartInfo.dataList.splice(index,1) */
+			}
+		},
+		updateCartDataList(id,sid,numb){
+			let key = id+"_"+sid;
+			//判断是否已经存在
+			let index = this.cartInfo.dataList.findIndex(sitem => sitem.key == key);
+			if(index == -1){
+				console.log("新增购物车data列表")
+				let goods = this.goodsSkusMap[key];
+				goods["key"]=key;
+				goods["cart"]=numb;
+				goods["cutPrice"]=0;
+				this.cartInfo.dataList.push(goods);
+			}else if(numb < 1){
+				console.log("删除购物车data列表",index)
+				//删除
+				this.cartInfo.dataList.splice(index,1);
+				console.log("剩余",this.cartInfo.dataList.length);
+			}else{
+				console.log("更新购物车data列表",index)
+				this.cartInfo.dataList[index].cart=numb;
+			}
 		},
 		/**打开sku选择弹窗**/
 		openSkus(item,pid){
@@ -439,9 +597,6 @@ export default {
 				this.showLoginDialog();
 				return;
 			}
-			//规格弹窗点了加入购物车，再调用
-			/* this.goodsCartNumber[item.id]++;
-			this.changeGoodsCategoryCount(pid,item.id,this.goodsCartNumber[item.id]); */
 			//处理规格结构
 			let skus = item.skus;
 			let skuMap=[];
@@ -482,17 +637,7 @@ export default {
 				this.cartNumber[pid]={};
 			}
 			this.cartNumber[pid][gid]=number;
-			let sum = 0;
-			//更新大分类数量
-			for(let i in this.cartNumber[pid]){
-				sum+=this.cartNumber[pid][i];
-			}
-			let index = this.categoryList.findIndex(sitem => sitem.id === pid);
-			if(index <0){
-				return;
-			}
-			console.log(sum)
-			this.categoryList[index]["cart"]=sum;
+			this.getMainCategoryNumber(pid);
 			//商品总量
 			this.goodsCartNumber[gid]=number;
 			//所有分类的数量
@@ -510,6 +655,27 @@ export default {
 				console.log(res)
 			});
 		},
+		/**计算主分类总数量**/
+		getMainCategoryNumber(pid){
+			let sum = 0;
+			//更新大分类数量
+			for(let i in this.cartNumber[pid]){
+				sum+=this.cartNumber[pid][i];
+			}
+			let index = this.mainCategoryMap[pid];
+			//let index = this.categoryList.findIndex(sitem => sitem.id === pid);
+			if(index < 0){
+				return;
+			}
+			//console.log(sum)
+			this.categoryList[index]["cart"]=sum;
+		},
+		/**计算主所有分类总数量**/
+		getAllMainCategoryNumber(){
+			for(let pid in this.cartNumber){
+				this.getMainCategoryNumber(pid);
+			}
+		},
 		/**计算购物车总数量**/
 		getSumCartNumber(){
 			let allSum=0;
@@ -518,7 +684,7 @@ export default {
 					allSum+=this.cartNumber[b][c];
 				}
 			}
-			this.sumCart = allSum;
+			this.cartInfo.sumCart = allSum;
 		},
 		/**关闭sku选择弹窗**/
 		closeSkuDialog(){
@@ -550,6 +716,42 @@ export default {
 			this.$refs['showlogin'].open();
 		},closeLoginDialog(){
 			this.$refs['showlogin'].close();
+		},
+		/**清空购物车数据**/
+		cleanAllCart(){
+			cleanCart({
+				id:this.shopid,
+				stationId: this.stationId
+			}).then(res=>{
+				console.log(res)
+			});
+			//清空临时数据
+			this.cartInfo={
+				sumCart:0,
+				sumPrice:0,
+				sumDiscount:0,
+				sumDeliveryMoney:0,
+				dataList:[]
+			}
+			this.cartNumber={};
+			this.skuCart={};
+			//关闭列表
+			this.openCartDialog();
+		},
+		/**打开购物车pop**/
+		openCartDialog(){
+			if(this.isCartOpen){
+				this.$refs['showcart'].close();
+			}else{
+				this.$nextTick(()=>{
+					this.$refs['showcart'].open();
+				})
+			}
+		},changeCartList(e){
+			setTimeout(()=>{
+				this.isCartOpen = e.show;
+			},200);
+			console.log('是否打开cartList:' + e.show)
 		}
 	}
 };
@@ -639,7 +841,7 @@ $border-color: #f5f5f5;
 	width: 160upx;
 	height: 100%;
 	.space {
-		padding-top: 80upx;
+		padding-top: 160upx;
 	}
 }
 .f-item {
@@ -685,13 +887,13 @@ $border-color: #f5f5f5;
 	}
 }
 
-.right-aside {
+.right-aside ,.cart-list{
 	flex: 1;
 	overflow: hidden;
 	padding:2upx 18upx 0;
 	height: 100%;
 	.space {
-		padding-top: 120upx;
+		padding-top: 160upx;
 	}
 	.s-item{
 		display: flex;
@@ -773,7 +975,7 @@ $box-height: 60upx;
 	text-align: right;
 	position: relative;
 	.sku_btn{
-		background: #f5c454;
+		background: $btn-color-light;
 		color: $font-color-dark;
 		padding: 12upx 16upx 12upx;
 		border-radius: 30upx;
@@ -868,14 +1070,72 @@ $box-height: 60upx;
 		border-radius: 20upx;
 	}
 	.btn_ok{
-		background: #f5c454;
+		background: $btn-color-light;
 	}
 }
 .cart{
+	$bg-color:#1c1819;
 	position: fixed;
-	left: 40upx;
+	left: 25upx;
 	bottom: 60upx;
-	background: #fff;
+	background: none;
 	z-index: 100;
+	font-size: $font-sm;
+	width: 700upx;
+	border-radius: 60upx;
+	color: #fff;
+	height: 90upx;
+	.weui-flex{
+		align-items: stretch;
+	}
+	.settleMoney{
+		background: $bg-color;
+		.weui-flex{
+			align-items: center;
+		}
+		.img{
+			position: relative;
+			margin-right: 16upx;
+		}
+		image{
+			width: 80upx;
+			height: 80upx;
+		}
+	}
+	.price{
+		color: #ffffff;
+	}
+	.sub_number{
+		top: 18upx;
+		right: 18upx;
+		background:none;
+	}
+	.btn{
+		padding:0 24upx;
+		align-items: center;
+		display: flex;
+		background: $bg-color;
+		border-radius: 60upx 0 0 60upx;
+	}
+	.btn_tel{
+		margin-right: 4upx;
+	}
+	.btn_ok{
+		background: $btn-color-light;
+		border-radius: 0 60upx 60upx 0;
+		color: $font-color-dark;
+	}
+}
+.cart-list-title{
+	background: #fff;
+	display: flex;
+	justify-content:flex-end;
+	padding: 20upx 40upx;
+	font-size: $font-ssm;
+}
+.cart-list{
+	height: 670upx;
+	background: #fff;
+	padding: 6upx;
 }
 </style>

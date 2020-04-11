@@ -83,10 +83,11 @@ exports.main = async (event, context) => {
 				uid:uid
 			}).field({
 				"_id":0,
+				"price": 1,//加入购物车时候的价格，如果降价了，可以提示
 				"goods_id": 1,
 				"sku_id": 1,
 				"amount": 1,
-			}).get();
+			}).orderBy("_id","desc").get();
 			if (carts.affectedDocs > 0) {
 				shopInfo["carts"] = carts.data;
 			}

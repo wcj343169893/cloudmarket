@@ -55,6 +55,14 @@ const editCart = function(data) {
 		data: data
 	})
 }
+//清空购物车数量，0为删除
+const cleanCart = function(data) {
+	data["opt"]="clean";
+	return network({
+		url: "carts",
+		data: data
+	})
+}
 export {
 	getCategoryByPid,
 	getShopsByCid,
@@ -62,5 +70,6 @@ export {
 	getShopHome,
 	getGoodsByCid,
 	getCartList,
-	editCart
+	editCart,
+	cleanCart
 }

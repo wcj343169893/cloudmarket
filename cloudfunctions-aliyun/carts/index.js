@@ -46,6 +46,13 @@ exports.main = async (event, context) => {
 		if (carts.affectedDocs > 0) {
 			data = carts.data;
 		}
+	} else if (opt == "clean") {
+		//清空当前用户在指定店铺的所有数据
+		let res = await cartCollection.where({
+		  shopid: shopid,
+		  uid: uid,
+		}).remove();
+		data="ok";
 	} else if (opt == "edit") {
 		//增加或者删除
 		//商品id
@@ -54,6 +61,12 @@ exports.main = async (event, context) => {
 		let sku_id = event.sku_id ? parseInt(event.sku_id) : 0;
 		//数量
 		let amount = event.amount ? parseInt(event.amount) : 0;
+		if(goods_id < 1){
+			return {
+				"code": 404,
+				"message": "商品不存在",
+			};
+		}
 		//查询是否存在，否则新增
 		let cartsOld = await cartCollection.where({
 			shopid: shopid,
