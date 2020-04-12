@@ -23,14 +23,16 @@ const getCategoryByPid = function(data) {
 const getShopsByCid = function(data) {
 	return network({
 		url: "getShops",
-		data: data
+		data: data,
+		isShowLoading: false
 	})
 }
 //根据分类id，分页查询店铺
 const getShopHome = function(data) {
 	return network({
 		url: "shopHome",
-		data: data
+		data: data,
+		isShowLoading: true
 	})
 }
 const getGoodsByCid = function(data) {
@@ -52,7 +54,8 @@ const editCart = function(data) {
 	data["opt"]="edit";
 	return network({
 		url: "carts",
-		data: data
+		data: data,
+		isShowLoading: false
 	})
 }
 //清空购物车数量，0为删除
@@ -60,7 +63,8 @@ const cleanCart = function(data) {
 	data["opt"]="clean";
 	return network({
 		url: "carts",
-		data: data
+		data: data,
+		isShowLoading: true
 	})
 }
 export {

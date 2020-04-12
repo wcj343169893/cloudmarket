@@ -78,6 +78,9 @@
     },
     "h5" : {
         "title" : "cloudmarket",
-        "domain" : "market.cjblog.org"
+        "domain" : "market.cjblog.org",
+        "router" : {
+            "mode" : "history"
+        }
     }
 }

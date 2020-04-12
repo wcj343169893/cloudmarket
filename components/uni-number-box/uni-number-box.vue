@@ -55,21 +55,31 @@
 		data() {
 			return {
 				isFocus:false,
-				inputValue: 0
+				inputValue: 0,
+				isInit:false
 			};
 		},
 		watch: {
 			value(val) {
+				this.isInit = true;
 				this.inputValue = +val;
 			},
 			inputValue(newVal, oldVal) {
-				if (newVal != "" && !isNaN(newVal) && +newVal !== +oldVal) {
-					console.log("inputValue",newVal,oldVal)
-					this.$emit("change", newVal,this.id);
+				if(this.isInit){
+					//初始化
+					this.isInit=false;
+					console.log("inputValue初始化",newVal,+newVal,oldVal,+oldVal);
+				}else if (+newVal !== +oldVal) {
+					console.log("inputValue",newVal,+newVal,oldVal,+oldVal)
+					this.$emit("change", +newVal,this.id);
 				}
 			}
 		},
 		created() {
+			//传入的值不是0
+			if(+this.value > 0){
+				this.isInit = true;
+			}
 			this.inputValue = +this.value;
 		},
 		methods: {

@@ -570,7 +570,7 @@ page {
 			.goods {
 				width: 100%;
 				height: 220upx;
-				border-radius: 20upx;
+				border-radius: 12upx;
 			}
 			.logo {
 				position: absolute;
@@ -592,10 +592,13 @@ page {
 			width: 100%;
 		}
 	}
-	&.rss-numb-3 {
+	&.rss-numb-3,&.rss-numb-5,&.rss-numb-7,&.rss-numb-9 {
 		.rss-item {
 			&:nth-child(1) {
 				width: 100%;
+				.goods{
+					height: 260upx;
+				}
 			}
 			&:nth-child(2n + 1) {
 				margin-right: 0;

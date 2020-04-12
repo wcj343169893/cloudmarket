@@ -12,13 +12,14 @@
 					<view>
 						<text class="ops">评分{{ shopinfo.score }}</text>
 						<text class="ops">月售{{ shopinfo.monthSale }}</text>
-					</view>
-					<view class="">
-						<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
-						<text class="ops">配送￥{{ shopinfo.deliveryMoney }}</text>
-						<text v-if="shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
 						<text class="ops">人均￥{{ shopinfo.perCapita }}</text>
 					</view>
+					<!-- <view class="">
+						<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
+						<text class="ops" v-if="shopinfo.deliveryMoney == 0">免配送费</text>
+						<text class="ops" v-if="shopinfo.deliveryMoney > 0">配送￥{{ shopinfo.deliveryMoney }}</text>
+						<text v-if="shopinfo.deliveryMoney > 0 && shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
+					</view> -->
 					<view class="youhui" v-if="shopinfo.hasManjian">
 						<text class="yh" v-for="(cou, ind) in shopinfo.manjians" :key="ind">{{ cou.name }}</text>
 					</view>
@@ -67,7 +68,7 @@
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :id="category.pid+'_'+item.id" :value="item.cart" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :id="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -78,6 +79,9 @@
 			</scroll-view>
 		</view>
 		<view class="cart" v-if="hasLogin">
+			<view class="notice" v-if="shopinfo.deliveryMin > cartInfo.sumPrice">
+				<text>还差￥{{shopinfo.deliveryMin - cartInfo.sumPrice}}达到起送金额</text>
+			</view>
 			<view class="weui-flex">
 				<view class="btn btn_tel">
 					<text>联系商家</text>
@@ -223,8 +227,8 @@ export default {
 			currentAfterId: 0,
 			categoryList: [],
 			slist: [],
-			mainCategoryMap:{},
-			cartNumber:{},
+			mainCategoryMap:{},//主分类id索引
+			cartNumber:{},//大分类对应商品数量
 			cartInfo:{
 				sumCart:0,
 				sumPrice:0,
@@ -233,13 +237,14 @@ export default {
 				dataList:[]
 			},
 			goodsSkusMap:{},//商品+规格map数据，用于购物车动态处理
-			goodsCartNumber:{},
+			goodsCartNumber:{},//商品购物车总计
 			skuDialogType:"center",
 			cartDialogType:"bottom",
 			isCartOpen:false,
+			isCleanCart:false,
 			skuGoods:{},
 			skuGoodsSelected:"",
-			skuCart:{}
+			skuCart:{}////多规格购物车数量统计
 		};
 	},
 	watch: {
@@ -335,15 +340,15 @@ export default {
 							res.goods.forEach((ele, index) => {
 								//是否存在多规格
 								ele["hasSku"]=ele.skus && ele.skus.length > 0;
+								if(!this.skuCart[ele.id]){
+									this.skuCart[ele.id]={};
+								}
 								//多规格
 								if(ele.hasSku){
 									ele["cart"] = 0;
 									ele.skus.forEach(sku=>{
 										let key=ele.id+"_"+sku.id;
 										let cartI=0;
-										if(!this.skuCart[ele.id]){
-											this.skuCart[ele.id]={};
-										}
 										//多规格购物车数量统计
 										ele["cart"] += cartI = this.skuCart[ele.id][sku.id]= cartMap[key]?parseInt(cartMap[key]):0;//sku.cart?parseInt(sku.cart):0;
 										this.goodsSkusMap[key]={
@@ -361,7 +366,7 @@ export default {
 								}else{
 									let key=ele.id+"_0";
 									//单品购物车数量
-									ele["cart"] = cartMap[key]?parseInt(cartMap[key]):0;
+									this.skuCart[ele.id][0] = ele["cart"] = cartMap[key]?parseInt(cartMap[key]):0;
 									this.goodsSkusMap[key]={
 										goods_id:ele.id,
 										sku_id:0,
@@ -396,14 +401,8 @@ export default {
 							//初始化购物车详细列表
 							if(res.carts.length > 0){
 								res.carts.forEach(ct=>{
-									let key = ct.goods_id+"_"+ct.sku_id;
-									let goods = this.goodsSkusMap[key];
-									goods["key"]=key;
-									goods["cutPrice"]=0;
-									if(goods.price < ct.price){
-										goods["cutPrice"]=ct.price-goods.price;
-									}
-									this.cartInfo.dataList.push(goods);
+									//加入到购物车数据列表
+									this.updateCartDataList(ct.goods_id,ct.sku_id,ct.amount,true);
 								});
 							}
 						}
@@ -509,20 +508,13 @@ export default {
 		},
 		/**单商品增减数量**/
 		bindChange(number,id){
-			console.log("单规格",number,id)
+			console.log("单规格",number,id);
 			let ginfo=id.split("_");
 			let pid = parseInt(ginfo[0]);
 			let gid = parseInt(ginfo[1]);
 			let num = parseInt(number)*1;
-			if(this.goodsCartNumber[gid] == num){
-				console.log("单规格商品数量没有改变")
-				return;
-			}
-			//有修改数据，更新到服务器
-			this.saveCartAmount(gid,0,num);
-			this.changeGoodsCategoryCount(pid,gid,num);
-			//更新购物车数据列表
-			this.updateCartDataList(gid,0,num);
+			//调用多规格方法
+			this.changeCartDataList(pid,gid,0,num);
 		},
 		/**多规格商品增减数量**/
 		bindChangeSku(number,id){
@@ -531,28 +523,8 @@ export default {
 			let pid = parseInt(ginfo[0]);
 			let gid = parseInt(ginfo[1]);
 			let num = parseInt(number);
-			//this.skuGoods.selectedSkuId
-			//得到当前选中的skuid，往下传递的num，应该是所有规格的总数
-			if(!this.skuCart[gid]){
-				this.skuCart[gid]={};
-			}
-			if(this.skuCart[gid][this.skuGoods.selectedSkuId] == num){
-				console.log("多规格商品数量没有改变")
-				return;
-			}
-			//有修改数据，更新到服务器
-			this.saveCartAmount(gid,this.skuGoods.selectedSkuId,num);
-			this.skuCart[gid][this.skuGoods.selectedSkuId]=num;
-			//计算所有规格的总数
-			let gnumber=0;
-			for(let i in this.skuCart[gid]){
-				gnumber+=this.skuCart[gid][i];
-			}
-			//商品的总数量
-			this.changeGoodsCategoryCount(pid,gid,gnumber);
-			
-			//更新购物车数据列表
-			this.updateCartDataList(gid,this.skuGoods.selectedSkuId,num);
+			//统一处理
+			this.changeCartDataList(pid,gid,this.skuGoods.selectedSkuId,num);
 		},
 		/**购物车商品增减数量**/
 		bindChangeCart(number,id){
@@ -564,13 +536,50 @@ export default {
 			let sid = parseInt(ginfo[1]);
 			//数量
 			let num = parseInt(number);
-			if(num == 0){
-				/* let index = this.cartInfo.dataList.findIndex(sitem => sitem.key == id);
-				//删除购物车
-				this.cartInfo.dataList.splice(index,1) */
-			}
+			//找到商品对应多个主分类，最好是一个
+			let goods = this.goodsSkusMap[gid+"_"+sid];
+			let firstPid=0;
+			goods.categories.forEach(cate=>{
+				let index = this.mainCategoryMap[cate.id];
+				if(index != -1){
+					if(!firstPid){
+						firstPid = cate.id;
+						//统一处理
+						this.changeCartDataList(cate.id,gid,sid,num);
+					}else{
+						//只更新数量
+					}
+				}
+			})
 		},
-		updateCartDataList(id,sid,numb){
+		/**统一处理修改购物车数量操作**/
+		changeCartDataList(pid,gid,sid,num){
+			//得到当前选中的skuid，往下传递的num，应该是所有规格的总数
+			if(!this.skuCart[gid]){
+				this.skuCart[gid]={};
+			}
+			if(this.skuCart[gid][sid] == num){
+				console.log("多规格商品数量没有改变")
+				return;
+			}
+			this.skuCart[gid][sid]=num;
+			console.log(this.skuCart);
+			//更新购物车数据列表
+			this.updateCartDataList(gid,sid,num,false);
+			//计算所有规格的总数
+			let gnumber=0;
+			for(let i in this.skuCart[gid]){
+				gnumber+=this.skuCart[gid][i];
+			}
+			//商品的总数量
+			this.changeGoodsCategoryCount(pid,gid,gnumber);
+		},
+		/**更新购物车数据列表**/
+		updateCartDataList(id,sid,numb,isInit){
+			if(!isInit){
+				//有修改数据，更新到服务器
+				this.saveCartAmount(id,sid,numb);
+			}
 			let key = id+"_"+sid;
 			//判断是否已经存在
 			let index = this.cartInfo.dataList.findIndex(sitem => sitem.key == key);
@@ -640,11 +649,17 @@ export default {
 			this.getMainCategoryNumber(pid);
 			//商品总量
 			this.goodsCartNumber[gid]=number;
+			console.log("goodsCartNumber",this.goodsCartNumber[gid])
 			//所有分类的数量
 			this.getSumCartNumber();
 		},
 		//更新购物车数据到服务器
 		saveCartAmount(gid,sku,number){
+			if(+number == 0 && this.isCleanCart){
+				console.log("不请求数据")
+				return;
+			}
+			this.isCleanCart = false;
 			editCart({
 				id:this.shopid,
 				stationId: this.stationId,
@@ -678,13 +693,37 @@ export default {
 		},
 		/**计算购物车总数量**/
 		getSumCartNumber(){
-			let allSum=0;
-			for(let b in this.cartNumber){
-				for(let c in this.cartNumber[b]){
-					allSum+=this.cartNumber[b][c];
+			let sumCount=0;
+			let sumPrice=0;
+			let sumDiscount=0;
+			let sumDeliveryMoney=this.shopinfo.deliveryMoney;
+			this.cartInfo.dataList.forEach(goods=>{
+				//商品数量
+				sumCount+=goods.cart;
+				//总价=单价*数量
+				sumPrice+=goods.price * goods.cart;
+				//总优惠
+				if(goods.originPrice && goods.originPrice > goods.price){
+					sumDiscount+=(goods.originPrice - goods.price)*goods.cart;
 				}
+			});
+			//如果店铺存在满多少免运费
+			if(+this.shopinfo.deliveryFreeMoney > 0 && this.shopinfo.deliveryFreeMoney <= sumPrice){
+				sumDeliveryMoney = 0;
 			}
-			this.cartInfo.sumCart = allSum;
+			//如果店铺存在满减运费,则减少相应的运费
+			if(+this.shopinfo.deliveryMinusMoney > 0 && this.shopinfo.deliveryMinusMoney <= sumPrice){
+				let money = this.shopinfo.deliveryMoney - this.shopinfo.deliveryMinusMoney;
+				sumDeliveryMoney = money > 0 ? money:0;
+			}
+			this.cartInfo.sumCart = sumCount;
+			this.cartInfo.sumPrice = sumPrice;
+			this.cartInfo.sumDiscount = sumDiscount;
+			this.cartInfo.sumDeliveryMoney = sumDeliveryMoney;
+			//判断是否达到起送金额
+			if(this.shopinfo.deliveryMin > this.cartInfo.sumPrice){
+				
+			}
 		},
 		/**关闭sku选择弹窗**/
 		closeSkuDialog(){
@@ -725,6 +764,7 @@ export default {
 			}).then(res=>{
 				console.log(res)
 			});
+			this.isCleanCart = true;
 			//清空临时数据
 			this.cartInfo={
 				sumCart:0,
@@ -733,8 +773,21 @@ export default {
 				sumDeliveryMoney:0,
 				dataList:[]
 			}
+			//大分类+商品对应数量
 			this.cartNumber={};
-			this.skuCart={};
+			//多规格商品统计
+			//this.skuCart={};
+			for (let sg in this.skuCart) {
+				for(let i in this.skuCart[sg]){
+					this.skuCart[sg][i]=0;
+				}
+			}
+			//清理商品数量统计
+			this.goodsCartNumber={};
+			//清理主分类数量
+			this.categoryList.forEach(c=>{
+				c.cart=0;
+			});
 			//关闭列表
 			this.openCartDialog();
 		},
@@ -932,7 +985,7 @@ $border-color: #f5f5f5;
 		font-size: $font-sm;
 		color: $font-color-light;
 		.title {
-			font-size: $font-lg;
+			font-size: $font-base;
 			color: $font-color-dark;
 			line-height: 1.1;
 			font-weight: 400;
@@ -1124,6 +1177,17 @@ $box-height: 60upx;
 		background: $btn-color-light;
 		border-radius: 0 60upx 60upx 0;
 		color: $font-color-dark;
+	}
+	.notice{
+		text-align: center;
+		background: #fffbf2;
+		width: 432upx;
+		margin: 0 auto;
+		color: #333;
+		padding: 4upx;
+		position: absolute;
+		top: -40upx;
+		left: 142upx;
 	}
 }
 .cart-list-title{

@@ -17,7 +17,7 @@ const network = function(options) {
 			reject("错误信息" + e)
 		}
 
-		if (!options.isShowLoading) { //是否需要显示  loading(true:不显示，false:显示)
+		if (options.isShowLoading) { //是否需要显示  loading(true:不显示，false:显示)
 			uni.showLoading({
 				title: '正在加载',
 				mask: false
@@ -44,7 +44,7 @@ const network = function(options) {
 			reject(err)
 			uni.showToast({
 				icon: "none",
-				title: '稍后重试' + err.message
+				title: err.message || '稍后重试'
 			});
 		})
 	})
