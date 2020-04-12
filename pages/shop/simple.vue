@@ -95,10 +95,13 @@
 						<view class="weui-flex__item">
 							<view class="price">
 								<text>￥{{cartInfo.sumPrice}}</text>
-								<text class="del m-l" v-if="cartInfo.sumDiscount > 0">￥{{cartInfo.sumDiscount}}</text>
+								<text class="del m-l" v-if="cartInfo.sumDiscount > 0">￥{{cartInfo.sumPrice + cartInfo.sumDiscount}}</text>
 							</view>
 							<view class="delivery" v-if="cartInfo.sumDeliveryMoney > 0">
 								<text>另需配送费￥{{cartInfo.sumDeliveryMoney}}</text>
+							</view>
+							<view class="delivery" v-if="cartInfo.sumDeliveryMoney == 0">
+								<text>免配送费</text>
 							</view>
 						</view>
 					</view>
@@ -1157,6 +1160,10 @@ $box-height: 60upx;
 	}
 	.price{
 		color: #ffffff;
+		line-height: 1.2;
+	}
+	.delivery{
+		line-height: 1.2;
 	}
 	.sub_number{
 		top: 18upx;
