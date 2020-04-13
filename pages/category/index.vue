@@ -17,45 +17,16 @@
 			</scroll-view>
 		</view>
 		<!-- 主分类下的店铺 -->
-		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
-			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">免配送费</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
-		</view>
-		<view class="nearby-section">
-			<view v-for="(item, index) in shopList" :key="index" class="shop-item" @click="navToShopPage(item)">
-				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
-				<view class="desc">
-					<view class="">
-						<text class="title clamp">{{ item.name }}</text>
-					</view>
-					<view>
-						<text class="ops">评分{{ item.score }}</text>
-						<text class="ops">月售{{ item.monthSale }}</text>
-					</view>
-					<view class="">
-						<text class="ops">起送￥{{ item.deliveryMin }}</text>
-						<text class="ops">配送￥{{ item.deliveryMoney }}</text>
-						<text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{ item.deliveryMoneyBefore }}</text>
-						<text class="ops">人均￥{{ item.perCapita }}</text>
-					</view>
-					<view class="youhui" v-if="item.hasManjian">
-						<text class="yh" v-for="(cou, ind) in item.manjians" :key="ind">{{ cou.name }}</text>
-					</view>
-				</view>
-			</view>
-		</view>
-		<uni-load-more :status="loadingType"></uni-load-more>
+		<shop-list-cell :cid="cateId" :next="goNext"></shop-list-cell>
 	</view>
 </template>
 <script>
 import { mapState } from 'vuex';
-import { getCategoryByPid, getShopsByCid } from '@/common/request.js';
-import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import { getCategoryByPid } from '@/common/request.js';
+import shopListCell from '@/components/shop-list-cell.vue';
 export default {
 	components: {
-		uniLoadMore
+		shopListCell
 	},
 	data() {
 		return {
@@ -63,6 +34,7 @@ export default {
 			limit: 20,
 			cateId: 0,
 			catName: '',
+			goNext:1,
 			nearByShopIndex: 0,
 			loadingType: 'more', //加载更多状态
 			nearbyHeaderPosition: 0,
@@ -82,7 +54,7 @@ export default {
 			}, 3000);
 			return;
 		}
-		this.cateId = options.id;
+		this.cateId = +options.id;
 		this.catName = options.name;
 		uni.setNavigationBarTitle({
 			title: options.name
@@ -99,9 +71,7 @@ export default {
 	},
 	//加载更多
 	onReachBottom() {
-		if (this.loadingType != 'nomore') {
-			this.getNearbyShops(0, this.nearByShopPage + 1);
-		}
+		this.goNext +=1;
 	},
 	computed: {
 		...mapState(['userInfo', 'stationId'])
@@ -111,7 +81,7 @@ export default {
 			//加载子分类
 			this.getSubCategories();
 			//加载店铺
-			this.getNearbyShops(0, 1);
+			//this.getNearbyShops(0, 1);
 		},
 		getSubCategories() {
 			console.log({
@@ -126,54 +96,9 @@ export default {
 			});
 		},
 		getShopsByCategory(id) {
-			this.cateId = id;
-			this.$api.loading();
-			this.getNearbyShops(0, 1);
-		},
-		getNearbyShops(index, page) {
-			if (index > 0) {
-				this.$api.loading();
-				if ((this.nearByShopIndex & index) == index) {
-					//已经存在，减少
-					this.nearByShopIndex = this.nearByShopIndex - index;
-				} else {
-					this.nearByShopIndex = this.nearByShopIndex + index;
-				}
-			}
-			this.page = page;
-			getShopsByCid({
-				page: page,
-				limit: this.limit,
-				index: this.nearByShopIndex,
-				cid: this.cateId,
-				stationId: this.stationId
-			})
-				.then(
-					res => {
-						if (page == 1) {
-							//清空原数据
-							this.shopList = res;
-						} else {
-							//累加到现有数组
-							this.shopList = this.shopList.concat(res);
-						}
-						//不足一页，肯定没有下一页了
-						if (res.length < this.limit) {
-							this.loadingType = 'nomore';
-						} else {
-							//还有数据
-							this.loadingType = 'more';
-						}
-					},
-					err => {
-						//没有数据
-						this.loadingType = 'nomore';
-					}
-				)
-				.catch(err => {
-					console.log(err)
-					this.$api.msg('网络异常');
-				});
+			this.cateId = +id;
+			//this.$api.loading();
+			//this.getNearbyShops(0, 1);
 		},
 		//详情页
 		navToShopPage(item) {

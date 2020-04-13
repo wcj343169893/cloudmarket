@@ -9,17 +9,11 @@
 					<view class="">
 						<text class="title">{{ shopinfo.name }}</text>
 					</view>
-					<view>
+					<view v-if="shopinfo.name !=''">
 						<text class="ops">评分{{ shopinfo.score }}</text>
 						<text class="ops">月售{{ shopinfo.monthSale }}</text>
 						<text class="ops">人均￥{{ shopinfo.perCapita }}</text>
 					</view>
-					<!-- <view class="">
-						<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
-						<text class="ops" v-if="shopinfo.deliveryMoney == 0">免配送费</text>
-						<text class="ops" v-if="shopinfo.deliveryMoney > 0">配送￥{{ shopinfo.deliveryMoney }}</text>
-						<text v-if="shopinfo.deliveryMoney > 0 && shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
-					</view> -->
 					<view class="youhui" v-if="shopinfo.hasManjian">
 						<text class="yh" v-for="(cou, ind) in shopinfo.manjians" :key="ind">{{ cou.name }}</text>
 					</view>
@@ -34,7 +28,7 @@
 				<view
 					v-for="(item, index) in categoryList"
 					:key="item.id"
-					class="f-item b-b"
+					class="f-item"
 					:class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId }"
 					@click="tabtap(item)"
 				>
@@ -78,7 +72,7 @@
 				<view class="space"></view>
 			</scroll-view>
 		</view>
-		<view class="cart" v-if="hasLogin">
+		<view class="cart" v-if="hasLogin && inited">
 			<view class="notice" v-if="shopinfo.deliveryMin > cartInfo.sumPrice">
 				<text>还差￥{{shopinfo.deliveryMin - cartInfo.sumPrice}}达到起送金额</text>
 			</view>
@@ -211,13 +205,14 @@ export default {
 	data() {
 		return {
 			shopinfo: {
-				name:" ",
+				name:"",
 				perCapita:0,
 				score:0,
 				monthSale:0,
 				deliveryMoney:0,
 				deliveryMin:0
 			},
+			inited:false,//是否获得了店铺数据
 			headHeight: 100,
 			contentStyleHeight: 'height:500px',
 			goodsList: [],
@@ -294,10 +289,8 @@ export default {
 			}).then(
 				res => {
 					console.log(res);
-					if (!res.id) {
-						return;
-					}
-					this.shopinfo = res;
+					this.inited = true;
+					this.shopinfo = res.info;
 					if (this.shopinfo.banner) {
 						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
 					}
@@ -873,8 +866,8 @@ $border-color: #f5f5f5;
 			padding-top: 8upx;
 			.yh {
 				margin-right: 10upx;
-				color: #f0ad4e;
-				border: 1px solid #f0ad4e;
+				color: $font-color-emphasis;
+				border: 1px solid $font-color-emphasis;
 				font-size: 0.8em;
 				padding: 0upx 10upx;
 				line-height: 1;
@@ -928,15 +921,9 @@ $border-color: #f5f5f5;
 			border-radius: 0 4px 4px 0;
 			opacity: 0.8;
 		}
-		&::after{
-			display: none;
-		}
 	}
 	&.before {
 		border-radius: 0 0 10px 0;
-		&::after{
-			display: none;
-		}
 	}
 	&.after {
 		border-radius: 0 10px 0 0;

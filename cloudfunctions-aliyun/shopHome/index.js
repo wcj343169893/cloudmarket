@@ -37,7 +37,9 @@ exports.main = async (event, context) => {
 			"message": "店铺不存在",
 		};
 	}
-	let shopInfo = data.data[0];
+	let shopInfo={
+		"info":data.data[0]
+	};
 	//查询分类
 	let categories = await db.collection(collectionNames['goods_categories']).where({
 		shopid: shopid

@@ -76,46 +76,17 @@
 				<text class="tit2">Nearby shops</text>
 			</view>
 		</view>
-		<view v-bind:class="{ fixed: nearbyHeaderPosition, 'nearby-func-section': 1 }">
-			<text v-bind:class="{ active: (nearByShopIndex & 1) == 1, 'fast-btn': 1 }" @click="getNearbyShops(1, 1)">满减优惠</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 2) >> 1 == 1, 'fast-btn': 1 }" @click="getNearbyShops(2, 1)">30分钟内</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 4) >> 2 == 1, 'fast-btn': 1 }" @click="getNearbyShops(4, 1)">免配送费</text>
-			<text v-bind:class="{ active: (nearByShopIndex & 8) >> 3 == 1, 'fast-btn': 1 }" @click="getNearbyShops(8, 1)">大众好评</text>
-		</view>
-		<view class="nearby-section">
-			<view v-for="(item, index) in shopList" :key="index" class="shop-item" @click="navToShopPage(item)">
-				<view class="image-wrapper"><image :src="item.src" mode="aspectFill"></image></view>
-				<view class="desc">
-					<view class="">
-						<text class="title clamp">{{ item.name }}</text>
-					</view>
-					<view>
-						<text class="ops">评分{{ item.score }}</text>
-						<text class="ops">月售{{ item.monthSale }}</text>
-					</view>
-					<view class="">
-						<text class="ops">起送￥{{ item.deliveryMin }}</text>
-						<text class="ops">配送￥{{ item.deliveryMoney }}</text>
-						<text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{ item.deliveryMoneyBefore }}</text>
-						<text class="ops">人均￥{{ item.perCapita }}</text>
-					</view>
-					<view class="youhui" v-if="item.hasManjian">
-						<text class="yh" v-for="(cou, ind) in item.manjians" :key="ind">{{ cou.name }}</text>
-					</view>
-				</view>
-			</view>
-		</view>
-		<uni-load-more :status="loadingType"></uni-load-more>
+		<shop-list-cell :next="goNext"></shop-list-cell>
 	</view>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { getHomeData, getShopsByCid } from '@/common/request.js';
-import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import { getHomeData } from '@/common/request.js';
+import shopListCell from '@/components/shop-list-cell.vue';
 export default {
 	components: {
-		uniLoadMore
+		shopListCell
 	},
 	data() {
 		return {
@@ -128,6 +99,7 @@ export default {
 			recommendShopList: [],
 			recommendShopClass: 'recommend-shops-section',
 			shopList: [],
+			goNext:1,
 			nearByShopIndex: 0,
 			nearByShopPage: 1,
 			nearByHeadTop: 200,
@@ -150,18 +122,16 @@ export default {
 			this.nearbyHeaderPosition = 0;
 		}
 	},
-	//下拉刷新
+	//下拉刷新,不会更新底部附近的店铺
 	onPullDownRefresh() {
 		//this.loadData('refresh');
 		console.log('刷新整页');
-		this.loadData();
 		uni.stopPullDownRefresh();
+		this.loadData();
 	},
 	//加载更多
 	onReachBottom() {
-		if (this.loadingType != 'nomore') {
-			this.getNearbyShops(0, this.nearByShopPage + 1);
-		}
+		this.goNext +=1;
 	},
 	computed: {
 		...mapState(['hasLogin', 'userInfo', 'stationId'])
@@ -176,7 +146,6 @@ export default {
 	},
 	methods: {
 		async loadData() {
-			this.$api.loading()
 			getHomeData({
 						shop_recommend_uid: this.userInfo.shop_recommend_uid,
 						stationId: this.stationId
@@ -220,13 +189,12 @@ export default {
 					this.$api.msg('网络异常');
 					console.log(err)
 				});
-			this.getNearbyShops(0, 1);
+			//this.getNearbyShops(0, 1);
 			//let goodsList = await this.$api.json('goodsList');
 			//this.goodsList = goodsList || [];
 		},
 		getNearbyShops(index, page) {
 			if (index > 0) {
-				this.$api.loading()
 				if ((this.nearByShopIndex & index) == index) {
 					//已经存在，减少
 					this.nearByShopIndex = this.nearByShopIndex - index;
