@@ -11,6 +11,14 @@ const getHomeData = function(data) {
 		isShowLoading: false
 	})
 }
+//获取水果首页数据
+const getHomeFruitData = function(data) {
+	return network({
+		url: "homeFruit",
+		data: data,
+		isShowLoading: false
+	})
+}
 //根据上级id，查询二级分类
 const getCategoryByPid = function(data) {
 	return network({
@@ -68,6 +76,7 @@ const cleanCart = function(data) {
 	})
 }
 export {
+	getHomeFruitData,
 	getCategoryByPid,
 	getShopsByCid,
 	getHomeData,

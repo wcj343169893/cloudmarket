@@ -7,6 +7,8 @@ const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
 		stationId: 0, //分站id
+		shopId:123457,//分站店铺id，根据收货地址动态设置
+		categoryId:0,
 		userInfo: {},
 	},
 	mutations: {
@@ -26,10 +28,18 @@ const store = new Vuex.Store({
 			uni.removeStorage({
 				key: 'userInfo'
 			})
-		},loginPage(){
+		},
+		loginPage(){
 			uni.navigateTo({
 				url: '/pages/public/login'
 			});
+		},
+		//修改最近店铺id
+		changeShopId(state,id){
+			state.shopId = id;
+		},
+		changeMainCateId(state,id){
+			state.categoryId = id;
 		}
 	},
 	actions: {

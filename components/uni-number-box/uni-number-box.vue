@@ -1,11 +1,11 @@
 <template>
 	<view class="uni-numbox">
 		<view @click="_calcValue('minus')" :class="{'uni-numbox__minus':1,'uni-numbox__minus_show':isFocus || inputValue > 0}">
-			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }"><image src="../../static/icon/delete.png" mode=""></image></text>
+			<text class="yticon icon--jianhao uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }"></text>
 		</view>
 		<input :disabled="disabled" @blur="_onBlur" @focus="_onFocus" :class="{'uni-numbox__value':1,'uni-numbox__value_show':isFocus || inputValue > 0}" type="number" pattern="[0-9]{3}" v-model="inputValue" />
 		<view @click="_calcValue('plus')" :class="{'uni-numbox__plus':1,'uni-numbox__plus_left':inputValue == 0}">
-			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }"><image src="../../static/icon/new.png" mode=""></image> </text>
+			<text class="yticon icon-jia2 uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }"></text>
 		</view>
 	</view>
 </template>
@@ -185,6 +185,7 @@
 		flex-direction: row;  /* 子元素横向排列 */
 		justify-content: center; /* 相对父元素水平居中 */
 		align-items: center; /*  子元素相对父元素垂直居中 */
+		color: $font-color-dark;
 	}
 	.uni-numbox__minus_show{
 		width: $box-width;
@@ -201,5 +202,6 @@
 		flex-direction: row;  /* 子元素横向排列 */
 		justify-content: center; /* 相对父元素水平居中 */
 		align-items: center; /*  子元素相对父元素垂直居中 */
+		color: $font-color-white;
 	}
 </style>

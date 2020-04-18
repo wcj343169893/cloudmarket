@@ -23,6 +23,7 @@
 	export default {
 		data() {
 			return {
+				id:0,
 				sizeCalcState: false,
 				tabScrollTop: 0,
 				currentId: 1,
@@ -31,7 +32,10 @@
 				tlist: [],
 			}
 		},
-		onLoad(){
+		onLoad(options){
+			if(options.id){
+				this.id = id;
+			}
 			this.loadData();
 		},
 		methods: {
