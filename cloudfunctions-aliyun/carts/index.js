@@ -40,19 +40,64 @@ exports.main = async (event, context) => {
 			"sku_id": 1,
 			"amount": 1,
 			"created": 1,
-			"price": 1,
-			"src": 1
-		}).get();
+			"modified": 1,
+			"checked": 1,
+			"price": 1
+		}).orderBy("_id","desc").get();
 		if (carts.affectedDocs > 0) {
-			data = carts.data;
+			//data = carts.data;
+			data = {
+				"cart": carts.data
+			}
+			let ids = [];
+			for (let i = 0; i < carts.affectedDocs; i++) {
+				ids.push(carts.data[i].goods_id);
+			}
+			const cmd = db.command;
+			//查询实时商品信息
+			let goods = await db.collection(collectionNames['goods']).where({
+				shopid: shopid,
+				id: cmd.in(ids)
+			}).field({
+				"_id": 0,
+				"id": 1,
+				"title": 1,
+				"stock": 1,
+				"src": 1,
+				"score": 1,
+				"price": 1,
+				"skuname": 1,
+				"skus": 1,
+				"originPrice": 1,
+				"monthlySale": 1,
+				"categories": 1,
+			}).get();
+			if (goods.affectedDocs > 0) {
+				data["goods"] = goods.data;
+			}
+		} else {
+			return {
+				"code": 404,
+				"message": "无数据",
+			};
 		}
+	} else if (opt == "selected") {
+		//批量选中
+		let checked = event.checked ? true : false;
+		let res = await cartCollection.where({
+			shopid: shopid,
+			uid: uid,
+		}).update({
+			checked: checked,
+		});
+		data = "ok";
 	} else if (opt == "clean") {
 		//清空当前用户在指定店铺的所有数据
 		let res = await cartCollection.where({
-		  shopid: shopid,
-		  uid: uid,
+			shopid: shopid,
+			uid: uid,
 		}).remove();
-		data="ok";
+		data = "ok";
 	} else if (opt == "edit") {
 		//增加或者删除
 		//商品id
@@ -61,7 +106,9 @@ exports.main = async (event, context) => {
 		let sku_id = event.sku_id ? parseInt(event.sku_id) : 0;
 		//数量
 		let amount = event.amount ? parseInt(event.amount) : 0;
-		if(goods_id < 1){
+		//默认选中
+		let checked = event.checked ? true : false;
+		if (goods_id < 1) {
 			return {
 				"code": 404,
 				"message": "商品不存在",
@@ -74,11 +121,12 @@ exports.main = async (event, context) => {
 			goods_id: goods_id,
 			sku_id: sku_id,
 		}).field({
-			amount: 1
+			amount: 1,
+			checked: 1
 		}).get();
 		let date = new Date();
 		if (cartsOld.affectedDocs == 0) {
-			if(amount < 1){
+			if (amount < 1) {
 				return {
 					"code": 404,
 					"message": "商品不存在",
@@ -90,16 +138,24 @@ exports.main = async (event, context) => {
 				goods_id: goods_id,
 				sku_id: sku_id,
 				amount: amount,
+				checked: true,
+				src: event.src ? event.src : "",
+				price: event.price ? +event.price : 0,
+				modified: date.toISOString(),
 				created: date.toISOString()
 			});
 			data = "ok";
-		} else if(amount < 1){
+		} else if (amount < 1) {
 			//删除购物车
 			let reslt = await cartCollection.doc(cartsOld.data[0]._id).remove();
 			data = "ok";
 		} else {
 			let reslt = await cartCollection.doc(cartsOld.data[0]._id).update({
-				amount: amount
+				amount: amount,
+				checked: checked,
+				src: event.src ? event.src : "",
+				price: event.price ? +event.price : 0,
+				modified: date.toISOString()
 			});
 			data = "ok";
 		}

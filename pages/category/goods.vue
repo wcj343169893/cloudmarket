@@ -182,7 +182,7 @@ export default {
 			//加载店铺信息
 			this.getShopInfo();
 		},
-		...mapMutations(["loginPage"]),
+		...mapMutations(["loginPage","updateCartNumber"]),
 		getShopInfo() {
 			//一并查询所有商品
 			getShopHome({
@@ -316,8 +316,10 @@ export default {
 						this.calcSize();
 						//从首页点击过来，默认选中
 						console.log("默认选中分类：",this.categoryId)
-						if(this.categoryId){
-							this.tabtap({id:this.categoryId})
+						if(this.categoryId ){
+							setTimeout(()=>{
+								this.tabtap({id:this.categoryId})
+							},100);
 						}
 					})
 					//this.goodsList = res.goods;
@@ -434,16 +436,7 @@ export default {
 					gnumber+=this.skuCart[i][b];
 				}
 			}
-			if(gnumber < 1){
-				uni.removeTabBarBadge({
-					index:2
-				})
-			}else{
-				uni.setTabBarBadge({
-					index:2,
-					text:gnumber+""
-				});
-			}
+			this.updateCartNumber(gnumber);
 		},
 		/**打开sku选择弹窗**/
 		openSkus(item,pid){
@@ -498,12 +491,16 @@ export default {
 		},
 		//更新购物车数据到服务器
 		saveCartAmount(gid,sku,number){
+			let goods = this.goodsSkusMap[gid+"_"+sku];
 			console.log("saveCartAmount",gid,sku,number)
 			editCart({
 				id:this.shopId,
 				stationId: this.stationId,
 				goods_id:gid,
 				sku_id:sku,
+				price:goods.price,
+				src:goods.src,
+				checked:1,
 				amount:number
 			}).then(res=>{
 				console.log(res)
@@ -529,6 +526,10 @@ export default {
 			for(let pid in this.cartNumber){
 				this.getMainCategoryNumber(pid);
 			}
+		},
+		onShow(){
+			//需要重新刷新购物车数据
+			console.log("category goods onShow")
 		},
 		/**关闭sku选择弹窗**/
 		closeSkuDialog(){
@@ -759,17 +760,17 @@ $box-height: 60upx;
 		text-align: center;
 		display: flex;
 	}
-	$yellow-color:#f8d889;
+	$yellow-color:$uni-color-success;
 	.skuoptions__item{
 		width: 200upx;
-		border: 1px solid $yellow-color;
+		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
 		padding: 8upx;
 		margin-right: 20upx;
 		margin-bottom: 20upx;
 		&.active{
-			color: #f1a63b;
-			background: #fefbf2;
+			border: 1px solid $yellow-color;
+			color: $font-color-emphasis;
 		}
 	}
 	.sku_selected{

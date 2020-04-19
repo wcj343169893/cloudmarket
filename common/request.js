@@ -51,7 +51,7 @@ const getGoodsByCid = function(data) {
 }
 //单独获取购物车数据
 const getCartList = function(data) {
-	data["opt"]="list";
+	data["opt"]=data.opt || "list";
 	return network({
 		url: "carts",
 		data: data
@@ -75,6 +75,15 @@ const cleanCart = function(data) {
 		isShowLoading: true
 	})
 }
+//批量选择购物车
+const selectCart = function(data) {
+	data["opt"]="selected";
+	return network({
+		url: "carts",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -84,5 +93,6 @@ export {
 	getGoodsByCid,
 	getCartList,
 	editCart,
+	selectCart,
 	cleanCart
 }

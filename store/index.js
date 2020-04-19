@@ -9,6 +9,7 @@ const store = new Vuex.Store({
 		stationId: 0, //分站id
 		shopId:123457,//分站店铺id，根据收货地址动态设置
 		categoryId:0,
+		cartNumber:0,//购物车总数量
 		userInfo: {},
 	},
 	mutations: {
@@ -38,8 +39,28 @@ const store = new Vuex.Store({
 		changeShopId(state,id){
 			state.shopId = id;
 		},
+		//更新默认选中分类选项卡分类id
 		changeMainCateId(state,id){
 			state.categoryId = id;
+		},
+		//更新购物车总数量
+		updateCartNumber(state,gnumber){
+			state.cartNumber = gnumber;
+			if(gnumber < 1){
+				uni.removeTabBarBadge({
+					index:2
+				})
+			}else if(gnumber > 999){
+				uni.setTabBarBadge({
+					index:2,
+					text:"999+"
+				});
+			}else{
+				uni.setTabBarBadge({
+					index:2,
+					text:gnumber+""
+				});
+			}
 		}
 	},
 	actions: {

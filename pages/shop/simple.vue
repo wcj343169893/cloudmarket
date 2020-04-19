@@ -193,12 +193,11 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { getShopHome,editCart,cleanCart} from '@/common/request.js';
-import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
+import {uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
 		uniNumberBox,
-		uniFab,
 		uniPopup,
 		uniIcons
 	},

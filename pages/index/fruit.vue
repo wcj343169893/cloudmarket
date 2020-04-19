@@ -21,11 +21,11 @@
 		<!-- 口号 -->
 		<view class="weui-flex kouhao m-t">
 			<image src="../../static/icon/home_icon_1_1.jpg" mode=""></image>
-			<text>最快29分钟送达</text>
+			<text>最快2小时送达</text>
 			<image src="../../static/icon/home_icon_1_2.jpg" mode=""></image>
-			<text>0起送费 0配送费</text>
+			<text>0起送费0配送费</text>
 			<image src="../../static/icon/home_icon_1_3.jpg" mode=""></image>
-			<text>安心退</text>
+			<text>安心退换</text>
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section m-t">
