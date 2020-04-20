@@ -39,7 +39,7 @@
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :id="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -58,7 +58,7 @@
 				</view>
 				<view class="weui-flex">
 					<view class="weui-flex__item">
-						<text class="btn btn_ok" @click="loginPage()">登录</text>
+						<text class="btn btn_ok" @click="navToLoginPage()">登录</text>
 					</view>
 					<view class="weui-flex__item" @click="closeLoginDialog()">
 						<text class="btn">取消</text>
@@ -93,7 +93,7 @@
 						<text class="del m-l" v-if="skuGoods.showOriginPrice > 0">￥{{ skuGoods.showOriginPrice }}</text>
 					</view>
 					<view class="sku_prices_buttons__btn" v-if="skuCart[skuGoods.id]">
-						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
+						<uni-number-box :min="0" :max="99" :keys="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
 					</view>
 				</view>
 			</view>
@@ -106,7 +106,8 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex';
-import { getShopHome,editCart,cleanCart} from '@/common/request.js';
+import { getShopHome,editCart,cleanCart,getCartList} from '@/common/request.js';
+import { updateCartNumber,navToGoodsPage,navToLoginPage} from '@/common/functions.js';
 import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -118,6 +119,7 @@ export default {
 	},
 	data() {
 		return {
+			isLoaded:false,
 			shopinfo: {
 				name:"",
 				perCapita:0,
@@ -174,6 +176,14 @@ export default {
 	onLoad() {
 		this.loadData();
 	},
+	onShow(){
+		if(this.isLoaded){
+			console.log("category goods onShow")
+			//重新加载页面数据
+			//this.loadData();
+			this.reBuildCartData();
+		}
+	},
 	computed: {
 		...mapState(['hasLogin','userInfo', 'stationId','shopId','categoryId'])
 	},
@@ -182,7 +192,6 @@ export default {
 			//加载店铺信息
 			this.getShopInfo();
 		},
-		...mapMutations(["loginPage","updateCartNumber"]),
 		getShopInfo() {
 			//一并查询所有商品
 			getShopHome({
@@ -192,12 +201,10 @@ export default {
 				withSubCategory: 1
 			}).then(
 				res => {
+					this.isLoaded = true;
 					console.log(res);
 					this.inited = true;
 					this.shopinfo = res.info;
-					if (this.shopinfo.banner) {
-						this.shopinfo.bannerBackground = 'background-image: url(' + this.shopinfo.banner + ');';
-					}
 					this.slist=[];
 					this.mainCategoryMap={};
 					if (res.goods_categories.length > 0) {
@@ -260,7 +267,7 @@ export default {
 											title:ele.title,
 											subName:sku.name.replace("&gt;"," "),
 											categories:ele.categories,
-											cart:cartI
+											//cart:cartI
 										}
 									});
 								}else{
@@ -276,7 +283,7 @@ export default {
 										title:ele.title,
 										subName:"",
 										categories:ele.categories,
-										cart:ele.cart
+										//cart:ele.cart
 									}
 								}
 								//多分类
@@ -319,7 +326,7 @@ export default {
 						if(this.categoryId ){
 							setTimeout(()=>{
 								this.tabtap({id:this.categoryId})
-							},100);
+							},200);
 						}
 					})
 					//this.goodsList = res.goods;
@@ -332,13 +339,49 @@ export default {
 				}
 			);
 		},
+		reBuildCartData(){
+			getCartList({
+				id:this.shopId,
+				stationId: this.stationId,
+			}).then(res=>{
+				//单个商品总数量
+				this.goodsCartNumber={};
+				//2级清零
+				this.skuCart={};
+				console.log("reBuildCartData");
+				let cartMap ={};
+				res.forEach(ct=>{
+					cartMap[ct.goods_id+"_"+ct.sku_id]=ct.amount;
+					if(!this.goodsCartNumber[+ct.goods_id]){
+						this.goodsCartNumber[+ct.goods_id]=0;
+					}
+					this.goodsCartNumber[+ct.goods_id]+=ct.amount;
+				});
+				//所有商品走一遭,平铺多规格
+				for (let key in this.goodsSkusMap) {
+					let goods = this.goodsSkusMap[key];
+					if(!this.skuCart[goods.goods_id]){
+						this.skuCart[goods.goods_id]={};
+					}
+					this.skuCart[goods.goods_id][goods.sku_id]=cartMap[key]?parseInt(cartMap[key]):0;
+				}
+				//更新分类对应商品数量
+				for (let pid in this.cartNumber) {
+					for (let g in this.cartNumber[pid]) {
+						this.cartNumber[pid][g]=this.goodsCartNumber[g]?parseInt(this.goodsCartNumber[g]):0;
+					}
+				}
+				//统计所有主分类购物车数量
+				this.getAllMainCategoryNumber();
+			});
+		},
 		//一级分类点击
 		tabtap(item) {
 			this.currentId = item.id;
 			let index = this.slist.findIndex(sitem => sitem.pid === item.id);
 			this.tabScrollTop = this.slist[index].top+4;
 			this.cateIndex(this.currentId);
-			console.log("clicked")
+			console.log("clicked",this.tabScrollTop)
 		},
 		/**右侧分类滚动**/
 		asideScroll(e) {
@@ -436,7 +479,7 @@ export default {
 					gnumber+=this.skuCart[i][b];
 				}
 			}
-			this.updateCartNumber(gnumber);
+			updateCartNumber(gnumber);
 		},
 		/**打开sku选择弹窗**/
 		openSkus(item,pid){
@@ -518,7 +561,6 @@ export default {
 			if(index < 0){
 				return;
 			}
-			//console.log(sum)
 			this.categoryList[index]["cart"]=sum;
 		},
 		/**计算主所有分类总数量**/
@@ -526,10 +568,6 @@ export default {
 			for(let pid in this.cartNumber){
 				this.getMainCategoryNumber(pid);
 			}
-		},
-		onShow(){
-			//需要重新刷新购物车数据
-			console.log("category goods onShow")
 		},
 		/**关闭sku选择弹窗**/
 		closeSkuDialog(){
@@ -561,10 +599,12 @@ export default {
 			this.$refs['showlogin'].open();
 		},closeLoginDialog(){
 			this.$refs['showlogin'].close();
-		},navToGoodsPage(id){
-			uni.navigateTo({
-				url: `../product/product?id=${id}`
-			});
+		},
+		navToGoodsPage(id){
+			navToGoodsPage(id,0)
+		},
+		navToLoginPage(){
+			navToLoginPage()
 		}
 	}
 };

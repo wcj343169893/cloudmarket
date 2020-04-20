@@ -62,7 +62,7 @@
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :id="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -149,7 +149,7 @@
 						<text class="del m-l" v-if="skuGoods.showOriginPrice > 0">￥{{ skuGoods.showOriginPrice }}</text>
 					</view>
 					<view class="sku_prices_buttons__btn" v-if="skuCart[skuGoods.id]">
-						<uni-number-box :min="0" :max="99" :id="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
+						<uni-number-box :min="0" :max="99" :keys="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
 					</view>
 				</view>
 			</view>
@@ -179,7 +179,7 @@
 									<text>{{ item.price }}</text>
 									<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
 								</view>
-								<uni-number-box  :min="0" :max="99"  :id="item.goods_id+'_'+item.sku_id" :value="item.cart"  @change="bindChangeCart"></uni-number-box>
+								<uni-number-box  :min="0" :max="99"  :keys="item.goods_id+'_'+item.sku_id" :value="item.cart"  @change="bindChangeCart"></uni-number-box>
 							</view>
 						</view>
 					</view>

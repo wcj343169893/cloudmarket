@@ -27,9 +27,9 @@
 	export default {
 		name: "UniNumberBox",
 		props: {
-			id: {
-				type: [Number, String],
-				default: 1
+			keys: {
+				type: String,
+				default: ""
 			},
 			value: {
 				type: [Number, String],
@@ -71,7 +71,7 @@
 					console.log("inputValue初始化",newVal,+newVal,oldVal,+oldVal);
 				}else if (+newVal !== +oldVal) {
 					console.log("inputValue",newVal,+newVal,oldVal,+oldVal)
-					this.$emit("change", +newVal,this.id);
+					this.$emit("change", +newVal,this.keys);
 				}
 			}
 		},
@@ -88,7 +88,7 @@
 			},
 			_calcValue(type) {
 				if (this.disabled) {
-					this.$emit("disabledEvent",this.id);
+					this.$emit("disabledEvent",this.keys);
 					return;
 				}
 				const scale = this._getDecimalScale();

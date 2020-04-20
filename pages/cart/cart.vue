@@ -9,49 +9,51 @@
 			</view>
 			<view v-else class="empty-tips">
 				空空如也
-				<view class="navigator" @click="loginPage">去登陆></view>
+				<view class="navigator" @click="navToLoginPage">去登陆></view>
 			</view>
 		</view>
 		<view v-else>
 			<!-- 列表 -->
 			<view class="cart-list">
-				<view v-for="(item, index) in cartList" :key="index" class="goodsList">
-					<view class="weui-flex">
-						<view class="weui-flex-check">
-							<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }"  @click="check('item', index)"></view>
-							<view class="image-wrapper" @click="navToGoodsPage(item.goods_id,item.sku_id)">
-								<image
-									:src="item.src"
-									:class="[item.loaded]"
-									mode="aspectFill"
-									lazy-load
-									@load="onImageLoad('cartList', index)"
-									@error="onImageError('cartList', index)"
-								></image>
-							</view>
-						</view>
-						<view class="desc weui-flex__item">
-							<view class="" @click="navToGoodsPage(item.goods_id,item.sku_id)">
-								<text class="title">{{ item.title }}</text>
-							</view>
-							<view class="">
-								<text>{{ item.subName }}</text>
-								<text class="price saledPrice" v-if="item.cutPrice > 0">
-									<text class="unit">比加入时便宜￥</text>
-									<text class="unit">{{ item.cutPrice }}</text>
-								</text>
-							</view>
-							<view class="buttons">
-								<view class="price">
-									<text class="unit">￥</text>
-									<text>{{ item.price }}</text>
-									<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+				<block v-for="(item, index) in cartList" :key="index">
+					<view class="goodsList" v-if="item.cart > 0">
+						<view class="weui-flex">
+							<view class="weui-flex-check">
+								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }"  @click="check('item', index)"></view>
+								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id,item.sku_id)">
+									<image
+										:src="item.src"
+										:class="[item.loaded]"
+										mode="aspectFill"
+										lazy-load
+										@load="onImageLoad('cartList', index)"
+										@error="onImageError('cartList', index)"
+									></image>
 								</view>
-								<uni-number-box :min="0" :max="99" :id="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
+							</view>
+							<view class="desc weui-flex__item">
+								<view class="" @click="navToGoodsPage(item.goods_id,item.sku_id)">
+									<text class="title">{{ item.title }}</text>
+								</view>
+								<view class="">
+									<text>{{ item.subName }}</text>
+									<text class="price saledPrice" v-if="item.cutPrice > 0">
+										<text class="unit">比加入时便宜￥</text>
+										<text class="unit">{{ item.cutPrice }}</text>
+									</text>
+								</view>
+								<view class="buttons">
+									<view class="price">
+										<text class="unit">￥</text>
+										<text>{{ item.price }}</text>
+										<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+									</view>
+									<uni-number-box :min="0" :max="99" :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
+				</block>
 			</view>
 			<!-- 底部菜单栏 -->
 			<view class="action-section">
@@ -72,6 +74,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { editCart, cleanCart, selectCart, getCartList } from '@/common/request.js';
+import { updateCartNumber,navToGoodsPage,navToLoginPage,navToCreateOrder} from '@/common/functions.js';
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
@@ -79,6 +82,7 @@ export default {
 	},
 	data() {
 		return {
+			isLoaded:false,
 			total: 0, //总价格
 			discount: 0, //总优惠
 			allChecked: false, //全选状态  true|false
@@ -88,11 +92,20 @@ export default {
 		};
 	},
 	onLoad() {
+		console.log("cart onLoad")
 		this.loadData();
 	},
 	onShow(){
-		console.log("onShow")
-		//重新加载页面数据
+		if(this.isLoaded){
+			console.log("cart onShow")
+			//重新加载页面数据
+			this.loadData();
+		}
+	},
+	//下拉刷新,不会更新底部附近的店铺,app没效果
+	onPullDownRefresh() {
+		console.log('刷新整页');
+		uni.stopPullDownRefresh();
 		this.loadData();
 	},
 	watch: {
@@ -108,7 +121,6 @@ export default {
 		...mapState(['hasLogin', 'shopId', 'stationId'])
 	},
 	methods: {
-		...mapMutations(["loginPage","updateCartNumber"]),
 		//请求数据
 		async loadData() {
 			getCartList({
@@ -117,6 +129,7 @@ export default {
 				opt: 'full'
 			}).then(
 				res => {
+					this.isLoaded = true;
 					let goodsSkusMap = {};
 					res.goods.forEach(ele => {
 						//是否存在多规格
@@ -177,16 +190,9 @@ export default {
 				err => {
 					//没有数据
 					this.empty = true;
+					this.isLoaded = true;
 				}
 			);
-			/*let list = await this.$api.json('cartList');
-			 let cartList = list.map(item => {
-				item.checked = true;
-				return item;
-			});
-			this.cartList = cartList; 
-			this.calcTotal(); //计算总价
-			*/
 		},
 		//监听image加载完成
 		onImageLoad(key, index) {
@@ -205,8 +211,8 @@ export default {
 			if (numb < 1) {
 				console.log('删除购物车data列表', index);
 				//删除
-				this.cartList.splice(index, 1);
-				console.log('剩余', this.cartList.length);
+				//this.cartList.splice(index, 1);
+				console.log('剩余', this.cartList);
 				editCart({
 					id: this.shopId,
 					stationId: this.stationId,
@@ -216,6 +222,7 @@ export default {
 				}).then(res => {
 					console.log(res);
 				});
+				this.cartList[index].cart = numb;
 			} else {
 				console.log('更新购物车data列表', index);
 				this.cartList[index].cart = numb;
@@ -320,7 +327,7 @@ export default {
 			let list = this.cartList;
 			if (list.length === 0) {
 				this.empty = true;
-				this.updateCartNumber(0);
+				updateCartNumber(0);
 				return;
 			}
 			let total = 0;
@@ -342,31 +349,17 @@ export default {
 			this.allChecked = checked;
 			this.total = Number(total.toFixed(2));
 			this.discount = discount;
-			this.updateCartNumber(number);
-		},navToGoodsPage(id,sid){
-			uni.navigateTo({
-				url: `../product/product?id=${id}&sid=${sid}`
-			});
+			updateCartNumber(number);
+		},
+		navToGoodsPage(id, sid){
+			navToGoodsPage(id, sid);
+		},
+		navToLoginPage(){
+			navToLoginPage();
 		},
 		//创建订单
 		createOrder() {
-			let list = this.cartList;
-			let goodsData = [];
-			list.forEach(item => {
-				if (item.checked) {
-					goodsData.push({
-						attr_val: item.attr_val,
-						number: item.number
-					});
-				}
-			});
-
-			uni.navigateTo({
-				url: `/pages/order/createOrder?data=${JSON.stringify({
-					goodsData: goodsData
-				})}`
-			});
-			this.$api.msg('跳转下一页 sendData');
+			navToCreateOrder();
 		}
 	}
 };

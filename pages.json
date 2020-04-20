@@ -12,7 +12,7 @@
 							"borderRadius": "16px",
 							"placeholder": "西瓜",
 							"disabled": true,
-							"placeholderColor": "#606266"
+							"placeholderColor": "#787a7d"
 						},
 						"buttons": [{
 								"fontSrc": "/static/yticon.ttf",
@@ -99,7 +99,8 @@
 		}, {
 			"path": "pages/cart/cart",
 			"style": {
-				"navigationBarTitleText": "购物车"
+				"navigationBarTitleText": "购物车",
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/public/login",
@@ -215,7 +216,7 @@
 							"borderRadius": "16px",
 							"placeholder": "西兰花",
 							"disabled": true,
-							"placeholderColor": "#606266"
+							"placeholderColor": "#787a7d"
 						}
 					}
 				}

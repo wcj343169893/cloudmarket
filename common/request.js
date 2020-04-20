@@ -84,6 +84,14 @@ const selectCart = function(data) {
 		isShowLoading: true
 	})
 }
+//预结算、结算提交订单
+const settlement = function(data) {
+	return network({
+		url: "settlement",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -94,5 +102,6 @@ export {
 	getCartList,
 	editCart,
 	selectCart,
-	cleanCart
+	cleanCart,
+	settlement
 }
