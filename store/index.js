@@ -9,6 +9,12 @@ const store = new Vuex.Store({
 		stationId: 0, //分站id
 		shopId:123457,//分站店铺id，根据收货地址动态设置
 		categoryId:0,
+		location:{
+			id:null,//收货地址id
+			latitude:0,//纬度
+			longitude:0,//经度
+			name:""//地址名称
+		},
 		userInfo: {},
 	},
 	mutations: {
@@ -41,6 +47,13 @@ const store = new Vuex.Store({
 		//更新默认选中分类选项卡分类id
 		changeMainCateId(state,id){
 			state.categoryId = id;
+		},setUserLocation(state,data){
+			//获取用户位置信息，首页需要，
+			//顺序1：收货地址，2：当前定位，3：ip定位
+			if(data.id){
+				//收货地址
+				state.location.id = data.id;
+			}
 		}
 	},
 	actions: {

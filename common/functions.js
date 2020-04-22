@@ -18,6 +18,15 @@ const updateCartNumber = function(gnumber) {
 		});
 	}
 };
+
+const getUserLocation = function(){
+	//获取用户位置信息，首页需要，
+	//顺序1：收货地址，2：当前定位，3：ip定位
+	if(!state.location.id){
+		
+	}
+}
+
 //跳转登录
 const navToLoginPage = function(id, sid) {
 	if(isRedirect){
