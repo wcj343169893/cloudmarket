@@ -66,6 +66,14 @@ exports.main = async (event, context) => {
 			});
 		}
 		let data = await collection.doc(id).update(event);
+	} else if (type == "default") {
+		//查询一条默认收货地址
+		let address = await collection.where({
+			uid: uid
+		}).orderBy("default", "desc").limit(1).get();
+		if (address.affectedDocs > 0) {
+			data = address.data[0];
+		}
 	} else {
 		//查询所有
 		let address = await collection.where({

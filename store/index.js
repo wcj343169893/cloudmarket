@@ -48,12 +48,15 @@ const store = new Vuex.Store({
 		changeMainCateId(state,id){
 			state.categoryId = id;
 		},setUserLocation(state,data){
-			//获取用户位置信息，首页需要，
+			//获取用户位置信息，首页需要，如果是设置的收货地址，下次直接默认
 			//顺序1：收货地址，2：当前定位，3：ip定位
 			if(data.id){
 				//收货地址
 				state.location.id = data.id;
 			}
+			state.location.latitude = data.latitude;
+			state.location.longitude = data.longitude;
+			state.location.name = data.addressName;
 		}
 	},
 	actions: {

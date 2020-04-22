@@ -18,13 +18,18 @@ const updateCartNumber = function(gnumber) {
 		});
 	}
 };
-
-const getUserLocation = function(){
+//获取用户定位信息
+const getUserLocation = function(state){
 	//获取用户位置信息，首页需要，
 	//顺序1：收货地址，2：当前定位，3：ip定位
-	if(!state.location.id){
-		
+	if(state.latitude > 0){
+		return ;
 	}
+	address({
+		type:"default"
+	}).then(res=>{
+
+	});
 }
 
 //跳转登录
@@ -70,5 +75,6 @@ export {
 	updateCartNumber,
 	navToGoodsPage,
 	navToLoginPage,
-	navToCreateOrder
+	navToCreateOrder,
+	getUserLocation
 }
