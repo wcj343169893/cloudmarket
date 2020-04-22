@@ -167,7 +167,7 @@
 		}, {
 			"path": "pages/order/createOrder",
 			"style": {
-				"navigationBarTitleText": "创建订单"
+				"navigationBarTitleText": "填写订单"
 			}
 		}, {
 			"path": "pages/address/address",

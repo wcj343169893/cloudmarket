@@ -54,7 +54,8 @@ const getCartList = function(data) {
 	data["opt"]=data.opt || "list";
 	return network({
 		url: "carts",
-		data: data
+		data: data,
+		isShowLoading: true
 	})
 }
 //修改购物车数量，0为删除
@@ -92,6 +93,14 @@ const settlement = function(data) {
 		isShowLoading: true
 	})
 }
+//收货地址管理,新增，删除，修改，列表
+const address = function(data) {
+	return network({
+		url: "address",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -103,5 +112,6 @@ export {
 	editCart,
 	selectCart,
 	cleanCart,
-	settlement
+	settlement,
+	address
 }

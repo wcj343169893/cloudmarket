@@ -22,8 +22,9 @@ exports.main = async (event, context) => {
 		};
 	}
 	let data = {
-		"cart": carts.data,
-		"address": {}
+		"carts": carts.data,
+		"address": {},
+		"goods":[]
 	}
 	let ids = [];
 	for (let i = 0; i < carts.affectedDocs; i++) {
