@@ -33,6 +33,15 @@ exports.main = async (event, context) => {
 			});
 		}
 		let data = await collection.add(event);
+	} else if (type == "deleteAll") {
+		//批量删除
+		let ids = event.ids.split(",");
+		const cmd = db.command;
+		let address = await collection.where({
+			_id:cmd.in(ids),
+			uid:uid
+		}).remove();
+		data = address;
 	} else if (type == "delete") {
 		//特意增加uid，防止删除其他用户数据
 		let address = await collection.doc(id).get(); //居然是一个列表

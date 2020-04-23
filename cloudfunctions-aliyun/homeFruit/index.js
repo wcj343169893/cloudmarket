@@ -7,7 +7,7 @@ exports.main = async (event, context) => {
 	};
 	//根据用户收货地址查询最近的一家店铺
 	let shopid = 123457;
-	let uid = 10000;
+	let uid = 0;
 	if (event.uid) {
 		uid = +event.uid;
 	}

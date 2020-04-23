@@ -45,10 +45,14 @@ export default {
 
 .yticon {
 	font-family: 'yticon' !important;
-	font-size: 16px;
+	font-size: $font-lg;
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.yticon.checked{
+	color: $uni-color-success;
 }
 
 .icon-yiguoqi1:before {
@@ -109,6 +113,10 @@ export default {
 
 .icon-shoucang:before {
 	content: '\e645';
+}
+
+.icon-xuanzhong2 {
+	color: $font-color-disabled;
 }
 
 .icon-xuanzhong2:before {
@@ -444,5 +452,15 @@ button[type='default'] {
 
 .placeholder {
 	color: #999999;
+}
+
+.tag {
+	font-size: $font-base;
+	color: $base-color;
+	margin-right: 10upx;
+	border: 1px solid $base-color;
+	border-radius: 4upx;
+	padding: 4upx 10upx;
+	line-height: 1;
 }
 </style>

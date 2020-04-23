@@ -20,7 +20,7 @@
 
 		<view class="row default-row">
 			<text class="tit">设为默认</text>
-			<switch :checked="addressData.defaule" color="#fa436a" @change="switchChange" />
+			<switch :checked="addressData.default" color="#fa436a" @change="switchChange" />
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
 	</view>
@@ -64,13 +64,20 @@ export default {
 			});
 		},
 		switchChange(e) {
-			this.addressData.default = e.detail;
+			this.addressData.default = e.detail.value;
 		},
 
 		//地图选择地址
 		chooseLocation() {
 			uni.chooseLocation({
 				success: data => {
+					let noNeedName = ["我的位置","地图位置"];
+					console.log(data,noNeedName.indexOf(data.name))
+					if(noNeedName.indexOf(data.name) > -1){
+						this.$api.msg("所选地址无效");
+						console.log("地址无效")
+						return;
+					}
 					//广东省深圳市南山区桃园路1号
 					this.addressData.address = data.address;
 					//西海明珠大厦
@@ -102,12 +109,14 @@ export default {
 				this.$api.msg('请填写门牌号信息');
 				return;
 			}
-			//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-			//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新,新增的data，没有_id，在提交的时候，会默认查询一条
-			this.$api.prePage().refreshList(data, this.manageType);
-			this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
 			data["type"]=this.manageType;
 			address(data).then(res => {
+				//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
+				//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新,新增的data，没有_id，在提交的时候，会默认查询一条
+				if(this.$api.prePage()){
+					this.$api.prePage().refreshList(data, this.manageType);
+				}
+				this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
 				uni.navigateBack();
 			});
 		}

@@ -457,13 +457,8 @@ export default {
 		font-size: 44upx;
 		line-height: 1;
 		padding: 4upx;
-		color: $font-color-disabled;
-		background: #fff;
 		border-radius: 50px;
 		margin-right: 10upx;
-		&.checked {
-			color: $uni-color-success;
-		}
 	}
 	.desc {
 		flex: 1;

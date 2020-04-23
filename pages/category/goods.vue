@@ -107,7 +107,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { getShopHome,editCart,cleanCart,getCartList} from '@/common/request.js';
-import { updateCartNumber,navToGoodsPage,navToLoginPage} from '@/common/functions.js';
+import { updateCartNumber,navToGoodsPage,navToLoginPage,showLoginDialog} from '@/common/functions.js';
 import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -235,12 +235,16 @@ export default {
 						});
 						//处理购物车信息
 						let cartMap={};
+						let cartSumNunber = 0;
 						this.cartInfo.dataList=[];
 						if(res.carts.length > 0){
 							res.carts.forEach(ct=>{
 								cartMap[ct.goods_id+"_"+ct.sku_id]=ct.amount;
+								cartSumNunber+=ct.amount;
 							});
 						}
+						//更新购物车总数量
+						updateCartNumber(cartSumNunber);
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
 							console.log("cartMap",cartMap);
@@ -595,8 +599,9 @@ export default {
 			console.log('是否打开:' + e.show)
 		},showLoginDialog(){
 			//登录提示框
-			console.log("showLoginDialog")
-			this.$refs['showlogin'].open();
+			showLoginDialog();
+			//console.log("showLoginDialog")
+			//this.$refs['showlogin'].open();
 		},closeLoginDialog(){
 			this.$refs['showlogin'].close();
 		},
@@ -855,6 +860,7 @@ $box-height: 60upx;
 	}
 	.btn_ok{
 		background: $btn-color-light;
+		color: #FFFFFF;
 	}
 }
 .cart{

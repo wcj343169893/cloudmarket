@@ -31,7 +31,20 @@ const getUserLocation = function(state){
 
 	});
 }
-
+//登录提示框
+const showLoginDialog = function(){
+	uni.showModal({
+		title:"温馨提示",
+		content:'您还未登录，请登录后再操作',
+		cancelText:'再逛逛',
+		confirmText:'去登录',
+		success: function (res) {
+			if (res.confirm) {
+				navToLoginPage();
+			}
+		}
+	});
+}
 //跳转登录
 const navToLoginPage = function(id, sid) {
 	if(isRedirect){
@@ -76,5 +89,6 @@ export {
 	navToGoodsPage,
 	navToLoginPage,
 	navToCreateOrder,
-	getUserLocation
+	getUserLocation,
+	showLoginDialog
 }

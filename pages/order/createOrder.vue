@@ -1,15 +1,16 @@
 <template>
 	<view>
 		<!-- 地址 -->
-		<navigator v-if="addressData._id" url="/pages/address/address?source=1" class="address-section">
+		<navigator v-if="addressData.uid" url="/pages/address/address?source=1" class="address-section">
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
 				<view class="cen">
 					<view class="top">
 						<text class="name">{{ addressData.name }}</text>
 						<text class="mobile">{{ addressData.mobile }}</text>
+						<text v-if="addressData.default" class="tag">默认</text>
 					</view>
-					<text class="address">{{ addressData.address }} {{ addressData.area }}</text>
+					<text class="address">{{ addressData.addressName }} {{ addressData.area }}</text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -23,9 +24,7 @@
 		<navigator v-else url="/pages/address/addressManage?type=new" class="address-section">
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
-				<view class="cen">
-					<text>暂无收货地址，去添加</text>
-				</view>
+				<view class="cen"><text>暂无收货地址，去添加</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<image
@@ -43,7 +42,7 @@
 					</view>
 				</scroll-view>
 				<!-- 总计 -->
-				<navigator url="/pages/address/address?source=1" class="weui-flex__item">
+				<navigator url="/pages/order/goods" class="weui-flex__item">
 					<view class="total">
 						<text>共{{ cartCount }}件</text>
 						<text class="yticon icon-you"></text>
@@ -135,14 +134,6 @@ export default {
 				{
 					title: '新用户专享优惠券',
 					price: 5
-				},
-				{
-					title: '庆五一发一波优惠券',
-					price: 10
-				},
-				{
-					title: '优惠券优惠券优惠券优惠券',
-					price: 15
 				}
 			],
 			dataList: [],
@@ -168,65 +159,15 @@ export default {
 					console.log(res);
 					//默认收货地址
 					this.addressData = res.address;
-					let cartMap = {};
-					this.dataList = [];
-					this.cartCount = 0;
-					this.totalMoney = 0;
-					this.totalDiscount = 0;
-					if (res.carts.length > 0) {
-						res.carts.forEach(ct => {
-							cartMap[ct.goods_id + '_' + ct.sku_id] = ct.amount;
-							this.cartCount += ct.amount;
-						});
-					}
-					if (res.goods.length > 0) {
-						res.goods.forEach(ele => {
-							//多规格
-							if (ele.skus && ele.skus.length > 0) {
-								ele.skus.forEach(sku => {
-									let key = ele.id + '_' + sku.id;
-									if (cartMap[key] && cartMap[key] > 0) {
-										let info = {
-											key: key,
-											goods_id: ele.id,
-											sku_id: sku.id,
-											src: ele.src,
-											price: sku.price,
-											originPrice: sku.originPrice ? sku.originPrice : 0,
-											title: ele.title,
-											cart: cartMap[key],
-											subName: sku.name.replace('&gt;', ' ')
-										};
-										this.dataList.push(info);
-									}
-								});
-							} else {
-								let key = ele.id + '_0';
-								if (cartMap[key] && cartMap[key] > 0) {
-									//单品购物车数量
-									let info = {
-										key: key,
-										goods_id: ele.id,
-										sku_id: 0,
-										src: ele.src,
-										price: ele.price,
-										originPrice: ele.originPrice ? ele.originPrice : 0,
-										title: ele.title,
-										subName: '',
-										cart: cartMap[key]
-									};
-									this.dataList.push(info);
-								}
-							}
-						});
-					}
-					//计算总金额和总优惠
-					this.dataList.forEach(ct => {
-						this.totalMoney += ct.price * ct.cart;
-						if (ct.originPrice > 0) {
-							this.totalDiscount += (ct.originPrice - ct.price) * ct.cart;
-						}
+					//结算商品列表，写到本地临时缓存
+					this.dataList = res.goods;
+					uni.setStorage({
+						key:"create_order_goods",
+						data:res.goods
 					});
+					this.cartCount = res.cartCount;
+					this.totalMoney = res.totalMoney;
+					this.totalDiscount = res.totalDiscount;
 				},
 				err => {
 					//购物车没有需要结算的商品
@@ -246,13 +187,20 @@ export default {
 				this.maskState = state;
 			}, timer);
 		},
+		//提交订单，并跳转到支付页面
 		submit() {
+			settlement({
+				id: this.shopId,
+				stationId: this.stationId,
+				type: 'submit',
+				addressid: this.addressData._id
+			}).then(res => {});
 			uni.redirectTo({
 				url: '/pages/money/pay'
 			});
 		},
-		refreshList(data,type){
-			console.log(data,type);
+		refreshList(data, type) {
+			console.log(data, type);
 			this.addressData = data;
 		},
 		stopPrevent() {}
@@ -320,6 +268,10 @@ page {
 		width: 100%;
 		height: 5upx;
 	}
+	.tag {
+		font-size: $font-sm;
+		margin-left: 10upx;
+	}
 }
 
 .goods-section {
@@ -353,6 +305,7 @@ page {
 	.g-item {
 		margin-left: 16upx;
 		image {
+			border-radius: 12upx;
 			width: 100upx;
 			height: 100upx;
 		}
@@ -446,45 +399,6 @@ page {
 		flex: 1;
 		font-size: $font-base;
 		color: $font-color-dark;
-	}
-}
-
-/* 支付列表 */
-.pay-list {
-	padding-left: 40upx;
-	margin-top: 16upx;
-	background: #fff;
-	.pay-item {
-		display: flex;
-		align-items: center;
-		padding-right: 20upx;
-		line-height: 1;
-		height: 110upx;
-		position: relative;
-	}
-	.icon-weixinzhifu {
-		width: 80upx;
-		font-size: 40upx;
-		color: #6bcc03;
-	}
-	.icon-alipay {
-		width: 80upx;
-		font-size: 40upx;
-		color: #06b4fd;
-	}
-	.icon-xuanzhong2 {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 60upx;
-		height: 60upx;
-		font-size: 40upx;
-		color: $base-color;
-	}
-	.tit {
-		font-size: 32upx;
-		color: $font-color-dark;
-		flex: 1;
 	}
 }
 

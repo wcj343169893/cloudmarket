@@ -172,7 +172,20 @@
 		}, {
 			"path": "pages/address/address",
 			"style": {
-				"navigationBarTitleText": "收货地址"
+				"navigationBarTitleText": "收货地址",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60f",
+								"fontSize": "18",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)"
+							}
+						]
+					}
+				}
 			}
 		}, {
 			"path": "pages/address/addressManage",
@@ -261,6 +274,12 @@
             		}
             	}
             }
+        }
+        ,{
+            "path" : "pages/order/goods",
+            "style" : {
+				"navigationBarTitleText": "商品信息"
+			}
         }
     ],
 	"globalStyle": {
