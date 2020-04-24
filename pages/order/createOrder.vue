@@ -33,7 +33,7 @@
 			></image>
 		</navigator>
 		<view class="goods-section">
-			<view class="g-header b-b"><text class="name">产地直销，新鲜直达</text></view>
+			<view class="g-header b-b"><text class="name">产地直供，新鲜到家</text></view>
 			<view class="weui-flex">
 				<!-- 商品列表 -->
 				<scroll-view scroll-x="true" class="goods_list">
@@ -81,7 +81,7 @@
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
-				<input class="desc" type="text" v-model="desc" placeholder="请填写备注信息" placeholder-class="placeholder" />
+				<input class="desc" type="text" v-model="remark" placeholder="请填写备注信息" placeholder-class="placeholder" />
 			</view>
 		</view>
 
@@ -128,7 +128,7 @@ export default {
 	data() {
 		return {
 			maskState: 0, //优惠券面板显示状态
-			desc: '', //备注
+			remark: '', //备注
 			payType: 1, //1微信 2支付宝
 			couponList: [
 				{

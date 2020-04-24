@@ -25,6 +25,8 @@ exports.main = async (event, context) => {
 		};
 	}
 	let data = {
+		"shopid": shopid,
+		"uid": uid,
 		"cartCount": 0, //总件数
 		"totalMoney": 0,
 		"stockNotEnough": [],
@@ -43,8 +45,9 @@ exports.main = async (event, context) => {
 		data.cartCount += ct.amount;
 		ids.push(ct.goods_id);
 	});
+	const goodsCollection = db.collection('goods');
 	//查询实时商品信息
-	let goods = await db.collection('goods').where({
+	let goods = await goodsCollection.where({
 		shopid: shopid,
 		id: cmd.in(ids)
 	}).field({
@@ -63,8 +66,10 @@ exports.main = async (event, context) => {
 		goods.data.forEach(ele => {
 			if (ele.skus && ele.skus.length > 0) {
 				ele.skus.forEach(sku => {
+					//相当于clone对象
 					let goo = { ...ele
 					};
+					goo["hasSku"] = true;
 					//删除多型号
 					delete goo.skus;
 					let key = ele.id + '_' + sku.id;
@@ -89,6 +94,7 @@ exports.main = async (event, context) => {
 			} else {
 				let key = ele.id + '_0';
 				ele["cart"] = cartMap[key].amount;
+				ele["hasSku"] = false;
 				ele.sku_id = 0;
 				//加入购物车时的差价
 				ele.cutPrice = 0;
@@ -125,7 +131,75 @@ exports.main = async (event, context) => {
 	}
 	//提交订单
 	if (type && type == "submit") {
-
+		//收货地址不存在
+		if (!data.address._id) {
+			return {
+				"code": 404,
+				"message": "收货地址错误"
+			};
+		}
+		//结算商品不存在
+		if (data.goods.lengt < 1) {
+			return {
+				"code": 404,
+				"message": "商品不存在"
+			};
+		}
+		//检查是否存在库存不足的商品
+		if (data.stockNotEnough.lengt > 0) {
+			return {
+				"code": 404,
+				"message": "商品库存不足",
+				"data": data
+			};
+		}
+		data.goods.forEach(ele => {
+			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
+			//有问题
+			/* if (ele.hasSku) {
+				let res = await goodsCollection.where({
+					_id: ele._id,
+					"skus.id": ele.sku_id
+				}).update({
+					monthlySale: cmd.inc(ele.cart),
+					stock: cmd.inc(-1 * ele.cart),
+					'skus.$.stock': cmd.inc(-1 * ele.cart)
+				});
+			} else {
+				let res = await goodsCollection.where({
+					_id: ele._id
+				}).update({
+					monthlySale: cmd.inc(ele.cart),
+					stock: cmd.inc(-1 * ele.cart)
+				});
+			} */
+			//@todo保存商品每日销量
+		});
+		//备注
+		data["remark"] = event.remark;
+		const day = new Date().toISOString();
+		data["created"] = day;
+		data["modified"] = day;
+		//用户设备信息
+		data["platform"] = [
+			context.OS,
+			context.PLATFORM
+		].join(",");
+		data["requestId"] = context.requestId;
+		//用户真实ip
+		data["ip"] = context.headers["x-forwarded-for"].split(",")[0];
+		//状态：0未付款，1已付款，2已发货，3已收货
+		data["state"] = 0;
+		//字典表递增获得位id
+		data["id"] = 0;
+		//保存订单
+		let res = await db.collection("orders").add(data);
+		if (res.inserted == 0) {
+			return {
+				"code": 404,
+				"message": "提交订单失败",
+			};
+		}
 	}
 	return {
 		"code": 200,

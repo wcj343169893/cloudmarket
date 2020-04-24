@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "collection_names": "file:../common/collection_names"
+    "base-common": "file:../common/base-common"
   }
 }

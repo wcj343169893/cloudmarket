@@ -1,8 +1,8 @@
 /**
- * 数据库集合分表处理公共函数
- * @param {Object} event.stationId 站点名称
+ * 获取集合名称,更好管理多地区分站
+ * @param {Object} event
  */
-module.exports = function(event) {
+const getCollectionNames = function(event) {
 	// 公用模块用法请参考 https://uniapp.dcloud.io/uniCloud/quickstart?id=common
 	//基础
 	var bases = ["users", "orders", "carts", "user_often_buy_shops", "user_recommend_shops"];
@@ -21,4 +21,14 @@ module.exports = function(event) {
 		collections[coll] = coll;
 	}
 	return collections;
+};
+/**
+ * 获取店铺信息
+ * @param {Object} id
+ */
+const getShopInfoById=function(id){
+	
+}
+module.exports = {
+	getCollectionNames
 }

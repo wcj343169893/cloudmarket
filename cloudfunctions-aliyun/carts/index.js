@@ -1,6 +1,6 @@
 'use strict';
 const db = uniCloud.database();
-const getCollectionNames = require('collection_names');
+const {getCollectionNames} = require('base-common');
 exports.main = async (event, context) => {
 	let shopid = parseInt(event.id);
 	let uid = parseInt(event.uid);
