@@ -39,7 +39,7 @@
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="99" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="item.stock" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>

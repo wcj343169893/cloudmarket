@@ -31,9 +31,9 @@ const network = function(options) {
 			uni.hideLoading()
 			console.log(res)
 			if (res.result.code !== 200) {
-				if(res.result.code !== 404){
-					//没有数据
-					reject({});
+				if(res.result.code === 404){
+					//没有数据,message,data
+					reject(res.result);
 					return;
 				}
 				return Promise.reject(new Error(res.result.message));

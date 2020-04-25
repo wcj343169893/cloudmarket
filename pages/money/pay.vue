@@ -2,160 +2,187 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">38.88</text>
+			<text class="price">{{orderInfo.totalMoney}}</text>
 		</view>
 
 		<view class="pay-type-list">
-
-			<view class="type-item b-b" @click="changePayType(1)">
-				<text class="icon yticon icon-weixinzhifu"></text>
-				<view class="con">
-					<text class="tit">微信支付</text>
-					<text>推荐使用微信支付</text>
-				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 1' />
-					</radio>
-				</label>
-			</view>
-			<view class="type-item b-b" @click="changePayType(2)">
-				<text class="icon yticon icon-alipay"></text>
-				<view class="con">
-					<text class="tit">支付宝支付</text>
-				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 2' />
-					</radio>
-				</label>
-			</view>
-			<view class="type-item" @click="changePayType(3)">
-				<text class="icon yticon icon-erjiye-yucunkuan"></text>
-				<view class="con">
-					<text class="tit">预存款支付</text>
-					<text>可用余额 ¥198.5</text>
-				</view>
-				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 3' />
-					</radio>
-				</label>
-			</view>
+			<radio-group @change="changePayType">
+				<block v-for="(item, index) in payment" :key="index">
+					<view class="type-item b-b">
+						<text class="icon yticon" :class="item.icon"></text>
+						<view class="con">
+							<text class="tit">{{ item.name }}</text>
+							<text>{{ item.desc }}</text>
+						</view>
+						<label class="radio"><radio :value="item.value" :disabled="!item.usable" color="#fa436a" :checked="index == 0" /></label>
+					</view>
+				</block>
+			</radio-group>
 		</view>
-		
 		<text class="mix-btn" @click="confirm">确认支付</text>
 	</view>
 </template>
 
 <script>
+import { payInfo } from '@/common/request.js';
+export default {
+	data() {
+		return {
+			id: 0,
+			payType: '',
+			payment: [],
+			orderInfo: {}
+		};
+	},
+	computed: {},
+	onLoad(options) {
+		if (options.id) {
+			this.id = options.id;
+		}
+		this.loadData();
+	},
 
-	export default {
-		data() {
-			return {
-				payType: 1,
-				orderInfo: {}
-			};
+	methods: {
+		loadData() {
+			payInfo({
+				id: this.id
+			}).then(res => {
+				this.orderInfo = res.order;
+				this.payment = res.payment;
+			});
 		},
-		computed: {
-		
+		//选择支付方式
+		changePayType(event) {
+			this.payType = event.detail.value;
 		},
-		onLoad(options) {
-			
-		},
-
-		methods: {
-			//选择支付方式
-			changePayType(type) {
-				this.payType = type;
-			},
-			//确认支付
-			confirm: async function() {
-				uni.redirectTo({
-					url: '/pages/money/paySuccess'
-				})
-			},
+		//确认支付
+		confirm: async function() {
+			if(this.payType == "balance"){
+				//余额支付，单独调用接口
+				uni.showModal({
+					title: '温馨提示',
+					content: '支付失败！'
+				});
+				return;
+			}
+			//https://uniapp.dcloud.io/api/plugins/payment?id=orderinfo
+			/* uni.redirectTo({
+				url: '/pages/money/paySuccess'
+			}); */
+			uni.requestPayment({
+				provider: this.payType,
+				orderInfo: this.id,
+				//微信、支付宝订单数据
+				success: function(res) {
+					uni.showModal({
+						title: '温馨提示',
+						content: '支付成功！',
+						success: function(res) {
+							if (res.confirm) {
+								uni.navigateBack({
+									delta: 1
+								});
+							} else {
+								uni.navigateBack({
+									delta: 1
+								});
+							}
+						}
+					});
+				},
+				fail: function(err) {
+					uni.showModal({
+						title: '温馨提示',
+						content: '支付失败！',
+						success: function(res) {
+							console.log(res.data)
+						}
+					});
+				}
+			});
 		}
 	}
+};
 </script>
 
-<style lang='scss'>
-	.app {
-		width: 100%;
+<style lang="scss">
+.app {
+	width: 100%;
+}
+
+.price-box {
+	background-color: #fff;
+	height: 265upx;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 28upx;
+	color: #909399;
+
+	.price {
+		font-size: 50upx;
+		color: #303133;
+		margin-top: 12upx;
+		&:before {
+			content: '￥';
+			font-size: 40upx;
+		}
+	}
+}
+
+.pay-type-list {
+	margin-top: 20upx;
+	background-color: #fff;
+	padding-left: 60upx;
+
+	.type-item {
+		height: 120upx;
+		padding: 20upx 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-right: 60upx;
+		font-size: 30upx;
+		position: relative;
 	}
 
-	.price-box {
-		background-color: #fff;
-		height: 265upx;
+	.icon {
+		width: 100upx;
+		font-size: 52upx;
+	}
+	.icon-erjiye-yucunkuan {
+		color: #fe8e2e;
+	}
+	.icon-weixinzhifu {
+		color: #36cb59;
+	}
+	.icon-alipay {
+		color: #01aaef;
+	}
+	.tit {
+		font-size: $font-lg;
+		color: $font-color-dark;
+		margin-bottom: 4upx;
+	}
+	.con {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		font-size: 28upx;
-		color: #909399;
-
-		.price{
-			font-size: 50upx;
-			color: #303133;
-			margin-top: 12upx;
-			&:before{
-				content: '￥';
-				font-size: 40upx;
-			}
-		}
+		font-size: $font-sm;
+		color: $font-color-light;
 	}
-
-	.pay-type-list {
-		margin-top: 20upx;
-		background-color: #fff;
-		padding-left: 60upx;
-		
-		.type-item{
-			height: 120upx;
-			padding: 20upx 0;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding-right: 60upx;
-			font-size: 30upx;
-			position:relative;
-		}
-		
-		.icon{
-			width: 100upx;
-			font-size: 52upx;
-		}
-		.icon-erjiye-yucunkuan {
-			color: #fe8e2e;
-		}
-		.icon-weixinzhifu {
-			color: #36cb59;
-		}
-		.icon-alipay {
-			color: #01aaef;
-		}
-		.tit{
-			font-size: $font-lg;
-			color: $font-color-dark;
-			margin-bottom: 4upx;
-		}
-		.con{
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-			font-size: $font-sm;
-			color: $font-color-light;
-		}
-	}
-	.mix-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 630upx;
-		height: 80upx;
-		margin: 80upx auto 30upx;
-		font-size: $font-lg;
-		color: #fff;
-		background-color: $base-color;
-		border-radius: 10upx;
-		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-	}
-
+}
+.mix-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 630upx;
+	height: 80upx;
+	margin: 80upx auto 30upx;
+	font-size: $font-lg;
+	color: #fff;
+	background-color: $base-color;
+	border-radius: 10upx;
+}
 </style>

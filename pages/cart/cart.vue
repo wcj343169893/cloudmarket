@@ -16,10 +16,12 @@
 			<!-- 列表 -->
 			<view class="cart-list">
 				<block v-for="(item, index) in cartList" :key="index">
-					<view class="goodsList" v-if="item.cart > 0">
+					<view class="goodsList" :class="{disabled:item.disabled}" v-if="item.cart > 0">
 						<view class="weui-flex">
 							<view class="weui-flex-check">
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }"  @click="check('item', index)"></view>
+							</view>
+							<view class="desc">
 								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id,item.sku_id)">
 									<image
 										:src="item.src"
@@ -30,26 +32,28 @@
 										@error="onImageError('cartList', index)"
 									></image>
 								</view>
-							</view>
-							<view class="desc weui-flex__item">
-								<view class="" @click="navToGoodsPage(item.goods_id,item.sku_id)">
-									<text class="title">{{ item.title }}</text>
-								</view>
-								<view class="">
-									<text>{{ item.subName }}</text>
-									<text class="price saledPrice" v-if="item.cutPrice > 0">
-										<text class="unit">比加入时便宜￥</text>
-										<text class="unit">{{ item.cutPrice }}</text>
-									</text>
-								</view>
-								<view class="buttons">
-									<view class="price">
-										<text class="unit">￥</text>
-										<text>{{ item.price }}</text>
-										<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+								<view class="desc-name">
+									<view class="" @click="navToGoodsPage(item.goods_id,item.sku_id)">
+										<text class="title">{{ item.title }}</text>
 									</view>
-									<uni-number-box :min="0" :max="99" :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
+									<view class="">
+										<text>{{ item.subName }}</text>
+										<text class="price saledPrice" v-if="item.cutPrice > 0">
+											<text class="unit">比加入时便宜￥</text>
+											<text class="unit">{{ item.cutPrice }}</text>
+										</text>
+									</view>
+									<view class="buttons">
+										<view class="price">
+											<text class="unit">￥</text>
+											<text>{{ item.price }}</text>
+											<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+										</view>
+									</view>
 								</view>
+							</view>
+							<view class="">
+								<uni-number-box :min="0" :max="item.stock" :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
 							</view>
 						</view>
 					</view>
@@ -65,7 +69,7 @@
 					<text class="price"><text class="unit">￥</text>{{ total }}</text>
 					<text class="coupon">已优惠<text>{{ discount }}</text>元</text>
 				</view>
-				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
+				<button type="primary" class="no-border confirm-btn" :class="{disabled:!isChecked}" @click="createOrder">去结算</button>
 			</view>
 		</view>
 	</view>
@@ -83,6 +87,7 @@ export default {
 	data() {
 		return {
 			isLoaded:false,
+			isChecked:false,
 			total: 0, //总价格
 			discount: 0, //总优惠
 			allChecked: false, //全选状态  true|false
@@ -148,6 +153,7 @@ export default {
 									sku_id: sku.id,
 									src: ele.src,
 									price: sku.price,
+									stock: sku.stock,
 									originPrice: sku.originPrice ? sku.originPrice : 0,
 									title: ele.title,
 									subName: sku.name.replace('&gt;', ' '),
@@ -163,6 +169,7 @@ export default {
 								sku_id: 0,
 								src: ele.src,
 								price: ele.price,
+								stock: ele.stock,
 								originPrice: ele.originPrice ? ele.originPrice : 0,
 								title: ele.title,
 								subName: '',
@@ -176,7 +183,10 @@ export default {
 						let key = ct.goods_id + '_' + ct.sku_id;
 						let goods = goodsSkusMap[key];
 						goods['cart'] = ct.amount;
-						goods['checked'] = ct.checked;
+						//必须保证库存足够
+						goods['disabled'] = ct.amount > goods.stock;
+						//默认选中
+						goods['checked'] = ct.checked && !goods.disabled;
 						goods['cutPrice'] = 0;
 						goods['loaded'] = "";
 						if (ct.price > 0 && ct.price > goods.price) {
@@ -184,6 +194,7 @@ export default {
 						}
 						this.cartList.push(goods);
 					});
+					//console.log(this.cartList);
 					//计算购物车总金额
 					this.calcTotal();
 				},
@@ -226,6 +237,11 @@ export default {
 			} else {
 				console.log('更新购物车data列表', index);
 				this.cartList[index].cart = numb;
+				//判断库存
+				/* if(this.cartList[index].cart > this.cartList[index].stock){
+					this.cartList[index].disabled = true;
+					
+				} */
 				editCart({
 					id: this.shopId,
 					stationId: this.stationId,
@@ -330,6 +346,7 @@ export default {
 				updateCartNumber(0);
 				return;
 			}
+			this.isChecked = false;
 			let total = 0;
 			let number=0;
 			let discount = 0;
@@ -341,6 +358,7 @@ export default {
 					if (item.originPrice && item.originPrice > item.price) {
 						discount += (item.originPrice - item.price) * item.cart;
 					}
+					this.isChecked = true;
 				} else if (checked === true) {
 					checked = false;
 				}
@@ -359,7 +377,9 @@ export default {
 		},
 		//创建订单
 		createOrder() {
-			navToCreateOrder();
+			if(this.isChecked){
+				navToCreateOrder();
+			}
 		}
 	}
 };
@@ -428,11 +448,13 @@ export default {
 		padding: 20upx 0 20upx;
 		border-radius: 12upx;
 		margin-bottom: 8upx;
-		.weui-flex {
-			align-items: flex-start;
-		}
 		.sub-catename {
 			padding-bottom: 10upx;
+		}
+		&.disabled{
+			.checkbox{
+				display: none;
+			}
 		}
 	}
 	.image-wrapper {
@@ -464,6 +486,11 @@ export default {
 		flex: 1;
 		font-size: $font-sm;
 		color: $font-color-light;
+		display: flex;
+		align-items: flex-start;
+		.desc-name{
+			flex: 1;
+		}
 		.title {
 			font-size: $font-base;
 			color: $font-color-dark;
@@ -573,6 +600,11 @@ export default {
 		font-size: $font-base + 2upx;
 		background: $uni-color-success;
 		box-shadow: 1px 2px 5px rgba(0, 170, 0, 0.7);
+		transition: 0.4s;
+		&.disabled{
+			background-color:$font-color-disabled;
+			box-shadow: 1px 2px 5px rgba(170, 170, 127, 0.7);
+		}
 	}
 }
 /* 复选框选中状态 */

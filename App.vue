@@ -49,6 +49,7 @@ export default {
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	transition: 0.4s;
 }
 
 .yticon.checked{

@@ -129,7 +129,6 @@ export default {
 		return {
 			maskState: 0, //优惠券面板显示状态
 			remark: '', //备注
-			payType: 1, //1微信 2支付宝
 			couponList: [
 				{
 					title: '新用户专享优惠券',
@@ -193,10 +192,15 @@ export default {
 				id: this.shopId,
 				stationId: this.stationId,
 				type: 'submit',
+				remark:this.remark,
 				addressid: this.addressData._id
-			}).then(res => {});
-			uni.redirectTo({
-				url: '/pages/money/pay'
+			}).then(res => {
+				let id = res;
+				uni.redirectTo({
+					url: `/pages/money/pay?id=${id}`
+				});
+			},err=>{
+				this.$api.msg(err.message);
 			});
 		},
 		refreshList(data, type) {

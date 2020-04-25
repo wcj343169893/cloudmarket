@@ -7,7 +7,8 @@ exports.main = async (event, context) => {
 	let addressid = event.addressid;
 	let type = event.type;
 	const cmd = db.command;
-	let carts = await db.collection('carts').where({
+	const cartCollection = db.collection('carts');
+	let carts = await cartCollection.where({
 		shopid: shopid,
 		checked: true,
 		uid: uid
@@ -39,6 +40,7 @@ exports.main = async (event, context) => {
 	//处理商品购物车数据
 	carts.data.forEach(ct => {
 		cartMap[ct.goods_id + '_' + ct.sku_id] = {
+			id: ct._id,
 			price: ct.price,
 			amount: ct.amount
 		};
@@ -153,10 +155,10 @@ exports.main = async (event, context) => {
 				"data": data
 			};
 		}
-		data.goods.forEach(ele => {
+		data.goods.map(async(ele)=>{
+			//异步更新库存
 			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
-			//有问题
-			/* if (ele.hasSku) {
+			if (ele.hasSku) {
 				let res = await goodsCollection.where({
 					_id: ele._id,
 					"skus.id": ele.sku_id
@@ -172,8 +174,12 @@ exports.main = async (event, context) => {
 					monthlySale: cmd.inc(ele.cart),
 					stock: cmd.inc(-1 * ele.cart)
 				});
-			} */
-			//@todo保存商品每日销量
+			}
+			//@todo保存商品每日销量,最好是redis
+		});
+		//删除购物车cartId
+		carts.data.map(async(ele)=>{
+			return await cartCollection.doc(ele._id).remove();
 		});
 		//备注
 		data["remark"] = event.remark;
@@ -194,12 +200,17 @@ exports.main = async (event, context) => {
 		data["id"] = 0;
 		//保存订单
 		let res = await db.collection("orders").add(data);
-		if (res.inserted == 0) {
+		if (!res.id) {
 			return {
 				"code": 404,
 				"message": "提交订单失败",
 			};
 		}
+		return {
+			"code": 200,
+			"message": "操作成功",
+			"data": res.id
+		};
 	}
 	return {
 		"code": 200,

@@ -101,6 +101,14 @@ const address = function(data) {
 		isShowLoading: true
 	})
 }
+//支付查询
+const payInfo = function(data) {
+	return network({
+		url: "payInfo",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -113,5 +121,6 @@ export {
 	selectCart,
 	cleanCart,
 	settlement,
-	address
+	address,
+	payInfo
 }
