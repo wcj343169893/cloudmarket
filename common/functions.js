@@ -84,11 +84,26 @@ const navToCreateOrder = function() {
 		}
 	});
 }
+//支付订单跳转
+const navToPayOrder = function(id) {
+	if(isRedirect){
+		return false;
+	}
+	isRedirect=true;
+	uni.navigateTo({
+		url: `/pages/money/pay?id=${id}`,
+		success: function() {
+			isRedirect=false;
+		}
+	});
+}
+
 export {
 	updateCartNumber,
 	navToGoodsPage,
 	navToLoginPage,
 	navToCreateOrder,
 	getUserLocation,
-	showLoginDialog
+	showLoginDialog,
+	navToPayOrder
 }

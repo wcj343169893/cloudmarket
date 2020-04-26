@@ -20,7 +20,7 @@ const network = function(options) {
 		if (options.isShowLoading) { //是否需要显示  loading(true:不显示，false:显示)
 			uni.showLoading({
 				title: '正在加载',
-				mask: false
+				mask: options.isShowMask
 			});
 		}
 

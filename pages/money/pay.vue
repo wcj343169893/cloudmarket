@@ -65,6 +65,8 @@ export default {
 				});
 				return;
 			}
+			//刷新上一页数据
+			this.$api.prePage().refreshList();
 			//https://uniapp.dcloud.io/api/plugins/payment?id=orderinfo
 			/* uni.redirectTo({
 				url: '/pages/money/paySuccess'

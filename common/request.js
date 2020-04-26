@@ -109,6 +109,16 @@ const payInfo = function(data) {
 		isShowLoading: true
 	})
 }
+//订单
+const orders = function(data) {
+	let isShowLoading = data["type"] != "list";
+	return network({
+		url: "orders",
+		data: data,
+		isShowLoading: isShowLoading,
+		isShowMask: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -122,5 +132,6 @@ export {
 	cleanCart,
 	settlement,
 	address,
-	payInfo
+	payInfo,
+	orders
 }
