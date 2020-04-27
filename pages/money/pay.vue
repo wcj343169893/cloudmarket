@@ -40,6 +40,7 @@ export default {
 	onLoad(options) {
 		if (options.id) {
 			this.id = options.id;
+			this.orderInfo.totalMoney = options.money;
 		}
 		this.loadData();
 	},

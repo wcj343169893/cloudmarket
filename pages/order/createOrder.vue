@@ -195,8 +195,9 @@ export default {
 				addressid: this.addressData._id
 			}).then(res => {
 				let id = res;
+				let money = this.totalMoney;
 				uni.redirectTo({
-					url: `/pages/money/pay?id=${id}`
+					url: `/pages/money/pay?id=${id}&money=${money}`
 				});
 			},err=>{
 				this.$api.msg(err.message);

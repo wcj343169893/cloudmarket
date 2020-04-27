@@ -461,7 +461,7 @@ export default {
 				return;
 			}
 			this.skuCart[gid][sid]=num;
-			console.log(this.skuCart);
+			//console.log(this.skuCart);
 			//计算所有规格的总数
 			let gnumber=0;
 			for(let i in this.skuCart[gid]){
@@ -590,6 +590,9 @@ export default {
 			this.skuGoods["selectedSkuId"]=selectSku.id;
 			//更新商品价格
 			this.skuGoods["showPrice"] = selectSku.price;
+			//库存和限购
+			this.skuGoods["stock"] = selectSku.stock;
+			this.skuGoods["limit"] = selectSku.limit;
 			this.skuGoods["showOriginPrice"] = selectSku.originPrice? selectSku.originPrice:0;
 			//console.log(this.skuGoods)
 			this.skuGoodsSelected = names.join("、");

@@ -192,6 +192,8 @@ export default {
 					//没有数据
 					this.empty = true;
 					this.isLoaded = true;
+					//购物车总数量
+					updateCartNumber(0);
 				}
 			);
 		},

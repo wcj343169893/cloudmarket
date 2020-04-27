@@ -41,7 +41,7 @@
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
 							<button class="action-btn" @click="cancelOrder(item,index)">取消订单</button>
-							<button class="action-btn recom" @click="payOrder(item._id)">立即支付</button>
+							<button class="action-btn recom" @click="payOrder(item)">立即支付</button>
 						</view>
 						<!-- 已付款 -->
 						<view class="action-box b-t" v-if="item.state == 1">
@@ -199,9 +199,9 @@ export default {
 			this.loadData();
 		},
 		//去支付
-		payOrder(id) {
-			console.log(id);
-			navToPayOrder(id);
+		payOrder(item) {
+			console.log(item);
+			navToPayOrder(item._id,item.totalMoney);
 		},
 		//删除订单
 		deleteOrder(index) {
