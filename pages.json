@@ -179,8 +179,9 @@
 							{
 								"fontSrc": "/static/yticon.ttf",
 								"text": "\ue60f",
-								"fontSize": "18",
+								"fontSize": "24",
 								"color": "#303133",
+								"width": "46px",
 								"background": "rgba(0,0,0,0)"
 							}
 						]

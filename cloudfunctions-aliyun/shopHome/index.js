@@ -74,6 +74,8 @@ exports.main = async (event, context) => {
 			"originPrice": 1,
 			"monthlySale": 1,
 			"categories": 1,
+			"miaosha": 1,
+			"manjian": 1,
 		}).get();
 		if (goods.affectedDocs > 0) {
 			shopInfo["goods"] = goods.data;

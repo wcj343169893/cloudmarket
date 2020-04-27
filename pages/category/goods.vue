@@ -29,17 +29,19 @@
 										<text>月售{{ item.monthlySale }}</text>
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
 									</view>
+									<view class="tags">
+										<text v-for="(tag) in item.tags" class="tag warning">{{tag}}</text>
+									</view>
 									<view class="buttons">
-										<view class="price">
-											<text class="unit">￥</text>
-											<text>{{ item.price }}</text>
-											<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+										<view >
+											<text class="price">{{ item.price }}</text>
+											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 										</view>
 										<view class="sku_button" v-if="item.hasSku">
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="item.stock" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-if="!item.hasSku" :min="0" :max="item.limit" :stock="item.stock" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -87,13 +89,12 @@
 					<text>已选择规格：{{skuGoodsSelected}}</text>
 				</view>
 				<view class="sku_prices_buttons">
-					<view class="sku_prices_buttons__price price">
-						<text class="unit">￥</text>
-						<text>{{skuGoods.showPrice}}</text>
-						<text class="del m-l" v-if="skuGoods.showOriginPrice > 0">￥{{ skuGoods.showOriginPrice }}</text>
+					<view class="sku_prices_buttons__price ">
+						<text class="price">{{skuGoods.showPrice}}</text>
+						<text class="price del m-l" v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
 					</view>
 					<view class="sku_prices_buttons__btn" v-if="skuCart[skuGoods.id]">
-						<uni-number-box :min="0" :max="99" :keys="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
+						<uni-number-box :min="0" :max="skuGoods.limit" :stock="skuGoods.stock" :keys="skuGoods.catPid+'_'+skuGoods.id" :value="skuCart[skuGoods.id][skuGoods.selectedSkuId]" @change="bindChangeSku"></uni-number-box>
 					</view>
 				</view>
 			</view>
@@ -107,7 +108,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { getShopHome,editCart,cleanCart,getCartList} from '@/common/request.js';
-import { updateCartNumber,navToGoodsPage,navToLoginPage,showLoginDialog} from '@/common/functions.js';
+import { updateCartNumber,navToGoodsPage,navToLoginPage,showLoginDialog,updateGoodsTags} from '@/common/functions.js';
 import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -247,17 +248,15 @@ export default {
 						updateCartNumber(cartSumNunber);
 						//需要按分类来分组联动，这里的商品,优先二级
 						if (res.goods.length > 0) {
-							console.log("cartMap",cartMap);
-							res.goods.forEach((ele, index) => {
-								//是否存在多规格
-								ele["hasSku"]=ele.skus && ele.skus.length > 0;
+							res.goods.map((ele, index) => {
+								updateGoodsTags(ele);
 								if(!this.skuCart[ele.id]){
 									this.skuCart[ele.id]={};
 								}
 								//多规格
 								if(ele.hasSku){
 									ele["cart"] = 0;
-									ele.skus.forEach(sku=>{
+									ele.skus.map(sku=>{
 										let key=ele.id+"_"+sku.id;
 										let cartI=0;
 										//多规格购物车数量统计
@@ -270,7 +269,7 @@ export default {
 											originPrice:sku.originPrice?sku.originPrice:0,
 											title:ele.title,
 											subName:sku.name.replace("&gt;"," "),
-											categories:ele.categories,
+											//categories:ele.categories,
 											//cart:cartI
 										}
 									});
@@ -286,13 +285,13 @@ export default {
 										originPrice:ele.originPrice?ele.originPrice:0,
 										title:ele.title,
 										subName:"",
-										categories:ele.categories,
+										//categories:ele.categories,
 										//cart:ele.cart
 									}
 								}
 								//多分类
 								if (ele.categories) {
-									ele.categories.forEach((cate, cindex) => {
+									ele.categories.map((cate, cindex) => {
 										//判断是否存在与二级分类中
 										if (cate.id in cateMap) {
 											let cmIndex = cateMap[cate.id];
@@ -742,18 +741,6 @@ $border-color: #f5f5f5;
 }
 .m-l {
 	margin-left: 10upx;
-}
-.price {
-	color: $base-color;
-	font-size: 1.4em;
-	.unit {
-		font-size: 0.8em;
-	}
-	.del {
-		font-size: 0.8em;
-		color: $font-color-light;
-		text-decoration: line-through;
-	}
 }
 /**选规格**/
 $box-height: 60upx;

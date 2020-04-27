@@ -14,7 +14,7 @@
 							<text class="tit">{{ item.name }}</text>
 							<text>{{ item.desc }}</text>
 						</view>
-						<label class="radio"><radio :value="item.value" :disabled="!item.usable" color="#fa436a" :checked="index == 0" /></label>
+						<label class="radio"><radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="index == 0" /></label>
 					</view>
 				</block>
 			</radio-group>
@@ -31,7 +31,9 @@ export default {
 			id: 0,
 			payType: '',
 			payment: [],
-			orderInfo: {}
+			orderInfo: {
+				totalMoney:0
+			}
 		};
 	},
 	computed: {},
@@ -124,12 +126,7 @@ export default {
 
 	.price {
 		font-size: 50upx;
-		color: #303133;
 		margin-top: 12upx;
-		&:before {
-			content: '￥';
-			font-size: 40upx;
-		}
 	}
 }
 

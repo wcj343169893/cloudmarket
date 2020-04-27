@@ -1,6 +1,9 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
-var isRedirect=false;
-//更新购物车总数量
+var isRedirect = false;
+/**
+ * 更新购物车总数量
+ * @param int gnumber 
+ */
 const updateCartNumber = function(gnumber) {
 	if (gnumber < 1) {
 		uni.removeTabBarBadge({
@@ -18,27 +21,75 @@ const updateCartNumber = function(gnumber) {
 		});
 	}
 };
+/**
+ * 更新商品的标签,秒杀，满减
+ * @param Object goods 商品信息
+ * @param int isPrecise 是否精确，true:精确到规格
+ */
+const updateGoodsTags = function(goods, isPrecise) {
+	let tags = [];
+	//最大单品加入99件
+	goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
+	//是否存在多规格
+	goods["hasSku"] = goods.skus && goods.skus.length > 0;
+	if (goods.miaosha) {
+		if (!isPrecise) {
+			tags.push("限时");
+		}
+		//如果是多规格商品
+		if (goods.hasSku) {
+			goods.skus.forEach(sku => {
+				//多规格限购
+				sku.limit = sku.limit || sku.stock < 100 ? sku.stock : 99;
+				if (sku.id == goods.miaosha.sku_id) {
+					goods.originPrice = sku.originPrice = sku.price;
+					//规格折后价价格
+					sku.price = goods.miaosha.price;
+					//商品外面显示价格
+					goods.price = goods.price > sku.price ? sku.price : goods.price;
+					//限量
+					sku.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+					if (isPrecise) {
+						sku.tags = ["限时"];
+					}
+				}
+			})
+		} else {
+			if (isPrecise) {
+				tags.push("限时");
+			}
+			goods.originPrice = goods.price;
+			goods.price = goods.miaosha.price;
+			//限量
+			goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+		}
+	}
+	if (goods.manjian) {
+
+	}
+	goods["tags"] = tags;
+};
 //获取用户定位信息
-const getUserLocation = function(state){
+const getUserLocation = function(state) {
 	//获取用户位置信息，首页需要，
 	//顺序1：收货地址，2：当前定位，3：ip定位
-	if(state.latitude > 0){
-		return ;
+	if (state.latitude > 0) {
+		return;
 	}
 	address({
-		type:"default"
-	}).then(res=>{
+		type: "default"
+	}).then(res => {
 
 	});
 }
 //登录提示框
-const showLoginDialog = function(){
+const showLoginDialog = function() {
 	uni.showModal({
-		title:"温馨提示",
-		content:'您还未登录，请登录后再操作',
-		cancelText:'再逛逛',
-		confirmText:'去登录',
-		success: function (res) {
+		title: "温馨提示",
+		content: '您还未登录，请登录后再操作',
+		cancelText: '再逛逛',
+		confirmText: '去登录',
+		success: function(res) {
 			if (res.confirm) {
 				navToLoginPage();
 			}
@@ -47,53 +98,68 @@ const showLoginDialog = function(){
 }
 //跳转登录
 const navToLoginPage = function(id, sid) {
-	if(isRedirect){
+	if (isRedirect) {
 		return false;
 	}
-	isRedirect=true;
+	isRedirect = true;
 	uni.navigateTo({
 		url: `/pages/public/login`,
 		success: function() {
-			isRedirect=false;
+			isRedirect = false;
 		}
 	});
 }
 /** 跳转商品详细页 id商品id，sid型号id*/
 const navToGoodsPage = function(id, sid) {
-	if(isRedirect){
+	if (isRedirect) {
 		return false;
 	}
-	isRedirect=true;
+	isRedirect = true;
 	uni.navigateTo({
 		url: `/pages/product/product?id=${id}&sid=${sid}`,
 		success: function() {
-			isRedirect=false;
+			isRedirect = false;
 		}
 	});
 }
 //创建订单
 const navToCreateOrder = function() {
-	if(isRedirect){
+	if (isRedirect) {
 		return false;
 	}
-	isRedirect=true;
+	isRedirect = true;
 	uni.navigateTo({
 		url: `/pages/order/createOrder`,
 		success: function() {
-			isRedirect=false;
+			isRedirect = false;
 		}
 	});
 }
 //支付订单跳转
 const navToPayOrder = function(id) {
-	if(isRedirect){
+	if (isRedirect) {
 		return false;
 	}
-	isRedirect=true;
+	isRedirect = true;
 	uni.navigateTo({
 		url: `/pages/money/pay?id=${id}`,
 		success: function() {
-			isRedirect=false;
+			isRedirect = false;
+		}
+	});
+}
+/**
+ * 订单商品列表
+ */
+const navToOrderGoodsList = function() {
+	if (isRedirect) {
+		return false;
+	}
+	isRedirect = true;
+	uni.navigateTo({
+		url: `/pages/order/goods`,
+		success: function() {
+			isRedirect = false;
 		}
 	});
 }
@@ -105,5 +171,7 @@ export {
 	navToCreateOrder,
 	getUserLocation,
 	showLoginDialog,
-	navToPayOrder
+	navToPayOrder,
+	updateGoodsTags,
+	navToOrderGoodsList
 }

@@ -40,8 +40,8 @@ exports.main = async (event, context) => {
 	//处理商品购物车数据
 	carts.data.forEach(ct => {
 		cartMap[ct.goods_id + '_' + ct.sku_id] = {
-			id: ct._id,
-			price: ct.price,
+			cartId: ct._id,
+			cartPrice: ct.price,
 			amount: ct.amount
 		};
 		data.cartCount += ct.amount;
@@ -60,61 +60,76 @@ exports.main = async (event, context) => {
 		"price": 1,
 		"skus": 1,
 		"originPrice": 1,
+		"miaosha": 1,
+		"manjian": 1,
 	}).get();
 
 	if (goods.affectedDocs > 0) {
 		let goodsOut = [];
 		//处理选中数量
-		goods.data.forEach(ele => {
+		goods.data.map(ele => {
 			if (ele.skus && ele.skus.length > 0) {
-				ele.skus.forEach(sku => {
-					//相当于clone对象
-					let goo = { ...ele
-					};
-					goo["hasSku"] = true;
-					//删除多型号
-					delete goo.skus;
+				ele.skus.map(sku => {
 					let key = ele.id + '_' + sku.id;
 					if (cartMap[key] && cartMap[key].amount > 0) {
-						goo["cart"] = cartMap[key].amount;
-						goo.sku_id = sku.id;
-						goo.price = sku.price;
-						//加入购物车时的差价
-						goo.cutPrice = 0;
-						if (cartMap[key].price > sku.price) {
-							goo.cutPrice = cartMap[key].price - sku.price;
+						//相当于clone对象
+						let goo = { ...ele};
+						//删除多型号
+						delete goo.skus;
+						if(goo.miaosha && goo.miaosha.sku_id != sku.id){
+							delete goo.miaosha;
+						}else{
+							delete goo.manjian;
 						}
-						goo.stock = sku.stock;
-						goo.originPrice = sku.originPrice;
-						goo.subName = sku.name.replace('&gt;', ' ');
-						if (sku.src) {
-							goo.src = sku.src;
-						}
+						
+						Object.assign(goo,cartMap[key],sku,{
+							hasSku:true,
+							sku_id:sku.id,
+							subName:sku.name.replace('&gt;', ' ')
+						})
 						goodsOut.push(goo);
 					}
 				});
 			} else {
-				let key = ele.id + '_0';
-				ele["cart"] = cartMap[key].amount;
-				ele["hasSku"] = false;
-				ele.sku_id = 0;
-				//加入购物车时的差价
-				ele.cutPrice = 0;
-				if (cartMap[key].price > ele.price) {
-					ele.cutPrice = cartMap[key].price - ele.price;
+				if(ele.miaosha){
+					//秒杀与满减不同享
+					delete ele.manjian;
 				}
+				let key = ele.id + '_0';
+				Object.assign(ele,cartMap[key],{
+					hasSku:false,
+					sku_id:0
+				});
 				goodsOut.push(ele);
 			}
 		});
 		goodsOut.forEach(ele => {
+			//处理秒杀价
+			if(ele.miaosha){
+				let time = new Date().getTime();
+				if(time < ele.miaosha.endTime && time > ele.miaosha.beginTime){
+					ele.originPrice = ele.price;
+					ele.price = ele.miaosha.price;
+					ele.stock = ele.miaosha.stock;
+					//开始结束时间用时间戳  new Date().getTime()
+					//测试代码===>key $date must not start with '$'
+					/* delete ele.miaosha.beginTime;
+					delete ele.miaosha.endTime; */
+				}
+			}
+			//加入购物车时的差价
+			ele.cutPrice = 0;
+			if (ele.cartPrice > ele.price) {
+				ele.cutPrice = ele.cartPrice - ele.price;
+			}
 			//购物车总价格
-			data.totalMoney += ele.price * ele.cart;
+			data.totalMoney += ele.price * ele.amount;
 			if (ele.originPrice > 0) {
 				//购物车总折扣
-				data.totalDiscount += (ele.originPrice - ele.price) * ele.cart;
+				data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
 			}
 			//检查库存是否不足
-			if (ele.cart > ele.stock) {
+			if (ele.amount > ele.stock) {
 				data.stockNotEnough.push(ele);
 			}
 		})
@@ -131,6 +146,9 @@ exports.main = async (event, context) => {
 	if (address.affectedDocs > 0) {
 		data["address"] = address.data[0];
 	}
+	//格式化数字
+	data.totalDiscount = Number(data.totalDiscount.toFixed(2));
+	data.totalMoney = Number(data.totalMoney.toFixed(2));
 	//提交订单
 	if (type && type == "submit") {
 		//收货地址不存在
@@ -163,16 +181,16 @@ exports.main = async (event, context) => {
 					_id: ele._id,
 					"skus.id": ele.sku_id
 				}).update({
-					monthlySale: cmd.inc(ele.cart),
-					stock: cmd.inc(-1 * ele.cart),
-					'skus.$.stock': cmd.inc(-1 * ele.cart)
+					monthlySale: cmd.inc(ele.amount),
+					stock: cmd.inc(-1 * ele.amount),
+					'skus.$.stock': cmd.inc(-1 * ele.amount)
 				});
 			} else {
 				let res = await goodsCollection.where({
 					_id: ele._id
 				}).update({
-					monthlySale: cmd.inc(ele.cart),
-					stock: cmd.inc(-1 * ele.cart)
+					monthlySale: cmd.inc(ele.amount),
+					stock: cmd.inc(-1 * ele.amount)
 				});
 			}
 			//@todo保存商品每日销量,最好是redis

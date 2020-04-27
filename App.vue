@@ -454,14 +454,46 @@ button[type='default'] {
 .placeholder {
 	color: #999999;
 }
-
+.tags{
+	margin-top: 6upx;
+}
+/* 标签 */
 .tag {
-	font-size: $font-base;
+	font-size: $font-sm;
 	color: $base-color;
 	margin-right: 10upx;
 	border: 1px solid $base-color;
 	border-radius: 4upx;
-	padding: 4upx 10upx;
+	padding: 2upx 6upx;
 	line-height: 1;
+	display: inline-block;
+	&.warning{
+		color: $font-color-warning;
+		border-color: $font-color-warning;
+	}
+}
+/* 价格 */
+.price{
+	color: $base-color;
+	font-size: $font-base;
+	&:before {
+		content: '￥';
+		font-size: 0.85em;
+	}
+	&.del{
+		font-size: $font-sm;
+		color: $font-color-light;
+		text-decoration: line-through;
+		&:before {
+			font-size: $font-ssm;
+		}
+	}
+	&.emphasis{
+		font-size: $font-sm;
+		color: $font-color-warning;
+	}
+	&.warning{
+		color: $font-color-warning;
+	}
 }
 </style>

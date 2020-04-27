@@ -38,22 +38,24 @@
 									</view>
 									<view class="">
 										<text>{{ item.subName }}</text>
-										<text class="price saledPrice" v-if="item.cutPrice > 0">
-											<text class="unit">比加入时便宜￥</text>
-											<text class="unit">{{ item.cutPrice }}</text>
+										<text class="saledPrice" v-if="item.cutPrice > 0">
+											<text class="unit">比加入时便宜</text>
+											<text class="price emphasis">{{ item.cutPrice }}</text>
 										</text>
 									</view>
+									<view class="tags">
+										<text v-for="(tag) in item.tags" class="tag warning">{{tag}}</text>
+									</view>
 									<view class="buttons">
-										<view class="price">
-											<text class="unit">￥</text>
-											<text>{{ item.price }}</text>
-											<text class="del m-l" v-if="item.originPrice > 0">￥{{ item.originPrice }}</text>
+										<view >
+											<text class="price">{{ item.price }}</text>
+											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 										</view>
 									</view>
 								</view>
 							</view>
 							<view class="">
-								<uni-number-box :min="0" :max="item.stock" :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
+								<uni-number-box :min="0" :zeroNotice="!0" :max="item.limit" :stock="item.stock"  :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
 							</view>
 						</view>
 					</view>
@@ -66,7 +68,7 @@
 					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
 				</view>
 				<view class="total-box">
-					<text class="price"><text class="unit">￥</text>{{ total }}</text>
+					<text class="price emphasis">{{ total }}</text>
 					<text class="coupon">已优惠<text>{{ discount }}</text>元</text>
 				</view>
 				<button type="primary" class="no-border confirm-btn" :class="{disabled:!isChecked}" @click="createOrder">去结算</button>
@@ -78,7 +80,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { editCart, cleanCart, selectCart, getCartList } from '@/common/request.js';
-import { updateCartNumber,navToGoodsPage,navToLoginPage,navToCreateOrder} from '@/common/functions.js';
+import { updateCartNumber,navToGoodsPage,navToLoginPage,navToCreateOrder,updateGoodsTags} from '@/common/functions.js';
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
@@ -136,45 +138,33 @@ export default {
 				res => {
 					this.isLoaded = true;
 					let goodsSkusMap = {};
-					res.goods.forEach(ele => {
-						//是否存在多规格
-						ele['hasSku'] = ele.skus && ele.skus.length > 0;
+					res.goods.map(ele=>{
+						updateGoodsTags(ele,true);
 						if (!this.skuCart[ele.id]) {
 							this.skuCart[ele.id] = {};
 						}
+						let id = ele.id;
 						//多规格
 						if (ele.hasSku) {
-							ele['cart'] = 0;
-							ele.skus.forEach(sku => {
-								let key = ele.id + '_' + sku.id;
-								goodsSkusMap[key] = {
+							ele.skus.map(sku => {
+								let key = id + '_' + sku.id;
+								let item = {...ele};
+								goodsSkusMap[key] = Object.assign(item,sku,{
 									key: key,
 									goods_id: ele.id,
 									sku_id: sku.id,
-									src: ele.src,
-									price: sku.price,
-									stock: sku.stock,
-									originPrice: sku.originPrice ? sku.originPrice : 0,
-									title: ele.title,
 									subName: sku.name.replace('&gt;', ' '),
-									categories: ele.categories
-								};
+								});
 							});
 						} else {
 							let key = ele.id + '_0';
 							//单品购物车数量
-							goodsSkusMap[key] = {
+							goodsSkusMap[key] = Object.assign(ele,{
 								key: key,
 								goods_id: ele.id,
 								sku_id: 0,
-								src: ele.src,
-								price: ele.price,
-								stock: ele.stock,
-								originPrice: ele.originPrice ? ele.originPrice : 0,
-								title: ele.title,
 								subName: '',
-								categories: ele.categories
-							};
+							});
 						}
 					});
 					this.cartList=[];
@@ -366,7 +356,7 @@ export default {
 			});
 			this.allChecked = checked;
 			this.total = Number(total.toFixed(2));
-			this.discount = discount;
+			this.discount = Number(discount.toFixed(2));
 			updateCartNumber(number);
 		},
 		navToGoodsPage(id, sid){
@@ -514,21 +504,6 @@ export default {
 .m-l {
 	margin-left: 10upx;
 }
-.price {
-	color: $base-color;
-	font-size: 1.4em;
-	.unit {
-		font-size: 0.8em;
-	}
-	.del {
-		font-size: 0.8em;
-		color: $font-color-light;
-		text-decoration: line-through;
-	}
-	&.saledPrice{
-		color: $font-color-warning;
-	}
-}
 /* 底部栏 */
 .action-section {
 	position: fixed;
@@ -579,10 +554,6 @@ export default {
 		flex-direction: column;
 		text-align: right;
 		padding-right: 40upx;
-		.price {
-			font-size: $font-lg;
-			color: $font-color-dark;
-		}
 		.coupon {
 			font-size: $font-sm;
 			color: $font-color-light;

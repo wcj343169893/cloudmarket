@@ -6,7 +6,7 @@
 		<block v-else>
 			<view
 				@click="_calcValue('minus')"
-				:class="{ 'uni-numbox__minus': 1, 'uni-numbox__minus_show': isFocus || inputValue > 0, 'uni-numbox--disabled': inputValue <= min || disabled }"
+				:class="{ 'uni-numbox__minus': 1, 'uni-numbox__minus_show': isFocus || inputValue > 0, 'uni-numbox--disabled':(!isFocus && inputValue <= min) || disabled }"
 			>
 				<text class="yticon icon--jianhao uni-numbox--text"></text>
 			</view>
@@ -19,7 +19,7 @@
 				pattern="[0-9]{3}"
 				v-model="inputValue"
 			/>
-			<view @click="_calcValue('plus')" :class="{ 'uni-numbox__plus': 1, 'uni-numbox__plus_left': inputValue == 0, 'uni-numbox--disabled': inputValue >= max || disabled }">
+			<view @click="_calcValue('plus')" :class="{ 'uni-numbox__plus': 1, 'uni-numbox__plus_left': inputValue == 0, 'uni-numbox--disabled': (!isFocus && inputValue >= max) || disabled }">
 				<text class="yticon icon-jia2 uni-numbox--text"></text>
 			</view>
 		</block>
@@ -58,9 +58,17 @@ export default {
 			type: Number,
 			default: 100
 		},
+		stock: {
+			type: Number,
+			default: 10
+		},
 		step: {
 			type: Number,
 			default: 1
+		},
+		zeroNotice:{
+			type: Boolean,
+			default: false
 		},
 		disabled: {
 			type: Boolean,
@@ -84,7 +92,10 @@ export default {
 				//初始化
 				this.isInit = false;
 				//console.log('inputValue初始化', newVal, +newVal, oldVal, +oldVal);
-			} else if (+newVal !== +oldVal) {
+			}else if(this.isFocus && +newVal == 0){
+				console.log("删除干净了",+newVal,+oldVal);
+			}else if (+newVal !== +oldVal) {
+				//正在编辑中，不调用
 				//console.log('inputValue', newVal, +newVal, oldVal, +oldVal);
 				this.$emit('change', +newVal, this.keys);
 			}
@@ -117,12 +128,30 @@ export default {
 				if (value > this.max * scale) {
 					value = this.max * scale;
 				}
+				if(value == 0 && this.zeroNotice){
+					uni.showModal({
+						content:"确定删除该商品吗？",
+						success: e => {
+							if (e.confirm) {
+								this.inputValue = String(value / scale);
+							}
+						}
+					});
+					return;
+				}
 			} else if (type === 'plus') {
 				value += step;
 				if (value > this.max * scale) {
 					uni.showToast({
 						icon:"none",
-						title:"抱歉,该商品仅剩"+this.max+"件"
+						title:"抱歉,该商品限购"+this.max+"件"
+					})
+					return;
+				}
+				if (value > this.stock * scale) {
+					uni.showToast({
+						icon:"none",
+						title:"抱歉,该商品仅剩"+this.stock+"件"
 					})
 					return;
 				}
@@ -145,7 +174,11 @@ export default {
 			let value = event.detail.value;
 			this.isFocus = false;
 			if (!value) {
-				this.inputValue = 0;
+				if(this.zeroNotice){
+					this.inputValue = 1;
+				}else{
+					this.inputValue = 0;
+				}
 				return;
 			}
 			value = +value;

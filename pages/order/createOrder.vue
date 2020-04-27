@@ -89,7 +89,6 @@
 		<view class="footer">
 			<view class="price-content">
 				<text>实付款</text>
-				<text class="price-tip">￥</text>
 				<text class="price">{{ totalMoney }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>

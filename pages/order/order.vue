@@ -17,26 +17,26 @@
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
 							<text v-if="item.state === 9" class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(index)"></text>
 						</view>
-
-						<scroll-view v-if="item.goods.length > 1" class="goods-box" scroll-x>
-							<view v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex" class="goods-item">
+						<view class="" @click="showGoods(item)">
+							<scroll-view v-if="item.goods.length > 1" class="goods-box" scroll-x>
+								<view v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex" class="goods-item">
+									<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+								</view>
+							</scroll-view>
+							<view v-else class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex">
 								<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
-							</view>
-						</scroll-view>
-						<view v-else class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex">
-							<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
-							<view class="right">
-								<text class="title clamp">{{ goodsItem.title }}</text>
-								<text class="attr-box">{{ goodsItem.subName }} x {{ goodsItem.cart }}</text>
-								<text class="price">{{ goodsItem.price }}</text>
+								<view class="right">
+									<text class="title clamp">{{ goodsItem.title }}</text>
+									<text class="attr-box">{{ goodsItem.subName }} x {{ goodsItem.amount }}</text>
+									<text class="price">{{ goodsItem.price }}</text>
+								</view>
 							</view>
 						</view>
-
 						<view class="price-box">
 							共
 							<text class="num">{{ item.cartCount }}</text>
 							件商品 实付款
-							<text class="price">{{ item.totalMoney }}</text>
+							<text class="price warning">{{ item.totalMoney }}</text>
 						</view>
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
@@ -66,7 +66,7 @@
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
-import { navToPayOrder } from '@/common/functions.js';
+import { navToPayOrder,navToOrderGoodsList } from '@/common/functions.js';
 let moment = require('moment');
 export default {
 	components: {
@@ -148,7 +148,7 @@ export default {
 				return;
 			}
 			navItem.page++;
-			let limit = 5;
+			let limit = 20;
 			navItem.loadingType = 'loading';
 			orders({
 				state: state,
@@ -276,6 +276,13 @@ export default {
 				title: '请稍后',
 				mask: true
 			});
+		},
+		showGoods(item){
+			uni.setStorage({
+				key:"create_order_goods",
+				data:item.goods
+			});
+			navToOrderGoodsList();
 		},
 		//订单状态文字和颜色
 		orderStateExp(state) {
@@ -430,15 +437,6 @@ page,
 				color: $font-color-light;
 				padding: 10upx 12upx;
 			}
-			.price {
-				font-size: $font-base + 2upx;
-				color: $font-color-dark;
-				&:before {
-					content: '￥';
-					font-size: $font-sm;
-					margin: 0 2upx 0 8upx;
-				}
-			}
 		}
 	}
 
@@ -452,15 +450,6 @@ page,
 		.num {
 			margin: 0 8upx;
 			color: $font-color-dark;
-		}
-		.price {
-			font-size: $font-lg;
-			color: $font-color-dark;
-			&:before {
-				content: '￥';
-				font-size: $font-sm;
-				margin: 0 2upx 0 8upx;
-			}
 		}
 	}
 	.action-box {

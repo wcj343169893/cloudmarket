@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="cart-list">
 			<block v-for="(item, index) in cartList" :key="index">
-				<view class="goodsList" v-if="item.cart > 0">
+				<view class="goodsList" v-if="item.amount > 0">
 				<view class="weui-flex">
 					<view class="weui-flex start">
 						<view class="weui-flex-check">
@@ -23,30 +23,25 @@
 							</view>
 							<view class="">
 								<text>{{ item.subName }}</text>
-								<text class="price saledPrice" v-if="item.cutPrice > 0">
-									<text class="unit">比加入时便宜￥</text>
-									<text class="unit">{{ item.cutPrice }}</text>
+								<text class="" v-if="item.cutPrice > 0">
+									<text class="unit">比加入时便宜</text>
+									<text class="price emphasis">{{ item.cutPrice }}</text>
 								</text>
 							</view>
 							<view class="buttons" v-if="item.originPrice > 0">
 								<view class="">
 									<text class="unit">原价</text>
-									<text class="unit">￥</text>
-									<text class="unit">{{ item.originPrice }}</text>
+									<text class="price del">{{ item.originPrice }}</text>
 								</view>
 							</view>
-							<view class="buttons">
-								<view class="price">
-									<text class="unit">￥</text>
-									<text>{{ item.price }} X {{item.cart}}</text>
-								</view>
+							<view >
+								<text class="price">{{ item.price }}</text><text>X {{item.amount}}</text>
 							</view>
 						</view>
 					</view>
 					<view class="total">
-						<view class="price">
-							<text class="unit">￥</text>
-							<text>{{item.price*item.cart}}</text>
+						<view class="price warning">
+							<text>{{item.price*item.amount}}</text>
 						</view>
 					</view>
 				</view>
@@ -122,10 +117,6 @@ export default {
 		.start{
 			flex: 1;
 		}
-		.total .price{
-			font-size: $font-base;
-			color: $font-color-warning;
-		}
 		.sub-catename {
 			padding-bottom: 10upx;
 		}
@@ -182,20 +173,4 @@ export default {
 .m-l {
 	margin-left: 10upx;
 }
-.price {
-	color: $base-color;
-	font-size: 1.4em;
-	.unit {
-		font-size: 0.8em;
-	}
-	.del {
-		font-size: 0.8em;
-		color: $font-color-light;
-		text-decoration: line-through;
-	}
-	&.saledPrice{
-		color: $font-color-warning;
-	}
-}
-
 </style>
