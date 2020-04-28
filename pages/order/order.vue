@@ -38,6 +38,10 @@
 							件商品 实付款
 							<text class="price warning">{{ item.totalMoney }}</text>
 						</view>
+						<!-- 已取消 -->
+						<view class="action-box b-t" v-if="item.state == -1">
+							<button class="action-btn" @click="deleteOrder(item)">删除订单</button>
+						</view>
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
 							<button class="action-btn" @click="cancelOrder(item,index)">取消订单</button>
@@ -45,7 +49,6 @@
 						</view>
 						<!-- 已付款 -->
 						<view class="action-box b-t" v-if="item.state == 1">
-							<button class="action-btn" @click="deleteOrder(item)">删除订单</button>
 							<button class="action-btn" @click="confirmOrder(item)">确定收货</button>
 						</view>
 						<!-- 已收货，待评价 -->
@@ -204,10 +207,10 @@ export default {
 			navToPayOrder(item._id,item.totalMoney);
 		},
 		//删除订单
-		deleteOrder(index) {
+		deleteOrder(item) {
 			uni.showModal({
-				title:"操作提示",
-				content:"是否确定删除？",
+				title:"确认删除订单？",
+				content:"删除之后可以从回收站恢复",
 				success: res => {
 					if (res.confirm) {
 						orders({
@@ -241,10 +244,26 @@ export default {
 							//刷新当前列表数据
 							//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
 							//更改所有订单的状态
-							this.navList.forEach(tabs=>{
-								tabs.orderList.forEach(ord=>{
+							this.navList.map((tabs,index)=>{
+								tabs.orderList.map((ord,index2)=>{
 									if(ord._id == item._id){
-										ord.state= -1;
+										//ord.state= -1;
+										if(index == 1){
+											//如果在待付款列表，则直接删除掉
+											this.navList[index].orderList.splice(index2, 1);
+										}else{
+											let state = -1;
+											//状态名称 Object.assign
+											let { stateTip, stateTipColor }= this.orderStateExp(state);
+											Object.assign(this.navList[index].orderList[index2],{
+												state,
+												stateTip,
+												stateTipColor
+											});
+											/* this.navList[index].orderList[index2].stateTip= stateTip;
+											this.navList[index].orderList[index2].stateTipColor= stateTipColor;
+											this.navList[index].orderList[index2].state= state; */
+										}
 									}
 								})
 							})

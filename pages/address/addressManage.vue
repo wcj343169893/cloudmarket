@@ -22,7 +22,7 @@
 			<text class="tit">设为默认</text>
 			<switch :checked="addressData.default" color="#fa436a" @change="switchChange" />
 		</view>
-		<button class="add-btn" @click="confirm">提交</button>
+		<button class="add-btn" @click="confirm">{{submitText}}</button>
 	</view>
 </template>
 
@@ -32,6 +32,7 @@ export default {
 	data() {
 		return {
 			manageType: '',
+			submitText:"提交",
 			addressData: {
 				name: '',
 				mobile: '',
@@ -48,6 +49,8 @@ export default {
 			this.id = option.id;
 			title = '编辑收货地址';
 			this.getAddress();
+		}else if(option.source && option.source=="settlement"){
+			this.submitText="提交并使用";
 		}
 		this.manageType = option.type;
 		uni.setNavigationBarTitle({
@@ -112,7 +115,11 @@ export default {
 			data["type"]=this.manageType;
 			address(data).then(res => {
 				//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-				//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新,新增的data，没有_id，在提交的时候，会默认查询一条
+				//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新
+				if(res.id){
+					//新增返回的id
+					data["_id"]=res.id;
+				}
 				if(this.$api.prePage()){
 					this.$api.prePage().refreshList(data, this.manageType);
 				}

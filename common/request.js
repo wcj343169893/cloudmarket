@@ -49,6 +49,16 @@ const getGoodsByCid = function(data) {
 		data: data
 	})
 }
+/**
+ * 查询商品详情
+ * @param {Object} data
+ */
+const getGoodsInfo = function(data) {
+	return network({
+		url: "goodsInfo",
+		data: data
+	})
+}
 //单独获取购物车数据
 const getCartList = function(data) {
 	data["opt"]=data.opt || "list";
@@ -125,6 +135,7 @@ export {
 	getShopsByCid,
 	getHomeData,
 	getShopHome,
+	getGoodsInfo,
 	getGoodsByCid,
 	getCartList,
 	editCart,

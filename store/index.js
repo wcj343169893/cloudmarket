@@ -15,7 +15,13 @@ const store = new Vuex.Store({
 			longitude:0,//经度
 			name:""//地址名称
 		},
-		userInfo: {},
+		userInfo: {
+			nickname:"游客",
+			portrait:"/static/missing-face.png",
+			balance:0,
+			score:0,
+			coupons:0
+		},
 	},
 	mutations: {
 		login(state, provider) {

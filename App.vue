@@ -476,6 +476,7 @@ button[type='default'] {
 .price{
 	color: $base-color;
 	font-size: $font-base;
+	margin-right: 12upx;
 	&:before {
 		content: '￥';
 		font-size: 0.85em;

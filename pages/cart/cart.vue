@@ -3,26 +3,23 @@
 		<!-- 空白页 -->
 		<view v-if="!hasLogin || empty === true" class="empty">
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
-			<view v-if="hasLogin" class="empty-tips">
-				空空如也
-				<navigator class="navigator" v-if="hasLogin" url="../index/fruit" open-type="switchTab">随便逛逛></navigator>
-			</view>
-			<view v-else class="empty-tips">
-				空空如也
-				<view class="navigator" @click="navToLoginPage">去登陆></view>
+			<view class="empty-tips">
+				<text>空空如也</text>
+				<navigator v-if="hasLogin" class="navigator" url="/pages/index/fruit" open-type="switchTab">随便逛逛></navigator>
+				<view v-else class="navigator" @click="navToLoginPage">去登陆></view>
 			</view>
 		</view>
 		<view v-else>
 			<!-- 列表 -->
 			<view class="cart-list">
 				<block v-for="(item, index) in cartList" :key="index">
-					<view class="goodsList" :class="{disabled:item.disabled}" v-if="item.cart > 0">
+					<view class="goodsList" :class="{ disabled: item.disabled }" v-if="item.cart > 0">
 						<view class="weui-flex">
 							<view class="weui-flex-check">
-								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }"  @click="check('item', index)"></view>
+								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
 							</view>
 							<view class="desc">
-								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id,item.sku_id)">
+								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
 									<image
 										:src="item.src"
 										:class="[item.loaded]"
@@ -33,7 +30,7 @@
 									></image>
 								</view>
 								<view class="desc-name">
-									<view class="" @click="navToGoodsPage(item.goods_id,item.sku_id)">
+									<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
 										<text class="title">{{ item.title }}</text>
 									</view>
 									<view class="">
@@ -44,10 +41,10 @@
 										</text>
 									</view>
 									<view class="tags">
-										<text v-for="(tag) in item.tags" class="tag warning">{{tag}}</text>
+										<text v-for="tag in item.tags" class="tag warning">{{ tag }}</text>
 									</view>
 									<view class="buttons">
-										<view >
+										<view>
 											<text class="price">{{ item.price }}</text>
 											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 										</view>
@@ -55,32 +52,44 @@
 								</view>
 							</view>
 							<view class="">
-								<uni-number-box :min="0" :zeroNotice="!0" :max="item.limit" :stock="item.stock"  :keys="item.goods_id + '_' + item.sku_id" :value="item.cart" @change="bindChangeCart"></uni-number-box>
+								<uni-number-box
+									:min="0"
+									:zeroNotice="!0"
+									:max="item.limit"
+									:stock="item.stock"
+									:keys="item.goods_id + '_' + item.sku_id"
+									:value="item.cart"
+									@change="bindChangeCart"
+								></uni-number-box>
 							</view>
 						</view>
 					</view>
 				</block>
 			</view>
 			<!-- 底部菜单栏 -->
-			<view class="action-section">
+			<view class="action-section" v-show="isLoaded">
 				<view class="checkbox">
 					<image :src="allChecked ? '/static/selected2.png' : '/static/select.png'" mode="aspectFit" @click="check('all')"></image>
 					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
 				</view>
 				<view class="total-box">
 					<text class="price emphasis">{{ total }}</text>
-					<text class="coupon">已优惠<text>{{ discount }}</text>元</text>
+					<text class="coupon">
+						已优惠
+						<text>{{ discount }}</text>
+						元
+					</text>
 				</view>
-				<button type="primary" class="no-border confirm-btn" :class="{disabled:!isChecked}" @click="createOrder">去结算</button>
+				<button type="primary" class="no-border confirm-btn" :class="{ disabled: !isChecked }" @click="createOrder">去结算</button>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { mapState,mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { editCart, cleanCart, selectCart, getCartList } from '@/common/request.js';
-import { updateCartNumber,navToGoodsPage,navToLoginPage,navToCreateOrder,updateGoodsTags} from '@/common/functions.js';
+import { updateCartNumber, navToGoodsPage, navToLoginPage, navToCreateOrder, updateGoodsTags } from '@/common/functions.js';
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
@@ -88,8 +97,8 @@ export default {
 	},
 	data() {
 		return {
-			isLoaded:false,
-			isChecked:false,
+			isLoaded: false,
+			isChecked: false,
 			total: 0, //总价格
 			discount: 0, //总优惠
 			allChecked: false, //全选状态  true|false
@@ -99,12 +108,12 @@ export default {
 		};
 	},
 	onLoad() {
-		console.log("cart onLoad")
+		console.log('cart onLoad');
 		this.loadData();
 	},
-	onShow(){
-		if(this.isLoaded){
-			console.log("cart onShow")
+	onShow() {
+		if (this.isLoaded) {
+			console.log('cart onShow');
 			//重新加载页面数据
 			this.loadData();
 		}
@@ -138,8 +147,8 @@ export default {
 				res => {
 					this.isLoaded = true;
 					let goodsSkusMap = {};
-					res.goods.map(ele=>{
-						updateGoodsTags(ele,true);
+					res.goods.map(ele => {
+						updateGoodsTags(ele, true);
 						if (!this.skuCart[ele.id]) {
 							this.skuCart[ele.id] = {};
 						}
@@ -148,26 +157,26 @@ export default {
 						if (ele.hasSku) {
 							ele.skus.map(sku => {
 								let key = id + '_' + sku.id;
-								let item = {...ele};
-								goodsSkusMap[key] = Object.assign(item,sku,{
+								let item = { ...ele };
+								goodsSkusMap[key] = Object.assign(item, sku, {
 									key: key,
 									goods_id: ele.id,
 									sku_id: sku.id,
-									subName: sku.name.replace('&gt;', ' '),
+									subName: sku.name.replace('&gt;', ' ')
 								});
 							});
 						} else {
 							let key = ele.id + '_0';
 							//单品购物车数量
-							goodsSkusMap[key] = Object.assign(ele,{
+							goodsSkusMap[key] = Object.assign(ele, {
 								key: key,
 								goods_id: ele.id,
 								sku_id: 0,
-								subName: '',
+								subName: ''
 							});
 						}
 					});
-					this.cartList=[];
+					this.cartList = [];
 					res.cart.forEach(ct => {
 						//加入到购物车数据列表
 						let key = ct.goods_id + '_' + ct.sku_id;
@@ -178,7 +187,7 @@ export default {
 						//默认选中
 						goods['checked'] = ct.checked && !goods.disabled;
 						goods['cutPrice'] = 0;
-						goods['loaded'] = "";
+						goods['loaded'] = '';
 						if (ct.price > 0 && ct.price > goods.price) {
 							goods['cutPrice'] = ct.price - goods.price;
 						}
@@ -265,7 +274,7 @@ export default {
 		check(type, index) {
 			if (type === 'item') {
 				this.cartList[index].checked = !this.cartList[index].checked;
-				console.log(index)
+				console.log(index);
 				let goods = this.cartList[index];
 				editCart({
 					id: this.shopId,
@@ -286,11 +295,11 @@ export default {
 					item.checked = checked;
 				});
 				this.allChecked = checked;
-				//保存数据	
+				//保存数据
 				selectCart({
 					id: this.shopId,
 					stationId: this.stationId,
-					checked:checked
+					checked: checked
 				}).then(res => {
 					console.log(res);
 				});
@@ -340,7 +349,7 @@ export default {
 			}
 			this.isChecked = false;
 			let total = 0;
-			let number=0;
+			let number = 0;
 			let discount = 0;
 			let checked = true;
 			list.forEach(item => {
@@ -354,22 +363,22 @@ export default {
 				} else if (checked === true) {
 					checked = false;
 				}
-				number+=item.cart;
+				number += item.cart;
 			});
 			this.allChecked = checked;
 			this.total = Number(total.toFixed(2));
 			this.discount = Number(discount.toFixed(2));
 			updateCartNumber(number);
 		},
-		navToGoodsPage(id, sid){
+		navToGoodsPage(id, sid) {
 			navToGoodsPage(id, sid);
 		},
-		navToLoginPage(){
+		navToLoginPage() {
 			navToLoginPage();
 		},
 		//创建订单
 		createOrder() {
-			if(this.isChecked){
+			if (this.isChecked) {
 				navToCreateOrder();
 			}
 		}
@@ -443,8 +452,8 @@ export default {
 		.sub-catename {
 			padding-bottom: 10upx;
 		}
-		&.disabled{
-			.checkbox{
+		&.disabled {
+			.checkbox {
 				display: none;
 			}
 		}
@@ -462,7 +471,7 @@ export default {
 			opacity: 1;
 		}
 	}
-	.weui-flex-check{
+	.weui-flex-check {
 		display: flex;
 		align-items: center;
 	}
@@ -480,7 +489,7 @@ export default {
 		color: $font-color-light;
 		display: flex;
 		align-items: flex-start;
-		.desc-name{
+		.desc-name {
 			flex: 1;
 		}
 		.title {
@@ -574,8 +583,8 @@ export default {
 		background: $uni-color-success;
 		box-shadow: 1px 2px 5px rgba(0, 170, 0, 0.7);
 		transition: 0.4s;
-		&.disabled{
-			background-color:$font-color-disabled;
+		&.disabled {
+			background-color: $font-color-disabled;
 			box-shadow: 1px 2px 5px rgba(170, 170, 127, 0.7);
 		}
 	}

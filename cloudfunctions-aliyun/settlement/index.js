@@ -214,6 +214,8 @@ exports.main = async (event, context) => {
 		data["ip"] = context.headers["x-forwarded-for"].split(",")[0];
 		//状态：0未付款，1已付款，2已发货，3已收货
 		data["state"] = 0;
+		//是否删除，默认0,删除不改变原有状态
+		data["isDelete"] = 0;
 		//字典表递增获得位id
 		data["id"] = 0;
 		//保存订单

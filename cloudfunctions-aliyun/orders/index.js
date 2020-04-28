@@ -20,11 +20,14 @@ exports.main = async (event, context) => {
 		limit = 10;
 	}
 	let conditions = {
-		uid: uid
+		uid: uid,
+		isDelete:0
 	};
 	let data;
 	const cmd = db.command;
 	const orderCollection = db.collection("orders");
+	//测试语句，全部更新为未删除状态
+	//await orderCollection.where({_id:cmd.exists(true)}).update({isDelete:0});
 	if (type == "list") {
 		if (state > 0) {
 			switch (state) {
@@ -33,11 +36,11 @@ exports.main = async (event, context) => {
 					conditions["state"] = 0;
 					break;
 				case 2:
-					//2已付款，待收货
-					conditions["state"] = 1;
+					//2已付款，待收货，包含已发货
+					conditions["state"] = cmd.in([1,2]);
 					break;
 				case 3:
-					//3待评价
+					//3待评价，已收货
 					conditions["state"] = 3;
 					break;
 				case 4:
@@ -45,7 +48,7 @@ exports.main = async (event, context) => {
 					conditions["state"] = 4;
 					break;
 				default:
-					conditions["state"] = cmd.gt(-2);
+					//conditions["state"] = cmd.gt(-2);
 					break;
 			}
 		}
@@ -77,14 +80,14 @@ exports.main = async (event, context) => {
 			}; 
 		}
 		let order = data.data[0];
-		if(order.state == -1){
-			return {
-				"code": 404,
-				"message": "订单已取消"
-			}; 
-		}
 		if(type == "cancel"){
+			//取消未付款订单
 			data = await orderCollection.doc(order._id).update({state:-1});
+		}else if(type == "delete"){
+			//删除订单，软删除
+			data = await orderCollection.doc(order._id).update({isDelete:1});
+		}else if(type == "makesure"){
+			//确定收货
 		}
 	}
 

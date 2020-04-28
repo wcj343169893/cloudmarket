@@ -32,7 +32,7 @@ exports.main = async (event, context) => {
 				default: false
 			});
 		}
-		let data = await collection.add(event);
+		data = await collection.add(event);
 	} else if (type == "deleteAll") {
 		//批量删除
 		let ids = event.ids.split(",");
@@ -74,7 +74,7 @@ exports.main = async (event, context) => {
 				default: false
 			});
 		}
-		let data = await collection.doc(id).update(event);
+		data = await collection.doc(id).update(event);
 	} else if (type == "default") {
 		//查询一条默认收货地址
 		let address = await collection.where({

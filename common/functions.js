@@ -31,7 +31,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 	//最大单品加入99件
 	goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
 	//是否存在多规格
-	goods["hasSku"] = goods.skus && goods.skus.length > 0;
+	goods["hasSku"] = false;
+	if(goods.skus && goods.skus.length > 0){
+		goods["hasSku"] = true;
+	}
 	if (goods.miaosha) {
 		if (!isPrecise) {
 			tags.push("限时");
