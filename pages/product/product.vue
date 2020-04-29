@@ -7,7 +7,22 @@
 				</swiper-item>
 			</swiper>
 		</view>
-
+		<block v-if="hasMiaosha">
+			<view class="miaosha-section">
+				<view class="title">
+					<text class="name">限时抢购</text>
+					<text class="status">{{ miaosha.statusName }}</text>
+				</view>
+				<view class="time" v-if="!miaosha.isEnd">
+					<text>{{ miaosha.statusSubName }}</text>
+					<text class="ti hour">01</text>
+					<text>:</text>
+					<text class="ti minute">01</text>
+					<text>:</text>
+					<text class="ti second">01</text>
+				</view>
+			</view>
+		</block>
 		<view class="introduce-section">
 			<text class="title">{{ title }}</text>
 			<view class="price-box">
@@ -75,9 +90,7 @@
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom">
 			<view class="options">
-				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
-					<text class="yticon icon-gouwuche"></text>
-				</navigator>
+				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn"><text class="yticon icon-gouwuche"></text></navigator>
 			</view>
 			<button class="add-btn" @click="addToCart">加入购物车</button>
 		</view>
@@ -116,14 +129,11 @@ export default {
 			zhekou: 0,
 			service: [],
 			amount: 1,
-
-			specClass: 'none',
-			specSelected: [],
-
 			favorite: false,
 			hasSku: false,
 			shareList: [],
 			skuMap: [],
+			hasMiaosha: false,
 			nameMap: {}
 		};
 	},
@@ -144,6 +154,7 @@ export default {
 		async loadData() {
 			getGoodsInfo({ id: this.id }).then(item => {
 				updateGoodsTags(item);
+				this.checkMiaosha(item);
 				console.log(item);
 				for (let field in item) {
 					this[field] = item[field];
@@ -178,8 +189,6 @@ export default {
 					this.nameMap = nameMap;
 					//默认选中秒杀商品，否则第一个
 					if (item.miaosha) {
-						//let miaoshaDefaultSelect=[1,1];
-						///this.selectSku(...miaoshaDefaultSelect);
 						skuMap.map((s, i) => {
 							//找到秒杀规格所在位置
 							let i2 = s.child.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
@@ -194,28 +203,28 @@ export default {
 				}
 			});
 		},
-		//选择规格
-		selectSpec(index, pid) {
-			let list = this.specChildList;
-			list.forEach(item => {
-				if (item.pid === pid) {
-					this.$set(item, 'selected', false);
-				}
-			});
-
-			this.$set(list[index], 'selected', true);
-			//存储已选择
-			/**
-			 * 修复选择规格存储错误
-			 * 将这几行代码替换即可
-			 * 选择的规格存放在specSelected中
-			 */
-			this.specSelected = [];
-			list.forEach(item => {
-				if (item.selected === true) {
-					this.specSelected.push(item);
-				}
-			});
+		checkMiaosha(item) {
+			if (!item.miaosha) {
+				return;
+			}
+			//秒杀状态，未开始，抢购中，已结束
+			let time = new Date().getTime();
+			item.miaosha.isEnd = false;
+			if (time < item.miaosha.begnTime) {
+				item.miaosha.statusName = '未开始';
+				item.miaosha.statusSubName = '距开始';
+				//@todo 倒计时开始时间,结束之后更改状态
+				
+			} else if (time > item.miaosha.endTime) {
+				item.miaosha.statusName = '已结束';
+				item.miaosha.statusSubName = '';
+				item.miaosha.isEnd = true;
+			} else {
+				item.miaosha.statusName = '抢购中';
+				item.miaosha.statusSubName = '距结束';
+				//@todo 启动倒计时
+			}
+			item.hasMiaosha = true;
 		},
 		//分享
 		share() {
@@ -704,6 +713,37 @@ page {
 		&.active {
 			border: 1px solid $yellow-color;
 			color: $font-color-emphasis;
+		}
+	}
+}
+.miaosha-section {
+	display: flex;
+	background: #e35650;
+	font-size: $font-ssm;
+	text-align: center;
+	height: 43px;
+	align-items: center;
+	.title {
+		flex: 1;
+		color: #fff;
+		.name {
+			font-size: $font-base;
+			margin-right: 12upx;
+		}
+	}
+	.time {
+		color: #e85d58;
+		width: 266upx;
+		background: #fcefea;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.ti {
+			background: #e85d58;
+			color: #fff;
+			margin: 0 8upx;
+			padding: 0 4upx;
 		}
 	}
 }

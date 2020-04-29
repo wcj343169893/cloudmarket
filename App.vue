@@ -459,7 +459,7 @@ button[type='default'] {
 }
 /* 标签 */
 .tag {
-	font-size: $font-sm;
+	font-size: $font-ssm;
 	color: $base-color;
 	margin-right: 10upx;
 	border: 1px solid $base-color;
