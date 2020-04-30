@@ -32,7 +32,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 	goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
 	//是否存在多规格
 	goods["hasSku"] = false;
-	if(goods.skus && goods.skus.length > 0){
+	if (goods.skus && goods.skus.length > 0) {
 		goods["hasSku"] = true;
 	}
 	if (goods.miaosha) {
@@ -85,6 +85,41 @@ const getUserLocation = function(state) {
 
 	});
 }
+/**
+ * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
+ * @param {Object} value
+ * @param {Object} fmt
+ */
+const dateFormat = function(value, fmt) {
+	let getDate = new Date(value);
+	let o = {
+		'M+': getDate.getMonth() + 1,
+		'd+': getDate.getDate(),
+		'h+': getDate.getHours(),
+		'm+': getDate.getMinutes(),
+		's+': getDate.getSeconds(),
+		'q+': Math.floor((getDate.getMonth() + 3) / 3),
+		'S': getDate.getMilliseconds()
+	};
+	if (/(y+)/.test(fmt)) {
+		fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
+	}
+	for (let k in o) {
+		if (new RegExp('(' + k + ')').test(fmt)) {
+			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+		}
+	}
+	return fmt;
+}
+/**
+ * 倒计时,用于秒杀未开始或者已开始
+ * @param {Object} item
+ * @param int endTime
+ */
+const countDown = function(item,endTime){
+	
+}
+
 //登录提示框
 const showLoginDialog = function() {
 	uni.showModal({
@@ -139,7 +174,7 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id,money) {
+const navToPayOrder = function(id, money) {
 	if (isRedirect) {
 		return false;
 	}
@@ -176,5 +211,6 @@ export {
 	showLoginDialog,
 	navToPayOrder,
 	updateGoodsTags,
-	navToOrderGoodsList
+	navToOrderGoodsList,
+	dateFormat
 }

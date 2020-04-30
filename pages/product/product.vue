@@ -64,10 +64,10 @@
 							v-for="(sname, index2) in item.child"
 							:key="index2"
 							class="skuoptions__item"
-							:class="{ active: item.active == index2 }"
+							:class="{ active: item.active == index2,disabled:sname.disabled }"
 							@click="selectSku(index, index2)"
 						>
-							<text>{{ sname }}</text>
+							<text>{{ sname.value }}</text>
 						</view>
 					</view>
 				</view>
@@ -167,18 +167,28 @@ export default {
 						skuMap.push({
 							name: item.skuname[n],
 							active: 0,
-							child: []
+							child:[],
+							childName:[]
 						});
 					}
 					let nameMap = {};
 					let miaoshaSkuName = [];
+					//所有存在的规格名称，例如：aabb，bbcc
+					let nameHash = [];
 					item.skus.map(sku => {
 						let names = sku.name.split('&gt;');
 						names.map((n, i) => {
-							if (skuMap[i]['child'].indexOf(n) == -1) {
-								skuMap[i]['child'].push(n);
+							if (skuMap[i]['childName'].indexOf(n) == -1) {
+								skuMap[i]["child"].push({
+									value:n,
+									stock:sku.stock,
+									disabled:false
+								});
+								skuMap[i]["childName"].push(n);
 							}
 						});
+						//name排序之后再拼接起来
+						nameHash.push(names.sort().join("&gt;"));
 						nameMap[sku.name] = sku;
 						//寻找秒杀商品的定位
 						if (this.miaosha && this.miaosha.sku_id == sku.id) {
@@ -187,11 +197,17 @@ export default {
 					});
 					this.skuMap = skuMap;
 					this.nameMap = nameMap;
+					this.nameHash = nameHash;
 					//默认选中秒杀商品，否则第一个
 					if (item.miaosha) {
 						skuMap.map((s, i) => {
 							//找到秒杀规格所在位置
-							let i2 = s.child.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
+							let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
+							if(i2 < 0){
+								//没找到对应的型号
+								console.log("默认没找到对应的型号",miaoshaSkuName)
+								i2 = 0;
+							}
 							this.selectSku(i, i2);
 						});
 					} else {
@@ -271,11 +287,25 @@ export default {
 		},
 		/**规格选择,默认选中秒杀商品**/
 		selectSku(index, index2) {
+			//被点击的name
+			let clickName = this.skuMap[index]["child"][index2];
+			if(clickName.disabled || clickName.stock < 1){
+				console.log("点击禁用按钮",clickName);
+				return false;
+			}
 			this.skuMap[index].active = index2;
 			//更新已选择规格
 			let names = [];
-			this.skuMap.map(skuname => {
-				names.push(skuname['child'][skuname.active]);
+			this.skuMap.forEach((skuname,ind) => {
+				names.push(skuname['child'][skuname.active].value);
+				skuname["child"].forEach(n2=>{
+					//点击的其他行
+					if(ind != index){
+						let joinName = [clickName.value,n2.value].sort().join("&gt;");
+						//不存在组合或者库存不足
+						n2.disabled = this.nameHash.indexOf(joinName) == -1 || n2.stock < 1;
+					}
+				})
 			});
 			//匹配skuid
 			let sku = this.nameMap[names.join('&gt;')];
@@ -708,11 +738,15 @@ page {
 		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
 		padding: 8upx;
-		margin-right: 20upx;
+		margin-left: 20upx;
 		margin-bottom: 20upx;
 		&.active {
 			border: 1px solid $yellow-color;
 			color: $font-color-emphasis;
+		}
+		&.disabled{
+			border-color: #e8e8e8;
+			color: $font-color-disabled;
 		}
 	}
 }

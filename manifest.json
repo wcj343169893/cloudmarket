@@ -82,7 +82,7 @@
         }
     },
     "h5" : {
-        "title" : "cloudmarket",
+        "title" : "爱农APP",
         "domain" : "market.cjblog.org",
         "router" : {
             "mode" : "history"

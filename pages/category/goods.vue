@@ -80,8 +80,8 @@
 					</view>
 					<view class="skuoptions">
 						<view v-for="(sname,index2) in item.child" :key="index2" class="skuoptions__item" 
-						:class="{active:item.active== index2}" @click="selectSku(index,index2)">
-							<text>{{sname}}</text>
+						:class="{active:item.active== index2,disabled:sname.disabled}" @click="selectSku(index,index2)">
+							<text>{{sname.value}}</text>
 						</view>
 					</view>
 				</view>
@@ -496,19 +496,29 @@ export default {
 			for(let n in item.skuname){
 				skuMap.push({
 					name:item.skuname[n],
-					active:0,
-					child:[]
+					active:0,//相当于默认选中第一个，一定存在
+					child:[],
+					childName:[],
 				});
 			}
 			console.log(skuMap);
 			let nameMap={};
-			skus.forEach(sku=>{
+			//所有存在的规格名称，例如：aabb，bbcc
+			let nameHash = [];
+			skus.map(sku=>{
 				let names = sku.name.split("&gt;");
-				names.forEach((n,i)=>{
-					if(skuMap[i]["child"].indexOf(n) == -1){
-						skuMap[i]["child"].push(n)
+				names.map((n,i)=>{
+					if(skuMap[i]["childName"].indexOf(n) == -1){
+						skuMap[i]["child"].push({
+							value:n,
+							stock:sku.stock,
+							disabled:false
+						});
+						skuMap[i]["childName"].push(n);
 					}
 				});
+				//name排序之后再拼接起来
+				nameHash.push(names.sort().join("&gt;"));
 				nameMap[sku.name]=sku;
 			})
 			//默认第一个规格的选中次数
@@ -516,6 +526,7 @@ export default {
 			item["catPid"]=pid;
 			item["skuNameIds"]=nameMap;
 			item["skuNameMap"]=skuMap;
+			item["skuNameHash"]=nameHash;
 			this.skuGoods = item;
 			//默认选中第一个
 			this.selectSku(0,0);
@@ -578,12 +589,27 @@ export default {
 		},
 		/**规格选择**/
 		selectSku(index,index2){
-			console.log("selectSku")
+			console.log("selectSku");
+			//被点击的name
+			let clickName = this.skuGoods.skuNameMap[index]["child"][index2];
+			if(clickName.disabled){
+				console.log(clickName);
+				return false;
+			}
+			//skuNameIds
 			this.skuGoods.skuNameMap[index].active=index2;
 			//更新已选择规格
 			let names=[];
-			this.skuGoods.skuNameMap.forEach(skuname=>{
-				names.push(skuname["child"][skuname.active]);
+			this.skuGoods.skuNameMap.forEach((skuname,ind)=>{
+				names.push(skuname["child"][skuname.active].value);
+				skuname["child"].forEach(n2=>{
+					//点击的其他行
+					if(ind != index){
+						let joinName = [clickName.value,n2.value].sort().join("&gt;");
+						//不存在组合或者库存不足
+						n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock < 1;
+					}
+				})
 			});
 			//匹配skuid
 			let selectSku = this.skuGoods["skuNameIds"][names.join("&gt;")];
@@ -797,15 +823,19 @@ $box-height: 60upx;
 	}
 	$yellow-color:$uni-color-success;
 	.skuoptions__item{
-		width: 200upx;
+		width: 180upx;
 		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
 		padding: 8upx;
-		margin-right: 20upx;
+		margin-left: 20upx;
 		margin-bottom: 20upx;
 		&.active{
 			border: 1px solid $yellow-color;
 			color: $font-color-emphasis;
+		}
+		&.disabled{
+			border-color: #e8e8e8;
+			color: $font-color-disabled;
 		}
 	}
 	.sku_selected{

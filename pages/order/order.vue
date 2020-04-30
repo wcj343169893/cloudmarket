@@ -69,8 +69,7 @@
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
-import { navToPayOrder,navToOrderGoodsList } from '@/common/functions.js';
-let moment = require('moment');
+import { navToPayOrder,navToOrderGoodsList,dateFormat } from '@/common/functions.js';
 export default {
 	components: {
 		uniLoadMore,
@@ -162,7 +161,7 @@ export default {
 				if (res.affectedDocs > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
-						ele.created = moment(ele.created).format('YYYY-MM-DD HH:mm:ss');
+						ele.created = dateFormat(ele.created,'yyyy-MM-dd hh:mm:ss');
 						//状态名称 Object.assign
 						let { stateTip, stateTipColor }= this.orderStateExp(ele.state);
 						ele.stateTip=stateTip;
