@@ -34,37 +34,70 @@ const updateGoodsTags = function(goods, isPrecise) {
 	goods["hasSku"] = false;
 	if (goods.skus && goods.skus.length > 0) {
 		goods["hasSku"] = true;
+		goods.skus.forEach(sku => {
+			//多规格限购
+			sku.limit = sku.limit || sku.stock < 100 ? sku.stock : 99;
+		});
+	}else{
+		//默认id=0
+		goods.sku_id = 0;
 	}
+	//console.log("updateGoodsTags");
 	if (goods.miaosha) {
-		if (!isPrecise) {
-			tags.push("限时");
-		}
-		//如果是多规格商品
-		if (goods.hasSku) {
-			goods.skus.forEach(sku => {
-				//多规格限购
-				sku.limit = sku.limit || sku.stock < 100 ? sku.stock : 99;
-				if (sku.id == goods.miaosha.sku_id) {
-					goods.originPrice = sku.originPrice = sku.price;
-					//规格折后价价格
-					sku.price = goods.miaosha.price;
-					//商品外面显示价格
-					goods.price = goods.price > sku.price ? sku.price : goods.price;
-					//限量
-					sku.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+		let time = new Date().getTime();
+		//秒杀必须是开始状态
+		if(time < goods.miaosha.endTime && goods.miaosha.beginTime < time){
+			if (!isPrecise) {
+				tags.push("限时");
+			}
+			//如果是多规格商品
+			if (goods.hasSku) {
+				let index = goods.skus.findIndex(sku=>sku.id == goods.miaosha.sku_id);
+				if(index != -1){
+					goods.miaosha.skuIndex = index;
+					let sku = goods.skus[index];
+					Object.assign(goods.skus[index],{
+						originPrice:sku.price,
+						price:goods.miaosha.price,
+					});
 					if (isPrecise) {
 						sku.tags = ["限时"];
 					}
+					if(goods.price > sku.price){
+						goods.originPrice = sku.originPrice;
+						//商品外面显示价格
+						goods.price = sku.price;
+					}
+					//限量
+					sku.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+					//型号信息
+					goods.miaosha.skuInfo = sku;
 				}
-			})
-		} else {
-			if (isPrecise) {
-				tags.push("限时");
+				/* 
+				goods.skus.forEach(sku => {
+					if (sku.id == goods.miaosha.sku_id) {
+						goods.originPrice = sku.originPrice = sku.price;
+						//规格折后价价格
+						sku.price = goods.miaosha.price;
+						//商品外面显示价格
+						goods.price = goods.price > sku.price ? sku.price : goods.price;
+						//限量
+						sku.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+						if (isPrecise) {
+							sku.tags = ["限时"];
+						}
+					}
+				}) */
+			} else {
+				if (isPrecise) {
+					tags.push("限时");
+				}
+				goods.originPrice = goods.price;
+				goods.price = goods.miaosha.price;
+				//限量
+				goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
 			}
-			goods.originPrice = goods.price;
-			goods.price = goods.miaosha.price;
-			//限量
-			goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
+			//console.log("goods.miaosha",goods)
 		}
 	}
 	if (goods.manjian) {
@@ -113,10 +146,44 @@ const dateFormat = function(value, fmt) {
 }
 /**
  * 倒计时,用于秒杀未开始或者已开始
- * @param {Object} item
- * @param int endTime
+ * @param {Object} item，包含输入的时间 startTime，输出的小时，分，秒
+ * @param int endTime 最后时间
+ * @param function callback 回调方法
  */
-const countDown = function(item,endTime){
+const miaoshaCountDown = function(item,endTime,callback){
+	let startTime = parseInt(item.startTime/1000);
+	let lastTime = parseInt(endTime/1000);
+	if(startTime >= lastTime){
+		if(callback){
+			callback();
+		}
+		return false;
+	}
+	let timer;
+	let tick = function(){
+		let n1 = lastTime-startTime;
+		if(n1 < 1){
+			clearInterval(timer);
+			if(callback){
+				callback();
+			}
+			return;
+		}
+		let hour = parseInt(n1/3600);
+		let minute = parseInt((n1-hour*3600)/60);
+		let second = parseInt(n1%60);
+		
+		item.hour = number2String(hour);
+		item.minute = number2String(minute);
+		item.second = number2String(second);
+		startTime++;
+	}
+	let number2String = function(n){
+		return ("00"+n).substr((""+n).length);
+	}
+	timer = setInterval(function(){
+		tick();
+	},1000);
 	
 }
 
@@ -212,5 +279,6 @@ export {
 	navToPayOrder,
 	updateGoodsTags,
 	navToOrderGoodsList,
-	dateFormat
+	dateFormat,
+	miaoshaCountDown
 }

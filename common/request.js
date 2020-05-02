@@ -129,6 +129,14 @@ const orders = function(data) {
 		isShowMask: true
 	})
 }
+//最近浏览记录
+const getGoodsVisites = function(data) {
+	return network({
+		url: "goodsVisite",
+		data: data,
+		isShowLoading: false
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -144,5 +152,6 @@ export {
 	settlement,
 	address,
 	payInfo,
-	orders
+	orders,
+	getGoodsVisites
 }

@@ -8,18 +8,18 @@
 			</swiper>
 		</view>
 		<block v-if="hasMiaosha">
-			<view class="miaosha-section">
+			<view class="miaosha-section" :class="{ready:!miaosha.isStart}">
 				<view class="title">
 					<text class="name">限时抢购</text>
 					<text class="status">{{ miaosha.statusName }}</text>
 				</view>
 				<view class="time" v-if="!miaosha.isEnd">
 					<text>{{ miaosha.statusSubName }}</text>
-					<text class="ti hour">01</text>
+					<text class="ti hour">{{miaosha.hour}}</text>
 					<text>:</text>
-					<text class="ti minute">01</text>
+					<text class="ti minute">{{miaosha.minute}}</text>
 					<text>:</text>
-					<text class="ti second">01</text>
+					<text class="ti second">{{miaosha.second}}</text>
 				</view>
 			</view>
 		</block>
@@ -102,7 +102,7 @@
 <script>
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { navToLoginPage, updateGoodsTags } from '@/common/functions.js';
+import { navToLoginPage, updateGoodsTags,miaoshaCountDown } from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -141,9 +141,9 @@ export default {
 		if (!options.id) {
 			//商品id不存在
 			this.$api.msg('商品不存在');
-			this.$nextTick(() => {
+			setTimeout(()=>{
 				uni.navigateBack();
-			});
+			},3000)
 			return false;
 		}
 		this.id = options.id;
@@ -226,21 +226,50 @@ export default {
 			//秒杀状态，未开始，抢购中，已结束
 			let time = new Date().getTime();
 			item.miaosha.isEnd = false;
-			if (time < item.miaosha.begnTime) {
+			item.miaosha.isStart = true;
+			item.miaosha.hour="00";
+			item.miaosha.minute="00";
+			item.miaosha.second="00";
+			item.miaosha.startTime=time;
+			item.hasMiaosha = true;
+			console.log("秒杀时间检测：",time,item.miaosha.beginTime);
+			if (time < item.miaosha.beginTime) {
+				item.miaosha.isStart = false;
 				item.miaosha.statusName = '未开始';
 				item.miaosha.statusSubName = '距开始';
 				//@todo 倒计时开始时间,结束之后更改状态
-				
+				miaoshaCountDown(item.miaosha,item.miaosha.beginTime,()=>{
+					updateGoodsTags(item);
+					this.checkMiaosha(item);
+					this.updateMiaoshaPrice(item);
+				});
 			} else if (time > item.miaosha.endTime) {
 				item.miaosha.statusName = '已结束';
 				item.miaosha.statusSubName = '';
 				item.miaosha.isEnd = true;
+				item.hasMiaosha = false;
 			} else {
+				item.miaosha.isStart = true;
 				item.miaosha.statusName = '抢购中';
 				item.miaosha.statusSubName = '距结束';
 				//@todo 启动倒计时
+				miaoshaCountDown(item.miaosha,item.miaosha.endTime,()=>{
+					updateGoodsTags(item);
+					this.checkMiaosha(item);
+					this.updateMiaoshaPrice(item);
+				});
 			}
-			item.hasMiaosha = true;
+		},
+		updateMiaoshaPrice(item){
+			//没有型号或者型号相等
+			if(!this.sku_id || this.sku_id == item.miaosha.sku_id){
+				this.originPrice = item.originPrice;
+				this.price =  item.price;
+				this.limit = item.miaosha.limit;
+				this.stock = item.miaosha.stock;
+				//计算折扣
+				this.getSaleRate();
+			}
 		},
 		//分享
 		share() {
@@ -309,7 +338,7 @@ export default {
 			});
 			//匹配skuid
 			let sku = this.nameMap[names.join('&gt;')];
-			console.log(sku);
+			//console.log(sku);
 			this.sku_id = sku.id;
 			this.stock = sku.stock;
 			this.limit = sku.limit;
@@ -751,8 +780,9 @@ page {
 	}
 }
 .miaosha-section {
+	$base-c:#e35650;
 	display: flex;
-	background: #e35650;
+	background: $base-c;
 	font-size: $font-ssm;
 	text-align: center;
 	height: 43px;
@@ -766,7 +796,7 @@ page {
 		}
 	}
 	.time {
-		color: #e85d58;
+		color: $base-c;
 		width: 266upx;
 		background: #fcefea;
 		height: 100%;
@@ -774,10 +804,22 @@ page {
 		align-items: center;
 		justify-content: center;
 		.ti {
-			background: #e85d58;
+			background: $base-c;
 			color: #fff;
 			margin: 0 8upx;
 			padding: 0 4upx;
+		}
+	}
+	/* 准备中 */
+	&.ready{
+		$base-c:#54b85d;
+		background: $base-c;
+		.time{
+			color: $base-c;
+			background: #f3f5f3;
+			.ti {
+				background: $base-c;
+			}
 		}
 	}
 }

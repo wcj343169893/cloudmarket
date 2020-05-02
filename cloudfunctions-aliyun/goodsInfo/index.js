@@ -7,7 +7,15 @@ exports.main = async (event, context) => {
 	let id = +event.id;
 	let uid = +event.uid;
 	const collection = db.collection('goods');
+	//商品浏览记录，每人每件商品只存在一条
+	const visiteCollection = db.collection('goods_visites');
 	const cmd = db.command;
+	
+	/* process.on('unhandledRejection', (reason, p) => {
+	  console.log('Unhandled Rejection at:', p, 'reason:', reason);
+	  // application specific logging, throwing an error, or other logic here
+	}); */
+	
 	let goods = await collection.where({
 		id: id
 	}).field({
@@ -35,14 +43,6 @@ exports.main = async (event, context) => {
 			"message": "商品不存在"
 		};
 	}
-	//延时处理
-	goods.data.map(async (item) => {
-		//增加浏览记录,必须存在uid
-		//增加浏览量
-		return await collection.doc(item._id).update({
-			visite: cmd.inc(1)
-		});
-	})
 	let data = goods.data[0];
 	//承诺服务
 	data["service"] = [
@@ -50,6 +50,40 @@ exports.main = async (event, context) => {
 		"假一赔十",
 	];
 	if (uid > 0) {
+		let time = new Date().getTime();
+		//延时处理
+		goods.data.map(async (item) => {
+			console.log("item.id",item.id);
+			//增加浏览记录,必须存在uid
+			let visite = await visiteCollection.where({
+				uid: uid,
+				goods_id: item.id
+			}).field({
+				goods_id: 1
+			}).get();
+			console.log("visite.affectedDocs",visite.affectedDocs);
+			if (visite.affectedDocs < 1) {
+				let visave = await visiteCollection.add({
+					uid: uid,
+					goods_id: item.id,
+					shopid: item.shopid,
+					price: item.price,
+					src: item.src,
+					time: time
+				});
+				//增加浏览量
+				return await collection.doc(item._id).update({
+					visite: cmd.inc(1)
+				});
+			} else {
+				//更新浏览时间
+				return visite.data.map(async (vi) => {
+					return await visiteCollection.doc(vi._id).update({
+						time: time
+					});
+				});
+			}
+		});
 		//favorite  是否收藏
 		//查询已加入购物车信息amount
 		let carts = await db.collection('carts').where({
@@ -64,8 +98,8 @@ exports.main = async (event, context) => {
 		if (carts.affectedDocs > 0) {
 			data["cart"] = {};
 			//处理成规格对于数量
-			carts.data.map(c=>{
-				data["cart"][c.sku_id]=c.amount;
+			carts.data.map(c => {
+				data["cart"][c.sku_id] = c.amount;
 			});
 		} else {
 			data["cart"] = {};

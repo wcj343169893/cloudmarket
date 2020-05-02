@@ -35,7 +35,9 @@
 									</view>
 									<view class="">
 										<text>{{ item.subName }}</text>
-										<text class="saledPrice" v-if="item.cutPrice > 0">
+									</view>
+									<view class="" v-if="item.cutPrice > 0">
+										<text class="saledPrice" >
 											<text class="unit">比加入时便宜</text>
 											<text class="price emphasis">{{ item.cutPrice }}</text>
 										</text>
@@ -189,7 +191,7 @@ export default {
 						goods['cutPrice'] = 0;
 						goods['loaded'] = '';
 						if (ct.price > 0 && ct.price > goods.price) {
-							goods['cutPrice'] = ct.price - goods.price;
+							goods['cutPrice'] = (ct.price - goods.price).toFixed(2);
 						}
 						this.cartList.push(goods);
 					});

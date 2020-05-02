@@ -20,12 +20,18 @@
 		</view>
 		<!-- 口号 -->
 		<view class="weui-flex kouhao m-t">
-			<image src="../../static/icon/home_icon_1_1.jpg" mode=""></image>
-			<text>最快2小时送达</text>
-			<image src="../../static/icon/home_icon_1_2.jpg" mode=""></image>
-			<text>0起送费0配送费</text>
-			<image src="../../static/icon/home_icon_1_3.jpg" mode=""></image>
-			<text>安心退换</text>
+			<view class="kouhao_item">
+				<image src="../../static/icon/navicon-chps.png" mode=""></image>
+				<text>最快2小时送达</text>
+			</view>
+			<view class="kouhao_item">
+				<image src="../../static/icon/qian.png" mode=""></image>
+				<text>0起送费0配送费</text>
+			</view>
+			<view class="kouhao_item">
+				<image src="../../static/icon/dunpai.png" mode=""></image>
+				<text>安心退换</text>
+			</view>
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section m-t">
@@ -34,12 +40,56 @@
 				<text>{{ item.name }}</text>
 			</view>
 		</view>
+		<block v-if="miaoshaList.length > 0">
+			<view class="f-header m-t">
+				<view class="icon">&nbsp;</view>
+				<view class="tit-box">
+					<text class="tit">限时抢购</text>
+				</view>
+				<text class="yticon icon-you"></text>
+			</view>
+			<view class="seckill-section">
+				<scroll-view class="floor-list" scroll-x>
+					<view class="scoll-wrapper">
+						<view v-for="(item, index) in miaoshaList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
+							<image :src="item.src" mode="aspectFill"></image>
+							<view class="title clamp">
+								<text>{{ item.title }}</text>
+							</view>
+							<view class="price">{{item.price}}</view>
+							<view class="price del">{{item.originPrice}}</view>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+		</block>
+		<view class="f-header m-t">
+			<view class="icon">&nbsp;</view>
+			<view class="tit-box">
+				<text class="tit">实时鲜货</text>
+			</view>
+		</view>
+		<view class="newest-section">
+			<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
+				<image :src="item.src" mode="aspectFill"></image>
+				<view class="title clamp">
+					<text>{{ item.title }}</text>
+				</view>
+				<view class="price">{{item.price}}</view>
+				<view class="price del" v-if="item.originPrice>0">{{item.originPrice}}</view>
+			</view>
+		</view>
+		
+		<view class="bottom">
+			<text>以下没数据了</text>
+		</view>
 	</view>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
+import { navToGoodsPage,updateGoodsTags} from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -49,7 +99,9 @@ export default {
 			goNext: 1,
 			address:"定位/收货地址获得位置",
 			carouselList: [],
-			recommendCategoriesList: []
+			recommendCategoriesList: [],
+			miaoshaList:[],
+			newestList:[]
 		};
 	},
 	computed: {
@@ -101,6 +153,14 @@ export default {
 				if (res.categories) {
 					this.recommendCategoriesList = res.categories;
 				}
+				this.miaoshaList = res.miaosha;
+				this.miaoshaList.forEach(item=>{
+					updateGoodsTags(item)
+				})
+				this.newestList = res.newest;
+				this.newestList.forEach(item=>{
+					updateGoodsTags(item)
+				})
 				//this.address = res.address;
 				//购物车总数量
 				if(res.cart > 0){
@@ -138,6 +198,9 @@ export default {
 			uni.switchTab({
 				url: `../category/goods`
 			});
+		},
+		navToGoodsPage(item){
+			navToGoodsPage(item.id)
 		}
 	},
 	// #ifndef MP
@@ -171,6 +234,7 @@ export default {
 
 <style lang="scss">
 page {
+	background: #F5F5F5;
 }
 /* 头部 轮播图 */
 .carousel-section {
@@ -254,16 +318,18 @@ page {
 	flex: 1;
 }
 .m-t {
-	margin-top: 26upx;
+	margin-top: 22upx;
 }
 .kouhao {
-	font-size: $font-base;
-	justify-content: center;
+	font-size: $font-sm;
+	justify-content: space-around;
 	color: $base-color;
+	.kouhao_item{
+		display: flex;
+	}
 	image {
-		width: 34upx;
-		height: 30upx;
-		margin-left: 20upx;
+		width: 32upx;
+		height: 32upx;
 		margin-right: 4upx;
 	}
 }
@@ -273,7 +339,7 @@ page {
 	justify-content: space-around;
 	align-items: center;
 	flex-wrap: wrap;
-	padding: 0 22upx;
+	padding: 30upx 22upx 0;
 	background: #fff;
 	.cate-item {
 		display: flex;
@@ -291,5 +357,119 @@ page {
 		border-radius: 50%;
 		box-shadow: 4upx 4upx 20upx rgba(62, 147, 23, 0.3);
 	}
+}
+
+/* 秒杀专区 */
+.seckill-section {
+	padding: 4upx 30upx 24upx;
+	background: #fff;
+	.s-header {
+		display: flex;
+		align-items: center;
+		height: 92upx;
+		line-height: 1;
+		.s-img {
+			width: 140upx;
+			height: 30upx;
+		}
+		.tip {
+			font-size: $font-base;
+			color: $font-color-light;
+			margin: 0 20upx 0 40upx;
+		}
+		.timer {
+			display: inline-block;
+			width: 40upx;
+			height: 36upx;
+			text-align: center;
+			line-height: 36upx;
+			margin-right: 14upx;
+			font-size: $font-sm + 2upx;
+			color: #fff;
+			border-radius: 2px;
+			background: rgba(0, 0, 0, 0.8);
+		}
+		.icon-you {
+			font-size: $font-lg;
+			color: $font-color-light;
+			flex: 1;
+			text-align: right;
+		}
+	}
+	.floor-list {
+		white-space: nowrap;
+	}
+	.scoll-wrapper {
+		display: flex;
+		align-items: flex-start;
+	}
+	.floor-item {
+		width: 300upx;
+		margin-right: 20upx;
+		font-size: $font-sm + 2upx;
+		color: $font-color-dark;
+		image {
+			width: 300upx;
+			height: 300upx;
+			border-radius: 6upx;
+		}
+	}
+}
+.f-header {
+	display: flex;
+	align-items: center;
+	height: 100upx;
+	padding: 6upx 30upx 8upx;
+	background: #fff;
+	.icon {
+		flex-shrink: 0;
+		width: 10upx;
+		height: 36upx;
+		background: linear-gradient(#75d66f, #62b66c);
+		margin-right: 12upx;
+	}
+	.tit-box {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+	.tit {
+		font-size: $font-lg + 2upx;
+		color: $font-color-dark;
+		line-height: 1.3;
+	}
+	.tit2 {
+		font-size: $font-sm;
+		color: $font-color-light;
+	}
+	.icon-you {
+		font-size: $font-lg + 2upx;
+		color: $font-color-light;
+	}
+}
+.newest-section{
+	display: flex;
+	flex-wrap: wrap;
+	font-size: $font-base;
+	padding-top: 20upx;
+	.floor-item{
+		background: #FFFFFF;
+		width: 345upx;
+		margin-left: 20upx;
+		padding: 20upx;
+		margin-bottom: 20upx;
+		border-radius: 16upx;
+		image{
+			width: 304upx;
+			height: 304upx;
+			border-radius: 12upx;
+		}
+	}
+}
+.bottom{
+	text-align: center;
+	font-size: $font-sm;
+	color: $font-color-disabled;
+	padding: 20upx;
 }
 </style>

@@ -82,7 +82,7 @@
         }
     },
     "h5" : {
-        "title" : "爱农APP",
+        "title" : "爱农",
         "domain" : "market.cjblog.org",
         "router" : {
             "mode" : "history"

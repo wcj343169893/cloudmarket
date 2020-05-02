@@ -3,7 +3,9 @@ const db = uniCloud.database();
 exports.main = async (event, context) => {
 	let dataOut = {
 		cart: 0,
-		shopId:0,
+		shopId: 0,
+		miaosha: [],
+		newest:[]
 	};
 	//根据用户收货地址查询最近的一家店铺
 	let shopid = 123457;
@@ -12,10 +14,10 @@ exports.main = async (event, context) => {
 		uid = +event.uid;
 	}
 	dataOut["shopId"] = shopid;
-	const dbCmd = db.command;
+	const cmd = db.command;
 	//查询广告,优先店铺，再是全站
 	const ads = await db.collection('ads').where({
-		shopid: dbCmd.in([0, shopid])
+		shopid: cmd.in([0, shopid])
 	}).field({
 		"_id": 0,
 		"background": 1,
@@ -36,6 +38,39 @@ exports.main = async (event, context) => {
 	}).orderBy("posid", "asc").limit(10).get();
 	if (categories.affectedDocs > 0) {
 		dataOut["categories"] = categories.data;
+	}
+	let time = new Date().getTime();
+	//正在秒杀商品5条
+	let miaoshaGoods = await db.collection('goods').where({
+		shopid: shopid,
+		"miaosha.beginTime": cmd.lt(time),
+		"miaosha.endTime": cmd.gt(time),
+	}).field({
+		_id: 0,
+		id: 1,
+		src: 1,
+		title: 1,
+		miaosha: 1,
+		price: 1,
+		stock: 1
+	}).limit(5).get();
+	if (miaoshaGoods.affectedDocs > 0) {
+		dataOut["miaosha"] = miaoshaGoods.data;
+	}
+	//最新上架,20条
+	let newGoods = await db.collection('goods').where({
+		shopid: shopid
+	}).field({
+		_id: 0,
+		id: 1,
+		src: 1,
+		title: 1,
+		miaosha: 1,
+		price: 1,
+		stock: 1
+	}).orderBy("onlineTime","desc").limit(20).get();
+	if (newGoods.affectedDocs > 0) {
+		dataOut["newest"] = newGoods.data;
 	}
 	//购物车总数
 	if (uid > 0) {
