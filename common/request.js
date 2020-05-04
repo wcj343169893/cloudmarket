@@ -137,6 +137,14 @@ const getGoodsVisites = function(data) {
 		isShowLoading: false
 	})
 }
+//手机号自动登录
+const mobileAutoLogin = function(data) {
+	return network({
+		url: "login",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -153,5 +161,6 @@ export {
 	address,
 	payInfo,
 	orders,
-	getGoodsVisites
+	getGoodsVisites,
+	mobileAutoLogin
 }

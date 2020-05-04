@@ -100,9 +100,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { navToLoginPage, updateGoodsTags,miaoshaCountDown } from '@/common/functions.js';
+import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown } from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -136,6 +137,9 @@ export default {
 			hasMiaosha: false,
 			nameMap: {}
 		};
+	},
+	computed: {
+		...mapState(['hasLogin'])
 	},
 	async onLoad(options) {
 		if (!options.id) {
@@ -280,6 +284,10 @@ export default {
 			this.favorite = !this.favorite;
 		},
 		addToCart() {
+			if(!this.hasLogin){
+				showLoginDialog();
+				return;
+			}
 			uni.showLoading({
 				title: '正在加载',
 				mask: true

@@ -3,14 +3,39 @@
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
+const shanYanSDKModule = uni.requireNativePlugin('CLSDK-ShanYanSDKModule');
 export default {
 	methods: {
 		...mapMutations(['login'])
 	},
 	onLaunch: function() {
 		let userInfo = uni.getStorageSync('userInfo') || '';
+		console.log('App.vue 启动');
+		//初始化自动登录
+		/* let platform = uni.getSystemInfoSync().platform;
+		let appid;
+		let appkey;
+		if (platform == 'android') {
+			appid = '5AvWkYQj';
+			appkey = 'MxqI3HJV';
+		} else if (platform == 'ios') {
+			appid = 'eWWfA2KJ';
+			appkey = 'tDo3Ml2K';
+		}
+		console.log('初始化自动登录', appid);
+		shanYanSDKModule.init(
+			{
+				appid: appid
+			},
+			result => {
+				//初始化回调
+				console.log('初始化', result);
+				if(result.code == 1022){
+					//this.getPhoneInfo();
+				}
+			}
+		); */
 		if (userInfo.id) {
-			console.log('App.vue 启动');
 			//更新登陆状态
 			this.login(userInfo);
 			/* uni.getStorage({
@@ -52,7 +77,7 @@ export default {
 	transition: 0.4s;
 }
 
-.yticon.checked{
+.yticon.checked {
 	color: $uni-color-success;
 }
 
@@ -454,7 +479,7 @@ button[type='default'] {
 .placeholder {
 	color: #999999;
 }
-.tags{
+.tags {
 	margin-top: 6upx;
 }
 /* 标签 */
@@ -467,13 +492,13 @@ button[type='default'] {
 	padding: 2upx 6upx;
 	line-height: 1;
 	display: inline-block;
-	&.warning{
+	&.warning {
 		color: $font-color-warning;
 		border-color: $font-color-warning;
 	}
 }
 /* 价格 */
-.price{
+.price {
 	color: $base-color;
 	font-size: $font-base;
 	margin-right: 12upx;
@@ -481,7 +506,7 @@ button[type='default'] {
 		content: '￥';
 		font-size: 0.85em;
 	}
-	&.del{
+	&.del {
 		font-size: $font-sm;
 		color: $font-color-light;
 		text-decoration: line-through;
@@ -489,11 +514,11 @@ button[type='default'] {
 			font-size: $font-ssm;
 		}
 	}
-	&.emphasis{
+	&.emphasis {
 		font-size: $font-sm;
 		color: $font-color-warning;
 	}
-	&.warning{
+	&.warning {
 		color: $font-color-warning;
 	}
 }
