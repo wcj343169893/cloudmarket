@@ -15,7 +15,10 @@
             "delay" : 0
         },
         "modules" : {
-            "Payment" : {}
+            "Payment" : {},
+            "Push" : {},
+            "Share" : {},
+            "Maps" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -32,6 +35,7 @@
                     "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.GET_TASKS\"/>",
@@ -55,7 +59,16 @@
                 "payment" : {
                     "alipay" : {}
                 },
-                "speech" : {}
+                "speech" : {},
+                "push" : {
+                    "unipush" : {}
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "3d849a7a36b58b5a4f4a0c37d665df85",
+                        "appkey_android" : "e077c938b8359e13eb32920f1693a77d"
+                    }
+                }
             }
         },
         "safearea" : {

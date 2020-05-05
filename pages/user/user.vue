@@ -13,9 +13,9 @@
 				<view class="b-btn">立即开通</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
-					DCloud会员
+					会员
 				</view>
-				<text class="e-m">DCloud Union</text>
+				<text class="e-m"></text>
 				<text class="e-b">开通会员开发无bug 一测就上线</text>
 			</view>
 		</view>

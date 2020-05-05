@@ -44,7 +44,7 @@ const network = function(options) {
 			reject(err)
 			uni.showToast({
 				icon: "none",
-				title: err.message || '稍后重试'
+				title: err.message || '系统错误,请稍后重试'
 			});
 		})
 	})

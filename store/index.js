@@ -36,7 +36,13 @@ const store = new Vuex.Store({
 		},
 		logout(state) {
 			state.hasLogin = false;
-			state.userInfo = {};
+			state.userInfo = {
+				nickname:"游客",
+				portrait:"/static/missing-face.png",
+				balance:0,
+				score:0,
+				coupons:0
+			};
 			uni.removeStorage({
 				key: 'userInfo'
 			})

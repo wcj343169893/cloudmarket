@@ -3,7 +3,6 @@
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
-const shanYanSDKModule = uni.requireNativePlugin('CLSDK-ShanYanSDKModule');
 export default {
 	methods: {
 		...mapMutations(['login'])
@@ -11,30 +10,6 @@ export default {
 	onLaunch: function() {
 		let userInfo = uni.getStorageSync('userInfo') || '';
 		console.log('App.vue 启动');
-		//初始化自动登录
-		/* let platform = uni.getSystemInfoSync().platform;
-		let appid;
-		let appkey;
-		if (platform == 'android') {
-			appid = '5AvWkYQj';
-			appkey = 'MxqI3HJV';
-		} else if (platform == 'ios') {
-			appid = 'eWWfA2KJ';
-			appkey = 'tDo3Ml2K';
-		}
-		console.log('初始化自动登录', appid);
-		shanYanSDKModule.init(
-			{
-				appid: appid
-			},
-			result => {
-				//初始化回调
-				console.log('初始化', result);
-				if(result.code == 1022){
-					//this.getPhoneInfo();
-				}
-			}
-		); */
 		if (userInfo.id) {
 			//更新登陆状态
 			this.login(userInfo);

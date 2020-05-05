@@ -194,7 +194,7 @@ const showLoginDialog = function() {
 		content: '您还未登录，请登录后再操作',
 		cancelText: '再逛逛',
 		confirmText: '去登录',
-		success: function(res) {
+		success: (res)=> {
 			if (res.confirm) {
 				navToLoginPage();
 			}

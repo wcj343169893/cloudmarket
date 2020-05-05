@@ -26,8 +26,13 @@ exports.main = async (event, context) => {
 	return [os,platform,appid]; */
 	
 	const cmd = db.command;
-	let res =await db.collection("identity").where({"key":"order_id"}).update({
+	/* let res =await db.collection("identity").where({"key":"orders"}).update({
+		value:cmd.inc(1)
+	}); */
+	
+	await db.collection("identity").doc("5eb1166933bd17004e01b396").update({
 		value:cmd.inc(1)
 	});
+	let res = await db.collection("identity").doc("5eb1166933bd17004e01b396").get();
 	return res;
 };
