@@ -380,7 +380,7 @@ export default {
 			width: 160upx;
 			height: 160upx;
 			margin-right: 20upx;
-			border-radius: 10upx;
+			border-radius: 4%;
 		}
 	}
 }

@@ -722,7 +722,7 @@ $border-color: #f5f5f5;
 	.goodsList {
 		background: #ffffff;
 		padding: 20upx;
-		border-radius: 12upx;
+			border-radius: 4%;
 		margin-bottom: 8upx;
 		.weui-flex {
 			align-items: flex-start;
@@ -734,8 +734,8 @@ $border-color: #f5f5f5;
 	.image-wrapper {
 		width: 120upx;
 		height: 120upx;
-		border-radius: 3px;
 		overflow: hidden;
+		border-radius: 4%;
 		margin-right: 22upx;
 		flex-shrink: 0;
 		image {

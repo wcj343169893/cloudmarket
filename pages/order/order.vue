@@ -11,13 +11,13 @@
 					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
 
 					<!-- 订单列表 -->
-					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item">
+					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item"  @click="navToOrderDetail(item)">
 						<view class="i-top b-b">
 							<text class="time">{{ item.created }}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
 							<text v-if="item.state === 9" class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(index)"></text>
 						</view>
-						<view class="" @click="showGoods(item)">
+						<view class="">
 							<scroll-view v-if="item.goods.length > 1" class="goods-box" scroll-x>
 								<view v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex" class="goods-item">
 									<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
@@ -26,9 +26,16 @@
 							<view v-else class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex">
 								<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
 								<view class="right">
-									<text class="title clamp">{{ goodsItem.title }}</text>
-									<text class="attr-box">{{ goodsItem.subName }} x {{ goodsItem.amount }}</text>
-									<text class="price">{{ goodsItem.price }}</text>
+									<view class="">
+										<text class="title clamp">{{ goodsItem.title }}</text>
+									</view>
+									<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
+									<view class="attr-box">
+										<text>单价:</text>
+										<text class="price">{{ goodsItem.price }}</text>
+										<text>数量:</text>
+										<text>{{ goodsItem.amount }}</text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -39,22 +46,18 @@
 							<text class="price warning">{{ item.totalMoney }}</text>
 						</view>
 						<!-- 已取消 -->
-						<view class="action-box b-t" v-if="item.state == -1">
-							<button class="action-btn" @click="deleteOrder(item)">删除订单</button>
-						</view>
+						<view class="action-box b-t" v-if="item.state == -1"><button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button></view>
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
-							<button class="action-btn" @click="cancelOrder(item,index)">取消订单</button>
-							<button class="action-btn recom" @click="payOrder(item)">立即支付</button>
+							<button class="action-btn" @click.stop="cancelOrderConfirm(item, index)">取消订单</button>
+							<button class="action-btn recom" @click.stop="payOrder(item)">去支付{{ item.payment.minute }}:{{ item.payment.second }}</button>
 						</view>
 						<!-- 已付款 -->
-						<view class="action-box b-t" v-if="item.state == 1">
-							<button class="action-btn" @click="confirmOrder(item)">确定收货</button>
-						</view>
+						<view class="action-box b-t" v-if="item.state == 1"><button class="action-btn" @click.stop="confirmOrder(item)">确定收货</button></view>
 						<!-- 已收货，待评价 -->
 						<view class="action-box b-t" v-if="item.state == 2">
-							<button class="action-btn" @click="deleteOrder(item)">删除订单</button>
-							<button class="action-btn" @click="evaluateOrder(item)">评价</button>
+							<button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button>
+							<button class="action-btn" @click.stop="evaluateOrder(item)">评价</button>
 						</view>
 					</view>
 
@@ -69,7 +72,7 @@
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
-import { navToPayOrder,navToOrderGoodsList,dateFormat } from '@/common/functions.js';
+import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail } from '@/common/functions.js';
 export default {
 	components: {
 		uniLoadMore,
@@ -158,14 +161,27 @@ export default {
 				type: 'list',
 				limit: limit
 			}).then(res => {
+				let time = new Date().getTime();
 				if (res.affectedDocs > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
-						ele.created = dateFormat(ele.created,'yyyy-MM-dd hh:mm:ss');
+						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
+						//支付倒计时
+						if (ele.state == 0) {
+							ele.payment = {
+								startTime: time,
+								minute: '00',
+								second: '00'
+							};
+							miaoshaCountDown(ele.payment, ele.lastPayTime, () => {
+								console.log('自动取消订单', ele);
+								this.cancelOrder(ele, index,"auto");
+							});
+						}
 						//状态名称 Object.assign
-						let { stateTip, stateTipColor }= this.orderStateExp(ele.state);
-						ele.stateTip=stateTip;
-						ele.stateTipColor=stateTipColor;
+						let { stateTip, stateTipColor } = this.orderStateExp(ele.state);
+						ele.stateTip = stateTip;
+						ele.stateTipColor = stateTipColor;
 					});
 					navItem.orderList = navItem.orderList.concat(res.data);
 					navItem.loadingType = 'more';
@@ -203,13 +219,13 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id,item.totalMoney);
+			navToPayOrder(item._id, item.totalMoney);
 		},
 		//删除订单
 		deleteOrder(item) {
 			uni.showModal({
-				title:"确认删除订单？",
-				content:"删除之后可以从回收站恢复",
+				title: '确认删除订单？',
+				content: '删除之后可以从回收站恢复',
 				success: res => {
 					if (res.confirm) {
 						orders({
@@ -228,49 +244,52 @@ export default {
 				uni.hideLoading();
 			}, 600); */
 		},
-		//取消订单
-		cancelOrder(item,index) {
+		cancelOrderConfirm(item, index) {
 			uni.showModal({
-				title:"操作提示",
-				content:"是否确定取消？",
+				title: '操作提示',
+				content: '是否确定取消？',
 				success: res => {
 					if (res.confirm) {
-						orders({
-							id: item._id,
-							type: 'cancel'
-						}).then(res => {
-							console.log(res);
-							//刷新当前列表数据
-							//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
-							//更改所有订单的状态
-							this.navList.map((tabs,index)=>{
-								tabs.orderList.map((ord,index2)=>{
-									if(ord._id == item._id){
-										//ord.state= -1;
-										if(index == 1){
-											//如果在待付款列表，则直接删除掉
-											this.navList[index].orderList.splice(index2, 1);
-										}else{
-											let state = -1;
-											//状态名称 Object.assign
-											let { stateTip, stateTipColor }= this.orderStateExp(state);
-											Object.assign(this.navList[index].orderList[index2],{
-												state,
-												stateTip,
-												stateTipColor
-											});
-											/* this.navList[index].orderList[index2].stateTip= stateTip;
-											this.navList[index].orderList[index2].stateTipColor= stateTipColor;
-											this.navList[index].orderList[index2].state= state; */
-										}
-									}
-								})
-							})
-						});
-					} else if (res.cancel) {
-						console.log('用户点击取消');
+						this.cancelOrder(item, index,"user");
 					}
 				}
+			});
+		},
+		//取消订单
+		cancelOrder(item, index,style) {
+			//style 取消方式，auto自动，user用户点击取消
+			orders({
+				id: item._id,
+				type: 'cancel',
+				style:style
+			}).then(res => {
+				console.log(res);
+				//刷新当前列表数据
+				//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
+				//更改所有订单的状态
+				this.navList.map((tabs, index) => {
+					tabs.orderList.map((ord, index2) => {
+						if (ord._id == item._id) {
+							//ord.state= -1;
+							if (index == 1) {
+								//如果在待付款列表，则直接删除掉
+								this.navList[index].orderList.splice(index2, 1);
+							} else {
+								let state = -1;
+								//状态名称 Object.assign
+								let { stateTip, stateTipColor } = this.orderStateExp(state);
+								Object.assign(this.navList[index].orderList[index2], {
+									state,
+									stateTip,
+									stateTipColor
+								});
+								/* this.navList[index].orderList[index2].stateTip= stateTip;
+											this.navList[index].orderList[index2].stateTipColor= stateTipColor;
+											this.navList[index].orderList[index2].state= state; */
+							}
+						}
+					});
+				});
 			});
 
 			/* setTimeout(() => {
@@ -295,10 +314,14 @@ export default {
 				mask: true
 			});
 		},
-		showGoods(item){
+		navToOrderDetail(item) {
+			//pages/order/detail
+			navToOrderDetail(item._id);
+		},
+		showGoods(item) {
 			uni.setStorage({
-				key:"create_order_goods",
-				data:item.goods
+				key: 'create_order_goods',
+				data: item.goods
 			});
 			navToOrderGoodsList();
 		},
@@ -428,6 +451,7 @@ page,
 			display: block;
 			width: 100%;
 			height: 100%;
+			border-radius: 4%;
 		}
 	}
 	/* 单条商品 */
@@ -438,6 +462,7 @@ page,
 			display: block;
 			width: 120upx;
 			height: 120upx;
+			border-radius: 4%;
 		}
 		.right {
 			flex: 1;
@@ -453,7 +478,7 @@ page,
 			.attr-box {
 				font-size: $font-sm + 2upx;
 				color: $font-color-light;
-				padding: 10upx 12upx;
+				padding: 8upx 0upx 0;
 			}
 		}
 	}
@@ -479,11 +504,10 @@ page,
 		padding-right: 30upx;
 	}
 	.action-btn {
-		width: 160upx;
 		height: 60upx;
 		margin: 0;
+		padding: 0 30upx;
 		margin-left: 24upx;
-		padding: 0;
 		text-align: center;
 		line-height: 60upx;
 		font-size: $font-sm + 2upx;
@@ -494,7 +518,8 @@ page,
 			border-radius: 100px;
 		}
 		&.recom {
-			color: $base-color;
+			background: $base-color;
+			color: #fff;
 		}
 	}
 }

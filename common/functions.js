@@ -155,7 +155,7 @@ const miaoshaCountDown = function(item,endTime,callback){
 	let lastTime = parseInt(endTime/1000);
 	if(startTime >= lastTime){
 		if(callback){
-			callback();
+			callback(item);
 		}
 		return false;
 	}
@@ -165,7 +165,7 @@ const miaoshaCountDown = function(item,endTime,callback){
 		if(n1 < 1){
 			clearInterval(timer);
 			if(callback){
-				callback();
+				callback(item);
 			}
 			return;
 		}
@@ -268,6 +268,21 @@ const navToOrderGoodsList = function() {
 		}
 	});
 }
+/**
+ * 订单详情
+ */
+const navToOrderDetail = function(id) {
+	if (isRedirect) {
+		return false;
+	}
+	isRedirect = true;
+	uni.navigateTo({
+		url: `/pages/order/detail?id=${id}`,
+		success: function() {
+			isRedirect = false;
+		}
+	});
+}
 
 export {
 	updateCartNumber,
@@ -280,5 +295,6 @@ export {
 	updateGoodsTags,
 	navToOrderGoodsList,
 	dateFormat,
-	miaoshaCountDown
+	miaoshaCountDown,
+	navToOrderDetail
 }

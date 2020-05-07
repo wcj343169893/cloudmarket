@@ -21,7 +21,7 @@ exports.main = async (event, context) => {
 	}
 	let conditions = {
 		uid: uid,
-		isDelete:0
+		isDelete: 0
 	};
 	let data;
 	const cmd = db.command;
@@ -37,7 +37,7 @@ exports.main = async (event, context) => {
 					break;
 				case 2:
 					//2已付款，待收货，包含已发货
-					conditions["state"] = cmd.in([1,2]);
+					conditions["state"] = cmd.in([1, 2]);
 					break;
 				case 3:
 					//3待评价，已收货
@@ -60,34 +60,60 @@ exports.main = async (event, context) => {
 			created: 1,
 			goods: 1,
 			cartCount: 1,
-			address: 1
+			address: 1,
+			lastPayTime: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("_id", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
-	}else{
+	} else {
 		//取消未付款的订单
-		conditions["_id"]=id;
-		if(type == "cancel"){
-			conditions["state"]=cmd.in([0,-1]);
+		conditions["_id"] = id;
+		let field = {
+			state: 1
+		};
+		if (type == "cancel") {
+			conditions["state"] = cmd.in([0, -1]);
 		}
-		data = await orderCollection.where(conditions).limit(1).field({
-			state:1
-		}).get();
-		if(data.affectedDocs == 0){
+		if (type == "detail") {
+			field = {
+				id: 1,
+				totalMoney: 1,
+				totalDiscount: 1,
+				state: 1,
+				created: 1,
+				goods: 1,
+				cartCount: 1,
+				address: 1,
+				lastPayTime: 1,
+				cancelStyle: 1,
+				modified: 1
+			};
+		}
+		data = await orderCollection.where(conditions).limit(1).field(field).get();
+		if (data.affectedDocs == 0) {
 			return {
 				"code": 404,
 				"message": "订单不存在"
-			}; 
+			};
 		}
 		let order = data.data[0];
-		if(type == "cancel"){
+		if (type == "cancel") {
 			//取消未付款订单
-			data = await orderCollection.doc(order._id).update({state:-1});
-		}else if(type == "delete"){
+			data = await orderCollection.doc(order._id).update({
+				state: -1,
+				cancelStyle: event.style
+			});
+		} else if (type == "delete") {
 			//删除订单，软删除
-			data = await orderCollection.doc(order._id).update({isDelete:1});
-		}else if(type == "makesure"){
+			data = await orderCollection.doc(order._id).update({
+				isDelete: 1
+			});
+		} else if (type == "makesure") {
 			//确定收货
+
+		} else if (type == "detail") {
+			//查询详细
+			data = order;
 		}
 	}
 

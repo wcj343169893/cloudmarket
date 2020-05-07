@@ -377,10 +377,11 @@ page {
 		margin-right: 20upx;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
+		border-radius: 4%;
 		image {
 			width: 300upx;
 			height: 300upx;
-			border-radius: 6upx;
+			border-radius: 4%;
 		}
 	}
 }
@@ -427,11 +428,11 @@ page {
 		margin-left: 20upx;
 		padding: 20upx;
 		margin-bottom: 20upx;
-		border-radius: 16upx;
+		border-radius: 4%;
 		image{
 			width: 304upx;
 			height: 304upx;
-			border-radius: 12upx;
+			border-radius: 4%;
 		}
 	}
 }

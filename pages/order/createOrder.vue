@@ -296,7 +296,7 @@ page {
 		width: 80%;
 	}
 	.scoll-wrapper {
-		display: flex;
+		display: inline-flex;
 		align-items: flex-start;
 	}
 	.total {
@@ -309,7 +309,7 @@ page {
 	.g-item {
 		margin-left: 16upx;
 		image {
-			border-radius: 12upx;
+			border-radius: 4%;
 			width: 100upx;
 			height: 100upx;
 		}

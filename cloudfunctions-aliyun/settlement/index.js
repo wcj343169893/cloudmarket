@@ -73,41 +73,42 @@ exports.main = async (event, context) => {
 					let key = ele.id + '_' + sku.id;
 					if (cartMap[key] && cartMap[key].amount > 0) {
 						//相当于clone对象
-						let goo = { ...ele};
+						let goo = { ...ele
+						};
 						//删除多型号
 						delete goo.skus;
-						if(goo.miaosha && goo.miaosha.sku_id != sku.id){
+						if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
 							delete goo.miaosha;
-						}else{
+						} else {
 							delete goo.manjian;
 						}
-						
-						Object.assign(goo,cartMap[key],sku,{
-							hasSku:true,
-							sku_id:sku.id,
-							subName:sku.name.replace('&gt;', ' ')
+
+						Object.assign(goo, cartMap[key], sku, {
+							hasSku: true,
+							sku_id: sku.id,
+							subName: sku.name.replace('&gt;', ' ')
 						})
 						goodsOut.push(goo);
 					}
 				});
 			} else {
-				if(ele.miaosha){
+				if (ele.miaosha) {
 					//秒杀与满减不同享
 					delete ele.manjian;
 				}
 				let key = ele.id + '_0';
-				Object.assign(ele,cartMap[key],{
-					hasSku:false,
-					sku_id:0
+				Object.assign(ele, cartMap[key], {
+					hasSku: false,
+					sku_id: 0
 				});
 				goodsOut.push(ele);
 			}
 		});
 		goodsOut.forEach(ele => {
 			//处理秒杀价
-			if(ele.miaosha){
+			if (ele.miaosha) {
 				let time = new Date().getTime();
-				if(time < ele.miaosha.endTime && time > ele.miaosha.beginTime){
+				if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime) {
 					ele.originPrice = ele.price;
 					ele.price = ele.miaosha.price;
 					ele.stock = ele.miaosha.stock;
@@ -173,7 +174,7 @@ exports.main = async (event, context) => {
 				"data": data
 			};
 		}
-		data.goods.map(async(ele)=>{
+		data.goods.map(async (ele) => {
 			//异步更新库存
 			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
 			if (ele.hasSku) {
@@ -196,7 +197,7 @@ exports.main = async (event, context) => {
 			//@todo保存商品每日销量,最好是redis
 		});
 		//删除购物车cartId
-		carts.data.map(async(ele)=>{
+		carts.data.map(async (ele) => {
 			return await cartCollection.doc(ele._id).remove();
 		});
 		//备注
@@ -204,6 +205,8 @@ exports.main = async (event, context) => {
 		const day = new Date().toISOString();
 		data["created"] = day;
 		data["modified"] = day;
+		//最后支付时间，否则自动取消订单,5分钟支付时间
+		data["lastPayTime"] = (new Date()).getTime() + 5*60*1000;
 		//用户设备信息
 		data["platform"] = [
 			context.OS,

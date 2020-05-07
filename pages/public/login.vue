@@ -25,6 +25,10 @@ export default {
 		//#ifdef APP-PLUS
 		this.initLogin();
 		//#endif
+		
+		//#ifdef H5
+		this.toLogin();
+		//#endif
 		//this.getPhoneInfo();
 	},
 	methods: {
@@ -52,6 +56,8 @@ export default {
 			} else if (this.platform == 'ios') {
 				appid = 'eWWfA2KJ';
 				appkey = 'tDo3Ml2K';
+				this.toLogin();
+				return;
 			}
 			console.log('初始化自动登录', appid);
 			shanYanSDKModule.init(
@@ -222,23 +228,8 @@ export default {
 			uni.navigateBack();
 		},
 		async toLogin() {
-			this.qulickLogin();
-			return;
 			this.logining = true;
-			const { mobile, password } = this;
-			/* 数据验证模块
-				if(!this.$api.match({
-					mobile,
-					password
-				})){
-					this.logining = false;
-					return;
-				}
-				*/
-			const sendData = {
-				mobile,
-				password
-			};
+			//const { mobile, password } = this;
 			const result = await this.$api.json('userInfo');
 			if (result.status === 1) {
 				this.login(result.data);

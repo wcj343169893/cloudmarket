@@ -124,7 +124,7 @@ export default {
 	.image-wrapper {
 		width: 120upx;
 		height: 120upx;
-		border-radius: 3px;
+		border-radius: 4%;
 		overflow: hidden;
 		margin-right: 22upx;
 		flex-shrink: 0;
