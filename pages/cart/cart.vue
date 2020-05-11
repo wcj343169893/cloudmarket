@@ -43,7 +43,7 @@
 										</text>
 									</view>
 									<view class="tags">
-										<text v-for="tag in item.tags" class="tag warning">{{ tag }}</text>
+										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
 									</view>
 									<view class="buttons">
 										<view>

@@ -80,11 +80,7 @@
 <script>
 import { mapState } from 'vuex';
 import { getShopHome,getGoodsByCid } from '@/common/request.js';
-import { uniIcons } from '@dcloudio/uni-ui';
 export default {
-	components: {
-		uniIcons
-	},
 	data() {
 		return {
 			scrollTop: 0,

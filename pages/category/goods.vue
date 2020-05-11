@@ -30,7 +30,7 @@
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
 									</view>
 									<view class="tags">
-										<text v-for="(tag) in item.tags" class="tag warning">{{tag}}</text>
+										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
 									</view>
 									<view class="buttons">
 										<view >
@@ -109,15 +109,7 @@
 import { mapState,mapMutations } from 'vuex';
 import { getShopHome,editCart,cleanCart,getCartList} from '@/common/request.js';
 import { updateCartNumber,navToGoodsPage,navToLoginPage,showLoginDialog,updateGoodsTags} from '@/common/functions.js';
-import {uniFab,uniPopup,uniIcons  } from "@dcloudio/uni-ui"
-import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
-	components: {
-		uniNumberBox,
-		uniFab,
-		uniPopup,
-		uniIcons
-	},
 	data() {
 		return {
 			isLoaded:false,

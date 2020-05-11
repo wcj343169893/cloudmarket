@@ -77,7 +77,7 @@
 			<view class="c-row b-b">
 				<text class="tit">服务</text>
 				<view class="bz-list con">
-					<text v-for="ser in service">{{ ser }} ·</text>
+					<text v-for="(ser,serIndex) in service" :key="serIndex">{{ ser }} ·</text>
 				</view>
 			</view>
 		</view>

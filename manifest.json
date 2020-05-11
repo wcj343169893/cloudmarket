@@ -84,18 +84,43 @@
             }
         },
         "nativePlugins" : {
-            "CLSDK-ShanYanSDKModule" : {
+            "JG-JVerification" : {
+                "JPUSH_CHANNEL_ANDROID" : "developer-default",
+                "JPUSH_APPKEY_IOS" : "0000000000",
+                "JPUSH_APPKEY_ANDROID" : "d3552898cb41098811589dc6",
+                "JPUSH_CHANNEL_IOS" : "developer-default",
                 "__plugin_info__" : {
-                    "name" : "闪验SDK",
-                    "description" : "本机号码一键登录",
+                    "name" : "极光认证官方SDK",
+                    "description" : "极光认证官方SDK HBuilder插件版本",
                     "platforms" : "Android,iOS",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=645",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=1356",
                     "android_package_name" : "com.gengyun",
                     "ios_bundle_id" : "",
                     "isCloud" : true,
                     "bought" : 1,
-                    "pid" : "645",
-                    "parameters" : {}
+                    "pid" : "1356",
+                    "parameters" : {
+                        "JPUSH_CHANNEL_ANDROID" : {
+                            "des" : "[Android]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JPUSH_CHANNEL",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_IOS" : {
+                            "des" : "[iOS]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JVerification:APP_KEY",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_ANDROID" : {
+                            "des" : "[Android]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JPUSH_APPKEY",
+                            "value" : ""
+                        },
+                        "JPUSH_CHANNEL_IOS" : {
+                            "des" : "[iOS]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JVerification:CHANNEL",
+                            "value" : ""
+                        }
+                    }
                 }
             }
         }

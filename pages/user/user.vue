@@ -76,7 +76,9 @@
 						<text>浏览历史</text>
 					</view>
 					<scroll-view scroll-x class="h-list">
-						<image v-for="item in visiteGoodsList" :src="item.src" @click="navToGoods(item.goods_id)" mode="aspectFill"></image>
+						<view v-for="(item,index) in visiteGoodsList" :key="index" class="h-list-image">
+							<image :src="item.src" @click="navToGoods(item.goods_id)" mode="aspectFill"></image>
+						</view>
 					</scroll-view>
 				</block>
 				<!-- <list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell> -->
@@ -375,12 +377,14 @@ export default {
 	.h-list {
 		white-space: nowrap;
 		padding: 30upx 30upx 0;
-		image {
+		.h-list-image {
 			display: inline-block;
-			width: 160upx;
-			height: 160upx;
 			margin-right: 20upx;
-			border-radius: 4%;
+			image{
+				width: 160upx;
+				height: 160upx;
+				border-radius: 4%;
+			}
 		}
 	}
 }

@@ -140,7 +140,8 @@ const getGoodsVisites = function(data) {
 //手机号自动登录
 const mobileAutoLogin = function(data) {
 	return network({
-		url: "login",
+		url: "jgLogin",
+		//url: "login",
 		data: data,
 		isShowLoading: true
 	})
