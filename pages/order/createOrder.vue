@@ -187,6 +187,11 @@ export default {
 		},
 		//提交订单，并跳转到支付页面
 		submit() {
+			//判断收货地址
+			if(!this.addressData || !this.addressData._id){
+				this.$api.msg("请填写收货地址");
+				return;
+			}
 			settlement({
 				id: this.shopId,
 				stationId: this.stationId,

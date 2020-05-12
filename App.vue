@@ -1,11 +1,36 @@
 <script>
+//#ifdef APP-PLUS
+//极光登录插件,提前预取号，提高登录速度
+const jv = uni.requireNativePlugin('JG-JVerification');
+//#endif
 /**
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
 export default {
 	methods: {
-		...mapMutations(['login'])
+		...mapMutations(['login']),
+		async initLogin() {
+			jv.init(
+				{
+					timeout: 7000,
+					isProduction: true
+				},
+				result => {
+					console.log('jv.init', result);
+				}
+			);
+			jv.isInitSuccess(result => {
+				console.log('jv.isInitSuccess', result);
+			});
+			jv.checkVerifyEnable(result => {
+				console.log('jv.checkVerifyEnable', result);
+			});
+			//预取号
+			jv.preLogin(7000, result => {
+				console.log('jv.preLogin', result);
+			});
+		}
 	},
 	onLaunch: function() {
 		let userInfo = uni.getStorageSync('userInfo') || '';
@@ -22,6 +47,9 @@ export default {
 					}
 				}); */
 		}
+		//#ifdef APP-PLUS
+		this.initLogin();
+		//#endif
 	},
 	onShow: function() {
 		console.log('App Show');

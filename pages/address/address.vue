@@ -107,6 +107,10 @@ export default {
 								this.cancelOptions();
 								//如果是从填写订单过来的，需要刷新订单页面的收货地址
 							});
+							//全部清理完了，
+							if (this.source == "settlement" && this.addressList.length == 0) {
+								this.$api.prePage().refreshList({}, 'select');
+							}
 						}
 					}
 				});

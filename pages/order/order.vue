@@ -15,7 +15,6 @@
 						<view class="i-top b-b">
 							<text class="time">{{ item.created }}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
-							<text v-if="item.state === 9" class="del-btn yticon icon-iconfontshanchu1" @click="deleteOrder(index)"></text>
 						</view>
 						<view class="">
 							<scroll-view v-if="item.goods.length > 1" class="goods-box" scroll-x>
@@ -233,6 +232,15 @@ export default {
 							type: 'delete'
 						}).then(res => {
 							console.log(res);
+							//更改所有订单的状态
+							this.navList.map((tabs, index) => {
+								tabs.orderList.map((ord, index2) => {
+									if (ord._id == item._id) {
+										//所有列表全部删除
+										this.navList[index].orderList.splice(index2, 1);
+									}
+								});
+							});
 						});
 					} else if (res.cancel) {
 						console.log('用户点击取消');

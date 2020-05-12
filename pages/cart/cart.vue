@@ -111,13 +111,17 @@ export default {
 	},
 	onLoad() {
 		console.log('cart onLoad');
-		this.loadData();
+		if (!this.isLoaded) {
+			this.loadData();
+		}
 	},
 	onShow() {
+		console.log('cart onShow');
 		if (this.isLoaded) {
-			console.log('cart onShow');
 			//重新加载页面数据
 			this.loadData();
+			
+			this.isLoaded=false;
 		}
 	},
 	//下拉刷新,不会更新底部附近的店铺,app没效果
