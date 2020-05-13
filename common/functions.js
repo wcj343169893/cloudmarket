@@ -20,7 +20,33 @@ const updateCartNumber = function(gnumber) {
 			text: gnumber + ""
 		});
 	}
+	console.log("cart_sum_count",gnumber)
+	uni.setStorage({
+		key:"cart_sum_count",
+		data:gnumber
+	})
 };
+/**
+ * 获得购物车数量
+ */
+const getCartSumNumber = function(){
+	let data =  uni.getStorageSync("cart_sum_count");
+	console.log("getCartSumNumber",data)
+	if(data < 1){
+		data=0;
+	}
+	return data;
+}
+/**
+ * 递增购物车数量
+ * @param {Object} number
+ */
+const incrCartNumber= function(number){
+	let data = getCartSumNumber();
+	data += number;
+	updateCartNumber(data);
+	return data;
+}
 /**
  * 更新商品的标签,秒杀，满减
  * @param Object goods 商品信息
@@ -153,21 +179,18 @@ const dateFormat = function(value, fmt) {
 const miaoshaCountDown = function(item,endTime,callback){
 	let startTime = parseInt(item.startTime/1000);
 	let lastTime = parseInt(endTime/1000);
-	if(startTime >= lastTime){
+	/* if(startTime >= lastTime){
 		if(callback){
-			callback(item);
+			callback();
 		}
 		return false;
-	}
+	} */
 	let timer;
 	let tick = function(){
 		let n1 = lastTime-startTime;
-		if(n1 < 1){
-			clearInterval(timer);
-			if(callback){
-				callback(item);
-			}
-			return;
+		//这里判断很关键，如果写1，在1秒之内，会重复调用
+		if(n1 < 0){
+			return true;
 		}
 		let hour = parseInt(n1/3600);
 		let minute = parseInt((n1-hour*3600)/60);
@@ -177,14 +200,28 @@ const miaoshaCountDown = function(item,endTime,callback){
 		item.minute = number2String(minute);
 		item.second = number2String(second);
 		startTime++;
+		//console.log(item.minute,item.second);
+		return false;
 	}
 	let number2String = function(n){
 		return ("00"+n).substr((""+n).length);
 	}
-	timer = setInterval(function(){
-		tick();
-	},1000);
-	
+	let timePromise = new Promise((resolve, reject)=>{
+		let t1=tick();
+		timer = setInterval(function(){
+			t1 = tick();
+			if(t1){
+				clearInterval(timer);
+				resolve();
+			}
+		},1000);
+	});
+	timePromise.then(res=>{
+		console.log("miaoshaCountDown finish")
+		if(callback){
+			callback();
+		}
+	})
 }
 
 //登录提示框
@@ -286,6 +323,8 @@ const navToOrderDetail = function(id) {
 
 export {
 	updateCartNumber,
+	incrCartNumber,
+	getCartSumNumber,
 	navToGoodsPage,
 	navToLoginPage,
 	navToCreateOrder,

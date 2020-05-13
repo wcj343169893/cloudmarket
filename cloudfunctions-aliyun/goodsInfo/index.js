@@ -7,15 +7,13 @@ exports.main = async (event, context) => {
 	let id = +event.id;
 	let uid = +event.uid;
 	const collection = db.collection('goods');
-	//商品浏览记录，每人每件商品只存在一条
-	const visiteCollection = db.collection('goods_visites');
 	const cmd = db.command;
-	
-	/* process.on('unhandledRejection', (reason, p) => {
-	  console.log('Unhandled Rejection at:', p, 'reason:', reason);
-	  // application specific logging, throwing an error, or other logic here
-	}); */
-	
+
+	process.on('unhandledRejection', (reason, p) => {
+		console.log('Unhandled Rejection at:', 'reason:', reason);
+		console.log(p);
+	});
+
 	let goods = await collection.where({
 		id: id
 	}).field({
@@ -53,17 +51,19 @@ exports.main = async (event, context) => {
 		let time = new Date().getTime();
 		//延时处理
 		goods.data.map(async (item) => {
-			console.log("item.id",item.id);
+			//商品浏览记录，每人每件商品只存在一条
+			console.log("item.id", item.id);
 			//增加浏览记录,必须存在uid
-			let visite = await visiteCollection.where({
+			let visite = await db.collection('goods_visites').where({
 				uid: uid,
 				goods_id: item.id
 			}).field({
-				goods_id: 1
-			}).get();
-			console.log("visite.affectedDocs",visite.affectedDocs);
+				goods_id: 1,
+				time: 1
+			}).limit(1).get();
+			console.log("visite.affectedDocs", visite.affectedDocs);
 			if (visite.affectedDocs < 1) {
-				let visave = await visiteCollection.add({
+				console.log({
 					uid: uid,
 					goods_id: item.id,
 					shopid: item.shopid,
@@ -71,18 +71,31 @@ exports.main = async (event, context) => {
 					src: item.src,
 					time: time
 				});
+				//新增浏览记录
+				let visave = await db.collection('goods_visites').add({
+					uid: uid,
+					goods_id: item.id,
+					shopid: item.shopid,
+					price: item.price,
+					src: item.src,
+					time: time
+				});
+				console.log("visave", visave);
+
 				//增加浏览量
-				return await collection.doc(item._id).update({
+				let incResult = await collection.doc(item._id).update({
 					visite: cmd.inc(1)
 				});
+				console.log("incResult", incResult);
 			} else {
+				console.log(visite.data[0]);
 				//更新浏览时间
-				return visite.data.map(async (vi) => {
-					return await visiteCollection.doc(vi._id).update({
-						time: time
-					});
+				let updateVisite = await db.collection('goods_visites').doc(visite.data[0]._id).update({
+					time: time
 				});
+				console.log("updateVisite", updateVisite);
 			}
+			return Promise.resolve({});
 		});
 		//favorite  是否收藏
 		//查询已加入购物车信息amount

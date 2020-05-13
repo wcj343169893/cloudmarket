@@ -54,7 +54,7 @@
 		</view> -->
 
 		<view class="c-list " v-if="hasSku">
-			<view class="b-b skuDialogPanel">
+			<view class="skuDialogPanel">
 				<view v-for="(item, index) in skuMap" :key="index">
 					<view class="skuname">
 						<text>{{ item.name }}</text>
@@ -74,10 +74,12 @@
 			</view>
 		</view>
 		<view class="c-list">
-			<view class="c-row b-b">
+			<view class="c-row">
 				<text class="tit">服务</text>
 				<view class="bz-list con">
-					<text v-for="(ser,serIndex) in service" :key="serIndex">{{ ser }} ·</text>
+					<view class="item" v-for="(ser,serIndex) in service" :key="serIndex">
+						<text>·{{ ser }}</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -90,7 +92,9 @@
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom">
 			<view class="options">
-				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn"><text class="yticon icon-gouwuche"></text></navigator>
+				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
+					<text class="yticon icon-gouwuche"><text class="sub" v-if="cartSumCount>0">{{cartSumCount}}</text></text>
+				</navigator>
 			</view>
 			<button class="add-btn" @click="addToCart">加入购物车</button>
 		</view>
@@ -103,7 +107,7 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown } from '@/common/functions.js';
+import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown,incrCartNumber,getCartSumNumber} from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -135,7 +139,8 @@ export default {
 			shareList: [],
 			skuMap: [],
 			hasMiaosha: false,
-			nameMap: {}
+			nameMap: {},
+			cartSumCount:0
 		};
 	},
 	computed: {
@@ -222,6 +227,9 @@ export default {
 					this.getSaleRate();
 				}
 			});
+			
+			//获得购物车总数量
+			this.cartSumCount = getCartSumNumber();
 		},
 		checkMiaosha(item) {
 			if (!item.miaosha) {
@@ -318,8 +326,9 @@ export default {
 				checked: 1,
 				amount: this.cart[this.sku_id]
 			}).then(res => {
-				this.$api.msg('加入购物车成功！');
+				this.$api.msg('加入成功',1500,false,"success");
 				console.log(res);
+				this.cartSumCount = incrCartNumber(1)
 			});
 		},
 		/**规格选择,默认选中秒杀商品**/
@@ -373,7 +382,7 @@ export default {
 <style lang="scss">
 page {
 	background: $page-color-base;
-	padding-bottom: 160upx;
+	padding-bottom: 100upx;
 }
 .icon-you {
 	font-size: $font-base + 2upx;
@@ -455,7 +464,7 @@ page {
 	display: flex;
 	align-items: center;
 	color: $font-color-base;
-	background: linear-gradient(left, #fdf5f6, #fbebf6);
+	background: linear-gradient(to left, #fdf5f6, #fbebf6);
 	padding: 12upx 30upx;
 	.share-icon {
 		display: flex;
@@ -533,12 +542,10 @@ page {
 		}
 	}
 	.bz-list {
-		height: 40upx;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
-		text {
-			display: inline-block;
-			margin-right: 30upx;
+		.item{
+			margin-bottom: 8upx;
 		}
 	}
 	.con-list {
@@ -613,6 +620,7 @@ page {
 .detail-desc {
 	background: #fff;
 	margin-top: 16upx;
+	overflow-x: hidden;
 	.d-header {
 		display: flex;
 		justify-content: center;
@@ -638,6 +646,10 @@ page {
 			content: '';
 			border-bottom: 1px solid #ccc;
 		}
+	}
+	img{
+		max-width: 100%;
+		display: block;
 	}
 }
 

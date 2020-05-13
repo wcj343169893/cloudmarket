@@ -89,7 +89,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsPage,updateGoodsTags} from '@/common/functions.js';
+import { navToGoodsPage,updateGoodsTags,incrCartNumber,updateCartNumber} from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -163,12 +163,13 @@ export default {
 				})
 				//this.address = res.address;
 				//购物车总数量
-				if(res.cart > 0){
+				/* if(res.cart > 0){
 					uni.setTabBarBadge({
 						index:2,
 						text:res.cart+""
 					});
-				}
+				} */
+				updateCartNumber(res.cart);
 			});
 		},
 		//轮播图切换修改背景色
@@ -395,7 +396,7 @@ page {
 		flex-shrink: 0;
 		width: 10upx;
 		height: 36upx;
-		background: linear-gradient(#75d66f, #62b66c);
+		background: linear-gradient(to bottom,#75d66f, #62b66c);
 		margin-right: 12upx;
 	}
 	.tit-box {
