@@ -16,6 +16,8 @@ exports.main = async (event, context) => {
 	let collectionNames = getCollectionNames(event);
 	let data = [];
 	let cartCollection = db.collection(collectionNames['carts']);
+	
+	const cmd = db.command;
 	if (opt == "list") {
 		//查询列表
 		let carts = await cartCollection.where({
@@ -53,7 +55,6 @@ exports.main = async (event, context) => {
 			for (let i = 0; i < carts.affectedDocs; i++) {
 				ids.push(carts.data[i].goods_id);
 			}
-			const cmd = db.command;
 			//查询实时商品信息
 			let goods = await db.collection(collectionNames['goods']).where({
 				shopid: shopid,
@@ -86,10 +87,15 @@ exports.main = async (event, context) => {
 	} else if (opt == "selected") {
 		//批量选中
 		let checked = event.checked ? true : false;
-		let res = await cartCollection.where({
+		let condition = {
 			shopid: shopid,
 			uid: uid,
-		}).update({
+		};
+		//批量处理指定的购物车信息
+		if(event.cartIds){
+			condition["_id"]=cmd.in(event.cartIds.split(","));
+		}
+		let res = await cartCollection.where(condition).update({
 			checked: checked,
 		});
 		data = "ok";

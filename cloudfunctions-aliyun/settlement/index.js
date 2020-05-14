@@ -1,12 +1,14 @@
 'use strict';
 const db = uniCloud.database();
+const cmd = db.command;
 exports.main = async (event, context) => {
 	//查询购物车选中数据
 	let shopid = parseInt(event.id);
 	let uid = parseInt(event.uid);
 	let addressid = event.addressid;
+	//处理类型，preview，submit
 	let type = event.type;
-	const cmd = db.command;
+	//忽略库存不足商品
 	const cartCollection = db.collection('carts');
 	let carts = await cartCollection.where({
 		shopid: shopid,
@@ -37,14 +39,17 @@ exports.main = async (event, context) => {
 	}
 	let ids = [];
 	let cartMap = {};
+	//减少秒杀库存成功
+	let decrStockMiaoshaGoodsSuccess = [];
+	//减少商品库存
+	let decrStockGoodsSuccess = [];
 	//处理商品购物车数据
-	carts.data.forEach(ct => {
+	carts.data.map(ct => {
 		cartMap[ct.goods_id + '_' + ct.sku_id] = {
 			cartId: ct._id,
 			cartPrice: ct.price,
 			amount: ct.amount
 		};
-		data.cartCount += ct.amount;
 		ids.push(ct.goods_id);
 	});
 	const goodsCollection = db.collection('goods');
@@ -69,7 +74,7 @@ exports.main = async (event, context) => {
 		//处理选中数量
 		goods.data.map(ele => {
 			if (ele.skus && ele.skus.length > 0) {
-				ele.skus.map(sku => {
+				ele.skus.map((sku, index) => {
 					let key = ele.id + '_' + sku.id;
 					if (cartMap[key] && cartMap[key].amount > 0) {
 						//相当于clone对象
@@ -79,62 +84,81 @@ exports.main = async (event, context) => {
 						delete goo.skus;
 						if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
 							delete goo.miaosha;
-						} else {
-							delete goo.manjian;
 						}
 
 						Object.assign(goo, cartMap[key], sku, {
 							hasSku: true,
 							sku_id: sku.id,
+							sku_index: index,
 							subName: sku.name.replace('&gt;', ' ')
 						})
 						goodsOut.push(goo);
 					}
 				});
 			} else {
-				if (ele.miaosha) {
-					//秒杀与满减不同享
-					delete ele.manjian;
-				}
 				let key = ele.id + '_0';
 				Object.assign(ele, cartMap[key], {
 					hasSku: false,
+					sku_index: 0,
 					sku_id: 0
 				});
 				goodsOut.push(ele);
 			}
 		});
-		goodsOut.forEach(ele => {
+		for (let ele of goodsOut) {
 			//处理秒杀价
 			if (ele.miaosha) {
 				let time = new Date().getTime();
-				if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime) {
-					ele.originPrice = ele.price;
-					ele.price = ele.miaosha.price;
-					ele.stock = ele.miaosha.stock;
+				//秒杀库存一定大于购买数量,如果秒杀限量，购买数量不能大于限量
+				if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime && ele.miaosha.stock >= ele.amount && (ele.miaosha
+						.limit == 0 || ele.miaosha.limit >= ele.amount)) {
+					//同步更新秒杀库存，相当于拿钥匙
+					let isMiaoshaError = false;
+					if (type == "submit") {
+						let res = await updateGoodsMiaoshaStock(ele, 1);
+						console.log("updateGoodsMiaoshaStock", res);
+						if (res.updated < 1) {
+							isMiaoshaError = true;
+						} else {
+							decrStockMiaoshaGoodsSuccess.push({
+								_id: ele._id,
+								amount: ele.amount
+							});
+						}
+					}
+					if (!isMiaoshaError) {
+						ele.originPrice = ele.price;
+						ele.price = ele.miaosha.price;
+						ele.stock = ele.miaosha.stock;
+					}
 					//开始结束时间用时间戳  new Date().getTime()
 					//测试代码===>key $date must not start with '$'
 					/* delete ele.miaosha.beginTime;
 					delete ele.miaosha.endTime; */
+				} else {
+					//秒杀与满减不同享
+					delete ele.manjian;
 				}
-			}
-			//加入购物车时的差价
-			ele.cutPrice = 0;
-			if (ele.cartPrice > ele.price) {
-				ele.cutPrice = ele.cartPrice - ele.price;
-			}
-			//购物车总价格
-			data.totalMoney += ele.price * ele.amount;
-			if (ele.originPrice > 0) {
-				//购物车总折扣
-				data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
 			}
 			//检查库存是否不足
 			if (ele.amount > ele.stock) {
 				data.stockNotEnough.push(ele);
+			} else {
+				//加入购物车时的差价
+				ele.cutPrice = 0;
+				if (ele.cartPrice > ele.price) {
+					ele.cutPrice = ele.cartPrice - ele.price;
+				}
+				//购物车总价格
+				data.totalMoney += ele.price * ele.amount;
+				if (ele.originPrice > 0) {
+					//购物车总折扣
+					data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
+				}
+				data.goods.push(ele);
+				data.cartCount += ele.amount;
 			}
-		})
-		data["goods"] = goodsOut;
+		}
 	}
 	//查询默认收货地址,结算的时候，前端传addressid
 	let addressCondition = {
@@ -174,39 +198,46 @@ exports.main = async (event, context) => {
 				"data": data
 			};
 		}
-		data.goods.map(async (ele) => {
-			//异步更新库存
+		let isGoodsError = false;
+		for (let ele of data.goods) {
 			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
-			if (ele.hasSku) {
-				let res = await goodsCollection.where({
-					_id: ele._id,
-					"skus.id": ele.sku_id
-				}).update({
-					monthlySale: cmd.inc(ele.amount),
-					stock: cmd.inc(-1 * ele.amount),
-					'skus.$.stock': cmd.inc(-1 * ele.amount)
-				});
+			let res = await updateGoodsStock(ele, 1);
+			console.log("updateGoodsStock", res);
+			if (res.updated < 1) {
+				isGoodsError = true;
+				break;
 			} else {
-				let res = await goodsCollection.where({
-					_id: ele._id
-				}).update({
-					monthlySale: cmd.inc(ele.amount),
-					stock: cmd.inc(-1 * ele.amount)
+				decrStockGoodsSuccess.push({
+					_id: ele._id,
+					amount: ele.amount,
+					hasSku: ele.hasSku,
+					sku_index: ele.sku_index,
+					sku_id: ele.sku_id
 				});
 			}
-			//@todo保存商品每日销量,最好是redis
-		});
-		//删除购物车cartId
-		carts.data.map(async (ele) => {
-			return await cartCollection.doc(ele._id).remove();
-		});
+		}
+		if (isGoodsError) {
+			//归还秒杀库存
+			decrStockMiaoshaGoodsSuccess.map(async (ele) => {
+				return await updateGoodsMiaoshaStock(ele, -1);
+			});
+			//归还商品库存,
+			decrStockGoodsSuccess.map(async (ele) => {
+				return await updateGoodsStock(ele, -1);
+			});
+			return {
+				"code": 404,
+				"message": "提交订单失败!\n商品库存不足",
+			};
+		}
+		//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 		//备注
 		data["remark"] = event.remark;
 		const day = new Date().toISOString();
 		data["created"] = day;
 		data["modified"] = day;
 		//最后支付时间，否则自动取消订单,5分钟支付时间
-		data["lastPayTime"] = (new Date()).getTime() + 5*60*1000;
+		data["lastPayTime"] = (new Date()).getTime() + 5 * 60 * 1000;
 		//用户设备信息
 		data["platform"] = [
 			context.OS,
@@ -229,6 +260,16 @@ exports.main = async (event, context) => {
 				"message": "提交订单失败",
 			};
 		}
+
+		//删除购物车cartId
+		carts.data.map(async (ele) => {
+			console.log("移除购物车", ele._id);
+			let res = await db.collection('carts').where({
+				_id: ele._id
+			}).remove();
+			console.log(res);
+			return res;
+		});
 		return {
 			"code": 200,
 			"message": "操作成功",
@@ -241,3 +282,40 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
+//根系秒杀库存
+const updateGoodsMiaoshaStock = function(ele, xishu) {
+	return db.collection('goods').where({
+		_id: ele._id,
+		"miaosha.stock": cmd.gte(ele.amount * xishu)
+	}).update({
+		miaosha: {
+			stock: cmd.inc(-1 * ele.amount * xishu),
+			sales: cmd.inc(ele.amount * xishu)
+		}
+	});
+}
+//更新商品库存
+const updateGoodsStock = function(ele, xishu) {
+	if (ele.hasSku) {
+		let condition = {
+			_id: ele._id,
+			"skus.id": ele.sku_id
+		};
+		condition['skus.' + ele.sku_index + '.stock'] = cmd.gte(ele.amount * xishu);
+		let data = {
+			monthlySale: cmd.inc(ele.amount * xishu),
+			stock: cmd.inc(-1 * ele.amount * xishu)
+		};
+		data['skus.' + ele.sku_index + '.stock'] = cmd.inc(-1 * ele.amount * xishu);
+		data['skus.' + ele.sku_index + '.sales'] = cmd.inc(1 * ele.amount * xishu);
+		return db.collection('goods').where(condition).update(data);
+	} else {
+		return db.collection('goods').where({
+			_id: ele._id,
+			stock: cmd.gte(ele.amount * xishu)
+		}).update({
+			monthlySale: cmd.inc(ele.amount * xishu),
+			stock: cmd.inc(-1 * ele.amount * xishu)
+		});
+	}
+}

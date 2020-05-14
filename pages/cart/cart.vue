@@ -13,7 +13,7 @@
 			<!-- 列表 -->
 			<view class="cart-list">
 				<block v-for="(item, index) in cartList" :key="index">
-					<view class="goodsList" :class="{ disabled: item.disabled }" v-if="item.cart > 0">
+					<view class="goodsList b-b">
 						<view class="weui-flex">
 							<view class="weui-flex-check">
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
@@ -37,13 +37,13 @@
 										<text>{{ item.subName }}</text>
 									</view>
 									<view class="" v-if="item.cutPrice > 0">
-										<text class="saledPrice" >
+										<text class="saledPrice">
 											<text class="unit">比加入时便宜</text>
 											<text class="price emphasis">{{ item.cutPrice }}</text>
 										</text>
 									</view>
 									<view class="tags">
-										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
+										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
 									</view>
 									<view class="buttons">
 										<view>
@@ -63,6 +63,51 @@
 									:value="item.cart"
 									@change="bindChangeCart"
 								></uni-number-box>
+							</view>
+						</view>
+					</view>
+				</block>
+			</view>
+			<view class="lose-notice b-b" v-if="notEnoughCartList.length > 0"><text>因配送范围、库存原因而导致失效的商品</text></view>
+			<view class="cart-list lose">
+				<block v-for="(item, index) in notEnoughCartList" :key="index">
+					<view class="goodsList b-b">
+						<view class="weui-flex">
+							<view class="weui-flex-check"><text>失效</text></view>
+							<view class="desc">
+								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+									<image
+										:src="item.src"
+										:class="[item.loaded]"
+										mode="aspectFill"
+										lazy-load
+										@load="onImageLoad('notEnoughCartList', index)"
+										@error="onImageError('notEnoughCartList', index)"
+									></image>
+								</view>
+								<view class="desc-name">
+									<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+										<text class="title">{{ item.title }}</text>
+									</view>
+									<view class="">
+										<text>{{ item.subName }}</text>
+									</view>
+									<view class="" v-if="item.cutPrice > 0">
+										<text class="saledPrice">
+											<text class="unit">比加入时便宜</text>
+											<text class="price emphasis">{{ item.cutPrice }}</text>
+										</text>
+									</view>
+									<view class="tags">
+										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
+									</view>
+									<view class="buttons">
+										<view>
+											<text class="price">{{ item.price }}</text>
+											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -106,7 +151,8 @@ export default {
 			allChecked: false, //全选状态  true|false
 			empty: false, //空白页现实  true|false
 			skuCart: {},
-			cartList: []
+			cartList: [],
+			notEnoughCartList: []
 		};
 	},
 	onLoad() {
@@ -118,7 +164,7 @@ export default {
 	onShow() {
 		console.log('cart onShow');
 		if (this.isLoaded) {
-			this.isLoaded=false;
+			this.isLoaded = false;
 			//重新加载页面数据
 			this.loadData();
 		}
@@ -182,25 +228,49 @@ export default {
 						}
 					});
 					this.cartList = [];
-					res.cart.forEach(ct => {
+					this.notEnoughCartList = [];
+					res.cart.map(ct => {
 						//加入到购物车数据列表
 						let key = ct.goods_id + '_' + ct.sku_id;
 						let goods = goodsSkusMap[key];
 						goods['cart'] = ct.amount;
 						//必须保证库存足够
 						goods['disabled'] = ct.amount > goods.stock;
-						//默认选中
-						goods['checked'] = ct.checked && !goods.disabled;
 						goods['cutPrice'] = 0;
 						goods['loaded'] = '';
 						if (ct.price > 0 && ct.price > goods.price) {
 							goods['cutPrice'] = (ct.price - goods.price).toFixed(2);
 						}
-						this.cartList.push(goods);
+						if (goods.disabled) {
+							this.notEnoughCartList.push(goods);
+						} else {
+							//默认选中
+							goods['checked'] = ct.checked && !goods.disabled;
+							this.cartList.push(goods);
+						}
 					});
 					//console.log(this.cartList);
 					//计算购物车总金额
 					this.calcTotal();
+					if (this.notEnoughCartList.length > 0) {
+						let cartIds = [];
+						this.notEnoughCartList.map(m => {
+							if (m.checked) {
+								cartIds.push(m.cartId);
+							}
+						});
+						//批量取消选择
+						if (cartIds.length > 0) {
+							selectCart({
+								id: this.shopId,
+								stationId: this.stationId,
+								checked: false,
+								cartIds: cartIds.join(',')
+							}).then(res => {
+								console.log(res);
+							});
+						}
+					}
 				},
 				err => {
 					//没有数据
@@ -392,6 +462,9 @@ export default {
 </script>
 
 <style lang="scss">
+page {
+	background: #f5f5f5;
+}
 .container {
 	padding-bottom: calc(60upx + var(--window-bottom));
 	//#ifdef APP-PLUS
@@ -436,7 +509,6 @@ export default {
 .cart-list {
 	flex: 1;
 	overflow: hidden;
-	padding: 20upx 18upx 0;
 	height: 100%;
 	.space {
 		padding-top: var(--window-bottom);
@@ -451,9 +523,7 @@ export default {
 	.goodsList {
 		position: relative;
 		background: #ffffff;
-		padding: 20upx 0 20upx;
-		border-radius: 12upx;
-		margin-bottom: 8upx;
+		padding: 20upx 20upx 20upx;
 		.sub-catename {
 			padding-bottom: 10upx;
 		}
@@ -474,7 +544,6 @@ export default {
 			width: 100%;
 			height: 100%;
 			opacity: 1;
-			
 		}
 	}
 	.weui-flex-check {
@@ -515,6 +584,24 @@ export default {
 			.empty {
 				flex: 1;
 			}
+		}
+	}
+	.b-b:after {
+		left: 80upx;
+	}
+	&.lose {
+		color: $font-color-disabled;
+		.weui-flex-check {
+			font-size: $font-sm;
+			padding-right: 10upx;
+		}
+		.desc {
+			.title {
+				color: $font-color-disabled;
+			}
+		}
+		.price {
+			color: $font-color-disabled;
 		}
 	}
 }
@@ -599,5 +686,13 @@ export default {
 .action-section .checkbox.checked,
 .cart-item .checkbox.checked {
 	color: $uni-color-success;
+}
+.lose-notice {
+	font-size: $font-sm;
+	text-align: center;
+	margin-top: 20upx;
+	background-color: #fff;
+	padding: 18upx 8upx;
+	position: relative;
 }
 </style>

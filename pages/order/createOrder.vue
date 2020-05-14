@@ -121,7 +121,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { settlement } from '@/common/request.js';
+import { settlement, selectCart } from '@/common/request.js';
 import { navToLoginPage } from '@/common/functions.js';
 export default {
 	data() {
@@ -135,6 +135,8 @@ export default {
 				}
 			],
 			dataList: [],
+			//库存不足商品
+			stockNotEnough: [],
 			cartCount: 0,
 			totalMoney: 0,
 			totalDiscount: 0,
@@ -160,12 +162,45 @@ export default {
 					//结算商品列表，写到本地临时缓存
 					this.dataList = res.goods;
 					uni.setStorage({
-						key:"create_order_goods",
-						data:res.goods
+						key: 'create_order_goods',
+						data: res.goods
 					});
 					this.cartCount = res.cartCount;
 					this.totalMoney = res.totalMoney;
 					this.totalDiscount = res.totalDiscount;
+					this.stockNotEnough = res.stockNotEnough;
+					if (this.stockNotEnough.length > 0) {
+						uni.showModal({
+							title: '库存不足提醒',
+							content:
+								'商品:' +
+								this.stockNotEnough
+									.map(m => {
+										return m.title;
+									})
+									.join(',') +
+								' 库存不足\n是否移除后继续提交？',
+							success: e => {
+								if (e.confirm) {
+									//更新库存不足的商品为未选中状态
+									selectCart({
+										id: this.shopId,
+										stationId: this.stationId,
+										checked: false,
+										cartIds: this.stockNotEnough
+											.map(m => {
+												return m.cartId;
+											})
+											.join(',')
+									}).then(res => {
+										console.log(res);
+									});
+								} else {
+									uni.navigateBack();
+								}
+							}
+						});
+					}
 				},
 				err => {
 					//购物车没有需要结算的商品
@@ -188,25 +223,28 @@ export default {
 		//提交订单，并跳转到支付页面
 		submit() {
 			//判断收货地址
-			if(!this.addressData || !this.addressData._id){
-				this.$api.msg("请填写收货地址");
+			if (!this.addressData || !this.addressData._id) {
+				this.$api.msg('请填写收货地址');
 				return;
 			}
 			settlement({
 				id: this.shopId,
 				stationId: this.stationId,
 				type: 'submit',
-				remark:this.remark,
+				remark: this.remark,
 				addressid: this.addressData._id
-			}).then(res => {
-				let id = res;
-				let money = this.totalMoney;
-				uni.redirectTo({
-					url: `/pages/money/pay?id=${id}&money=${money}`
-				});
-			},err=>{
-				this.$api.msg(err.message);
-			});
+			}).then(
+				res => {
+					let id = res;
+					let money = this.totalMoney;
+					uni.redirectTo({
+						url: `/pages/money/pay?id=${id}&money=${money}`
+					});
+				},
+				err => {
+					this.$api.msg(err.message);
+				}
+			);
 		},
 		refreshList(data, type) {
 			console.log(data, type);

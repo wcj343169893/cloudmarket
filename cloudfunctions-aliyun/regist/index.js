@@ -29,10 +29,31 @@ exports.main = async (event, context) => {
 	/* let res =await db.collection("identity").where({"key":"orders"}).update({
 		value:cmd.inc(1)
 	}); */
-	
+	/* 
 	await db.collection("identity").doc("5eb1166933bd17004e01b396").update({
 		value:cmd.inc(1)
 	});
-	let res = await db.collection("identity").doc("5eb1166933bd17004e01b396").get();
+	let res = await db.collection("identity").doc("5eb1166933bd17004e01b396").get(); */
+	/* let res = await db.collection("goods").where({
+		_id: "5e75bd15b1e402004d1dbbce",
+		stock:cmd.gte(5)
+	}).update({
+		miaosha:{
+			stock:cmd.inc(-1 * 5),
+			sales:cmd.inc(5)
+		}
+	}); */
+	//{"affectedDocs":1,"updated":1}
+	
+	
+	/* let res = await db.collection('goods').where({
+		_id: "5e75bd28d040d3004cb60b7c",
+	}).update({
+		"skus.1.stock":222
+	}); */
+	
+	let res = await db.collection('carts').where({
+		_id:"5eba802c0a0d75004cfead50"
+	}).remove();
 	return res;
 };
