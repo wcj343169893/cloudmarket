@@ -24,7 +24,7 @@ exports.main = async (event, context) => {
 	  let appid = context.APPID // manifest.json中配置的appid
 	
 	return [os,platform,appid]; */
-	
+
 	const cmd = db.command;
 	/* let res =await db.collection("identity").where({"key":"orders"}).update({
 		value:cmd.inc(1)
@@ -44,16 +44,36 @@ exports.main = async (event, context) => {
 		}
 	}); */
 	//{"affectedDocs":1,"updated":1}
-	
-	
+
+
 	/* let res = await db.collection('goods').where({
 		_id: "5e75bd28d040d3004cb60b7c",
 	}).update({
 		"skus.1.stock":222
 	}); */
-	
-	let res = await db.collection('carts').where({
-		_id:"5eba802c0a0d75004cfead50"
-	}).remove();
-	return res;
+	let carts = await db.collection('carts').where({
+		checked: true,
+		uid: 10000
+	}).field({
+		"goods_id": 1,
+		"sku_id": 1,
+		"price": 1,
+		"amount": 1
+	}).get();
+	for (let ele of carts.data) {
+		let res = await deleteCart(ele);
+		console.log(res);
+	}
+	return carts;
 };
+
+
+const deleteCart = function(ele) {
+	return db.collection('carts').where({
+		"goods_id": ele.goods_id,
+		"sku_id": ele.sku_id,
+		uid: 10000
+	}).update({
+		amount: 4
+	});
+}

@@ -37,12 +37,30 @@ exports.main = async (event, context) => {
 		"address": {},
 		"goods": []
 	}
+	//查询默认收货地址,结算的时候，前端传addressid
+	let addressCondition = {
+		uid: uid
+	};
+	if (addressid) {
+		addressCondition["_id"] = addressid;
+	}
+	let address = await db.collection('addresses').where(addressCondition).orderBy("default", "desc").limit(1).get();
+	if (address.affectedDocs > 0) {
+		data["address"] = address.data[0];
+	} else if (type == "submit") {
+		//收货地址不存在
+		return {
+			"code": 404,
+			"message": "收货地址不存在"
+		};
+	}
 	let ids = [];
 	let cartMap = {};
 	//减少秒杀库存成功
 	let decrStockMiaoshaGoodsSuccess = [];
 	//减少商品库存
 	let decrStockGoodsSuccess = [];
+	let cartIds=[];
 	//处理商品购物车数据
 	carts.data.map(ct => {
 		cartMap[ct.goods_id + '_' + ct.sku_id] = {
@@ -51,6 +69,7 @@ exports.main = async (event, context) => {
 			amount: ct.amount
 		};
 		ids.push(ct.goods_id);
+		cartIds.push(ct._id);
 	});
 	const goodsCollection = db.collection('goods');
 	//查询实时商品信息
@@ -159,39 +178,25 @@ exports.main = async (event, context) => {
 				data.cartCount += ele.amount;
 			}
 		}
+	}else{
+		//结算商品不存在
+		return {
+			"code": 404,
+			"message": "商品不存在"
+		};
 	}
-	//查询默认收货地址,结算的时候，前端传addressid
-	let addressCondition = {
-		uid: uid
-	};
-	if (addressid) {
-		addressCondition["_id"] = addressid;
-	}
-	let address = await db.collection('addresses').where(addressCondition).orderBy("default", "desc").limit(1).get();
-	if (address.affectedDocs > 0) {
-		data["address"] = address.data[0];
-	}
+
 	//格式化数字
 	data.totalDiscount = Number(data.totalDiscount.toFixed(2));
 	data.totalMoney = Number(data.totalMoney.toFixed(2));
 	//提交订单
 	if (type && type == "submit") {
-		//收货地址不存在
-		if (!data.address._id) {
-			return {
-				"code": 404,
-				"message": "收货地址错误"
-			};
-		}
-		//结算商品不存在
-		if (data.goods.lengt < 1) {
-			return {
-				"code": 404,
-				"message": "商品不存在"
-			};
-		}
 		//检查是否存在库存不足的商品
 		if (data.stockNotEnough.lengt > 0) {
+			//归还秒杀库存1
+			decrStockMiaoshaGoodsSuccess.map(async (ele) => {
+				return await updateGoodsMiaoshaStock(ele, -1);
+			});
 			return {
 				"code": 404,
 				"message": "商品库存不足",
@@ -217,11 +222,11 @@ exports.main = async (event, context) => {
 			}
 		}
 		if (isGoodsError) {
-			//归还秒杀库存
+			//归还秒杀库存2
 			decrStockMiaoshaGoodsSuccess.map(async (ele) => {
 				return await updateGoodsMiaoshaStock(ele, -1);
 			});
-			//归还商品库存,
+			//归还商品库存
 			decrStockGoodsSuccess.map(async (ele) => {
 				return await updateGoodsStock(ele, -1);
 			});
@@ -261,15 +266,11 @@ exports.main = async (event, context) => {
 			};
 		}
 
-		//删除购物车cartId
-		carts.data.map(async (ele) => {
-			console.log("移除购物车", ele._id);
-			let res = await db.collection('carts').where({
-				_id: ele._id
-			}).remove();
-			console.log(res);
-			return res;
-		});
+		//删除购物车cartId-------------我怀疑不支持异步操作--------
+		let delCart = await db.collection('carts').where({
+			_id: cmd.in(cartIds)
+		}).remove();
+		console.log(delCart)
 		return {
 			"code": 200,
 			"message": "操作成功",
