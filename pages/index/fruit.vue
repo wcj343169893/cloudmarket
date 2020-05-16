@@ -34,7 +34,7 @@
 			</view>
 		</view>
 		<!-- 分类 -->
-		<view class="cate-section m-t">
+		<view class="cate-section m-t" v-if="recommendCategoriesList.length > 0">
 			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item.id)">
 				<image :src="item.src"></image>
 				<text>{{ item.name }}</text>
@@ -63,24 +63,25 @@
 				</scroll-view>
 			</view>
 		</block>
-		<view class="f-header m-t">
-			<view class="icon">&nbsp;</view>
-			<view class="tit-box">
-				<text class="tit">实时鲜货</text>
-			</view>
-		</view>
-		<view class="newest-section">
-			<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-				<image :src="item.src" mode="aspectFill"></image>
-				<view class="title clamp">
-					<text>{{ item.title }}</text>
+		<block v-if="newestList.length > 0">
+			<view class="f-header m-t">
+				<view class="icon">&nbsp;</view>
+				<view class="tit-box">
+					<text class="tit">实时鲜货</text>
 				</view>
-				<view class="price">{{item.price}}</view>
-				<view class="price del" v-if="item.originPrice>0">{{item.originPrice}}</view>
 			</view>
-		</view>
-		
-		<view class="bottom">
+			<view class="newest-section">
+				<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
+					<image :src="item.src" mode="aspectFill"></image>
+					<view class="title clamp">
+						<text>{{ item.title }}</text>
+					</view>
+					<view class="price">{{item.price}}</view>
+					<view class="price del" v-if="item.originPrice>0">{{item.originPrice}}</view>
+				</view>
+			</view>
+		</block>
+		<view class="bottom" v-show="isLoaded">
 			<text>以下没数据了</text>
 		</view>
 	</view>
@@ -97,6 +98,7 @@ export default {
 			swiperCurrent: 0,
 			swiperLength: 0,
 			goNext: 1,
+			isLoaded:false,
 			address:"定位/收货地址获得位置",
 			carouselList: [],
 			recommendCategoriesList: [],
@@ -138,9 +140,11 @@ export default {
 	methods: {
 		...mapMutations(['changeShopId','changeMainCateId']),
 		async loadData() {
+			this.isLoaded = false;
 			getHomeFruitData({
 				stationId: this.stationId
 			}).then(res => {
+				this.isLoaded = true;
 				//修改默认附近店铺id
 				this.changeShopId(res.shopId);
 				//广告
@@ -169,6 +173,7 @@ export default {
 						text:res.cart+""
 					});
 				} */
+				//异步查询购物车总数量，需要过滤库存不足的商品
 				updateCartNumber(res.cart);
 			});
 		},

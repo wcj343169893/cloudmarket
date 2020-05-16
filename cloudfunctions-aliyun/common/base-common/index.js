@@ -29,6 +29,59 @@ const getCollectionNames = function(event) {
 const getShopInfoById=function(id){
 	
 }
+
+/**
+ * 更新秒杀库存
+ * @param {Object} ele 商品对象，必须存在_id,sku_id
+ * @param {Object} xishu 相乘系数，1或者-1
+ */
+const updateGoodsMiaoshaStock = function(ele, xishu) {
+	const db = uniCloud.database();
+	const cmd = db.command;
+	return db.collection('goods').where({
+		_id: ele._id,
+		"miaosha.stock": cmd.gte(ele.amount * xishu)
+	}).update({
+		miaosha: {
+			stock: cmd.inc(-1 * ele.amount * xishu),
+			sales: cmd.inc(ele.amount * xishu)
+		}
+	});
+}
+/**
+ * 更新商品库存
+ * @param {Object} ele 商品对象，必须存在_id,sku_id,amount,hasSku
+ * @param {Object} xishu 相乘系数，1或者-1
+ */
+const updateGoodsStock = function(ele, xishu) {
+	const db = uniCloud.database();
+	const cmd = db.command;
+	if (ele.hasSku) {
+		let condition = {
+			_id: ele._id,
+			"skus.id": ele.sku_id
+		};
+		condition['skus.' + ele.sku_index + '.stock'] = cmd.gte(ele.amount * xishu);
+		let data = {
+			monthlySale: cmd.inc(ele.amount * xishu),
+			stock: cmd.inc(-1 * ele.amount * xishu)
+		};
+		data['skus.' + ele.sku_index + '.stock'] = cmd.inc(-1 * ele.amount * xishu);
+		data['skus.' + ele.sku_index + '.sales'] = cmd.inc(1 * ele.amount * xishu);
+		return db.collection('goods').where(condition).update(data);
+	} else {
+		return db.collection('goods').where({
+			_id: ele._id,
+			stock: cmd.gte(ele.amount * xishu)
+		}).update({
+			monthlySale: cmd.inc(ele.amount * xishu),
+			stock: cmd.inc(-1 * ele.amount * xishu)
+		});
+	}
+}
+
 module.exports = {
-	getCollectionNames
+	getCollectionNames,
+	updateGoodsMiaoshaStock,
+	updateGoodsStock
 }

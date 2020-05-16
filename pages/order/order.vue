@@ -9,9 +9,8 @@
 				<scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadData">
 					<!-- 空白页 -->
 					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
-
 					<!-- 订单列表 -->
-					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item"  @click="navToOrderDetail(item)">
+					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 						<view class="i-top b-b">
 							<text class="time">{{ item.created }}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
@@ -68,13 +67,11 @@
 </template>
 
 <script>
-import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
-import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail } from '@/common/functions.js';
+import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail,getOrderStateExp } from '@/common/functions.js';
 export default {
 	components: {
-		uniLoadMore,
 		empty
 	},
 	data() {
@@ -138,7 +135,7 @@ export default {
 	},
 	methods: {
 		//获取订单列表
-		loadData(source) {
+		async loadData(source) {
 			//这里是将订单挂载到tab列表下
 			let index = this.tabCurrentIndex;
 			let navItem = this.navList[index];
@@ -147,7 +144,7 @@ export default {
 				//tab切换只有第一次需要加载数据
 				return;
 			}
-			if (navItem.loadingType === 'loading') {
+			if (navItem.loadingType === 'loading' || navItem.loadingType === 'noMore') {
 				//防止重复加载
 				return;
 			}
@@ -172,13 +169,25 @@ export default {
 								minute: '00',
 								second: '00'
 							};
-							miaoshaCountDown(ele.payment, ele.lastPayTime, () => {
-								console.log('自动取消订单', ele);
-								this.cancelOrder(ele, index,"auto");
-							});
+							if (ele.lastPayTime > time) {
+								miaoshaCountDown(ele.payment, ele.lastPayTime, () => {
+									console.log('自动取消订单', ele);
+									this.cancelOrder(ele, index, 'auto');
+								});
+							} else {
+								ele.state = -1;
+								//直接取消
+								orders({
+									id: ele._id,
+									type: 'cancel',
+									style: 'auto'
+								}).then(res => {
+									console.log("自动取消订单")
+								});
+							}
 						}
 						//状态名称 Object.assign
-						let { stateTip, stateTipColor } = this.orderStateExp(ele.state);
+						let { stateTip, stateTipColor } = this.orderStateExp(ele);
 						ele.stateTip = stateTip;
 						ele.stateTipColor = stateTipColor;
 					});
@@ -258,18 +267,18 @@ export default {
 				content: '是否确定取消？',
 				success: res => {
 					if (res.confirm) {
-						this.cancelOrder(item, index,"user");
+						this.cancelOrder(item, index, 'user');
 					}
 				}
 			});
 		},
 		//取消订单
-		cancelOrder(item, index,style) {
+		cancelOrder(item, index, style) {
 			//style 取消方式，auto自动，user用户点击取消
 			orders({
 				id: item._id,
 				type: 'cancel',
-				style:style
+				style: style
 			}).then(res => {
 				console.log(res);
 				//刷新当前列表数据
@@ -284,38 +293,38 @@ export default {
 								this.navList[index].orderList.splice(index2, 1);
 							} else {
 								let state = -1;
+								ord.state = state;
 								//状态名称 Object.assign
-								let { stateTip, stateTipColor } = this.orderStateExp(state);
+								let { stateTip, stateTipColor } = this.orderStateExp(ord);
 								Object.assign(this.navList[index].orderList[index2], {
 									state,
 									stateTip,
 									stateTipColor
 								});
-								/* this.navList[index].orderList[index2].stateTip= stateTip;
-											this.navList[index].orderList[index2].stateTipColor= stateTipColor;
-											this.navList[index].orderList[index2].state= state; */
 							}
 						}
 					});
 				});
 			});
-
-			/* setTimeout(() => {
-				let { stateTip, stateTipColor } = this.orderStateExp(9);
-				item = Object.assign(item, {
-					state: 9,
-					stateTip,
-					stateTipColor
-				});
-
-				//取消订单后删除待付款中该项
-				let list = this.navList[1].orderList;
-				let index = list.findIndex(val => val.id === item.id);
-				index !== -1 && list.splice(index, 1);
-
-				uni.hideLoading();
-			}, 600); */
 		},
+		//确定收货
+		confirmOrder(ele){
+			uni.showModal({
+				content: '是否确认收到货物？',
+				success: res => {
+					if (res.confirm) {
+						orders({
+							id: ele._id,
+							type: 'makesure'
+						}).then(res => {
+							//重新刷新页面
+							this.loadData();
+						});
+					}
+				}
+			});
+		},
+		//评价
 		evaluateOrder() {
 			uni.showLoading({
 				title: '请稍后',
@@ -324,7 +333,11 @@ export default {
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail
-			navToOrderDetail(item._id);
+			if(item.state == 0){
+				this.payOrder(item)
+			}else{
+				navToOrderDetail(item._id);
+			}
 		},
 		showGoods(item) {
 			uni.setStorage({
@@ -334,24 +347,8 @@ export default {
 			navToOrderGoodsList();
 		},
 		//订单状态文字和颜色
-		orderStateExp(state) {
-			let stateTip = '',
-				stateTipColor = '#fa436a';
-			switch (+state) {
-				case 0:
-					stateTip = '待付款';
-					break;
-				case 1:
-					stateTip = '待发货';
-					break;
-				case -1:
-					stateTip = '订单已关闭';
-					stateTipColor = '#909399';
-					break;
-
-				//更多自定义
-			}
-			return { stateTip, stateTipColor };
+		orderStateExp(item) {
+			return getOrderStateExp(item);
 		}
 	}
 };

@@ -49,8 +49,8 @@ exports.main = async (event, context) => {
 	];
 	if (uid > 0) {
 		let time = new Date().getTime();
-		//延时处理
-		goods.data.map(async (item) => {
+		//延时处理---同步更新浏览记录
+		for (let item of goods.data) {
 			//商品浏览记录，每人每件商品只存在一条
 			console.log("item.id", item.id);
 			//增加浏览记录,必须存在uid
@@ -95,8 +95,7 @@ exports.main = async (event, context) => {
 				});
 				console.log("updateVisite", updateVisite);
 			}
-			return Promise.resolve({});
-		});
+		};
 		//favorite  是否收藏
 		//查询已加入购物车信息amount
 		let carts = await db.collection('carts').where({

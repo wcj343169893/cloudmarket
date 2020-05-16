@@ -1,6 +1,10 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const {
+	updateGoodsMiaoshaStock,
+	updateGoodsStock
+} = require('base-common');
 exports.main = async (event, context) => {
 	//查询购物车选中数据
 	let shopid = parseInt(event.id);
@@ -12,7 +16,7 @@ exports.main = async (event, context) => {
 	const cartCollection = db.collection('carts');
 	let carts = await cartCollection.where({
 		shopid: shopid,
-		checked: true,
+		settlement: true,
 		uid: uid
 	}).field({
 		"goods_id": 1,
@@ -104,10 +108,10 @@ exports.main = async (event, context) => {
 						if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
 							delete goo.miaosha;
 						}
-
+						goo["sku_id"] = sku.id; 
+						delete sku.id;
 						Object.assign(goo, cartMap[key], sku, {
 							hasSku: true,
-							sku_id: sku.id,
 							sku_index: index,
 							subName: sku.name.replace('&gt;', ' ')
 						})
@@ -185,7 +189,6 @@ exports.main = async (event, context) => {
 			"message": "商品不存在"
 		};
 	}
-
 	//格式化数字
 	data.totalDiscount = Number(data.totalDiscount.toFixed(2));
 	data.totalMoney = Number(data.totalMoney.toFixed(2));
@@ -235,6 +238,7 @@ exports.main = async (event, context) => {
 				"message": "提交订单失败!\n商品库存不足",
 			};
 		}
+		console.log(data.goods)
 		//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 		//备注
 		data["remark"] = event.remark;
@@ -250,13 +254,14 @@ exports.main = async (event, context) => {
 		].join(",");
 		data["requestId"] = context.requestId;
 		//用户真实ip
-		data["ip"] = context.headers["x-forwarded-for"].split(",")[0];
+		data["ip"] = context.headers["x-forwarded-for"];
 		//状态：0未付款，1已付款，2已发货，3已收货
 		data["state"] = 0;
 		//是否删除，默认0,删除不改变原有状态
 		data["isDelete"] = 0;
 		//字典表递增获得位id
 		data["id"] = 0;
+		data["shopId"] = shopid;
 		//保存订单
 		let res = await db.collection("orders").add(data);
 		if (!res.id) {
@@ -283,40 +288,3 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
-//根系秒杀库存
-const updateGoodsMiaoshaStock = function(ele, xishu) {
-	return db.collection('goods').where({
-		_id: ele._id,
-		"miaosha.stock": cmd.gte(ele.amount * xishu)
-	}).update({
-		miaosha: {
-			stock: cmd.inc(-1 * ele.amount * xishu),
-			sales: cmd.inc(ele.amount * xishu)
-		}
-	});
-}
-//更新商品库存
-const updateGoodsStock = function(ele, xishu) {
-	if (ele.hasSku) {
-		let condition = {
-			_id: ele._id,
-			"skus.id": ele.sku_id
-		};
-		condition['skus.' + ele.sku_index + '.stock'] = cmd.gte(ele.amount * xishu);
-		let data = {
-			monthlySale: cmd.inc(ele.amount * xishu),
-			stock: cmd.inc(-1 * ele.amount * xishu)
-		};
-		data['skus.' + ele.sku_index + '.stock'] = cmd.inc(-1 * ele.amount * xishu);
-		data['skus.' + ele.sku_index + '.sales'] = cmd.inc(1 * ele.amount * xishu);
-		return db.collection('goods').where(condition).update(data);
-	} else {
-		return db.collection('goods').where({
-			_id: ele._id,
-			stock: cmd.gte(ele.amount * xishu)
-		}).update({
-			monthlySale: cmd.inc(ele.amount * xishu),
-			stock: cmd.inc(-1 * ele.amount * xishu)
-		});
-	}
-}

@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 		_id: id
 	}).field({
 		id: 1,
+		lastPayTime: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
 		state: 1

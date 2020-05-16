@@ -548,6 +548,8 @@ export default {
 				goods_id:gid,
 				sku_id:sku,
 				price:goods.price,
+				title:goods.title,
+				subTitle:goods.subName,
 				src:goods.src,
 				checked:1,
 				amount:number

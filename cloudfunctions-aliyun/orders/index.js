@@ -1,5 +1,10 @@
 'use strict';
 const db = uniCloud.database();
+const cmd = db.command;
+const {
+	updateGoodsMiaoshaStock,
+	updateGoodsStock
+} = require('base-common');
 /**
  * 订单处理
  */
@@ -24,8 +29,8 @@ exports.main = async (event, context) => {
 		isDelete: 0
 	};
 	let data;
-	const cmd = db.command;
 	const orderCollection = db.collection("orders");
+	let time = new Date().getTime();
 	//测试语句，全部更新为未删除状态
 	//await orderCollection.where({_id:cmd.exists(true)}).update({isDelete:0});
 	if (type == "list") {
@@ -34,6 +39,7 @@ exports.main = async (event, context) => {
 				case 1:
 					//1待付款
 					conditions["state"] = 0;
+					conditions["lastPayTime"] = cmd.gt(time);
 					break;
 				case 2:
 					//2已付款，待收货，包含已发货
@@ -61,6 +67,7 @@ exports.main = async (event, context) => {
 			goods: 1,
 			cartCount: 1,
 			address: 1,
+			cancelStyle: 1,
 			lastPayTime: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("_id", "desc").get();
 		data["page"] = page;
@@ -72,6 +79,10 @@ exports.main = async (event, context) => {
 			state: 1
 		};
 		if (type == "cancel") {
+			field = {
+				state: 1,
+				goods:1
+			};
 			conditions["state"] = cmd.in([0, -1]);
 		}
 		if (type == "detail") {
@@ -86,6 +97,7 @@ exports.main = async (event, context) => {
 				address: 1,
 				lastPayTime: 1,
 				cancelStyle: 1,
+				shopId:1,
 				modified: 1
 			};
 		}
@@ -98,19 +110,37 @@ exports.main = async (event, context) => {
 		}
 		let order = data.data[0];
 		if (type == "cancel") {
+			if (order.state == -1) {
+				return {
+					"code": 404,
+					"message": "订单已取消"
+				};
+			}
 			//取消未付款订单
 			data = await orderCollection.doc(order._id).update({
 				state: -1,
 				cancelStyle: event.style
 			});
+			for (let ele of order.goods) {
+				if(ele.miaosha){
+					let res = await updateGoodsMiaoshaStock(ele, -1);
+					console.log("updateGoodsMiaoshaStock", res);
+				}
+				let resStock = await updateGoodsStock(ele, -1);
+				console.log("updateGoodsStock", resStock);
+			}
+
 		} else if (type == "delete") {
 			//删除订单，软删除
 			data = await orderCollection.doc(order._id).update({
 				isDelete: 1
 			});
 		} else if (type == "makesure") {
-			//确定收货
-
+			//确定收货,资金解冻
+			data = await orderCollection.doc(order._id).update({
+				state: 3
+			});
+			//@todo 资金解冻
 		} else if (type == "detail") {
 			//查询详细
 			data = order;

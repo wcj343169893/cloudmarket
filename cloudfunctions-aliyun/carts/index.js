@@ -1,6 +1,8 @@
 'use strict';
 const db = uniCloud.database();
-const {getCollectionNames} = require('base-common');
+const {
+	getCollectionNames
+} = require('base-common');
 exports.main = async (event, context) => {
 	let shopid = parseInt(event.id);
 	let uid = parseInt(event.uid);
@@ -16,7 +18,7 @@ exports.main = async (event, context) => {
 	let collectionNames = getCollectionNames(event);
 	let data = [];
 	let cartCollection = db.collection(collectionNames['carts']);
-	
+
 	const cmd = db.command;
 	if (opt == "list") {
 		//查询列表
@@ -24,7 +26,6 @@ exports.main = async (event, context) => {
 			shopid: shopid,
 			uid: uid
 		}).field({
-			"_id": 0,
 			"goods_id": 1,
 			"sku_id": 1,
 			"amount": 1,
@@ -37,19 +38,22 @@ exports.main = async (event, context) => {
 			shopid: shopid,
 			uid: uid
 		}).field({
-			"_id": 0,
 			"goods_id": 1,
 			"sku_id": 1,
 			"amount": 1,
 			"created": 1,
 			"modified": 1,
 			"checked": 1,
+			"src": 1,
+			"title": 1,
+			"subTitle": 1,
 			"price": 1
-		}).orderBy("_id","desc").get();
+		}).orderBy("_id", "desc").get();
 		if (carts.affectedDocs > 0) {
 			//data = carts.data;
 			data = {
-				"cart": carts.data
+				"cart": carts.data,
+				"goods":[]
 			}
 			let ids = [];
 			for (let i = 0; i < carts.affectedDocs; i++) {
@@ -84,89 +88,107 @@ exports.main = async (event, context) => {
 				"message": "无数据",
 			};
 		}
+	} else if (opt == "settlement") {
+		//设置结算属性
+		let ids = [];
+		if (event.cartIds) {
+			ids = event.cartIds.split(",");
+		}
+		if (ids.length < 1) {
+			return {
+				"code": 404,
+				"message": "商品不存在",
+			};
+		}
+		//其他商品设置为不结算
+		let res = await cartCollection.where({
+			shopid: shopid,
+			uid: uid,
+			_id: cmd.nin(ids)
+		}).update({
+			settlement: false,
+		});
+		//设置特定商品为结算
+		let res2 = await cartCollection.where({
+			shopid: shopid,
+			uid: uid,
+			_id: cmd.in(ids)
+		}).update({
+			settlement: true,
+		});
+		data = res2;
 	} else if (opt == "selected") {
 		//批量选中
 		let checked = event.checked ? true : false;
 		let condition = {
 			shopid: shopid,
 			uid: uid,
+			checked: !checked
 		};
 		//批量处理指定的购物车信息
-		if(event.cartIds){
-			condition["_id"]=cmd.in(event.cartIds.split(","));
+		if (event.cartIds) {
+			condition["_id"] = cmd.in(event.cartIds.split(","));
 		}
 		let res = await cartCollection.where(condition).update({
 			checked: checked,
 		});
 		data = "ok";
 	} else if (opt == "clean") {
+		let condition = {
+			shopid: shopid,
+			uid: uid
+		};
+		//移除指定多条信息
+		if (event.cartIds) {
+			condition["_id"] = cmd.in(event.cartIds.split(","));
+		}
 		//清空当前用户在指定店铺的所有数据
+		let res = await cartCollection.where(condition).remove();
+		data = "ok";
+	} else if (opt == "addmany") {
+		let goodsList = event.data;
+		if (goodsList.length < 1) {
+			return {
+				"code": 404,
+				"message": "商品不存在"
+			};
+		}
+		//其他商品设置为不结算
 		let res = await cartCollection.where({
 			shopid: shopid,
-			uid: uid,
-		}).remove();
-		data = "ok";
+			uid: uid
+		}).update({
+			settlement: false,
+		});
+		//循环加入购物车
+		let date = new Date();
+		for (let ele of goodsList) {
+			ele.settlement = true;
+			await saveCartInfo(ele, shopid, uid, date);
+		}
+		return {
+			"code": 200,
+			"message": "批量添加成功"
+		};
 	} else if (opt == "edit") {
 		//增加或者删除
 		//商品id
-		let goods_id = parseInt(event.goods_id);
+		event.goods_id = +event.goods_id;
 		//规格
-		let sku_id = event.sku_id ? parseInt(event.sku_id) : 0;
+		event.sku_id = +event.sku_id;
 		//数量
-		let amount = event.amount ? parseInt(event.amount) : 0;
+		event.amount = +event.amount;
+		//当前卖价
+		event.price = +event.price;
 		//默认选中
-		let checked = event.checked ? true : false;
-		if (goods_id < 1) {
+		event.checked = event.checked ? true : false;
+		if (event.goods_id < 1) {
 			return {
 				"code": 404,
 				"message": "商品不存在",
 			};
 		}
-		//查询是否存在，否则新增
-		let cartsOld = await cartCollection.where({
-			shopid: shopid,
-			uid: uid,
-			goods_id: goods_id,
-			sku_id: sku_id,
-		}).field({
-			amount: 1,
-			checked: 1
-		}).get();
-		let date = new Date();
-		if (cartsOld.affectedDocs == 0) {
-			if (amount < 1) {
-				return {
-					"code": 404,
-					"message": "商品不存在",
-				};
-			}
-			let reslt = await cartCollection.add({
-				shopid: shopid,
-				uid: uid,
-				goods_id: goods_id,
-				sku_id: sku_id,
-				amount: amount,
-				checked: true,
-				src: event.src ? event.src : "",
-				price: event.price ? +event.price : 0,
-				modified: date.toISOString(),
-				created: date.toISOString()
-			});
-			data = "ok";
-		} else if (amount < 1) {
-			//删除购物车
-			let reslt = await cartCollection.doc(cartsOld.data[0]._id).remove();
-			data = "ok";
-		} else {
-			let reslt = await cartCollection.doc(cartsOld.data[0]._id).update({
-				amount: amount,
-				checked: checked,
-				src: event.src ? event.src : "",
-				price: event.price ? +event.price : 0,
-				modified: date.toISOString()
-			});
-			data = "ok";
-		}
+		data =await saveCartInfo(event, shopid, uid, new Date());
 	}
 	return {
 		"code": 200,
@@ -174,3 +196,48 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
+
+const saveCartInfo =async function(ele, shopid, uid, date) {
+	let cartCollection = db.collection("carts");
+	//查询是否存在，否则新增
+	let cartsOld = await cartCollection.where({
+		shopid: shopid,
+		uid: uid,
+		goods_id: ele.goods_id,
+		sku_id: ele.sku_id,
+	}).field({
+		amount: 1,
+		checked: 1
+	}).limit(1).get();
+	if (cartsOld.affectedDocs == 0) {
+		//新增
+		return await cartCollection.add({
+			shopid: shopid,
+			uid: uid,
+			goods_id: ele.goods_id,
+			sku_id: ele.sku_id,
+			amount: ele.amount,
+			title: ele.title,
+			subTitle: ele.subTitle,
+			checked: true,
+			src: ele.src ? ele.src : "",
+			price: ele.price ? +ele.price : 0,
+			settlement: ele.settlement ? true : false,
+			modified: date.toISOString(),
+			created: date.toISOString()
+		});
+	} else if (ele.amount < 1) {
+		//删除购物车
+		return await cartCollection.doc(cartsOld.data[0]._id).remove();
+	} else {
+		//更新
+		return await cartCollection.doc(cartsOld.data[0]._id).update({
+			amount: ele.amount,
+			checked: ele.checked,
+			src: ele.src ? ele.src : "",
+			price: ele.price ? +ele.price : 0,
+			settlement: ele.settlement ? true : false,
+			modified: date.toISOString()
+		});
+	}
+}

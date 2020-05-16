@@ -1,6 +1,54 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
 var isRedirect = false;
 /**
+ * 订单状态
+ * @param {Object} ele
+ */
+const getOrderStateExp = function(item) {
+	let stateTip = '',
+		state = item.state,
+		stateTipColor = '#fa436a',
+		stateContent="";
+	switch (+state) {
+		case 0:
+			stateTip = '待付款';
+			stateContent = "订单未支付，去付款";
+			break;
+		case 1:
+			stateTip = '待发货';
+			stateContent = "订单已支付，等待发货";
+			break;
+		case 2:
+			stateTip = '待收货';
+			stateContent = "订单已发货，等待收货";
+			break;
+		case 3:
+			stateTip = '已完成';
+			stateContent = "感谢您的信任，祝您生活愉快";
+			break;
+		case 4:
+			stateTip = '已评价';
+			stateContent = "感谢您的信任，祝您生活愉快";
+			break;
+		case -1:
+			stateTip = '已关闭';
+			stateTipColor = '#909399';
+			if(item.cancelStyle == "auto"){
+				stateContent = "订单未支付，已自动取消";
+			}else{
+				stateContent = "订单未支付，已手动取消";
+			}
+			break;
+		
+			//更多自定义
+	}
+	return {
+		stateTip,
+		stateTipColor,
+		stateContent,
+	};
+}
+/**
  * 更新购物车总数量
  * @param int gnumber 
  */
@@ -20,20 +68,20 @@ const updateCartNumber = function(gnumber) {
 			text: gnumber + ""
 		});
 	}
-	console.log("cart_sum_count",gnumber)
+	console.log("cart_sum_count", gnumber)
 	uni.setStorage({
-		key:"cart_sum_count",
-		data:gnumber
+		key: "cart_sum_count",
+		data: gnumber
 	})
 };
 /**
  * 获得购物车数量
  */
-const getCartSumNumber = function(){
-	let data =  uni.getStorageSync("cart_sum_count");
-	console.log("getCartSumNumber",data)
-	if(data < 1){
-		data=0;
+const getCartSumNumber = function() {
+	let data = uni.getStorageSync("cart_sum_count");
+	console.log("getCartSumNumber", data)
+	if (data < 1) {
+		data = 0;
 	}
 	return data;
 }
@@ -41,7 +89,7 @@ const getCartSumNumber = function(){
  * 递增购物车数量
  * @param {Object} number
  */
-const incrCartNumber= function(number){
+const incrCartNumber = function(number) {
 	let data = getCartSumNumber();
 	data += number;
 	updateCartNumber(data);
@@ -64,7 +112,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 			//多规格限购
 			sku.limit = sku.limit || sku.stock < 100 ? sku.stock : 99;
 		});
-	}else{
+	} else {
 		//默认id=0
 		goods.sku_id = 0;
 	}
@@ -72,24 +120,24 @@ const updateGoodsTags = function(goods, isPrecise) {
 	if (goods.miaosha) {
 		let time = new Date().getTime();
 		//秒杀必须是开始状态
-		if(time < goods.miaosha.endTime && goods.miaosha.beginTime < time){
+		if (time < goods.miaosha.endTime && goods.miaosha.beginTime < time) {
 			if (!isPrecise) {
 				tags.push("限时");
 			}
 			//如果是多规格商品
 			if (goods.hasSku) {
-				let index = goods.skus.findIndex(sku=>sku.id == goods.miaosha.sku_id);
-				if(index != -1){
+				let index = goods.skus.findIndex(sku => sku.id == goods.miaosha.sku_id);
+				if (index != -1) {
 					goods.miaosha.skuIndex = index;
 					let sku = goods.skus[index];
-					Object.assign(goods.skus[index],{
-						originPrice:sku.price,
-						price:goods.miaosha.price,
+					Object.assign(goods.skus[index], {
+						originPrice: sku.price,
+						price: goods.miaosha.price,
 					});
 					if (isPrecise) {
 						sku.tags = ["限时"];
 					}
-					if(goods.price > sku.price){
+					if (goods.price > sku.price) {
 						goods.originPrice = sku.originPrice;
 						//商品外面显示价格
 						goods.price = sku.price;
@@ -176,9 +224,9 @@ const dateFormat = function(value, fmt) {
  * @param int endTime 最后时间
  * @param function callback 回调方法
  */
-const miaoshaCountDown = function(item,endTime,callback){
-	let startTime = parseInt(item.startTime/1000);
-	let lastTime = parseInt(endTime/1000);
+const miaoshaCountDown = function(item, endTime, callback) {
+	let startTime = parseInt(item.startTime / 1000);
+	let lastTime = parseInt(endTime / 1000);
 	/* if(startTime >= lastTime){
 		if(callback){
 			callback();
@@ -186,16 +234,16 @@ const miaoshaCountDown = function(item,endTime,callback){
 		return false;
 	} */
 	let timer;
-	let tick = function(){
-		let n1 = lastTime-startTime;
+	let tick = function() {
+		let n1 = lastTime - startTime;
 		//这里判断很关键，如果写1，在1秒之内，会重复调用
-		if(n1 < 0){
+		if (n1 < 0) {
 			return true;
 		}
-		let hour = parseInt(n1/3600);
-		let minute = parseInt((n1-hour*3600)/60);
-		let second = parseInt(n1%60);
-		
+		let hour = parseInt(n1 / 3600);
+		let minute = parseInt((n1 - hour * 3600) / 60);
+		let second = parseInt(n1 % 60);
+
 		item.hour = number2String(hour);
 		item.minute = number2String(minute);
 		item.second = number2String(second);
@@ -203,22 +251,22 @@ const miaoshaCountDown = function(item,endTime,callback){
 		//console.log(item.minute,item.second);
 		return false;
 	}
-	let number2String = function(n){
-		return ("00"+n).substr((""+n).length);
+	let number2String = function(n) {
+		return ("00" + n).substr(("" + n).length);
 	}
-	let timePromise = new Promise((resolve, reject)=>{
-		let t1=tick();
-		timer = setInterval(function(){
+	let timePromise = new Promise((resolve, reject) => {
+		let t1 = tick();
+		timer = setInterval(function() {
 			t1 = tick();
-			if(t1){
+			if (t1) {
 				clearInterval(timer);
 				resolve();
 			}
-		},1000);
+		}, 1000);
 	});
-	timePromise.then(res=>{
+	timePromise.then(res => {
 		console.log("miaoshaCountDown finish")
-		if(callback){
+		if (callback) {
 			callback();
 		}
 	})
@@ -231,7 +279,7 @@ const showLoginDialog = function() {
 		content: '您还未登录，请登录后再操作',
 		cancelText: '再逛逛',
 		confirmText: '去登录',
-		success: (res)=> {
+		success: (res) => {
 			if (res.confirm) {
 				navToLoginPage();
 			}
@@ -335,5 +383,6 @@ export {
 	navToOrderGoodsList,
 	dateFormat,
 	miaoshaCountDown,
-	navToOrderDetail
+	navToOrderDetail,
+	getOrderStateExp
 }

@@ -77,6 +77,14 @@ const editCart = function(data) {
 		isShowLoading: false
 	})
 }
+const addManyCart = function(data) {
+	data["opt"]="addmany";
+	return network({
+		url: "carts",
+		data: data,
+		isShowLoading: true
+	})
+}
 //清空购物车数量，0为删除
 const cleanCart = function(data) {
 	data["opt"]="clean";
@@ -89,6 +97,15 @@ const cleanCart = function(data) {
 //批量选择购物车
 const selectCart = function(data) {
 	data["opt"]="selected";
+	return network({
+		url: "carts",
+		data: data,
+		isShowLoading: true
+	})
+}
+//购物车结算
+const settlementCart = function(data) {
+	data["opt"]="settlement";
 	return network({
 		url: "carts",
 		data: data,
@@ -158,6 +175,8 @@ export {
 	editCart,
 	selectCart,
 	cleanCart,
+	addManyCart,
+	settlementCart,
 	settlement,
 	address,
 	payInfo,

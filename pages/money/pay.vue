@@ -3,6 +3,7 @@
 		<view class="price-box">
 			<text>支付金额</text>
 			<text class="price">{{orderInfo.totalMoney}}</text>
+			<text class="lastTime" v-if="this.times.startTime > 0">支付剩余时间:{{times.minute}}:{{times.second}}</text>
 		</view>
 
 		<view class="pay-type-list">
@@ -24,13 +25,15 @@
 </template>
 
 <script>
-import { payInfo } from '@/common/request.js';
+import { payInfo ,orders} from '@/common/request.js';
+import { miaoshaCountDown } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			id: 0,
 			payType: '',
 			payment: [],
+			times:{},
 			orderInfo: {
 				totalMoney:0
 			}
@@ -52,7 +55,33 @@ export default {
 			}).then(res => {
 				this.orderInfo = res.order;
 				this.payment = res.payment;
+				let time = new Date().getTime();
+				this.times = {
+					startTime: time,
+					minute: '00',
+					second: '00'
+				};
+				miaoshaCountDown(this.times, this.orderInfo.lastPayTime, () => {
+					console.log('自动取消订单');
+					//this.cancelOrder(ele, index, 'auto');
+					orders({
+						id: this.orderInfo._id,
+						type: 'cancel',
+						style: "auto"
+					}).then(res => {
+						this.$api.msg("支付超时，订单已取消");
+						this.goBack()
+					});
+				});
+			},err=>{
+				this.$api.msg(err.message);
+				this.goBack()
 			});
+		},
+		goBack(){
+			setTimeout(()=>{
+				uni.navigateBack();
+			},1500)
 		},
 		//选择支付方式
 		changePayType(event) {
@@ -184,5 +213,8 @@ export default {
 	color: #fff;
 	background-color: $base-color;
 	border-radius: 10upx;
+}
+.lastTime{
+	color: $font-color-warning;
 }
 </style>

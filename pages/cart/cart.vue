@@ -13,7 +13,7 @@
 			<!-- 列表 -->
 			<view class="cart-list">
 				<block v-for="(item, index) in cartList" :key="index">
-					<view class="goodsList b-b">
+					<view class="goodsList b-b" v-if="item.cart > 0">
 						<view class="weui-flex">
 							<view class="weui-flex-check">
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
@@ -42,7 +42,7 @@
 											<text class="price emphasis">{{ item.cutPrice }}</text>
 										</text>
 									</view>
-									<view class="tags">
+									<view class="tags" v-if="item.tags && item.tags.length > 0">
 										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
 									</view>
 									<view class="buttons">
@@ -68,53 +68,58 @@
 					</view>
 				</block>
 			</view>
-			<view class="lose-notice b-b" v-if="notEnoughCartList.length > 0"><text>因配送范围、库存原因而导致失效的商品</text></view>
-			<view class="cart-list lose">
-				<block v-for="(item, index) in notEnoughCartList" :key="index">
-					<view class="goodsList b-b">
-						<view class="weui-flex">
-							<view class="weui-flex-check"><text>失效</text></view>
-							<view class="desc">
-								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
-									<image
-										:src="item.src"
-										:class="[item.loaded]"
-										mode="aspectFill"
-										lazy-load
-										@load="onImageLoad('notEnoughCartList', index)"
-										@error="onImageError('notEnoughCartList', index)"
-									></image>
-								</view>
-								<view class="desc-name">
-									<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
-										<text class="title">{{ item.title }}</text>
+			<block v-if="notEnoughCartList.length > 0">
+				<view class="lose-notice b-b" ><text>因配送范围、库存原因而导致失效的商品</text></view>
+				<view class="cart-list lose">
+					<block v-for="(item, index) in notEnoughCartList" :key="index">
+						<view class="goodsList b-b">
+							<view class="weui-flex">
+								<view class="weui-flex-check"><text>失效</text></view>
+								<view class="desc">
+									<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+										<image
+											:src="item.src"
+											:class="[item.loaded]"
+											mode="aspectFill"
+											lazy-load
+											@load="onImageLoad('notEnoughCartList', index)"
+											@error="onImageError('notEnoughCartList', index)"
+										></image>
 									</view>
-									<view class="">
-										<text>{{ item.subName }}</text>
-									</view>
-									<view class="" v-if="item.cutPrice > 0">
-										<text class="saledPrice">
-											<text class="unit">比加入时便宜</text>
-											<text class="price emphasis">{{ item.cutPrice }}</text>
-										</text>
-									</view>
-									<view class="tags">
-										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
-									</view>
-									<view class="buttons">
-										<view>
-											<text class="price">{{ item.price }}</text>
-											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+									<view class="desc-name">
+										<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+											<text class="title">{{ item.title }}</text>
+										</view>
+										<view class="" v-if="item.subName && item.subName.length > 0">
+											<text>{{ item.subName }}</text>
+										</view>
+										<view class="tags" v-if="item.tags && item.tags.length > 0">
+											<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
+										</view>
+										<view class="buttons">
+											<view>
+												<text class="price">{{ item.price }}</text>
+												<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+											</view>
+										</view>
+										<view class="notice">
+											{{item.notice}}
 										</view>
 									</view>
 								</view>
+								<view class="">
+									<text>{{item.cart}}</text>
+								</view>
 							</view>
 						</view>
-					</view>
-				</block>
-			</view>
+					</block>
+				</view>
+				<view class="lose-buttons">
+					<button class="action-btn" @click.stop="cleanLoseGoods()">一键移除失效商品</button>
+				</view>
+			</block>
 			<!-- 底部菜单栏 -->
-			<view class="action-section" v-show="isLoaded">
+			<view class="action-section" v-show="canSetllement">
 				<view class="checkbox">
 					<image :src="allChecked ? '/static/selected2.png' : '/static/select.png'" mode="aspectFit" @click="check('all')"></image>
 					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
@@ -135,7 +140,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { editCart, cleanCart, selectCart, getCartList } from '@/common/request.js';
+import { editCart, cleanCart, selectCart, getCartList,settlementCart } from '@/common/request.js';
 import { updateCartNumber, navToGoodsPage, navToLoginPage, navToCreateOrder, updateGoodsTags } from '@/common/functions.js';
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
@@ -145,6 +150,7 @@ export default {
 	data() {
 		return {
 			isLoaded: false,
+			canSetllement: false,
 			isChecked: false,
 			total: 0, //总价格
 			discount: 0, //总优惠
@@ -178,7 +184,7 @@ export default {
 	watch: {
 		//显示空白页
 		cartList(e) {
-			let empty = e.length === 0 ? true : false;
+			let empty = e.length === 0 && this.notEnoughCartList.length == 0 ? true : false;
 			if (this.empty !== empty) {
 				this.empty = empty;
 			}
@@ -196,7 +202,9 @@ export default {
 				opt: 'full'
 			}).then(
 				res => {
+					this.canSetllement = false;
 					this.isLoaded = true;
+					this.allChecked = false;
 					let goodsSkusMap = {};
 					res.goods.map(ele => {
 						updateGoodsTags(ele, true);
@@ -229,26 +237,40 @@ export default {
 					});
 					this.cartList = [];
 					this.notEnoughCartList = [];
+					let number = 0;
 					res.cart.map(ct => {
 						//加入到购物车数据列表
 						let key = ct.goods_id + '_' + ct.sku_id;
 						let goods = goodsSkusMap[key];
-						goods['cart'] = ct.amount;
-						//必须保证库存足够
-						goods['disabled'] = ct.amount > goods.stock;
-						goods['cutPrice'] = 0;
-						goods['loaded'] = '';
-						if (ct.price > 0 && ct.price > goods.price) {
-							goods['cutPrice'] = (ct.price - goods.price).toFixed(2);
-						}
-						if (goods.disabled) {
-							this.notEnoughCartList.push(goods);
-						} else {
-							//默认选中
-							goods['checked'] = ct.checked && !goods.disabled;
-							this.cartList.push(goods);
+						if(goods){
+							goods['cart'] = ct.amount;
+							//必须保证库存足够
+							goods['disabled'] = ct.amount > goods.stock;
+							goods['cutPrice'] = 0;
+							goods['cartId'] = ct._id;
+							goods['loaded'] = '';
+							if (ct.price > 0 && ct.price > goods.price) {
+								goods['cutPrice'] = (ct.price - goods.price).toFixed(2);
+							}
+							if (goods.disabled) {
+								goods["notice"] = "库存不足";
+								goods['checked'] = ct.checked;
+								this.notEnoughCartList.push(goods);
+							} else {
+								//默认选中
+								goods['checked'] = ct.checked && !goods.disabled;
+								this.cartList.push(goods);
+							}
+							number+=ct.amount;
+						}else{
+							ct["notice"] = "商品已下架";
+							ct['cart'] = ct.amount;
+							ct["subName"] = ct.subTitle;
+							this.notEnoughCartList.push(ct);
 						}
 					});
+					
+					updateCartNumber(number);
 					//console.log(this.cartList);
 					//计算购物车总金额
 					this.calcTotal();
@@ -261,6 +283,7 @@ export default {
 						});
 						//批量取消选择
 						if (cartIds.length > 0) {
+							console.log(cartIds);
 							selectCart({
 								id: this.shopId,
 								stationId: this.stationId,
@@ -270,6 +293,9 @@ export default {
 								console.log(res);
 							});
 						}
+					}
+					if(this.cartList.length > 0){
+						this.canSetllement = true;
 					}
 				},
 				err => {
@@ -325,6 +351,8 @@ export default {
 					sku_id: sid,
 					price: goods.price,
 					src: goods.src,
+					title:goods.title,
+					subTitle:goods.subName,
 					checked: goods.checked,
 					amount: numb
 				}).then(res => {
@@ -366,15 +394,20 @@ export default {
 			} else {
 				const checked = !this.allChecked;
 				const list = this.cartList;
+				let cartIds=[];
 				list.forEach(item => {
+					if(item.checked !== checked){
+						cartIds.push(item.cartId);
+					}
 					item.checked = checked;
 				});
 				this.allChecked = checked;
-				//保存数据
+				//保存数据可以购买的商品
 				selectCart({
 					id: this.shopId,
 					stationId: this.stationId,
-					checked: checked
+					checked: checked,
+					cartIds: cartIds.join(',')
 				}).then(res => {
 					console.log(res);
 				});
@@ -412,6 +445,8 @@ export default {
 			});
 			//清空临时数据
 			this.cartList = [];
+			//失效商品
+			this.notEnoughCartList = [];
 			this.calcTotal();
 		},
 		//计算总价
@@ -419,7 +454,6 @@ export default {
 			let list = this.cartList;
 			if (list.length === 0) {
 				this.empty = true;
-				updateCartNumber(0);
 				return;
 			}
 			this.isChecked = false;
@@ -443,7 +477,31 @@ export default {
 			this.allChecked = checked;
 			this.total = Number(total.toFixed(2));
 			this.discount = Number(discount.toFixed(2));
-			updateCartNumber(number);
+		},
+		cleanLoseGoods(){
+			uni.showModal({
+				content: '是否确定移除？',
+				success: e => {
+					if (e.confirm) {
+						let cartIds =this.notEnoughCartList.map(m => {
+							return m.cartId;
+						});
+						//批量取消选择
+						if (cartIds.length > 0) {
+							console.log("移除失效商品",cartIds);
+							cleanCart({
+								id: this.shopId,
+								stationId: this.stationId,
+								cartIds: cartIds.join(',')
+							}).then(res => {
+								console.log(res);
+							});
+						}
+						this.notEnoughCartList = [];
+					}
+				}
+			});
+			
 		},
 		navToGoodsPage(id, sid) {
 			navToGoodsPage(id, sid);
@@ -454,7 +512,20 @@ export default {
 		//创建订单
 		createOrder() {
 			if (this.isChecked) {
-				navToCreateOrder();
+				//批量设置结算属性
+				let cartIds = [];
+				this.cartList.map(e=>{
+					if(e.checked){
+						cartIds.push(e.cartId);
+					}
+				});
+				settlementCart({
+					id: this.shopId,
+					stationId: this.stationId,
+					cartIds: cartIds.join(',')
+				}).then(res=>{
+					navToCreateOrder();
+				})
 			}
 		}
 	}
@@ -510,6 +581,7 @@ page {
 	flex: 1;
 	overflow: hidden;
 	height: 100%;
+	font-size: $font-base;
 	.space {
 		padding-top: var(--window-bottom);
 	}
@@ -585,6 +657,9 @@ page {
 				flex: 1;
 			}
 		}
+	}
+	.notice{
+		color: $font-color-warning;
 	}
 	.b-b:after {
 		left: 80upx;
@@ -694,5 +769,20 @@ page {
 	background-color: #fff;
 	padding: 18upx 8upx;
 	position: relative;
+}
+.lose-buttons{
+	text-align: center;
+	padding: 20upx;
+	background: #fff;
+}
+.action-btn{
+	background: #fff;
+	color: $base-color;
+	display: inline-block;
+	height: 60upx;
+	margin: 0;
+	padding: 0 30upx;
+	line-height: 60upx;
+	font-size: $font-sm + 2upx;
 }
 </style>

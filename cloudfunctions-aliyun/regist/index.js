@@ -51,7 +51,7 @@ exports.main = async (event, context) => {
 	}).update({
 		"skus.1.stock":222
 	}); */
-	let carts = await db.collection('carts').where({
+	/* let carts = await db.collection('carts').where({
 		checked: true,
 		uid: 10000
 	}).field({
@@ -63,10 +63,23 @@ exports.main = async (event, context) => {
 	for (let ele of carts.data) {
 		let res = await deleteCart(ele);
 		console.log(res);
-	}
-	return carts;
+	} */
+	// 清理全部数据
+	/* const collection = db.collection('carts');
+	let res = await collection.get()
+	res.data.map(async(document) => {
+	  return await collection.doc(document._id).remove();
+	});
+	return res; */
+	
+	const orderCollection = db.collection("orders");
+	let order = await orderCollection.doc("5ebe930933bd17004e01ca6d").field({
+		goods:1,
+		state:1
+	}).get();
+	return order;
 };
-
+/* 
 
 const deleteCart = function(ele) {
 	return db.collection('carts').where({
@@ -77,3 +90,4 @@ const deleteCart = function(ele) {
 		amount: 4
 	});
 }
+ */
