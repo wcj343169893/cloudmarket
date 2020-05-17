@@ -218,6 +218,22 @@ const dateFormat = function(value, fmt) {
 	}
 	return fmt;
 }
+let countDownTimerMap={};
+/**
+ * 关闭定时器
+ * @param {Object} id
+ */
+const clearCountDownTimer = function(id){
+	if(id && countDownTimerMap[id]){
+		//删除指定
+		clearInterval(countDownTimerMap[id]);
+	}else{
+		//删除所有
+		for (let tid in countDownTimerMap) {
+			clearInterval(countDownTimerMap[tid]);
+		}
+	}
+}
 /**
  * 倒计时,用于秒杀未开始或者已开始
  * @param {Object} item，包含输入的时间 startTime，输出的小时，分，秒
@@ -233,7 +249,14 @@ const miaoshaCountDown = function(item, endTime, callback) {
 		}
 		return false;
 	} */
-	let timer;
+	let timerId = item.id;
+	if(item.subId){
+		timerId = item.id+"_"+item.subId;
+	}
+	if(countDownTimerMap[timerId]){
+		clearInterval(countDownTimerMap[timerId]);
+	}
+	console.log(timerId)
 	let tick = function() {
 		let n1 = lastTime - startTime;
 		//这里判断很关键，如果写1，在1秒之内，会重复调用
@@ -248,7 +271,7 @@ const miaoshaCountDown = function(item, endTime, callback) {
 		item.minute = number2String(minute);
 		item.second = number2String(second);
 		startTime++;
-		//console.log(item.minute,item.second);
+		console.log(item.minute,item.second);
 		return false;
 	}
 	let number2String = function(n) {
@@ -256,10 +279,10 @@ const miaoshaCountDown = function(item, endTime, callback) {
 	}
 	let timePromise = new Promise((resolve, reject) => {
 		let t1 = tick();
-		timer = setInterval(function() {
+		countDownTimerMap[timerId] = setInterval(function() {
 			t1 = tick();
 			if (t1) {
-				clearInterval(timer);
+				clearInterval(countDownTimerMap[timerId]);
 				resolve();
 			}
 		}, 1000);
@@ -384,5 +407,6 @@ export {
 	dateFormat,
 	miaoshaCountDown,
 	navToOrderDetail,
+	clearCountDownTimer,
 	getOrderStateExp
 }

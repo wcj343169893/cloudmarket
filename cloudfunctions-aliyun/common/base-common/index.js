@@ -26,8 +26,8 @@ const getCollectionNames = function(event) {
  * 获取店铺信息
  * @param {Object} id
  */
-const getShopInfoById=function(id){
-	
+const getShopInfoById = function(id) {
+
 }
 
 /**
@@ -79,9 +79,32 @@ const updateGoodsStock = function(ele, xishu) {
 		});
 	}
 }
+/**
+ * 更新用户订单数总计
+ * @param {Object} uid
+ * @param {Object} type 类型,-2:deleted已删除，-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+ * @param {Object} number 如果是负数，则减少
+ * @param {Object} type2 类型转移到下一个类型，与type相反的数值
+ */
+const updateUserOrderCount = function(uid, type, number, type2) {
+	const db = uniCloud.database();
+	const cmd = db.command;
+	let data = {
+		order: {}
+	};
+	data.order[type] = cmd.inc(+number);
+	if (type2) {
+		data.order[type2] = cmd.inc(+number * -1);
+	}
+	console.log(uid,JSON.stringify(data));
+	return db.collection("users").where({
+		id: +uid
+	}).update(data);
+}
 
 module.exports = {
 	getCollectionNames,
 	updateGoodsMiaoshaStock,
+	updateUserOrderCount,
 	updateGoodsStock
 }

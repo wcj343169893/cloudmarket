@@ -9,14 +9,22 @@ const {
  * 自动取消24小时未付款的订单，定时器每小时执行一次
  */
 exports.main = async (event, context) => {
+	let uid = +event.uid;
 	const orderCollection = db.collection("orders");
 	let time = new Date().getTime();
 	const day = new Date().toISOString();
-	let orders = await orderCollection.where({
+	let ordCondition = {
 		lastPayTime: cmd.lt(time),
 		state: 0
-	}).field({
-		goods: 1
+	};
+	//只清理自己的数据
+	if(uid > 0){
+		ordCondition["uid"]=uid;
+	}
+	
+	let orders = await orderCollection.where(ordCondition).field({
+		goods: 1,
+		uid:1
 	}).get();
 	if (orders.affectedDocs == 0) {
 		return;
@@ -41,6 +49,10 @@ exports.main = async (event, context) => {
 			let resStock = await updateGoodsStock(ele, -1);
 			console.log("updateGoodsStock", resStock);
 		}
+		
+		//更新用户已取消和未支付数量
+		let resUser = await updateUserOrderCount(order.uid,"canceled",1,"unpaid");
+		console.log("resUser", resUser);
 	}
 	return result;
 };

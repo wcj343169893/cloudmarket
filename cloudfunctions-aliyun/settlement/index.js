@@ -3,7 +3,8 @@ const db = uniCloud.database();
 const cmd = db.command;
 const {
 	updateGoodsMiaoshaStock,
-	updateGoodsStock
+	updateGoodsStock,
+	updateUserOrderCount
 } = require('base-common');
 exports.main = async (event, context) => {
 	//查询购物车选中数据
@@ -275,7 +276,9 @@ exports.main = async (event, context) => {
 		let delCart = await db.collection('carts').where({
 			_id: cmd.in(cartIds)
 		}).remove();
-		console.log(delCart)
+		console.log(delCart);
+		//更新用户待付款订单数
+		await updateUserOrderCount(uid,"unpaid",1,false);
 		return {
 			"code": 200,
 			"message": "操作成功",

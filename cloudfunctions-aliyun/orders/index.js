@@ -3,7 +3,8 @@ const db = uniCloud.database();
 const cmd = db.command;
 const {
 	updateGoodsMiaoshaStock,
-	updateGoodsStock
+	updateGoodsStock,
+	updateUserOrderCount
 } = require('base-common');
 /**
  * 订单处理
@@ -40,6 +41,14 @@ exports.main = async (event, context) => {
 					//1待付款
 					conditions["state"] = 0;
 					conditions["lastPayTime"] = cmd.gt(time);
+					if(page == 1){
+						//清理自己已过期的数据
+						let res = await uniCloud.callFunction({
+							name: "cronCancelOrders",
+							data: { uid: uid }
+						});
+						console.log("clear order",uid,res);
+					}
 					break;
 				case 2:
 					//2已付款，待收货，包含已发货
@@ -129,17 +138,24 @@ exports.main = async (event, context) => {
 				let resStock = await updateGoodsStock(ele, -1);
 				console.log("updateGoodsStock", resStock);
 			}
-
+			//更新用户已取消和未支付数量
+			let resUser = await updateUserOrderCount(uid,"canceled",1,"unpaid");
+			console.log("resUser", resUser);
 		} else if (type == "delete") {
 			//删除订单，软删除
 			data = await orderCollection.doc(order._id).update({
 				isDelete: 1
 			});
+			//更新用户已取消和已删除
+			let resUser = await updateUserOrderCount(uid,"deleted",1,"canceled");
+			console.log("resUser", resUser);
 		} else if (type == "makesure") {
 			//确定收货,资金解冻
 			data = await orderCollection.doc(order._id).update({
 				state: 3
 			});
+			//更新用户已发货和已收货
+			let resUser = await updateUserOrderCount(uid,"received",1,"delivered");
 			//@todo 资金解冻
 		} else if (type == "detail") {
 			//查询详细

@@ -74,7 +74,7 @@ const editCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
-		isShowLoading: false
+		isShowLoading: true
 	})
 }
 const addManyCart = function(data) {
@@ -163,6 +163,29 @@ const mobileAutoLogin = function(data) {
 		isShowLoading: true
 	})
 }
+/**
+ * 获取自己的信息
+ * @param {Object} data
+ */
+const getUserInfo = function(data) {
+	return network({
+		url: "users",
+		data: data,
+		isShowLoading: true
+	})
+}
+/**
+ * 余额支付
+ * @param {Object} data
+ */
+const balancePay = function(data) {
+	data["ispay"]=true;
+	return network({
+		url: "payInfo",
+		data: data,
+		isShowLoading: true
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -181,6 +204,8 @@ export {
 	address,
 	payInfo,
 	orders,
+	getUserInfo,
 	getGoodsVisites,
+	balancePay,
 	mobileAutoLogin
 }

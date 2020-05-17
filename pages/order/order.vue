@@ -69,7 +69,7 @@
 <script>
 import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
-import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail,getOrderStateExp } from '@/common/functions.js';
+import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail,getOrderStateExp,clearCountDownTimer } from '@/common/functions.js';
 export default {
 	components: {
 		empty
@@ -124,6 +124,8 @@ export default {
 		 * 替换onLoad下代码即可
 		 */
 		this.tabCurrentIndex = +options.state;
+		//关闭秒杀定时器
+		clearCountDownTimer();
 		// #ifndef MP
 		this.loadData();
 		// #endif
@@ -132,6 +134,11 @@ export default {
 			this.loadData();
 		}
 		// #endif
+	},
+	onUnload(){
+		console.log("order onUnload")
+		//关闭秒杀定时器
+		clearCountDownTimer();
 	},
 	methods: {
 		//获取订单列表
@@ -165,6 +172,8 @@ export default {
 						//支付倒计时
 						if (ele.state == 0) {
 							ele.payment = {
+								id:ele._id,
+								subId:index+"",
 								startTime: time,
 								minute: '00',
 								second: '00'
@@ -305,6 +314,8 @@ export default {
 						}
 					});
 				});
+			},err=>{
+				console.log("取消订单失败")
 			});
 		},
 		//确定收货

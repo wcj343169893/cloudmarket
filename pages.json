@@ -115,6 +115,7 @@
 		}, {
 			"path": "pages/user/user",
 			"style": {
+				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "我的",
 				// #ifdef MP
 				"navigationStyle": "custom",

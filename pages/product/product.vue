@@ -107,7 +107,7 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown,incrCartNumber,getCartSumNumber} from '@/common/functions.js';
+import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown,incrCartNumber,getCartSumNumber,clearCountDownTimer} from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -158,6 +158,11 @@ export default {
 		this.id = options.id;
 		this.loadData();
 		/*this.shareList = await this.$api.json('shareList'); */
+	},
+	onUnload(){
+		console.log("product onUnload")
+		//关闭秒杀定时器
+		clearCountDownTimer();
 	},
 	methods: {
 		async loadData() {

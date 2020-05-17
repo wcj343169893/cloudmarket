@@ -55,15 +55,15 @@
 					<text>全部订单</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-daifukuan"></text>
+					<text class="yticon icon-daifukuan"><text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text></text>
 					<text>待付款</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-yishouhuo"></text>
+					<text class="yticon icon-yishouhuo"><text class="sub" v-if="order.receive > 0">{{ order.receive }}</text></text>
 					<text>待收货</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouhoutuikuan"></text>
+					<text class="yticon icon-shouhoutuikuan"><text class="sub" v-if="order.refund > 0">{{ order.refund }}</text></text>
 					<text>退款/售后</text>
 				</view>
 			</view>
@@ -76,7 +76,7 @@
 						<text>浏览历史</text>
 					</view>
 					<scroll-view scroll-x class="h-list">
-						<view v-for="(item,index) in visiteGoodsList" :key="index" class="h-list-image">
+						<view v-for="(item, index) in visiteGoodsList" :key="index" class="h-list-image">
 							<image :src="item.src" @click="navToGoods(item.goods_id)" mode="aspectFill"></image>
 						</view>
 					</scroll-view>
@@ -93,9 +93,9 @@
 </template>
 <script>
 import listCell from '@/components/mix-list-cell';
-import { getGoodsVisites } from '@/common/request.js';
+import { getGoodsVisites, getUserInfo } from '@/common/request.js';
 import { navToGoodsPage } from '@/common/functions.js';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 let startY = 0,
 	moveY = 0,
 	pageAtTop = true;
@@ -109,13 +109,23 @@ export default {
 			coverTransition: '0s',
 			hasVisiteGoods: false,
 			visiteGoodsList: [],
+			order: {
+				unpaid: 0,
+				payup:0,
+				delivered:0,
+				receive: 0,
+				refund: 0
+			},
 			moving: false
 		};
 	},
 	onLoad() {
-		console.log(this.userInfo);
+		this.loadData();
 	},
-	onShow() {
+	//下拉刷新
+	onPullDownRefresh() {
+		console.log('刷新整页');
+		uni.stopPullDownRefresh();
 		this.loadData();
 	},
 	// #ifndef MP
@@ -142,16 +152,32 @@ export default {
 		...mapState(['hasLogin', 'userInfo'])
 	},
 	methods: {
+		...mapMutations(['login']),
 		async loadData() {
-			getGoodsVisites().then(
-				res => {
-					this.hasVisiteGoods = true;
-					this.visiteGoodsList = res;
-				},
-				err => {
-					this.hasVisiteGoods = false;
-				}
-			);
+			if (this.hasLogin) {
+				//自己的信息
+				getUserInfo().then(res => {
+					//this.userInfo = res;
+					//this.order = res.order;
+					this.login(res);
+					if (res.order) {
+						//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+						for (let t in res.order) {
+							this.order[t] = res.order[t];
+						}
+						this.order.receive = this.order.payup+this.order.delivered;
+					}
+				});
+				getGoodsVisites().then(
+					res => {
+						this.hasVisiteGoods = true;
+						this.visiteGoodsList = res;
+					},
+					err => {
+						this.hasVisiteGoods = false;
+					}
+				);
+			}
 		},
 		navToGoods(gid) {
 			navToGoodsPage(gid, 0);
@@ -345,6 +371,22 @@ export default {
 		border-radius: 10upx;
 		font-size: $font-sm;
 		color: $font-color-dark;
+		.yticon{
+			position: relative;
+		}
+		.sub{
+			position: absolute;
+			top: -20upx;
+			right: -18upx;
+			font-size: $font-ssm;
+			color: #fff;
+			background: #fa436a;
+			border-radius: 50%;
+			width: 36upx;
+			height: 36upx;
+			text-align: center;
+			line-height: 36upx;
+		}
 	}
 	.yticon {
 		font-size: 48upx;
@@ -380,7 +422,7 @@ export default {
 		.h-list-image {
 			display: inline-block;
 			margin-right: 20upx;
-			image{
+			image {
 				width: 160upx;
 				height: 160upx;
 				border-radius: 4%;
