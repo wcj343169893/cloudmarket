@@ -527,6 +527,10 @@ export default {
 					navToCreateOrder();
 				})
 			}
+		},
+		//刷新数据
+		refreshList(){
+			this.loadData();
 		}
 	}
 };

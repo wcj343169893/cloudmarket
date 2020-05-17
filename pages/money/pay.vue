@@ -77,6 +77,8 @@ export default {
 						}).then(res => {
 							this.$api.msg('支付超时，订单已取消');
 							this.goBack();
+							//刷新上一页数据
+							this.$api.prePage().refreshList();
 						});
 					});
 				},
@@ -96,7 +98,7 @@ export default {
 			this.payType = event.detail.value;
 		},
 		//确认支付
-		confirmPay: async function() {
+		confirmPay() {
 			if (this.payType == 'balance') {
 				//余额支付，单独调用接口
 				balancePay({
@@ -111,8 +113,6 @@ export default {
 				);
 				return;
 			}
-			//刷新上一页数据
-			this.$api.prePage().refreshList();
 			//https://uniapp.dcloud.io/api/plugins/payment?id=orderinfo
 			/* uni.redirectTo({
 				url: '/pages/money/paySuccess'
@@ -121,10 +121,10 @@ export default {
 				provider: this.payType,
 				orderInfo: this.id,
 				//微信、支付宝订单数据
-				success: function(res) {
+				success: res => {
 					this.paySuccess();
 				},
-				fail: function(err) {
+				fail: res => {
 					this.payFailed();
 				}
 			});
@@ -134,7 +134,22 @@ export default {
 			uni.showModal({
 				title: '温馨提示',
 				content: '支付成功！',
-				showCancel:false,
+				showCancel: false,
+				success: function(res) {
+					uni.navigateBack({
+						delta: 1
+					});
+				}
+			});
+			//刷新上一页数据
+			this.$api.prePage().refreshList();
+		},
+		payFailed() {
+			this.clouseTimer();
+			uni.showModal({
+				title: '温馨提示',
+				content: '支付失败！',
+				showCancel: false,
 				success: function(res) {
 					uni.navigateBack({
 						delta: 1
@@ -142,21 +157,9 @@ export default {
 				}
 			});
 		},
-		payFailed() {
-			this.clouseTimer();
-			uni.showModal({
-				title: '温馨提示',
-				content: '支付失败！',
-				showCancel:false,
-				success: function(res) {
-					uni.navigateBack({
-						delta: 1
-					});
-				}
-			});
-		},clouseTimer(){
+		clouseTimer() {
 			//关闭秒杀定时器
-			clearCountDownTimer();
+			clearCountDownTimer(this.id);
 		}
 	}
 };

@@ -63,14 +63,6 @@ exports.main = async (event, context) => {
 			}).limit(1).get();
 			console.log("visite.affectedDocs", visite.affectedDocs);
 			if (visite.affectedDocs < 1) {
-				console.log({
-					uid: uid,
-					goods_id: item.id,
-					shopid: item.shopid,
-					price: item.price,
-					src: item.src,
-					time: time
-				});
 				//新增浏览记录
 				let visave = await db.collection('goods_visites').add({
 					uid: uid,

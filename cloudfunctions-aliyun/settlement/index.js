@@ -239,7 +239,7 @@ exports.main = async (event, context) => {
 				"message": "提交订单失败!\n商品库存不足",
 			};
 		}
-		console.log(data.goods)
+		//console.log(data.goods)
 		//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 		//备注
 		data["remark"] = event.remark;

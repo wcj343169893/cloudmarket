@@ -230,6 +230,10 @@ export default {
 		onImageError(key, index) {
 			this[key][index].image = '/static/errorImage.jpg';
 		},
+		//刷新数据
+		refreshList() {
+			this.loadData();
+		},
 		navBack() {
 			uni.navigateBack();
 		}

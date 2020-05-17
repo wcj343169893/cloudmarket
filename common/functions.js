@@ -271,7 +271,7 @@ const miaoshaCountDown = function(item, endTime, callback) {
 		item.minute = number2String(minute);
 		item.second = number2String(second);
 		startTime++;
-		console.log(item.minute,item.second);
+		//console.log(item.minute,item.second);
 		return false;
 	}
 	let number2String = function(n) {
