@@ -165,7 +165,7 @@ export default {
 				limit: limit
 			}).then(res => {
 				let time = new Date().getTime();
-				if (res.affectedDocs > 0) {
+				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
 						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
@@ -203,7 +203,7 @@ export default {
 					navItem.orderList = navItem.orderList.concat(res.data);
 					navItem.loadingType = 'more';
 				}
-				if (res.affectedDocs < limit) {
+				if (res.data.length < limit) {
 					//没有数据了
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 					this.$set(navItem, 'loaded', true);

@@ -33,6 +33,9 @@ export default {
 		}
 	},
 	onLaunch: function() {
+		const auth = uniCloud.auth();
+		
+		
 		let userInfo = uni.getStorageSync('userInfo') || '';
 		console.log('App.vue 启动');
 		if (userInfo.id) {
