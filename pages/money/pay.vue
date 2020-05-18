@@ -9,14 +9,14 @@
 		<view class="pay-type-list">
 			<radio-group @change="changePayType">
 				<block v-for="(item, index) in payment" :key="index">
-					<view class="type-item b-b">
+					<label class="radio type-item b-b">
 						<text class="icon yticon" :class="item.icon"></text>
 						<view class="con">
 							<text class="tit">{{ item.name }}</text>
 							<text>{{ item.desc }}</text>
 						</view>
-						<label class="radio"><radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="index == 0" /></label>
-					</view>
+						<radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="index == 0" />
+					</label>
 				</block>
 			</radio-group>
 		</view>
@@ -96,6 +96,7 @@ export default {
 		//选择支付方式
 		changePayType(event) {
 			this.payType = event.detail.value;
+			console.log(event.detail.value)
 		},
 		//确认支付
 		confirmPay() {

@@ -93,7 +93,7 @@
 </template>
 <script>
 import listCell from '@/components/mix-list-cell';
-import { getGoodsVisites, getUserInfo } from '@/common/request.js';
+import { getGoodsVisites, getUserInfo,cronCancelOrders } from '@/common/request.js';
 import { navToGoodsPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
@@ -155,6 +155,11 @@ export default {
 		...mapMutations(['login']),
 		async loadData() {
 			if (this.hasLogin) {
+				cronCancelOrders().then(res=>{
+					console.log("清理过期订单",res);
+				}).catch(err=>{
+					console.log(err)
+				});
 				//自己的信息
 				getUserInfo().then(res => {
 					//this.userInfo = res;

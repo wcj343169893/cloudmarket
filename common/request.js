@@ -186,6 +186,17 @@ const balancePay = function(data) {
 		isShowLoading: true
 	})
 }
+/**
+ * 手动清理用户未支付的过期订单
+ * @param {Object} data
+ */
+const cronCancelOrders = function(data) {
+	return network({
+		url: "cronCancelOrders",
+		data: data,
+		isShowLoading: false
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -207,5 +218,6 @@ export {
 	getUserInfo,
 	getGoodsVisites,
 	balancePay,
-	mobileAutoLogin
+	mobileAutoLogin,
+	cronCancelOrders
 }
