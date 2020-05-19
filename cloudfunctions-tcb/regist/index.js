@@ -65,19 +65,26 @@ exports.main = async (event, context) => {
 		console.log(res);
 	} */
 	// 清理全部数据
-	/* const collection = db.collection('carts');
-	let res = await collection.get()
-	res.data.map(async(document) => {
-	  return await collection.doc(document._id).remove();
+	const collection = db.collection('carts');
+	let res = await collection.get();
+	console.log(1)
+	let data = res.data.map(async (document) => {
+		console.log(2)
+		let r = await collection.doc(document._id).update({
+			time:new Date().getTime()
+		});
+		console.log(3,r);
+		return r;
 	});
-	return res; */
-	
-	const orderCollection = db.collection("orders");
+	console.log(4)
+	return data;
+
+	/* const orderCollection = db.collection("orders");
 	let order = await orderCollection.doc("5ebe930933bd17004e01ca6d").field({
 		goods:1,
 		state:1
 	}).get();
-	return order;
+	return order; */
 };
 /* 
 

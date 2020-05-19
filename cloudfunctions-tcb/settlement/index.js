@@ -124,6 +124,7 @@ exports.main = async (event, context) => {
 				let key = ele.id + '_0';
 				Object.assign(ele, cartMap[key], {
 					hasSku: false,
+					subName:"",
 					sku_index: 0,
 					sku_id: 0
 				});
@@ -208,6 +209,7 @@ exports.main = async (event, context) => {
 				"data": data
 			};
 		}
+		let body=[];
 		let isGoodsError = false;
 		for (let ele of data.goods) {
 			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
@@ -225,6 +227,7 @@ exports.main = async (event, context) => {
 					sku_id: ele.sku_id
 				});
 			}
+			body.push(ele.title+ele.subName);
 		}
 		if (isGoodsError) {
 			//归还秒杀库存2
@@ -248,7 +251,7 @@ exports.main = async (event, context) => {
 		data["created"] = day;
 		data["modified"] = day;
 		//最后支付时间，否则自动取消订单,5分钟支付时间
-		data["lastPayTime"] = (new Date()).getTime() + 5 * 60 * 1000;
+		data["lastPayTime"] = (new Date()).getTime() + 30 * 60 * 1000;
 		//用户设备信息
 		data["platform"] = [
 			context.OS,
@@ -264,6 +267,7 @@ exports.main = async (event, context) => {
 		//字典表递增获得位id
 		data["id"] = await genIdentityId("orders");
 		data["shopId"] = shopid;
+		data["body"] = body.join(",");
 		//保存订单
 		let res = await db.collection("orders").add(data);
 		if (!res.id) {

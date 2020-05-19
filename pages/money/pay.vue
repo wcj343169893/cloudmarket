@@ -25,13 +25,14 @@
 </template>
 
 <script>
-import { payInfo, orders, balancePay } from '@/common/request.js';
+import { payInfo, orders, balancePay, payment } from '@/common/request.js';
 import { miaoshaCountDown, clearCountDownTimer } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			id: 0,
 			payType: '',
+			openid: '',
 			payment: [],
 			times: {},
 			orderInfo: {
@@ -60,6 +61,10 @@ export default {
 				res => {
 					this.orderInfo = res.order;
 					this.payment = res.payment;
+					if (res.payment.length > 0) {
+						//默认第一条
+						this.payType = res.payment[0].value;
+					}
 					let time = new Date().getTime();
 					this.times = {
 						id: this.id,
@@ -96,7 +101,7 @@ export default {
 		//选择支付方式
 		changePayType(event) {
 			this.payType = event.detail.value;
-			console.log(event.detail.value)
+			console.log(event.detail.value);
 		},
 		//确认支付
 		confirmPay() {
@@ -114,47 +119,64 @@ export default {
 				);
 				return;
 			}
+			payment({
+				openid: this.openid,
+				provider: this.payType,
+				id: this.id
+			}).then(
+				res => {
+					console.log(res);
+					uni.requestPayment({
+						// #ifdef APP-PLUS
+						provider: this.payType, // App端此参数必填，可以通过uni.getProvider获取
+						// #endif
+
+						// #ifdef MP-WEIXIN
+						...res,
+						// #endif
+						
+						// #ifdef APP-PLUS || MP-ALIPAY
+						orderInfo: res,
+						// #endif
+
+						//微信、支付宝订单数据
+						success: res => {
+							this.paySuccess();
+						},
+						fail: res => {
+							this.payFailed();
+						}
+					});
+				},
+				err => {
+					console.log(err);
+				}
+			);
 			//https://uniapp.dcloud.io/api/plugins/payment?id=orderinfo
 			/* uni.redirectTo({
 				url: '/pages/money/paySuccess'
 			}); */
-			uni.requestPayment({
-				provider: this.payType,
-				orderInfo: this.id,
-				//微信、支付宝订单数据
-				success: res => {
-					this.paySuccess();
-				},
-				fail: res => {
-					this.payFailed();
-				}
-			});
 		},
+		//支付成功
 		paySuccess() {
 			this.clouseTimer();
-			uni.showModal({
-				title: '温馨提示',
-				content: '支付成功！',
-				showCancel: false,
-				success: function(res) {
-					uni.navigateBack({
-						delta: 1
-					});
-				}
-			});
 			//刷新上一页数据
 			this.$api.prePage().refreshList();
+			//直接跳转支付成功页面
+			uni.redirectTo({
+				url: '/pages/money/paySuccess'
+			});
 		},
+		//支付失败，可以另外选择支付方式
 		payFailed() {
-			this.clouseTimer();
 			uni.showModal({
 				title: '温馨提示',
 				content: '支付失败！',
 				showCancel: false,
 				success: function(res) {
-					uni.navigateBack({
+					/* uni.navigateBack({
 						delta: 1
-					});
+					}); */
 				}
 			});
 		},

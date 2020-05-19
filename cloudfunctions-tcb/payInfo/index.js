@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
 	let uid = +event.uid;
 	let ispay = event.ispay;
 	let data = {};
-	if(!id){
+	if (!id) {
 		return {
 			"code": 404,
 			"message": "订单ID不存在"
@@ -40,24 +40,6 @@ exports.main = async (event, context) => {
 			"message": "订单" + (data["order"].state = 1 ? "已支付" : "已取消")
 		};
 	}
-	//支付方式https://uniapp.dcloud.io/api/plugins/provider
-	data["payment"] = [{
-			id: 1,
-			value: "wxpay",
-			icon: "icon-weixinzhifu",
-			name: "微信支付",
-			usable: true,
-			desc: "推荐使用微信支付"
-		},
-		{
-			id: 2,
-			value: "alipay",
-			icon: "icon-alipay",
-			name: "支付宝支付",
-			usable: true,
-			desc: ""
-		}
-	];
 	//账户余额
 	let userInfo = await db.collection("users").where({
 		id: uid
@@ -69,14 +51,6 @@ exports.main = async (event, context) => {
 		//处理余额为2位小数
 		balance = userInfo.data[0].balance.toFixed(2);
 	}
-	data.payment.push({
-		id: 3,
-		value: "balance",
-		icon: "icon-erjiye-yucunkuan",
-		name: "余额支付",
-		usable: balance >= data.order.totalMoney,
-		desc: "可用余额￥" + balance
-	});
 	//支付订单,最好支持事物
 	if (ispay) {
 		const cmd = db.command;
@@ -100,12 +74,45 @@ exports.main = async (event, context) => {
 				_id: id
 			}).update({
 				state: 1,
-				payTime: time,
-				modified:time
+				payInfo: {
+					time: time,
+					uid: uid,
+					type: "balance",
+					balance: balance - data.order.totalMoney,
+				},
+				modified: time
 			});
 			//更新用户订单统计，用户待付款订单数
-			await updateUserOrderCount(uid, "payup", 1, "unpaid");
+			res = await updateUserOrderCount(uid, "payup", 1, "unpaid");
+			console.log("updateUserOrderCount", res);
 		}
+	} else {
+		//支付方式https://uniapp.dcloud.io/api/plugins/provider
+		data["payment"] = [{
+				id: 1,
+				value: "wxpay",
+				icon: "icon-weixinzhifu",
+				name: "微信支付",
+				usable: true,
+				desc: "推荐使用微信支付"
+			},
+			{
+				id: 2,
+				value: "alipay",
+				icon: "icon-alipay",
+				name: "支付宝支付",
+				usable: true,
+				desc: ""
+			},
+			{
+				id: 3,
+				value: "balance",
+				icon: "icon-erjiye-yucunkuan",
+				name: "余额支付",
+				usable: balance >= data.order.totalMoney,
+				desc: "可用余额￥" + balance
+			}
+		];
 	}
 
 	return {

@@ -11,6 +11,10 @@ export default {
 	methods: {
 		...mapMutations(['login']),
 		async initLogin() {
+			if(!jv){
+				console.log("不支持jv")
+				return;
+			}
 			jv.init(
 				{
 					timeout: 7000,

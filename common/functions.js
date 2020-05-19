@@ -7,19 +7,20 @@ var isRedirect = false;
 const getOrderStateExp = function(item) {
 	let stateTip = '',
 		state = item.state,
-		stateTipColor = '#fa436a',
+		stateTipColor = '#303133',
 		stateContent="";
 	switch (+state) {
 		case 0:
 			stateTip = '待付款';
 			stateContent = "订单未支付，去付款";
+			stateTipColor = '#fa436a';
 			break;
 		case 1:
 			stateTip = '待发货';
 			stateContent = "订单已支付，等待发货";
 			break;
 		case 2:
-			stateTip = '待收货';
+			stateTip = '已发货';
 			stateContent = "订单已发货，等待收货";
 			break;
 		case 3:

@@ -51,9 +51,15 @@
 							<button class="action-btn recom" @click.stop="payOrder(item)">去支付{{ item.payment.minute }}:{{ item.payment.second }}</button>
 						</view>
 						<!-- 已付款 -->
-						<view class="action-box b-t" v-if="item.state == 1"><button class="action-btn" @click.stop="confirmOrder(item)">确定收货</button></view>
+						<block v-if="item.state == 1">
+							<view class="action-box b-t" ><button class="action-btn" @click.stop="pusheDelivery(item)">催发货</button></view>
+						</block>
+						<!-- 已发货 -->
+						<block v-if="item.state == 2">
+							<view class="action-box b-t" ><button class="action-btn" @click.stop="confirmOrder(item)">确定收货</button></view>
+						</block>
 						<!-- 已收货，待评价 -->
-						<view class="action-box b-t" v-if="item.state == 2">
+						<view class="action-box b-t" v-if="item.state == 3">
 							<button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button>
 							<button class="action-btn" @click.stop="evaluateOrder(item)">评价</button>
 						</view>
@@ -317,6 +323,9 @@ export default {
 			},err=>{
 				console.log("取消订单失败")
 			});
+		},
+		pusheDelivery(ele){
+			this.$api.msg("已发送消息给商家,请耐心等待");
 		},
 		//确定收货
 		confirmOrder(ele){

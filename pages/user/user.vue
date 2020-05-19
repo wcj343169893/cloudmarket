@@ -171,6 +171,10 @@ export default {
 							this.order[t] = res.order[t];
 						}
 						this.order.receive = this.order.payup+this.order.delivered;
+					}else{
+						for (let t in this.order) {
+							this.order[t] = res0;
+						}
 					}
 				});
 				getGoodsVisites().then(

@@ -78,7 +78,7 @@ exports.main = async (event, context) => {
 			address: 1,
 			cancelStyle: 1,
 			lastPayTime: 1
-		}).skip((page - 1) * limit).limit(limit).orderBy("_id", "desc").get();
+		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
 	} else {

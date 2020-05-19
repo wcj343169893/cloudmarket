@@ -22,10 +22,11 @@ export default {
 	},
 	onLoad() {
 		this.platform = uni.getSystemInfoSync().platform;
+		//测试阶段，自动登录
+		this.toLogin();
+		return;
 		//在应用初始化调用
 		//#ifdef APP-PLUS
-		//this.initLogin();
-
 		this.jgLogin();
 		//#endif
 

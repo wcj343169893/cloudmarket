@@ -136,6 +136,14 @@ const payInfo = function(data) {
 		isShowLoading: true
 	})
 }
+//获取支付参数
+const payment = function(data) {
+	return network({
+		url: "payment",
+		data: data,
+		isShowLoading: true
+	})
+}
 //订单
 const orders = function(data) {
 	let isShowLoading = data["type"] != "list";
@@ -214,10 +222,11 @@ export {
 	settlement,
 	address,
 	payInfo,
+	payment,
 	orders,
 	getUserInfo,
 	getGoodsVisites,
 	balancePay,
 	mobileAutoLogin,
-	cronCancelOrders
+	cronCancelOrders,
 }
