@@ -1,7 +1,8 @@
 'use strict';
 const db = uniCloud.database();
+
 const {
-	updateUserOrderCount
+	addUserBalanceLog
 } = require('base-common');
 /**
  * 订单支付,余额支付,扣款成功后，统一回调订单处理
@@ -25,6 +26,7 @@ exports.main = async (event, context) => {
 		lastPayTime: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
+		body: 1,
 		state: 1
 	}).limit(1).get();
 	if (order.data.length < 1) {
@@ -68,23 +70,30 @@ exports.main = async (event, context) => {
 				"message": "余额不足,付款失败"
 			};
 		} else {
-			let time = new Date().toISOString();
-			//更新订单状态
-			data = await db.collection("orders").where({
-				_id: id
-			}).update({
-				state: 1,
-				payInfo: {
-					time: time,
+			let yue = balance - data.order.totalMoney;
+			//记录余额变动历史user_balance_logs
+			let log =await addUserBalanceLog({
+				uid: uid,
+				type: 0, //0支出，1收入
+				balance: yue,
+				orderId: id,
+				money: data.order.totalMoney,
+				description: "购买:" + data.order.body,
+			});
+			let resultData = await uniCloud.callFunction({
+				name: "paymentResultOrder",
+				data: {
+					outTradeNo: id,
+					transactionId:log.id,
 					uid: uid,
 					type: "balance",
-					balance: balance - data.order.totalMoney,
-				},
-				modified: time
-			});
-			//更新用户订单统计，用户待付款订单数
-			res = await updateUserOrderCount(uid, "payup", 1, "unpaid");
-			console.log("updateUserOrderCount", res);
+					name: "余额",
+					balance: yue,
+				}
+			})
+			console.log(resultData);
+			
+			data = resultData;
 		}
 	} else {
 		//支付方式https://uniapp.dcloud.io/api/plugins/provider

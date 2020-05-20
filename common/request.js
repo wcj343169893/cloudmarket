@@ -205,6 +205,17 @@ const cronCancelOrders = function(data) {
 		isShowLoading: false
 	})
 }
+/**
+ * 获取登录访问令牌
+ * @param {Object} data
+ */
+const getToken = function(data) {
+	return network({
+		url: "token",
+		data: data,
+		isShowLoading: false
+	})
+}
 export {
 	getHomeFruitData,
 	getCategoryByPid,
@@ -229,4 +240,5 @@ export {
 	balancePay,
 	mobileAutoLogin,
 	cronCancelOrders,
+	getToken
 }

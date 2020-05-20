@@ -7,12 +7,13 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
+import { getToken } from '@/common/request.js';
 export default {
 	methods: {
 		...mapMutations(['login']),
 		async initLogin() {
-			if(!jv){
-				console.log("不支持jv")
+			if (!jv) {
+				console.log('不支持jv');
 				return;
 			}
 			jv.init(
@@ -38,13 +39,48 @@ export default {
 	},
 	onLaunch: function() {
 		const auth = uniCloud.auth();
-		
-		
-		let userInfo = uni.getStorageSync('userInfo') || '';
+		uniCloud.on('loginStateExpire', () => {
+			// 尝试重新登录
+			console.log('loginStateExpire,尝试重新登录');
+		});
+		uniCloud.on('refreshAccessToken', () => {
+		  // 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
+		  console.log("uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态")
+		})
+		let userInfoKey = 'userInfo';
+		let userInfo = uni.getStorageSync(userInfoKey) || {};
 		console.log('App.vue 启动');
+		console.log(userInfo);
 		if (userInfo.id) {
 			//更新登陆状态
-			this.login(userInfo);
+			getToken({
+				uid: userInfo.id,
+				token: userInfo.token
+			}).then(
+				res => {
+					console.log(res);
+					auth.signInWithTicket(res)
+						.then(() => {
+							// 登录成功
+							console.log('客户端登录成功');
+							return auth.getUserInfo();
+						})
+						.then(u => {
+							console.log(u);
+						});
+					/* uni.setStorage({
+					key:"userTicket",
+					data:res
+				}); */
+					this.login(userInfo);
+				},
+				err => {
+					//登录信息失效
+					uni.removeStorage({
+						key: userInfoKey
+					});
+				}
+			);
 			/* uni.getStorage({
 					key: 'userInfo',
 					success: (res) => {

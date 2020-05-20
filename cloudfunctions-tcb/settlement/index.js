@@ -251,7 +251,7 @@ exports.main = async (event, context) => {
 		data["created"] = day;
 		data["modified"] = day;
 		//最后支付时间，否则自动取消订单,5分钟支付时间
-		data["lastPayTime"] = (new Date()).getTime() + 30 * 60 * 1000;
+		data["lastPayTime"] = (new Date()).getTime() + 5 * 60 * 1000;
 		//用户设备信息
 		data["platform"] = [
 			context.OS,
@@ -266,7 +266,6 @@ exports.main = async (event, context) => {
 		data["isDelete"] = 0;
 		//字典表递增获得位id
 		data["id"] = await genIdentityId("orders");
-		data["shopId"] = shopid;
 		data["body"] = body.join(",");
 		//保存订单
 		let res = await db.collection("orders").add(data);

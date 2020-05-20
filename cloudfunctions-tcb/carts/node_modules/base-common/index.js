@@ -126,11 +126,24 @@ const genIdentityId = async function(key){
 	return res2.data[0].value;
 	//生成用户id----结束-----
 }
+/**
+ * 保存用户余额变动日志
+ * @param {Object} data
+ */
+const addUserBalanceLog =async function(data){
+	const db = uniCloud.database();
+	//记录余额变动历史user_balance_logs
+	return await db.collection("user_balance_logs").add({
+		created: new Date().toISOString(),
+		...data
+	});
+}
 
 module.exports = {
 	getCollectionNames,
 	updateGoodsMiaoshaStock,
 	updateUserOrderCount,
 	updateGoodsStock,
-	genIdentityId
+	genIdentityId,
+	addUserBalanceLog
 }

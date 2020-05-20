@@ -350,13 +350,13 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id, money) {
+const navToPayOrder = function(id, money,comefrom) {
 	if (isRedirect) {
 		return false;
 	}
 	isRedirect = true;
 	uni.navigateTo({
-		url: `/pages/money/pay?id=${id}&money=${money}`,
+		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}`,
 		success: function() {
 			isRedirect = false;
 		}

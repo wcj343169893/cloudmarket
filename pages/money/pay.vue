@@ -31,6 +31,7 @@ export default {
 	data() {
 		return {
 			id: 0,
+			comefrom:"",
 			payType: '',
 			openid: '',
 			payment: [],
@@ -45,6 +46,11 @@ export default {
 		if (options.id) {
 			this.id = options.id;
 			this.orderInfo.totalMoney = options.money;
+			this.comefrom = options.comefrom;
+		}else{
+			this.$api.msg("支付订单号不存在");
+			this.goBack();
+			return;
 		}
 		this.loadData();
 	},
@@ -163,8 +169,10 @@ export default {
 			//刷新上一页数据
 			this.$api.prePage().refreshList();
 			//直接跳转支付成功页面
+			let comefrom = this.comefrom;
+			let id = this.id;
 			uni.redirectTo({
-				url: '/pages/money/paySuccess'
+				url: `/pages/money/paySuccess?id=${id}&comefrom=${comefrom}`
 			});
 		},
 		//支付失败，可以另外选择支付方式

@@ -15,28 +15,45 @@
 			<view class="sub-title">
 				<text>{{ info.stateContent }}</text>
 			</view>
-			<view class="buttons" v-if="info.state == 1"><button type="default" class="action-btn" @click="confirmOrder">确定收货</button></view>
-			<view class="buttons" v-else>
-				<button type="default" class="action-btn" @click="deleteOrder">删除订单</button>
-				<button type="default" class="action-btn" @click="buyAgain()">再次购买</button>
-				<button type="default" class="action-btn recom" @click="evaluateOrder" v-if="info.state == 3">评价一下</button>
+			<view class="buttons" >
+				<block v-if="info.state == 1">
+					<button type="default" class="action-btn" @click="pusheDelivery">催发货</button>
+				</block>
+				<block v-else-if="info.state == 2">
+					<button type="default" class="action-btn" @click="confirmOrder">确定收货</button>
+				</block>
+				<block v-else-if="info.state == 3">
+					<button type="default" class="action-btn recom" @click="evaluateOrder">评价一下</button>
+				</block>
+				<block v-else>
+					<button type="default" class="action-btn" @click="deleteOrder">删除订单</button>
+					<button type="default" class="action-btn" @click="buyAgain()">再次购买</button>
+				</block>
 			</view>
 		</view>
-		<view class="section m-t weui-flex address" v-if="info.address">
-			<view class=""><text>收货地址</text></view>
-			<view class="weui-flex__item">
+		<view class="section ab m-t">
+			<view class="weui-flex" v-if="info.address">
+				<view class=""><text>收货地址</text></view>
 				<view class="">
-					<text>{{ info.address.name }}</text>
-					<text class="m-l">{{ info.address.mobile }}</text>
+					<view class="">
+						<text>{{ info.address.name }}</text>
+						<text class="m-l">{{ info.address.mobile }}</text>
+					</view>
+					<text>{{ info.address.addressName }}</text>
 				</view>
-				<text>{{ info.address.addressName }}</text>
+			</view>
+			<view class="weui-flex">
+				<view class=""><text>备注</text></view>
+				<view class="">
+					<text>{{ info.remark||"无" }}</text>
+				</view>
 			</view>
 		</view>
 		<view class="m-t"></view>
 
-		<view class="cart-list">
+		<view class="cart-list ">
 			<block v-for="(item, index) in goodsList" :key="index">
-				<view class="goodsList" v-if="item.amount > 0">
+				<view class="goodsList b-b" v-if="item.amount > 0">
 					<view class="weui-flex">
 						<view class="weui-flex start">
 							<view class="weui-flex-check">
@@ -52,43 +69,81 @@
 								</view>
 							</view>
 							<view class="desc weui-flex__item">
-								<view class="">
-									<text class="title">{{ item.title }}</text>
+								<view class="weui-flex">
+									<text class="title weui-flex__item">{{ item.title }}</text>
+									<text class="price warning">{{ item.price * item.amount }}</text>
 								</view>
 								<view class="">
 									<text>{{ item.subName }}</text>
 								</view>
-								<view class="weui-flex">
-									<view class=" prices">
-										<view class="">
-											<text>
-												单价:
-												<text class="price">{{ item.price }}</text>
-											</text>
-										</view>
-										<view class="">
-											<text>
-												数量:
-												<text>{{ item.amount }}</text>
-											</text>
-										</view>
-										<view class="">
-											<text>
-												总价:
-												<text class="price warning">{{ item.price * item.amount }}</text>
-											</text>
-										</view>
+								<view class=" prices">
+									<view class="">
+										<text>单价:</text>
+										<text class="price">{{ item.price }}</text>
+										<text>数量:</text>
+										<text>{{ item.amount }}</text>
 									</view>
-									<view class="buttons weui-flex__item">
-										<button type="default"  v-if="info.state > 2" class="action-btn" @click="refundOrder(item)">申请退款</button>
-										<button type="default" class="action-btn" @click="buyAgain(item)">加购物车</button>
-									</view>
+								</view>
+								<view class="buttons">
+									<button type="default" v-if="info.state > 2" class="action-btn" @click="refundOrder(item)">申请退款</button>
+									<button type="default" class="action-btn" @click="buyAgain(item)">加购物车</button>
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</block>
+			<view class="more-btn b-b" v-if="moreGoodsCount > 0" @click="showAllGoods">
+				<text>还有{{ moreGoodsCount }}种商品</text>
+				<text class="yticon icon-jiantour-copy"></text>
+			</view>
+			<view class="section ab">
+				<view class="weui-flex">
+					<view class=""><text>商品金额</text></view>
+					<view class="">
+						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+					</view>
+				</view>
+				<view class="weui-flex">
+					<view class=""><text>优惠金额</text></view>
+					<view class="">
+						<text>-</text><text class="price">{{ info.totalDiscount }}</text>
+					</view>
+				</view>
+				<view class="weui-flex">
+					<view class=""><text>实付金额</text></view>
+					<view class="">
+						<text class="price warning">{{ info.totalMoney }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="m-t"></view>
+		<view class="section ab">
+			<view class="weui-flex">
+				<view class=""><text>订单编号</text></view>
+				<view class="">
+					<text>{{ info.id }}</text>
+				</view>
+			</view>	
+			<view class="weui-flex">
+				<view class=""><text>支付编号</text></view>
+				<view class="">
+					<text>{{ info._id }}</text>
+				</view>
+			</view>
+			<view class="weui-flex">
+				<view class=""><text>下单时间</text></view>
+				<view class="">
+					<text class="">{{ info.created }}</text>
+				</view>
+			</view>
+			<view class="weui-flex" v-if="info.payInfo">
+				<view class=""><text>支付方式</text></view>
+				<view class="">
+					<text>{{ info.payInfo.name }}</text>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -96,12 +151,14 @@
 <script>
 import { mapState } from 'vuex';
 import { orders, addManyCart } from '@/common/request.js';
-import { navToGoodsPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
+import { navToGoodsPage, navToCreateOrder, getOrderStateExp,dateFormat } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			id: 0,
 			goodsList: [],
+			moreGoodsCount: 0,
+			maxShowCount: 3,
 			info: {}
 		};
 	},
@@ -114,19 +171,34 @@ export default {
 	},
 	methods: {
 		async loadData() {
+			//优先从缓存读取，有助于显示速度
+			let item = uni.getStorageSync('orderDetail');
+			this.orderInfo(item);
 			orders({
 				id: this.id,
 				type: 'detail'
 			}).then(res => {
-				//订单状态
-				let { stateTip, stateTipColor, stateContent } = getOrderStateExp(res);
-				res.stateTip = stateTip;
-				res.stateTipColor = stateTipColor;
-				res.stateContent = stateContent;
-
-				this.info = res;
-				this.goodsList = res.goods;
+				res.created = dateFormat(res.created,"yyyy-MM-dd hh:mm:ss")
+				this.orderInfo(res);
 			});
+		},
+		orderInfo(res) {
+			//订单状态
+			let { stateTip, stateTipColor, stateContent } = getOrderStateExp(res);
+			res.stateTip = stateTip;
+			res.stateTipColor = stateTipColor;
+			res.stateContent = stateContent;
+			this.moreGoodsCount = res.goods.length - this.maxShowCount;
+			this.info = res;
+			if (this.moreGoodsCount > 0) {
+				this.goodsList = res.goods.slice(0, this.maxShowCount);
+			} else {
+				this.goodsList = res.goods;
+			}
+		},
+		showAllGoods() {
+			this.goodsList = this.info.goods;
+			this.moreGoodsCount = 0;
 		},
 		//删除订单
 		deleteOrder() {
@@ -197,6 +269,10 @@ export default {
 					navToCreateOrder();
 				});
 			}
+		},
+		//催老板发货
+		pusheDelivery(){
+			this.$api.msg("已发送消息给商家,请耐心等待");
 		},
 		//确定收货
 		confirmOrder(ele) {
@@ -287,7 +363,7 @@ page {
 }
 .section {
 	background: #ffffff;
-	padding: 30upx;
+	padding:20upx 30upx;
 	border-radius: 20upx;
 }
 .message_notice {
@@ -325,7 +401,8 @@ page {
 .cart-list {
 	flex: 1;
 	overflow: hidden;
-	height: 100%;
+	background: #ffffff;
+	border-radius: 20upx;
 	.space {
 		padding-top: var(--window-bottom);
 	}
@@ -383,6 +460,7 @@ page {
 			color: $font-color-dark;
 			line-height: 1.1;
 			font-weight: 400;
+			padding-right: 20upx;
 		}
 		.desc2 {
 			padding: 4upx 0 0;
@@ -406,6 +484,24 @@ page {
 	align-items: flex-start;
 	.weui-flex__item {
 		text-align: right;
+	}
+}
+.more-btn {
+	background: #fff;
+	text-align: center;
+	padding: 20upx;
+	position: relative;
+}
+.ab {
+	.weui-flex {
+		justify-content: space-between;
+		margin-bottom: 14upx;
+	}
+}
+.price{
+	color: $font-color-dark;
+	&.warning {
+		color: $font-color-warning;
 	}
 }
 </style>

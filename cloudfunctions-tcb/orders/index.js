@@ -101,13 +101,15 @@ exports.main = async (event, context) => {
 				totalDiscount: 1,
 				state: 1,
 				created: 1,
+				remark:1,
 				goods: 1,
 				cartCount: 1,
 				address: 1,
 				lastPayTime: 1,
 				cancelStyle: 1,
-				shopId:1,
-				modified: 1
+				shopid:1,
+				modified: 1,
+				payInfo:1
 			};
 		}
 		data = await orderCollection.where(conditions).limit(1).field(field).get();

@@ -5,6 +5,7 @@ const userInfo = {
   "balance": 12.3,
   "birthday": "1990-03-03",
   "coupons": 2,
+  "token":"f84j2ddk38f9u3u423jfwe",
   "id": 10000,
   "lastLogin": "2020-03-12T01:30:14.081Z",
   "messageCount": 0,

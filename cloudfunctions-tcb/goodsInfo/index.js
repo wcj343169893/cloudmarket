@@ -1,9 +1,18 @@
 'use strict';
 const db = uniCloud.database();
+const app = uniCloud.init({
+	spaceId: 'cloud-market-3c5868',
+	credentials: require('./credentials.json')
+});
+const auth = app.auth();
+//const auth = uniCloud.auth();
 /**
  * 商品详情页面
  */
 exports.main = async (event, context) => {
+	const userInfo = auth.getUserInfo();
+	console.log(auth.getClientIP());
+	console.log(userInfo);
 	let id = +event.id;
 	let uid = +event.uid;
 	const collection = db.collection('goods');

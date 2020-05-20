@@ -65,7 +65,7 @@ exports.main = async (event, context) => {
 		console.log(res);
 	} */
 	// 清理全部数据
-	const collection = db.collection('carts');
+	/* const collection = db.collection('carts');
 	let res = await collection.get();
 	console.log(1)
 	let data = res.data.map(async (document) => {
@@ -77,7 +77,7 @@ exports.main = async (event, context) => {
 		return r;
 	});
 	console.log(4)
-	return data;
+	return data; */
 
 	/* const orderCollection = db.collection("orders");
 	let order = await orderCollection.doc("5ebe930933bd17004e01ca6d").field({
@@ -85,6 +85,19 @@ exports.main = async (event, context) => {
 		state:1
 	}).get();
 	return order; */
+	const app = uniCloud.init({
+	  spaceId: 'cloud-market-3c5868',
+	  credentials: require('./credentials.json')
+	});
+	
+	const auth = app.auth();
+	
+	let customUserId = '10000';
+	
+	const ticket = auth.createTicket(customUserId, {
+	  refresh: 10 * 60 * 1000 // 每十分钟刷新一次登录态， 默认为一小时
+	});
+	return ticket;
 };
 /* 
 

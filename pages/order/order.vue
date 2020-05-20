@@ -48,7 +48,7 @@
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
 							<button class="action-btn" @click.stop="cancelOrderConfirm(item, index)">取消订单</button>
-							<button class="action-btn recom" @click.stop="payOrder(item)">去支付{{ item.payment.minute }}:{{ item.payment.second }}</button>
+							<button class="action-btn recom" @click.stop="payOrder(item)">去支付<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
 						</view>
 						<!-- 已付款 -->
 						<block v-if="item.state == 1">
@@ -242,7 +242,7 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id, item.totalMoney);
+			navToPayOrder(item._id, item.totalMoney,"order");
 		},
 		//删除订单
 		deleteOrder(item) {
@@ -321,7 +321,9 @@ export default {
 					});
 				});
 			},err=>{
-				console.log("取消订单失败")
+				console.log("取消订单失败");
+				//重新刷新页面数据
+				this.refreshList();
 			});
 		},
 		pusheDelivery(ele){
@@ -356,6 +358,10 @@ export default {
 			if(item.state == 0){
 				this.payOrder(item)
 			}else{
+				uni.setStorage({
+					key:"orderDetail",
+					data:item
+				})
 				navToOrderDetail(item._id);
 			}
 		},
@@ -539,6 +545,10 @@ page,
 		color: $font-color-dark;
 		background: #fff;
 		border-radius: 100px;
+		.time{
+			width: 72upx;
+			display: inline-block;
+		}
 		&:after {
 			border-radius: 100px;
 		}

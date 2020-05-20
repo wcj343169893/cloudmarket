@@ -4,14 +4,15 @@
  */
 const network = function(options) {
 	return new Promise((resolve, reject) => {
+		let data={};
+		if(options.data){
+			data = options.data;
+		}
 		try {
-			let userInfo = uni.getStorageSync('userInfo') || '';
-			if(!options.data){
-				options.data={};
-			}
+			//云验证访问令牌
+			let userInfo = uni.getStorageSync('userInfo') || {};
 			if(userInfo.id){
-				options.data.uid = userInfo.id;
-				options.data.token = userInfo.token;
+				data["uid"]=userInfo.id;
 			}
 		} catch (e) {
 			reject("错误信息" + e)
@@ -26,7 +27,7 @@ const network = function(options) {
 
 		uniCloud.callFunction({
 			name: options.url,
-			data: options.data || {}
+			data: data
 		}).then(res => {
 			uni.hideLoading()
 			console.log(res)
