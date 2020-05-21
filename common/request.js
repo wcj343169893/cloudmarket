@@ -183,6 +183,18 @@ const getUserInfo = function(data) {
 	})
 }
 /**
+ * 修改自己的信息
+ * @param {Object} data
+ */
+const saveUserInfo = function(data) {
+	data["type"]="save";
+	return network({
+		url: "users",
+		data: data,
+		isShowLoading: true
+	})
+}
+/**
  * 余额支付
  * @param {Object} data
  */
@@ -236,6 +248,7 @@ export {
 	payment,
 	orders,
 	getUserInfo,
+	saveUserInfo,
 	getGoodsVisites,
 	balancePay,
 	mobileAutoLogin,

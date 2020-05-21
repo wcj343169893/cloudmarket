@@ -77,6 +77,10 @@ exports.main = async (event, context) => {
 			cartCount: 1,
 			address: 1,
 			cancelStyle: 1,
+			remark:1,
+			shopid:1,
+			"payInfo.time":1,
+			"payInfo.name":1,
 			lastPayTime: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 		data["page"] = page;

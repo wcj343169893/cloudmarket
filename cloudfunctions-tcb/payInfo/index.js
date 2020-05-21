@@ -87,7 +87,7 @@ exports.main = async (event, context) => {
 					transactionId:log.id,
 					uid: uid,
 					type: "balance",
-					name: "余额",
+					name: "余额支付",
 					balance: yue,
 				}
 			})

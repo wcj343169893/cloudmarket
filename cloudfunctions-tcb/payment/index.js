@@ -64,7 +64,7 @@ exports.main = async (event, context) => {
 		subject: order.body, // 微信支付时不可填写此项
 		body: order.body,
 		outTradeNo: id, //订单号
-		totalFee: 1, //parseInt(order.totalMoney * 100), // 金额，单位分
+		totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
 		notifyUrl: notifyUrl // 支付结果通知地址
 	})
 	return {

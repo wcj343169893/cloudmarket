@@ -4,9 +4,11 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="userInfo.portrait"></image></view>
-				<view class="info-box">
-					<text class="username">{{ userInfo.nickname }}</text>
-				</view>
+				<navigator url="../userinfo/userinfo" open-type="navigate">
+					<view class="info-box">
+						<text class="username">{{ userInfo.nickname }}</text>
+					</view>
+				</navigator>
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
@@ -20,18 +22,7 @@
 			</view>
 		</view>
 
-		<view
-			class="cover-container"
-			:style="[
-				{
-					transform: coverTransform,
-					transition: coverTransition
-				}
-			]"
-			@touchstart="coverTouchstart"
-			@touchmove="coverTouchmove"
-			@touchend="coverTouchend"
-		>
+		<view class="cover-container">
 			<image class="arc" src="/static/arc.png"></image>
 
 			<view class="tj-sction">
@@ -55,15 +46,21 @@
 					<text>全部订单</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-daifukuan"><text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text></text>
+					<text class="yticon icon-daifukuan">
+						<text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text>
+					</text>
 					<text>待付款</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-yishouhuo"><text class="sub" v-if="order.receive > 0">{{ order.receive }}</text></text>
+					<text class="yticon icon-yishouhuo">
+						<text class="sub" v-if="order.receive > 0">{{ order.receive }}</text>
+					</text>
 					<text>待收货</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouhoutuikuan"><text class="sub" v-if="order.refund > 0">{{ order.refund }}</text></text>
+					<text class="yticon icon-shouhoutuikuan">
+						<text class="sub" v-if="order.refund > 0">{{ order.refund }}</text>
+					</text>
 					<text>退款/售后</text>
 				</view>
 			</view>
@@ -93,7 +90,7 @@
 </template>
 <script>
 import listCell from '@/components/mix-list-cell';
-import { getGoodsVisites, getUserInfo,cronCancelOrders } from '@/common/request.js';
+import { getGoodsVisites, getUserInfo, cronCancelOrders } from '@/common/request.js';
 import { navToGoodsPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
@@ -111,8 +108,8 @@ export default {
 			visiteGoodsList: [],
 			order: {
 				unpaid: 0,
-				payup:0,
-				delivered:0,
+				payup: 0,
+				delivered: 0,
 				receive: 0,
 				refund: 0
 			},
@@ -155,11 +152,13 @@ export default {
 		...mapMutations(['login']),
 		async loadData() {
 			if (this.hasLogin) {
-				cronCancelOrders().then(res=>{
-					console.log("清理过期订单",res);
-				}).catch(err=>{
-					console.log(err)
-				});
+				cronCancelOrders()
+					.then(res => {
+						console.log('清理过期订单', res);
+					})
+					.catch(err => {
+						console.log(err);
+					});
 				//自己的信息
 				getUserInfo().then(res => {
 					//this.userInfo = res;
@@ -170,8 +169,8 @@ export default {
 						for (let t in res.order) {
 							this.order[t] = res.order[t];
 						}
-						this.order.receive = this.order.payup+this.order.delivered;
-					}else{
+						this.order.receive = this.order.payup + this.order.delivered;
+					} else {
 						for (let t in this.order) {
 							this.order[t] = res0;
 						}
@@ -202,45 +201,6 @@ export default {
 			uni.navigateTo({
 				url
 			});
-		},
-
-		/**
-		 *  会员卡下拉和回弹
-		 *  1.关闭bounce避免ios端下拉冲突
-		 *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
-		 *    transition设置0.1秒延迟，让css来过渡这段空窗期
-		 *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
-		 */
-		coverTouchstart(e) {
-			if (pageAtTop === false) {
-				return;
-			}
-			this.coverTransition = 'transform .1s linear';
-			startY = e.touches[0].clientY;
-		},
-		coverTouchmove(e) {
-			moveY = e.touches[0].clientY;
-			let moveDistance = moveY - startY;
-			if (moveDistance < 0) {
-				this.moving = false;
-				return;
-			}
-			this.moving = true;
-			if (moveDistance >= 80 && moveDistance < 100) {
-				moveDistance = 80;
-			}
-
-			if (moveDistance > 0 && moveDistance <= 80) {
-				this.coverTransform = `translateY(${moveDistance}px)`;
-			}
-		},
-		coverTouchend() {
-			if (this.moving === false) {
-				return;
-			}
-			this.moving = false;
-			this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
-			this.coverTransform = 'translateY(0px)';
 		}
 	}
 };
@@ -380,10 +340,10 @@ export default {
 		border-radius: 10upx;
 		font-size: $font-sm;
 		color: $font-color-dark;
-		.yticon{
+		.yticon {
 			position: relative;
 		}
-		.sub{
+		.sub {
 			position: absolute;
 			top: -20upx;
 			right: -18upx;

@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 	//验证成功
 	if (res.resultCode == "SUCCESS") {
 		res["type"] = "wxpay";
-		res["name"] = "微信";
+		res["name"] = "微信支付";
 		//调用订单处理
 		let data = await uniCloud.callFunction({
 			name: "paymentResultOrder",

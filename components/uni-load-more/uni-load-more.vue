@@ -75,8 +75,8 @@
 	}
 
 	.uni-load-more__img {
-		height: 40upx;
-		width: 40upx;
+		height: 24px;
+		width: 24px;
 		margin-right: 10px
 	}
 
@@ -122,8 +122,8 @@
 	.load1,
 	.load2,
 	.load3 {
-		height: 40upx;
-		width: 40upx
+		height: 24px;
+		width: 24px
 	}
 
 	.load2 {

@@ -174,13 +174,13 @@ export default {
 			//优先从缓存读取，有助于显示速度
 			let item = uni.getStorageSync('orderDetail');
 			this.orderInfo(item);
-			orders({
+			/* orders({
 				id: this.id,
 				type: 'detail'
 			}).then(res => {
 				res.created = dateFormat(res.created,"yyyy-MM-dd hh:mm:ss")
 				this.orderInfo(res);
-			});
+			}); */
 		},
 		orderInfo(res) {
 			//订单状态
@@ -240,7 +240,7 @@ export default {
 					amount: item.amount
 				});
 				addManyCart({
-					id: this.info.shopId,
+					id: this.info.shopid,
 					stationId: this.stationId,
 					data: data
 				}).then(res => {
@@ -261,7 +261,7 @@ export default {
 					});
 				}
 				addManyCart({
-					id: this.info.shopId,
+					id: this.info.shopid,
 					stationId: this.stationId,
 					data: data
 				}).then(res => {

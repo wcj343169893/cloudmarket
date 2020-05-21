@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 	//验证成功
 	if (res.resultCode == "SUCCESS") {
 		res["type"] = "alipay";
-		res["name"] = "支付宝";
+		res["name"] = "支付宝支付";
 		//调用订单处理
 		let data = await uniCloud.callFunction({
 			name: "paymentResultOrder",

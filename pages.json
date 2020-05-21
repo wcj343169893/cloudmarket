@@ -94,7 +94,7 @@
 		{
 			"path": "pages/userinfo/userinfo",
 			"style": {
-				"navigationBarTitleText": "修改资料"
+				"navigationBarTitleText": "个人资料"
 			}
 		}, {
 			"path": "pages/cart/cart",
@@ -288,6 +288,12 @@
             "style" : {
 				"navigationBarTitleText": "订单详情",
 				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/userinfo/avatar",
+            "style" : {
+				"navigationBarTitleText": "裁剪头像"
 			}
         }
     ],
