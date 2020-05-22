@@ -35,14 +35,16 @@ exports.main = async (event, context) => {
 		let strinFields = ["portrait", "nickname", "birthday"];
 		let intFields = ["sex"];
 		let entity = {};
+		console.log(event);
 		for (let f in event) {
-			if (strinFields.indexOf(f)) {
+			if (strinFields.indexOf(f) != -1) {
 				//可保存的字段
 				entity[f] = event[f];
-			} else if (intFields.indexOf(f)) {
+			} else if (intFields.indexOf(f) != -1) {
 				entity[f] = parseInt(event[f]);
 			}
 		}
+		console.log(entity);
 		//保存更改
 		let res = await db.collection("users").doc(info._id).update(entity);
 		console.log("保存用户基本信息", res);

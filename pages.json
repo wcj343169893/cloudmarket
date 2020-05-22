@@ -225,6 +225,7 @@
             "style" : {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
+					"bounce": "none",
 					"titleNView": {
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
@@ -293,7 +294,22 @@
         ,{
             "path" : "pages/userinfo/avatar",
             "style" : {
-				"navigationBarTitleText": "裁剪头像"
+				"navigationBarTitleText": "裁剪头像",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [
+							{
+								"text": "保存",
+								"fontSize": "16",
+								"color": "#54b85d",
+								"width": "46px",
+								"background": "rgba(0,0,0,0)"
+							}
+						]
+					}
+				}
 			}
         }
     ],

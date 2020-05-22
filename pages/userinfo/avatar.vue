@@ -22,7 +22,7 @@
 								<view class="uni-cropper-point point-t" data-drag="top" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></view>
 								<view class="uni-cropper-point point-tr" data-drag="topTight"></view>
 								<view class="uni-cropper-point point-r" data-drag="right" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></view>
-								<view class="uni-cropper-point point-rb" data-drag="rightBottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></view>
+								<!-- <view class="uni-cropper-point point-rb" data-drag="rightBottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></view> -->
 								<view class="uni-cropper-point point-b" data-drag="bottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove" @touchend.stop="dragEnd"></view>
 								<view class="uni-cropper-point point-bl" data-drag="bottomLeft"></view>
 								<view class="uni-cropper-point point-l" data-drag="left" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></view>
@@ -32,9 +32,6 @@
 					</view>
 				</view>
 			</view>
-			<view class="cropper-config">
-				<button type="warn" @click="getImageInfo" style="margin-top: 30rpx;">保存头像</button>
-			</view>
 			<canvas canvas-id="myCanvas" :style="'position:absolute;border: 1px solid red; width:' + imageW + 'px;height:' + imageH + 'px;top:-9999px;left:-9999px;'"></canvas>
 		</view>
 	</view>
@@ -42,8 +39,9 @@
 
 <script>
 let sysInfo = uni.getSystemInfoSync();
+console.log(sysInfo);
 let SCREEN_WIDTH = sysInfo.screenWidth;
-let SCREEN_HEIGHT = sysInfo.screenHeight-100;
+let SCREEN_HEIGHT = sysInfo.screenHeight;
 let PAGE_X, // 手按下的x位置
 	PAGE_Y, // 手按下y的位置
 	PR = sysInfo.pixelRatio, // dpi
@@ -68,7 +66,6 @@ export default {
 	 */
 	data() {
 		return {
-			name: '杨大宝',
 			imageSrc: 'https://img-cdn-qiniu.dcloud.net.cn/demo_crop.jpg',
 			isShowImg: false,
 			// 初始化的宽高
@@ -95,18 +92,19 @@ export default {
 			cutB: SCREEN_WIDTH,
 			cutR: '100%',
 			qualityWidth: DRAW_IMAGE_W,
-			innerAspectRadio: DRAFG_MOVE_RATIO
+			innerAspectRadio: DRAFG_MOVE_RATIO,
+			ratio: 1 /**宽高比例*/
 		};
 	},
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad: function(options) {},
+	onLoad(options) {},
 
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
-	onReady: function() {
+	onReady() {
 		uni.getStorage({
 			key: 'avatar',
 			success: e => {
@@ -115,6 +113,13 @@ export default {
 				this.loadImage();
 			}
 		});
+	},
+	//点击导航栏 buttons 时触发
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if (index == 0) {
+			this.getImageInfo();
+		}
 	},
 	methods: {
 		setData(obj) {
@@ -131,29 +136,36 @@ export default {
 
 			uni.getImageInfo({
 				src: _this.imageSrc,
-				success: (res) =>{
+				success: res => {
 					IMG_RATIO = res.width / res.height;
 					if (IMG_RATIO >= 1) {
 						IMG_REAL_W = SCREEN_WIDTH;
 						IMG_REAL_H = SCREEN_WIDTH / IMG_RATIO;
+					} else if (SCREEN_WIDTH / SCREEN_HEIGHT < IMG_RATIO) {
+						console.log('SCREEN_WIDTH/SCREEN_HEIGHT,IMG_RATIO', SCREEN_WIDTH / SCREEN_HEIGHT, IMG_RATIO);
+						IMG_REAL_W = SCREEN_WIDTH;
+						IMG_REAL_H = SCREEN_WIDTH / IMG_RATIO;
 					} else {
-						IMG_REAL_W = SCREEN_WIDTH * IMG_RATIO;
-						IMG_REAL_H = SCREEN_WIDTH;
+						//超出屏幕高度,缩小尺寸
+						IMG_REAL_H = SCREEN_HEIGHT;
+						IMG_REAL_W = SCREEN_HEIGHT * IMG_RATIO;
 					}
-					let minRange = IMG_REAL_W > IMG_REAL_H ? IMG_REAL_W : IMG_REAL_H;
+					let minRange = IMG_REAL_W < IMG_REAL_H ? IMG_REAL_W : IMG_REAL_H;
 					INIT_DRAG_POSITION = minRange > INIT_DRAG_POSITION ? INIT_DRAG_POSITION : minRange;
 					// 根据图片的宽高显示不同的效果   保证图片可以正常显示
+					console.log('实际宽高', res.width, res.height);
+					console.log('显示宽高', IMG_REAL_W, IMG_REAL_H);
 					if (IMG_RATIO >= 1) {
-						let cutT = Math.ceil((SCREEN_WIDTH / IMG_RATIO - (SCREEN_WIDTH / IMG_RATIO - INIT_DRAG_POSITION)) / 2);
+						let cutT = 0;
 						let cutB = cutT;
-						let cutL = Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH + INIT_DRAG_POSITION) / 2);
+						let cutL = (IMG_REAL_W - IMG_REAL_H) / 2;
 						let cutR = cutL;
 						_this.setData({
 							cropperW: SCREEN_WIDTH,
 							cropperH: SCREEN_WIDTH / IMG_RATIO,
 							// 初始化left right
 							cropperL: 0,
-							cropperT: 0,
+							cropperT: (SCREEN_HEIGHT - IMG_REAL_H) / 2,
 							cutL: cutL,
 							cutT: cutT,
 							cutR: cutR,
@@ -166,16 +178,17 @@ export default {
 							innerAspectRadio: IMG_RATIO
 						});
 					} else {
-						let cutL = Math.ceil((SCREEN_WIDTH * IMG_RATIO - SCREEN_WIDTH * IMG_RATIO) / 2);
+						let cutL = 0;
 						let cutR = cutL;
-						let cutT = Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2);
+						let cutT = (IMG_REAL_H - IMG_REAL_W) / 2; //图片高-宽//Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2);
 						let cutB = cutT;
+						console.log(cutT);
 						_this.setData({
-							cropperW: SCREEN_WIDTH,
-							cropperH: SCREEN_WIDTH/IMG_RATIO,
+							cropperW: IMG_REAL_W,
+							cropperH: IMG_REAL_H,
 							// 初始化left right
-							cropperL: 0,
-							cropperT: 0,
+							cropperL: (SCREEN_WIDTH - IMG_REAL_W) / 2,
+							cropperT: (SCREEN_HEIGHT - IMG_REAL_H) / 2,
 
 							cutL: cutL,
 							cutT: cutT,
@@ -204,7 +217,6 @@ export default {
 
 		// 拖动时候触发的touchMove事件
 		contentMoveing(e) {
-			var _this = this;
 			var dragLengthX = (PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO;
 			var dragLengthY = (PAGE_Y - e.touches[0].pageY) * DRAFG_MOVE_RATIO;
 			// 左移
@@ -236,7 +248,7 @@ export default {
 		getImageInfo() {
 			var _this = this;
 			uni.showLoading({
-				title: '图片生成中...'
+				title: '图片生成中'
 			});
 			// 将图片写入画布
 			const ctx = uni.createCanvasContext('myCanvas');
@@ -254,15 +266,53 @@ export default {
 					height: canvasH,
 					destWidth: canvasW,
 					destHeight: canvasH,
-					quality: 0.5,
+					quality: 0.8,
+					fileType: 'jpg',
 					canvasId: 'myCanvas',
-					success: function(res) {
-						uni.hideLoading();
+					success: res => {
+						let day = new Date();
+						//// 在H5平台下，tempFilePath 为 base64
+						let p = ['user', 'images', day.getFullYear(), day.getMonth() + 1, day.getDate(), day.getTime() + '.jpg'];
+						let cloudPath = p.join('/');
+						uni.showLoading({
+							title: '图片上传中'
+						});
+						//上传到服务器
+						uniCloud
+							.uploadFile({
+								filePath: res.tempFilePath,
+								cloudPath: cloudPath, //文件的绝对路径，包含文件名	阿里云非必填，腾讯云必填
+								onUploadProgress: progressEvent => {
+									console.log(progressEvent);
+									var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+								}
+							})
+							.then(result => {
+								uni.hideLoading();
+								if (!result.code) {
+									//上传成功
+									let url = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/' + cloudPath;
+									this.$api.prePage().refreshFile(url);
+									this.$api.msg('上传成功');
+									setTimeout(() => {
+										uni.navigateBack({
+											delta: 1
+										});
+									}, 1500);
+								} else {
+									uni.showModal({
+										title: '上传失败',
+										content: result.message,
+										showCancel: false
+									});
+								}
+							});
+						//this.$api.prePage().refreshFile(res.tempFilePath);
 						// 成功获得地址的地方
-						uni.previewImage({
+						/* uni.previewImage({
 							current: '', // 当前显示图片的http链接
 							urls: [res.tempFilePath] // 需要预览的图片http链接列表
-						});
+						}); */
 					}
 				});
 			});
@@ -286,35 +336,45 @@ export default {
 				case 'right':
 					var dragLength = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO;
 					if (CUT_R + dragLength < 0) dragLength = -CUT_R;
+					if (CUT_B + dragLength < 0) dragLength = -CUT_B;
 					this.setData({
-						cutR: CUT_R + dragLength
+						cutR: CUT_R + dragLength,
+						cutB: CUT_B + dragLength //1：1比例
 					});
 					break;
 				case 'left':
 					var dragLength = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO;
 					if (CUT_L - dragLength < 0) dragLength = CUT_L;
 					if (CUT_L - dragLength > this.cropperW - this.cutR) dragLength = CUT_L - (this.cropperW - this.cutR);
+					if (CUT_B - dragLength < 0) dragLength = CUT_B;
+
 					this.setData({
-						cutL: CUT_L - dragLength
+						cutL: CUT_L - dragLength,
+						cutB: CUT_B - dragLength //1：1比例
 					});
 					break;
 				case 'top':
 					var dragLength = (T_PAGE_Y - e.touches[0].pageY) * DRAFG_MOVE_RATIO;
 					if (CUT_T - dragLength < 0) dragLength = CUT_T;
 					if (CUT_T - dragLength > this.cropperH - this.cutB) dragLength = CUT_T - (this.cropperH - this.cutB);
+					if (CUT_R - dragLength < 0) dragLength = CUT_R;
+
 					this.setData({
-						cutT: CUT_T - dragLength
+						cutT: CUT_T - dragLength,
+						cutR: CUT_R - dragLength //1：1比例
 					});
 					break;
 				case 'bottom':
 					var dragLength = (T_PAGE_Y - e.touches[0].pageY) * DRAFG_MOVE_RATIO;
 					if (CUT_B + dragLength < 0) dragLength = -CUT_B;
+					if (CUT_L + dragLength < 0) dragLength = -CUT_L;
 					this.setData({
-						cutB: CUT_B + dragLength
+						cutB: CUT_B + dragLength,
+						cutL: CUT_L + dragLength //1：1比例
 					});
 					break;
 				case 'rightBottom':
-					var dragLengthX = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO;
+					/* var dragLengthX = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO;
 					var dragLengthY = (T_PAGE_Y - e.touches[0].pageY) * DRAFG_MOVE_RATIO;
 
 					if (CUT_B + dragLengthY < 0) dragLengthY = -CUT_B;
@@ -325,7 +385,7 @@ export default {
 					this.setData({
 						cutB: cutB,
 						cutR: cutR
-					});
+					}); */
 					break;
 				default:
 					break;
@@ -337,10 +397,10 @@ export default {
 
 <style>
 /* pages/uni-cropper/index.wxss */
-page{
+page {
 	background: #000;
 }
-.container{
+.container {
 }
 .uni-content-info {
 	/* position: fixed;

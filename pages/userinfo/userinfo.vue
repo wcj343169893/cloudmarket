@@ -47,6 +47,7 @@
 					<view class="cell-tit"><input type="text" v-model="nickname" placeholder="请输入昵称" maxlength="20" /></view>
 					<view class="cell-tit-right"><button type="default" @click="saveNickname">保存</button></view>
 				</view>
+				<view class="temp"></view>
 			</uni-popup>
 			<uni-popup ref="sexPopup" type="bottom">
 				<radio-group @change="saveSex">
@@ -59,6 +60,7 @@
 						<view class="cell-more"><radio value="2" :checked="sex === 2" /></view>
 					</label>
 				</radio-group>
+				<view class="temp"></view>
 			</uni-popup>
 			<uni-calendar ref="calendar" :insert="false" @confirm="saveBirthday" />
 			<uni-popup ref="mobilePopup" type="bottom">
@@ -66,6 +68,7 @@
 					<view class="cell-tit"><input type="tel" v-model="mobile" placeholder="请输入手机号码" maxlength="11" /></view>
 					<view class="cell-tit-right"><button type="default" @click="saveMobile">保存</button></view>
 				</view>
+				<view class="temp"></view>
 			</uni-popup>
 		</view>
 	</view>
@@ -114,13 +117,18 @@ export default {
 				}
 			});
 		},
+		refreshFile(file){
+			this.userInfo.portrait=file;
+			this.saveInfo({
+				portrait: file
+			});
+		},
 		changeNickname() {
 			this.nickname = this.userInfo.nickname;
 			this.$refs.nicknamePopup.open();
 		},
 		saveNickname() {
 			this.$refs.nicknamePopup.close();
-			this.userInfo.nickname = this.nickname;
 			this.saveInfo({
 				nickname: this.nickname
 			});
@@ -141,7 +149,6 @@ export default {
 			this.$refs.calendar.open();
 		},
 		saveBirthday(e) {
-			this.userInfo.birthday = e.fulldate;
 			this.saveInfo({
 				birthday: e.fulldate
 			});
@@ -157,6 +164,7 @@ export default {
 		},
 		bindWx() {},
 		saveInfo(info) {
+			Object.assign(this.userInfo,info)
 			saveUserInfo(info);
 		},
 
@@ -226,5 +234,9 @@ page {
 	height: 90upx;
 	border: 2upx solid #fff;
 	border-radius: 50%;
+}
+.temp{
+	background: #FFFFFF;
+	padding-bottom: 40upx;
 }
 </style>

@@ -3,7 +3,7 @@
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box"><image class="portrait" :src="userInfo.portrait"></image></view>
+				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
 				<navigator url="../userinfo/userinfo" open-type="navigate">
 					<view class="info-box">
 						<text class="username">{{ userInfo.nickname }}</text>
@@ -187,6 +187,14 @@ export default {
 				);
 			}
 		},
+		previewAvatar() {
+			uni.previewImage({
+				indicator:"none",
+				urls:[
+					this.userInfo.portrait
+				]
+			})
+		},
 		navToGoods(gid) {
 			navToGoodsPage(gid, 0);
 		},
@@ -322,6 +330,7 @@ export default {
 		height: 140upx;
 		font-size: $font-sm;
 		color: #75787d;
+		flex: 1;
 	}
 	.num {
 		font-size: $font-lg;
