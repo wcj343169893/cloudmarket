@@ -7,7 +7,9 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 			<!--收货地址-->
-			<view class="titleNview-address" v-if="address!=''"><text>送至:{{address}}</text></view>
+			<view class="titleNview-address" v-if="address != ''">
+				<text>送至:{{ address }}</text>
+			</view>
 			<swiper class="carousel" circular @change="swiperChange">
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)"><image :src="item.src" /></swiper-item>
 			</swiper>
@@ -43,9 +45,7 @@
 		<block v-if="miaoshaList.length > 0">
 			<view class="f-header m-t">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box">
-					<text class="tit">限时抢购</text>
-				</view>
+				<view class="tit-box"><text class="tit">限时抢购</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<view class="seckill-section">
@@ -56,8 +56,8 @@
 							<view class="title clamp">
 								<text>{{ item.title }}</text>
 							</view>
-							<view class="price">{{item.price}}</view>
-							<view class="price del">{{item.originPrice}}</view>
+							<view class="price">{{ item.price }}</view>
+							<view class="price del">{{ item.originPrice }}</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -66,9 +66,7 @@
 		<block v-if="newestList.length > 0">
 			<view class="f-header m-t">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box">
-					<text class="tit">实时鲜货</text>
-				</view>
+				<view class="tit-box"><text class="tit">实时鲜货</text></view>
 			</view>
 			<view class="newest-section">
 				<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
@@ -76,21 +74,19 @@
 					<view class="title clamp">
 						<text>{{ item.title }}</text>
 					</view>
-					<view class="price">{{item.price}}</view>
-					<view class="price del" v-if="item.originPrice>0">{{item.originPrice}}</view>
+					<view class="price">{{ item.price }}</view>
+					<view class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</view>
 				</view>
 			</view>
 		</block>
-		<view class="bottom" v-show="isLoaded">
-			<text>以下没数据了</text>
-		</view>
+		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 	</view>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsPage,updateGoodsTags,incrCartNumber,updateCartNumber} from '@/common/functions.js';
+import { navToGoodsPage, updateGoodsTags, incrCartNumber, updateCartNumber } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -98,20 +94,20 @@ export default {
 			swiperCurrent: 0,
 			swiperLength: 0,
 			goNext: 1,
-			isLoaded:false,
-			address:"定位/收货地址获得位置",
+			isLoaded: false,
+			address: '定位/收货地址获得位置',
 			carouselList: [],
 			recommendCategoriesList: [],
-			miaoshaList:[],
-			newestList:[]
+			miaoshaList: [],
+			newestList: []
 		};
 	},
 	computed: {
-		...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId'])
+		...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location'])
 	},
 	watch: {
-		shopId(){
-			console.log("附近店铺id有变动");
+		shopId() {
+			console.log('附近店铺id有变动');
 			setTimeout(() => {
 				this.loadData();
 			}, 100);
@@ -124,7 +120,7 @@ export default {
 		}
 	},
 	onLoad() {
-		this.loadData();
+		this.getUserLocation();
 	},
 	//下拉刷新,不会更新底部附近的店铺
 	onPullDownRefresh() {
@@ -138,11 +134,31 @@ export default {
 		this.goNext += 1;
 	},
 	methods: {
-		...mapMutations(['changeShopId','changeMainCateId']),
+		...mapMutations(['changeShopId', 'changeMainCateId']),
+		async getUserLocation() {
+			console.log('开始获取定位');
+			uni.getLocation({
+				type: 'gcj02',
+				altitude: true,
+				geocode: true,
+				success: res => {
+					console.log('获取定位完成', res);
+					this.location.latitude = res.latitude;
+					this.location.longitude = res.longitude;
+					this.address = this.location.name = res.address.poiName;
+					this.loadData();
+				},
+				fail: () => {
+					this.loadData();
+				}
+			});
+		},
 		async loadData() {
 			this.isLoaded = false;
 			getHomeFruitData({
-				stationId: this.stationId
+				stationId: this.stationId,
+				latitude: this.location.latitude,
+				longitude: this.location.longitude
 			}).then(res => {
 				this.isLoaded = true;
 				//修改默认附近店铺id
@@ -158,13 +174,13 @@ export default {
 					this.recommendCategoriesList = res.categories;
 				}
 				this.miaoshaList = res.miaosha;
-				this.miaoshaList.forEach(item=>{
-					updateGoodsTags(item)
-				})
+				this.miaoshaList.forEach(item => {
+					updateGoodsTags(item);
+				});
 				this.newestList = res.newest;
-				this.newestList.forEach(item=>{
-					updateGoodsTags(item)
-				})
+				this.newestList.forEach(item => {
+					updateGoodsTags(item);
+				});
 				//this.address = res.address;
 				//购物车总数量
 				/* if(res.cart > 0){
@@ -205,8 +221,8 @@ export default {
 				url: `../category/goods`
 			});
 		},
-		navToGoodsPage(item){
-			navToGoodsPage(item.id)
+		navToGoodsPage(item) {
+			navToGoodsPage(item.id);
 		}
 	},
 	// #ifndef MP
@@ -240,7 +256,7 @@ export default {
 
 <style lang="scss">
 page {
-	background: #F5F5F5;
+	background: #f5f5f5;
 }
 /* 头部 轮播图 */
 .carousel-section {
@@ -249,7 +265,7 @@ page {
 
 	.titleNview-placing {
 		height: var(--status-bar-height);
-		padding-top: 44px;
+		padding-top: 68upx;
 		box-sizing: content-box;
 	}
 
@@ -262,11 +278,11 @@ page {
 		transition: 0.4s;
 	}
 	.titleNview-address {
-		position: absolute;
-		top: calc(var(--status-bar-height) + 70upx);
-		font-size: $font-ssm;
+		font-size: $font-sm;
 		color: #ffffff;
-		left: 16upx;
+		position: relative;
+		padding-left: 36upx;
+		padding-bottom: 20upx;
 	}
 }
 .carousel {
@@ -330,7 +346,7 @@ page {
 	font-size: $font-sm;
 	justify-content: space-around;
 	color: $base-color;
-	.kouhao_item{
+	.kouhao_item {
 		display: flex;
 	}
 	image {
@@ -401,7 +417,7 @@ page {
 		flex-shrink: 0;
 		width: 10upx;
 		height: 36upx;
-		background: linear-gradient(to bottom,#75d66f, #62b66c);
+		background: linear-gradient(to bottom, #75d66f, #62b66c);
 		margin-right: 12upx;
 	}
 	.tit-box {
@@ -423,26 +439,26 @@ page {
 		color: $font-color-light;
 	}
 }
-.newest-section{
+.newest-section {
 	display: flex;
 	flex-wrap: wrap;
 	font-size: $font-base;
 	padding-top: 20upx;
-	.floor-item{
-		background: #FFFFFF;
+	.floor-item {
+		background: #ffffff;
 		width: 345upx;
 		margin-left: 20upx;
 		padding: 20upx;
 		margin-bottom: 20upx;
 		border-radius: 4%;
-		image{
+		image {
 			width: 304upx;
 			height: 304upx;
 			border-radius: 4%;
 		}
 	}
 }
-.bottom{
+.bottom {
 	text-align: center;
 	font-size: $font-sm;
 	color: $font-color-disabled;

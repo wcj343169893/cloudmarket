@@ -120,8 +120,8 @@ const updateGoodsTags = function(goods, isPrecise) {
 	//console.log("updateGoodsTags");
 	if (goods.miaosha) {
 		let time = new Date().getTime();
-		//秒杀必须是开始状态
-		if (time < goods.miaosha.endTime && goods.miaosha.beginTime < time) {
+		//秒杀必须是有效的
+		if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
 			if (!isPrecise) {
 				tags.push("限时");
 			}

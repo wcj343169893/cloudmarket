@@ -32,9 +32,9 @@
 			</view>
 		</view>
 		<view class="section ab m-t">
-			<view class="weui-flex" v-if="info.address">
+			<view class="weui-flex address b-b" v-if="info.address">
 				<view class=""><text>收货地址</text></view>
-				<view class="">
+				<view class="content">
 					<view class="">
 						<text>{{ info.address.name }}</text>
 						<text class="m-l">{{ info.address.mobile }}</text>
@@ -481,8 +481,9 @@ page {
 	margin-left: 10upx;
 }
 .address {
-	align-items: flex-start;
-	.weui-flex__item {
+	position: relative;
+	padding-bottom: 14upx;
+	.content{
 		text-align: right;
 	}
 }

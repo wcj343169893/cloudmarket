@@ -141,17 +141,22 @@ export default {
 				}
 			} else if (type === 'plus') {
 				value += step;
+				
+				if (value > this.stock * scale) {
+					let msg = "抱歉,该商品仅剩"+this.stock+"件";
+					if(this.stock == 0){
+						msg="抱歉,该商品已卖光了"
+					}
+					uni.showToast({
+						icon:"none",
+						title:msg
+					})
+					return;
+				}
 				if (value > this.max * scale) {
 					uni.showToast({
 						icon:"none",
 						title:"抱歉,该商品限购"+this.max+"件"
-					})
-					return;
-				}
-				if (value > this.stock * scale) {
-					uni.showToast({
-						icon:"none",
-						title:"抱歉,该商品仅剩"+this.stock+"件"
 					})
 					return;
 				}

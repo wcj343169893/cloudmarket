@@ -85,7 +85,7 @@ exports.main = async (event, context) => {
 		state:1
 	}).get();
 	return order; */
-	const app = uniCloud.init({
+	/* const app = uniCloud.init({
 	  spaceId: 'cloud-market-3c5868',
 	  credentials: require('./credentials.json')
 	});
@@ -97,7 +97,27 @@ exports.main = async (event, context) => {
 	const ticket = auth.createTicket(customUserId, {
 	  refresh: 10 * 60 * 1000 // 每十分钟刷新一次登录态， 默认为一小时
 	});
-	return ticket;
+	return ticket; */
+	let po = new db.Geo.Point(113.91934346588135, 22.487874584531095);
+	let str =
+		"113.90341758728027 22.46917851496644,113.90745162963867 22.47020960449022,113.90839576721191 22.471875194432027,113.91406059265137 22.46648178300711,113.92024040222168 22.469495774098846,113.91500473022461 22.474571821398893,113.92650604248047 22.482026928584514,113.92607688903809 22.478061496005573,113.9395523071289 22.475047691295924,113.95182609558105 22.48472335786479,113.95285606384277 22.505341374315076,113.91603469848633 22.50510349164863,113.9143180847168 22.50415195689087,113.91363143920898 22.502486755311175,113.91551971435547 22.49979067215121,113.91775131225586 22.49931488731488,113.91715049743652 22.49733243288233,113.90899658203125 22.488212776614095,113.90401840209961 22.473540764346186,113.90255928039551 22.46973371797133,113.90341758728027 22.46917851496644";
+	let lines = [];
+	let points = [];
+	for (let ss of str.split(",")) {
+		let ll = ss.split(" ");
+		console.log(ll[0], ll[1])
+		points.push(new db.Geo.Point(+ll[0], +ll[1]))
+	}
+	console.log(points)
+
+	let pol = new db.Geo.Polygon([
+		new db.Geo.LineString(points),
+	]);
+	let res = await db.collection("shops").doc("faf20935850e4e81a3fc8ce87548948f").update({
+		lnglat: po,
+		serviceArea: pol
+	});
+	return res;
 };
 /* 
 

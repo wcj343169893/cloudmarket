@@ -8,18 +8,18 @@
 			</swiper>
 		</view>
 		<block v-if="hasMiaosha">
-			<view class="miaosha-section" :class="{ready:!miaosha.isStart}">
+			<view class="miaosha-section" :class="{ ready: !miaosha.isStart }">
 				<view class="title">
 					<text class="name">限时抢购</text>
 					<text class="status">{{ miaosha.statusName }}</text>
 				</view>
 				<view class="time" v-if="!miaosha.isEnd">
 					<text>{{ miaosha.statusSubName }}</text>
-					<text class="ti hour">{{miaosha.hour}}</text>
+					<text class="ti hour">{{ miaosha.hour }}</text>
 					<text>:</text>
-					<text class="ti minute">{{miaosha.minute}}</text>
+					<text class="ti minute">{{ miaosha.minute }}</text>
 					<text>:</text>
-					<text class="ti second">{{miaosha.second}}</text>
+					<text class="ti second">{{ miaosha.second }}</text>
 				</view>
 			</view>
 		</block>
@@ -64,7 +64,7 @@
 							v-for="(sname, index2) in item.child"
 							:key="index2"
 							class="skuoptions__item"
-							:class="{ active: item.active == index2,disabled:sname.disabled }"
+							:class="{ active: item.active == index2, disabled: sname.disabled }"
 							@click="selectSku(index, index2)"
 						>
 							<text>{{ sname.value }}</text>
@@ -77,7 +77,7 @@
 			<view class="c-row">
 				<text class="tit">服务</text>
 				<view class="bz-list con">
-					<view class="item" v-for="(ser,serIndex) in service" :key="serIndex">
+					<view class="item" v-for="(ser, serIndex) in service" :key="serIndex">
 						<text>·{{ ser }}</text>
 					</view>
 				</view>
@@ -93,7 +93,9 @@
 		<view class="page-bottom">
 			<view class="options">
 				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
-					<text class="yticon icon-gouwuche"><text class="sub" v-if="cartSumCount>0">{{cartSumCount}}</text></text>
+					<text class="yticon icon-gouwuche">
+						<text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text>
+					</text>
 				</navigator>
 			</view>
 			<button class="add-btn" @click="addToCart">加入购物车</button>
@@ -107,7 +109,7 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { showLoginDialog,navToLoginPage, updateGoodsTags,miaoshaCountDown,incrCartNumber,getCartSumNumber,clearCountDownTimer} from '@/common/functions.js';
+import { showLoginDialog, navToLoginPage, updateGoodsTags, miaoshaCountDown, incrCartNumber, getCartSumNumber, clearCountDownTimer } from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -140,7 +142,7 @@ export default {
 			skuMap: [],
 			hasMiaosha: false,
 			nameMap: {},
-			cartSumCount:0
+			cartSumCount: 0
 		};
 	},
 	computed: {
@@ -150,17 +152,17 @@ export default {
 		if (!options.id) {
 			//商品id不存在
 			this.$api.msg('商品不存在');
-			setTimeout(()=>{
+			setTimeout(() => {
 				uni.navigateBack();
-			},3000)
+			}, 3000);
 			return false;
 		}
 		this.id = options.id;
 		this.loadData();
 		/*this.shareList = await this.$api.json('shareList'); */
 	},
-	onUnload(){
-		console.log("product onUnload")
+	onUnload() {
+		console.log('product onUnload');
 		//关闭秒杀定时器
 		clearCountDownTimer();
 	},
@@ -181,8 +183,8 @@ export default {
 						skuMap.push({
 							name: item.skuname[n],
 							active: 0,
-							child:[],
-							childName:[]
+							child: [],
+							childName: []
 						});
 					}
 					let nameMap = {};
@@ -193,16 +195,16 @@ export default {
 						let names = sku.name.split('&gt;');
 						names.map((n, i) => {
 							if (skuMap[i]['childName'].indexOf(n) == -1) {
-								skuMap[i]["child"].push({
-									value:n,
-									stock:sku.stock,
-									disabled:false
+								skuMap[i]['child'].push({
+									value: n,
+									stock: sku.stock,
+									disabled: false
 								});
-								skuMap[i]["childName"].push(n);
+								skuMap[i]['childName'].push(n);
 							}
 						});
 						//name排序之后再拼接起来
-						nameHash.push(names.sort().join("&gt;"));
+						nameHash.push(names.sort().join('&gt;'));
 						nameMap[sku.name] = sku;
 						//寻找秒杀商品的定位
 						if (this.miaosha && this.miaosha.sku_id == sku.id) {
@@ -217,9 +219,9 @@ export default {
 						skuMap.map((s, i) => {
 							//找到秒杀规格所在位置
 							let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
-							if(i2 < 0){
+							if (i2 < 0) {
 								//没找到对应的型号
-								console.log("默认没找到对应的型号",miaoshaSkuName)
+								console.log('默认没找到对应的型号', miaoshaSkuName);
 								i2 = 0;
 							}
 							this.selectSku(i, i2);
@@ -232,7 +234,7 @@ export default {
 					this.getSaleRate();
 				}
 			});
-			
+
 			//获得购物车总数量
 			this.cartSumCount = getCartSumNumber();
 		},
@@ -244,18 +246,18 @@ export default {
 			let time = new Date().getTime();
 			item.miaosha.isEnd = false;
 			item.miaosha.isStart = true;
-			item.miaosha.hour="00";
-			item.miaosha.minute="00";
-			item.miaosha.second="00";
-			item.miaosha.startTime=time;
+			item.miaosha.hour = '00';
+			item.miaosha.minute = '00';
+			item.miaosha.second = '00';
+			item.miaosha.startTime = time;
 			item.hasMiaosha = true;
-			console.log("秒杀时间检测：",time,item.miaosha.beginTime);
+			console.log('秒杀时间检测：', time, item.miaosha.beginTime);
 			if (time < item.miaosha.beginTime) {
 				item.miaosha.isStart = false;
 				item.miaosha.statusName = '未开始';
 				item.miaosha.statusSubName = '距开始';
 				//@todo 倒计时开始时间,结束之后更改状态
-				miaoshaCountDown(item.miaosha,item.miaosha.beginTime,()=>{
+				miaoshaCountDown(item.miaosha, item.miaosha.beginTime, () => {
 					updateGoodsTags(item);
 					this.checkMiaosha(item);
 					this.updateMiaoshaPrice(item);
@@ -270,18 +272,18 @@ export default {
 				item.miaosha.statusName = '抢购中';
 				item.miaosha.statusSubName = '距结束';
 				//@todo 启动倒计时
-				miaoshaCountDown(item.miaosha,item.miaosha.endTime,()=>{
+				miaoshaCountDown(item.miaosha, item.miaosha.endTime, () => {
 					updateGoodsTags(item);
 					this.checkMiaosha(item);
 					this.updateMiaoshaPrice(item);
 				});
 			}
 		},
-		updateMiaoshaPrice(item){
+		updateMiaoshaPrice(item) {
 			//没有型号或者型号相等
-			if(!this.sku_id || this.sku_id == item.miaosha.sku_id){
+			if (!this.sku_id || this.sku_id == item.miaosha.sku_id) {
 				this.originPrice = item.originPrice;
-				this.price =  item.price;
+				this.price = item.price;
 				this.limit = item.miaosha.limit;
 				this.stock = item.miaosha.stock;
 				//计算折扣
@@ -297,7 +299,7 @@ export default {
 			this.favorite = !this.favorite;
 		},
 		addToCart() {
-			if(!this.hasLogin){
+			if (!this.hasLogin) {
 				showLoginDialog();
 				return;
 			}
@@ -308,15 +310,19 @@ export default {
 			if (!this.cart[this.sku_id]) {
 				this.cart[this.sku_id] = 0;
 			}
+			if (this.cart[this.sku_id] >= this.stock) {
+				uni.hideLoading();
+				let msg = "抱歉,该商品仅剩"+this.stock+"件";
+				if(this.stock == 0){
+					msg="抱歉,该商品已卖光了"
+				}
+				this.$api.msg(msg);
+				return;
+			}
 			//处理limit和stock
 			if (this.cart[this.sku_id] >= this.limit) {
 				uni.hideLoading();
 				this.$api.msg('抱歉,该商品限购' + this.limit + '件');
-				return;
-			}
-			if (this.cart[this.sku_id] >= this.stock) {
-				uni.hideLoading();
-				this.$api.msg('抱歉,该商品仅剩' + this.stock + '件');
 				return;
 			}
 			//累加一件商品
@@ -331,36 +337,37 @@ export default {
 				checked: 1,
 				amount: this.cart[this.sku_id]
 			}).then(res => {
-				this.$api.msg('加入成功',1500,false,"success");
+				this.$api.msg('加入成功', 1500, false, 'success');
 				console.log(res);
-				this.cartSumCount = incrCartNumber(1)
+				this.cartSumCount = incrCartNumber(1);
 			});
 		},
 		/**规格选择,默认选中秒杀商品**/
 		selectSku(index, index2) {
 			//被点击的name
-			let clickName = this.skuMap[index]["child"][index2];
-			if(clickName.disabled || clickName.stock < 1){
-				console.log("点击禁用按钮",clickName);
+			let clickName = this.skuMap[index]['child'][index2];
+			if (clickName.disabled || clickName.stock < 1) {
+				console.log('点击禁用按钮', clickName);
 				return false;
 			}
 			this.skuMap[index].active = index2;
+			console.log(this.skuMap);
 			//更新已选择规格
 			let names = [];
-			this.skuMap.forEach((skuname,ind) => {
+			this.skuMap.forEach((skuname, ind) => {
 				names.push(skuname['child'][skuname.active].value);
-				skuname["child"].forEach(n2=>{
-					//点击的其他行
-					if(ind != index){
-						let joinName = [clickName.value,n2.value].sort().join("&gt;");
+				//点击的其他行
+				if (ind != index) {
+					skuname['child'].forEach(n2 => {
+						let joinName = [clickName.value, n2.value].sort().join('&gt;');
 						//不存在组合或者库存不足
-						n2.disabled = this.nameHash.indexOf(joinName) == -1 || n2.stock < 1;
-					}
-				})
+						n2.disabled = this.nameHash.indexOf(joinName) == -1;
+					});
+				}
 			});
 			//匹配skuid
 			let sku = this.nameMap[names.join('&gt;')];
-			//console.log(sku);
+			console.log(sku);
 			this.sku_id = sku.id;
 			this.stock = sku.stock;
 			this.limit = sku.limit;
@@ -549,7 +556,7 @@ page {
 	.bz-list {
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
-		.item{
+		.item {
 			margin-bottom: 8upx;
 		}
 	}
@@ -652,7 +659,7 @@ page {
 			border-bottom: 1px solid #ccc;
 		}
 	}
-	img{
+	img {
 		max-width: 100%;
 		display: block;
 	}
@@ -798,14 +805,14 @@ page {
 			border: 1px solid $yellow-color;
 			color: $font-color-emphasis;
 		}
-		&.disabled{
+		&.disabled {
 			border-color: #e8e8e8;
 			color: $font-color-disabled;
 		}
 	}
 }
 .miaosha-section {
-	$base-c:#e35650;
+	$base-c: #e35650;
 	display: flex;
 	background: $base-c;
 	font-size: $font-ssm;
@@ -836,10 +843,10 @@ page {
 		}
 	}
 	/* 准备中 */
-	&.ready{
-		$base-c:#54b85d;
+	&.ready {
+		$base-c: #54b85d;
 		background: $base-c;
-		.time{
+		.time {
 			color: $base-c;
 			background: #f3f5f3;
 			.ti {
