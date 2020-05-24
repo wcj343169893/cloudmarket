@@ -147,12 +147,13 @@ export default {
 		this.loadData();
 	},
 	computed: {
-		...mapState(['hasLogin', 'shopId', 'stationId'])
+		...mapState(['hasLogin', 'shopId', 'stationId','location'])
 	},
 	methods: {
 		async loadData() {
 			settlement({
 				id: this.shopId,
+				addressid:this.location.id,
 				stationId: this.stationId
 			}).then(
 				res => {

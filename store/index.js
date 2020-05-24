@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 		shopId: 123457, //分站店铺id，根据收货地址动态设置
 		categoryId: 0,
 		location: {
-			id: null, //收货地址id
+			id: false, //收货地址id
 			latitude: 0, //纬度
 			longitude: 0, //经度
 			name: "" //地址名称
