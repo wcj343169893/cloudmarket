@@ -76,6 +76,7 @@ exports.main = async (event, context) => {
 				let visave = await db.collection('goods_visites').add({
 					uid: uid,
 					goods_id: item.id,
+					title: item.title,
 					shopid: item.shopid,
 					price: item.price,
 					src: item.src,
@@ -92,6 +93,9 @@ exports.main = async (event, context) => {
 				console.log(visite.data[0]);
 				//更新浏览时间
 				let updateVisite = await db.collection('goods_visites').doc(visite.data[0]._id).update({
+					src: item.src,
+					title: item.title,
+					price: item.price,
 					time: time
 				});
 				console.log("updateVisite", updateVisite);

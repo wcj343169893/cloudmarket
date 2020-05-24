@@ -329,6 +329,31 @@ const navToGoodsPage = function(id, sid) {
 		return false;
 	}
 	isRedirect = true;
+	//移除原缓存，兼容navToGoodsItemPage
+	uni.removeStorage({
+		key:"goodsInfo"
+	});
+	uni.navigateTo({
+		url: `/pages/product/product?id=${id}&sid=${sid}`,
+		success: function() {
+			isRedirect = false;
+		}
+	});
+}
+const navToGoodsItemPage = function(item) {
+	if (isRedirect) {
+		return false;
+	}
+	isRedirect = true;
+	uni.setStorage({
+		key:"goodsInfo",
+		data:item,
+		success: () => {
+			
+		}
+	});
+	let id= item.id;
+	let sid = item.sku_id || 0;
 	uni.navigateTo({
 		url: `/pages/product/product?id=${id}&sid=${sid}`,
 		success: function() {
@@ -398,6 +423,7 @@ export {
 	incrCartNumber,
 	getCartSumNumber,
 	navToGoodsPage,
+	navToGoodsItemPage,
 	navToLoginPage,
 	navToCreateOrder,
 	getUserLocation,

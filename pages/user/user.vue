@@ -74,7 +74,7 @@
 					</view>
 					<scroll-view scroll-x class="h-list">
 						<view v-for="(item, index) in visiteGoodsList" :key="index" class="h-list-image">
-							<image :src="item.src" @click="navToGoods(item.goods_id)" mode="aspectFill"></image>
+							<image :src="item.src" @click="navToGoods(item)" mode="aspectFill"></image>
 						</view>
 					</scroll-view>
 				</block>
@@ -91,7 +91,7 @@
 <script>
 import listCell from '@/components/mix-list-cell';
 import { getGoodsVisites, getUserInfo, cronCancelOrders } from '@/common/request.js';
-import { navToGoodsPage } from '@/common/functions.js';
+import { navToGoodsItemPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
 	moveY = 0,
@@ -195,8 +195,9 @@ export default {
 				]
 			})
 		},
-		navToGoods(gid) {
-			navToGoodsPage(gid, 0);
+		navToGoods(item) {
+			item.id = item.goods_id;
+			navToGoodsItemPage(item);
 		},
 		/**
 		 * 统一跳转接口,拦截未登录路由

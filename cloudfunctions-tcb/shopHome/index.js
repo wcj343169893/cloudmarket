@@ -76,7 +76,7 @@ exports.main = async (event, context) => {
 			"categories": 1,
 			"miaosha": 1,
 			"manjian": 1,
-		}).get();
+		}).orderBy("posid","asc").get();
 		if (goods.data.length > 0) {
 			shopInfo["goods"] = goods.data;
 		}

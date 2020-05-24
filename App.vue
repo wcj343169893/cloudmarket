@@ -10,7 +10,7 @@ import { mapMutations } from 'vuex';
 import { getToken } from '@/common/request.js';
 export default {
 	methods: {
-		...mapMutations(['login']),
+		...mapMutations(['login','setUserLocation']),
 		async initLogin() {
 			if (!jv) {
 				console.log('不支持jv');
@@ -47,6 +47,11 @@ export default {
 		  // 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
 		  console.log("uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态")
 		})
+		let userLocationInfo = uni.getStorageSync("userLocationInfo") || {};
+		if(userLocationInfo.latitude > 0){
+			this.setUserLocation(userLocationInfo);
+		}
+		
 		let userInfoKey = 'userInfo';
 		let userInfo = uni.getStorageSync(userInfoKey) || {};
 		console.log('App.vue 启动');

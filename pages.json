@@ -1,8 +1,7 @@
 {
-	"pages": [
-		{
-            "path" : "pages/index/fruit",
-            "style" : {
+	"pages": [{
+			"path": "pages/index/fruit",
+			"style": {
 				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
@@ -34,7 +33,7 @@
 					}
 				}
 			}
-        },
+		},
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -176,16 +175,14 @@
 				"navigationBarTitleText": "收货地址",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60f",
-								"fontSize": "24",
-								"color": "#303133",
-								"width": "46px",
-								"background": "rgba(0,0,0,0)"
-							}
-						]
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60f",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -205,24 +202,22 @@
 			"style": {
 				"navigationBarTitleText": "支付成功"
 			}
-		}
-	    ,{
-            "path" : "pages/notice/notice",
-            "style" : {
+		}, {
+			"path": "pages/notice/notice",
+			"style": {
 				"navigationBarTitleText": "通知"
 			}
-        }
-        ,{
-            "path" : "pages/category/category",
-            "style" : {
+		}, {
+			"path": "pages/category/category",
+			"style": {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
-        },{
-            "path" : "pages/category/goods",
-            "style" : {
+		}, {
+			"path": "pages/category/goods",
+			"style": {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
 					"bounce": "none",
@@ -237,25 +232,22 @@
 					}
 				}
 			}
-        }
-		,{
-		    "path" : "pages/category/index",
-		    "style" : {
+		}, {
+			"path": "pages/category/index",
+			"style": {
 				"navigationBarTitleText": "",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
-		}
-        ,{
-            "path" : "pages/product/list",
-            "style" : {
+		}, {
+			"path": "pages/product/list",
+			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "商品列表"
 			}
-        }
-        ,{
-            "path" : "pages/shop/index",
+		}, {
+			"path": "pages/shop/index",
 			"style": {
 				"navigationBarTitleText": "",
 				"app-plus": {
@@ -265,54 +257,64 @@
 					}
 				}
 			}
-        }
-        ,{
-            "path" : "pages/shop/simple",
-            "style": {
-            	"navigationBarTitleText": "",
-            	"app-plus": {
-            		"bounce": "none",
-            		"titleNView": {
-            			"type": "transparent"
-            		}
-            	}
-            }
-        }
-        ,{
-            "path" : "pages/order/goods",
-            "style" : {
+		}, {
+			"path": "pages/shop/simple",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent"
+					}
+				}
+			}
+		}, {
+			"path": "pages/order/goods",
+			"style": {
 				"navigationBarTitleText": "商品信息"
 			}
-        }
-        ,{
-            "path" : "pages/order/detail",
-            "style" : {
+		}, {
+			"path": "pages/order/detail",
+			"style": {
 				"navigationBarTitleText": "订单详情",
 				"navigationStyle": "custom"
 			}
-        }
-        ,{
-            "path" : "pages/userinfo/avatar",
-            "style" : {
+		}, {
+			"path": "pages/userinfo/avatar",
+			"style": {
 				"navigationBarTitleText": "裁剪头像",
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
 						"type": "transparent",
-						"buttons": [
-							{
-								"text": "保存",
-								"fontSize": "16",
-								"color": "#54b85d",
-								"width": "46px",
-								"background": "rgba(0,0,0,0)"
-							}
-						]
+						"buttons": [{
+							"text": "保存",
+							"fontSize": "16",
+							"color": "#54b85d",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
-        }
-    ],
+		}, {
+			"path": "pages/index/chooseAddress",
+			"style": {
+				"navigationBarTitleText": "选择收货地址",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "新增地址",
+							"fontSize": "16",
+							"color": "#54b85d",
+							"width": "88px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "爱农",
@@ -350,10 +352,9 @@
 			}
 		]
 	},
-	"condition" : { //模式配置，仅开发期间生效
+	"condition": { //模式配置，仅开发期间生效
 		"current": 1, //当前激活的模式(list 的索引项)
-		"list": [
-			{
+		"list": [{
 				"name": "index", //模式名称
 				"path": "pages/index/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到

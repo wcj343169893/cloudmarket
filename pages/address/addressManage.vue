@@ -114,6 +114,7 @@ export default {
 			}
 			data["type"]=this.manageType;
 			address(data).then(res => {
+				console.log("保存地址：",res)
 				//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
 				//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新
 				if(res.id){
@@ -124,7 +125,9 @@ export default {
 					this.$api.prePage().refreshList(data, this.manageType);
 				}
 				this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
-				uni.navigateBack();
+				setTimeout(()=>{
+					uni.navigateBack();
+				},1500)
 			});
 		}
 	}

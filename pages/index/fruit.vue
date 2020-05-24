@@ -56,8 +56,10 @@
 							<view class="title clamp">
 								<text>{{ item.title }}</text>
 							</view>
-							<view class="price">{{ item.price }}</view>
-							<view class="price del">{{ item.originPrice }}</view>
+							<view class="">
+								<text class="price">{{ item.price }}</text>
+								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -74,8 +76,10 @@
 					<view class="title clamp">
 						<text>{{ item.title }}</text>
 					</view>
-					<view class="price">{{ item.price }}</view>
-					<view class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</view>
+					<view class="">
+						<text class="price">{{ item.price }}</text>
+						<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+					</view>
 				</view>
 			</view>
 		</block>
@@ -86,7 +90,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsPage, updateGoodsTags, incrCartNumber, updateCartNumber } from '@/common/functions.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -95,7 +99,7 @@ export default {
 			swiperLength: 0,
 			goNext: 1,
 			isLoaded: false,
-			address: '定位/收货地址获得位置',
+			address: '开启定位获得位置/收货地址',
 			carouselList: [],
 			recommendCategoriesList: [],
 			miaoshaList: [],
@@ -117,6 +121,10 @@ export default {
 			setTimeout(() => {
 				this.loadData();
 			}, 100);
+		},
+		location(){
+			console.log("watch location");
+			console.log(this.location)
 		}
 	},
 	onLoad() {
@@ -137,21 +145,38 @@ export default {
 		...mapMutations(['changeShopId', 'changeMainCateId']),
 		async getUserLocation() {
 			console.log('开始获取定位');
-			uni.getLocation({
-				type: 'gcj02',
-				altitude: true,
-				geocode: true,
-				success: res => {
-					console.log('获取定位完成', res);
-					this.location.latitude = res.latitude;
-					this.location.longitude = res.longitude;
-					this.address = this.location.name = res.address.poiName;
-					this.loadData();
-				},
-				fail: () => {
-					this.loadData();
-				}
-			});
+			//1.如果存在经纬度，则直接访问
+			if(this.location.latitude > 0 && this.location.longitude > 0){
+				//存在历史定位，只能是从收货地址填写
+				console.log('存在选择地址',this.location);
+				this.address = this.location.name;
+				this.loadData();
+			}else{
+				//获取定位
+				uni.getLocation({
+					type: 'gcj02',
+					altitude: true,
+					geocode: true,
+					success: res => {
+						console.log('获取定位完成', res);
+						this.location.latitude = res.latitude;
+						this.location.longitude = res.longitude;
+						this.address = this.location.name = res.address.poiName;
+						this.loadData();
+					},
+					fail: (res) => {
+						console.log('获取定位失败', res.errMsg);
+						this.loadData();
+					}
+				});
+			}
+		},
+		changeLocationInfo(info){
+			//this.location = info;
+			console.log(this.location)
+			this.address = this.location.name;
+			//刷新页面数据
+			this.loadData();
 		},
 		async loadData() {
 			this.isLoaded = false;
@@ -222,7 +247,8 @@ export default {
 			});
 		},
 		navToGoodsPage(item) {
-			navToGoodsPage(item.id);
+			//navToGoodsPage(item.id);
+			navToGoodsItemPage(item);
 		}
 	},
 	// #ifndef MP
@@ -234,7 +260,9 @@ export default {
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
 		if (index === 0) {
-			this.$api.msg('点击了定位');
+			uni.navigateTo({
+				url:`/pages/index/chooseAddress`
+			})
 		} else if (index === 1) {
 			// #ifdef APP-PLUS
 			//隐藏红点
@@ -282,7 +310,7 @@ page {
 		color: #ffffff;
 		position: relative;
 		padding-left: 36upx;
-		padding-bottom: 20upx;
+		padding-bottom: 12upx;
 	}
 }
 .carousel {

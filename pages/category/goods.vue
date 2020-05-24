@@ -20,9 +20,9 @@
 					<view class="t-list">
 						<view v-for="(item, index) in category.goods" :key="index" class="goodsList">
 							<view class="weui-flex">
-								<view class="image-wrapper"  @click="navToGoodsPage(item.id)"><image :src="item.src" mode="aspectFill"></image></view>
+								<view class="image-wrapper"  @click="navToGoodsPage(item)"><image :src="item.src" mode="aspectFill"></image></view>
 								<view class="desc weui-flex__item">
-									<view class=""  @click="navToGoodsPage(item.id)">
+									<view class=""  @click="navToGoodsPage(item)">
 										<text class="title">{{ item.title }}</text>
 									</view>
 									<view class="desc2">
@@ -108,7 +108,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex';
 import { getShopHome,editCart,cleanCart,getCartList} from '@/common/request.js';
-import { updateCartNumber,navToGoodsPage,navToLoginPage,showLoginDialog,updateGoodsTags} from '@/common/functions.js';
+import { updateCartNumber,navToGoodsItemPage,navToLoginPage,showLoginDialog,updateGoodsTags} from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -627,8 +627,9 @@ export default {
 		},closeLoginDialog(){
 			this.$refs['showlogin'].close();
 		},
-		navToGoodsPage(id){
-			navToGoodsPage(id,0)
+		navToGoodsPage(item){
+			//navToGoodsPage(item.id,0);
+			navToGoodsItemPage(item)
 		},
 		navToLoginPage(){
 			navToLoginPage()

@@ -53,7 +53,7 @@
 
 		<view class="cart-list ">
 			<block v-for="(item, index) in goodsList" :key="index">
-				<view class="goodsList b-b" v-if="item.amount > 0">
+				<view class="goodsList b-b" v-if="item.amount > 0" @click="navToGoodsPage(item)">
 					<view class="weui-flex">
 						<view class="weui-flex start">
 							<view class="weui-flex-check">
@@ -85,8 +85,8 @@
 									</view>
 								</view>
 								<view class="buttons">
-									<button type="default" v-if="info.state > 2" class="action-btn" @click="refundOrder(item)">申请退款</button>
-									<button type="default" class="action-btn" @click="buyAgain(item)">加购物车</button>
+									<button type="default" v-if="info.state > 2" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
+									<button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button>
 								</view>
 							</view>
 						</view>
@@ -138,12 +138,20 @@
 					<text class="">{{ info.created }}</text>
 				</view>
 			</view>
-			<view class="weui-flex" v-if="info.payInfo">
+			<block v-if="info.payInfo">
+			<view class="weui-flex">
 				<view class=""><text>支付方式</text></view>
 				<view class="">
 					<text>{{ info.payInfo.name }}</text>
 				</view>
 			</view>
+			<view class="weui-flex">
+				<view class=""><text>支付时间</text></view>
+				<view class="">
+					<text>{{ info.payInfo.time }}</text>
+				</view>
+			</view>
+			</block>
 		</view>
 	</view>
 </template>
@@ -151,7 +159,7 @@
 <script>
 import { mapState } from 'vuex';
 import { orders, addManyCart } from '@/common/request.js';
-import { navToGoodsPage, navToCreateOrder, getOrderStateExp,dateFormat } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp,dateFormat } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -189,6 +197,10 @@ export default {
 			res.stateTipColor = stateTipColor;
 			res.stateContent = stateContent;
 			this.moreGoodsCount = res.goods.length - this.maxShowCount;
+			//支付时间
+			if(res.payInfo){
+				res.payInfo.time = dateFormat(res.payInfo.time,"yyyy-MM-dd hh:mm:ss")
+			}
 			this.info = res;
 			if (this.moreGoodsCount > 0) {
 				this.goodsList = res.goods.slice(0, this.maxShowCount);
@@ -199,6 +211,9 @@ export default {
 		showAllGoods() {
 			this.goodsList = this.info.goods;
 			this.moreGoodsCount = 0;
+		},
+		navToGoodsPage(item){
+			navToGoodsItemPage(item)
 		},
 		//删除订单
 		deleteOrder() {

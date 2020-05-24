@@ -118,6 +118,7 @@ export default {
 		return {
 			id: 0,
 			sku_id: 0,
+			default_sku_id: 0,
 			title: '',
 			stock: 0,
 			visite: 0,
@@ -154,10 +155,16 @@ export default {
 			this.$api.msg('商品不存在');
 			setTimeout(() => {
 				uni.navigateBack();
-			}, 3000);
-			return false;
+			}, 1500);
+			return;
 		}
+		console.log(options)
+		//商品id
 		this.id = options.id;
+		//商品规格
+		if (options.sid) {
+			this.default_sku_id = +options.sid;
+		}
 		this.loadData();
 		/*this.shareList = await this.$api.json('shareList'); */
 	},
@@ -168,75 +175,89 @@ export default {
 	},
 	methods: {
 		async loadData() {
+			//优先读取缓存
+			let info = uni.getStorageSync('goodsInfo');
+			if (info) {
+				this.buildGoodsInfo(info);
+			}
+			//再次读取数据库，获得详细信息
 			getGoodsInfo({ id: this.id }).then(item => {
-				updateGoodsTags(item);
-				this.checkMiaosha(item);
-				console.log(item);
-				for (let field in item) {
-					this[field] = item[field];
-				}
-				this.imgs.unshift(item.src);
-				if (item.hasSku) {
-					//多规格
-					let skuMap = [];
-					for (let n in item.skuname) {
-						skuMap.push({
-							name: item.skuname[n],
-							active: 0,
-							child: [],
-							childName: []
-						});
-					}
-					let nameMap = {};
-					let miaoshaSkuName = [];
-					//所有存在的规格名称，例如：aabb，bbcc
-					let nameHash = [];
-					item.skus.map(sku => {
-						let names = sku.name.split('&gt;');
-						names.map((n, i) => {
-							if (skuMap[i]['childName'].indexOf(n) == -1) {
-								skuMap[i]['child'].push({
-									value: n,
-									stock: sku.stock,
-									disabled: false
-								});
-								skuMap[i]['childName'].push(n);
-							}
-						});
-						//name排序之后再拼接起来
-						nameHash.push(names.sort().join('&gt;'));
-						nameMap[sku.name] = sku;
-						//寻找秒杀商品的定位
-						if (this.miaosha && this.miaosha.sku_id == sku.id) {
-							miaoshaSkuName = names;
-						}
-					});
-					this.skuMap = skuMap;
-					this.nameMap = nameMap;
-					this.nameHash = nameHash;
-					//默认选中秒杀商品，否则第一个
-					if (item.miaosha) {
-						skuMap.map((s, i) => {
-							//找到秒杀规格所在位置
-							let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
-							if (i2 < 0) {
-								//没找到对应的型号
-								console.log('默认没找到对应的型号', miaoshaSkuName);
-								i2 = 0;
-							}
-							this.selectSku(i, i2);
-						});
-					} else {
-						this.selectSku(0, 0);
-					}
-				} else {
-					//计算折扣
-					this.getSaleRate();
-				}
+				this.buildGoodsInfo(item);
 			});
 
 			//获得购物车总数量
 			this.cartSumCount = getCartSumNumber();
+		},
+		buildGoodsInfo(item) {
+			this.imgs = [];
+			updateGoodsTags(item);
+			this.checkMiaosha(item);
+			console.log(this.default_sku_id)
+			for (let field in item) {
+				this[field] = item[field];
+			}
+			this.imgs.unshift(item.src);
+			if (item.hasSku) {
+				//多规格
+				let skuMap = [];
+				for (let n in item.skuname) {
+					skuMap.push({
+						name: item.skuname[n],
+						active: 0,
+						child: [],
+						childName: []
+					});
+				}
+				let nameMap = {};
+				let miaoshaSkuName = [];
+				//所有存在的规格名称，例如：aabb，bbcc
+				let nameHash = [];
+				item.skus.map(sku => {
+					let names = sku.name.split('&gt;');
+					names.map((n, i) => {
+						if (skuMap[i]['childName'].indexOf(n) == -1) {
+							skuMap[i]['child'].push({
+								value: n,
+								//stock: sku.stock,//没有用
+								disabled: false
+							});
+							skuMap[i]['childName'].push(n);
+						}
+					});
+					//name排序之后再拼接起来
+					let nameKey = names.sort().join('&gt;');
+					nameHash.push(nameKey);
+					nameMap[nameKey] = sku;
+					//寻找秒杀商品的定位
+					if (this.default_sku_id > 0 && this.default_sku_id == sku.id) {
+						miaoshaSkuName = names;
+					} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
+						miaoshaSkuName = names;
+					}
+				});
+				this.skuMap = skuMap;
+				this.nameMap = nameMap;
+				this.nameHash = nameHash;
+				// console.log("miaoshaSkuName",miaoshaSkuName)
+				if (miaoshaSkuName.length > 0) {
+					//默认选中秒杀商品，否则第一个
+					skuMap.map((s, i) => {
+						//找到秒杀规格所在位置
+						let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
+						if (i2 < 0) {
+							//没找到对应的型号
+							console.log('默认没找到对应的型号', miaoshaSkuName);
+							i2 = 0;
+						}
+						this.selectSku(i, i2);
+					});
+				} else {
+					this.selectSku(0, 0);
+				}
+			} else {
+				//计算折扣
+				this.getSaleRate();
+			}
 		},
 		checkMiaosha(item) {
 			if (!item.miaosha) {
@@ -312,9 +333,9 @@ export default {
 			}
 			if (this.cart[this.sku_id] >= this.stock) {
 				uni.hideLoading();
-				let msg = "抱歉,该商品仅剩"+this.stock+"件";
-				if(this.stock == 0){
-					msg="抱歉,该商品已卖光了"
+				let msg = '抱歉,该商品仅剩' + this.stock + '件';
+				if (this.stock == 0) {
+					msg = '抱歉,该商品已卖光了';
 				}
 				this.$api.msg(msg);
 				return;
@@ -361,12 +382,12 @@ export default {
 					skuname['child'].forEach(n2 => {
 						let joinName = [clickName.value, n2.value].sort().join('&gt;');
 						//不存在组合或者库存不足
-						n2.disabled = this.nameHash.indexOf(joinName) == -1;
+						n2.disabled = this.nameHash.indexOf(joinName) == -1 || this.nameMap[joinName].stock < 1;
 					});
 				}
 			});
 			//匹配skuid
-			let sku = this.nameMap[names.join('&gt;')];
+			let sku = this.nameMap[names.sort().join('&gt;')];
 			console.log(sku);
 			this.sku_id = sku.id;
 			this.stock = sku.stock;

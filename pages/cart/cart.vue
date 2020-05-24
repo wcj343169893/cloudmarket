@@ -19,7 +19,7 @@
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
 							</view>
 							<view class="desc">
-								<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+								<view class="image-wrapper" @click="navToGoodsPage(item)">
 									<image
 										:src="item.src"
 										:class="[item.loaded]"
@@ -30,7 +30,7 @@
 									></image>
 								</view>
 								<view class="desc-name">
-									<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+									<view class="" @click="navToGoodsPage(item)">
 										<text class="title">{{ item.title }}</text>
 									</view>
 									<view class="">
@@ -76,7 +76,7 @@
 							<view class="weui-flex">
 								<view class="weui-flex-check"><text>失效</text></view>
 								<view class="desc">
-									<view class="image-wrapper" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+									<view class="image-wrapper" @click="navToGoodsPage(item)">
 										<image
 											:src="item.src"
 											:class="[item.loaded]"
@@ -87,7 +87,7 @@
 										></image>
 									</view>
 									<view class="desc-name">
-										<view class="" @click="navToGoodsPage(item.goods_id, item.sku_id)">
+										<view class="" @click="navToGoodsPage(item)">
 											<text class="title">{{ item.title }}</text>
 										</view>
 										<view class="" v-if="item.subName && item.subName.length > 0">
@@ -141,7 +141,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { editCart, cleanCart, selectCart, getCartList,settlementCart } from '@/common/request.js';
-import { updateCartNumber, navToGoodsPage, navToLoginPage, navToCreateOrder, updateGoodsTags } from '@/common/functions.js';
+import { updateCartNumber, navToGoodsItemPage, navToLoginPage, navToCreateOrder, updateGoodsTags } from '@/common/functions.js';
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
 	components: {
@@ -503,8 +503,9 @@ export default {
 			});
 			
 		},
-		navToGoodsPage(id, sid) {
-			navToGoodsPage(id, sid);
+		navToGoodsPage(item) {
+			item.id = item.goods_id;
+			navToGoodsItemPage(item);
 		},
 		navToLoginPage() {
 			navToLoginPage();
