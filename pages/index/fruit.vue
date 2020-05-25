@@ -57,6 +57,9 @@
 								<view class="title clamp">
 									<text>{{ item.title }}</text>
 								</view>
+								<view class="tags">
+									<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
+								</view>
 								<view class="">
 									<text class="price">{{ item.price }}</text>
 									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
@@ -82,9 +85,9 @@
 						<view class="tags">
 							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
 						</view>
-						<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 						<view class="">
 							<text class="price">{{ item.price }}</text>
+							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 						</view>
 					</view>
 				</view>
