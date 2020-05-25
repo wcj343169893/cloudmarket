@@ -12,13 +12,13 @@
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">立即开通</view>
+				<view class="b-btn">免费开通</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
 					会员
 				</view>
 				<text class="e-m"></text>
-				<text class="e-b">开通会员开发无bug 一测就上线</text>
+				<text class="e-b">开通会员享受会员专属价格</text>
 			</view>
 		</view>
 
@@ -310,7 +310,7 @@ export default {
 }
 .cover-container {
 	background: $page-color-base;
-	margin-top: -150upx;
+	margin-top: -60upx;
 	padding: 0 30upx;
 	position: relative;
 	background: #f5f5f5;

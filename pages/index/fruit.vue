@@ -43,7 +43,7 @@
 			</view>
 		</view>
 		<block v-if="miaoshaList.length > 0">
-			<view class="f-header m-t">
+			<view class="f-header m-t" @click="navToSecKillGoods">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">限时抢购</text></view>
 				<text class="yticon icon-you"></text>
@@ -249,6 +249,15 @@ export default {
 		navToGoodsPage(item) {
 			//navToGoodsPage(item.id);
 			navToGoodsItemPage(item);
+		},navToSecKillGoods(){
+			//秒杀商品列表,把当前页面数据传过去
+			uni.setStorage({
+				key:"secKillGoodsList",
+				data:this.miaoshaList
+			});
+			uni.navigateTo({
+				url:"/pages/index/seckillGoods"
+			})
 		}
 	},
 	// #ifndef MP
@@ -411,7 +420,7 @@ page {
 
 /* 秒杀专区 */
 .seckill-section {
-	padding: 20upx 30upx 24upx;
+	padding: 20upx 0 24upx;
 	.floor-list {
 		white-space: nowrap;
 	}
@@ -419,18 +428,19 @@ page {
 		display: inline-flex;
 		align-items: flex-start;
 		flex-direction: row;
+		padding-left:20upx;
 	}
 	.floor-item {
 		background: #fff;
-		width: 340upx;
+		width: 280upx;
 		padding: 20upx;
 		margin-right: 20upx;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
 		border-radius: 4%;
 		image {
-			width: 300upx;
-			height: 300upx;
+			width: 240upx;
+			height: 240upx;
 			border-radius: 4%;
 		}
 	}

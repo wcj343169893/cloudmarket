@@ -66,6 +66,8 @@ const store = new Vuex.Store({
 			if (data.id) {
 				//收货地址
 				state.location.id = data.id;
+			}else{
+				state.location.id = false;
 			}
 			state.location.latitude = data.latitude;
 			state.location.longitude = data.longitude;

@@ -83,6 +83,9 @@ export default {
 </script>
 
 <style lang="scss">
+	page{
+		background-color: $background-color;
+	}
 .weui-flex {
 	display: flex;
 	align-items: center;
@@ -111,7 +114,7 @@ export default {
 	.goodsList {
 		position: relative;
 		background: #ffffff;
-		padding: 20upx 0 20upx;
+		padding: 20upx;
 		border-radius: 12upx;
 		margin-bottom: 8upx;
 		.start{

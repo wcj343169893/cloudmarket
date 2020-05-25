@@ -118,11 +118,49 @@ exports.main = async (event, context) => {
 		serviceArea: pol
 	});
 	return res; */
-	return await db.collection('goods').where({
+	/* return await db.collection('goods').where({
 		id:cmd.in([10005,10006,10007])
 	}).update({
 		posid:0
-	});
+	}); */
+
+	let goods = await db.collection('goods').field({
+		id: 1,
+		skus: 1,
+		miaosha: 1
+	}).get();
+	for (let ele of goods.data) {
+		let n = parseInt(Math.random() * 1000);
+		let da = {};
+		if (ele.skus) {
+			let sum = 0;
+			let minPrice = 100;
+			ele.skus.map((sku, ind) => {
+				n = parseInt(Math.random() * 1000);
+				da["skus." + ind + ".stock"] = n;
+				sum += n;
+				if (sku.price < minPrice) {
+					minPrice = sku.price;
+					da["price"] = minPrice;
+					da["originPrice"] = sku.originPrice?sku.originPrice:0;
+				}
+			});
+			da["stock"] = sum;
+			if (ele.miaosha) {
+				let mIndex = parseInt(Math.random() * ele.skus.length);
+				console.log(ele.skus.length, mIndex)
+				da["miaosha.sku_id"] = ele.skus[mIndex].id;
+				da["miaosha.stock"] = da["skus." + mIndex + ".stock"];
+			}
+		} else {
+			da = {
+				stock: n
+			};
+		}
+		//console.log(da);
+		let res = await db.collection('goods').doc(ele._id).update(da);
+		console.log(res);
+	}
 };
 /* 
 

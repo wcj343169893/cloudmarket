@@ -19,6 +19,14 @@ const getHomeFruitData = function(data) {
 		isShowLoading: false
 	})
 }
+
+const getMiaosha = function(data) {
+	return network({
+		url: "miaosha",
+		data: data,
+		isShowLoading: false
+	})
+}
 //根据上级id，查询二级分类
 const getCategoryByPid = function(data) {
 	return network({
@@ -230,6 +238,7 @@ const getToken = function(data) {
 }
 export {
 	getHomeFruitData,
+	getMiaosha,
 	getCategoryByPid,
 	getShopsByCid,
 	getHomeData,

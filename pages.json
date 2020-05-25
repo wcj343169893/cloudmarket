@@ -314,7 +314,13 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/index/seckillGoods",
+            "style" : {
+				"navigationBarTitleText": "限时抢购"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "爱农",
