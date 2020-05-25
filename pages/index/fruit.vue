@@ -53,12 +53,14 @@
 					<view class="scoll-wrapper">
 						<view v-for="(item, index) in miaoshaList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
 							<image :src="item.src" mode="aspectFill"></image>
-							<view class="title clamp">
-								<text>{{ item.title }}</text>
-							</view>
-							<view class="">
-								<text class="price">{{ item.price }}</text>
-								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							<view class="content">
+								<view class="title clamp">
+									<text>{{ item.title }}</text>
+								</view>
+								<view class="">
+									<text class="price">{{ item.price }}</text>
+									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -73,12 +75,17 @@
 			<view class="newest-section">
 				<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
 					<image :src="item.src" mode="aspectFill"></image>
-					<view class="title clamp">
-						<text>{{ item.title }}</text>
-					</view>
-					<view class="">
-						<text class="price">{{ item.price }}</text>
+					<view class="content">
+						<view class="title clamp">
+							<text>{{ item.title }}</text>
+						</view>
+						<view class="tags">
+							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
+						</view>
 						<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+						<view class="">
+							<text class="price">{{ item.price }}</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -122,9 +129,9 @@ export default {
 				this.loadData();
 			}, 100);
 		},
-		location(){
-			console.log("watch location");
-			console.log(this.location)
+		location() {
+			console.log('watch location');
+			console.log(this.location);
 		}
 	},
 	onLoad() {
@@ -146,12 +153,12 @@ export default {
 		async getUserLocation() {
 			console.log('开始获取定位');
 			//1.如果存在经纬度，则直接访问
-			if(this.location.latitude > 0 && this.location.longitude > 0){
+			if (this.location.latitude > 0 && this.location.longitude > 0) {
 				//存在历史定位，只能是从收货地址填写
-				console.log('存在选择地址',this.location);
+				console.log('存在选择地址', this.location);
 				this.address = this.location.name;
 				this.loadData();
-			}else{
+			} else {
 				//获取定位
 				uni.getLocation({
 					type: 'gcj02',
@@ -164,16 +171,16 @@ export default {
 						this.address = this.location.name = res.address.poiName;
 						this.loadData();
 					},
-					fail: (res) => {
+					fail: res => {
 						console.log('获取定位失败', res.errMsg);
 						this.loadData();
 					}
 				});
 			}
 		},
-		changeLocationInfo(info){
+		changeLocationInfo(info) {
 			//this.location = info;
-			console.log(this.location)
+			console.log(this.location);
 			this.address = this.location.name;
 			//刷新页面数据
 			this.loadData();
@@ -249,15 +256,16 @@ export default {
 		navToGoodsPage(item) {
 			//navToGoodsPage(item.id);
 			navToGoodsItemPage(item);
-		},navToSecKillGoods(){
+		},
+		navToSecKillGoods() {
 			//秒杀商品列表,把当前页面数据传过去
 			uni.setStorage({
-				key:"secKillGoodsList",
-				data:this.miaoshaList
+				key: 'secKillGoodsList',
+				data: this.miaoshaList
 			});
 			uni.navigateTo({
-				url:"/pages/index/seckillGoods"
-			})
+				url: '/pages/index/seckillGoods'
+			});
 		}
 	},
 	// #ifndef MP
@@ -270,8 +278,8 @@ export default {
 		const index = e.index;
 		if (index === 0) {
 			uni.navigateTo({
-				url:`/pages/index/chooseAddress`
-			})
+				url: `/pages/index/chooseAddress`
+			});
 		} else if (index === 1) {
 			// #ifdef APP-PLUS
 			//隐藏红点
@@ -428,20 +436,23 @@ page {
 		display: inline-flex;
 		align-items: flex-start;
 		flex-direction: row;
-		padding-left:20upx;
+		padding-left: 20upx;
 	}
 	.floor-item {
 		background: #fff;
 		width: 280upx;
-		padding: 20upx;
+		padding:0 0 20upx;
 		margin-right: 20upx;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
 		border-radius: 4%;
+		overflow: hidden;
+		.content{
+			padding:0 20upx;
+		}
 		image {
-			width: 240upx;
-			height: 240upx;
-			border-radius: 4%;
+			width: 280upx;
+			height: 280upx;
 		}
 	}
 }
@@ -484,15 +495,18 @@ page {
 	padding-top: 20upx;
 	.floor-item {
 		background: #ffffff;
-		width: 345upx;
+		width: 344upx;
 		margin-left: 20upx;
-		padding: 20upx;
+		padding: 0 0 20upx;
 		margin-bottom: 20upx;
 		border-radius: 4%;
+		overflow: hidden;
+		.content {
+			padding: 0 16upx;
+		}
 		image {
-			width: 304upx;
-			height: 304upx;
-			border-radius: 4%;
+			width: 344upx;
+			height: 344upx;
 		}
 	}
 }

@@ -74,7 +74,7 @@ exports.main = async (event, context) => {
 		miaosha: 1,
 		price: 1,
 		stock: 1
-	}).limit(5).get();
+	}).limit(5).orderBy("miaosha.beginTime","desc").get();
 	dataOut["miaosha"] = miaoshaGoods.data;
 	//最新上架,20条
 	let newGoods = await db.collection('goods').where({

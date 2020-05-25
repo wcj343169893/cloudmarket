@@ -4,12 +4,14 @@
 			<view class="seckill-section">
 				<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
 					<image :src="item.src" mode="aspectFill"></image>
-					<view class="title clamp">
-						<text>{{ item.title }}</text>
-					</view>
-					<view class="">
-						<text class="price">{{ item.price }}</text>
-						<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+					<view class="content">
+						<view class="title clamp">
+							<text>{{ item.title }}</text>
+						</view>
+						<view class="">
+							<text class="price">{{ item.price }}</text>
+							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -93,15 +95,18 @@ page {
 	padding-top: 20upx;
 	.floor-item {
 		background: #ffffff;
-		width: 345upx;
+		width: 344upx;
 		margin-left: 20upx;
-		padding: 20upx;
+		padding: 0 0 20upx;
 		margin-bottom: 20upx;
 		border-radius: 4%;
+		overflow: hidden;
+		.content {
+			padding: 0 16upx;
+		}
 		image {
-			width: 304upx;
-			height: 304upx;
-			border-radius: 4%;
+			width: 344upx;
+			height: 344upx;
 		}
 	}
 }
