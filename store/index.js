@@ -45,7 +45,17 @@ const store = new Vuex.Store({
 			};
 			uni.removeStorage({
 				key: 'userInfo'
-			})
+			});
+			//重置收货地址
+			state.location = {
+				id: false, //收货地址id
+				latitude: 0, //纬度
+				longitude: 0, //经度
+				name: "" //地址名称
+			};
+			uni.removeStorage({
+				key: 'userLocationInfo'
+			});
 		},
 		loginPage() {
 			uni.navigateTo({
@@ -63,16 +73,7 @@ const store = new Vuex.Store({
 		setUserLocation(state, data) {
 			//获取用户位置信息，首页需要，如果是设置的收货地址，下次直接默认
 			//顺序1：收货地址，2：当前定位，3：ip定位
-			if (data.id) {
-				//收货地址
-				state.location.id = data.id;
-			}else{
-				state.location.id = false;
-			}
-			state.location.latitude = data.latitude;
-			state.location.longitude = data.longitude;
-			state.location.name = data.name;
-			
+			state.location = data;
 			uni.setStorage({
 				key: 'userLocationInfo',
 				data: state.location

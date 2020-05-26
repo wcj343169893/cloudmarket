@@ -1,76 +1,74 @@
 <template>
-	<view>
-		<view class="container">
-			<view class="list-cell m-t b-b" @click="changeAvatar" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">头像</text>
-				<image class="portrait" :src="userInfo.portrait"></image>
-			</view>
-			<view class="list-cell b-b" @click="changeNickname" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">昵称</text>
-				<view class="cell-more">
-					<text>{{ userInfo.nickname }}</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-			<view class="list-cell b-b" @click="changeSex" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">性别</text>
-				<view class="cell-more">
-					<text>{{ sexName }}</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-			<view class="list-cell b-b" @click="changeBirthday" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">生日</text>
-				<view class="cell-more">
-					<text v-if="userInfo.birthday && userInfo.birthday.length > 0">{{ userInfo.birthday }}</text>
-					<text v-else>去填写</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-			<view class="list-cell b-b" @click="changeMobile" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">手机号</text>
-				<view class="cell-more">
-					<text>{{ userInfo.mobile }}</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-			<view class="list-cell" @click="bindWx" hover-class="cell-hover" :hover-stay-time="50">
-				<text class="cell-tit">绑定微信账号</text>
-				<view class="cell-more">
-					<text>立即绑定</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-
-			<uni-popup ref="nicknamePopup" type="bottom">
-				<view class="list-cell">
-					<view class="cell-tit"><input type="text" v-model="nickname" placeholder="请输入昵称" maxlength="20" /></view>
-					<view class="cell-tit-right"><button type="default" @click="saveNickname">保存</button></view>
-				</view>
-				<view class="temp"></view>
-			</uni-popup>
-			<uni-popup ref="sexPopup" type="bottom">
-				<radio-group @change="saveSex">
-					<label class="list-cell b-b">
-						<text class="cell-tit">男</text>
-						<view class="cell-more"><radio value="1" :checked="sex === 1" /></view>
-					</label>
-					<label class="list-cell">
-						<text class="cell-tit">女</text>
-						<view class="cell-more"><radio value="2" :checked="sex === 2" /></view>
-					</label>
-				</radio-group>
-				<view class="temp"></view>
-			</uni-popup>
-			<uni-calendar ref="calendar" :insert="false" @confirm="saveBirthday" />
-			<uni-popup ref="mobilePopup" type="bottom">
-				<view class="list-cell">
-					<view class="cell-tit"><input type="tel" v-model="mobile" placeholder="请输入手机号码" maxlength="11" /></view>
-					<view class="cell-tit-right"><button type="default" @click="saveMobile">保存</button></view>
-				</view>
-				<view class="temp"></view>
-			</uni-popup>
+	<view class="container">
+		<view class="list-cell m-t b-b" @click="changeAvatar" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">头像</text>
+			<image class="portrait" :src="userInfo.portrait"></image>
 		</view>
+		<view class="list-cell b-b" @click="changeNickname" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">昵称</text>
+			<view class="cell-more">
+				<text>{{ userInfo.nickname }}</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
+		<view class="list-cell b-b" @click="changeSex" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">性别</text>
+			<view class="cell-more">
+				<text>{{ sexName }}</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
+		<view class="list-cell b-b" @click="changeBirthday" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">生日</text>
+			<view class="cell-more">
+				<text v-if="userInfo.birthday && userInfo.birthday.length > 0">{{ userInfo.birthday }}</text>
+				<text v-else>去填写</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
+		<view class="list-cell b-b" @click="changeMobile" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">手机号</text>
+			<view class="cell-more">
+				<text>{{ userInfo.mobile }}</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
+		<view class="list-cell" @click="bindWx" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">绑定微信账号</text>
+			<view class="cell-more">
+				<text>立即绑定</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
+
+		<uni-popup ref="nicknamePopup" type="bottom">
+			<view class="list-cell">
+				<view class="cell-tit"><input type="text" v-model="nickname" placeholder="请输入昵称" maxlength="20" /></view>
+				<view class="cell-tit-right"><button type="default" @click="saveNickname">保存</button></view>
+			</view>
+			<view class="temp"></view>
+		</uni-popup>
+		<uni-popup ref="sexPopup" type="bottom">
+			<radio-group @change="saveSex">
+				<label class="list-cell b-b">
+					<text class="cell-tit">男</text>
+					<view class="cell-more"><radio value="1" :checked="sex === 1" /></view>
+				</label>
+				<label class="list-cell">
+					<text class="cell-tit">女</text>
+					<view class="cell-more"><radio value="2" :checked="sex === 2" /></view>
+				</label>
+			</radio-group>
+			<view class="temp"></view>
+		</uni-popup>
+		<uni-calendar ref="calendar" :insert="false" @confirm="saveBirthday" />
+		<uni-popup ref="mobilePopup" type="bottom">
+			<view class="list-cell">
+				<view class="cell-tit"><input type="tel" v-model="mobile" placeholder="请输入手机号码" maxlength="11" /></view>
+				<view class="cell-tit-right"><button type="default" @click="saveMobile">保存</button></view>
+			</view>
+			<view class="temp"></view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -107,18 +105,18 @@ export default {
 					console.log(res);
 					if (res.tempFilePaths.length > 0) {
 						uni.setStorage({
-							key:"avatar",
-							data:res.tempFilePaths[0]
+							key: 'avatar',
+							data: res.tempFilePaths[0]
 						});
 						uni.navigateTo({
-							url:"/pages/userinfo/avatar"
-						})
+							url: '/pages/userinfo/avatar'
+						});
 					}
 				}
 			});
 		},
-		refreshFile(file){
-			this.userInfo.portrait=file;
+		refreshFile(file) {
+			this.userInfo.portrait = file;
 			this.saveInfo({
 				portrait: file
 			});
@@ -164,7 +162,7 @@ export default {
 		},
 		bindWx() {},
 		saveInfo(info) {
-			Object.assign(this.userInfo,info)
+			Object.assign(this.userInfo, info);
 			saveUserInfo(info);
 		},
 
@@ -235,8 +233,8 @@ page {
 	border: 2upx solid #fff;
 	border-radius: 50%;
 }
-.temp{
-	background: #FFFFFF;
+.temp {
+	background: #ffffff;
 	padding-bottom: 40upx;
 }
 </style>

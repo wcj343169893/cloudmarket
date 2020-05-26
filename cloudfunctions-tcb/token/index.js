@@ -1,11 +1,6 @@
 'use strict';
 
-const app = uniCloud.init({
-	spaceId: 'cloud-market-3c5868',
-	credentials: require('./credentials.json')
-});
-const auth = app.auth();
-//const auth = uniCloud.auth();
+const {createTicket} = require('token');
 const db = uniCloud.database();
 /**
  * 验证用户id和token是否成功，返回访问令牌
@@ -29,10 +24,7 @@ exports.main = async (event, context) => {
 		};
 	}
 	console.log(uid);
-	const ticket = auth.createTicket(uid + "", {
-		refresh: 24 * 60 * 60 * 1000 //1天登录态， 默认为一小时
-		//refresh: 5 * 60 * 1000 //1天登录态， 默认为一小时
-	});
+	const ticket = createTicket(uid);
 	return {
 		code: 200,
 		data: ticket,

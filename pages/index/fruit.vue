@@ -129,12 +129,14 @@ export default {
 		hasLogin() {
 			console.log('watch 登录状态改变,刷新当前页面');
 			setTimeout(() => {
-				this.loadData();
+				//this.loadData();
+				this.getUserLocation();
 			}, 100);
 		},
 		location() {
 			console.log('watch location');
 			console.log(this.location);
+			this.address = this.location.name;
 		}
 	},
 	onLoad() {
@@ -152,7 +154,7 @@ export default {
 		this.goNext += 1;
 	},
 	methods: {
-		...mapMutations(['changeShopId', 'changeMainCateId']),
+		...mapMutations(['changeShopId', 'changeMainCateId','setUserLocation']),
 		async getUserLocation() {
 			console.log('开始获取定位');
 			//1.如果存在经纬度，则直接访问
@@ -169,9 +171,13 @@ export default {
 					geocode: true,
 					success: res => {
 						console.log('获取定位完成', res);
-						this.location.latitude = res.latitude;
-						this.location.longitude = res.longitude;
-						this.address = this.location.name = res.address.poiName;
+						this.setUserLocation({
+							id:false,
+							latitude:res.latitude,
+							longitude:res.longitude,
+							name:res.address.poiName,
+						});
+						this.address = res.address.poiName;
 						this.loadData();
 					},
 					fail: res => {

@@ -12,13 +12,14 @@
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">免费开通</view>
+				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">免费开通</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
-					会员
+					<text>会员</text>
 				</view>
 				<text class="e-m"></text>
-				<text class="e-b">开通会员享受会员专属价格</text>
+				<text class="m-l" v-if="userInfo.vip">卡号:{{userInfo.id}}</text>
+				<text class="e-b" v-else>开通会员享受会员专属价格</text>
 			</view>
 		</view>
 
@@ -86,11 +87,19 @@
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
+		<uni-popup ref="vipPopup" type="center">
+			<view class="vipPopup">
+				<view class="list-cell">
+					<view class="cell-tit"><input type="tel" v-model="vipnumber" placeholder="请输入邀请者会员卡号" maxlength="11" /></view>
+					<view class="cell-tit-right"><button type="default" @click="checkVip">确定</button></view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 <script>
 import listCell from '@/components/mix-list-cell';
-import { getGoodsVisites, getUserInfo, cronCancelOrders } from '@/common/request.js';
+import { getGoodsVisites, getUserInfo,saveUserInfo, cronCancelOrders } from '@/common/request.js';
 import { navToGoodsItemPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
@@ -104,6 +113,7 @@ export default {
 		return {
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
+			vipnumber:"",
 			hasVisiteGoods: false,
 			visiteGoodsList: [],
 			order: {
@@ -210,6 +220,33 @@ export default {
 			uni.navigateTo({
 				url
 			});
+		},
+		//开通会员
+		openVip(){
+			if (!this.hasLogin) {
+				this.navTo("");
+				return;
+			}
+			this.$refs.vipPopup.open();
+		},
+		//检查会员卡号是否正确,绑定邀请关系
+		checkVip(){
+			let n = +this.vipnumber;
+			if(n>1){
+				this.$refs.vipPopup.close();
+				saveUserInfo({
+					type:"invite",
+					fuid:n
+				}).then(res=>{
+					console.log(res)
+					this.$api.msg("开通成功",1500,true,"success");
+					this.login(res);
+				},err=>{
+					this.$api.msg(err.message)
+				});
+			}else{
+				this.$api.msg("卡号错误!")
+			}
 		}
 	}
 };
@@ -306,6 +343,9 @@ export default {
 		font-size: $font-sm;
 		color: #d8cba9;
 		margin-top: 10upx;
+	}
+	.m-l{
+		margin-left: 20upx;
 	}
 }
 .cover-container {
@@ -407,6 +447,20 @@ export default {
 				border-radius: 4%;
 			}
 		}
+	}
+}
+.vipPopup{
+	font-size: $font-base;
+	background: #FFFFFF;
+	width: 700upx;
+	padding: 20upx;
+	border-radius: 12upx;
+	.list-cell{
+		display: flex;
+		align-items: center;
+	}
+	.cell-tit{
+		flex: 1;
 	}
 }
 </style>

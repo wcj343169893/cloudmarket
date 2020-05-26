@@ -1,9 +1,14 @@
 'use strict';
 const db = uniCloud.database();
-const {
+/* const {
 	getCollectionNames
-} = require('base-common');
+} = require('base-common'); */
+const {
+	getUserInfo
+} = require('token');
 exports.main = async (event, context) => {
+	let {customUserId}=getUserInfo();
+	//console.log(customUserId)
 	let shopid = parseInt(event.id);
 	let uid = parseInt(event.uid);
 	//list full edit
@@ -15,9 +20,9 @@ exports.main = async (event, context) => {
 		};
 	}
 	//获取所有collection名称
-	let collectionNames = getCollectionNames(event);
+	//let collectionNames = getCollectionNames(event);
 	let data = [];
-	let cartCollection = db.collection(collectionNames['carts']);
+	let cartCollection = db.collection("carts");
 
 	const cmd = db.command;
 	if (opt == "list") {
@@ -60,7 +65,7 @@ exports.main = async (event, context) => {
 				ids.push(carts.data[i].goods_id);
 			}
 			//查询实时商品信息
-			let goods = await db.collection(collectionNames['goods']).where({
+			let goods = await db.collection("goods").where({
 				shopid: shopid,
 				id: cmd.in(ids)
 			}).field({

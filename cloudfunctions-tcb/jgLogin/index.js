@@ -4,6 +4,8 @@ const db = uniCloud.database();
 const {
 	genIdentityId
 } = require('base-common');
+const {createTicket} = require('token');
+
 exports.main = async (event, context) => {
 	let token = event.token;
 	//极光后台需要此公钥
@@ -76,6 +78,8 @@ exports.main = async (event, context) => {
 		} else {
 			data = user.data[0];
 		}
+		//生成ticket，登录本地
+		data["ticket"] = createTicket(data.id);
 		//临时输出
 		return {
 			"code": 200,

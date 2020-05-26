@@ -1,19 +1,21 @@
 <template>
 	<view class="container">
-		<view class="sec-header"><text>我的收货地址</text></view>
-		<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
-			<view class="wrapper">
-				<view class="address-box">
-					<text v-if="item.default" class="tag">默认</text>
-					<text class="address">{{ item.address }} {{ item.addressName }} {{ item.area }}</text>
+		<block v-if="addressList.length > 0">
+			<view class="sec-header"><text>我的收货地址</text></view>
+			<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
+				<view class="wrapper">
+					<view class="address-box">
+						<text v-if="item.default" class="tag">默认</text>
+						<text class="address">{{ item.address }} {{ item.addressName }} {{ item.area }}</text>
+					</view>
+					<view class="u-box">
+						<text class="name">{{ item.name }}</text>
+						<text class="mobile">{{ item.mobile }}</text>
+					</view>
 				</view>
-				<view class="u-box">
-					<text class="name">{{ item.name }}</text>
-					<text class="mobile">{{ item.mobile }}</text>
-				</view>
+				<view class="checked" v-if="item.checked"><image src="/static/icon/ok01.png" mode="" class="checked_image"></image></view>
 			</view>
-			<view class="checked" v-if="item.checked"><image src="/static/icon/ok01.png" mode="" class="checked_image"></image></view>
-		</view>
+		</block>
 		<view class="sec-header"><text>当前地址</text></view>
 		<view class="list b-b" v-if="currentAddress.address.length > 0" @click="checkAddress(currentAddress)">
 			<view class="wrapper">
@@ -33,6 +35,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { address } from '@/common/request.js';
+import { navToLoginPage } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -42,12 +45,23 @@ export default {
 			}
 		};
 	},
+	watch: {
+		hasLogin() {
+			console.log('watch 登录状态改变,刷新当前页面');
+			setTimeout(() => {
+				this.loadData();
+			}, 100);
+		}
+	},
 	computed: {
 		...mapState(['hasLogin', 'location'])
 	},
 	onLoad(option) {
-		this.loadData();
-		console.log(this.location);
+		if(this.hasLogin){
+			this.loadData();
+		}
+		this.getLocation();
+		//console.log(this.location);
 	},
 	methods: {
 		...mapMutations(['setUserLocation']),
@@ -60,6 +74,8 @@ export default {
 				});
 				this.addressList = res;
 			});
+		},
+		getLocation(){
 			//获取当前定位位置
 			uni.getLocation({
 				type: 'gcj02',
@@ -73,10 +89,6 @@ export default {
 						longitude: res.longitude,
 						address: res.address.street + '' + res.address.streetNum
 					};
-					/* this.location.latitude = res.latitude;
-					this.location.longitude = res.longitude;
-					this.address = this.location.name = res.address.poiName;
-					this.loadData(); */
 				},
 				fail: res => {
 					console.log('获取定位失败', res.errMsg);
@@ -85,7 +97,7 @@ export default {
 		},
 		checkAddress(item) {
 			let info = {
-				id: item._id || 0,
+				id: item._id || false,
 				name: item.addressName,
 				latitude: item.latitude,
 				longitude: item.longitude
@@ -99,7 +111,7 @@ export default {
 				}
 			});
 			this.$api.msg('设置地址成功',1500,true,"success");
-			this.$api.prePage().changeLocationInfo(info);
+			//this.$api.prePage().changeLocationInfo(info);
 			setTimeout(() => {
 				uni.navigateBack({
 					delta: 1
@@ -114,6 +126,10 @@ export default {
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
+		if(!this.hasLogin){
+			navToLoginPage();
+			return;
+		}
 		if (index === 0) {
 			uni.navigateTo({
 				url:"/pages/address/addressManage?type=new"

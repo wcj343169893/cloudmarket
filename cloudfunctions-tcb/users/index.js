@@ -9,6 +9,7 @@ exports.main = async (event, context) => {
 		id: uid
 	}).field({
 		id: 1,
+		vip:1,
 		balance: 1,
 		birthday: 1,
 		count: 1,
@@ -48,11 +49,61 @@ exports.main = async (event, context) => {
 		//保存更改
 		let res = await db.collection("users").doc(info._id).update(entity);
 		console.log("保存用户基本信息", res);
+		//@todo 如果修改了头像，批量修改邀请者头像
 		return {
 			code: 200,
 			message: "操作成功",
 			data: res
 		}
+	} else if (event.type == "invite") {
+		if (info.invite > 0) {
+			//已经存在邀请者
+			return {
+				code: 404,
+				message: "已经存在邀请者"
+			}
+		}
+		let fuid = +event.fuid;
+		//检查用户是否是会员
+		let finfo = await db.collection("users").where({
+			id: fuid
+		}).field({
+			vip:1,
+			nickname: 1,
+			portrait: 1,
+			inviters: 1
+		}).get();
+		if (finfo.data.length < 1) {
+			return {
+				code: 404,
+				message: "邀请者不存在"
+			}
+		}
+		finfo = finfo.data[0];
+		let inviters = [];
+		if (finfo.inviters) {
+			inviters = finfo.inviters;
+		}
+		//所有上级用户
+		inviters.unshift({
+			id: fuid,
+			nickname: finfo.nickname,
+			portrait: finfo.portrait
+		})
+		let entity = {
+			vip:finfo.vip,
+			invite: fuid,
+			inviters: inviters
+		};
+		let res = await db.collection("users").doc(info._id).update(entity);
+		if (res.updated < 1) {
+			return {
+				code: 404,
+				message: "开通失败"
+			}
+		}
+		//合并信息
+		Object.assign(info,entity);
 	}
 	//处理余额为2位小数
 	info.balance = info.balance.toFixed(2);

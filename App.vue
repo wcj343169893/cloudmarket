@@ -10,7 +10,7 @@ import { mapMutations } from 'vuex';
 import { getToken } from '@/common/request.js';
 export default {
 	methods: {
-		...mapMutations(['login','setUserLocation']),
+		...mapMutations(['login', 'setUserLocation']),
 		async initLogin() {
 			if (!jv) {
 				console.log('不支持jv');
@@ -38,62 +38,66 @@ export default {
 		}
 	},
 	onLaunch: function() {
-		const auth = uniCloud.auth();
-		uniCloud.on('loginStateExpire', () => {
-			// 尝试重新登录
-			console.log('loginStateExpire,尝试重新登录');
+		console.log('App.vue 启动');
+		/* const app = uniCloud.init({
+			provider:"tencent",
+			spaceId: 'cloud-market-3c5868',
+			credentials: require('./credentials.json')
 		});
-		uniCloud.on('refreshAccessToken', () => {
-		  // 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
-		  console.log("uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态")
-		})
-		let userLocationInfo = uni.getStorageSync("userLocationInfo") || {};
-		if(userLocationInfo.latitude > 0){
-			this.setUserLocation(userLocationInfo);
-		}
+		const auth = app.auth(); */
+		const auth = uniCloud.auth();
 		
 		let userInfoKey = 'userInfo';
-		let userInfo = uni.getStorageSync(userInfoKey) || {};
-		console.log('App.vue 启动');
-		console.log(userInfo);
-		if (userInfo.id) {
-			//更新登陆状态
-			getToken({
-				uid: userInfo.id,
-				token: userInfo.token
-			}).then(
-				res => {
-					console.log(res);
-					auth.signInWithTicket(res)
-						.then(() => {
+		uniCloud.on('loginStateExpire', () => {
+			// 尝试重新登录
+			console.error('loginStateExpire,尝试重新登录');
+			let userInfo = uni.getStorageSync(userInfoKey) || {};
+			if (userInfo.id) {
+				//更新登陆状态
+				getToken({
+					uid: userInfo.id,
+					token: userInfo.token
+				}).then(
+					res => {
+						console.log(res);
+						auth.signInWithTicket(res).then(() => {
 							// 登录成功
 							console.log('客户端登录成功');
-							return auth.getUserInfo();
-						})
-						.then(u => {
-							console.log(u);
 						});
-					/* uni.setStorage({
-					key:"userTicket",
-					data:res
-				}); */
-					this.login(userInfo);
-				},
-				err => {
-					//登录信息失效
-					uni.removeStorage({
-						key: userInfoKey
-					});
-				}
-			);
-			/* uni.getStorage({
-					key: 'userInfo',
-					success: (res) => {
-						console.log("App.vue.userInfo");
-						console.log(res.data);
-						this.login(res.data);
+					},
+					err => {
+						//登录信息失效
+						uni.removeStorage({
+							key: userInfoKey
+						});
 					}
-				}); */
+				);
+			} 
+		});
+		uniCloud.on('refreshAccessToken', () => {
+			// 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
+			console.log('uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态');
+			auth.getAccessToken().then(res => {
+				console.log(res);
+				uni.setStorage({
+					key: 'userAccessToken',
+					data: res.accessToken
+				});
+			});
+			auth.getUserInfo().then(res=>{
+				console.log(res)
+			})
+			
+			let userInfo = uni.getStorageSync(userInfoKey) || {};
+			if(userInfo.id){
+				console.log('设置登录缓存信息到store');
+				//兼容服务器无法获取用户id,将来可以删除掉
+				this.login(userInfo);
+			}
+		});
+		let userLocationInfo = uni.getStorageSync('userLocationInfo') || {};
+		if (userLocationInfo.latitude > 0) {
+			this.setUserLocation(userLocationInfo);
 		}
 		//#ifdef APP-PLUS
 		this.initLogin();

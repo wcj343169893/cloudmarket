@@ -195,7 +195,7 @@ const getUserInfo = function(data) {
  * @param {Object} data
  */
 const saveUserInfo = function(data) {
-	data["type"]="save";
+	data["type"]=data.type || "save";
 	return network({
 		url: "users",
 		data: data,

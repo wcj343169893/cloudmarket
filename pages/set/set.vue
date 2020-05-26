@@ -55,6 +55,10 @@
 				    success: (e)=>{
 				    	if(e.confirm){
 				    		this.logout();
+							const auth = uniCloud.auth();
+							auth.signOut().then(res=>{
+								console.log(res)
+							});
 				    		setTimeout(()=>{
 				    			uni.navigateBack();
 				    		}, 200)

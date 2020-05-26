@@ -7,7 +7,7 @@
 //极光登录插件
 const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
-import { mobileAutoLogin } from '@/common/request.js';
+import { mobileAutoLogin,getToken } from '@/common/request.js';
 import { mapMutations } from 'vuex';
 
 export default {
@@ -86,6 +86,10 @@ export default {
 					this.$api.msg('登录成功', 2000, false, 'success');
 					console.log(res);
 					this.login(res);
+					auth.signInWithTicket(res.ticket).then(() => {
+						// 登录成功
+						console.log('客户端登录成功');
+					});
 					this.navTimeBack();
 				},
 				err => {
@@ -102,6 +106,24 @@ export default {
 		navBack() {
 			uni.navigateBack();
 		},
+		localLogin(data){
+			const auth = uniCloud.auth();
+			getToken({
+				uid: data.id,
+				token: data.token
+			}).then(
+				res => {
+					console.log(res);
+					auth.signInWithTicket(res).then(() => {
+						// 登录成功
+						console.log('客户端登录成功');
+					});
+				},
+				err => {
+					//登录信息失效
+				}
+			);
+		},
 		async toLogin() {
 			this.logining = true;
 			//const { mobile, password } = this;
@@ -109,6 +131,7 @@ export default {
 			if (result.status === 1) {
 				this.$api.msg('登录成功', 2000, false, 'success');
 				this.login(result.data);
+				this.localLogin(result.data)
 				setTimeout(() => {
 					uni.navigateBack();
 				}, 2000);
