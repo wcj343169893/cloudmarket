@@ -7,10 +7,23 @@ const {
 	updateUserOrderCount,
 	genIdentityId
 } = require('base-common');
+const {
+	getUserInfo
+} = require('token');
 exports.main = async (event, context) => {
+	let {
+		customUserId
+	} = await getUserInfo(event);
+	if(customUserId < 1){
+		return {
+			"code": 404,
+			"message": "用户信息不存在",
+		};
+	}
 	//查询购物车选中数据
 	let shopid = parseInt(event.id);
-	let uid = parseInt(event.uid);
+	//let uid = parseInt(event.uid);
+	let uid = customUserId;
 	let addressid = event.addressid;
 	//处理类型，preview，submit
 	let type = event.type;

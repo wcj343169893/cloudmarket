@@ -181,14 +181,19 @@ export default {
 		async loadData() {
 			//优先从缓存读取，有助于显示速度
 			let item = uni.getStorageSync('orderDetail');
-			this.orderInfo(item);
-			/* orders({
-				id: this.id,
-				type: 'detail'
-			}).then(res => {
-				res.created = dateFormat(res.created,"yyyy-MM-dd hh:mm:ss")
-				this.orderInfo(res);
-			}); */
+			if(item){
+				//从缓存读取
+				this.orderInfo(item);
+			}else{
+				//从网络获取
+				orders({
+					id: this.id,
+					type: 'detail'
+				}).then(res => {
+					res.created = dateFormat(res.created,"yyyy-MM-dd hh:mm:ss")
+					this.orderInfo(res);
+				});
+			}
 		},
 		orderInfo(res) {
 			//订单状态

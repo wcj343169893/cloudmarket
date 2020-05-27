@@ -57,6 +57,13 @@ exports.main = async (event, context) => {
 			mobile: mobileName
 		}).field(fields).limit(1).get();
 		let data = {};
+		
+		key = new NodeRSA(publicKey);
+		key.setOptions({
+			encryptionScheme: 'pkcs1'
+		});
+		token = key.encrypt(mobileName,"base64");
+		console.log(token)
 		if (user.data.length < 1) {
 			const cmd = db.command;
 			data = {
@@ -66,6 +73,7 @@ exports.main = async (event, context) => {
 				balance: 0,
 				coupons: 0,
 				score: 0,
+				token:token,
 				regist: time,
 				lastLogin: time,
 			};
@@ -77,6 +85,13 @@ exports.main = async (event, context) => {
 			data["_id"] = result.id;
 		} else {
 			data = user.data[0];
+			data["token"] = token;
+			data["lastLogin"] = time;
+			//更新token
+			let result = await usersCollection.doc(data._id).update({
+				token:token,
+				lastLogin: time,
+			});
 		}
 		//生成ticket，登录本地
 		data["ticket"] = createTicket(data.id);

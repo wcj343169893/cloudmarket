@@ -46,7 +46,7 @@ export default {
 		});
 		const auth = app.auth(); */
 		const auth = uniCloud.auth();
-		
+
 		let userInfoKey = 'userInfo';
 		uniCloud.on('loginStateExpire', () => {
 			// 尝试重新登录
@@ -72,7 +72,9 @@ export default {
 						});
 					}
 				);
-			} 
+			} else {
+				console.log('本地没有历史登录信息');
+			}
 		});
 		uniCloud.on('refreshAccessToken', () => {
 			// 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
@@ -84,12 +86,11 @@ export default {
 					data: res.accessToken
 				});
 			});
-			auth.getUserInfo().then(res=>{
-				console.log(res)
-			})
-			
+			auth.getUserInfo().then(res => {
+				console.log(res);
+			});
 			let userInfo = uni.getStorageSync(userInfoKey) || {};
-			if(userInfo.id){
+			if (userInfo.id) {
 				console.log('设置登录缓存信息到store');
 				//兼容服务器无法获取用户id,将来可以删除掉
 				this.login(userInfo);

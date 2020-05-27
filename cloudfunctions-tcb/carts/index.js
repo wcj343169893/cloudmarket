@@ -7,10 +7,12 @@ const {
 	getUserInfo
 } = require('token');
 exports.main = async (event, context) => {
-	let {customUserId}=getUserInfo();
-	//console.log(customUserId)
+	let {
+		customUserId
+	} = await getUserInfo(event);
 	let shopid = parseInt(event.id);
-	let uid = parseInt(event.uid);
+	//let uid = parseInt(event.uid);
+	let uid = customUserId;
 	//list full edit
 	let opt = event.opt;
 	if (shopid < 1 || uid < 1) {
@@ -58,7 +60,7 @@ exports.main = async (event, context) => {
 			//data = carts.data;
 			data = {
 				"cart": carts.data,
-				"goods":[]
+				"goods": []
 			}
 			let ids = [];
 			for (let i = 0; i < carts.data.length; i++) {
@@ -193,7 +195,7 @@ exports.main = async (event, context) => {
 				"message": "商品不存在",
 			};
 		}
-		data =await saveCartInfo(event, shopid, uid, new Date());
+		data = await saveCartInfo(event, shopid, uid, new Date());
 	}
 	return {
 		"code": 200,
@@ -202,7 +204,7 @@ exports.main = async (event, context) => {
 	};
 };
 
-const saveCartInfo =async function(ele, shopid, uid, date) {
+const saveCartInfo = async function(ele, shopid, uid, date) {
 	let cartCollection = db.collection("carts");
 	//查询是否存在，否则新增
 	let cartsOld = await cartCollection.where({

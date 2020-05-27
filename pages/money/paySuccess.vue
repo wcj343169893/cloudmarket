@@ -4,10 +4,14 @@
 		<text class="tit">支付成功</text>
 
 		<view class="btn-group">
-			<navigator v-if="comefrom=='cart'" url="/pages/order/order?state=0" open-type="redirect" class="mix-btn">查看订单</navigator>
-			<navigator v-if="comefrom=='order'" :delta="delta" open-type="navigateBack" class="mix-btn">查看订单</navigator>
-			
-			<navigator url="/pages/index/fruit" open-type="switchTab" class="mix-btn hollow">返回首页</navigator>
+			<block v-if="comefrom == 'cart'">
+				<navigator url="/pages/order/order?state=0" open-type="redirect" class="mix-btn">查看订单</navigator>
+				<navigator url="/pages/index/fruit" open-type="switchTab" class="mix-btn hollow">返回首页</navigator>
+			</block>
+			<block v-if="comefrom == 'order'">
+				<navigator :url="detailUrl" open-type="redirect" class="mix-btn">查看订单</navigator>
+				<navigator :delta="delta" open-type="navigateBack" class="mix-btn">返回</navigator>
+			</block>
 		</view>
 	</view>
 </template>
@@ -16,19 +20,32 @@
 export default {
 	data() {
 		return {
-			id:"",
-			delta:1,
-			comefrom:"cart"
+			id: '',
+			delta: 1,
+			detailUrl: '',
+			comefrom: 'cart'
 		};
 	},
 	onLoad(options) {
 		if (options.comefrom) {
 			this.comefrom = options.comefrom;
 		}
-		console.log(options)
+		console.log(options);
 		this.id = options.id;
+		if (this.comefrom == 'order') {
+			this.changeOrderTabs();
+		}
+		this.detailUrl = '/pages/order/detail?id=' + this.id;
 	},
 	methods: {
+		async changeOrderTabs() {
+			//把订单列表的选项卡切换到待收货 2
+			this.$api.prePage().tabClick(2);
+			console.log('切换订单列表选项卡');
+			uni.removeStorage({
+				key: 'orderDetail'
+			});
+		}
 	}
 };
 </script>

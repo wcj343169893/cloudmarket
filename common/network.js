@@ -9,10 +9,13 @@ const network = function(options) {
 			data = options.data;
 		}
 		try {
-			//云验证访问令牌
+			//云验证访问令牌,将来可以取消此段代码
 			let userInfo = uni.getStorageSync('userInfo') || {};
 			if(userInfo.id){
 				data["uid"]=userInfo.id;
+				if(!data.token){
+					data["token"]=userInfo.token;
+				}
 			}
 		} catch (e) {
 			reject("错误信息" + e)

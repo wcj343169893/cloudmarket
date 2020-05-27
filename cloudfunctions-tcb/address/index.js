@@ -1,12 +1,25 @@
 'use strict';
 const db = uniCloud.database();
+const {
+	getUserInfo
+} = require('token');
 /**
  * 收货地址处理，增加，修改，删除，列表
  */
 exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
+	let {
+		customUserId
+	} = await getUserInfo(event);
+	if(customUserId < 1){
+		return {
+			"code": 404,
+			"message": "用户信息不存在",
+		};
+	}
 	let id = event.id || event._id;
-	let uid = +event.uid;
+	//let uid = +event.uid;
+	let uid = customUserId;
 	let type = event.type;
 	let data = [];
 	if (event._id) {

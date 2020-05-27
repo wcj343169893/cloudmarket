@@ -120,12 +120,12 @@ export default {
 		...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location'])
 	},
 	watch: {
-		shopId() {
+		/* shopId() {
 			console.log('附近店铺id有变动');
 			setTimeout(() => {
 				this.loadData();
 			}, 100);
-		},
+		}, */
 		hasLogin() {
 			console.log('watch 登录状态改变,刷新当前页面');
 			setTimeout(() => {
@@ -280,7 +280,7 @@ export default {
 	// #ifndef MP
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
-		this.$api.msg('点击了搜索框');
+		//this.$api.msg('点击了搜索框');
 	},
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {

@@ -1,10 +1,23 @@
 'use strict';
 const db = uniCloud.database();
+const {
+	getUserInfo
+} = require('token');
 /**
  * 我的信息，需要验证权限
  */
 exports.main = async (event, context) => {
-	let uid = +event.uid;
+	let {
+		customUserId
+	} = await getUserInfo(event);
+	if(customUserId < 1){
+		return {
+			"code": 404,
+			"message": "用户信息不存在",
+		};
+	}
+	//let uid = +event.uid;
+	let uid = customUserId;
 	let data = await db.collection("users").where({
 		id: uid
 	}).field({
