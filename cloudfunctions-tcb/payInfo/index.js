@@ -132,6 +132,7 @@ exports.main = async (event, context) => {
 				icon: "icon-erjiye-yucunkuan",
 				name: "余额支付",
 				usable: balance >= data.order.totalMoney,
+				usableText:"余额不足,请选择其他支付方式",
 				desc: "可用余额￥" + balance
 			}
 		];
