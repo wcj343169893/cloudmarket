@@ -23,8 +23,10 @@ export default {
 	onLoad() {
 		this.platform = uni.getSystemInfoSync().platform;
 		//测试阶段，自动登录
-		this.toLogin();
-		return;
+		if(this.platform  == "ios"){
+			this.toLogin();
+			return;
+		}
 		//在应用初始化调用
 		//#ifdef APP-PLUS
 		this.jgLogin();
@@ -86,6 +88,7 @@ export default {
 					this.$api.msg('登录成功', 2000, false, 'success');
 					console.log(res);
 					this.login(res);
+					const auth = uniCloud.auth();
 					auth.signInWithTicket(res.ticket).then(() => {
 						// 登录成功
 						console.log('客户端登录成功');

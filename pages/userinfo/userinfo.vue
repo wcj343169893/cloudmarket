@@ -21,7 +21,7 @@
 		<view class="list-cell b-b" @click="changeBirthday" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">生日</text>
 			<view class="cell-more">
-				<text v-if="userInfo.birthday && userInfo.birthday.length > 0">{{ userInfo.birthday }}</text>
+				<text v-if="userInfo.birthday && userInfo.birthday.length != ''">{{ userInfo.birthday }}</text>
 				<text v-else>去填写</text>
 				<text class="yticon icon-you"></text>
 			</view>

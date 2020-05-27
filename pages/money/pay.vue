@@ -3,7 +3,7 @@
 		<view class="price-box">
 			<text>支付金额</text>
 			<text class="price">{{ orderInfo.totalMoney }}</text>
-			<text class="lastTime" v-if="this.times.startTime > 0">支付剩余时间:{{ times.minute }}:{{ times.second }}</text>
+			<text class="lastTime">支付剩余时间:{{ times.minute }}:{{ times.second }}</text>
 		</view>
 
 		<view class="pay-type-list">
@@ -14,6 +14,7 @@
 						<view class="con">
 							<text class="tit">{{ item.name }}</text>
 							<text>{{ item.desc }}</text>
+							<text v-if="!item.usable">{{ item.usableText }}</text>
 						</view>
 						<radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="index == 0" />
 					</label>
@@ -35,7 +36,10 @@ export default {
 			payType: '',
 			openid: '',
 			payment: [],
-			times: {},
+			times: {
+				minute:"05",
+				second:"00",
+			},
 			orderInfo: {
 				totalMoney: 0
 			}
@@ -60,7 +64,14 @@ export default {
 		this.clouseTimer();
 	},
 	methods: {
-		loadData() {
+		async loadData() {
+			let paymentKey="paymentKey";
+			//优先从缓存加载支付方式
+			let data = uni.getStorageSync(paymentKey);
+			if(data){
+				this.payment = data;
+				this.payType = data[0].value;
+			}
 			payInfo({
 				id: this.id
 			}).then(
@@ -71,6 +82,11 @@ export default {
 						//默认第一条
 						this.payType = res.payment[0].value;
 					}
+					//写入缓存
+					uni.setStorage({
+						key:paymentKey,
+						data:res.payment
+					})
 					let time = new Date().getTime();
 					this.times = {
 						id: this.id,
@@ -81,6 +97,10 @@ export default {
 					miaoshaCountDown(this.times, this.orderInfo.lastPayTime, () => {
 						console.log('自动取消订单');
 						//this.cancelOrder(ele, index, 'auto');
+						if(this.comefrom=="order"){
+							//默认切换到第一个选项卡，保证返回后一定有数据
+							this.$api.prePage().tabClick(0);
+						}
 						orders({
 							id: this.orderInfo._id,
 							type: 'cancel',
@@ -90,6 +110,9 @@ export default {
 							this.goBack();
 							//刷新上一页数据
 							this.$api.prePage().refreshList();
+						},err=>{
+							this.$api.msg('支付超时，订单已取消');
+							this.goBack();
 						});
 					});
 				},

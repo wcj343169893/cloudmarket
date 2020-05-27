@@ -4,11 +4,9 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
-				<navigator url="../userinfo/userinfo" open-type="navigate">
-					<view class="info-box">
-						<text class="username">{{ userInfo.nickname }}</text>
-					</view>
-				</navigator>
+				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
+					<text class="username">{{ userInfo.nickname }}</text>
+				</view>
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
@@ -198,6 +196,10 @@ export default {
 			}
 		},
 		previewAvatar() {
+			if (!this.hasLogin) {
+				this.navTo("");
+				return;
+			}
 			uni.previewImage({
 				indicator:"none",
 				urls:[
