@@ -4,12 +4,12 @@ const db = uniCloud.database();
 	getCollectionNames
 } = require('base-common'); */
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 exports.main = async (event, context) => {
 	let {
 		customUserId
-	} = await getUserInfo(event);
+	} = await getLoginUser(event);
 	let shopid = parseInt(event.id);
 	//let uid = parseInt(event.uid);
 	let uid = customUserId;

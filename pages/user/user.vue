@@ -63,6 +63,39 @@
 					<text>退款/售后</text>
 				</view>
 			</view>
+			<!-- 管理的店铺列表 -->
+			<view class="admin-section" v-if="userInfo.admin && userInfo.admin.length > 0">
+				<view class="title">
+					<text>我的门店</text>
+				</view>
+				<view v-for="(item,index) in userInfo.admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
+					<image :src="item.src" mode="aspectFill"></image>
+					<view class="content">
+						<view class="title">
+							<text>{{item.name}}</text>
+						</view>
+						<view class="address">
+							<text>{{item.address}}</text>
+						</view>
+						<view class="orders" v-if="item.order">
+							<view class="" @click.stop="navToShopOrder(0)">
+								<text>待付款</text>
+								<text>{{item.order.unpaid}}</text>
+							</view>
+							<view class="" @click.stop="navToShopOrder(1)">
+								<text>待发货</text>
+								<text>{{item.order.payup}}</text>
+							</view>
+							<view class="" @click.stop="navToShopOrder(2)">
+								<text>售后</text>
+								<text>{{item.order.refunded}}</text>
+							</view>
+						</view>
+					</view>
+					<text class="yticon icon-you"></text>
+				</view>
+			</view>
+			
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
 				<block v-if="hasVisiteGoods">
@@ -249,6 +282,14 @@ export default {
 			}else{
 				this.$api.msg("卡号错误!")
 			}
+		},
+		//店铺管理界面
+		navToShopAdmin(item){
+			console.log(item)
+		},
+		//店铺订单类型页面
+		navToShopOrder(state){
+			console.log(state)
 		}
 	}
 };
@@ -463,6 +504,46 @@ export default {
 	}
 	.cell-tit{
 		flex: 1;
+	}
+}
+.admin-section{
+	padding: 30upx 0 0 30upx;
+	margin-top: 20upx;
+	background: #fff;
+	border-radius: 10upx;
+	font-size: $font-sm;
+	.admin-shops{
+		display: flex;
+		margin-top: 20upx;
+		position: relative;
+		padding-bottom: 20upx;
+		align-items: center;
+		padding-right: 30upx;
+		&:last-child::after{
+			display: none;
+		}
+	}
+	image{
+		width: 120upx;
+		height: 120upx;
+		border-radius: 4%;
+		margin-right: 20upx;
+	}
+	.title{
+		font-size: $font-lg;
+	}
+	.content{
+		flex: 1;
+		margin-right: 20upx;
+	}
+	.orders{
+		display: flex;
+		justify-content: space-between;
+		view{
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+		}
 	}
 }
 </style>

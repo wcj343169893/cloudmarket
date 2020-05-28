@@ -7,7 +7,7 @@ const auth = app.auth();
  * 获取登录用户信息
  * @param {Object} data data.accessToken
  */
-const getUserInfo = async function(data) {
+const getLoginUser = async function(data) {
 	//临时兼容获取用户信息,从数据库查询
 	const db = uniCloud.database();
 	let token = data.token || "unknown";
@@ -45,6 +45,6 @@ const createTicket = function(id) {
 }
 
 module.exports = {
-	getUserInfo,
+	getLoginUser,
 	createTicket
 }

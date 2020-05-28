@@ -5,7 +5,7 @@ const {
 	addUserBalanceLog
 } = require('base-common');
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 /**
  * 订单支付,余额支付,扣款成功后，统一回调订单处理
@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
 	let {
 		customUserId
-	} = await getUserInfo(event);
+	} = await getLoginUser(event);
 	if(customUserId < 1){
 		return {
 			"code": 404,

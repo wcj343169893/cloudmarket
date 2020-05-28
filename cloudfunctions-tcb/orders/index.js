@@ -7,7 +7,7 @@ const {
 	updateUserOrderCount
 } = require('base-common');
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 /**
  * 订单处理
@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
 	let {
 		customUserId
-	} = await getUserInfo(event);
+	} = await getLoginUser(event);
 	if(customUserId < 1){
 		return {
 			"code": 404,

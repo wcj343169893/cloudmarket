@@ -1,7 +1,8 @@
 'use strict';
 const db = uniCloud.database();
+const cmd = db.command;
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 /**
  * 我的信息，需要验证权限
@@ -9,8 +10,8 @@ const {
 exports.main = async (event, context) => {
 	let {
 		customUserId
-	} = await getUserInfo(event);
-	if(customUserId < 1){
+	} = await getLoginUser(event);
+	if (customUserId < 1) {
 		return {
 			"code": 404,
 			"message": "用户信息不存在",
@@ -18,32 +19,7 @@ exports.main = async (event, context) => {
 	}
 	//let uid = +event.uid;
 	let uid = customUserId;
-	let data = await db.collection("users").where({
-		id: uid
-	}).field({
-		id: 1,
-		vip:1,
-		balance: 1,
-		birthday: 1,
-		count: 1,
-		coupons: 1,
-		invite: 1,
-		messageCount: 1,
-		nickname: 1,
-		portrait: 1,
-		score: 1,
-		token: 1,
-		mobile: 1,
-		sex: 1,
-		order: 1
-	}).limit(1).get();
-	if (data.data.length == 0) {
-		return {
-			code: 404,
-			message: "信息不存在"
-		}
-	}
-	let info = data.data[0];
+	let info = {};
 	//保存个人信息，头像，昵称，性别，生日
 	if (event.type == "save") {
 		let strinFields = ["portrait", "nickname", "birthday"];
@@ -60,7 +36,9 @@ exports.main = async (event, context) => {
 		}
 		console.log(entity);
 		//保存更改
-		let res = await db.collection("users").doc(info._id).update(entity);
+		let res = await db.collection("users").where({
+			id: uid
+		}).update(entity);
 		console.log("保存用户基本信息", res);
 		//@todo 如果修改了头像，批量修改邀请者头像
 		return {
@@ -69,7 +47,11 @@ exports.main = async (event, context) => {
 			data: res
 		}
 	} else if (event.type == "invite") {
-		if (info.invite > 0) {
+		let isExist = await db.collection("users").where({
+			id: uid,
+			invite: cmd.exists(true)
+		}).count();
+		if (isExist.count > 0) {
 			//已经存在邀请者
 			return {
 				code: 404,
@@ -81,7 +63,7 @@ exports.main = async (event, context) => {
 		let finfo = await db.collection("users").where({
 			id: fuid
 		}).field({
-			vip:1,
+			vip: 1,
 			nickname: 1,
 			portrait: 1,
 			inviters: 1
@@ -104,22 +86,71 @@ exports.main = async (event, context) => {
 			portrait: finfo.portrait
 		})
 		let entity = {
-			vip:finfo.vip,
+			vip: finfo.vip,
 			invite: fuid,
 			inviters: inviters
 		};
-		let res = await db.collection("users").doc(info._id).update(entity);
+		let res = await db.collection("users").where({
+			id: uid
+		}).update(entity);
 		if (res.updated < 1) {
 			return {
 				code: 404,
 				message: "开通失败"
 			}
 		}
-		//合并信息
-		Object.assign(info,entity);
+		return {
+			code: 200,
+			message: "操作成功",
+			data: res
+		}
+	} else {
+		//查询用户信息
+		let data = await db.collection("users").where({
+			id: uid
+		}).field({
+			id: 1,
+			vip: 1,
+			balance: 1,
+			birthday: 1,
+			count: 1,
+			coupons: 1,
+			invite: 1,
+			messageCount: 1,
+			nickname: 1,
+			portrait: 1,
+			score: 1,
+			token: 1,
+			mobile: 1,
+			sex: 1,
+			order: 1,
+			admin: 1,
+			inviters: 1
+		}).limit(1).get();
+		if (data.data.length == 0) {
+			return {
+				code: 404,
+				message: "信息不存在"
+			}
+		}
+		info = data.data[0];
+		//处理余额为2位小数
+		info.balance = info.balance.toFixed(2);
+		if (info.admin) {
+			//查询店铺的订单统计情况,以及店铺信息
+			let shops = await db.collection("shops").where({
+				id: cmd.in(info.admin)
+			}).field({
+				id: 1,
+				name: 1,
+				src: 1,
+				monthSale: 1,
+				address: 1,
+				order: 1
+			}).orderBy("id", "desc").limit(30).get();
+			info.admin = shops.data;
+		}
 	}
-	//处理余额为2位小数
-	info.balance = info.balance.toFixed(2);
 	return {
 		code: 200,
 		message: "操作成功",

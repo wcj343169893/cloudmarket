@@ -2,20 +2,20 @@
 const userInfo = {
 	status: 1,
 	data: {
-  "balance": 12.3,
-  "birthday": "1990-03-03",
-  "coupons": 2,
-  "token":"f84j2ddk38f9u3u423jfwe",
-  "id": 10000,
-  "lastLogin": "2020-03-12T01:30:14.081Z",
-  "messageCount": 0,
-  "mobile": "18888888888",
-  "nickname": "怪兽",
-  "portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/dcec6610-63fc-11ea-8a62-f911ff21d1d9.jpg",
-  "regist": "2020-03-12T01:30:14.081Z",
-  "score": 102,
-  "shop_recommend_id": "5e69ee2ccb556e463cf225a0"
-},
+		"balance": 12.3,
+		"birthday": "1990-03-03",
+		"coupons": 2,
+		"token": "f84j2ddk38f9u3u423jfwe",
+		"id": 10000,
+		"lastLogin": "2020-03-12T01:30:14.081Z",
+		"messageCount": 0,
+		"mobile": "18888888888",
+		"nickname": "怪兽",
+		"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/dcec6610-63fc-11ea-8a62-f911ff21d1d9.jpg",
+		"regist": "2020-03-12T01:30:14.081Z",
+		"score": 102,
+		"shop_recommend_id": "5e69ee2ccb556e463cf225a0"
+	},
 	msg: '提示'
 }
 /* 首页轮播图 */

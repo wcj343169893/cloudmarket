@@ -96,7 +96,7 @@ const updateUserOrderCount = function(uid, type, number, type2) {
 	if (type2) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
-	console.log(uid,JSON.stringify(data));
+	console.log(uid, JSON.stringify(data));
 	return db.collection("users").where({
 		id: +uid
 	}).update(data);
@@ -106,22 +106,22 @@ const updateUserOrderCount = function(uid, type, number, type2) {
  * 生成唯一id
  * @param {Object} key
  */
-const genIdentityId = async function(key){
+const genIdentityId = async function(key) {
 	const db = uniCloud.database();
 	const cmd = db.command;
 	//生成用户id----开始-----
 	const identity = db.collection("identity");
 	//获取用户id
 	let res = await identity.where({
-		"key":key
+		"key": key
 	}).update({
-		value:cmd.inc(1)
+		value: cmd.inc(1)
 	});
 	//立马查询出来，可能值是对的
 	let res2 = await identity.where({
-		"key":key
+		"key": key
 	}).field({
-		value:1
+		value: 1
 	}).get();
 	return res2.data[0].value;
 	//生成用户id----结束-----
@@ -130,13 +130,31 @@ const genIdentityId = async function(key){
  * 保存用户余额变动日志
  * @param {Object} data
  */
-const addUserBalanceLog =async function(data){
+const addUserBalanceLog = async function(data) {
 	const db = uniCloud.database();
 	//记录余额变动历史user_balance_logs
 	return await db.collection("user_balance_logs").add({
 		created: new Date().toISOString(),
 		...data
 	});
+}
+/**
+ * 根据用户id查询用户信息
+ * @param {int} id
+ * @param {Object} field 
+ */
+const getUserInfoById = async function(id, field) {
+	const db = uniCloud.database();
+	field = field || {
+		nickname: 1
+	}
+	let data = await db.collection("users").where({
+		id: +id
+	}).field(field).limit(1).get();
+	if (data.data.length > 0) {
+		return data.data[0];
+	}
+	return {};
 }
 
 module.exports = {
@@ -145,5 +163,6 @@ module.exports = {
 	updateUserOrderCount,
 	updateGoodsStock,
 	genIdentityId,
-	addUserBalanceLog
+	addUserBalanceLog,
+	getUserInfoById
 }

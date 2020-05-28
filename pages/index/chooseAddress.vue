@@ -28,13 +28,19 @@
 					<text>{{ currentAddress.address }}</text>
 				</view>
 			</view>
-			<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" @click.stop="getLocation"></image>
+			<view class="dingwei" @click.stop="getLocation(true)">
+				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei"></image>
+				<text>重新定位</text>
+			</view>
 		</view>
 		<view class="list b-b" v-else>
 			<view class="wrapper">
 				<text>定位失败</text>
 			</view>
-			<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" @click="getLocation"></image>
+			<view class="dingwei" @click.stop="getLocation(true)">
+				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" ></image>
+				<text>重新定位</text>
+			</view>
 		</view>
 		<view class=""><map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange" :show-location="show_location" style="width: 100%;height: 300px;"></map></view>
 		<view class="sec-header"><text>附近地址</text></view>
@@ -88,7 +94,7 @@ export default {
 		if (this.hasLogin) {
 			this.loadData();
 		}
-		this.getLocation();
+		this.getLocation(false);
 		if (this.location.latitude > 0) {
 			this.latitude = this.location.latitude;
 			this.longitude = this.location.longitude;
@@ -129,7 +135,7 @@ export default {
 				this.addressList = res;
 			});
 		},
-		async getLocation() {
+		async getLocation(isMsg) {
 			//获取当前定位位置
 			uni.getLocation({
 				type: 'gcj02',
@@ -145,14 +151,20 @@ export default {
 						longitude: res.longitude,
 						address: res.address.street + '' + res.address.streetNum
 					};
+					if(isMsg){
+						this.$api.msg("重新定位成功")
+					}
 				},
 				fail: res => {
 					console.log('获取定位失败', res.errMsg);
+					if(isMsg){
+						this.$api.msg("重新定位失败")
+					}
 				}
 			});
 		},
 		async poiSearchNearBy(pt) {
-			this.searchObj.poiSearchNearBy('小区', pt, 1000);
+			this.searchObj.poiSearchNearBy('住宅', pt, 1000);
 		},
 		//地图视野发生变化
 		regionchange(){
@@ -263,8 +275,14 @@ export default {
 	width: 64upx;
 	height: 64upx;
 }
+.dingwei{
+	color: #6bc56b;
+	display: flex;
+	align-items: center;
+}
 .btn-dingwei{
-	width: 64upx;
-	height: 64upx;
+	width: 48upx;
+	height: 48upx;
+	margin-right: 8upx;
 }
 </style>

@@ -5,16 +5,17 @@ const {
 	updateGoodsMiaoshaStock,
 	updateGoodsStock,
 	updateUserOrderCount,
-	genIdentityId
+	genIdentityId,
+	getUserInfoById
 } = require('base-common');
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 exports.main = async (event, context) => {
 	let {
 		customUserId
-	} = await getUserInfo(event);
-	if(customUserId < 1){
+	} = await getLoginUser(event);
+	if (customUserId < 1) {
 		return {
 			"code": 404,
 			"message": "用户信息不存在",
@@ -79,7 +80,7 @@ exports.main = async (event, context) => {
 	let decrStockMiaoshaGoodsSuccess = [];
 	//减少商品库存
 	let decrStockGoodsSuccess = [];
-	let cartIds=[];
+	let cartIds = [];
 	//处理商品购物车数据
 	carts.data.map(ct => {
 		cartMap[ct.goods_id + '_' + ct.sku_id] = {
@@ -123,7 +124,7 @@ exports.main = async (event, context) => {
 						if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
 							delete goo.miaosha;
 						}
-						goo["sku_id"] = sku.id; 
+						goo["sku_id"] = sku.id;
 						delete sku.id;
 						Object.assign(goo, cartMap[key], sku, {
 							hasSku: true,
@@ -137,7 +138,7 @@ exports.main = async (event, context) => {
 				let key = ele.id + '_0';
 				Object.assign(ele, cartMap[key], {
 					hasSku: false,
-					subName:"",
+					subName: "",
 					sku_index: 0,
 					sku_id: 0
 				});
@@ -198,7 +199,7 @@ exports.main = async (event, context) => {
 				data.cartCount += ele.amount;
 			}
 		}
-	}else{
+	} else {
 		//结算商品不存在
 		return {
 			"code": 404,
@@ -222,7 +223,7 @@ exports.main = async (event, context) => {
 				"data": data
 			};
 		}
-		let body=[];
+		let body = [];
 		let isGoodsError = false;
 		for (let ele of data.goods) {
 			//减少库存,默认下单减库存，inc,这里不像redis能返回更新后的结果，所以还是可能会出现超卖的情况
@@ -240,7 +241,7 @@ exports.main = async (event, context) => {
 					sku_id: ele.sku_id
 				});
 			}
-			body.push(ele.title+ele.subName);
+			body.push(ele.title + ele.subName);
 		}
 		if (isGoodsError) {
 			//归还秒杀库存2
@@ -280,6 +281,15 @@ exports.main = async (event, context) => {
 		//字典表递增获得位id
 		data["id"] = await genIdentityId("orders");
 		data["body"] = body.join(",");
+		//邀请信息,只允许2级关系
+		let uinfo = await getUserInfoById(uid,{
+			inviters:1
+		});
+		//用户邀请列表
+		data["inviters"] = [];
+		if(uinfo && uinfo.inviters){
+			data["inviters"] = uinfo.inviters.slice(0,2)
+		}
 		//保存订单
 		let res = await db.collection("orders").add(data);
 		if (!res.id) {
@@ -295,7 +305,7 @@ exports.main = async (event, context) => {
 		}).remove();
 		console.log(delCart);
 		//更新用户待付款订单数
-		await updateUserOrderCount(uid,"unpaid",1,false);
+		await updateUserOrderCount(uid, "unpaid", 1, false);
 		return {
 			"code": 200,
 			"message": "操作成功",

@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const {
-	getUserInfo
+	getLoginUser
 } = require('token');
 /**
  * 收货地址处理，增加，修改，删除，列表
@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
 	let {
 		customUserId
-	} = await getUserInfo(event);
+	} = await getLoginUser(event);
 	if(customUserId < 1){
 		return {
 			"code": 404,
