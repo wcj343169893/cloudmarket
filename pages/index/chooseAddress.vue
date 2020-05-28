@@ -2,18 +2,20 @@
 	<view class="container">
 		<block v-if="addressList.length > 0">
 			<view class="sec-header"><text>我的收货地址</text></view>
-			<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
-				<view class="wrapper">
-					<view class="address-box">
-						<text v-if="item.default" class="tag">默认</text>
-						<text class="address">{{ item.address }} {{ item.addressName }} {{ item.area }}</text>
+			<view class="">
+				<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
+					<view class="wrapper">
+						<view class="address-box">
+							<text v-if="item.default" class="tag">默认</text>
+							<text class="address">{{ item.address }} {{ item.addressName }} {{ item.area }}</text>
+						</view>
+						<view class="u-box">
+							<text class="name">{{ item.name }}</text>
+							<text class="mobile">{{ item.mobile }}</text>
+						</view>
 					</view>
-					<view class="u-box">
-						<text class="name">{{ item.name }}</text>
-						<text class="mobile">{{ item.mobile }}</text>
-					</view>
+					<view class="checked" v-if="item.checked"><image src="/static/icon/ok01.png" mode="" class="checked_image"></image></view>
 				</view>
-				<view class="checked" v-if="item.checked"><image src="/static/icon/ok01.png" mode="" class="checked_image"></image></view>
 			</view>
 		</block>
 		<view class="sec-header"><text>当前地址</text></view>
@@ -26,9 +28,28 @@
 					<text>{{ currentAddress.address }}</text>
 				</view>
 			</view>
+			<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" @click.stop="getLocation"></image>
 		</view>
-		<view class="list b-b" v-else><text>定位失败</text></view>
+		<view class="list b-b" v-else>
+			<view class="wrapper">
+				<text>定位失败</text>
+			</view>
+			<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" @click="getLocation"></image>
+		</view>
+		<view class=""><map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange" :show-location="show_location" style="width: 100%;height: 300px;"></map></view>
 		<view class="sec-header"><text>附近地址</text></view>
+		<view class="">
+			<view class="list b-b" v-for="(item, index) in nearAddressList" :key="index" @click="checkAddress(item)">
+				<view class="wrapper">
+					<view class="address-box">
+						<text class="address">{{ item.addressName }}</text>
+					</view>
+					<view class="u-box">
+						<text>{{ item.address }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -39,7 +60,14 @@ import { navToLoginPage } from '@/common/functions.js';
 export default {
 	data() {
 		return {
+			latitude: 0,
+			longitude: 0,
+			show_location: true,
+			mapContext:null,
+			searchObj:null,
+			centerMaker:[],
 			addressList: [],
+			nearAddressList: [],
 			currentAddress: {
 				address: ''
 			}
@@ -57,11 +85,37 @@ export default {
 		...mapState(['hasLogin', 'location'])
 	},
 	onLoad(option) {
-		if(this.hasLogin){
+		if (this.hasLogin) {
 			this.loadData();
 		}
 		this.getLocation();
+		if (this.location.latitude > 0) {
+			this.latitude = this.location.latitude;
+			this.longitude = this.location.longitude;
+		}
 		//console.log(this.location);
+	},
+	onReady() {
+		console.log('onReady');
+		if (this.location.latitude > 0) {
+			this.mapContext = uni.createMapContext('map1', this);
+			//地图搜索
+			this.searchObj = new plus.maps.Search(this.mapContext.$getAppMap());
+			this.searchObj.onPoiSearchComplete = (state, result) => {
+				//console.log(state, result);
+				//this.nearAddressList = result.poiList;
+				this.nearAddressList=[];
+				result.poiList.map(e=>{
+					this.nearAddressList.push({
+						addressName:e.name,
+						address:e.address,
+						latitude:e.point.latitude,
+						longitude:e.point.longitude,
+					})
+				})
+				
+			};
+		}
 	},
 	methods: {
 		...mapMutations(['setUserLocation']),
@@ -75,7 +129,7 @@ export default {
 				this.addressList = res;
 			});
 		},
-		getLocation(){
+		async getLocation() {
 			//获取当前定位位置
 			uni.getLocation({
 				type: 'gcj02',
@@ -83,6 +137,8 @@ export default {
 				geocode: true,
 				success: res => {
 					console.log('获取定位完成', res);
+					this.latitude = res.latitude;
+					this.longitude = res.longitude;
 					this.currentAddress = {
 						addressName: res.address.poiName,
 						latitude: res.latitude,
@@ -94,6 +150,24 @@ export default {
 					console.log('获取定位失败', res.errMsg);
 				}
 			});
+		},
+		async poiSearchNearBy(pt) {
+			this.searchObj.poiSearchNearBy('小区', pt, 1000);
+		},
+		//地图视野发生变化
+		regionchange(){
+			console.log("regionchange")
+			this.centerMaker=[];
+			this.mapContext.getCenterLocation ({
+				success:(lnglat)=>{
+					var pt = new plus.maps.Point(lnglat.longitude, lnglat.latitude);
+					this.centerMaker.push({
+							latitude: lnglat.latitude,
+							longitude: lnglat.longitude
+						})
+					this.poiSearchNearBy(pt);
+				}
+			})
 		},
 		checkAddress(item) {
 			let info = {
@@ -110,7 +184,7 @@ export default {
 					this.$set(ele, 'checked', false);
 				}
 			});
-			this.$api.msg('设置地址成功',1500,true,"success");
+			this.$api.msg('设置地址成功', 1500, true, 'success');
 			//this.$api.prePage().changeLocationInfo(info);
 			setTimeout(() => {
 				uni.navigateBack({
@@ -126,14 +200,14 @@ export default {
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
-		if(!this.hasLogin){
+		if (!this.hasLogin) {
 			navToLoginPage();
 			return;
 		}
 		if (index === 0) {
 			uni.navigateTo({
-				url:"/pages/address/addressManage?type=new"
-			})
+				url: '/pages/address/addressManage?type=new'
+			});
 		}
 	}
 };
@@ -186,6 +260,10 @@ export default {
 	padding-left: 30upx;
 }
 .checked_image {
+	width: 64upx;
+	height: 64upx;
+}
+.btn-dingwei{
 	width: 64upx;
 	height: 64upx;
 }

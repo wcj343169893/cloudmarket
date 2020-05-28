@@ -158,7 +158,7 @@ export default {
 		async getUserLocation() {
 			console.log('开始获取定位');
 			//1.如果存在经纬度，则直接访问
-			if (this.location.latitude > 0 && this.location.longitude > 0) {
+			if (this.location.id) {
 				//存在历史定位，只能是从收货地址填写
 				console.log('存在选择地址', this.location);
 				this.address = this.location.name;
