@@ -150,7 +150,8 @@ const payInfo = function(data) {
 		url: "payInfo",
 		data: data,
 		auth:true,
-		isShowLoading: true
+		isShowLoading: true,
+		isShowMask:true
 	})
 }
 //获取支付参数
@@ -158,7 +159,8 @@ const payment = function(data) {
 	return network({
 		url: "payment",
 		data: data,
-		isShowLoading: true
+		isShowLoading: true,
+		isShowMask:true
 	})
 }
 //订单
@@ -225,7 +227,8 @@ const balancePay = function(data) {
 		url: "payInfo",
 		data: data,
 		auth:true,
-		isShowLoading: true
+		isShowLoading: true,
+		isShowMask:true
 	})
 }
 /**

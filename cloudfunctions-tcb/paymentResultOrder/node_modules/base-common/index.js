@@ -92,15 +92,17 @@ const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
 	if (type2) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
-	console.log(uid, JSON.stringify(data));
+	console.log(uid,shopid, JSON.stringify(data));
 	let res = await db.collection("users").where({
 		id: +uid
 	}).update(data);
+	console.log(res);
 	//更新店铺订单数总计
 	if(shopid > 0){
 		let res2 = await db.collection("shops").where({
 			id: +shopid
 		}).update(data);
+		console.log(res2);
 	}
 	return res;
 }

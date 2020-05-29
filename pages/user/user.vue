@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" src="/static/user-bg2.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
 				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
@@ -75,21 +75,18 @@
 							<view class="title">
 								<text>{{item.name}}</text>
 							</view>
-							<view class="address">
-								<text>{{item.address}}</text>
-							</view>
 							<view class="orders" v-if="item.order">
-								<view class="" @click.stop="navToShopOrder(0)">
+								<view class="" @click.stop="navToShopOrder(item,0)">
 									<text>待付款</text>
-									<text>{{item.order.unpaid}}</text>
+									<text class="num">{{item.order.unpaid}}</text>
 								</view>
-								<view class="" @click.stop="navToShopOrder(1)">
+								<view class="" @click.stop="navToShopOrder(item,1)">
 									<text>待发货</text>
-									<text>{{item.order.payup}}</text>
+									<text class="num">{{item.order.payup}}</text>
 								</view>
-								<view class="" @click.stop="navToShopOrder(2)">
+								<view class="" @click.stop="navToShopOrder(item,2)">
 									<text>售后</text>
-									<text>{{item.order.refunded}}</text>
+									<text class="num">{{item.order.refunded}}</text>
 								</view>
 							</view>
 						</view>
@@ -112,12 +109,11 @@
 						</view>
 					</scroll-view>
 				</block>
-				<!-- <list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell> -->
-				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell>
-				<!-- <list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell> -->
-				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell>
-				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
+				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
+				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
+				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></mix-list-cell>
+				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
+				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
 			</view>
 		</view>
 		<uni-popup ref="vipPopup" type="center">
@@ -131,7 +127,6 @@
 	</view>
 </template>
 <script>
-import listCell from '@/components/mix-list-cell';
 import { getGoodsVisites, getUserInfo,saveUserInfo, cronCancelOrders } from '@/common/request.js';
 import { navToGoodsItemPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
@@ -139,9 +134,6 @@ let startY = 0,
 	moveY = 0,
 	pageAtTop = true;
 export default {
-	components: {
-		listCell
-	},
 	data() {
 		return {
 			coverTransform: 'translateY(0px)',
@@ -301,11 +293,26 @@ export default {
 		},
 		//店铺管理界面
 		navToShopAdmin(item){
-			console.log(item)
+			let id = item.id;
+			uni.setStorage({
+				key:"adminShopInfo",
+				data:item
+			});
+			uni.navigateTo({
+				url:`/pages/admin/admin?id=${id}`
+			})
 		},
-		//店铺订单类型页面
-		navToShopOrder(state){
-			console.log(state)
+		//店铺订单类型页面,进入店铺之后，再跳转订单页面
+		navToShopOrder(item,state){
+			let id = item.id;
+			uni.setStorage({
+				key:"adminShopInfo",
+				data:item
+			});
+			uni.navigateTo({
+				url:`/pages/admin/admin?id=${id}&second=orderList&state=${state}`
+			})
+			
 		}
 	}
 };
@@ -527,7 +534,7 @@ export default {
 	margin-top: 20upx;
 	background: #fff;
 	border-radius: 10upx;
-	font-size: $font-sm;
+	font-size: $font-base;
 	.admin-shops{
 		display: flex;
 		margin-top: 20upx;
@@ -560,11 +567,15 @@ export default {
 	.orders{
 		display: flex;
 		justify-content: space-between;
+		padding-top: 12upx;
 		view{
 			display: flex;
 			flex-direction: column;
 			text-align: center;
 		}
+	}
+	.num{
+		color: $font-color-warning;
 	}
 }
 </style>

@@ -140,6 +140,7 @@ export default {
 			cartCount: 0,
 			totalMoney: 0,
 			totalDiscount: 0,
+			isSubmit:false,
 			addressData: {}
 		};
 	},
@@ -228,6 +229,10 @@ export default {
 				this.$api.msg('请填写收货地址');
 				return;
 			}
+			if(this.isSubmit){
+				return ;
+			}
+			this.isSubmit = true;
 			settlement({
 				id: this.shopId,
 				stationId: this.stationId,
@@ -241,8 +246,10 @@ export default {
 					uni.redirectTo({
 						url: `/pages/money/pay?id=${id}&money=${money}&comefrom=cart`
 					});
+					this.isSubmit = false;
 				},
 				err => {
+					this.isSubmit = false;
 					this.$api.msg(err.message);
 				}
 			);

@@ -146,7 +146,8 @@ exports.main = async (event, context) => {
 				src: 1,
 				monthSale: 1,
 				address: 1,
-				order: 1
+				order: 1,
+				banner:1
 			}).orderBy("id", "desc").limit(30).get();
 			info.admin = shops.data;
 		}

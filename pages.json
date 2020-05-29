@@ -320,6 +320,36 @@
 				"navigationBarTitleText": "限时抢购"
 			}
         }
+        ,{
+            "path" : "pages/admin/admin",
+            "style" : {
+				"navigationBarTitleText": "店铺管理",
+				"app-plus": {
+					/* "bounce": "none", */
+					"titleNView": {
+						"type": "transparent"
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/admin/goodsList",
+            "style" : {
+				"navigationBarTitleText": "商品列表"
+			}
+        }
+        ,{
+            "path" : "pages/admin/addGoods",
+            "style" : {
+				"navigationBarTitleText": "增加商品"
+			}
+        }
+        ,{
+            "path" : "pages/admin/orderList",
+            "style" : {
+				"navigationBarTitleText": "订单列表"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

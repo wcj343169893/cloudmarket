@@ -305,7 +305,7 @@ exports.main = async (event, context) => {
 		}).remove();
 		console.log(delCart);
 		//更新用户待付款订单数
-		await updateUserOrderCount(uid, "unpaid", 1, false);
+		await updateUserOrderCount(uid, "unpaid", 1, false,data.shopid);
 		return {
 			"code": 200,
 			"message": "操作成功",
