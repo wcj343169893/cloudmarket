@@ -25,7 +25,8 @@ exports.main = async (event, context) => {
 	
 	let orders = await orderCollection.where(ordCondition).field({
 		goods: 1,
-		uid:1
+		uid:1,
+		shopid:1
 	}).get();
 	if (orders.data.length == 0) {
 		return {
@@ -55,7 +56,7 @@ exports.main = async (event, context) => {
 		}
 		
 		//更新用户已取消和未支付数量
-		let resUser = await updateUserOrderCount(order.uid,"canceled",1,"unpaid");
+		let resUser = await updateUserOrderCount(order.uid,"canceled",1,"unpaid",order.shopid);
 		console.log("resUser", resUser);
 	}
 	return {

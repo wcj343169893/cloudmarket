@@ -11,8 +11,9 @@ const getLoginUser = async function(data) {
 	//临时兼容获取用户信息,从数据库查询
 	const db = uniCloud.database();
 	let token = data.token || "unknown";
+	let uid = parseInt(data.uid);
 	let isExists = await db.collection("users").where({
-		id: +data.uid,
+		id: uid,
 		token: token
 	}).count();
 	if (isExists.total > 0) {
@@ -20,7 +21,7 @@ const getLoginUser = async function(data) {
 			openId: '',
 			appId: '',
 			uid: '',
-			customUserId: +data.uid
+			customUserId: uid
 		};
 	}
 	return {

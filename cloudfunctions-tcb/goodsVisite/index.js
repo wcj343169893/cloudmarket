@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
 		goods_id: 1,
 		src: 1,
 		shopid: 1
-	}).orderBy("time", "desc").limit(20).get();
+	}).orderBy("time", "desc").limit(10).get();
 
 	if (visite.data.length == 0) {
 		return {

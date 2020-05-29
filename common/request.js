@@ -73,6 +73,7 @@ const getCartList = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -82,6 +83,7 @@ const editCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -90,6 +92,7 @@ const addManyCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -99,6 +102,7 @@ const cleanCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -108,6 +112,7 @@ const selectCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -117,6 +122,7 @@ const settlementCart = function(data) {
 	return network({
 		url: "carts",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -125,6 +131,7 @@ const settlement = function(data) {
 	return network({
 		url: "settlement",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -133,6 +140,7 @@ const address = function(data) {
 	return network({
 		url: "address",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -141,6 +149,7 @@ const payInfo = function(data) {
 	return network({
 		url: "payInfo",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -158,6 +167,7 @@ const orders = function(data) {
 	return network({
 		url: "orders",
 		data: data,
+		auth:true,
 		isShowLoading: isShowLoading,
 		isShowMask: true
 	})
@@ -167,6 +177,7 @@ const getGoodsVisites = function(data) {
 	return network({
 		url: "goodsVisite",
 		data: data,
+		auth:true,
 		isShowLoading: false
 	})
 }
@@ -187,6 +198,7 @@ const getUserInfo = function(data) {
 	return network({
 		url: "users",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -199,6 +211,7 @@ const saveUserInfo = function(data) {
 	return network({
 		url: "users",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -211,6 +224,7 @@ const balancePay = function(data) {
 	return network({
 		url: "payInfo",
 		data: data,
+		auth:true,
 		isShowLoading: true
 	})
 }
@@ -222,6 +236,7 @@ const cronCancelOrders = function(data) {
 	return network({
 		url: "cronCancelOrders",
 		data: data,
+		auth:true,
 		isShowLoading: false
 	})
 }

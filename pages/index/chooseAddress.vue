@@ -34,15 +34,24 @@
 			</view>
 		</view>
 		<view class="list b-b" v-else>
-			<view class="wrapper">
-				<text>定位失败</text>
-			</view>
+			<view class="wrapper"><text>定位失败</text></view>
 			<view class="dingwei" @click.stop="getLocation(true)">
-				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei" ></image>
+				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei"></image>
 				<text>重新定位</text>
 			</view>
 		</view>
-		<view class=""><map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange" :show-location="show_location" style="width: 100%;height: 300px;"></map></view>
+		<view class="">
+			<map
+				id="map1"
+				ref="map1"
+				:latitude="latitude"
+				:longitude="longitude"
+				:markers="centerMaker"
+				@regionchange="regionchange"
+				:show-location="show_location"
+				style="width: 100%;height: 300px;"
+			></map>
+		</view>
 		<view class="sec-header"><text>附近地址</text></view>
 		<view class="">
 			<view class="list b-b" v-for="(item, index) in nearAddressList" :key="index" @click="checkAddress(item)">
@@ -69,9 +78,9 @@ export default {
 			latitude: 0,
 			longitude: 0,
 			show_location: true,
-			mapContext:null,
-			searchObj:null,
-			centerMaker:[],
+			mapContext: null,
+			searchObj: null,
+			centerMaker: [],
 			addressList: [],
 			nearAddressList: [],
 			currentAddress: {
@@ -107,20 +116,19 @@ export default {
 			this.mapContext = uni.createMapContext('map1', this);
 			//地图搜索
 			this.searchObj = new plus.maps.Search(this.mapContext.$getAppMap());
+			this.searchObj.onRouteSearchComplete = (state, result)=>{
+				console.log("onRouteSearchComplete",state, result);
+				this.searchResult(result);
+			}
 			this.searchObj.onPoiSearchComplete = (state, result) => {
-				//console.log(state, result);
+				console.log("onPoiSearchComplete",state, result);
 				//this.nearAddressList = result.poiList;
-				this.nearAddressList=[];
-				result.poiList.map(e=>{
-					this.nearAddressList.push({
-						addressName:e.name,
-						address:e.address,
-						latitude:e.point.latitude,
-						longitude:e.point.longitude,
-					})
-				})
-				
+				this.searchResult(result);
 			};
+			this.centerMaker.push({
+				latitude: this.latitude,
+				longitude: this.longitude
+			});
 		}
 	},
 	methods: {
@@ -151,35 +159,54 @@ export default {
 						longitude: res.longitude,
 						address: res.address.street + '' + res.address.streetNum
 					};
-					if(isMsg){
-						this.$api.msg("重新定位成功")
+					if (isMsg) {
+						this.$api.msg('重新定位成功');
 					}
 				},
 				fail: res => {
 					console.log('获取定位失败', res.errMsg);
-					if(isMsg){
-						this.$api.msg("重新定位失败")
+					if (isMsg) {
+						this.$api.msg('重新定位失败');
 					}
 				}
 			});
 		},
 		async poiSearchNearBy(pt) {
-			this.searchObj.poiSearchNearBy('住宅', pt, 1000);
+			let res = this.searchObj.poiSearchNearBy('住宅', pt, 1000);
+			console.log("poiSearchNearBy",res);
 		},
 		//地图视野发生变化
-		regionchange(){
-			console.log("regionchange")
-			this.centerMaker=[];
-			this.mapContext.getCenterLocation ({
-				success:(lnglat)=>{
+		regionchange() {
+			console.log('regionchange');
+			this.centerMaker = [];
+			this.mapContext.getCenterLocation({
+				success: lnglat => {
+					console.log('获取getCenterLocation success',lnglat);
 					var pt = new plus.maps.Point(lnglat.longitude, lnglat.latitude);
 					this.centerMaker.push({
-							latitude: lnglat.latitude,
-							longitude: lnglat.longitude
-						})
+						latitude: lnglat.latitude,
+						longitude: lnglat.longitude
+					});
 					this.poiSearchNearBy(pt);
+				},
+				fail: () => {
+					console.log('获取getCenterLocation失败');
+				},
+				complete: () => {
+					console.log('获取getCenterLocation complete');
 				}
-			})
+			});
+		},
+		searchResult(result){
+			this.nearAddressList = [];
+			result.poiList.map(e => {
+				this.nearAddressList.push({
+					addressName: e.name,
+					address: e.address,
+					latitude: e.point.latitude,
+					longitude: e.point.longitude
+				});
+			});
 		},
 		checkAddress(item) {
 			let info = {
@@ -275,12 +302,12 @@ export default {
 	width: 64upx;
 	height: 64upx;
 }
-.dingwei{
+.dingwei {
 	color: #6bc56b;
 	display: flex;
 	align-items: center;
 }
-.btn-dingwei{
+.btn-dingwei {
 	width: 48upx;
 	height: 48upx;
 	margin-right: 8upx;

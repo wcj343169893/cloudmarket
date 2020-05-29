@@ -1,3 +1,5 @@
+const db = uniCloud.database();
+const cmd = db.command;
 /**
  * 获取集合名称,更好管理多地区分站
  * @param {Object} event
@@ -36,8 +38,6 @@ const getShopInfoById = function(id) {
  * @param {Object} xishu 相乘系数，1或者-1
  */
 const updateGoodsMiaoshaStock = function(ele, xishu) {
-	const db = uniCloud.database();
-	const cmd = db.command;
 	return db.collection('goods').where({
 		_id: ele._id,
 		"miaosha.stock": cmd.gte(ele.amount * xishu)
@@ -54,8 +54,6 @@ const updateGoodsMiaoshaStock = function(ele, xishu) {
  * @param {Object} xishu 相乘系数，1或者-1
  */
 const updateGoodsStock = function(ele, xishu) {
-	const db = uniCloud.database();
-	const cmd = db.command;
 	if (ele.hasSku) {
 		let condition = {
 			_id: ele._id,
@@ -86,9 +84,7 @@ const updateGoodsStock = function(ele, xishu) {
  * @param {Object} number 如果是负数，则减少
  * @param {Object} type2 类型转移到下一个类型，与type相反的数值
  */
-const updateUserOrderCount = function(uid, type, number, type2) {
-	const db = uniCloud.database();
-	const cmd = db.command;
+const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
 	let data = {
 		order: {}
 	};
@@ -97,9 +93,16 @@ const updateUserOrderCount = function(uid, type, number, type2) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
 	console.log(uid, JSON.stringify(data));
-	return db.collection("users").where({
+	let res = await db.collection("users").where({
 		id: +uid
 	}).update(data);
+	//更新店铺订单数总计
+	if(shopid > 0){
+		let res2 = await db.collection("shops").where({
+			id: +shopid
+		}).update(data);
+	}
+	return res;
 }
 
 /**
@@ -107,8 +110,6 @@ const updateUserOrderCount = function(uid, type, number, type2) {
  * @param {Object} key
  */
 const genIdentityId = async function(key) {
-	const db = uniCloud.database();
-	const cmd = db.command;
 	//生成用户id----开始-----
 	const identity = db.collection("identity");
 	//获取用户id
@@ -131,7 +132,6 @@ const genIdentityId = async function(key) {
  * @param {Object} data
  */
 const addUserBalanceLog = async function(data) {
-	const db = uniCloud.database();
 	//记录余额变动历史user_balance_logs
 	return await db.collection("user_balance_logs").add({
 		created: new Date().toISOString(),
@@ -144,7 +144,6 @@ const addUserBalanceLog = async function(data) {
  * @param {Object} field 
  */
 const getUserInfoById = async function(id, field) {
-	const db = uniCloud.database();
 	field = field || {
 		nickname: 1
 	}

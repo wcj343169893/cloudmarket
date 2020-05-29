@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
 	} = await getLoginUser(event);
 	if(customUserId < 1){
 		return {
-			"code": 404,
+			"code": 401,
 			"message": "用户信息不存在",
 		};
 	}

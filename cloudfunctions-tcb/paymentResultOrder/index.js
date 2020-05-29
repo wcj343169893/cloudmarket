@@ -27,7 +27,7 @@ exports.main = async (event, context) => {
 		}).get();
 		let order = orderData.data[0];
 		//更新用户订单统计，用户待付款订单数
-		let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid");
+		let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid",order.shopid);
 		console.log("updateUserOrderCount", res);
 
 		//商品销量日志

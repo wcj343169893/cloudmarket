@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
 	} = await getLoginUser(event);
 	if(customUserId < 1){
 		return {
-			"code": 404,
+			"code": 401,
 			"message": "用户信息不存在",
 		};
 	}
@@ -158,7 +158,7 @@ exports.main = async (event, context) => {
 				console.log("updateGoodsStock", resStock);
 			}
 			//更新用户已取消和未支付数量
-			let resUser = await updateUserOrderCount(uid,"canceled",1,"unpaid");
+			let resUser = await updateUserOrderCount(uid,"canceled",1,"unpaid",order.shopid);
 			console.log("resUser", resUser);
 		} else if (type == "delete") {
 			//删除订单，软删除
@@ -166,7 +166,7 @@ exports.main = async (event, context) => {
 				isDelete: 1
 			});
 			//更新用户已取消和已删除
-			let resUser = await updateUserOrderCount(uid,"deleted",1,"canceled");
+			let resUser = await updateUserOrderCount(uid,"deleted",1,"canceled",order.shopid);
 			console.log("resUser", resUser);
 		} else if (type == "makesure") {
 			//确定收货,资金解冻
@@ -174,7 +174,7 @@ exports.main = async (event, context) => {
 				state: 3
 			});
 			//更新用户已发货和已收货
-			let resUser = await updateUserOrderCount(uid,"received",1,"delivered");
+			let resUser = await updateUserOrderCount(uid,"received",1,"delivered",order.shopid);
 			//@todo 资金解冻
 		} else if (type == "detail") {
 			//查询详细

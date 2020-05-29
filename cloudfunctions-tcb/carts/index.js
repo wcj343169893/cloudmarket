@@ -10,12 +10,18 @@ exports.main = async (event, context) => {
 	let {
 		customUserId
 	} = await getLoginUser(event);
+	if (customUserId < 1) {
+		return {
+			"code": 401,
+			"message": "用户信息不存在",
+		};
+	}
 	let shopid = parseInt(event.id);
 	//let uid = parseInt(event.uid);
 	let uid = customUserId;
 	//list full edit
 	let opt = event.opt;
-	if (shopid < 1 || uid < 1) {
+	if (shopid < 1) {
 		return {
 			"code": 404,
 			"message": "用户或店铺信息不存在",

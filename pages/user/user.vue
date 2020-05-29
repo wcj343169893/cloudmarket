@@ -70,29 +70,31 @@
 				</view>
 				<view v-for="(item,index) in userInfo.admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
 					<image :src="item.src" mode="aspectFill"></image>
-					<view class="content">
-						<view class="title">
-							<text>{{item.name}}</text>
-						</view>
-						<view class="address">
-							<text>{{item.address}}</text>
-						</view>
-						<view class="orders" v-if="item.order">
-							<view class="" @click.stop="navToShopOrder(0)">
-								<text>待付款</text>
-								<text>{{item.order.unpaid}}</text>
+					<view class="right">
+						<view class="content">
+							<view class="title">
+								<text>{{item.name}}</text>
 							</view>
-							<view class="" @click.stop="navToShopOrder(1)">
-								<text>待发货</text>
-								<text>{{item.order.payup}}</text>
+							<view class="address">
+								<text>{{item.address}}</text>
 							</view>
-							<view class="" @click.stop="navToShopOrder(2)">
-								<text>售后</text>
-								<text>{{item.order.refunded}}</text>
+							<view class="orders" v-if="item.order">
+								<view class="" @click.stop="navToShopOrder(0)">
+									<text>待付款</text>
+									<text>{{item.order.unpaid}}</text>
+								</view>
+								<view class="" @click.stop="navToShopOrder(1)">
+									<text>待发货</text>
+									<text>{{item.order.payup}}</text>
+								</view>
+								<view class="" @click.stop="navToShopOrder(2)">
+									<text>售后</text>
+									<text>{{item.order.refunded}}</text>
+								</view>
 							</view>
 						</view>
+						<text class="yticon icon-you"></text>
 					</view>
-					<text class="yticon icon-you"></text>
 				</view>
 			</view>
 			
@@ -185,12 +187,20 @@ export default {
 			});
 		}
 	},
+	watch: {
+		hasLogin() {
+			console.log('watch 登录状态改变,刷新当前页面');
+			setTimeout(() => {
+				this.loadData();
+			}, 100);
+		}
+	},
 	// #endif
 	computed: {
 		...mapState(['hasLogin', 'userInfo'])
 	},
 	methods: {
-		...mapMutations(['login']),
+		...mapMutations(['login','logout']),
 		async loadData() {
 			if (this.hasLogin) {
 				cronCancelOrders()
@@ -216,6 +226,8 @@ export default {
 							this.order[t] = res0;
 						}
 					}
+				},err=>{
+					this.logout();
 				});
 				getGoodsVisites().then(
 					res => {
@@ -224,8 +236,12 @@ export default {
 					},
 					err => {
 						this.hasVisiteGoods = false;
+						this.visiteGoodsList = [];
 					}
 				);
+			}else{
+				this.hasVisiteGoods = false;
+				this.visiteGoodsList = [];
 			}
 		},
 		previewAvatar() {
@@ -517,11 +533,16 @@ export default {
 		margin-top: 20upx;
 		position: relative;
 		padding-bottom: 20upx;
-		align-items: center;
+		//align-items: center;
 		padding-right: 30upx;
 		&:last-child::after{
 			display: none;
 		}
+	}
+	.right{
+		display: flex;
+		align-items: center;
+		flex: 1;
 	}
 	image{
 		width: 120upx;
