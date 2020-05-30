@@ -15,6 +15,20 @@ const getShopInfo = function(data) {
 		isShowLoading: true
 	})
 }
+/**
+ * 查询订单列表
+ * @param {Object} data
+ */
+const getOrderList = function(data) {
+	data["type"]="list";
+	return network({
+		url: "adminOrders",
+		data: data,
+		auth: true,
+		isShowLoading: true
+	})
+}
 export {
-	getShopInfo
+	getShopInfo,
+	getOrderList
 }

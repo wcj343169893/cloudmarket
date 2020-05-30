@@ -4,7 +4,7 @@ const db = uniCloud.database();
 const {
 	genIdentityId
 } = require('base-common');
-const {createTicket} = require('token');
+const {createTicket,getTokenExpire} = require('token');
 
 exports.main = async (event, context) => {
 	let token = event.token;
@@ -63,7 +63,9 @@ exports.main = async (event, context) => {
 			encryptionScheme: 'pkcs1'
 		});
 		token = key.encrypt(mobileName,"base64");
-		console.log(token)
+		console.log(token);
+		//获得有效期
+		let tokenExpire = getTokenExpire();
 		if (user.data.length < 1) {
 			const cmd = db.command;
 			data = {
@@ -74,6 +76,7 @@ exports.main = async (event, context) => {
 				coupons: 0,
 				score: 0,
 				token:token,
+				tokenExpire:tokenExpire,
 				regist: time,
 				lastLogin: time,
 			};
@@ -87,9 +90,12 @@ exports.main = async (event, context) => {
 			data = user.data[0];
 			data["token"] = token;
 			data["lastLogin"] = time;
+			//token有效期
+			data["tokenExpire"] =tokenExpire;
 			//更新token
 			let result = await usersCollection.doc(data._id).update({
 				token:token,
+				tokenExpire:tokenExpire,
 				lastLogin: time,
 			});
 		}

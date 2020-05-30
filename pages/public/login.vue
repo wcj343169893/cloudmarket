@@ -87,7 +87,12 @@ export default {
 				res => {
 					this.$api.msg('登录成功', 2000, false, 'success');
 					console.log(res);
-					this.login(res);
+					//this.login(res);
+					//写入缓存
+					uni.setStorage({
+						key: "userInfo",
+						data:res
+					});
 					const auth = uniCloud.auth();
 					auth.signInWithTicket(res.ticket).then(() => {
 						// 登录成功
@@ -109,32 +114,37 @@ export default {
 		navBack() {
 			uni.navigateBack();
 		},
-		localLogin(data){
-			const auth = uniCloud.auth();
-			getToken({
-				uid: data.id,
-				token: data.token
-			}).then(
-				res => {
-					console.log(res);
-					auth.signInWithTicket(res).then(() => {
-						// 登录成功
-						console.log('客户端登录成功');
-					});
-				},
-				err => {
-					//登录信息失效
-				}
-			);
-		},
 		async toLogin() {
 			this.logining = true;
 			//const { mobile, password } = this;
 			const result = await this.$api.json('userInfo');
 			if (result.status === 1) {
 				this.$api.msg('登录成功', 2000, false, 'success');
-				this.login(result.data);
-				this.localLogin(result.data)
+				//this.login(result.data);
+				const auth = uniCloud.auth();
+				getToken({
+					uid: result.data.id,
+					token: result.data.token
+				}).then(
+					res => {
+						console.log(res);
+						//写入缓存
+						uni.setStorage({
+							key: "userInfo",
+							data:res
+						});
+						auth.signInWithTicket(res.ticket).then(() => {
+							// 登录成功
+							console.log('客户端登录成功');
+						});
+					},
+					err => {
+						//登录信息失效
+						uni.removeStorage({
+							key: "userInfo"
+						});
+					}
+				);
 				setTimeout(() => {
 					uni.navigateBack();
 				}, 2000);

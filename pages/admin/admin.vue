@@ -20,23 +20,23 @@
 		<view class="cover-container">
 			<!-- 订单信息统计 -->
 			<view class="order-section">
-				<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navToOrder('0')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-shouye"></text>
 					<text>全部订单</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navToOrder(1)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-daifukuan">
 						<text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text>
 					</text>
 					<text>待付款</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navToOrder(2)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-yishouhuo">
-						<text class="sub" v-if="order.receive > 0">{{ order.receive }}</text>
+						<text class="sub" v-if="order.payup > 0">{{ order.payup }}</text>
 					</text>
-					<text>待收货</text>
+					<text>待发货</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navToOrder(4)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-shouhoutuikuan">
 						<text class="sub" v-if="order.refund > 0">{{ order.refund }}</text>
 					</text>
@@ -67,9 +67,8 @@ export default {
 		if (options.second) {
 			//进一步跳转到下一页页面
 			uni.navigateTo({
-				url: `/pages/admin/${options.second}?id=${options.id}&state=${options.state}`
+				url: `/pages/admin/${options.second}?shopid=${options.id}&state=${options.state}`
 			});
-			return;
 		}
 		this.loadData();
 	},
@@ -96,6 +95,18 @@ export default {
 			for (let i in data) {
 				this[i] = data[i];
 			}
+		},
+		navToOrder(state){
+			let shopid = this.shopid;
+			this.navTo(`/pages/admin/orderList?state=${state}&shopid=${shopid}`)
+		},
+		navTo(url) {
+			/* if (!this.hasLogin) {
+				url = '/pages/public/login';
+			} */
+			uni.navigateTo({
+				url
+			});
 		}
 	}
 };
@@ -132,7 +143,6 @@ export default {
 }
 .user-info-box {
 	display: flex;
-	align-items: center;
 	position: relative;
 	z-index: 1;
 	.portrait {

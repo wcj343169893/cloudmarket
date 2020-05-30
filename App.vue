@@ -46,21 +46,37 @@ export default {
 		});
 		const auth = app.auth(); */
 		const auth = uniCloud.auth();
-
+		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
+		/* auth.getLoginState().then(state => {
+			console.log('auth.getLoginState', state);
+		}); */
 		let userInfoKey = 'userInfo';
 		uniCloud.on('loginStateExpire', () => {
 			// 尝试重新登录
 			console.error('loginStateExpire,尝试重新登录');
 			let userInfo = uni.getStorageSync(userInfoKey) || {};
 			if (userInfo.id) {
-				//更新登陆状态
+				//更新登陆状态,检查tokenExpire是否在有效期内
+				let time = new Date().getTime();
+				if (userInfo.tokenExpire < time) {
+					console.log('登录信息过期了');
+					uni.removeStorage({
+						key: userInfoKey
+					});
+					return;
+				}
 				getToken({
 					uid: userInfo.id,
 					token: userInfo.token
 				}).then(
 					res => {
 						console.log(res);
-						auth.signInWithTicket(res).then(() => {
+						//写入缓存
+						uni.setStorage({
+							key: userInfoKey,
+							data: res
+						});
+						auth.signInWithTicket(res.ticket).then(() => {
 							// 登录成功
 							console.log('客户端登录成功');
 						});
@@ -81,6 +97,7 @@ export default {
 			console.log('uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态');
 			auth.getAccessToken().then(res => {
 				console.log(res);
+				//暂时没用
 				uni.setStorage({
 					key: 'userAccessToken',
 					data: res.accessToken

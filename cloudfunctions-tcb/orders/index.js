@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
 	let {
 		customUserId
 	} = await getLoginUser(event);
-	if(customUserId < 1){
+	if (customUserId < 1) {
 		return {
 			"code": 401,
 			"message": "用户信息不存在",
@@ -54,13 +54,15 @@ exports.main = async (event, context) => {
 					//1待付款
 					conditions["state"] = 0;
 					conditions["lastPayTime"] = cmd.gt(time);
-					if(page == 1){
+					if (page == 1) {
 						//清理自己已过期的数据
 						let res = await uniCloud.callFunction({
 							name: "cronCancelOrders",
-							data: { uid: uid }
+							data: {
+								uid: uid
+							}
 						});
-						console.log("clear order",uid,res);
+						console.log("clear order", uid, res);
 					}
 					break;
 				case 2:
@@ -90,10 +92,10 @@ exports.main = async (event, context) => {
 			cartCount: 1,
 			address: 1,
 			cancelStyle: 1,
-			remark:1,
-			shopid:1,
-			"payInfo.time":1,
-			"payInfo.name":1,
+			remark: 1,
+			shopid: 1,
+			"payInfo.time": 1,
+			"payInfo.name": 1,
 			lastPayTime: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 		data["page"] = page;
@@ -107,7 +109,7 @@ exports.main = async (event, context) => {
 		if (type == "cancel") {
 			field = {
 				state: 1,
-				goods:1
+				goods: 1
 			};
 			conditions["state"] = cmd.in([0, -1]);
 		}
@@ -118,15 +120,15 @@ exports.main = async (event, context) => {
 				totalDiscount: 1,
 				state: 1,
 				created: 1,
-				remark:1,
+				remark: 1,
 				goods: 1,
 				cartCount: 1,
 				address: 1,
 				lastPayTime: 1,
 				cancelStyle: 1,
-				shopid:1,
+				shopid: 1,
 				modified: 1,
-				payInfo:1
+				payInfo: 1
 			};
 		}
 		data = await orderCollection.where(conditions).limit(1).field(field).get();
@@ -150,7 +152,7 @@ exports.main = async (event, context) => {
 				cancelStyle: event.style
 			});
 			for (let ele of order.goods) {
-				if(ele.miaosha){
+				if (ele.miaosha) {
 					let res = await updateGoodsMiaoshaStock(ele, -1);
 					console.log("updateGoodsMiaoshaStock", res);
 				}
@@ -158,7 +160,7 @@ exports.main = async (event, context) => {
 				console.log("updateGoodsStock", resStock);
 			}
 			//更新用户已取消和未支付数量
-			let resUser = await updateUserOrderCount(uid,"canceled",1,"unpaid",order.shopid);
+			let resUser = await updateUserOrderCount(uid, "canceled", 1, "unpaid", order.shopid);
 			console.log("resUser", resUser);
 		} else if (type == "delete") {
 			//删除订单，软删除
@@ -166,7 +168,7 @@ exports.main = async (event, context) => {
 				isDelete: 1
 			});
 			//更新用户已取消和已删除
-			let resUser = await updateUserOrderCount(uid,"deleted",1,"canceled",order.shopid);
+			let resUser = await updateUserOrderCount(uid, "deleted", 1, "canceled", order.shopid);
 			console.log("resUser", resUser);
 		} else if (type == "makesure") {
 			//确定收货,资金解冻
@@ -174,7 +176,7 @@ exports.main = async (event, context) => {
 				state: 3
 			});
 			//更新用户已发货和已收货
-			let resUser = await updateUserOrderCount(uid,"received",1,"delivered",order.shopid);
+			let resUser = await updateUserOrderCount(uid, "received", 1, "delivered", order.shopid);
 			//@todo 资金解冻
 		} else if (type == "detail") {
 			//查询详细

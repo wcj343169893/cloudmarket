@@ -350,6 +350,13 @@
 				"navigationBarTitleText": "订单列表"
 			}
         }
+        ,{
+            "path" : "pages/admin/orderDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情",
+				"navigationStyle": "custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

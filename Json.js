@@ -5,7 +5,7 @@ const userInfo = {
 		"balance": 12.3,
 		"birthday": "1990-03-03",
 		"coupons": 2,
-		"token": "f84j2ddk38f9u3u423jfwe",
+		"token": "VCjcvvEcigSXPwgECoOcemoxtOZuRgPR5Y4x3yBgssJHYWRLF/6qbKUhgxS3WwvrHe1NtWuyVIEB4ZWmmbXA+yNbociDw/y7gPf/1569x/iAdUmxVtnfkVZGXQ8Kj/2D5LifxTsYxmbckfZbAuZuZEXj6sv2yPCzENKV8XN6xLA=",
 		"id": 10000,
 		"lastLogin": "2020-03-12T01:30:14.081Z",
 		"messageCount": 0,
