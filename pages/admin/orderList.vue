@@ -38,12 +38,12 @@
 			<view class="action-box b-t" v-if="item.state == 0"><button class="action-btn" @click.stop="sendPayMessage(item, index)">发送付款提醒</button></view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
-				<view class="action-box b-t"><button class="action-btn" @click.stop="addDelivery(item)">发货</button></view>
+				<view class="action-box b-t"><button class="action-btn" @click.stop="addDelivery(item)">确定发货</button></view>
 			</block>
 			<!-- 已发货 -->
 			<block v-if="item.state == 2"></block>
 			<!-- 已收货，待评价 -->
-			<view class="action-box b-t" v-if="item.state == 3"><button class="action-btn" @click.stop="evaluateOrder(item)">评价</button></view>
+			<view class="action-box b-t" v-if="item.state == 3"><button class="action-btn" @click.stop="evaluateOrder(item)">查看评价</button></view>
 		</view>
 
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { getOrderList } from '@/common/admin_request.js';
+import { getOrderList,orderAdmin } from '@/common/admin_request.js';
 import { navToOrderGoodsList, dateFormat, getOrderStateExp } from '@/common/functions.js';
 export default {
 	data() {
@@ -59,7 +59,7 @@ export default {
 			shopid: 0,
 			state: 0,
 			page: 0,
-			limit: 10,
+			limit: 20,
 			loadingType: 'more',
 			orderList: []
 		};
@@ -110,7 +110,21 @@ export default {
 		//发送支付提醒
 		sendPayMessage() {},
 		//发货
-		addDelivery() {},
+		addDelivery(item) {
+			orderAdmin({
+				shopid: this.shopid,
+				id:item._id,
+				type:"addDelivery"
+			}).then(res=>{
+				this.$api.msg("发货成功");
+				item.state = 2;
+				let { stateTip, stateTipColor } = this.orderStateExp(item);
+				item.stateTip = stateTip;
+				item.stateTipColor = stateTipColor;
+			},err=>{
+				this.$api.msg("发货失败");
+			})
+		},
 		navToOrderDetail(item) {
 			uni.setStorage({
 				key: 'orderDetail',
@@ -123,6 +137,13 @@ export default {
 		//订单状态文字和颜色
 		orderStateExp(item) {
 			return getOrderStateExp(item);
+		},
+		//刷新页面数据
+		refreshList(){
+			console.log("重新刷新列表数据")
+			this.page = 0;
+			this.orderList = [];
+			this.loadData();
 		}
 	}
 };

@@ -28,7 +28,20 @@ const getOrderList = function(data) {
 		isShowLoading: true
 	})
 }
+/**
+ * 订单管理
+ * @param {Object} data
+ */
+const orderAdmin = function(data) {
+	return network({
+		url: "adminOrders",
+		data: data,
+		auth: true,
+		isShowLoading: true
+	})
+}
 export {
 	getShopInfo,
-	getOrderList
+	getOrderList,
+	orderAdmin
 }

@@ -4,6 +4,9 @@ const cmd = db.command;
 const {
 	getLoginUser
 } = require('token');
+const {
+	updateUserOrderCount
+} = require('base-common');
 exports.main = async (event, context) => {
 	let {
 		customUserId
@@ -25,6 +28,7 @@ exports.main = async (event, context) => {
 		shopid: shopid
 	};
 	let time = new Date().getTime();
+	const orderCollection = db.collection("orders");
 	//console.log(event)
 	if (type == "list") {
 		let page = +event.page;
@@ -35,32 +39,30 @@ exports.main = async (event, context) => {
 		if (limit < 1) {
 			limit = 10;
 		}
-		if (state > 0) {
-			switch (state) {
-				case 1:
-					//1待付款
-					conditions["state"] = 0;
-					conditions["lastPayTime"] = cmd.gt(time);
-					break;
-				case 2:
-					//2待发货
-					conditions["state"] = 1;
-					break;
-				case 3:
-					//3待评价，已收货
-					conditions["state"] = 3;
-					break;
-				case 4:
-					//售后
-					conditions["state"] = 4;
-					break;
-				default:
-					//conditions["state"] = cmd.gt(-2);
-					conditions["isDelete"] = 0;
-					break;
-			}
+		switch (state) {
+			case 1:
+				//1待付款
+				conditions["state"] = 0;
+				conditions["lastPayTime"] = cmd.gt(time);
+				break;
+			case 2:
+				//2待发货
+				conditions["state"] = 1;
+				break;
+			case 3:
+				//3待评价，已收货
+				conditions["state"] = 3;
+				break;
+			case 4:
+				//售后
+				conditions["state"] = 4;
+				break;
+			default:
+				conditions["state"] = cmd.gt(-1);
+				conditions["isDelete"] = 0;
+				break;
 		}
-		data = await db.collection("orders").where(conditions).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).field({
+		data = await orderCollection.where(conditions).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).field({
 			id: 1,
 			totalMoney: 1,
 			totalDiscount: 1,
@@ -78,6 +80,35 @@ exports.main = async (event, context) => {
 		}).get();
 		data["page"] = page;
 		data["limit"] = limit;
+	} else {
+		conditions["_id"] = event.id;
+		let field = {
+			state: 1,
+			shopid:1,
+			uid:1
+		};
+		data = await orderCollection.where(conditions).field(field).get();
+		if (data.data.length == 0) {
+			return {
+				"code": 404,
+				"message": "订单不存在"
+			};
+		}
+		let order = data.data[0];
+		if (type == "addDelivery") {
+			if(order.state != 1){
+				return {
+					"code": 404,
+					"message": "订单状态异常"+order.state
+				};
+			}
+			//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
+			data = await orderCollection.doc(order._id).update({
+				state: 2
+			});
+			//更新用户已发货和已收货
+			let resUser = await updateUserOrderCount(order.uid, "delivered", 1, "payup", order.shopid);
+		}
 	}
 	return {
 		"code": 200,

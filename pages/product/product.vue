@@ -90,7 +90,7 @@
 		</view>
 
 		<!-- 底部操作菜单 -->
-		<view class="page-bottom">
+		<view class="page-bottom" v-if="canAddCart">
 			<view class="options">
 				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
 					<text class="yticon icon-gouwuche">
@@ -143,7 +143,8 @@ export default {
 			skuMap: [],
 			hasMiaosha: false,
 			nameMap: {},
-			cartSumCount: 0
+			cartSumCount: 0,
+			canAddCart:false
 		};
 	},
 	computed: {
@@ -183,6 +184,7 @@ export default {
 			//再次读取数据库，获得详细信息
 			getGoodsInfo({ id: this.id }).then(item => {
 				this.buildGoodsInfo(item);
+				this.canAddCart=true;
 			});
 
 			//获得购物车总数量

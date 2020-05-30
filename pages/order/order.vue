@@ -340,7 +340,11 @@ export default {
 							type: 'makesure'
 						}).then(res => {
 							//重新刷新页面
-							this.loadData();
+							ele.state = 3;
+							let { stateTip, stateTipColor } = this.orderStateExp(ele);
+							ele.stateTip=stateTip;
+							ele.stateTipColor =stateTipColor;
+							//this.loadData();
 						});
 					}
 				}

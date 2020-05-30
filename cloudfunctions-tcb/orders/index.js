@@ -104,13 +104,11 @@ exports.main = async (event, context) => {
 		//取消未付款的订单
 		conditions["_id"] = id;
 		let field = {
-			state: 1
+			state: 1,
+			shopid:1
 		};
 		if (type == "cancel") {
-			field = {
-				state: 1,
-				goods: 1
-			};
+			field["goods"]=1;
 			conditions["state"] = cmd.in([0, -1]);
 		}
 		if (type == "detail") {
