@@ -25,7 +25,7 @@ const getOrderList = function(data) {
 		url: "adminOrders",
 		data: data,
 		auth: true,
-		isShowLoading: true
+		isShowLoading: false
 	})
 }
 /**
@@ -40,8 +40,35 @@ const orderAdmin = function(data) {
 		isShowLoading: true
 	})
 }
+/**
+ * 分页获取指定类型的商品
+ * @param {Object} data
+ */
+const getGoodsList = function(data) {
+	data["type"]="list";
+	return network({
+		url: "adminGoods",
+		data: data,
+		auth: true,
+		isShowLoading: false
+	})
+}
+/**
+ * 商品信息管理
+ * @param {Object} data
+ */
+const goodsAdmin = function(data) {
+	return network({
+		url: "adminGoods",
+		data: data,
+		auth: true,
+		isShowLoading: true
+	})
+}
 export {
 	getShopInfo,
 	getOrderList,
-	orderAdmin
+	orderAdmin,
+	getGoodsList,
+	goodsAdmin
 }

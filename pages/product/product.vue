@@ -452,10 +452,8 @@ page {
 	padding: 20upx 30upx;
 
 	.title {
-		font-size: 32upx;
+		font-size: $font-lg;
 		color: $font-color-dark;
-		height: 50upx;
-		line-height: 50upx;
 	}
 	.price-box {
 		display: flex;

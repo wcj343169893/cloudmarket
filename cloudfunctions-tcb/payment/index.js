@@ -21,6 +21,7 @@ exports.main = async (event, context) => {
 		totalDiscount: 1,
 		state: 1,
 		body: 1, //商品描述，100字以内
+		yuding:1,
 		lastPayTime: 1
 	}).get();
 	let time = new Date().getTime();
@@ -42,9 +43,22 @@ exports.main = async (event, context) => {
 			message: "订单已超时"
 		}
 	}
+	//预定结构
+	/* {
+		id:xxxx,yuding_开头
+		price:123,
+		state:1,
+		beginTime:159777777,
+		endTime:159888888,
+		finnalPaymentBeginTime:160000000,
+		finnalPaymentEndTime:16100000,
+		sku_ids:[111,222,333],
+		deduction:100
+	} */
 	console.log(event);
-	// 支付结果通知地址
-	let domain = "https://cloud-market-3c5868.service.tcloudbase.com/";
+	// 支付结果通知地址,经过测试，http地址也能作为通知地址
+	// let domain = "https://cloud-market-3c5868.service.tcloudbase.com/";
+	let domain = "http://api.cjblog.org/";
 	let notifyUrl = "";
 	if (event.provider == "wxpay") {
 		notifyUrl = domain + "notify/wxpay"

@@ -22,7 +22,7 @@ exports.main = async (event, context) => {
 	let type = event.type || "list";
 	//0全部，1待付款，2已付款，待收货，3待评价
 	//实际状态值：-2删除，-1取消，0未付款，1已付款，2已发货，3已收货待评价
-	let state = +event.state;
+	let state = event.state;
 	let data;
 	let conditions = {
 		shopid: shopid
@@ -39,22 +39,31 @@ exports.main = async (event, context) => {
 		if (limit < 1) {
 			limit = 10;
 		}
+		//'payup':"未发货", 'delivered':'已发货', 'received':'已收货', 'estimated':'已评价', 'refunded':'退款/售后'
 		switch (state) {
-			case 1:
+			case "unpaid":
 				//1待付款
 				conditions["state"] = 0;
 				conditions["lastPayTime"] = cmd.gt(time);
 				break;
-			case 2:
-				//2待发货
+			case "payup":
+				//2已付款,待发货
 				conditions["state"] = 1;
 				break;
-			case 3:
-				//3待评价，已收货
+			case "delivered":
+				//已发货，待收货
+				conditions["state"] = 2;
+				break;
+			case "received":
+				//已发货，待收货
 				conditions["state"] = 3;
 				break;
-			case 4:
-				//售后
+			case "estimated":
+				//已评价
+				conditions["state"] = 4;
+				break;
+			case "refunded":
+				//售后----待定
 				conditions["state"] = 4;
 				break;
 			default:

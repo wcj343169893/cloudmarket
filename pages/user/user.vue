@@ -76,17 +76,17 @@
 								<text>{{item.name}}</text>
 							</view>
 							<view class="orders" v-if="item.order">
-								<view class="" @click.stop="navToShopOrder(item,1)">
-									<text>待付款</text>
+								<view class="" @click.stop="navToShopOrder(item,'unpaid')">
 									<text class="num">{{item.order.unpaid}}</text>
+									<text>待付款</text>
 								</view>
-								<view class="" @click.stop="navToShopOrder(item,2)">
-									<text>待发货</text>
+								<view class="" @click.stop="navToShopOrder(item,'payup')">
 									<text class="num">{{item.order.payup}}</text>
+									<text>待发货</text>
 								</view>
-								<view class="" @click.stop="navToShopOrder(item,4)">
-									<text>售后</text>
+								<view class="" @click.stop="navToShopOrder(item,'refunded')">
 									<text class="num">{{item.order.refunded}}</text>
+									<text>退款/售后</text>
 								</view>
 							</view>
 						</view>

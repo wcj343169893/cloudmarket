@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<empty v-if="loaded === true && orderList.length === 0"></empty>
 		<view v-for="(item, index) in orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 			<view class="i-top b-b">
 				<text class="time">{{ item.created }}</text>
@@ -35,7 +36,10 @@
 			</view>
 			<!-- 已取消 -->
 			<!-- 未付款 -->
-			<view class="action-box b-t" v-if="item.state == 0"><button class="action-btn" @click.stop="sendPayMessage(item, index)">发送付款提醒</button></view>
+			<view class="action-box b-t" v-if="item.state == 0">
+				<button class="action-btn" @click.stop="editOrderMoney(item)">改价格</button>
+				<button class="action-btn" @click.stop="sendPayMessage(item, index)">发送付款提醒</button>
+			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
 				<view class="action-box b-t"><button class="action-btn" @click.stop="addDelivery(item)">确定发货</button></view>
@@ -52,7 +56,7 @@
 
 <script>
 import { getOrderList,orderAdmin } from '@/common/admin_request.js';
-import { navToOrderGoodsList, dateFormat, getOrderStateExp } from '@/common/functions.js';
+import { dateFormat, getOrderStateExp,getOrderTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -60,6 +64,7 @@ export default {
 			state: 0,
 			page: 0,
 			limit: 20,
+			loaded:false,
 			loadingType: 'more',
 			orderList: []
 		};
@@ -68,6 +73,8 @@ export default {
 		this.shopid = options.shopid;
 		this.state = options.state;
 		this.loadData();
+		//设置标题
+		this.setNavTitle();
 	},
 	//滑到底部加载更多
 	onReachBottom() {
@@ -77,6 +84,7 @@ export default {
 	},
 	methods: {
 		async loadData() {
+			this.loadingType = 'loading';
 			this.page++;
 			getOrderList({
 				shopid: this.shopid,
@@ -97,15 +105,26 @@ export default {
 					if (res.data.length < this.limit) {
 						//没有数据了
 						//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-						//this.$set(navItem, 'loaded', true);
+						this.loaded = true;
 						//判断是否还有数据， 有改为 more， 没有改为noMore
 						this.loadingType = 'noMore';
 					}
 				},
 				err => {
+					this.loaded = true;
 					this.loadingType = 'noMore';
 				}
 			);
+		},
+		setNavTitle(){
+			let types = getOrderTypes();
+			uni.setNavigationBarTitle({
+				title:types[this.state]
+			})
+		},
+		//修改订单价格
+		editOrderMoney(item){
+			
 		},
 		//发送支付提醒
 		sendPayMessage() {},

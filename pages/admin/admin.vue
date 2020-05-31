@@ -20,30 +20,18 @@
 		<view class="cover-container">
 			<!-- 订单信息统计 -->
 			<view class="order-section">
-				<view class="order-item" @click="navToOrder('0')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouye"></text>
-					<text>全部订单</text>
-				</view>
-				<view class="order-item" @click="navToOrder(1)" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-daifukuan">
-						<text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text>
-					</text>
-					<text>待付款</text>
-				</view>
-				<view class="order-item" @click="navToOrder(2)" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-yishouhuo">
-						<text class="sub" v-if="order.payup > 0">{{ order.payup }}</text>
-					</text>
-					<text>待发货</text>
-				</view>
-				<view class="order-item" @click="navToOrder(4)" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouhoutuikuan">
-						<text class="sub" v-if="order.refund > 0">{{ order.refund }}</text>
-					</text>
-					<text>退款/售后</text>
+				<view class="order-item" v-for="(item,index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
+					<text class="number">{{ item.number }}</text>
+					<text>{{item.name}}</text>
 				</view>
 			</view>
 			<!-- 商品信息统计，今日销售最高的4件商品 -->
+			<view class="order-section m-t">
+				<view class="order-item" v-for="(item,index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover" :hover-stay-time="50">
+					<text class="number">{{item.number}}</text>
+					<text>{{item.name}}</text>
+				</view>
+			</view>
 			<!-- 今日收入统计 -->
 		</view>
 	</view>
@@ -51,6 +39,7 @@
 
 <script>
 import { getShopInfo } from '@/common/admin_request.js';
+import { getOrderTypes,getGoodsTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -59,7 +48,9 @@ export default {
 			src: '/static/store-face.png',
 			banner: '/static/banner.jpg',
 			address: '',
-			notice: ''
+			notice: '',
+			orderTypes: [],
+			goodsTypes:[]
 		};
 	},
 	onLoad(options) {
@@ -92,13 +83,55 @@ export default {
 			);
 		},
 		buildShopInfo(data) {
+			uni.setNavigationBarTitle({
+				title: data.name
+			});
 			for (let i in data) {
 				this[i] = data[i];
 			}
+			let sum = 0;
+			//1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+			let types = getOrderTypes();
+			this.orderTypes=[];
+			for (let k in types) {
+				let number = 0;
+				if (this.order[k]) {
+					sum += number = this.order[k];
+				}
+				this.orderTypes.push({
+					name:types[k],
+					state:k,
+					number:number
+				})
+			}
+			this.orderTypes.unshift({
+				name:"全部",
+				state:"all",
+				number:sum
+			})
+			this.order['sum'] = sum;
+			//商品类型,"online"在售,"miaosha"秒杀,"yuding"预售,"baokuan"爆款,"shouqin"即将售罄
+			let goodsTypes = getGoodsTypes();
+			this.goodsTypes=[];
+			for (let gk in goodsTypes) {
+				let number = 0;
+				if (this.goods && this.goods[gk]) {
+					number = this.goods[gk];
+				}
+				this.goodsTypes.push({
+					name:goodsTypes[gk],
+					state:gk,
+					number:number
+				});
+			}
 		},
-		navToOrder(state){
+		navToOrder(item) {
 			let shopid = this.shopid;
-			this.navTo(`/pages/admin/orderList?state=${state}&shopid=${shopid}`)
+			this.navTo(`/pages/admin/orderList?state=${item.state}&shopid=${shopid}`);
+		},
+		navToGoods(item) {
+			let shopid = this.shopid;
+			this.navTo(`/pages/admin/goodsList?state=${item.state}&shopid=${shopid}`);
 		},
 		navTo(url) {
 			/* if (!this.hasLogin) {
@@ -179,6 +212,7 @@ export default {
 .order-section {
 	@extend %section;
 	padding: 28upx 0;
+	flex-wrap: wrap;
 	// margin-top: 20upx;
 	.order-item {
 		@extend %flex-center;
@@ -212,5 +246,13 @@ export default {
 	.icon-shouhoutuikuan {
 		font-size: 44upx;
 	}
+	.number {
+		font-size: $font-llg;
+		font-weight: 500;
+		color: $font-color-warning;
+	}
+}
+.m-t {
+	margin-top: 20upx;
 }
 </style>

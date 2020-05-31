@@ -8,7 +8,7 @@ const getOrderStateExp = function(item) {
 	let stateTip = '',
 		state = item.state,
 		stateTipColor = '#303133',
-		stateContent="";
+		stateContent = "";
 	switch (+state) {
 		case 0:
 			stateTip = '待付款';
@@ -34,13 +34,13 @@ const getOrderStateExp = function(item) {
 		case -1:
 			stateTip = '已关闭';
 			stateTipColor = '#909399';
-			if(item.cancelStyle == "auto"){
+			if (item.cancelStyle == "auto") {
 				stateContent = "订单未支付，已自动取消";
-			}else{
+			} else {
 				stateContent = "订单未支付，已手动取消";
 			}
 			break;
-		
+
 			//更多自定义
 	}
 	return {
@@ -49,6 +49,32 @@ const getOrderStateExp = function(item) {
 		stateContent,
 	};
 }
+/**
+ * 获取订单类型和名称
+ */
+const getOrderTypes = function() {
+	return {
+		'unpaid': "待付款",//改价格
+		'payup': "待发货",
+		//'delivered': '已发货',
+		//'received': '已收货',
+		'estimated': '已评价',
+		'refunded': '退款/售后'
+	};
+}
+/**
+ * 获取后台商品查询类型
+ */
+const getGoodsTypes = function() {
+	return {
+		online: '在售',
+		miaosha: '秒杀',
+		yuding: '预售',
+		baokuan: '爆款',
+		shouqin: '即将售罄'
+	};
+}
+
 /**
  * 更新购物车总数量
  * @param int gnumber 
@@ -219,16 +245,16 @@ const dateFormat = function(value, fmt) {
 	}
 	return fmt;
 }
-let countDownTimerMap={};
+let countDownTimerMap = {};
 /**
  * 关闭定时器
  * @param {Object} id
  */
-const clearCountDownTimer = function(id){
-	if(id && countDownTimerMap[id]){
+const clearCountDownTimer = function(id) {
+	if (id && countDownTimerMap[id]) {
 		//删除指定
 		clearInterval(countDownTimerMap[id]);
-	}else{
+	} else {
 		//删除所有
 		for (let tid in countDownTimerMap) {
 			clearInterval(countDownTimerMap[tid]);
@@ -251,10 +277,10 @@ const miaoshaCountDown = function(item, endTime, callback) {
 		return false;
 	} */
 	let timerId = item.id;
-	if(item.subId){
-		timerId = item.id+"_"+item.subId;
+	if (item.subId) {
+		timerId = item.id + "_" + item.subId;
 	}
-	if(countDownTimerMap[timerId]){
+	if (countDownTimerMap[timerId]) {
 		clearInterval(countDownTimerMap[timerId]);
 	}
 	console.log(timerId)
@@ -331,7 +357,7 @@ const navToGoodsPage = function(id, sid) {
 	isRedirect = true;
 	//移除原缓存，兼容navToGoodsItemPage
 	uni.removeStorage({
-		key:"goodsInfo"
+		key: "goodsInfo"
 	});
 	uni.navigateTo({
 		url: `/pages/product/product?id=${id}&sid=${sid}`,
@@ -346,13 +372,13 @@ const navToGoodsItemPage = function(item) {
 	}
 	isRedirect = true;
 	uni.setStorage({
-		key:"goodsInfo",
-		data:item,
+		key: "goodsInfo",
+		data: item,
 		success: () => {
-			
+
 		}
 	});
-	let id= item.id;
+	let id = item.id;
 	let sid = item.sku_id || 0;
 	uni.navigateTo({
 		url: `/pages/product/product?id=${id}&sid=${sid}`,
@@ -375,7 +401,7 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id, money,comefrom) {
+const navToPayOrder = function(id, money, comefrom) {
 	if (isRedirect) {
 		return false;
 	}
@@ -435,5 +461,7 @@ export {
 	miaoshaCountDown,
 	navToOrderDetail,
 	clearCountDownTimer,
-	getOrderStateExp
+	getOrderStateExp,
+	getOrderTypes,
+	getGoodsTypes
 }

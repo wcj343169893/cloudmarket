@@ -38,6 +38,38 @@
 			</view>
 		</view>
 		<view class="m-t"></view>
+		<view class="section ab important">
+			<view class="weui-flex">
+				<view class=""><text>商品金额</text></view>
+				<view class="">
+					<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+				</view>
+			</view>
+			<view class="weui-flex">
+				<view class=""><text>优惠金额</text></view>
+				<view class="">
+					<text>-</text>
+					<text class="price">{{ info.totalDiscount }}</text>
+				</view>
+			</view>
+			<view class="weui-flex b-b">
+				<view class=""><text>实付金额</text></view>
+				<view class="">
+					<text class="price warning">{{ info.totalMoney }}</text>
+				</view>
+			</view>
+			<view class="weui-flex">
+				<view class=""><text>扣除服务费</text></view>
+				<view class=""><text class="price warning">0</text></view>
+			</view>
+			<view class="weui-flex">
+				<view class=""><text>实收金额</text></view>
+				<view class="">
+					<text class="price warning">{{ info.totalMoney }}</text>
+				</view>
+			</view>
+		</view>
+		<view class="m-t"></view>
 
 		<view class="cart-list ">
 			<block v-for="(item, index) in goodsList" :key="index">
@@ -69,7 +101,7 @@
 										<text>单价:</text>
 										<text class="price">{{ item.price }}</text>
 										<text>数量:</text>
-										<text>{{ item.amount }}</text>
+										<text class="important">{{ item.amount }}</text>
 									</view>
 								</view>
 								<view class="buttons">
@@ -82,40 +114,8 @@
 					</view>
 				</view>
 			</block>
-			<view class="more-btn b-b" v-if="moreGoodsCount > 0" @click="showAllGoods">
-				<text>还有{{ moreGoodsCount }}种商品</text>
-				<text class="yticon icon-jiantour-copy"></text>
-			</view>
-			<view class="section ab important">
-				<view class="weui-flex">
-					<view class=""><text>商品金额</text></view>
-					<view class="">
-						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
-					</view>
-				</view>
-				<view class="weui-flex">
-					<view class=""><text>优惠金额</text></view>
-					<view class="">
-						<text>-</text>
-						<text class="price">{{ info.totalDiscount }}</text>
-					</view>
-				</view>
-				<view class="weui-flex b-b">
-					<view class=""><text>实付金额</text></view>
-					<view class="">
-						<text class="price warning">{{ info.totalMoney }}</text>
-					</view>
-				</view>
-				<view class="weui-flex">
-					<view class=""><text>扣除服务费</text></view>
-					<view class=""><text class="price warning">0</text></view>
-				</view>
-				<view class="weui-flex">
-					<view class=""><text>实收金额</text></view>
-					<view class="">
-						<text class="price warning">{{ info.totalMoney }}</text>
-					</view>
-				</view>
+			<view class="more-btn">
+				<text>共<text class="important">{{ goodsCount }}</text>种商品</text>
 			</view>
 		</view>
 		<view class="m-t"></view>
@@ -166,7 +166,7 @@ export default {
 		return {
 			id: 0,
 			goodsList: [],
-			moreGoodsCount: 0,
+			goodsCount: 0,
 			maxShowCount: 3,
 			shopid:0,
 			info: {}
@@ -203,22 +203,15 @@ export default {
 			res.stateTip = stateTip;
 			res.stateTipColor = stateTipColor;
 			res.stateContent = stateContent;
-			this.moreGoodsCount = res.goods.length - this.maxShowCount;
+			//this.moreGoodsCount = res.goods.length - this.maxShowCount;
+			this.goodsCount=res.goods.length;
 			//支付时间
 			if (res.payInfo) {
 				res.payInfo.time = dateFormat(res.payInfo.time, 'yyyy-MM-dd hh:mm:ss');
 			}
 			this.info = res;
-			if (this.moreGoodsCount > 0) {
-				this.goodsList = res.goods.slice(0, this.maxShowCount);
-			} else {
-				this.goodsList = res.goods;
-			}
+			this.goodsList = res.goods;
 			this.shopid = this.info.shopid;
-		},
-		showAllGoods() {
-			this.goodsList = this.info.goods;
-			this.moreGoodsCount = 0;
 		},
 		navToGoodsPage(item) {
 			navToGoodsItemPage(item);
@@ -477,7 +470,7 @@ page {
 }
 .important {
 	color: $font-color-warning;
-	font-weight: 600;
+	font-weight: 500;
 	.price {
 		color: $font-color-warning;
 	}

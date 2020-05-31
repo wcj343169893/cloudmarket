@@ -73,13 +73,9 @@
 </template>
 
 <script>
-import empty from '@/components/empty';
 import { orders } from '@/common/request.js';
 import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail,getOrderStateExp,clearCountDownTimer } from '@/common/functions.js';
 export default {
-	components: {
-		empty
-	},
 	data() {
 		return {
 			tabCurrentIndex: 0,

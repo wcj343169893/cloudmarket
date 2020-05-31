@@ -42,7 +42,8 @@ exports.main = async (event, context) => {
 		"categories": 1,
 		"miaosha": 1,
 		"manjian": 1,
-		"description": 1
+		"description": 1,
+		"yuding": 1
 	}).get();
 	if (goods.data.length == 0) {
 		return {
@@ -90,7 +91,7 @@ exports.main = async (event, context) => {
 				});
 				console.log("incResult", incResult);
 			} else {
-				console.log(visite.data[0]);
+				//console.log(visite.data[0]);
 				//更新浏览时间
 				let updateVisite = await db.collection('goods_visites').doc(visite.data[0]._id).update({
 					src: item.src,
