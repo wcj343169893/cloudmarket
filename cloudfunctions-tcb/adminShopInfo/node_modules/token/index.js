@@ -9,7 +9,7 @@ const auth = app.auth();
  */
 const getLoginUser = async function(data) {
 	//临时兼容获取用户信息,从数据库查询
-	const db = uniCloud.database();
+	/* const db = uniCloud.database();
 	let token = data.token || "unknown";
 	let uid = parseInt(data.uid);
 	let isExists = await db.collection("users").where({
@@ -23,12 +23,13 @@ const getLoginUser = async function(data) {
 			uid: '',
 			customUserId: uid
 		};
-	}
+	} */
+	let userInfo = await auth.getUserInfo();
 	return {
 		openId: '',
 		appId: '',
 		uid: '',
-		customUserId: 0
+		customUserId: +userInfo.customUserId
 	}
 	/* 
 	let info = auth.getUserInfo();

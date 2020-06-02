@@ -28,6 +28,11 @@
 					</view>
 				</view>
 			</view>
+			<view class="address" v-if="item.state ==1 && item.address">
+				<text class="m-r">{{item.address.name}}</text>
+				<text class="m-r">{{item.address.mobile}}</text>
+				<text>{{item.address.addressName}}{{item.address.area}}</text>
+			</view>
 			<view class="price-box">
 				共
 				<text class="num">{{ item.cartCount }}</text>
@@ -301,5 +306,14 @@ page,
 			color: #fff;
 		}
 	}
+	.address{
+		font-size: $font-base;
+		color: $font-color-warning;
+		text-align: right;
+		padding-right: 30upx;
+	}
+}
+.m-r{
+	margin-right: 14upx;
 }
 </style>

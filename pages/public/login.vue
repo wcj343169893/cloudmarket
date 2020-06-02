@@ -9,7 +9,13 @@ const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
 import { mobileAutoLogin,getToken } from '@/common/request.js';
 import { mapMutations } from 'vuex';
-
+const client = uniCloud.init({
+	provider: 'tencent',
+	spaceId: 'cloud-market-3c5868',
+	debugFunction: false
+});
+const auth = client.auth();
+//const auth = uniCloud.auth();
 export default {
 	data() {
 		return {
@@ -93,7 +99,6 @@ export default {
 						key: "userInfo",
 						data:res
 					});
-					const auth = uniCloud.auth();
 					auth.signInWithTicket(res.ticket).then(() => {
 						// 登录成功
 						console.log('客户端登录成功');
@@ -121,7 +126,6 @@ export default {
 			if (result.status === 1) {
 				this.$api.msg('登录成功', 2000, false, 'success');
 				//this.login(result.data);
-				const auth = uniCloud.auth();
 				getToken({
 					uid: result.data.id,
 					token: result.data.token

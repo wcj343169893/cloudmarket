@@ -6,17 +6,13 @@ const {
 	updateGoodsStock,
 	updateUserOrderCount
 } = require('base-common');
-const {
-	getLoginUser
-} = require('token');
+const auth = uniCloud.auth();
 /**
  * 订单处理
  */
 exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -24,8 +20,7 @@ exports.main = async (event, context) => {
 		};
 	}
 	let id = event.id || event._id;
-	//let uid = +event.uid;
-	let uid = customUserId;
+	let uid = +customUserId;
 	let type = event.type || "list";
 	//0全部，1待付款，2已付款，待收货，3待评价
 	//实际状态值：-2删除，-1取消，0未付款，1已付款，2已发货，3已收货待评价

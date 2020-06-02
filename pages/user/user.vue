@@ -6,11 +6,23 @@
 				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
 				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
 					<text class="username">{{ userInfo.nickname }}</text>
+					<view class="account">
+						<text>{{userInfo.id}}</text>
+					</view>
 				</view>
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">免费开通</view>
+				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">
+					<block v-if="freeVip">
+						<text class="price del">{{vipPrice}}/年</text>
+						<text>限时免费</text>
+					</block>
+					<block v-else>
+						<text class="price">{{vipPrice}}/年</text>
+						<text>去开通</text>
+					</block>
+				</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
 					<text>会员</text>
@@ -112,6 +124,7 @@
 				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
 				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
 				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></mix-list-cell>
+				<mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips"  @eventClick="joinTeam()"></mix-list-cell>
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
 				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
 			</view>
@@ -121,6 +134,14 @@
 				<view class="list-cell">
 					<view class="cell-tit"><input type="tel" v-model="vipnumber" placeholder="请输入邀请者会员卡号" maxlength="11" /></view>
 					<view class="cell-tit-right"><button type="default" @click="checkVip">确定</button></view>
+				</view>
+			</view>
+		</uni-popup>
+		<uni-popup ref="invitePopup" type="center">
+			<view class="vipPopup">
+				<view class="list-cell">
+					<view class="cell-tit"><input type="tel" v-model="inviteNumber" placeholder="请输入团队编号" maxlength="11" /></view>
+					<view class="cell-tit-right"><button type="default" @click="addInvite()">确定</button></view>
 				</view>
 			</view>
 		</uni-popup>
@@ -139,6 +160,9 @@ export default {
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			vipnumber:"",
+			inviteNumber:"",
+			freeVip:false,
+			vipPrice:88,
 			hasVisiteGoods: false,
 			visiteGoodsList: [],
 			order: {
@@ -148,6 +172,7 @@ export default {
 				receive: 0,
 				refund: 0
 			},
+			teamTips:"加入团队",
 			moving: false
 		};
 	},
@@ -207,6 +232,10 @@ export default {
 					//this.userInfo = res;
 					//this.order = res.order;
 					this.login(res);
+					//免费会员期限
+					this.freeVip = res.lastFreeVip>res.time;
+					//会员价格/年费
+					this.vipPrice = res.vipPrice;
 					if (res.order) {
 						//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 						for (let t in res.order) {
@@ -217,6 +246,9 @@ export default {
 						for (let t in this.order) {
 							this.order[t] = res0;
 						}
+					}
+					if(this.userInfo.invite > 0){
+						this.teamTips="已加入团队:"+this.userInfo.invite;
 					}
 				},err=>{
 					this.logout();
@@ -264,13 +296,22 @@ export default {
 				url
 			});
 		},
-		//开通会员
+		//开通会员，限时免费开通1年
 		openVip(){
 			if (!this.hasLogin) {
 				this.navTo("");
 				return;
 			}
-			this.$refs.vipPopup.open();
+			saveUserInfo({
+				type:"vip",
+				channel:"free"
+			}).then(res=>{
+				this.loadData();
+				this.$api.msg("开通成功",1500,true,"success");
+			},err=>{
+				this.$api.msg(err.message)
+			});
+			//this.$refs.vipPopup.open();
 		},
 		//检查会员卡号是否正确,绑定邀请关系
 		checkVip(){
@@ -278,17 +319,48 @@ export default {
 			if(n>1){
 				this.$refs.vipPopup.close();
 				saveUserInfo({
-					type:"invite",
+					type:"vip",
 					fuid:n
 				}).then(res=>{
-					console.log(res)
+					this.loadData();
 					this.$api.msg("开通成功",1500,true,"success");
-					this.login(res);
 				},err=>{
 					this.$api.msg(err.message)
 				});
 			}else{
-				this.$api.msg("卡号错误!")
+				this.$api.msg("输入错误!")
+			}
+		},
+		//加入团队/设置邀请者
+		joinTeam(){
+			if (!this.hasLogin) {
+				this.navTo("");
+				return;
+			}
+			if(this.userInfo.invite > 0){
+				//跳转团队信息
+				uni.navigateTo({
+					url:"./team"
+				})
+			}else{
+				this.$refs.invitePopup.open();
+			}
+		},
+		addInvite(){
+			let n = +this.inviteNumber;
+			if(n>1){
+				this.$refs.invitePopup.close();
+				saveUserInfo({
+					type:"invite",
+					fuid:n
+				}).then(res=>{
+					this.loadData();
+					this.$api.msg("加入成功",1500,true,"success");
+				},err=>{
+					this.$api.msg(err.message)
+				});
+			}else{
+				this.$api.msg("输入错误!")
 			}
 		},
 		//店铺管理界面
@@ -357,11 +429,15 @@ export default {
 		height: 130upx;
 		border: 5upx solid #fff;
 		border-radius: 50%;
+		margin-right: 20upx;
 	}
 	.username {
 		font-size: $font-lg + 6upx;
 		color: $font-color-dark;
-		margin-left: 20upx;
+	}
+	.account{
+		font-size: $font-base;
+		color: $border-color-light;
 	}
 }
 
@@ -386,7 +462,6 @@ export default {
 		position: absolute;
 		right: 20upx;
 		top: 16upx;
-		width: 132upx;
 		height: 40upx;
 		text-align: center;
 		line-height: 40upx;
@@ -395,6 +470,10 @@ export default {
 		border-radius: 20px;
 		background: linear-gradient(to right, #f9e6af, #ffd465);
 		z-index: 1;
+		padding: 0 8upx;
+		.price{
+			font-size: 22upx;
+		}
 	}
 	.tit {
 		font-size: $font-base + 2upx;

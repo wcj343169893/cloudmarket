@@ -74,7 +74,7 @@ const getCartList = function(data) {
 		url: "carts",
 		data: data,
 		auth:true,
-		isShowLoading: true
+		isShowLoading: data.showLoading
 	})
 }
 //修改购物车数量，0为删除

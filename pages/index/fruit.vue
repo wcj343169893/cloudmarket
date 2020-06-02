@@ -58,7 +58,7 @@
 									<text>{{ item.title }}</text>
 								</view>
 								<view class="tags">
-									<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
+									<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 								</view>
 								<view class="">
 									<text class="price">{{ item.price }}</text>
@@ -83,7 +83,7 @@
 							<text>{{ item.title }}</text>
 						</view>
 						<view class="tags">
-							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
+							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 						</view>
 						<view class="">
 							<text class="price">{{ item.price }}</text>

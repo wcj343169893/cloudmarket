@@ -357,6 +357,10 @@
 				"navigationStyle": "custom"
 			}
         }
+        ,{
+            "path" : "pages/user/team",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -30,7 +30,7 @@
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
 									</view>
 									<view class="tags">
-										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{tag}}</text>
+										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 									</view>
 									<view class="buttons">
 										<view >
@@ -331,12 +331,14 @@ export default {
 				},
 				err => {
 					this.$api.msg('加载店铺分类数据错误');
+					this.isLoaded = true;
 				}
 			);
 		},
 		reBuildCartData(){
 			getCartList({
 				id:this.shopId,
+				showLoading:false,
 				stationId: this.stationId,
 			}).then(res=>{
 				//单个商品总数量

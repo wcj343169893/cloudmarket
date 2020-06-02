@@ -1,25 +1,23 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const {
-	getLoginUser
-} = require('token');
+const auth = uniCloud.auth();
 /**
  * 我的信息，需要验证权限
  */
 exports.main = async (event, context) => {
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
 			"message": "用户信息不存在",
 		};
 	}
-	//let uid = +event.uid;
-	let uid = customUserId;
+	let uid = +customUserId;
 	let info = {};
+	//2020-10-01 13:42:51.745
+	let lastFreeVip = 1601530971745;
+	//let lastFreeVip = 1501530971745;
 	//保存个人信息，头像，昵称，性别，生日
 	if (event.type == "save") {
 		let strinFields = ["portrait", "nickname", "birthday"];
@@ -46,6 +44,13 @@ exports.main = async (event, context) => {
 			message: "操作成功",
 			data: res
 		}
+	} else if (event.type == "vip") {
+		//限时开通途径，free
+		let channel = event.channel;
+		return {
+			code: 404,
+			message: "开通失败"
+		}
 	} else if (event.type == "invite") {
 		let isExist = await db.collection("users").where({
 			id: uid,
@@ -59,11 +64,10 @@ exports.main = async (event, context) => {
 			}
 		}
 		let fuid = +event.fuid;
-		//检查用户是否是会员
 		let finfo = await db.collection("users").where({
 			id: fuid
 		}).field({
-			vip: 1,
+			//vip: 1,
 			nickname: 1,
 			portrait: 1,
 			inviters: 1
@@ -86,7 +90,7 @@ exports.main = async (event, context) => {
 			portrait: finfo.portrait
 		})
 		let entity = {
-			vip: finfo.vip,
+			//vip: finfo.vip,
 			invite: fuid,
 			inviters: inviters
 		};
@@ -96,7 +100,7 @@ exports.main = async (event, context) => {
 		if (res.updated < 1) {
 			return {
 				code: 404,
-				message: "开通失败"
+				message: "加入失败"
 			}
 		}
 		return {
@@ -151,6 +155,11 @@ exports.main = async (event, context) => {
 			}).orderBy("id", "desc").limit(30).get();
 			info.admin = shops.data;
 		}
+		//免费开通会员最后期限
+		info.lastFreeVip=lastFreeVip;
+		info.time = new Date().getTime();
+		//88/年
+		info.vipPrice = 88;
 	}
 	return {
 		code: 200,

@@ -147,9 +147,19 @@ const updateGoodsTags = function(goods, isPrecise) {
 	if (goods.miaosha) {
 		let time = new Date().getTime();
 		//秒杀必须是有效的
-		if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
+		if(goods.miaosha.beginTime > time){
 			if (!isPrecise) {
-				tags.push("限时");
+				tags.push({
+					type:"info",
+					text:"未开始"
+				});
+			}
+		}else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
+			if (!isPrecise) {
+				tags.push({
+					type:"warning",
+					text:"限时"
+				});
 			}
 			//如果是多规格商品
 			if (goods.hasSku) {
@@ -162,7 +172,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 						price: goods.miaosha.price,
 					});
 					if (isPrecise) {
-						sku.tags = ["限时"];
+						sku.tags = [{
+							type:"warning",
+							text:"限时"
+						}];
 					}
 					if (goods.price > sku.price) {
 						goods.originPrice = sku.originPrice;
@@ -174,24 +187,12 @@ const updateGoodsTags = function(goods, isPrecise) {
 					//型号信息
 					goods.miaosha.skuInfo = sku;
 				}
-				/* 
-				goods.skus.forEach(sku => {
-					if (sku.id == goods.miaosha.sku_id) {
-						goods.originPrice = sku.originPrice = sku.price;
-						//规格折后价价格
-						sku.price = goods.miaosha.price;
-						//商品外面显示价格
-						goods.price = goods.price > sku.price ? sku.price : goods.price;
-						//限量
-						sku.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
-						if (isPrecise) {
-							sku.tags = ["限时"];
-						}
-					}
-				}) */
 			} else {
 				if (isPrecise) {
-					tags.push("限时");
+					tags.push({
+						type:"warning",
+						text:"限时"
+					});
 				}
 				goods.originPrice = goods.price;
 				goods.price = goods.miaosha.price;

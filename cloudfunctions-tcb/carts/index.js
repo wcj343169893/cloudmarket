@@ -1,15 +1,8 @@
 'use strict';
 const db = uniCloud.database();
-/* const {
-	getCollectionNames
-} = require('base-common'); */
-const {
-	getLoginUser
-} = require('token');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -17,8 +10,7 @@ exports.main = async (event, context) => {
 		};
 	}
 	let shopid = parseInt(event.id);
-	//let uid = parseInt(event.uid);
-	let uid = customUserId;
+	let uid = +customUserId;
 	//list full edit
 	let opt = event.opt;
 	if (shopid < 1) {
@@ -61,7 +53,7 @@ exports.main = async (event, context) => {
 			"title": 1,
 			"subTitle": 1,
 			"price": 1
-		}).orderBy("_id", "desc").get();
+		}).orderBy("created", "desc").get();
 		if (carts.data.length > 0) {
 			//data = carts.data;
 			data = {

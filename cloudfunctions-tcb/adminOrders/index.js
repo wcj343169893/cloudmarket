@@ -2,15 +2,11 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	getLoginUser
-} = require('token');
-const {
 	updateUserOrderCount
 } = require('base-common');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -18,7 +14,7 @@ exports.main = async (event, context) => {
 		};
 	}
 	let shopid = +event.shopid;
-	let uid = customUserId;
+	let uid = +customUserId;
 	let type = event.type || "list";
 	//0全部，1待付款，2已付款，待收货，3待评价
 	//实际状态值：-2删除，-1取消，0未付款，1已付款，2已发货，3已收货待评价

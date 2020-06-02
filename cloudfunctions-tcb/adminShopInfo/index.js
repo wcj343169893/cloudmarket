@@ -1,19 +1,16 @@
 'use strict';
 const db = uniCloud.database();
-const {
-	getLoginUser
-} = require('token');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
 	let id = +event.id;
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
 			"message": "用户信息不存在",
 		};
 	}
+	let uid = +customUserId;
 	//2验证用户是否有管理店铺的权限
 	let res = await db.collection("shops").where({
 		id: id

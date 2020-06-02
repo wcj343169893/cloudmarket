@@ -2,15 +2,11 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	getLoginUser
-} = require('token');
-const {
 	updateUserOrderCount
 } = require('base-common');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -18,7 +14,7 @@ exports.main = async (event, context) => {
 		};
 	}
 	let shopid = +event.shopid;
-	let uid = customUserId;
+	let uid = +customUserId;
 	let type = event.type || "list";
 	//商品类型,"online"在售,"miaosha"秒杀,"yushou"预售,"baokuan"爆款,"shouqin"即将售罄
 	let state = event.state;

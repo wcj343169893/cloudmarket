@@ -20,15 +20,19 @@
 			</view>
 		</view>
 		<view class="section ab m-t important">
-			<view class="weui-flex address b-b" v-if="info.address">
+			<view class="weui-flex address b-b" v-if="info.address" @click="openMap(info.address)">
 				<view class=""><text>收货地址</text></view>
 				<view class="content">
 					<view class="">
 						<text>{{ info.address.name }}</text>
 						<text class="m-l">{{ info.address.mobile }}</text>
 					</view>
-					<text>{{ info.address.addressName }}</text>
+					<text>{{ info.address.addressName }}{{info.address.area}}</text>
+					<view class="">
+						<text>{{ info.address.address }}</text>
+					</view>
 				</view>
+				<text class="yticon icon-you"></text>
 			</view>
 			<view class="weui-flex">
 				<view class=""><text>备注</text></view>
@@ -272,6 +276,18 @@ export default {
 		refreshList() {
 			this.loadData();
 		},
+		//打开地图
+		openMap(address){
+			uni.openLocation({
+				name:address.addressName,
+				address:address.address,
+				latitude:address.latitude,
+				longitude:address.longitude,
+				success() {
+					console.log("打开地图成功")
+				}
+			})
+		},
 		navBack() {
 			uni.navigateBack();
 		}
@@ -447,6 +463,8 @@ page {
 	padding-bottom: 14upx;
 	.content {
 		text-align: right;
+		flex: 1;
+		margin-right: 12upx;
 	}
 }
 .more-btn {

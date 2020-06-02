@@ -57,7 +57,7 @@
 				    		this.logout();
 							const auth = uniCloud.auth();
 							auth.signOut().then(res=>{
-								console.log(res)
+								console.log("set signOut",res)
 							});
 				    		setTimeout(()=>{
 				    			uni.navigateBack();

@@ -8,13 +8,9 @@ const {
 	genIdentityId,
 	getUserInfoById
 } = require('base-common');
-const {
-	getLoginUser
-} = require('token');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
-	let {
-		customUserId
-	} = await getLoginUser(event);
+	let {customUserId} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -23,8 +19,7 @@ exports.main = async (event, context) => {
 	}
 	//查询购物车选中数据
 	let shopid = parseInt(event.id);
-	//let uid = parseInt(event.uid);
-	let uid = customUserId;
+	let uid = +customUserId;
 	let addressid = event.addressid;
 	//处理类型，preview，submit
 	let type = event.type;

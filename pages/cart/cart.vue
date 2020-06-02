@@ -43,7 +43,7 @@
 										</text>
 									</view>
 									<view class="tags" v-if="item.tags && item.tags.length > 0">
-										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag warning">{{ tag }}</text>
+										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 									</view>
 									<view class="buttons">
 										<view>
@@ -142,11 +142,7 @@
 import { mapState, mapMutations } from 'vuex';
 import { editCart, cleanCart, selectCart, getCartList,settlementCart } from '@/common/request.js';
 import { updateCartNumber, navToGoodsItemPage, navToLoginPage, navToCreateOrder, updateGoodsTags } from '@/common/functions.js';
-import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue';
 export default {
-	components: {
-		uniNumberBox
-	},
 	data() {
 		return {
 			isLoaded: false,
@@ -163,16 +159,13 @@ export default {
 	},
 	onLoad() {
 		console.log('cart onLoad');
-		if (!this.isLoaded) {
-			this.loadData();
-		}
+		this.loadData();
 	},
 	onShow() {
 		console.log('cart onShow');
 		if (this.isLoaded) {
-			this.isLoaded = false;
 			//重新加载页面数据
-			this.loadData();
+			this.loadData(true);
 		}
 	},
 	//下拉刷新,不会更新底部附近的店铺,app没效果
@@ -195,10 +188,12 @@ export default {
 	},
 	methods: {
 		//请求数据
-		async loadData() {
+		async loadData(isHideLoading) {
+			isHideLoading = isHideLoading || false;
 			getCartList({
 				id: this.shopId,
 				stationId: this.stationId,
+				showLoading:!isHideLoading,
 				opt: 'full'
 			}).then(
 				res => {
@@ -270,7 +265,6 @@ export default {
 						}
 					});
 					
-					updateCartNumber(number);
 					//console.log(this.cartList);
 					//计算购物车总金额
 					this.calcTotal();
@@ -454,6 +448,7 @@ export default {
 			let list = this.cartList;
 			if (list.length === 0) {
 				this.empty = true;
+				updateCartNumber(0);
 				return;
 			}
 			this.isChecked = false;
@@ -477,6 +472,8 @@ export default {
 			this.allChecked = checked;
 			this.total = Number(total.toFixed(2));
 			this.discount = Number(discount.toFixed(2));
+			//更新购物车总数量
+			updateCartNumber(number);
 		},
 		cleanLoseGoods(){
 			uni.showModal({

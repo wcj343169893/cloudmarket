@@ -7,7 +7,12 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
-import { getToken } from '@/common/request.js';
+const client = uniCloud.init({
+	provider: 'tencent',
+	spaceId: 'cloud-market-3c5868',
+	debugFunction: false
+});
+const auth = client.auth();
 export default {
 	methods: {
 		...mapMutations(['login', 'setUserLocation']),
@@ -45,7 +50,7 @@ export default {
 			credentials: require('./credentials.json')
 		});
 		const auth = app.auth(); */
-		const auth = uniCloud.auth();
+		//const auth = uniCloud.auth();
 		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
 		/* auth.getLoginState().then(state => {
 			console.log('auth.getLoginState', state);
@@ -65,29 +70,34 @@ export default {
 					});
 					return;
 				}
-				getToken({
-					uid: userInfo.id,
-					token: userInfo.token
-				}).then(
-					res => {
-						console.log(res);
-						//写入缓存
-						uni.setStorage({
-							key: userInfoKey,
-							data: res
-						});
-						auth.signInWithTicket(res.ticket).then(() => {
-							// 登录成功
-							console.log('客户端登录成功');
-						});
-					},
-					err => {
-						//登录信息失效
-						uni.removeStorage({
-							key: userInfoKey
-						});
-					}
-				);
+				client
+					.callFunction({
+						name: 'token',
+						data: {
+							uid: userInfo.id,
+							token: userInfo.token
+						}
+					})
+					.then(
+						res => {
+							console.log(res);
+							//写入缓存
+							uni.setStorage({
+								key: userInfoKey,
+								data: res
+							});
+							auth.signInWithTicket(res.ticket).then(() => {
+								// 登录成功
+								console.log('客户端登录成功');
+							});
+						},
+						err => {
+							//登录信息失效
+							uni.removeStorage({
+								key: userInfoKey
+							});
+						}
+					);
 			} else {
 				console.log('本地没有历史登录信息');
 			}
@@ -95,8 +105,9 @@ export default {
 		uniCloud.on('refreshAccessToken', () => {
 			// 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
 			console.log('uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态');
+			let time = new Date().getTime();
 			auth.getAccessToken().then(res => {
-				console.log(res);
+				console.log('getAccessToken', time, res);
 				//暂时没用
 				uni.setStorage({
 					key: 'userAccessToken',
@@ -104,11 +115,11 @@ export default {
 				});
 			});
 			auth.getUserInfo().then(res => {
-				console.log(res);
+				console.log('getUserInfo', time, res);
 			});
 			let userInfo = uni.getStorageSync(userInfoKey) || {};
 			if (userInfo.id) {
-				console.log('设置登录缓存信息到store');
+				console.log('设置登录缓存信息到store', time);
 				//兼容服务器无法获取用户id,将来可以删除掉
 				this.login(userInfo);
 			}
@@ -565,6 +576,8 @@ button[type='default'] {
 	padding: 2upx 6upx;
 	line-height: 1;
 	display: inline-block;
+	&.info {
+	}
 	&.warning {
 		color: $font-color-warning;
 		border-color: $font-color-warning;

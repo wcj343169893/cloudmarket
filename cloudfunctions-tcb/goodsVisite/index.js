@@ -1,10 +1,12 @@
 'use strict';
 const db = uniCloud.database();
+const auth = uniCloud.auth();
 /**
  * 商品浏览记录,按浏览时间倒序
  */
 exports.main = async (event, context) => {
-	let uid = +event.uid;
+	let {customUserId} = await auth.getUserInfo();
+	let uid = +customUserId;
 	//商品浏览记录，每人每件商品只存在一条
 	const visiteCollection = db.collection('goods_visites');
 	let visite = await visiteCollection.where({

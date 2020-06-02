@@ -6,11 +6,13 @@ const {
 	updateGoodsStock,
 	updateUserOrderCount
 } = require('base-common');
+const auth = uniCloud.auth();
 /**
  * 自动取消24小时未付款的订单，定时器每小时执行一次
  */
 exports.main = async (event, context) => {
-	let uid = +event.uid;
+	let {customUserId} = await auth.getUserInfo();
+	let uid = +customUserId;
 	const orderCollection = db.collection("orders");
 	let time = new Date().getTime();
 	const day = new Date().toISOString();

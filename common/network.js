@@ -1,10 +1,16 @@
+const client = uniCloud.init({
+	provider: 'tencent',
+	spaceId: 'cloud-market-3c5868',
+	debugFunction: false
+});
+const auth = client.auth();
 /**
  * @param {Object} options
  * 网络请求 模块
  */
 const network = function(options) {
 	return new Promise((resolve, reject) => {
-		const auth = uniCloud.auth();
+		//const auth = uniCloud.auth();
 		let data = {};
 		if (options.data) {
 			data = options.data;
@@ -15,10 +21,10 @@ const network = function(options) {
 			let userInfo = uni.getStorageSync('userInfo') || {};
 			if (userInfo.id) {
 				showLoginDialog = true;
-				data["uid"] = userInfo.id;
+				/* data["uid"] = userInfo.id;
 				if (!data.token) {
 					data["token"] = userInfo.token;
-				}
+				} */
 			}
 		} catch (e) {
 			reject("错误信息" + e)
@@ -34,12 +40,12 @@ const network = function(options) {
 
 		if (options.isShowLoading) { //是否需要显示  loading(true:不显示，false:显示)
 			uni.showLoading({
-				title: '正在加载',
+				title:"加载中",
 				mask: options.isShowMask
 			});
 		}
 
-		uniCloud.callFunction({
+		client.callFunction({
 			name: options.url,
 			data: data
 		}).then(res => {
@@ -57,7 +63,7 @@ const network = function(options) {
 						key: "userInfo"
 					});
 					auth.signOut().then(res => {
-						console.log(res)
+						console.log("network signOut",res)
 					});
 					if (showLoginDialog) {
 						uni.showModal({

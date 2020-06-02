@@ -2,9 +2,11 @@
 /* 店铺首页，查询店铺信息，分类 */
 const db = uniCloud.database();
 const getCollectionNames = require('collection_names');
+const auth = uniCloud.auth();
 exports.main = async (event, context) => {
+	let {customUserId} = await auth.getUserInfo();
 	let shopid = parseInt(event.id);
-	let uid = parseInt(event.uid);
+	let uid = +customUserId;
 	let withSubCategory = parseInt(event.withSubCategory)==1;
 	let withGoods = parseInt(event.withGoods)==1;
 	let collectionNames = getCollectionNames(event);
