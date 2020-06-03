@@ -231,7 +231,9 @@ export default {
 					});
 				} */
 				//异步查询购物车总数量，需要过滤库存不足的商品
-				updateCartNumber(res.cart);
+				if(this.hasLogin){
+					updateCartNumber(res.cart);
+				}
 			});
 		},
 		//轮播图切换修改背景色

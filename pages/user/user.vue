@@ -244,7 +244,7 @@ export default {
 						this.order.receive = this.order.payup + this.order.delivered;
 					} else {
 						for (let t in this.order) {
-							this.order[t] = res0;
+							this.order[t] = 0;
 						}
 					}
 					if(this.userInfo.invite > 0){
@@ -266,6 +266,10 @@ export default {
 			}else{
 				this.hasVisiteGoods = false;
 				this.visiteGoodsList = [];
+				for (let t in this.order) {
+					this.order[t] = 0;
+				}
+				this.teamTips="加入团队";
 			}
 		},
 		previewAvatar() {

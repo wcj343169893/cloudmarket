@@ -8,6 +8,7 @@ exports.main = async (event, context) => {
 	let longitude = event.longitude ? +event.longitude : 113.92246555717469;
 	let latitude = event.latitude ? +event.latitude : 22.489059185437284;
 	let dataOut = {
+		uid:+customUserId,
 		cart: 0,
 		shopId: 0,
 		categories: [],

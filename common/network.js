@@ -63,7 +63,8 @@ const network = function(options) {
 						key: "userInfo"
 					});
 					auth.signOut().then(res => {
-						console.log("network signOut",res)
+						console.log("network signOut",res);
+						auth.getLoginState();
 					});
 					if (showLoginDialog) {
 						uni.showModal({

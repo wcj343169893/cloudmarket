@@ -181,6 +181,12 @@ export default {
 			if (this.empty !== empty) {
 				this.empty = empty;
 			}
+		},
+		hasLogin() {
+			console.log('watch 登录状态改变,刷新当前页面');
+			setTimeout(() => {
+				this.loadData(true);
+			}, 100);
 		}
 	},
 	computed: {

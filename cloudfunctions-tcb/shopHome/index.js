@@ -56,6 +56,7 @@ exports.main = async (event, context) => {
 	shopInfo["goods_categories"] = [];
 	shopInfo["goods"] = [];
 	shopInfo["carts"] = [];
+	shopInfo["uid"] = uid;
 	if (categories.data.length > 0) {
 		shopInfo["goods_categories"] = categories.data;
 	}

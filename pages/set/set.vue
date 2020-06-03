@@ -54,10 +54,30 @@
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-				    		this.logout();
-							const auth = uniCloud.auth();
+							const client = uniCloud.init({
+								provider: 'tencent',
+								spaceId: 'cloud-market-3c5868',
+								debugFunction: false
+							});
+							const auth = client.auth();
+							//const auth = uniCloud.auth();
+							//清理缓存
+							uni.removeStorage({
+								key:"userInfo"
+							});
+							auth.shouldRefreshAccessToken(()=>{
+								console.log("auth.shouldRefreshAccessToken 强制不要刷新");
+								return false;
+							})
 							auth.signOut().then(res=>{
-								console.log("set signOut",res)
+								console.log("set signOut",res);
+								auth.getLoginState().then(r=>{
+									console.log("auth.getLoginState",r)
+								});
+								auth.getUserInfo().then(res => {
+									console.log('getUserInfo', time, res);
+								});
+								this.logout();
 							});
 				    		setTimeout(()=>{
 				    			uni.navigateBack();

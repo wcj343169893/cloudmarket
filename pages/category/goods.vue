@@ -230,7 +230,8 @@ export default {
 						let cartMap={};
 						let cartSumNunber = 0;
 						this.cartInfo.dataList=[];
-						if(res.carts.length > 0){
+						//这里只为了兼容退出登录不干净
+						if(res.carts.length > 0 && this.hasLogin){
 							res.carts.forEach(ct=>{
 								cartMap[ct.goods_id+"_"+ct.sku_id]=ct.amount;
 								cartSumNunber+=ct.amount;
@@ -366,6 +367,18 @@ export default {
 				for (let pid in this.cartNumber) {
 					for (let g in this.cartNumber[pid]) {
 						this.cartNumber[pid][g]=this.goodsCartNumber[g]?parseInt(this.goodsCartNumber[g]):0;
+					}
+				}
+				//统计所有主分类购物车数量
+				this.getAllMainCategoryNumber();
+			},err=>{
+				//单个商品总数量
+				this.goodsCartNumber={};
+				//2级清零
+				this.skuCart={};
+				for (let pid in this.cartNumber) {
+					for (let g in this.cartNumber[pid]) {
+						this.cartNumber[pid][g]=0;
 					}
 				}
 				//统计所有主分类购物车数量
