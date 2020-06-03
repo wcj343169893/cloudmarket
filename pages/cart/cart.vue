@@ -146,6 +146,7 @@ export default {
 	data() {
 		return {
 			isLoaded: false,
+			isSubmit:false,
 			canSetllement: false,
 			isChecked: false,
 			total: 0, //总价格
@@ -167,6 +168,7 @@ export default {
 			//重新加载页面数据
 			this.loadData(true);
 		}
+		this.isSubmit = false;
 	},
 	//下拉刷新,不会更新底部附近的店铺,app没效果
 	onPullDownRefresh() {
@@ -515,7 +517,11 @@ export default {
 		},
 		//创建订单
 		createOrder() {
+			if(this.isSubmit){
+				return;
+			}
 			if (this.isChecked) {
+				this.isSubmit = true;
 				//批量设置结算属性
 				let cartIds = [];
 				this.cartList.map(e=>{
@@ -523,13 +529,20 @@ export default {
 						cartIds.push(e.cartId);
 					}
 				});
-				settlementCart({
+				uni.setStorage({
+					key:"settlementCartsIds",
+					data:cartIds,
+					success:()=> {
+						navToCreateOrder();
+					}
+				})
+				/* settlementCart({
 					id: this.shopId,
 					stationId: this.stationId,
 					cartIds: cartIds.join(',')
 				}).then(res=>{
 					navToCreateOrder();
-				})
+				}) */
 			}
 		},
 		//刷新数据

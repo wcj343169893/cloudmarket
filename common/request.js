@@ -123,7 +123,8 @@ const settlementCart = function(data) {
 		url: "carts",
 		data: data,
 		auth:true,
-		isShowLoading: true
+		isShowLoading: true,
+		isShowMask:true
 	})
 }
 //预结算、结算提交订单

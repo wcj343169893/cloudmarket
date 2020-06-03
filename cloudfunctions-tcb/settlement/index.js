@@ -10,7 +10,9 @@ const {
 } = require('base-common');
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
-	let {customUserId} = await auth.getUserInfo();
+	let {
+		customUserId
+	} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -25,17 +27,41 @@ exports.main = async (event, context) => {
 	let type = event.type;
 	//忽略库存不足商品
 	const cartCollection = db.collection('carts');
-	let carts = await cartCollection.where({
-		shopid: shopid,
-		settlement: true,
-		uid: uid
-	}).field({
-		"goods_id": 1,
-		"sku_id": 1,
-		"price": 1,
-		"amount": 1
-	}).get();
+	let carts = {
+		data: []
+	};
+	//单个商品结算,必须存在商品goods_id，型号sku_id，数量amount,price=0
+	if (event.goods) {
+		carts.data.push({
+			_id:"none",
+			goods_id: +event.goods.id,
+			sku_id: +event.goods.sku_id ? event.goods.sku_id : 0,
+			amount: +event.goods.amount,
+			price: 0
+		});
+	} else {
+		//购物车结算
+		let condition = {
+			shopid: shopid,
+			settlement: true,
+			uid: uid
+		};
+		//多个购物车id提交
+		if (event.cartids) {
+			condition = {
+				shopid: shopid,
+				_id: cmd.in(event.cartids),
+				uid: uid
+			}
+		}
+		carts = await cartCollection.where(condition).field({
+			"goods_id": 1,
+			"sku_id": 1,
+			"price": 1,
+			"amount": 1
+		}).get();
 
+	}
 	if (carts.data.length == 0) {
 		return {
 			"code": 404,
@@ -277,13 +303,13 @@ exports.main = async (event, context) => {
 		data["id"] = await genIdentityId("orders");
 		data["body"] = body.join(",");
 		//邀请信息,只允许2级关系
-		let uinfo = await getUserInfoById(uid,{
-			inviters:1
+		let uinfo = await getUserInfoById(uid, {
+			inviters: 1
 		});
 		//用户邀请列表
 		data["inviters"] = [];
-		if(uinfo && uinfo.inviters){
-			data["inviters"] = uinfo.inviters.slice(0,2)
+		if (uinfo && uinfo.inviters) {
+			data["inviters"] = uinfo.inviters.slice(0, 2)
 		}
 		//保存订单
 		let res = await db.collection("orders").add(data);
@@ -294,13 +320,15 @@ exports.main = async (event, context) => {
 			};
 		}
 
-		//删除购物车cartId-------------我怀疑不支持异步操作--------
-		let delCart = await db.collection('carts').where({
-			_id: cmd.in(cartIds)
-		}).remove();
-		console.log(delCart);
+		//删除购物车cartId-------------我怀疑不支持异步操作--------单个商品结算
+		if(cartIds.length > 1 || cartIds.indexOf("none") == -1){
+			let delCart = await db.collection('carts').where({
+				_id: cmd.in(cartIds)
+			}).remove();
+			console.log(delCart);
+		}
 		//更新用户待付款订单数
-		await updateUserOrderCount(uid, "unpaid", 1, false,data.shopid);
+		await updateUserOrderCount(uid, "unpaid", 1, false, data.shopid);
 		return {
 			"code": 200,
 			"message": "操作成功",

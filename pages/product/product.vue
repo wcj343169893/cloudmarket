@@ -409,6 +409,9 @@ export default {
 				url: `/pages/order/createOrder`
 			});
 		},
+		refreshList(){
+			
+		},
 		stopPrevent() {}
 	}
 };

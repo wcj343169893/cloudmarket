@@ -134,6 +134,7 @@ export default {
 					price: 5
 				}
 			],
+			ids:[],
 			dataList: [],
 			//库存不足商品
 			stockNotEnough: [],
@@ -152,8 +153,15 @@ export default {
 	},
 	methods: {
 		async loadData() {
+			let ids = uni.getStorageSync("settlementCartsIds");
+			if(!ids){
+				console.log("结算信息不存在");
+				return;
+			}
+			this.ids = ids;
 			settlement({
 				id: this.shopId,
+				cartids:this.ids,
 				addressid:this.location.id,
 				stationId: this.stationId
 			}).then(
@@ -236,6 +244,7 @@ export default {
 			settlement({
 				id: this.shopId,
 				stationId: this.stationId,
+				cartids:this.ids,
 				type: 'submit',
 				remark: this.remark,
 				addressid: this.addressData._id
@@ -246,7 +255,9 @@ export default {
 					uni.redirectTo({
 						url: `/pages/money/pay?id=${id}&money=${money}&comefrom=cart`
 					});
-					this.isSubmit = false;
+					//this.isSubmit = false;
+					//刷新购物车列表
+					this.$api.prePage().refreshList();
 				},
 				err => {
 					this.isSubmit = false;
