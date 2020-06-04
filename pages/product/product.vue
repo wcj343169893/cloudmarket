@@ -7,37 +7,86 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<block v-if="hasMiaosha">
-			<view class="miaosha-section" :class="{ ready: !miaosha.isStart }">
+		<block v-if="yuding">
+			<view class="yuding-section" :class="{ ready: !yuding.isBegin }">
 				<view class="title">
-					<text class="name">限时抢购</text>
-					<text class="status">{{ miaosha.statusName }}</text>
+					<view class="sub-title">
+						<text class="name">定&nbsp;金</text>
+						<text class="price">{{ yuding.price }}</text>
+					</view>
+					<view class="">
+						<text class="name">预售价</text>
+						<text class="price">{{ price - yuding.deduction + yuding.price }}</text>
+					</view>
 				</view>
-				<view class="time" v-if="!miaosha.isEnd">
-					<text>{{ miaosha.statusSubName }}</text>
-					<text class="ti hour">{{ miaosha.hour }}</text>
-					<text>:</text>
-					<text class="ti minute">{{ miaosha.minute }}</text>
-					<text>:</text>
-					<text class="ti second">{{ miaosha.second }}</text>
+				<view class="time-area">
+					<view class="">
+						<text>{{ yuding.statusSubName }}:</text>
+					</view>
+					<view class="time">
+						<text class="ti hour">{{ yuding.hour }}</text>
+						<text>:</text>
+						<text class="ti minute">{{ yuding.minute }}</text>
+						<text>:</text>
+						<text class="ti second">{{ yuding.second }}</text>
+					</view>
+				</view>
+			</view>
+			<view class="introduce-section">
+				<text class="title">{{ title }}</text>
+				<view class="info-box" v-if="!yuding.isBegin">
+					<text class="name">定金</text>
+					<view class="desc">
+						<text class="price">{{ yuding.price }}</text>
+						<text>({{ yuding.beginTimeStr }}-{{ yuding.endTimeStr }})</text>
+					</view>
+				</view>
+				<view class="info-box">
+					<text class="name">尾款</text>
+					<view class="desc">
+						<text class="price">{{ price - yuding.deduction }}</text>
+						<text>({{ yuding.finalPaymentBeginTimeStr }}-{{ yuding.finalPaymentEndTimeStr }})</text>
+					</view>
+				</view>
+				<view class="info-box">
+					<text class="name">流程</text>
+					<text>1.付定金-2.付尾款-3.发货</text>
 				</view>
 			</view>
 		</block>
-		<view class="introduce-section">
-			<text class="title">{{ title }}</text>
-			<view class="price-box">
-				<text class="price">{{ price }}</text>
-				<block v-if="originPrice > 0">
-					<text class="price del">{{ originPrice }}</text>
-					<text class="coupon-tip">{{ zhekou }}折</text>
-				</block>
+		<block v-else>
+			<block v-if="hasMiaosha">
+				<view class="miaosha-section" :class="{ ready: !miaosha.isStart }">
+					<view class="title">
+						<text class="name">限时抢购</text>
+						<text class="status">{{ miaosha.statusName }}</text>
+					</view>
+					<view class="time" v-if="!miaosha.isEnd">
+						<text>{{ miaosha.statusSubName }}</text>
+						<text class="ti hour">{{ miaosha.hour }}</text>
+						<text>:</text>
+						<text class="ti minute">{{ miaosha.minute }}</text>
+						<text>:</text>
+						<text class="ti second">{{ miaosha.second }}</text>
+					</view>
+				</view>
+			</block>
+			<view class="introduce-section">
+				<text class="title">{{ title }}</text>
+				<view class="price-box">
+					<text class="price">{{ price }}</text>
+					<block v-if="originPrice > 0">
+						<text class="price del">{{ originPrice }}</text>
+						<text class="coupon-tip">{{ zhekou }}折</text>
+					</block>
+				</view>
+				<view class="bot-row">
+					<text>月售: {{ monthlySale }}</text>
+					<text>库存: {{ stock }}</text>
+					<text>浏览量: {{ visite }}</text>
+				</view>
 			</view>
-			<view class="bot-row">
-				<text>月售: {{ monthlySale }}</text>
-				<text>库存: {{ stock }}</text>
-				<text>浏览量: {{ visite }}</text>
-			</view>
-		</view>
+		</block>
 
 		<!--  分享 -->
 		<!-- <view class="share-section" @click="share">
@@ -74,12 +123,18 @@
 			</view>
 		</view>
 		<view class="c-list">
+			<view class="c-row amount b-b">
+				<text class="tit">数量</text>
+				<view class="bz-list con">
+					<uni-number-box :min="0" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
+				</view>
+			</view>
 			<view class="c-row">
 				<text class="tit">服务</text>
 				<view class="bz-list con">
-					<view class="item" v-for="(ser, serIndex) in service" :key="serIndex">
-						<text>·{{ ser }}</text>
-					</view>
+					<block v-for="(ser, serIndex) in service" :key="serIndex">
+						<text class="item">·{{ ser }}</text>
+					</block>
 				</view>
 			</view>
 		</view>
@@ -93,12 +148,14 @@
 		<view class="page-bottom" v-if="canAddCart">
 			<view class="options">
 				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
-					<text class="yticon icon-gouwuche">
-						<text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text>
-					</text>
+					<text class="yticon icon-gouwuche"><!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
 				</navigator>
 			</view>
-			<button class="add-btn" @click="addToCart">加入购物车</button>
+			<block v-if="yuding">
+				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
+				<button class="add-btn disabled" v-else>预定未开始</button>
+			</block>
+			<button class="add-btn" v-else @click="addToCart">加入购物车</button>
 		</view>
 		<!-- 分享 -->
 		<share ref="share" :contentHeight="580" :shareList="shareList"></share>
@@ -109,7 +166,17 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import { showLoginDialog, navToLoginPage, updateGoodsTags, miaoshaCountDown, incrCartNumber, getCartSumNumber, clearCountDownTimer } from '@/common/functions.js';
+import {
+	showLoginDialog,
+	navToLoginPage,
+	navToCreateOrder,
+	updateGoodsTags,
+	miaoshaCountDown,
+	incrCartNumber,
+	getCartSumNumber,
+	clearCountDownTimer,
+	dateFormat
+} from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -118,6 +185,7 @@ export default {
 		return {
 			id: 0,
 			sku_id: 0,
+			isSubmit: false,
 			default_sku_id: 0,
 			title: '',
 			stock: 0,
@@ -141,10 +209,11 @@ export default {
 			hasSku: false,
 			shareList: [],
 			skuMap: [],
+			yuding: false,
 			hasMiaosha: false,
 			nameMap: {},
 			cartSumCount: 0,
-			canAddCart:false
+			canAddCart: false
 		};
 	},
 	computed: {
@@ -159,7 +228,7 @@ export default {
 			}, 1500);
 			return;
 		}
-		console.log(options)
+		console.log(options);
 		//商品id
 		this.id = options.id;
 		//商品规格
@@ -174,6 +243,9 @@ export default {
 		//关闭秒杀定时器
 		clearCountDownTimer();
 	},
+	onShow() {
+		this.isSubmit = false;
+	},
 	methods: {
 		async loadData() {
 			//优先读取缓存
@@ -184,7 +256,7 @@ export default {
 			//再次读取数据库，获得详细信息
 			getGoodsInfo({ id: this.id }).then(item => {
 				this.buildGoodsInfo(item);
-				this.canAddCart=true;
+				this.canAddCart = true;
 			});
 
 			//获得购物车总数量
@@ -193,8 +265,9 @@ export default {
 		buildGoodsInfo(item) {
 			this.imgs = [];
 			updateGoodsTags(item);
+			this.checkYuding(item);
 			this.checkMiaosha(item);
-			console.log(this.default_sku_id)
+			console.log('default_sku_id:', this.default_sku_id);
 			for (let field in item) {
 				this[field] = item[field];
 			}
@@ -231,10 +304,12 @@ export default {
 					nameHash.push(nameKey);
 					nameMap[nameKey] = sku;
 					//寻找秒杀商品的定位
-					if (this.default_sku_id > 0 && this.default_sku_id == sku.id) {
-						miaoshaSkuName = names;
-					} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
-						miaoshaSkuName = names;
+					if (miaoshaSkuName.length == 0) {
+						if (this.default_sku_id > 0 && this.default_sku_id == sku.id) {
+							miaoshaSkuName = names;
+						} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
+							miaoshaSkuName = names;
+						}
 					}
 				});
 				this.skuMap = skuMap;
@@ -258,12 +333,53 @@ export default {
 				}
 			} else {
 				//计算折扣
+				this.amount = this.cart[0] > 0 ? this.cart[0] : 1;
 				this.getSaleRate();
+			}
+		},
+		checkYuding(item) {
+			if (!item.yuding) {
+				return false;
+			}
+			let time = new Date().getTime();
+			let isBegin = item.yuding.beginTime < time;
+			let statusSubName = '距预售开始';
+			if (isBegin) {
+				statusSubName = '距预售结束';
+			}
+			//如果预定没开始，是不能预定的，在预定时间内，价格为预订价
+			//处理付尾款时间
+			Object.assign(item.yuding, {
+				hour: '00',
+				minute: '00',
+				second: '00',
+				startTime: time,
+				isBegin: isBegin,
+				statusSubName: statusSubName,
+				beginTimeStr: dateFormat(item.yuding.beginTime, 'MM月dd日hh:mm'),
+				endTimeStr: dateFormat(item.yuding.endTime, 'MM月dd日hh:mm'),
+				finalPaymentBeginTimeStr: dateFormat(item.yuding.finalPaymentBeginTime, 'MM月dd日hh:mm'),
+				finalPaymentEndTimeStr: dateFormat(item.yuding.finalPaymentEndTime, 'MM月dd日hh:mm')
+			});
+			if(!isBegin){
+				//未开始
+				miaoshaCountDown(item.yuding, item.yuding.beginTime, () => {
+					this.checkYuding(item);
+				});
+			}else if(item.yuding.endTime < time){
+				//已结束,按正常价格购买
+				item.yuding.statusSubName="已结束";
+				
+			}else{
+				item.yuding.startTime = time;
+				miaoshaCountDown(item.yuding, item.yuding.endTime, () => {
+					this.checkYuding(item);
+				});
 			}
 		},
 		checkMiaosha(item) {
 			if (!item.miaosha) {
-				return;
+				return false;
 			}
 			//秒杀状态，未开始，抢购中，已结束
 			let time = new Date().getTime();
@@ -333,7 +449,7 @@ export default {
 			if (!this.cart[this.sku_id]) {
 				this.cart[this.sku_id] = 0;
 			}
-			if (this.cart[this.sku_id] >= this.stock) {
+			if (this.cart[this.sku_id] > this.stock) {
 				uni.hideLoading();
 				let msg = '抱歉,该商品仅剩' + this.stock + '件';
 				if (this.stock == 0) {
@@ -343,13 +459,13 @@ export default {
 				return;
 			}
 			//处理limit和stock
-			if (this.cart[this.sku_id] >= this.limit) {
+			if (this.cart[this.sku_id] > this.limit) {
 				uni.hideLoading();
 				this.$api.msg('抱歉,该商品限购' + this.limit + '件');
 				return;
 			}
 			//累加一件商品
-			this.cart[this.sku_id]++;
+			this.cart[this.sku_id] = this.amount;
 			editCart({
 				id: this.shopid,
 				//stationId: this.stationId,
@@ -362,7 +478,37 @@ export default {
 			}).then(res => {
 				this.$api.msg('加入成功', 1500, false, 'success');
 				console.log(res);
-				this.cartSumCount = incrCartNumber(1);
+				//这里算不准
+				//this.cartSumCount = incrCartNumber(1);
+				//this.cartSumCount = incrCartNumber(this.amount);
+			});
+		},
+		bindChange(number, id) {
+			console.log(number, id);
+			this.amount = +number;
+		},
+		//支付一件的定金,判断是否有效
+		payDingjin() {
+			if (!yuding.isBegin) {
+				this.$api.msg('预定未开始');
+				return;
+			}
+			if (this.isSubmit) {
+				return;
+			}
+			this.isSubmit = true;
+			uni.setStorage({
+				key: 'settlementCartsIds',
+				data: {
+					goods: {
+						id: this.id,
+						sku_id: this.sku_id,
+						amount: this.amount
+					}
+				},
+				success: () => {
+					navToCreateOrder();
+				}
 			});
 		},
 		/**规格选择,默认选中秒杀商品**/
@@ -374,7 +520,7 @@ export default {
 				return false;
 			}
 			this.skuMap[index].active = index2;
-			console.log(this.skuMap);
+			//console.log(this.skuMap);
 			//更新已选择规格
 			let names = [];
 			this.skuMap.forEach((skuname, ind) => {
@@ -396,6 +542,7 @@ export default {
 			this.limit = sku.limit;
 			this.price = sku.price;
 			this.originPrice = sku.originPrice;
+			this.amount = this.cart[this.sku_id] > 0 ? this.cart[this.sku_id] : 1;
 			//计算折扣
 			this.getSaleRate();
 		},
@@ -409,9 +556,7 @@ export default {
 				url: `/pages/order/createOrder`
 			});
 		},
-		refreshList(){
-			
-		},
+		refreshList() {},
 		stopPrevent() {}
 	}
 };
@@ -453,10 +598,23 @@ page {
 .introduce-section {
 	background: #fff;
 	padding: 20upx 30upx;
-
+	color: $font-color-dark;
 	.title {
 		font-size: $font-lg;
-		color: $font-color-dark;
+	}
+	.info-box {
+		display: flex;
+		align-items: baseline;
+		font-size: $font-sm;
+		margin-bottom: 8upx;
+		.name {
+			margin-right: 18upx;
+			font-weight: 500;
+		}
+		.desc {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 	.price-box {
 		display: flex;
@@ -569,9 +727,9 @@ page {
 	}
 	.tit {
 		width: 140upx;
+		flex: 1;
 	}
 	.con {
-		flex: 1;
 		color: $font-color-dark;
 		.selected-text {
 			margin-right: 10upx;
@@ -581,7 +739,7 @@ page {
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
 		.item {
-			margin-bottom: 8upx;
+			margin-right: 8upx;
 		}
 	}
 	.con-list {
@@ -801,6 +959,9 @@ page {
 	color: #fff;
 	background-color: $base-color;
 	border-radius: 10upx;
+	&.disabled {
+		background-color: $font-color-disabled;
+	}
 }
 .skuDialogPanel {
 	padding: 20upx 30upx;
@@ -816,6 +977,7 @@ page {
 		flex-wrap: wrap;
 		text-align: center;
 		display: flex;
+		padding-left: 40upx;
 	}
 	$yellow-color: $uni-color-success;
 	.skuoptions__item {
@@ -878,5 +1040,56 @@ page {
 			}
 		}
 	}
+}
+.yuding-section {
+	$base-c: #e35650;
+	display: flex;
+	align-items: center;
+	background: $base-c;
+	font-size: $font-ssm;
+	text-align: center;
+	color: #fff;
+	.price {
+		color: #fff;
+		font-size: 1.4em;
+	}
+	.title {
+		flex: 1;
+		text-align: left;
+		padding: 0 20upx;
+		line-height: 1;
+		.name {
+			margin-right: 12upx;
+		}
+	}
+	.sub-title {
+		font-size: 1.2em;
+	}
+	.time-area {
+		width: 266upx;
+		background: #fcefea;
+		padding: 12upx 0;
+		color: $base-c;
+		.ti {
+			background: $base-c;
+			color: #fff;
+			margin: 0 8upx;
+			padding: 0 4upx;
+		}
+	}
+	&.ready {
+		$base-c: #54b85d;
+		background: $base-c;
+		.time-area {
+			color: $base-c;
+			background: #f3f5f3;
+			.ti {
+				background: $base-c;
+			}
+		}
+	}
+}
+.icon-gouwuche {
+	font-size: 48upx;
 }
 </style>

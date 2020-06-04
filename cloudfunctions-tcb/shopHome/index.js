@@ -78,6 +78,7 @@ exports.main = async (event, context) => {
 			"monthlySale": 1,
 			"categories": 1,
 			"miaosha": 1,
+			"yuding": 1,
 			"manjian": 1,
 		}).orderBy("posid","asc").get();
 		if (goods.data.length > 0) {

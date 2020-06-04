@@ -158,12 +158,19 @@ export default {
 				console.log("结算信息不存在");
 				return;
 			}
+			console.log(ids);
 			this.ids = ids;
+			console.log({
+				id: this.shopId,
+				addressid:this.location.id,
+				stationId: this.stationId,
+				...this.ids
+			})
 			settlement({
 				id: this.shopId,
-				cartids:this.ids,
 				addressid:this.location.id,
-				stationId: this.stationId
+				stationId: this.stationId,
+				...this.ids
 			}).then(
 				res => {
 					console.log(res);
@@ -244,10 +251,10 @@ export default {
 			settlement({
 				id: this.shopId,
 				stationId: this.stationId,
-				cartids:this.ids,
 				type: 'submit',
 				remark: this.remark,
-				addressid: this.addressData._id
+				addressid: this.addressData._id,
+				...this.ids
 			}).then(
 				res => {
 					let id = res;

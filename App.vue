@@ -209,7 +209,7 @@ export default {
 }
 
 .yticon.checked {
-	color: $uni-color-success;
+	color: $base-color;
 }
 
 .icon-yiguoqi1:before {

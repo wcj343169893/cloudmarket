@@ -37,11 +37,14 @@
 											<text class="price">{{ item.price }}</text>
 											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 										</view>
-										<view class="sku_button" v-if="item.hasSku">
+										<view class="sku_button" v-if="item.yuding">
+											<text class="sku_btn" @click="navToGoodsPage(item)">查看</text>
+										</view>
+										<view class="sku_button" v-else-if="item.hasSku">
 											<text class="sub_number" v-if="goodsCartNumber[item.id] > 0">{{goodsCartNumber[item.id]}}</text>
 											<text class="sku_btn" @click="openSkus(item,category.pid)">选规格</text>
 										</view>
-										<uni-number-box v-if="!item.hasSku" :min="0" :max="item.limit" :stock="item.stock" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
+										<uni-number-box v-else :min="0" :max="item.limit" :stock="item.stock" :disabled="!hasLogin" :keys="category.pid+'_'+item.id" :value="goodsCartNumber[item.id]" @disabledEvent="showLoginDialog" @change="bindChange"></uni-number-box>
 									</view>
 								</view>
 							</view>
@@ -792,7 +795,7 @@ $box-height: 60upx;
 	.sku_btn{
 		background: $btn-color-light;
 		color: $font-color-white;
-		padding: 12upx 16upx 12upx;
+		padding: 12upx 24upx 12upx;
 		border-radius: 30upx;
 		display: inline-block;
 		font-size: $font-ssm;

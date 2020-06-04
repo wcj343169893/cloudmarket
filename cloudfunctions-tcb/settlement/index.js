@@ -126,6 +126,7 @@ exports.main = async (event, context) => {
 		"skus": 1,
 		"originPrice": 1,
 		"miaosha": 1,
+		"yuding": 1,
 		"manjian": 1,
 	}).get();
 
@@ -168,6 +169,9 @@ exports.main = async (event, context) => {
 		});
 		for (let ele of goodsOut) {
 			//处理秒杀价
+			if(ele.yuding){
+				//@todo 在预订时间内，仅支付定金,如果已经过了预定期，则不生效
+			}
 			if (ele.miaosha) {
 				let time = new Date().getTime();
 				//秒杀库存一定大于购买数量,如果秒杀限量，购买数量不能大于限量

@@ -119,7 +119,7 @@
 				</view>
 			</block>
 			<view class="more-btn">
-				<text>共<text class="important">{{ goodsCount }}</text>种商品</text>
+				<text><text class="important">{{ goodsCount }}</text>种商品，共<text class="important">{{ info.cartCount }}</text>件</text>
 			</view>
 		</view>
 		<view class="m-t"></view>
@@ -472,6 +472,10 @@ page {
 	text-align: center;
 	padding: 20upx;
 	position: relative;
+	.important{
+		font-size: 1.2em;
+		padding: 0 4upx;
+	}
 }
 .ab {
 	.weui-flex {

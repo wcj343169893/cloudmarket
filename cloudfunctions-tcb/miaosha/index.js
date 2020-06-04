@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
 	let miaoshaGoods = await db.collection('goods').where({
 		shopid: shopid,
 		"miaosha.stock": cmd.gt(0),
-		"miaosha.beginTime": cmd.lt(time),
+		"miaosha.beginTime": cmd.lt(time+24*3600*1000),
 		"miaosha.endTime": cmd.gt(time),
 	}).field({
 		_id: 0,

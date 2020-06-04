@@ -83,6 +83,7 @@ exports.main = async (event, context) => {
 				"categories": 1,
 				"miaosha": 1,
 				"manjian": 1,
+				"yuding": 1,
 			}).get();
 			if (goods.data.length > 0) {
 				data["goods"] = goods.data;

@@ -144,10 +144,13 @@ const updateGoodsTags = function(goods, isPrecise) {
 		goods.sku_id = 0;
 	}
 	//console.log("updateGoodsTags");
+	let time = new Date().getTime();
 	if (goods.miaosha) {
-		let time = new Date().getTime();
+		if(goods.miaosha.beginTime > time+24*3600*1000){
+			//秒杀提前1天显示，这里不显示
+			delete goods.miaosha;
+		}else if(goods.miaosha.beginTime > time){
 		//秒杀必须是有效的
-		if(goods.miaosha.beginTime > time){
 			if (!isPrecise) {
 				tags.push({
 					type:"info",
@@ -201,9 +204,17 @@ const updateGoodsTags = function(goods, isPrecise) {
 			}
 			//console.log("goods.miaosha",goods)
 		}
+	}else if(goods.yuding){
+		if(goods.yuding.endTime > time){
+			tags.push({
+				type:"info",
+				text:"预售"
+			});
+		}else{
+			delete goods.yuding;
+		}
 	}
 	if (goods.manjian) {
-
 	}
 	goods["tags"] = tags;
 };

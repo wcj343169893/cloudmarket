@@ -69,8 +69,10 @@ exports.main = async (event, context) => {
 		src: 1,
 		title: 1,
 		miaosha: 1,
+		manjian: 1,
 		price: 1,
 		//skus:1,
+		yuding:1,
 		stock: 1
 	};
 	//正在秒杀商品5条,必须是有库存的秒杀
@@ -78,6 +80,7 @@ exports.main = async (event, context) => {
 		shopid: shopid,
 		miaosha: cmd.exists(true),
 		"miaosha.stock": cmd.gt(0),
+		"miaosha.beginTime": cmd.lt(time+24*3600*1000),
 		"miaosha.endTime": cmd.gt(time),
 	}).field(goodsFields).limit(5).orderBy("miaosha.beginTime","asc").get();
 	dataOut["miaosha"] = miaoshaGoods.data;

@@ -14,11 +14,9 @@
 			<view class="cart-list">
 				<block v-for="(item, index) in cartList" :key="index">
 					<view class="goodsList b-b" v-if="item.cart > 0">
-						<view class="weui-flex">
+						<view class="weui-flex flex-start">
 							<view class="weui-flex-check">
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
-							</view>
-							<view class="desc">
 								<view class="image-wrapper" @click="navToGoodsPage(item)">
 									<image
 										:src="item.src"
@@ -29,40 +27,44 @@
 										@error="onImageError('cartList', index)"
 									></image>
 								</view>
+							</view>
+							<view class="desc">
 								<view class="desc-name">
 									<view class="" @click="navToGoodsPage(item)">
 										<text class="title">{{ item.title }}</text>
 									</view>
-									<view class="">
-										<text>{{ item.subName }}</text>
-									</view>
-									<view class="" v-if="item.cutPrice > 0">
-										<text class="saledPrice">
-											<text class="unit">比加入时便宜</text>
-											<text class="price emphasis">{{ item.cutPrice }}</text>
-										</text>
-									</view>
-									<view class="tags" v-if="item.tags && item.tags.length > 0">
-										<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
-									</view>
-									<view class="buttons">
-										<view>
-											<text class="price">{{ item.price }}</text>
-											<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+									<view class="weui-flex desc-content">
+										<view class="weui-flex__item">
+											<view class="">
+												<text>{{ item.subName }}</text>
+											</view>
+											<view class="" v-if="item.cutPrice > 0">
+												<text class="saledPrice">
+													<text class="unit">比加入时便宜</text>
+													<text class="price emphasis">{{ item.cutPrice }}</text>
+												</text>
+											</view>
+											<view class="tags" v-if="item.tags && item.tags.length > 0">
+												<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
+											</view>
+											<view class="buttons">
+												<view>
+													<text class="price">{{ item.price }}</text>
+													<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+												</view>
+											</view>
 										</view>
+										<uni-number-box
+											:min="0"
+											:zeroNotice="!0"
+											:max="item.limit"
+											:stock="item.stock"
+											:keys="item.goods_id + '_' + item.sku_id"
+											:value="item.cart"
+											@change="bindChangeCart"
+										></uni-number-box>
 									</view>
 								</view>
-							</view>
-							<view class="">
-								<uni-number-box
-									:min="0"
-									:zeroNotice="!0"
-									:max="item.limit"
-									:stock="item.stock"
-									:keys="item.goods_id + '_' + item.sku_id"
-									:value="item.cart"
-									@change="bindChangeCart"
-								></uni-number-box>
 							</view>
 						</view>
 					</view>
@@ -120,9 +122,10 @@
 			</block>
 			<!-- 底部菜单栏 -->
 			<view class="action-section" v-show="canSetllement">
-				<view class="checkbox">
-					<image :src="allChecked ? '/static/selected2.png' : '/static/select.png'" mode="aspectFit" @click="check('all')"></image>
-					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
+				<view class="checkbox_area">
+					<text class="yticon icon-xuanzhong2 checkbox" :class="{ checked: allChecked }" @click="check('all')"></text>
+					<!-- <image :src="allChecked ? '/static/selected2.png' : '/static/select.png'" mode="aspectFit" @click="check('all')"></image> -->
+					<view class="clear-btn2" v-show="allChecked" @click="clearCart">清空</view>
 				</view>
 				<view class="total-box">
 					<text class="price emphasis">{{ total }}</text>
@@ -531,7 +534,9 @@ export default {
 				});
 				uni.setStorage({
 					key:"settlementCartsIds",
-					data:cartIds,
+					data:{
+						cartids:cartIds
+					},
 					success:()=> {
 						navToCreateOrder();
 					}
@@ -594,6 +599,9 @@ page {
 .weui-flex {
 	display: flex;
 	align-items: center;
+}
+.flex-start{
+	align-items: start;
 }
 .weui-flex__item {
 	flex: 1;
@@ -718,15 +726,28 @@ page {
 	background: rgba(255, 255, 255, 0.9);
 	box-shadow: 0 0 20upx 0 rgba(0, 0, 0, 0.5);
 	border-radius: 16upx;
-	.checkbox {
-		height: 52upx;
-		position: relative;
-		image {
-			width: 52upx;
-			height: 100%;
-			position: relative;
-			z-index: 5;
-		}
+	.checkbox_area {
+		/* overflow: hidden;
+		width: 172upx;
+		font-size: $font-base; */
+		display: flex;
+		font-size: $font-base;
+		background-color: $font-color-disabled;
+		border-radius: 50px;
+		align-items: center;
+		line-height: 1;
+	}
+	.checkbox{
+		font-size: 52upx;
+		background-color: #FFFFFF;
+		border-radius: 50%;
+		margin: 2upx;
+	}
+	.clear-btn2{
+		color: #fff;
+		padding: 0 24upx 0 14upx;
+		font-size: $font-base;
+		transition: 0.2s;
 	}
 	.clear-btn {
 		position: absolute;
@@ -763,25 +784,23 @@ page {
 		}
 	}
 	.confirm-btn {
-		padding: 0 38upx;
+		padding: 0 56upx;
 		margin: 0;
 		border-radius: 100px;
 		height: 76upx;
 		line-height: 76upx;
 		font-size: $font-base + 2upx;
-		background: $uni-color-success;
-		box-shadow: 1px 2px 5px rgba(0, 170, 0, 0.7);
+		background: $base-color;
 		transition: 0.4s;
 		&.disabled {
 			background-color: $font-color-disabled;
-			box-shadow: 1px 2px 5px rgba(170, 170, 127, 0.7);
 		}
 	}
 }
 /* 复选框选中状态 */
 .action-section .checkbox.checked,
 .cart-item .checkbox.checked {
-	color: $uni-color-success;
+	color: $base-color;
 }
 .lose-notice {
 	font-size: $font-sm;
