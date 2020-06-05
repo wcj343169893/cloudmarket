@@ -212,6 +212,7 @@ export default {
 			yuding: false,
 			hasMiaosha: false,
 			nameMap: {},
+			cart: {},
 			cartSumCount: 0,
 			canAddCart: false
 		};
@@ -251,7 +252,12 @@ export default {
 			//优先读取缓存
 			let info = uni.getStorageSync('goodsInfo');
 			if (info) {
-				this.buildGoodsInfo(info);
+				try{
+					this.buildGoodsInfo(info);
+				}catch(e){
+					//TODO handle the exception
+					console.log(e);
+				}
 			}
 			//再次读取数据库，获得详细信息
 			getGoodsInfo({ id: this.id }).then(item => {
@@ -489,7 +495,7 @@ export default {
 		},
 		//支付一件的定金,判断是否有效
 		payDingjin() {
-			if (!yuding.isBegin) {
+			if (!this.yuding.isBegin) {
 				this.$api.msg('预定未开始');
 				return;
 			}

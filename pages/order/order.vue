@@ -38,17 +38,31 @@
 							</view>
 						</view>
 						<view class="price-box">
-							共
+							<text>共</text>	
 							<text class="num">{{ item.cartCount }}</text>
-							件商品 实付款
-							<text class="price warning">{{ item.totalMoney }}</text>
+							<text>件商品</text>	
+							<block v-if="item.yuding">
+								<text>定金</text>
+								<text class="price warning">{{ item.totalMoney }}</text>
+								<text>尾款</text>
+								<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
+							</block>
+							<block v-else>
+								<text>实付款</text>	
+								<text class="price warning">{{ item.totalMoney }}</text>
+							</block>
 						</view>
 						<!-- 已取消 -->
 						<view class="action-box b-t" v-if="item.state == -1"><button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button></view>
 						<!-- 未付款 -->
 						<view class="action-box b-t" v-if="item.state == 0">
 							<button class="action-btn" @click.stop="cancelOrderConfirm(item, index)">取消订单</button>
-							<button class="action-btn recom" @click.stop="payOrder(item)">去支付<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
+							<block v-if="item.yuding">
+								<button class="action-btn recom" v-if="item.yuding.state == 0" @click.stop="payOrder(item)">去支付定金<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
+								<button class="action-btn recom" v-else-if="item.yuding.finalpay == 1" @click.stop="payOrder(item)">去支付尾款<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
+								<button class="action-btn disabled" v-else>去支付尾款</button>
+							</block>
+							<button class="action-btn recom" v-else @click.stop="payOrder(item)">去支付<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
 						</view>
 						<!-- 已付款 -->
 						<block v-if="item.state == 1">
@@ -170,9 +184,20 @@ export default {
 				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
+						let isPay = true;
 						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
+						//预定yuding  item.yuding.finalpay
+						if(ele.yuding){
+							ele.yuding.finalpay = 0;
+							if(ele.yuding.finalPaymentBeginTime < time){
+								ele.yuding.finalpay = 1;
+							}else if(ele.yuding.state == 1){
+								//已支付定金，但是未开始支付尾款间隙
+								isPay = false;
+							}
+						}
 						//支付倒计时
-						if (ele.state == 0) {
+						if (ele.state == 0 && isPay) {
 							ele.payment = {
 								id:ele._id,
 								subId:index+"",
@@ -355,15 +380,20 @@ export default {
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail
-			if(item.state == 0){
-				this.payOrder(item)
-			}else{
-				uni.setStorage({
-					key:"orderDetail",
-					data:item
-				})
-				navToOrderDetail(item._id);
+			if(item.yuding){
+				if(item.yuding.state == 0 || item.yuding.finalpay == 1){
+					this.payOrder(item);
+					return;
+				}
+			}else if(item.state == 0){
+				this.payOrder(item);
+				return;
 			}
+			uni.setStorage({
+				key:"orderDetail",
+				data:item
+			})
+			navToOrderDetail(item._id);
 		},
 		showGoods(item) {
 			uni.setStorage({
@@ -554,6 +584,10 @@ page,
 		}
 		&.recom {
 			background: $base-color;
+			color: #fff;
+		}
+		&.disabled{
+			background-color: $font-color-disabled;
 			color: #fff;
 		}
 	}

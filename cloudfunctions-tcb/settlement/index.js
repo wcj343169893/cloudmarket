@@ -33,7 +33,7 @@ exports.main = async (event, context) => {
 	//单个商品结算,必须存在商品goods_id，型号sku_id，数量amount,price=0
 	if (event.goods) {
 		carts.data.push({
-			_id:"none",
+			_id: "none",
 			goods_id: +event.goods.id,
 			sku_id: +event.goods.sku_id ? event.goods.sku_id : 0,
 			amount: +event.goods.amount,
@@ -167,61 +167,73 @@ exports.main = async (event, context) => {
 				goodsOut.push(ele);
 			}
 		});
+		let time = new Date().getTime();
 		for (let ele of goodsOut) {
-			//处理秒杀价
-			if(ele.yuding){
+			//提前预定，有折扣
+			if (ele.yuding && ele.yuding.beginTime < time && ele.yuding.endTime > time) {
 				//@todo 在预订时间内，仅支付定金,如果已经过了预定期，则不生效
-			}
-			if (ele.miaosha) {
-				let time = new Date().getTime();
-				//秒杀库存一定大于购买数量,如果秒杀限量，购买数量不能大于限量
-				if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime && ele.miaosha.stock >= ele.amount && (ele.miaosha
-						.limit == 0 || ele.miaosha.limit >= ele.amount)) {
-					//同步更新秒杀库存，相当于拿钥匙
-					let isMiaoshaError = false;
-					if (type == "submit") {
-						let res = await updateGoodsMiaoshaStock(ele, 1);
-						console.log("updateGoodsMiaoshaStock", res);
-						if (res.updated < 1) {
-							isMiaoshaError = true;
-						} else {
-							decrStockMiaoshaGoodsSuccess.push({
-								_id: ele._id,
-								amount: ele.amount
-							});
-						}
-					}
-					if (!isMiaoshaError) {
-						ele.originPrice = ele.price;
-						ele.price = ele.miaosha.price;
-						ele.stock = ele.miaosha.stock;
-					}
-					//开始结束时间用时间戳  new Date().getTime()
-					//测试代码===>key $date must not start with '$'
-					/* delete ele.miaosha.beginTime;
-					delete ele.miaosha.endTime; */
-				} else {
-					//秒杀与满减不同享
-					delete ele.manjian;
-				}
-			}
-			//检查库存是否不足
-			if (ele.amount > ele.stock) {
-				data.stockNotEnough.push(ele);
-			} else {
-				//加入购物车时的差价
-				ele.cutPrice = 0;
-				if (ele.cartPrice > ele.price) {
-					ele.cutPrice = ele.cartPrice - ele.price;
-				}
-				//购物车总价格
-				data.totalMoney += ele.price * ele.amount;
-				if (ele.originPrice > 0) {
-					//购物车总折扣
-					data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
-				}
+				data.yuding = ele.yuding;
+				//更改商品原价=原价-抵扣价,最大抵扣完，不会出现负数
+				let price = ele.price - ele.yuding.deduction;
+				ele.price = price > 0 ? price : ele.yuding.price;
+				//尾款=尾款单价*数量，只支持单个商品预定，所以不存在尾款累加
+				let finishPaymentPrice = (ele.price - ele.yuding.price) * ele.amount;
+				data.yuding.finishPaymentPrice = Number(finishPaymentPrice.toFixed(2));
+				//购物车定金总结
+				data.totalMoney += ele.yuding.price * ele.amount;
 				data.goods.push(ele);
 				data.cartCount += ele.amount;
+			} else {
+				//普通购买
+				if (ele.miaosha) {
+					//秒杀库存一定大于购买数量,如果秒杀限量，购买数量不能大于限量
+					if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime && ele.miaosha.stock >= ele.amount && (ele.miaosha
+							.limit == 0 || ele.miaosha.limit >= ele.amount)) {
+						//同步更新秒杀库存，相当于拿钥匙
+						let isMiaoshaError = false;
+						if (type == "submit") {
+							let res = await updateGoodsMiaoshaStock(ele, 1);
+							console.log("updateGoodsMiaoshaStock", res);
+							if (res.updated < 1) {
+								isMiaoshaError = true;
+							} else {
+								decrStockMiaoshaGoodsSuccess.push({
+									_id: ele._id,
+									amount: ele.amount
+								});
+							}
+						}
+						if (!isMiaoshaError) {
+							ele.originPrice = ele.price;
+							ele.price = ele.miaosha.price;
+							ele.stock = ele.miaosha.stock;
+						}
+						//开始结束时间用时间戳  new Date().getTime()
+						//测试代码===>key $date must not start with '$'
+						/* delete ele.miaosha.beginTime;
+						delete ele.miaosha.endTime; */
+						//秒杀与满减不同享
+						delete ele.manjian;
+					}
+				}
+				//检查库存是否不足
+				if (ele.amount > ele.stock) {
+					data.stockNotEnough.push(ele);
+				} else {
+					//加入购物车时的差价
+					ele.cutPrice = 0;
+					if (ele.cartPrice > ele.price) {
+						ele.cutPrice = ele.cartPrice - ele.price;
+					}
+					//购物车总价格
+					data.totalMoney += ele.price * ele.amount;
+					if (ele.originPrice > 0) {
+						//购物车总折扣
+						data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
+					}
+					data.goods.push(ele);
+					data.cartCount += ele.amount;
+				}
 			}
 		}
 	} else {
@@ -303,8 +315,16 @@ exports.main = async (event, context) => {
 		data["state"] = 0;
 		//是否删除，默认0,删除不改变原有状态
 		data["isDelete"] = 0;
-		//字典表递增获得位id
-		data["id"] = await genIdentityId("orders");
+		//字典表递增获得位id,不靠谱
+		//data["id"] = await genIdentityId("orders");
+		//随机方法
+		data["id"] = genOrderNo();
+		if (data.yuding) {
+			//获得预定支付订单id
+			data.yuding.id = "reserve_" + genOrderNo();
+			//未支付
+			data.yuding.state = 0;
+		}
 		data["body"] = body.join(",");
 		//邀请信息,只允许2级关系
 		let uinfo = await getUserInfoById(uid, {
@@ -325,7 +345,7 @@ exports.main = async (event, context) => {
 		}
 
 		//删除购物车cartId-------------我怀疑不支持异步操作--------单个商品结算
-		if(cartIds.length > 1 || cartIds.indexOf("none") == -1){
+		if (cartIds.length > 1 || cartIds.indexOf("none") == -1) {
 			let delCart = await db.collection('carts').where({
 				_id: cmd.in(cartIds)
 			}).remove();
@@ -345,3 +365,36 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
+
+/**
+ * 生成序列号，时间+随机8位
+ */
+const genOrderNo = function() {
+	return dateFormat('yyyyMMddhhmmss') + (Math.random() + "").substr(2, 8);
+}
+
+/**
+ * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
+ * @param {Object} fmt
+ */
+const dateFormat = function(fmt) {
+	let getDate = new Date();
+	let o = {
+		'M+': getDate.getMonth() + 1,
+		'd+': getDate.getDate(),
+		'h+': getDate.getHours(),
+		'm+': getDate.getMinutes(),
+		's+': getDate.getSeconds(),
+		'q+': Math.floor((getDate.getMonth() + 3) / 3),
+		'S': getDate.getMilliseconds()
+	};
+	if (/(y+)/.test(fmt)) {
+		fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
+	}
+	for (let k in o) {
+		if (new RegExp('(' + k + ')').test(fmt)) {
+			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+		}
+	}
+	return fmt;
+}

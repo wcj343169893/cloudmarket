@@ -223,9 +223,9 @@ const saveUserInfo = function(data) {
  * @param {Object} data
  */
 const balancePay = function(data) {
-	data["ispay"]=true;
+	data["provider"]="balance";
 	return network({
-		url: "payInfo",
+		url: "payment",
 		data: data,
 		auth:true,
 		isShowLoading: true,

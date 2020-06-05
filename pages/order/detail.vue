@@ -286,7 +286,16 @@ export default {
 					data: data
 				}).then(res => {
 					console.log(res);
-					navToCreateOrder();
+					uni.setStorage({
+						key:"settlementCartsIds",
+						data:{
+							settlement:true
+						},
+						success:()=> {
+							navToCreateOrder();
+						}
+					})
+					//navToCreateOrder();
 				});
 			}
 		},

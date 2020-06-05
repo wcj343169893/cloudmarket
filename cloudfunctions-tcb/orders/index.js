@@ -89,6 +89,7 @@ exports.main = async (event, context) => {
 			cancelStyle: 1,
 			remark: 1,
 			shopid: 1,
+			yuding: 1,
 			"payInfo.time": 1,
 			"payInfo.name": 1,
 			lastPayTime: 1

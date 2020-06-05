@@ -32,13 +32,13 @@ export default {
 	data() {
 		return {
 			id: 0,
-			comefrom:"",
+			comefrom: '',
 			payType: '',
 			openid: '',
 			payment: [],
 			times: {
-				minute:"05",
-				second:"00",
+				minute: '05',
+				second: '00'
 			},
 			orderInfo: {
 				totalMoney: 0
@@ -51,8 +51,8 @@ export default {
 			this.id = options.id;
 			this.orderInfo.totalMoney = options.money;
 			this.comefrom = options.comefrom;
-		}else{
-			this.$api.msg("支付订单号不存在");
+		} else {
+			this.$api.msg('支付订单号不存在');
 			this.goBack();
 			return;
 		}
@@ -65,10 +65,10 @@ export default {
 	},
 	methods: {
 		async loadData() {
-			let paymentKey="paymentKey";
+			let paymentKey = 'paymentKey';
 			//优先从缓存加载支付方式
 			let data = uni.getStorageSync(paymentKey);
-			if(data){
+			if (data) {
 				this.payment = data;
 				this.payType = data[0].value;
 			}
@@ -84,9 +84,27 @@ export default {
 					}
 					//写入缓存
 					uni.setStorage({
-						key:paymentKey,
-						data:res.payment
-					})
+						key: paymentKey,
+						data: res.payment
+					});
+					//订单详情
+					uni.setStorage({
+						key: 'orderDetail',
+						data: this.orderInfo
+					});
+					//如果订单金额为0，则直接默认余额支付，并支付完成
+					if (this.orderInfo.totalMoney < 0.001) {
+						balancePay({
+							id: this.id
+						}).then(
+							res => {
+								this.paySuccess();
+							},
+							err => {
+								this.payFailed();
+							}
+						);
+					}
 					let time = new Date().getTime();
 					this.times = {
 						id: this.id,
@@ -97,7 +115,7 @@ export default {
 					miaoshaCountDown(this.times, this.orderInfo.lastPayTime, () => {
 						console.log('自动取消订单');
 						//this.cancelOrder(ele, index, 'auto');
-						if(this.comefrom=="order"){
+						if (this.comefrom == 'order') {
 							//默认切换到第一个选项卡，保证返回后一定有数据
 							this.$api.prePage().tabClick(0);
 						}
@@ -105,15 +123,18 @@ export default {
 							id: this.orderInfo._id,
 							type: 'cancel',
 							style: 'auto'
-						}).then(res => {
-							this.$api.msg('支付超时，订单已取消');
-							this.goBack();
-							//刷新上一页数据
-							this.$api.prePage().refreshList();
-						},err=>{
-							this.$api.msg('支付超时，订单已取消');
-							this.goBack();
-						});
+						}).then(
+							res => {
+								this.$api.msg('支付超时，订单已取消');
+								this.goBack();
+								//刷新上一页数据
+								this.$api.prePage().refreshList();
+							},
+							err => {
+								this.$api.msg('支付超时，订单已取消');
+								this.goBack();
+							}
+						);
 					});
 				},
 				err => {
@@ -163,7 +184,7 @@ export default {
 						// #ifdef MP-WEIXIN
 						...res,
 						// #endif
-						
+
 						// #ifdef APP-PLUS || MP-ALIPAY
 						orderInfo: res,
 						// #endif
