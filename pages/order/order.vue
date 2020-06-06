@@ -29,7 +29,7 @@
 									</view>
 									<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 									<view class="attr-box">
-										<text>单价:</text>
+										<text>{{item.priceTitle}}:</text>
 										<text class="price">{{ goodsItem.price }}</text>
 										<text>数量:</text>
 										<text>{{ goodsItem.amount }}</text>
@@ -42,13 +42,13 @@
 							<text class="num">{{ item.cartCount }}</text>
 							<text>件商品</text>	
 							<block v-if="item.yuding">
-								<text>定金</text>
+								<text class="m-l">定金</text>
 								<text class="price warning">{{ item.totalMoney }}</text>
-								<text>尾款</text>
+								<text class="m-l">尾款</text>
 								<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
 							</block>
 							<block v-else>
-								<text>实付款</text>	
+								<text class="m-l">实付款</text>	
 								<text class="price warning">{{ item.totalMoney }}</text>
 							</block>
 						</view>
@@ -186,8 +186,10 @@ export default {
 					res.data.forEach(ele => {
 						let isPay = true;
 						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
+						ele.priceTitle="单价";
 						//预定yuding  item.yuding.finalpay
 						if(ele.yuding){
+							ele.priceTitle="预售价";
 							ele.yuding.finalpay = 0;
 							if(ele.yuding.finalPaymentBeginTime < time){
 								ele.yuding.finalpay = 1;
@@ -317,6 +319,7 @@ export default {
 				style: style
 			}).then(res => {
 				console.log(res);
+				this.$api.msg("取消订单申请提交成功!")
 				//刷新当前列表数据
 				//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
 				//更改所有订单的状态
@@ -343,6 +346,7 @@ export default {
 				});
 			},err=>{
 				console.log("取消订单失败");
+				this.$api.msg("取消订单申请提交失败!")
 				//重新刷新页面数据
 				this.refreshList();
 			});
@@ -380,14 +384,17 @@ export default {
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail
-			if(item.yuding){
-				if(item.yuding.state == 0 || item.yuding.finalpay == 1){
+			if(item.state == 0){
+				if(item.yuding){
+					if(item.yuding.state == 0 || item.yuding.finalpay == 1){
+						console.log(item.yuding)
+						this.payOrder(item);
+						return;
+					}
+				}else{
 					this.payOrder(item);
 					return;
-				}
-			}else if(item.state == 0){
-				this.payOrder(item);
-				return;
+				} 
 			}
 			uni.setStorage({
 				key:"orderDetail",
@@ -723,5 +730,8 @@ page,
 	100% {
 		opacity: 0.2;
 	}
+}
+.m-l{
+	margin-left: 20upx;
 }
 </style>

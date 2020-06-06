@@ -270,7 +270,7 @@ export default {
 		},
 		buildGoodsInfo(item) {
 			this.imgs = [];
-			updateGoodsTags(item);
+			updateGoodsTags(item,true);
 			this.checkYuding(item);
 			this.checkMiaosha(item);
 			console.log('default_sku_id:', this.default_sku_id);

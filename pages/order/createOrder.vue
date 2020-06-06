@@ -15,10 +15,7 @@
 				<text class="yticon icon-you"></text>
 			</view>
 
-			<image
-				class="a-bg"
-				src="/static/address_bottom.png"
-			></image>
+			<image class="a-bg" src="/static/address_bottom.png"></image>
 		</navigator>
 		<!-- 新增地址 -->
 		<navigator v-else url="/pages/address/addressManage?type=new" class="address-section">
@@ -27,28 +24,44 @@
 				<view class="cen"><text>暂无收货地址，去添加</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<image
-				class="a-bg"
-				src="/static/address_bottom.png"
-			></image>
+			<image class="a-bg" src="/static/address_bottom.png"></image>
 		</navigator>
 		<view class="goods-section">
 			<view class="g-header b-b"><text class="name">产地直供，新鲜到家</text></view>
-			<view class="weui-flex">
-				<!-- 商品列表 -->
-				<scroll-view scroll-x="true" class="goods_list">
-					<view class="scoll-wrapper">
-						<view class="g-item" v-for="(item, index) in dataList" :key="index"><image :src="item.src"></image></view>
+			<block v-if="dataList.length > 1">
+				<view class="weui-flex">
+					<!-- 商品列表 -->
+					<scroll-view scroll-x="true" class="goods_list">
+						<view class="scoll-wrapper">
+							<view class="g-item" v-for="(item, index) in dataList" :key="index"><image :src="item.src"></image></view>
+						</view>
+					</scroll-view>
+					<!-- 总计 -->
+					<navigator url="/pages/order/goods" class="weui-flex__item">
+						<view class="total">
+							<text>共{{ cartCount }}件</text>
+							<text class="yticon icon-you"></text>
+						</view>
+					</navigator>
+				</view>
+			</block>
+			<block v-else>
+				<view class="goods-box-single" v-for="(goodsItem, index) in dataList" :key="index">
+					<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+					<view class="right">
+						<view class="">
+							<text class="title">{{ goodsItem.title }}</text>
+						</view>
+						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
+						<view class="attr-box">
+							<text>{{ priceTitle }}:</text>
+							<text class="price">{{ goodsItem.originPrice > 0 ? goodsItem.originPrice : goodsItem.price }}</text>
+							<text>数量:</text>
+							<text>{{ goodsItem.amount }}</text>
+						</view>
 					</view>
-				</scroll-view>
-				<!-- 总计 -->
-				<navigator url="/pages/order/goods" class="weui-flex__item">
-					<view class="total">
-						<text>共{{ cartCount }}件</text>
-						<text class="yticon icon-you"></text>
-					</view>
-				</navigator>
-			</view>
+				</view>
+			</block>
 		</view>
 
 		<!-- 优惠明细 -->
@@ -67,17 +80,41 @@
 		</view>
 		<!-- 金额明细 -->
 		<view class="yt-list">
-			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥{{ totalMoney + totalDiscount }}</text>
-			</view>
+			<block v-if="yuding">
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">阶段1：定金</text>
+					<text class="cell-tip">
+						<text class="price">{{ totalMoney + totalDiscount }}</text>
+					</text>
+				</view>
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">阶段2：尾款</text>
+					<text class="cell-tip">
+						<text class="price">{{ yuding.finishPaymentPrice }}</text>
+					</text>
+				</view>
+			</block>
+			<block v-else>
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">商品金额</text>
+					<text class="cell-tip">
+						<text class="price">{{ totalMoney + totalDiscount }}</text>
+					</text>
+				</view>
+			</block>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥{{ totalDiscount }}</text>
+				<text class="cell-tip red">
+					<text>-</text>
+					<text class="price">{{ totalDiscount }}</text>
+				</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
-				<text class="cell-tip">免运费</text>
+				<text class="cell-tip" v-if="freight > 0">
+					<text class="price">{{ freight }}</text>
+				</text>
+				<text class="cell-tip" v-else>免运费</text>
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
@@ -89,7 +126,7 @@
 		<view class="footer">
 			<view class="price-content">
 				<text>实付款</text>
-				<text class="price">{{ totalMoney }}</text>
+				<text class="price warning">{{ totalMoney }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -134,14 +171,17 @@ export default {
 					price: 5
 				}
 			],
-			ids:[],
+			ids: [],
 			dataList: [],
+			priceTitle: '单价',
 			//库存不足商品
 			stockNotEnough: [],
 			cartCount: 0,
 			totalMoney: 0,
 			totalDiscount: 0,
-			isSubmit:false,
+			freight: 0, //运费
+			isSubmit: false,
+			yuding: false,
 			addressData: {}
 		};
 	},
@@ -149,26 +189,18 @@ export default {
 		this.loadData();
 	},
 	computed: {
-		...mapState(['hasLogin', 'shopId', 'stationId','location'])
+		...mapState(['hasLogin', 'shopId', 'stationId', 'location'])
 	},
 	methods: {
 		async loadData() {
-			let ids = uni.getStorageSync("settlementCartsIds");
-			if(!ids){
-				console.log("结算信息不存在");
+			this.ids = uni.getStorageSync('settlementCartsIds');
+			if (!this.ids) {
+				console.log('结算信息不存在');
 				return;
 			}
-			console.log(ids);
-			this.ids = ids;
-			console.log({
-				id: this.shopId,
-				addressid:this.location.id,
-				stationId: this.stationId,
-				...this.ids
-			})
 			settlement({
 				id: this.shopId,
-				addressid:this.location.id,
+				addressid: this.location.id,
 				stationId: this.stationId,
 				...this.ids
 			}).then(
@@ -186,6 +218,11 @@ export default {
 					this.totalMoney = res.totalMoney;
 					this.totalDiscount = res.totalDiscount;
 					this.stockNotEnough = res.stockNotEnough;
+					this.freight = res.freight;
+					this.yuding = res.yuding;
+					if (this.yuding) {
+						this.priceTitle = '预售价';
+					}
 					if (this.stockNotEnough.length > 0) {
 						uni.showModal({
 							title: '库存不足提醒',
@@ -244,8 +281,8 @@ export default {
 				this.$api.msg('请填写收货地址');
 				return;
 			}
-			if(this.isSubmit){
-				return ;
+			if (this.isSubmit) {
+				return;
 			}
 			this.isSubmit = true;
 			settlement({
@@ -502,7 +539,6 @@ page {
 	}
 	.price {
 		font-size: 36upx;
-		color: $base-color;
 	}
 	.submit {
 		display: flex;
@@ -625,6 +661,34 @@ page {
 		&.r {
 			left: auto;
 			right: -6upx;
+		}
+	}
+}
+/* 单条商品 */
+.goods-box-single {
+	display: flex;
+	padding: 20upx;
+	.goods-img {
+		display: block;
+		width: 120upx;
+		height: 120upx;
+		border-radius: 4%;
+	}
+	.right {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding: 0 30upx 0 24upx;
+		overflow: hidden;
+		.title {
+			font-size: $font-base + 2upx;
+			color: $font-color-dark;
+			line-height: 1;
+		}
+		.attr-box {
+			font-size: $font-sm + 2upx;
+			color: $font-color-light;
+			padding: 8upx 0upx 0;
 		}
 	}
 }

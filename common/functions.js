@@ -14,6 +14,11 @@ const getOrderStateExp = function(item) {
 			stateTip = '待付款';
 			stateContent = "订单未支付，去付款";
 			stateTipColor = '#fa436a';
+			if(item.yuding){
+				if(item.yuding.state == 1){
+					stateContent = "订单已支付定金，等待付尾款";
+				}
+			}
 			break;
 		case 1:
 			stateTip = '待发货';
@@ -206,6 +211,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 		}
 	}else if(goods.yuding){
 		if(goods.yuding.endTime > time){
+			if(!isPrecise){
+				//更新商品价格
+				goods.price = goods.price+goods.yuding.price - goods.yuding.deduction;
+			}
 			tags.push({
 				type:"info",
 				text:"预售"

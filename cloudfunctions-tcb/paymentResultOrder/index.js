@@ -26,7 +26,7 @@ exports.main = async (event, context) => {
 	};
 	let type = "mall";
 	//支付定金
-	if (outTradeNo.indexOf("reserve_") === 0) {
+	if (outTradeNo.indexOf("YD_") === 0) {
 		conditions1 = {
 			"yuding.id": outTradeNo,
 		};

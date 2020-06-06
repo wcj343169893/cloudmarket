@@ -3,7 +3,7 @@
  * 插件市场导入
  * https://github.com/dcloudio/uniCloud-server-plugin/tree/master/src/entry/uni-pay
  */
-const uniPay = require('uni-pay');
+const uniPay = require('unipay');
 const db = uniCloud.database();
 const {
 	getAlipayConfig,
@@ -186,6 +186,8 @@ const balancePay = async function(uid, order, id) {
 			outTradeNo: id,
 			transactionId: log.id,
 			uid: uid,
+			tradeStatus:"TRADE_SUCCESS",
+			totalFee: parseInt(order.totalMoney*100),
 			type: "balance",
 			name: "余额支付",
 			balance: yue,

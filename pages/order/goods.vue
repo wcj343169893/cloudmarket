@@ -3,48 +3,49 @@
 		<view class="cart-list">
 			<block v-for="(item, index) in cartList" :key="index">
 				<view class="goodsList" v-if="item.amount > 0">
-				<view class="weui-flex">
-					<view class="weui-flex start">
-						<view class="weui-flex-check">
-							<view class="image-wrapper">
-								<image
-									:src="item.src"
-									:class="[item.loaded]"
-									mode="aspectFill"
-									lazy-load
-									@load="onImageLoad('cartList', index)"
-									@error="onImageError('cartList', index)"
-								></image>
-							</view>
-						</view>
-						<view class="desc weui-flex__item">
-							<view class="">
-								<text class="title">{{ item.title }}</text>
-							</view>
-							<view class="">
-								<text>{{ item.subName }}</text>
-								<text class="" v-if="item.cutPrice > 0">
-									<text class="unit">比加入时便宜</text>
-									<text class="price emphasis">{{ item.cutPrice }}</text>
-								</text>
-							</view>
-							<view class="buttons" v-if="item.originPrice > 0">
-								<view class="">
-									<text class="unit">原价</text>
-									<text class="price del">{{ item.originPrice }}</text>
+					<view class="weui-flex">
+						<view class="weui-flex start">
+							<view class="weui-flex-check">
+								<view class="image-wrapper">
+									<image
+										:src="item.src"
+										:class="[item.loaded]"
+										mode="aspectFill"
+										lazy-load
+										@load="onImageLoad('cartList', index)"
+										@error="onImageError('cartList', index)"
+									></image>
 								</view>
 							</view>
-							<view >
-								<text class="price">{{ item.price }}</text><text>X {{item.amount}}</text>
+							<view class="desc weui-flex__item">
+								<view class="">
+									<text class="title">{{ item.title }}</text>
+								</view>
+								<view class="">
+									<text>{{ item.subName }}</text>
+									<text class="" v-if="item.cutPrice > 0">
+										<text class="unit">比加入时便宜</text>
+										<text class="price emphasis">{{ item.cutPrice }}</text>
+									</text>
+								</view>
+								<view class="buttons" v-if="item.originPrice > 0">
+									<view class="">
+										<text class="unit">原价</text>
+										<text class="price del">{{ item.originPrice }}</text>
+									</view>
+								</view>
+								<view>
+									<text class="price">{{ item.price }}</text>
+									<text>X {{ item.amount }}</text>
+								</view>
+							</view>
+						</view>
+						<view class="total">
+							<view class="price warning">
+								<text>{{ item.price * item.amount }}</text>
 							</view>
 						</view>
 					</view>
-					<view class="total">
-						<view class="price warning">
-							<text>{{item.price*item.amount}}</text>
-						</view>
-					</view>
-				</view>
 				</view>
 			</block>
 		</view>
@@ -83,13 +84,13 @@ export default {
 </script>
 
 <style lang="scss">
-	page{
-		background-color: $background-color;
-	}
+page {
+	background-color: $background-color;
+}
 .weui-flex {
 	display: flex;
 	align-items: center;
-	&.start{
+	&.start {
 		align-items: flex-start;
 	}
 }
@@ -117,7 +118,7 @@ export default {
 		padding: 20upx;
 		border-radius: 12upx;
 		margin-bottom: 8upx;
-		.start{
+		.start {
 			flex: 1;
 		}
 		.sub-catename {

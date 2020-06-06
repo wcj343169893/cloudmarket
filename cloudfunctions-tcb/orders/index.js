@@ -12,7 +12,9 @@ const auth = uniCloud.auth();
  */
 exports.main = async (event, context) => {
 	//id为5e9d61c31ee4a2004c55801e
-	let {customUserId} = await auth.getUserInfo();
+	let {
+		customUserId
+	} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -92,7 +94,11 @@ exports.main = async (event, context) => {
 			yuding: 1,
 			"payInfo.time": 1,
 			"payInfo.name": 1,
-			lastPayTime: 1
+			"yudingPayInfo.time": 1,
+			"yudingPayInfo.name": 1,
+			lastPayTime: 1,
+			cancelApply: 1,
+			refundApply: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
@@ -101,10 +107,14 @@ exports.main = async (event, context) => {
 		conditions["_id"] = id;
 		let field = {
 			state: 1,
-			shopid:1
+			shopid: 1
 		};
 		if (type == "cancel") {
-			field["goods"]=1;
+			field["goods"] = 1;
+			field["yuding"] = 1;
+			field["yudingPayInfo"] = 1;
+			field["payInfo"] = 1;
+			field["body"] = 1;
 			conditions["state"] = cmd.in([0, -1]);
 		}
 		if (type == "detail") {
@@ -122,7 +132,8 @@ exports.main = async (event, context) => {
 				cancelStyle: 1,
 				shopid: 1,
 				modified: 1,
-				payInfo: 1
+				payInfo: 1,
+				yudingPayInfo: 1
 			};
 		}
 		data = await orderCollection.where(conditions).limit(1).field(field).get();
@@ -134,17 +145,27 @@ exports.main = async (event, context) => {
 		}
 		let order = data.data[0];
 		if (type == "cancel") {
-			if (order.state == -1) {
+			if (order.state < 0) {
 				return {
 					"code": 404,
 					"message": "订单已取消"
 				};
+			}else if (order.state > 0) {
+				//@todo 用户已付款，发送通知和取消申请，正常情况不会出现在这里，用户需发起退款申请
+				return {
+					"code": 200,
+					"message": "已发送取消申请"
+				};
 			}
+			//如果未付款，可以直接取消，
+			//已付款，或者已付定金，则发起取消请求
 			//取消未付款订单
 			data = await orderCollection.doc(order._id).update({
 				state: -1,
 				cancelStyle: event.style
 			});
+			//取消申请
+			await pushOrderCancelInfo(order._id, "您的取消申请已提交。");
 			for (let ele of order.goods) {
 				if (ele.miaosha) {
 					let res = await updateGoodsMiaoshaStock(ele, -1);
@@ -156,6 +177,25 @@ exports.main = async (event, context) => {
 			//更新用户已取消和未支付数量
 			let resUser = await updateUserOrderCount(uid, "canceled", 1, "unpaid", order.shopid);
 			console.log("resUser", resUser);
+
+			if (order.payInfo) {
+				//这里已经是走申请退款流程，不能直接取消，需要商家同意
+				/* await pushOrderCancelInfo(order._id, "您的订单拦截成功，正在进行退款审核，请耐心等待。");
+				order.payInfo.id=order._id;
+				//退款定时器,全额退款
+				await addOrderRefund(order.payInfo,order.payInfo.totalFee,"取消"+order.body); */
+			} else if (order.yudingPayInfo) {
+				if (order.yuding.finalPaymentBeginTime < time) {
+					await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，已支付定金不予退还。");
+				} else {
+					await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
+					order.yudingPayInfo.id=order._id;
+					//退款定时器,全额退款
+					await addOrderRefund(order.yudingPayInfo,order.yudingPayInfo.totalFee,"取消"+order.body);
+				}
+			} else {
+				await pushOrderCancelInfo(order._id, "您的订单已取消。");
+			}
 		} else if (type == "delete") {
 			//删除订单，软删除
 			data = await orderCollection.doc(order._id).update({
@@ -184,3 +224,31 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
+
+/**
+ * 添加取消订单进度
+ * @param {Object} id 
+ * @param {Object} message
+ */
+const pushOrderCancelInfo = async function(id, message) {
+	return await db.collection("orders").doc(id).update({
+		cancelApply: cmd.push({
+			message: message,
+			time: new Date().getTime()
+		})
+	});
+}
+/**
+ * 创建退款
+ * @param {Object} payInfo 
+ */
+const addOrderRefund = async function(payInfo, refundFee, refundDesc) {
+	//order_refunds
+	return await db.collection("order_refunds").add({
+		refundStatus: "refunding",
+		refundFee: refundFee,
+		refundDesc: refundDesc,
+		created: new Date().toISOString(),
+		...payInfo
+	});
+}

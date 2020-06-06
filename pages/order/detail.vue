@@ -14,17 +14,30 @@
 		<view class="section m-t">
 			<view class="sub-title">
 				<text>{{ info.stateContent }}</text>
+				<!-- 付尾款提示 ,只有付了定金，才能进入此详细页面-->
+				<view class="" v-if="info.yuding && info.state == 0">
+					<text>应付尾款：</text>
+					<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+					<text class="m-l">{{ info.yuding.finalPaymentBeginTimeStr }}开始</text>
+				</view>
+				<!-- 退款进度 -->
+				<view class="apply-list" v-if="info.cancelApply">
+					<text class="title">取消进度：</text>
+					<view class="apply-list-content">
+						<view v-for="(ca, iCa) in info.cancelApply" :key="iCa" class="weui-flex">
+							<text>{{ ca.message }}</text>
+							<text>{{ ca.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+						</view>
+					</view>
+				</view>
 			</view>
-			<view class="buttons" >
-				<block v-if="info.state == 1">
-					<button type="default" class="action-btn" @click="pusheDelivery">催发货</button>
+			<view class="buttons">
+				<block v-if="info.state == 0">
+					<block v-if="info.yuding"><button class="action-btn disabled">去支付尾款</button></block>
 				</block>
-				<block v-else-if="info.state == 2">
-					<button type="default" class="action-btn" @click="confirmOrder">确定收货</button>
-				</block>
-				<block v-else-if="info.state == 3">
-					<button type="default" class="action-btn recom" @click="evaluateOrder">评价一下</button>
-				</block>
+				<block v-else-if="info.state == 1"><button type="default" class="action-btn" @click="pusheDelivery">催发货</button></block>
+				<block v-else-if="info.state == 2"><button type="default" class="action-btn" @click="confirmOrder">确定收货</button></block>
+				<block v-else-if="info.state == 3"><button type="default" class="action-btn recom" @click="evaluateOrder">评价一下</button></block>
 				<block v-else>
 					<button type="default" class="action-btn" @click="deleteOrder">删除订单</button>
 					<button type="default" class="action-btn" @click="buyAgain()">再次购买</button>
@@ -45,7 +58,7 @@
 			<view class="weui-flex">
 				<view class=""><text>备注</text></view>
 				<view class="">
-					<text>{{ info.remark||"无" }}</text>
+					<text>{{ info.remark || '无' }}</text>
 				</view>
 			</view>
 		</view>
@@ -78,7 +91,7 @@
 								</view>
 								<view class=" prices">
 									<view class="">
-										<text>单价:</text>
+										<text>{{ priceTitle }}:</text>
 										<text class="price">{{ item.price }}</text>
 										<text>数量:</text>
 										<text>{{ item.amount }}</text>
@@ -86,7 +99,8 @@
 								</view>
 								<view class="buttons">
 									<button type="default" v-if="info.state > 2" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
-									<button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button>
+									<block v-if="info.yuding"></block>
+									<block v-else><button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button></block>
 								</view>
 							</view>
 						</view>
@@ -98,23 +112,43 @@
 				<text class="yticon icon-jiantour-copy"></text>
 			</view>
 			<view class="section ab">
-				<view class="weui-flex">
-					<view class=""><text>商品金额</text></view>
-					<view class="">
+				<block v-if="info.yuding">
+					<view class="weui-flex">
+						<text>阶段1：定金</text>
 						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
 					</view>
-				</view>
+					<block v-if="info.yudingPayInfo">
+						<view class="weui-flex">
+							<text class="m-l2">支付方式</text>
+							<text>{{ info.yudingPayInfo.name }}</text>
+						</view>
+						<view class="weui-flex">
+							<text class="m-l2">支付时间</text>
+							<text>{{ info.yudingPayInfo.time }}</text>
+						</view>
+					</block>
+
+					<view class="weui-flex">
+						<text>阶段2：尾款</text>
+						<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+					</view>
+				</block>
+				<block v-else>
+					<view class="weui-flex">
+						<text class="">商品金额</text>
+						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+					</view>
+				</block>
 				<view class="weui-flex">
 					<view class=""><text>优惠金额</text></view>
 					<view class="">
-						<text>-</text><text class="price">{{ info.totalDiscount }}</text>
+						<text>-</text>
+						<text class="price">{{ info.totalDiscount }}</text>
 					</view>
 				</view>
 				<view class="weui-flex">
 					<view class=""><text>实付金额</text></view>
-					<view class="">
-						<text class="price warning">{{ info.totalMoney }}</text>
-					</view>
+					<text class="price warning">{{ info.totalMoney }}</text>
 				</view>
 			</view>
 		</view>
@@ -125,7 +159,7 @@
 				<view class="">
 					<text>{{ info.id }}</text>
 				</view>
-			</view>	
+			</view>
 			<view class="weui-flex">
 				<view class=""><text>支付编号</text></view>
 				<view class="">
@@ -139,18 +173,18 @@
 				</view>
 			</view>
 			<block v-if="info.payInfo">
-			<view class="weui-flex">
-				<view class=""><text>支付方式</text></view>
-				<view class="">
-					<text>{{ info.payInfo.name }}</text>
+				<view class="weui-flex">
+					<view class=""><text>支付方式</text></view>
+					<view class="">
+						<text>{{ info.payInfo.name }}</text>
+					</view>
 				</view>
-			</view>
-			<view class="weui-flex">
-				<view class=""><text>支付时间</text></view>
-				<view class="">
-					<text>{{ info.payInfo.time }}</text>
+				<view class="weui-flex">
+					<view class=""><text>支付时间</text></view>
+					<view class="">
+						<text>{{ info.payInfo.time }}</text>
+					</view>
 				</view>
-			</view>
 			</block>
 		</view>
 	</view>
@@ -159,13 +193,14 @@
 <script>
 import { mapState } from 'vuex';
 import { orders, addManyCart } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp,dateFormat } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp, dateFormat } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			id: 0,
 			goodsList: [],
 			moreGoodsCount: 0,
+			priceTitle: '单价',
 			maxShowCount: 3,
 			info: {}
 		};
@@ -181,16 +216,16 @@ export default {
 		async loadData() {
 			//优先从缓存读取，有助于显示速度
 			let item = uni.getStorageSync('orderDetail');
-			if(item){
+			if (item) {
 				//从缓存读取
 				this.orderInfo(item);
-			}else{
+			} else {
 				//从网络获取
 				orders({
 					id: this.id,
 					type: 'detail'
 				}).then(res => {
-					res.created = dateFormat(res.created,"yyyy-MM-dd hh:mm:ss")
+					res.created = dateFormat(res.created, 'yyyy-MM-dd hh:mm:ss');
 					this.orderInfo(res);
 				});
 			}
@@ -203,8 +238,16 @@ export default {
 			res.stateContent = stateContent;
 			this.moreGoodsCount = res.goods.length - this.maxShowCount;
 			//支付时间
-			if(res.payInfo){
-				res.payInfo.time = dateFormat(res.payInfo.time,"yyyy-MM-dd hh:mm:ss")
+			if (res.payInfo) {
+				res.payInfo.time = dateFormat(res.payInfo.time, 'yyyy-MM-dd hh:mm:ss');
+			}
+			//预定支付方式
+			if (res.yudingPayInfo) {
+				res.yudingPayInfo.time = dateFormat(res.yudingPayInfo.time, 'yyyy-MM-dd hh:mm:ss');
+			}
+			//颠倒顺序
+			if(res.cancelApply){
+				res.cancelApply = res.cancelApply.reverse();
 			}
 			this.info = res;
 			if (this.moreGoodsCount > 0) {
@@ -212,13 +255,17 @@ export default {
 			} else {
 				this.goodsList = res.goods;
 			}
+			if (this.info.yuding) {
+				this.priceTitle = '预售价';
+				this.info.yuding.finalPaymentBeginTimeStr = dateFormat(this.info.yuding.finalPaymentBeginTime, 'yyyy-MM-dd hh:mm:ss');
+			}
 		},
 		showAllGoods() {
 			this.goodsList = this.info.goods;
 			this.moreGoodsCount = 0;
 		},
-		navToGoodsPage(item){
-			navToGoodsItemPage(item)
+		navToGoodsPage(item) {
+			navToGoodsItemPage(item);
 		},
 		//删除订单
 		deleteOrder() {
@@ -268,9 +315,19 @@ export default {
 					this.$api.msg('加入购物车成功', 1500, false, 'success');
 				});
 			} else {
-				//加入商品到购物车，再跳转到结算
+				//直接提交订单，如果存在库存不足，将提交失败
 				let goods = this.info.goods;
-				for (let ele of this.info.goods) {
+				uni.setStorage({
+					key: 'settlementCartsIds',
+					data: {
+						goodslist: goods
+					},
+					success: () => {
+						navToCreateOrder();
+					}
+				});
+				//加入商品到购物车，再跳转到结算
+				/* for (let ele of this.info.goods) {
 					data.push({
 						goods_id: ele.id,
 						sku_id: ele.sku_id,
@@ -296,12 +353,12 @@ export default {
 						}
 					})
 					//navToCreateOrder();
-				});
+				}); */
 			}
 		},
 		//催老板发货
-		pusheDelivery(){
-			this.$api.msg("已发送消息给商家,请耐心等待");
+		pusheDelivery() {
+			this.$api.msg('已发送消息给商家,请耐心等待');
 		},
 		//确定收货
 		confirmOrder(ele) {
@@ -392,7 +449,7 @@ page {
 }
 .section {
 	background: #ffffff;
-	padding:20upx 30upx;
+	padding: 20upx 30upx;
 	border-radius: 20upx;
 }
 .message_notice {
@@ -416,6 +473,10 @@ page {
 	}
 	&.recom {
 		background: $base-color;
+		color: #fff;
+	}
+	&.disabled {
+		background-color: $font-color-disabled;
 		color: #fff;
 	}
 }
@@ -509,10 +570,13 @@ page {
 .m-l {
 	margin-left: 10upx;
 }
+.m-l2 {
+	margin-left: 20upx;
+}
 .address {
 	position: relative;
 	padding-bottom: 14upx;
-	.content{
+	.content {
 		text-align: right;
 	}
 }
@@ -528,10 +592,28 @@ page {
 		margin-bottom: 14upx;
 	}
 }
-.price{
+.price {
 	color: $font-color-dark;
 	&.warning {
 		color: $font-color-warning;
+	}
+}
+.apply-list {
+	.title{
+		font-weight: 500;
+	}
+	.apply-list-content {
+		flex: 1;
+		color: $font-color-disabled;
+		padding-left: 20upx;
+		.weui-flex {
+			flex-direction: column;
+			align-items: inherit;
+			margin-bottom: 10upx;
+			&:nth-child(1){
+				color: $base-color;
+			}
+		}
 	}
 }
 </style>

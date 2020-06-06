@@ -6,7 +6,8 @@ const {
 	updateGoodsStock,
 	updateUserOrderCount,
 	genIdentityId,
-	getUserInfoById
+	getUserInfoById,
+	genOrderNo
 } = require('base-common');
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
@@ -25,19 +26,32 @@ exports.main = async (event, context) => {
 	let addressid = event.addressid;
 	//处理类型，preview，submit
 	let type = event.type;
+	//console.log(event)
 	//忽略库存不足商品
 	const cartCollection = db.collection('carts');
+	let lastPayTimeMinute = 5;
 	let carts = {
 		data: []
 	};
-	//单个商品结算,必须存在商品goods_id，型号sku_id，数量amount,price=0
 	if (event.goods) {
+		//单个商品结算,必须存在商品goods_id，型号sku_id，数量amount,price=0
 		carts.data.push({
 			_id: "none",
 			goods_id: +event.goods.id,
-			sku_id: +event.goods.sku_id ? event.goods.sku_id : 0,
+			sku_id: event.goods.sku_id > 0 ? +event.goods.sku_id : 0,
 			amount: +event.goods.amount,
 			price: 0
+		});
+	} else if (event.goodslist) {
+		//多条商品提交订单,订单详情-->再次购买
+		event.goodslist.map(goods => {
+			carts.data.push({
+				_id: "none",
+				goods_id: +goods.id,
+				sku_id: goods.sku_id > 0 ? +goods.sku_id : 0,
+				amount: +goods.amount,
+				price: parseFloat(goods.price)
+			});
 		});
 	} else {
 		//购物车结算
@@ -75,6 +89,7 @@ exports.main = async (event, context) => {
 		"totalMoney": 0,
 		"stockNotEnough": [],
 		"totalDiscount": 0,
+		"freight": 0,//运费
 		"address": {},
 		"goods": []
 	}
@@ -183,6 +198,7 @@ exports.main = async (event, context) => {
 				data.totalMoney += ele.yuding.price * ele.amount;
 				data.goods.push(ele);
 				data.cartCount += ele.amount;
+				lastPayTimeMinute = 30;
 			} else {
 				//普通购买
 				if (ele.miaosha) {
@@ -301,8 +317,8 @@ exports.main = async (event, context) => {
 		const day = new Date().toISOString();
 		data["created"] = day;
 		data["modified"] = day;
-		//最后支付时间，否则自动取消订单,5分钟支付时间
-		data["lastPayTime"] = (new Date()).getTime() + 5 * 60 * 1000;
+		//最后支付时间，否则自动取消订单,5分钟支付时间,预定订单30分钟
+		data["lastPayTime"] = (new Date()).getTime() + lastPayTimeMinute * 60 * 1000;
 		//用户设备信息
 		data["platform"] = [
 			context.OS,
@@ -321,7 +337,7 @@ exports.main = async (event, context) => {
 		data["id"] = genOrderNo();
 		if (data.yuding) {
 			//获得预定支付订单id
-			data.yuding.id = "reserve_" + genOrderNo();
+			data.yuding.id = "YD_" + genOrderNo();
 			//未支付
 			data.yuding.state = 0;
 		}
@@ -344,8 +360,8 @@ exports.main = async (event, context) => {
 			};
 		}
 
-		//删除购物车cartId-------------我怀疑不支持异步操作--------单个商品结算
-		if (cartIds.length > 1 || cartIds.indexOf("none") == -1) {
+		//删除购物车cartId-------------我怀疑不支持异步操作--------单个商品结算+多商品结算
+		if (cartIds.indexOf("none") == -1) {
 			let delCart = await db.collection('carts').where({
 				_id: cmd.in(cartIds)
 			}).remove();
@@ -365,36 +381,3 @@ exports.main = async (event, context) => {
 		"data": data
 	};
 };
-
-/**
- * 生成序列号，时间+随机8位
- */
-const genOrderNo = function() {
-	return dateFormat('yyyyMMddhhmmss') + (Math.random() + "").substr(2, 8);
-}
-
-/**
- * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
- * @param {Object} fmt
- */
-const dateFormat = function(fmt) {
-	let getDate = new Date();
-	let o = {
-		'M+': getDate.getMonth() + 1,
-		'd+': getDate.getDate(),
-		'h+': getDate.getHours(),
-		'm+': getDate.getMinutes(),
-		's+': getDate.getSeconds(),
-		'q+': Math.floor((getDate.getMonth() + 3) / 3),
-		'S': getDate.getMilliseconds()
-	};
-	if (/(y+)/.test(fmt)) {
-		fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
-	}
-	for (let k in o) {
-		if (new RegExp('(' + k + ')').test(fmt)) {
-			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
-		}
-	}
-	return fmt;
-}

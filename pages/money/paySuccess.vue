@@ -41,9 +41,6 @@ export default {
 		}
 		console.log(options);
 		this.id = options.id;
-		if (this.comefrom == 'order') {
-			this.changeOrderTabs(2);
-		}
 		this.detailUrl = '/pages/order/detail?id=' + this.id;
 		this.loadData();
 	},
@@ -64,6 +61,10 @@ export default {
 						if (this.comefrom == 'order') {
 							this.changeOrderTabs(1);
 						}
+					}else{
+						if (this.comefrom == 'order') {
+							this.changeOrderTabs(2);
+						}
 					} 
 					uni.removeStorage({
 						key: 'orderDetail'
@@ -74,7 +75,7 @@ export default {
 		async changeOrderTabs(index) {
 			//把订单列表的选项卡切换到待收货 2
 			this.$api.prePage().tabClick(index);
-			console.log('切换订单列表选项卡');
+			console.log('切换订单列表选项卡',index);
 		}
 	}
 };
