@@ -68,12 +68,14 @@ exports.main = async (event, context) => {
 				}
 			}
 			//支付预定订单
+			order.totalMoney = order.yuding.price;
 			id = order.yuding.id;
 			order.body = "定金：" + order.body;
 			console.log("定金", id, order.yuding);
 		} else {
 			//支付尾款
 			order.totalMoney = order.yuding.finishPaymentPrice;
+			order.body = "尾款：" + order.body;
 			console.log("尾款", order.yuding);
 		}
 	}
@@ -186,8 +188,8 @@ const balancePay = async function(uid, order, id) {
 			outTradeNo: id,
 			transactionId: log.id,
 			uid: uid,
-			tradeStatus:"TRADE_SUCCESS",
-			totalFee: parseInt(order.totalMoney*100),
+			tradeStatus: "TRADE_SUCCESS",
+			totalFee: parseInt(order.totalMoney * 100),
 			type: "balance",
 			name: "余额支付",
 			balance: yue,

@@ -10,6 +10,27 @@
 		<view class="section m-t">
 			<view class="sub-title">
 				<text>{{ info.stateContent }}</text>
+				<!-- 付尾款提示 ,只有付了定金，才能进入此详细页面-->
+				<view class="" v-if="info.yuding && info.state == 0">
+					<block v-if="info.yuding.state == 0">
+						<text>未支付定金</text>
+					</block>
+					<block v-else>
+						<text>应付尾款：</text>
+						<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+						<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
+					</block>
+				</view>
+				<!-- 退款进度 -->
+				<view class="apply-list" v-if="info.cancelApply">
+					<text class="title">取消进度：</text>
+					<view class="apply-list-content">
+						<view v-for="(ca, iCa) in info.cancelApply" :key="iCa" class="weui-flex">
+							<text>{{ ca.message }}</text>
+							<text>{{ ca.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+						</view>
+					</view>
+				</view>
 			</view>
 			<view class="buttons">
 				<button type="default" class="action-btn" @click="printTicket">打印小票</button>
@@ -43,12 +64,33 @@
 		</view>
 		<view class="m-t"></view>
 		<view class="section ab important">
-			<view class="weui-flex">
-				<view class=""><text>商品金额</text></view>
-				<view class="">
+			<block v-if="info.yuding">
+				<view class="weui-flex">
+					<text>阶段1：定金</text>
+					<text class="price">{{ info.yuding.price }}</text>
+				</view>
+				<block v-if="info.yuding.payInfo">
+					<view class="weui-flex">
+						<text class="m-l2">支付方式</text>
+						<text>{{ info.yuding.payInfo.name }}</text>
+					</view>
+					<view class="weui-flex">
+						<text class="m-l2">支付时间</text>
+						<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+					</view>
+				</block>
+			
+				<view class="weui-flex">
+					<text>阶段2：尾款</text>
+					<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+				</view>
+			</block>
+			<block v-else>
+				<view class="weui-flex">
+					<text class="">商品金额</text>
 					<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
 				</view>
-			</view>
+			</block>
 			<view class="weui-flex">
 				<view class=""><text>优惠金额</text></view>
 				<view class="">
@@ -139,7 +181,7 @@
 			<view class="weui-flex">
 				<view class=""><text>下单时间</text></view>
 				<view class="">
-					<text class="">{{ info.created }}</text>
+					<text class="">{{ info.created  | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 				</view>
 			</view>
 			<block v-if="info.payInfo">
@@ -152,7 +194,7 @@
 				<view class="weui-flex">
 					<view class=""><text>支付时间</text></view>
 					<view class="">
-						<text>{{ info.payInfo.time }}</text>
+						<text>{{ info.payInfo.time   | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 					</view>
 				</view>
 			</block>
@@ -164,7 +206,7 @@
 import { mapState } from 'vuex';
 import { addManyCart, orderAdmin } from '@/common/admin_request.js';
 import { orders } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp, dateFormat } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -196,7 +238,6 @@ export default {
 					id: this.id,
 					type: 'detail'
 				}).then(res => {
-					res.created = dateFormat(res.created, 'yyyy-MM-dd hh:mm:ss');
 					this.orderInfo(res);
 				});
 			}
@@ -209,10 +250,6 @@ export default {
 			res.stateContent = stateContent;
 			//this.moreGoodsCount = res.goods.length - this.maxShowCount;
 			this.goodsCount=res.goods.length;
-			//支付时间
-			if (res.payInfo) {
-				res.payInfo.time = dateFormat(res.payInfo.time, 'yyyy-MM-dd hh:mm:ss');
-			}
 			this.info = res;
 			this.goodsList = res.goods;
 			this.shopid = this.info.shopid;
@@ -457,6 +494,9 @@ page {
 }
 .m-l {
 	margin-left: 10upx;
+}
+.m-l2 {
+	margin-left: 20upx;
 }
 .address {
 	position: relative;

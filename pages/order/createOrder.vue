@@ -84,7 +84,7 @@
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">阶段1：定金</text>
 					<text class="cell-tip">
-						<text class="price">{{ totalMoney + totalDiscount }}</text>
+						<text class="price">{{ yuding.price }}</text>
 					</text>
 				</view>
 				<view class="yt-list-cell b-b">
@@ -125,7 +125,7 @@
 		<!-- 底部 -->
 		<view class="footer">
 			<view class="price-content">
-				<text>实付款</text>
+				<text>{{totalTitle}}</text>
 				<text class="price warning">{{ totalMoney }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
@@ -174,6 +174,7 @@ export default {
 			ids: [],
 			dataList: [],
 			priceTitle: '单价',
+			totalTitle: '实付款',
 			//库存不足商品
 			stockNotEnough: [],
 			cartCount: 0,
@@ -222,6 +223,8 @@ export default {
 					this.yuding = res.yuding;
 					if (this.yuding) {
 						this.priceTitle = '预售价';
+						this.totalTitle = "定金";
+						this.totalMoney = this.yuding.price;
 					}
 					if (this.stockNotEnough.length > 0) {
 						uni.showModal({

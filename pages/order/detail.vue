@@ -18,7 +18,7 @@
 				<view class="" v-if="info.yuding && info.state == 0">
 					<text>应付尾款：</text>
 					<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
-					<text class="m-l">{{ info.yuding.finalPaymentBeginTimeStr }}开始</text>
+					<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 				</view>
 				<!-- 退款进度 -->
 				<view class="apply-list" v-if="info.cancelApply">
@@ -98,7 +98,7 @@
 									</view>
 								</view>
 								<view class="buttons">
-									<button type="default" v-if="info.state > 2" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
+									<button type="default" v-if="info.state > 0" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
 									<block v-if="info.yuding"></block>
 									<block v-else><button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button></block>
 								</view>
@@ -115,16 +115,16 @@
 				<block v-if="info.yuding">
 					<view class="weui-flex">
 						<text>阶段1：定金</text>
-						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+						<text class="price">{{ info.yuding.price }}</text>
 					</view>
-					<block v-if="info.yudingPayInfo">
+					<block v-if="info.yuding.payInfo">
 						<view class="weui-flex">
 							<text class="m-l2">支付方式</text>
-							<text>{{ info.yudingPayInfo.name }}</text>
+							<text>{{ info.yuding.payInfo.name }}</text>
 						</view>
 						<view class="weui-flex">
 							<text class="m-l2">支付时间</text>
-							<text>{{ info.yudingPayInfo.time }}</text>
+							<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
 					</block>
 
@@ -169,7 +169,7 @@
 			<view class="weui-flex">
 				<view class=""><text>下单时间</text></view>
 				<view class="">
-					<text class="">{{ info.created }}</text>
+					<text class="">{{ info.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 				</view>
 			</view>
 			<block v-if="info.payInfo">
@@ -182,7 +182,7 @@
 				<view class="weui-flex">
 					<view class=""><text>支付时间</text></view>
 					<view class="">
-						<text>{{ info.payInfo.time }}</text>
+						<text>{{ info.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 					</view>
 				</view>
 			</block>
@@ -193,7 +193,7 @@
 <script>
 import { mapState } from 'vuex';
 import { orders, addManyCart } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp, dateFormat } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -225,7 +225,6 @@ export default {
 					id: this.id,
 					type: 'detail'
 				}).then(res => {
-					res.created = dateFormat(res.created, 'yyyy-MM-dd hh:mm:ss');
 					this.orderInfo(res);
 				});
 			}
@@ -237,14 +236,6 @@ export default {
 			res.stateTipColor = stateTipColor;
 			res.stateContent = stateContent;
 			this.moreGoodsCount = res.goods.length - this.maxShowCount;
-			//支付时间
-			if (res.payInfo) {
-				res.payInfo.time = dateFormat(res.payInfo.time, 'yyyy-MM-dd hh:mm:ss');
-			}
-			//预定支付方式
-			if (res.yudingPayInfo) {
-				res.yudingPayInfo.time = dateFormat(res.yudingPayInfo.time, 'yyyy-MM-dd hh:mm:ss');
-			}
 			//颠倒顺序
 			if(res.cancelApply){
 				res.cancelApply = res.cancelApply.reverse();
@@ -257,7 +248,6 @@ export default {
 			}
 			if (this.info.yuding) {
 				this.priceTitle = '预售价';
-				this.info.yuding.finalPaymentBeginTimeStr = dateFormat(this.info.yuding.finalPaymentBeginTime, 'yyyy-MM-dd hh:mm:ss');
 			}
 		},
 		showAllGoods() {

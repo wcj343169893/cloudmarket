@@ -65,11 +65,13 @@ exports.main = async (event, context) => {
 			}
 			//支付预定订单
 			id = order.yuding.id;
+			order.totalMoney = order.yuding.price;
 			order.body = "定金：" + order.body;
 			order.yuding.payType="dingjin";
 		} else {
 			//支付尾款
 			order.totalMoney = order.yuding.finishPaymentPrice;
+			order.body = "尾款：" + order.body;
 			order.yuding.payType="weikuan";
 		}
 	}

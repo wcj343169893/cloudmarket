@@ -89,7 +89,7 @@ exports.main = async (event, context) => {
 		"totalMoney": 0,
 		"stockNotEnough": [],
 		"totalDiscount": 0,
-		"freight": 0,//运费
+		"freight": 0, //运费
 		"address": {},
 		"goods": []
 	}
@@ -187,15 +187,22 @@ exports.main = async (event, context) => {
 			//提前预定，有折扣
 			if (ele.yuding && ele.yuding.beginTime < time && ele.yuding.endTime > time) {
 				//@todo 在预订时间内，仅支付定金,如果已经过了预定期，则不生效
-				data.yuding = ele.yuding;
+				let yuding = { ...ele.yuding
+				};
 				//更改商品原价=原价-抵扣价,最大抵扣完，不会出现负数
-				let price = ele.price - ele.yuding.deduction;
-				ele.price = price > 0 ? price : ele.yuding.price;
+				let price = ele.price - (yuding.deduction - yuding.price);
+				//预售价
+				ele.price = price > 0 ? price : yuding.price;
 				//尾款=尾款单价*数量，只支持单个商品预定，所以不存在尾款累加
-				let finishPaymentPrice = (ele.price - ele.yuding.price) * ele.amount;
-				data.yuding.finishPaymentPrice = Number(finishPaymentPrice.toFixed(2));
-				//购物车定金总结
-				data.totalMoney += ele.yuding.price * ele.amount;
+
+				//总定金
+				yuding.price = yuding.price * ele.amount;
+				//总尾款=预订价-定金
+				yuding.finishPaymentPrice = ele.price * ele.amount - yuding.price;
+
+				data.yuding = yuding;
+				//购物车总金额=总定金+总尾款
+				data.totalMoney += data.yuding.price + data.yuding.finishPaymentPrice;
 				data.goods.push(ele);
 				data.cartCount += ele.amount;
 				lastPayTimeMinute = 30;

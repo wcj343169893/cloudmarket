@@ -94,8 +94,6 @@ exports.main = async (event, context) => {
 			yuding: 1,
 			"payInfo.time": 1,
 			"payInfo.name": 1,
-			"yudingPayInfo.time": 1,
-			"yudingPayInfo.name": 1,
 			lastPayTime: 1,
 			cancelApply: 1,
 			refundApply: 1
@@ -107,14 +105,16 @@ exports.main = async (event, context) => {
 		conditions["_id"] = id;
 		let field = {
 			state: 1,
+			totalMoney: 1,
 			shopid: 1
 		};
 		if (type == "cancel") {
-			field["goods"] = 1;
-			field["yuding"] = 1;
-			field["yudingPayInfo"] = 1;
-			field["payInfo"] = 1;
-			field["body"] = 1;
+			Object.assign(field,{
+				goods:1,
+				yuding:1,
+				payInfo:1,
+				body:1,
+			});
 			conditions["state"] = cmd.in([0, -1]);
 		}
 		if (type == "detail") {
@@ -133,7 +133,7 @@ exports.main = async (event, context) => {
 				shopid: 1,
 				modified: 1,
 				payInfo: 1,
-				yudingPayInfo: 1
+				yuding: 1
 			};
 		}
 		data = await orderCollection.where(conditions).limit(1).field(field).get();
@@ -150,7 +150,7 @@ exports.main = async (event, context) => {
 					"code": 404,
 					"message": "订单已取消"
 				};
-			}else if (order.state > 0) {
+			} else if (order.state > 0) {
 				//@todo 用户已付款，发送通知和取消申请，正常情况不会出现在这里，用户需发起退款申请
 				return {
 					"code": 200,
@@ -183,15 +183,18 @@ exports.main = async (event, context) => {
 				/* await pushOrderCancelInfo(order._id, "您的订单拦截成功，正在进行退款审核，请耐心等待。");
 				order.payInfo.id=order._id;
 				//退款定时器,全额退款
-				await addOrderRefund(order.payInfo,order.payInfo.totalFee,"取消"+order.body); */
-			} else if (order.yudingPayInfo) {
-				if (order.yuding.finalPaymentBeginTime < time) {
-					await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，已支付定金不予退还。");
+				await addOrderRefund(order.uid,order.payInfo,order.payInfo.totalFee,"取消"+order.body); */
+			} else if (order.yuding && order.yuding.payInfo) {
+				//是否扣除服务费
+				let serviceMoney = false;
+				order.yuding.payInfo.id = order._id;
+				if (order.yuding.finalPaymentBeginTime < time && serviceMoney) {
+					await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除20%服务费。");
+					await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee * 0.8, "取消" + order.body);
 				} else {
 					await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
-					order.yudingPayInfo.id=order._id;
 					//退款定时器,全额退款
-					await addOrderRefund(order.yudingPayInfo,order.yudingPayInfo.totalFee,"取消"+order.body);
+					await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body);
 				}
 			} else {
 				await pushOrderCancelInfo(order._id, "您的订单已取消。");
@@ -211,6 +214,8 @@ exports.main = async (event, context) => {
 			});
 			//更新用户已发货和已收货
 			let resUser = await updateUserOrderCount(uid, "received", 1, "delivered", order.shopid);
+			//增加用户积分
+			await updateUserScore(uid,order.totalMoney);
 			//@todo 资金解冻
 		} else if (type == "detail") {
 			//查询详细
@@ -242,13 +247,14 @@ const pushOrderCancelInfo = async function(id, message) {
  * 创建退款
  * @param {Object} payInfo 
  */
-const addOrderRefund = async function(payInfo, refundFee, refundDesc) {
+const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc) {
 	//order_refunds
 	return await db.collection("order_refunds").add({
+		...payInfo,
+		uid: uid,
 		refundStatus: "refunding",
 		refundFee: refundFee,
 		refundDesc: refundDesc,
-		created: new Date().toISOString(),
-		...payInfo
+		created: new Date().toISOString()
 	});
 }

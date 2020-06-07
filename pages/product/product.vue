@@ -38,14 +38,14 @@
 					<text class="name">定金</text>
 					<view class="desc">
 						<text class="price">{{ yuding.price }}</text>
-						<text>({{ yuding.beginTimeStr }}-{{ yuding.endTimeStr }})</text>
+						<text>({{ yuding.beginTime | dateFormat('MM月dd日hh:mm') }}-{{ yuding.endTime | dateFormat('MM月dd日hh:mm') }})</text>
 					</view>
 				</view>
 				<view class="info-box">
 					<text class="name">尾款</text>
 					<view class="desc">
 						<text class="price">{{ price - yuding.deduction }}</text>
-						<text>({{ yuding.finalPaymentBeginTimeStr }}-{{ yuding.finalPaymentEndTimeStr }})</text>
+						<text>({{ yuding.finalPaymentBeginTime | dateFormat('MM月dd日hh:mm') }}-{{ yuding.finalPaymentEndTime | dateFormat('MM月dd日hh:mm') }})</text>
 					</view>
 				</view>
 				<view class="info-box">
@@ -155,7 +155,11 @@
 				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
 				<button class="add-btn disabled" v-else>预定未开始</button>
 			</block>
-			<button class="add-btn" v-else @click="addToCart">加入购物车</button>
+			<block  v-else>
+				<button class="add-btn" @click="addToCart">加入购物车</button>
+				<button class="add-btn spec" @click="buy">立即购买</button>
+				
+			</block>
 		</view>
 		<!-- 分享 -->
 		<share ref="share" :contentHeight="580" :shareList="shareList"></share>
@@ -174,8 +178,7 @@ import {
 	miaoshaCountDown,
 	incrCartNumber,
 	getCartSumNumber,
-	clearCountDownTimer,
-	dateFormat
+	clearCountDownTimer
 } from '@/common/functions.js';
 export default {
 	components: {
@@ -361,11 +364,7 @@ export default {
 				second: '00',
 				startTime: time,
 				isBegin: isBegin,
-				statusSubName: statusSubName,
-				beginTimeStr: dateFormat(item.yuding.beginTime, 'MM月dd日hh:mm'),
-				endTimeStr: dateFormat(item.yuding.endTime, 'MM月dd日hh:mm'),
-				finalPaymentBeginTimeStr: dateFormat(item.yuding.finalPaymentBeginTime, 'MM月dd日hh:mm'),
-				finalPaymentEndTimeStr: dateFormat(item.yuding.finalPaymentEndTime, 'MM月dd日hh:mm')
+				statusSubName: statusSubName
 			});
 			if(!isBegin){
 				//未开始
@@ -499,23 +498,7 @@ export default {
 				this.$api.msg('预定未开始');
 				return;
 			}
-			if (this.isSubmit) {
-				return;
-			}
-			this.isSubmit = true;
-			uni.setStorage({
-				key: 'settlementCartsIds',
-				data: {
-					goods: {
-						id: this.id,
-						sku_id: this.sku_id,
-						amount: this.amount
-					}
-				},
-				success: () => {
-					navToCreateOrder();
-				}
-			});
+			this.buy();
 		},
 		/**规格选择,默认选中秒杀商品**/
 		selectSku(index, index2) {
@@ -557,9 +540,28 @@ export default {
 				this.zhekou = ((this.price / this.originPrice) * 10).toFixed(1);
 			}
 		},
+		//单品直接购买，如果未登录，提示
 		buy() {
-			uni.navigateTo({
-				url: `/pages/order/createOrder`
+			if (!this.hasLogin) {
+				showLoginDialog();
+				return;
+			}
+			if (this.isSubmit) {
+				return;
+			}
+			this.isSubmit = true;
+			uni.setStorage({
+				key: 'settlementCartsIds',
+				data: {
+					goods: {
+						id: this.id,
+						sku_id: this.sku_id,
+						amount: this.amount
+					}
+				},
+				success: () => {
+					navToCreateOrder();
+				}
 			});
 		},
 		refreshList() {},
@@ -946,27 +948,31 @@ page {
 .page-bottom {
 	position: fixed;
 	left: 0upx;
-	bottom: var(--window-bottom);
+	bottom:var(--window-bottom);
 	z-index: 95;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: 100upx;
 	background: rgba(255, 255, 255, 0.9);
-	padding: 16upx 30upx;
+	padding: 16upx 30upx 36upx;
 	.options {
 		flex: 1;
 	}
 }
 .add-btn {
-	height: 80upx;
+	height: 70upx;
+	line-height: 70upx;
 	font-size: $font-lg;
 	color: #fff;
 	background-color: $base-color;
 	border-radius: 10upx;
+	margin-left: 20upx;
 	&.disabled {
 		background-color: $font-color-disabled;
+	}
+	&.spec{
+		background-color: $btn-color-spec;
 	}
 }
 .skuDialogPanel {

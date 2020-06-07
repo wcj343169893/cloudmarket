@@ -37,7 +37,7 @@ exports.main = async (event, context) => {
 		type = "yuding";
 		updateData = {
 			"yuding.state": 1,
-			yudingPayInfo: {
+			"yuding.payInfo": {
 				time: time,
 				...event
 			},

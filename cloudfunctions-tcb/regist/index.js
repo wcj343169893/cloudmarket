@@ -161,8 +161,11 @@ exports.main = async (event, context) => {
 		let res = await db.collection('goods').doc(ele._id).update(da);
 		console.log(res);
 	} */
-	let tokenExpire = new db.serverDate();
-	return tokenExpire;
+	/* let tokenExpire = new db.serverDate();
+	return tokenExpire; */
+	/* return await db.collection("orders").where({
+		_id:cmd.exists(true)
+	}).remove(); */
 };
 /* 
 

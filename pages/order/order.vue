@@ -12,7 +12,7 @@
 					<!-- 订单列表 -->
 					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 						<view class="i-top b-b">
-							<text class="time">{{ item.created }}</text>
+							<text class="time">{{ item.created | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
 						</view>
 						<view class="">
@@ -43,7 +43,7 @@
 							<text>件商品</text>	
 							<block v-if="item.yuding">
 								<text class="m-l">定金</text>
-								<text class="price warning">{{ item.totalMoney }}</text>
+								<text class="price warning">{{ item.yuding.price }}</text>
 								<text class="m-l">尾款</text>
 								<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
 							</block>
@@ -88,7 +88,7 @@
 
 <script>
 import { orders } from '@/common/request.js';
-import { navToPayOrder, navToOrderGoodsList, dateFormat, miaoshaCountDown, navToOrderDetail,getOrderStateExp,clearCountDownTimer } from '@/common/functions.js';
+import { navToPayOrder, navToOrderGoodsList, miaoshaCountDown, navToOrderDetail,getOrderStateExp,clearCountDownTimer } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -184,15 +184,20 @@ export default {
 				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
+						console.log(ele)
 						let isPay = true;
-						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
 						ele.priceTitle="单价";
 						//预定yuding  item.yuding.finalpay
+						ele.showPayMoney = ele.totalMoney;
 						if(ele.yuding){
 							ele.priceTitle="预售价";
 							ele.yuding.finalpay = 0;
+							//定金
+							ele.showPayMoney = ele.yuding.price;
 							if(ele.yuding.finalPaymentBeginTime < time){
 								ele.yuding.finalpay = 1;
+								//尾款
+								ele.showPayMoney = ele.yuding.finishPaymentPrice;
 							}else if(ele.yuding.state == 1){
 								//已支付定金，但是未开始支付尾款间隙
 								isPay = false;
@@ -265,7 +270,7 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id, item.totalMoney,"order");
+			navToPayOrder(item._id, item.showPayMoney,"order");
 		},
 		//删除订单
 		deleteOrder(item) {
@@ -320,7 +325,7 @@ export default {
 			}).then(res => {
 				console.log(res);
 				this.$api.msg("取消订单申请提交成功!")
-				//刷新当前列表数据
+				//刷新当前列表数据 
 				//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
 				//更改所有订单的状态
 				this.navList.map((tabs, index) => {
@@ -386,6 +391,7 @@ export default {
 			//pages/order/detail
 			if(item.state == 0){
 				if(item.yuding){
+					//支付定金或者支付尾款
 					if(item.yuding.state == 0 || item.yuding.finalpay == 1){
 						console.log(item.yuding)
 						this.payOrder(item);

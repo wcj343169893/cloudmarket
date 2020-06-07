@@ -81,6 +81,7 @@ exports.main = async (event, context) => {
 			shopid: 1,
 			"payInfo.time": 1,
 			"payInfo.name": 1,
+			yuding:1,
 			lastPayTime: 1
 		}).get();
 		data["page"] = page;

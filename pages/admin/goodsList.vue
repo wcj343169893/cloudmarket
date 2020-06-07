@@ -29,9 +29,9 @@
 					</view>
 					<view class="attr-box miaosha" v-if="item.miaosha" :class="[item.miaosha.state]">
 						<text>秒杀:</text>
-						<text>{{ item.miaosha.beginTimeStr }}</text>
+						<text>{{ item.miaosha.beginTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
 						<text class="m-lr">至</text>
-						<text>{{ item.miaosha.endTimeStr }}</text>
+						<text>{{ item.miaosha.endTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
 					</view>
 					<view class="attr-box yuding" v-if="item.yuding" :class="[item.yuding.state]">
 						<text>预售:</text>
@@ -42,15 +42,15 @@
 							</view>
 							<view class="step1">
 								<text>付定金:</text>
-								<text>{{ item.yuding.beginTimeStr }}</text>
+								<text>{{ item.yuding.beginTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 								<text class="m-lr">至</text>
-								<text>{{ item.yuding.endTimeStr }}</text>
+								<text>{{ item.yuding.endTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
 							</view>
 							<view class="step1">
 								<text>交尾款:</text>
-								<text>{{ item.yuding.finalPaymentBeginTimeStr }}</text>
+								<text>{{ item.yuding.finalPaymentBeginTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
 								<text class="m-lr">至</text>
-								<text>{{ item.yuding.finalPaymentEndTimeStr }}</text>
+								<text>{{ item.yuding.finalPaymentEndTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
 							</view>
 						</view>
 					</view>
@@ -75,7 +75,7 @@
 
 <script>
 import { getGoodsList, goodsAdmin } from '@/common/admin_request.js';
-import { dateFormat, navToGoodsItemPage,getGoodsTypes } from '@/common/functions.js';
+import {  navToGoodsItemPage,getGoodsTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -116,8 +116,6 @@ export default {
 					//处理秒杀开始，结束时间
 					res.data.forEach(item => {
 						if (item.miaosha) {
-							item.miaosha.beginTimeStr = dateFormat(item.miaosha.beginTime, 'MM-dd hh:mm');
-							item.miaosha.endTimeStr = dateFormat(item.miaosha.endTime, 'MM-dd hh:mm');
 							item.miaosha.state = 'notstart';
 							if (item.miaosha.endTime < time) {
 								item.miaosha.state = 'ended';
@@ -126,10 +124,6 @@ export default {
 							}
 						}
 						if (item.yuding) {
-							item.yuding.beginTimeStr = dateFormat(item.yuding.beginTime, 'MM-dd hh:mm');
-							item.yuding.endTimeStr = dateFormat(item.yuding.endTime, 'MM-dd hh:mm');
-							item.yuding.finalPaymentBeginTimeStr = dateFormat(item.yuding.finalPaymentBeginTime, 'MM-dd hh:mm');
-							item.yuding.finalPaymentEndTimeStr = dateFormat(item.yuding.finalPaymentEndTime, 'MM-dd hh:mm');
 							item.yuding.state = 'notstart';
 							if (item.yuding.finalPaymentEndTime < time) {
 								item.yuding.state = 'ended';

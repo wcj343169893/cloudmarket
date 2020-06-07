@@ -106,6 +106,19 @@ const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
 	}
 	return res;
 }
+/**
+ * 增加用户积分
+ * @param {Object} uid
+ * @param {Object} number
+ */
+const updateUserScore =async function(uid,number){
+	console.log("updateUserScore",uid,number);
+	return await db.collection("users").where({
+		id: +uid
+	}).update({
+		score:cmd.inc(number*1)
+	});
+}
 
 /**
  * 生成唯一id
@@ -194,6 +207,7 @@ module.exports = {
 	getCollectionNames,
 	updateGoodsMiaoshaStock,
 	updateUserOrderCount,
+	updateUserScore,
 	updateGoodsStock,
 	genIdentityId,
 	addUserBalanceLog,

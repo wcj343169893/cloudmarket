@@ -3,7 +3,7 @@
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
 		<view v-for="(item, index) in orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 			<view class="i-top b-b">
-				<text class="time">{{ item.created }}</text>
+				<text class="time">{{ item.created  | dateFormat('yyyy-MM-dd hh:mm:ss')  }}</text>
 				<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
 			</view>
 			<view class="">
@@ -20,7 +20,7 @@
 						</view>
 						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 						<view class="attr-box">
-							<text>单价:</text>
+							<text>{{item.priceTitle}}:</text>
 							<text class="price">{{ goodsItem.price }}</text>
 							<text>数量:</text>
 							<text>{{ goodsItem.amount }}</text>
@@ -34,10 +34,19 @@
 				<text>{{item.address.addressName}}{{item.address.area}}</text>
 			</view>
 			<view class="price-box">
-				共
+				<text>共</text>	
 				<text class="num">{{ item.cartCount }}</text>
-				件商品 实付款
-				<text class="price warning">{{ item.totalMoney }}</text>
+				<text>件商品</text>	
+				<block v-if="item.yuding">
+					<text class="m-l"><text v-if="item.yuding.state==1">已付</text>定金</text>
+					<text class="price warning">{{ item.yuding.price }}</text>
+					<text class="m-l">尾款</text>
+					<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
+				</block>
+				<block v-else>
+					<text class="m-l">实付款</text>	
+					<text class="price warning">{{ item.totalMoney }}</text>
+				</block>
 			</view>
 			<!-- 已取消 -->
 			<!-- 未付款 -->
@@ -61,7 +70,7 @@
 
 <script>
 import { getOrderList,orderAdmin } from '@/common/admin_request.js';
-import { dateFormat, getOrderStateExp,getOrderTypes } from '@/common/functions.js';
+import { getOrderStateExp,getOrderTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -100,11 +109,14 @@ export default {
 				res => {
 					//格式化时间
 					res.data.forEach(ele => {
-						ele.created = dateFormat(ele.created, 'yyyy-MM-dd hh:mm:ss');
 						//状态名称 Object.assign
 						let { stateTip, stateTipColor } = this.orderStateExp(ele);
 						ele.stateTip = stateTip;
 						ele.stateTipColor = stateTipColor;
+						ele.priceTitle="单价";
+						if(ele.yuding){
+							ele.priceTitle="预售价";
+						}
 					});
 					this.orderList = this.orderList.concat(res.data);
 					if (res.data.length < this.limit) {
@@ -315,5 +327,8 @@ page,
 }
 .m-r{
 	margin-right: 14upx;
+}
+.m-l{
+	margin-left: 20upx;
 }
 </style>
