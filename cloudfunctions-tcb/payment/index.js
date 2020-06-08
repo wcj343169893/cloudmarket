@@ -13,6 +13,9 @@ const {
 const {
 	addUserBalanceLog
 } = require('base-common');
+const {
+	updateOrderPaymentInfo
+} = require('order');
 const auth = uniCloud.auth();
 /**
  * 支付宝/微信
@@ -182,19 +185,16 @@ const balancePay = async function(uid, order, id) {
 		description: "购买:" + order.body,
 	});
 	//调用订单处理方法
-	let resultData = await uniCloud.callFunction({
-		name: "paymentResultOrder",
-		data: {
-			outTradeNo: id,
-			transactionId: log.id,
-			uid: uid,
-			tradeStatus: "TRADE_SUCCESS",
-			totalFee: parseInt(order.totalMoney * 100),
-			type: "balance",
-			name: "余额支付",
-			balance: yue,
-		}
-	})
+	let resultData = await updateOrderPaymentInfo({
+		outTradeNo: id,
+		transactionId: log.id,
+		uid: uid,
+		tradeStatus: "TRADE_SUCCESS",
+		totalFee: parseInt(order.totalMoney * 100),
+		type: "balance",
+		name: "余额支付",
+		balance: yue,
+	});
 	console.log(resultData);
 	return {
 		"code": 200,

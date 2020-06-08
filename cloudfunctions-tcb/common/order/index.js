@@ -1,10 +1,13 @@
-'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	updateUserOrderCount
+	updateUserOrderCount,
+	getDateString
 } = require('base-common');
-exports.main = async (event, context) => {
+/**
+ * 订单支付完成之后
+ */
+const updateOrderPaymentInfo = async function(event) {
 	console.log(event);
 	let time = new Date().toISOString();
 	//reserve_
@@ -96,26 +99,7 @@ exports.main = async (event, context) => {
 		console.log("saleRes", saleRes);
 	}
 	return data;
-};
-
-/**
- * 获取日期字符串，例如：20200521
- */
-const getDateString = function() {
-	let day = new Date();
-	let dayTime = day.getFullYear() + "";
-	let month = day.getMonth() + 1;
-	let dayNumber = day.getDate();
-
-	if (month < 10) {
-		dayTime += "0" + month;
-	} else {
-		dayTime += month;
-	}
-	if (dayNumber < 10) {
-		dayTime += "0" + dayNumber;
-	} else {
-		dayTime += dayNumber;
-	}
-	return dayTime;
+}
+module.exports = {
+	updateOrderPaymentInfo
 }

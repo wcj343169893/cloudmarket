@@ -84,7 +84,7 @@ const updateGoodsStock = function(ele, xishu) {
  * @param {Object} number 如果是负数，则减少
  * @param {Object} type2 类型转移到下一个类型，与type相反的数值
  */
-const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
+const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
 	let data = {
 		order: {}
 	};
@@ -92,13 +92,13 @@ const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
 	if (type2) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
-	console.log(uid,shopid, JSON.stringify(data));
+	console.log(uid, shopid, JSON.stringify(data));
 	let res = await db.collection("users").where({
 		id: +uid
 	}).update(data);
 	console.log(res);
 	//更新店铺订单数总计
-	if(shopid > 0){
+	if (shopid > 0) {
 		let res2 = await db.collection("shops").where({
 			id: +shopid
 		}).update(data);
@@ -111,12 +111,12 @@ const updateUserOrderCount =async function(uid, type, number, type2, shopid) {
  * @param {Object} uid
  * @param {Object} number
  */
-const updateUserScore =async function(uid,number){
-	console.log("updateUserScore",uid,number);
+const updateUserScore = async function(uid, number) {
+	console.log("updateUserScore", uid, number);
 	return await db.collection("users").where({
 		id: +uid
 	}).update({
-		score:cmd.inc(number*1)
+		score: cmd.inc(number * 1)
 	});
 }
 
@@ -203,6 +203,14 @@ const getDateFormat = function(fmt) {
 	return fmt;
 }
 
+/**
+ * 获取日期字符串，例如：20200521
+ */
+const getDateString = function() {
+	return getDateFormat("yyyyMMdd");
+}
+
+
 module.exports = {
 	getCollectionNames,
 	updateGoodsMiaoshaStock,
@@ -213,5 +221,6 @@ module.exports = {
 	addUserBalanceLog,
 	getUserInfoById,
 	genOrderNo,
-	getDateFormat
+	getDateFormat,
+	getDateString
 }
