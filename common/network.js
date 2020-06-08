@@ -1,16 +1,11 @@
-const client = uniCloud.init({
-	provider: 'tencent',
-	spaceId: 'cloud-market-3c5868',
-	debugFunction: false
-});
-const auth = client.auth();
+// const {client,auth} = require("./cloud.js")
+import { client, auth } from './cloud.js';
 /**
  * @param {Object} options
  * 网络请求 模块
  */
 const network = function(options) {
 	return new Promise((resolve, reject) => {
-		//const auth = uniCloud.auth();
 		let data = {};
 		if (options.data) {
 			data = options.data;

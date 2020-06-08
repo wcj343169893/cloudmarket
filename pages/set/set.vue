@@ -36,6 +36,7 @@
 	import {  
 	    mapMutations  
 	} from 'vuex';
+import { client, auth } from '@/common/cloud.js';
 	export default {
 		data() {
 			return {
@@ -54,13 +55,6 @@
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-							const client = uniCloud.init({
-								provider: 'tencent',
-								spaceId: 'cloud-market-3c5868',
-								debugFunction: false
-							});
-							const auth = client.auth();
-							//const auth = uniCloud.auth();
 							//清理缓存
 							uni.removeStorage({
 								key:"userInfo"

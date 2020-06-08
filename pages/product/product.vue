@@ -993,7 +993,7 @@ page {
 	}
 	$yellow-color: $uni-color-success;
 	.skuoptions__item {
-		width: 200upx;
+		width: 180upx;
 		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
 		padding: 8upx;

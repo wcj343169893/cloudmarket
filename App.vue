@@ -7,13 +7,8 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
-const client = uniCloud.init({
-	provider: 'tencent',
-	spaceId: 'cloud-market-3c5868',
-	debugFunction: false
-});
-const auth = client.auth();
-const pushClientInfoKey = "pushClientInfo";
+import { client, auth } from '@/common/cloud.js';
+const pushClientInfoKey = 'pushClientInfo';
 export default {
 	methods: {
 		...mapMutations(['login', 'setUserLocation']),
@@ -48,24 +43,27 @@ export default {
 		/**
 		 * 初始化push相关
 		 */
-		async initPush(){
-			console.log("初始化push message");
-			plus.push.addEventListener("receive",(msg)=>{
-				console.log("receive push message",msg);
+		async initPush() {
+			console.log('初始化push message');
+			plus.push.addEventListener('receive', msg => {
+				console.log('receive push message', msg);
 			});
-			plus.push.addEventListener("click",(msg)=>{
-				console.log("click push message",msg)
+			plus.push.addEventListener('click', msg => {
+				console.log('click push message', msg);
 			});
-			plus.push.getClientInfoAsync(info=>{
-				console.log("push.getClientInfoAsync",info);
-				//提交到服务器保存，第一步存到本地缓存
-				uni.setStorage({
-					key:pushClientInfoKey,
-					data:info
-				})
-			},err=>{
-				console.log("push.getClientInfoAsync",err)
-			})
+			plus.push.getClientInfoAsync(
+				info => {
+					console.log('push.getClientInfoAsync', info);
+					//提交到服务器保存，第一步存到本地缓存
+					uni.setStorage({
+						key: pushClientInfoKey,
+						data: info
+					});
+				},
+				err => {
+					console.log('push.getClientInfoAsync', err);
+				}
+			);
 		}
 	},
 	onLaunch: function() {
@@ -75,11 +73,11 @@ export default {
 			console.log('auth.getLoginState', state);
 		}); */
 		//根据返回值决定是否要刷新短期访问令牌。
-		auth.shouldRefreshAccessToken(()=>{
+		auth.shouldRefreshAccessToken(() => {
 			let userInfo = uni.getStorageSync(userInfoKey) || {};
-			console.log("auth.shouldRefreshAccessToken 判断是否可以刷新令牌",userInfo.id);
-			return userInfo.id>0;
-		})
+			console.log('auth.shouldRefreshAccessToken 判断是否可以刷新令牌', userInfo.id);
+			return userInfo.id > 0;
+		});
 		let userInfoKey = 'userInfo';
 		uniCloud.on('loginStateExpire', () => {
 			// 尝试重新登录
@@ -130,7 +128,7 @@ export default {
 		uniCloud.on('refreshAccessToken', () => {
 			// 此时 uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态
 			let time = new Date().getTime();
-			console.log('uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态',time);
+			console.log('uniCloud 短期访问令牌已经刷新，可以尝试刷新自身业务的登录态', time);
 			/* auth.getAccessToken().then(res => {
 				console.log('getAccessToken', time, res);
 				//暂时没用
@@ -150,21 +148,21 @@ export default {
 				this.login(userInfo);
 				//提交设备信息到服务器
 				uni.getStorage({
-					key:pushClientInfoKey,
-					success:(info)=>{
+					key: pushClientInfoKey,
+					success: info => {
 						client.callFunction({
-								name: 'unipush',
-								data: {
-									type:"regist",
-									...info.data
-								}
-							});
-							console.log("regist push to uid")
+							name: 'unipush',
+							data: {
+								type: 'regist',
+								...info.data
+							}
+						});
+						console.log('regist push to uid');
 					}
-				})
-			}else{
+				});
+			} else {
 				//用户信息失效
-				console.log("用户信息失效");
+				console.log('用户信息失效');
 				/* auth.signOut().then(res=>{
 					console.log("App.vue signOut",res);
 				}); */

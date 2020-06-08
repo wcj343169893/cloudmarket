@@ -9,13 +9,7 @@ const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
 import { mobileAutoLogin,getToken } from '@/common/request.js';
 import { mapMutations } from 'vuex';
-const client = uniCloud.init({
-	provider: 'tencent',
-	spaceId: 'cloud-market-3c5868',
-	debugFunction: false
-});
-const auth = client.auth();
-//const auth = uniCloud.auth();
+import { client, auth } from '@/common/cloud.js';
 export default {
 	data() {
 		return {
