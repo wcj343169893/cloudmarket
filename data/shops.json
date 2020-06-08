@@ -1,0 +1,40 @@
+{
+	"_id": "5e6c96519f43ab004d11b602",
+	"address": "兰家康城7号",
+	"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+	"categories": [{
+		"id": 10000,
+		"name": "美食"
+	}, {
+		"id": 10001,
+		"name": "火锅"
+	}, {
+		"id": 10002,
+		"name": "快餐"
+	}],
+	"deliveryMin": 20,
+	"deliveryMoney": 5,
+	"deliveryMoneyBefore": 0,
+	"deliveryTime": 30,
+	"hasManjian": 1,
+	"id": 123457,
+	"latitude": 22.123456,
+	"longitude": 113.123455,
+	"manjians": [{
+		"amount": 19,
+		"condition": 49,
+		"id": 123456,
+		"name": "49减19"
+	}, {
+		"amount": 25,
+		"condition": 69,
+		"id": 123456,
+		"name": "69减25"
+	}],
+	"monthSale": 123,
+	"name": "沃尔玛-蛇口店",
+	"perCapita": 30,
+	"score": 4.8,
+	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/d0497320-642a-11ea-a32c-3303601e2d34.png",
+	"stationId": 500119
+}

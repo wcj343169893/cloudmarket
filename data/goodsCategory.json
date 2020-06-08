@@ -1,0 +1,19 @@
+{
+	"id":1001,
+	"shopid":12347,
+	"name":"大分类",
+	"pid":0,
+	"goodsCount":12,
+	"children":[
+		{
+			"id":1002,
+			"name":"小分类一",
+			"goodsCount":12
+		},
+		{
+			"id":1003,
+			"name":"小分类二",
+			"goodsCount":5
+		}
+	]
+}

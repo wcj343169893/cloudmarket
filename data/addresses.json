@@ -1,0 +1,11 @@
+{
+	"uid": 10000,
+	"name": "许小星",
+	"mobile": "13853989563",
+	"addressName": "金九大道",
+	"address": "山东省济南市历城区",
+	"area": "149号",
+	"longitude":121.111,
+	"latitude":39.23,
+	"default": false
+}

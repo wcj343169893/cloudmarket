@@ -1,0 +1,152 @@
+{
+    "name" : "云上商城",
+    "appid" : "",
+    "description" : "",
+    "versionName" : "1.0.2",
+    "versionCode" : 102,
+    "transformPx" : false,
+    "app-plus" : {
+        /* 5+App特有相关 */
+        "usingComponents" : true,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "modules" : {
+            "Payment" : {},
+            "Push" : {},
+            "Share" : {},
+            "Maps" : {}
+        },
+        /* 模块配置 */
+        "distribute" : {
+            /* 应用发布信息 */
+            "android" : {
+                /* android打包配置 */
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_TASKS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ]
+            },
+            "ios" : {},
+            /* ios打包配置 */
+            "sdkConfigs" : {
+                "ad" : {},
+                "payment" : {
+                    "alipay" : {}
+                },
+                "speech" : {},
+                "push" : {
+                    "unipush" : {}
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "3d849a0036b58b5a4f4a0c37d665df85",
+                        "appkey_android" : "e077c90008359e13eb32920f1693a77d"
+                    }
+                }
+            }
+        },
+        "safearea" : {
+            /**iphone x 下巴收起来**/
+            "bottom" : {
+                "offset" : "none"
+            },
+            "left" : {
+                "offset" : "none"
+            },
+            "right" : {
+                "offset" : "none"
+            }
+        },
+        //禁止横屏
+        "orientation" : [ "portrait-primary", "portrait-secondary" ],
+        "nativePlugins" : {
+            "JG-JVerification" : {
+                "JPUSH_CHANNEL_ANDROID" : "developer-default",
+                "JPUSH_APPKEY_IOS" : "0000000000",
+                "JPUSH_APPKEY_ANDROID" : "0000000000",
+                "JPUSH_CHANNEL_IOS" : "developer-default",
+                "__plugin_info__" : {
+                    "name" : "极光认证官方SDK",
+                    "description" : "极光认证官方SDK HBuilder插件版本",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=1356",
+                    "android_package_name" : "com.qq",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "1356",
+                    "parameters" : {
+                        "JPUSH_CHANNEL_ANDROID" : {
+                            "des" : "[Android]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JPUSH_CHANNEL",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_IOS" : {
+                            "des" : "[iOS]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JVerification:APP_KEY",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_ANDROID" : {
+                            "des" : "[Android]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JPUSH_APPKEY",
+                            "value" : ""
+                        },
+                        "JPUSH_CHANNEL_IOS" : {
+                            "des" : "[iOS]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JVerification:CHANNEL",
+                            "value" : ""
+                        }
+                    }
+                }
+            }
+        },
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    /* SDK配置 */
+    "quickapp" : {},
+    /* 快应用特有相关 */
+    "mp-weixin" : {
+        /* 小程序特有相关 */
+        "usingComponents" : true,
+        "appid" : "",
+        "setting" : {
+            "urlCheck" : true
+        }
+    },
+    "h5" : {
+        "title" : "弄弄弄",
+        "domain" : "market.cjblog.org",
+        "router" : {
+            "mode" : "history"
+        }
+    }
+}
