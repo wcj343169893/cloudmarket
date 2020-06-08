@@ -51,16 +51,6 @@ exports.main = async (event, context) => {
 					//1待付款
 					conditions["state"] = 0;
 					conditions["lastPayTime"] = cmd.gt(time);
-					if (page == 1) {
-						//清理自己已过期的数据
-						let res = await uniCloud.callFunction({
-							name: "cronCancelOrders",
-							data: {
-								uid: uid
-							}
-						});
-						console.log("clear order", uid, res);
-					}
 					break;
 				case 2:
 					//2已付款，待收货，包含已发货
