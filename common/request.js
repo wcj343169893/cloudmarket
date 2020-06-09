@@ -255,6 +255,18 @@ const getToken = function(data) {
 		isShowLoading: false
 	})
 }
+/**
+ * 按关键字搜索商品
+ * @param {Object} data
+ */
+const searchGoodsByKey = function(data) {
+	return network({
+		url: "goodsSearch",
+		data: data,
+		isShowLoading: true,
+		isShowMask:true
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -281,5 +293,6 @@ export {
 	balancePay,
 	mobileAutoLogin,
 	cronCancelOrders,
-	getToken
+	getToken,
+	searchGoodsByKey
 }

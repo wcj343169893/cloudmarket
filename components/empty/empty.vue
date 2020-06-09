@@ -1,12 +1,19 @@
 <template>
 	<view class="empty-content">
 		<image class="empty-content-image" :src="setSrc" mode="aspectFit"></image>
+		<view class="content">
+			<text>{{content}}</text>
+		</view>
 	</view>
 </template>
 
 <script>
 	export default {
 		props: {
+			content:{
+				type: String,
+				default: '暂无数据'
+			},
 			src: {
 				type: String,
 				default: 'empty'
@@ -48,5 +55,9 @@
 			width: 200upx;
 			height: 200upx;
 		}
+	}
+	.content{
+		font-size: $font-base;
+		color: #909399;
 	}
 </style>

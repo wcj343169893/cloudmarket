@@ -29,12 +29,13 @@ exports.main = async (event, context) => {
 		address: 1,
 		name: 1,
 		notice: 1,
+		searchGoodsKeywords: 1,
 		src: 1
 	}).limit(5).get();
 	if (nearestShops.data.length > 0) {
 		shopid = nearestShops.data[0].id;
+		dataOut["shop"] = nearestShops.data[0];
 	}
-	dataOut["shops"] = nearestShops.data;
 	let uid = 0;
 	if (customUserId>0) {
 		uid = +customUserId;
@@ -91,12 +92,6 @@ exports.main = async (event, context) => {
 	dataOut["newest"] = newGoods.data;
 	//购物车总数
 	if (uid > 0) {
-		/* let res = await db.collection('carts').where({
-			uid: uid
-		}).count();
-		if (res) {
-			dataOut["cart"] = res.total;
-		}*/
 		const $ = db.command.aggregate
 		let res2 = await db.collection('carts').aggregate()
 			.match({

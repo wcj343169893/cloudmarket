@@ -108,7 +108,9 @@ export default {
 			swiperCurrent: 0,
 			swiperLength: 0,
 			goNext: 1,
+			searchWord:"",
 			isLoaded: false,
+			searchKeyWords:[],
 			address: '开启定位获得位置/收货地址',
 			carouselList: [],
 			recommendCategoriesList: [],
@@ -234,6 +236,15 @@ export default {
 				if(this.hasLogin){
 					updateCartNumber(res.cart);
 				}
+				if(res.shop){
+					this.searchKeyWords = res.shop.searchGoodsKeywords;
+					//同时写入缓存，在分类页面也能调用
+					uni.setStorage({
+						key:"shopSearchGoodsKeywords",
+						data:this.searchKeyWords
+					})
+					this.getDefaultSearchWord();
+				}
 			});
 		},
 		//轮播图切换修改背景色
@@ -277,12 +288,33 @@ export default {
 			uni.navigateTo({
 				url: '/pages/index/seckillGoods'
 			});
+		},
+		getDefaultSearchWord(){
+			if(this.searchKeyWords && this.searchKeyWords.length > 0){
+				this.searchWord = this.searchKeyWords[parseInt(Math.random() * this.searchKeyWords.length)];
+			}
+			// #ifdef APP-PLUS  
+			var webView = this.$mp.page.$getAppWebview();  
+			var tn = webView.getStyle().titleNView;
+			tn.searchInput.placeholder = this.searchWord;   
+			 
+			webView.setStyle({
+				titleNView : tn
+			});
+			// #endif
+			//10秒换一个
+			setTimeout(()=>{
+				this.getDefaultSearchWord();
+			},10000)
 		}
 	},
 	// #ifndef MP
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
 		//this.$api.msg('点击了搜索框');
+		uni.navigateTo({
+			url:`/pages/search/search?key=${this.searchWord}`
+		})
 	},
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
