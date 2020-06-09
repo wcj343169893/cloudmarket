@@ -95,17 +95,29 @@ export default {
 				this.$emit('canceled');
 				return;
 			}
-			if (!this.inputVal) return;
+			let val = this.inputVal.trim();
+			if (val=="") {
+				uni.showToast({
+					icon:"none",
+					title:"关键字不能为空"
+				});
+				setTimeout(()=>{
+					this.inputVal = "";
+					this.active = true;
+					this.focus();
+				},1500);
+				return
+			};
 			console.log(this.inputVal);
-			this.$emit('search', this.inputVal);
+			this.$emit('search', val);
 		},
 		confirmSearch(){
 			if (!this.inputVal){
 				console.log("placeholder",this.placeholder);
-				this.$emit('search', this.placeholder);
-			}else{
-				this.search();
+				this.inputVal = this.placeholder.trim();
+				this.isDelShow = true;
 			}
+			this.search();
 		}
 	},
 	watch: {
@@ -161,7 +173,7 @@ export default {
 			.input {
 				width: 100%;
 				max-width: 100%;
-				line-height: 60upx;
+				//line-height: 60upx;
 				height: 60upx;
 				transition: all 0.2s linear;
 				&.center {
