@@ -9,7 +9,7 @@
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
-							"placeholder": "西瓜",
+							"placeholder": "水果",
 							"disabled": true,
 							"placeholderColor": "#787a7d"
 						},
@@ -225,7 +225,7 @@
 						"searchInput": {
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
-							"placeholder": "西兰花",
+							"placeholder": "",
 							"disabled": true,
 							"placeholderColor": "#787a7d"
 						}
@@ -313,16 +313,14 @@
 					}
 				}
 			}
-		}
-	    ,{
-            "path" : "pages/index/seckillGoods",
-            "style" : {
+		}, {
+			"path": "pages/index/seckillGoods",
+			"style": {
 				"navigationBarTitleText": "限时抢购"
 			}
-        }
-        ,{
-            "path" : "pages/admin/admin",
-            "style" : {
+		}, {
+			"path": "pages/admin/admin",
+			"style": {
 				"navigationBarTitleText": "店铺管理",
 				"app-plus": {
 					/* "bounce": "none", */
@@ -331,37 +329,60 @@
 					}
 				}
 			}
-        }
-        ,{
-            "path" : "pages/admin/goodsList",
-            "style" : {
+		}, {
+			"path": "pages/admin/goodsList",
+			"style": {
 				"navigationBarTitleText": "商品列表"
 			}
-        }
-        ,{
-            "path" : "pages/admin/addGoods",
-            "style" : {
+		}, {
+			"path": "pages/admin/addGoods",
+			"style": {
 				"navigationBarTitleText": "增加商品"
 			}
-        }
-        ,{
-            "path" : "pages/admin/orderList",
-            "style" : {
+		}, {
+			"path": "pages/admin/orderList",
+			"style": {
 				"navigationBarTitleText": "订单列表"
 			}
-        }
-        ,{
-            "path" : "pages/admin/orderDetail",
-            "style" : {
+		}, {
+			"path": "pages/admin/orderDetail",
+			"style": {
 				"navigationBarTitleText": "订单详情",
 				"navigationStyle": "custom"
 			}
-        }
-        ,{
-            "path" : "pages/user/team",
-            "style" : {}
-        }
-    ],
+		}, {
+			"path": "pages/user/team",
+			"style": {}
+		}, {
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": false,
+					"animationType": "fade-in"
+				}
+			}
+		}, {
+			"path": "pages/search/goods",
+			"style": {
+				"app-plus": {
+					"titleNView": {
+						"animationType": "fade-in",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "",
+							"align":"left",
+							"disabled": true,
+							"placeholderColor": "#787a7d"
+						}
+					}
+				}
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "爱农",

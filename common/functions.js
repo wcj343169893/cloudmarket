@@ -387,6 +387,10 @@ const navToGoodsPage = function(id, sid) {
 		}
 	});
 }
+/**
+ * 跳转商品详细页，并在当前页面添加缓存，详情页优先读取缓存，提升显示速度
+ * @param {Object} item
+ */
 const navToGoodsItemPage = function(item) {
 	if (isRedirect) {
 		return false;

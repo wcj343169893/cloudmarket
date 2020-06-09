@@ -166,6 +166,13 @@ exports.main = async (event, context) => {
 	/* return await db.collection("orders").where({
 		_id:cmd.exists(true)
 	}).remove(); */
+	
+	return await db.collection("goods").where({
+		title:new RegExp('鱼')
+	}).limit(10).field({
+		id:1,
+		title:1
+	}).get();
 };
 /* 
 
