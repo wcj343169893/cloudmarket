@@ -1,10 +1,13 @@
 ## 云上商城 
-身边的线上生活超市，根据当前定位，就近匹配仓库，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜，交流QQ群：298724327
+身边的线上生活超市，根据当前定位，就近匹配仓库，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。  
+后续会完善商家端，骑手端，供应商端  
+本商城是基于[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)前端框架二次开发，增加云函数，成为一个完整的app，导入即可使用  
+交流QQ群：298724327  
 
 ### 导入步骤
 1. 启用unicloud，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）
 2. 导入测试数据：执行db_init.json，shops集合增加地理位置索引，否则有问题，索引字段：lnglat，非唯一。其他集合自己看情况增加
-3.云认证： 修改/common/cloud.js，spaceId填写自己当前项目的服务空间id，目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid，
+3. 云认证： 修改/common/cloud.js，spaceId填写自己当前项目的服务空间id，目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid，
 修改/cloudfunctions-tcb/common/token/index.js，spaceId,[文档](https://uniapp.dcloud.io/uniCloud/authentication)
 4. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善
 5. 支付功能：/cloudfunctions-tcb/common/configs/index.js，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
