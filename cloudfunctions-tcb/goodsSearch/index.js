@@ -4,7 +4,13 @@ const db = uniCloud.database();
  * 搜索商品,需要记录搜索日志
  */
 exports.main = async (event, context) => {
-	let key = event.key;
+	let key = event.key.trim();
+	if(key==""){
+		return {
+			"code": 404,
+			"message": "搜索词不能为空"
+		};
+	}
 	let shopid = +event.shopid;
 	let page = +event.page;
 	let limit = +event.limit;

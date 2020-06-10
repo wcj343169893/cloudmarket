@@ -47,9 +47,6 @@ export default {
 		this.searchWord = options.key;
 		this.loadData();
 		this.getDefaultSearchWord();
-		setTimeout(()=>{
-			this.getDefaultSearchWord();
-		},500)
 	},
 	//滑到底部加载更多
 	onReachBottom() {
@@ -72,6 +69,7 @@ export default {
 						updateGoodsTags(item);
 						this.goodsList.push(item);
 					});
+					this.getDefaultSearchWord();
 				},
 				err => {
 					this.isLoaded = true;

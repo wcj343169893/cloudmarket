@@ -36,7 +36,6 @@
 	import {  
 	    mapMutations  
 	} from 'vuex';
-import { client, auth } from '@/common/cloud.js';
 	export default {
 		data() {
 			return {
@@ -55,24 +54,7 @@ import { client, auth } from '@/common/cloud.js';
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-							//清理缓存
-							uni.removeStorage({
-								key:"userInfo"
-							});
-							auth.shouldRefreshAccessToken(()=>{
-								console.log("auth.shouldRefreshAccessToken 强制不要刷新");
-								return false;
-							})
-							auth.signOut().then(res=>{
-								console.log("set signOut",res);
-								auth.getLoginState().then(r=>{
-									console.log("auth.getLoginState",r)
-								});
-								auth.getUserInfo().then(res => {
-									console.log('getUserInfo', time, res);
-								});
-								this.logout();
-							});
+							this.logout();
 				    		setTimeout(()=>{
 				    			uni.navigateBack();
 				    		}, 200)

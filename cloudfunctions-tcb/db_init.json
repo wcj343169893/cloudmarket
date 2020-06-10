@@ -2925,6 +2925,11 @@
 				"canceled": 11,
 				"deleted": 0
 			},
+			 "searchGoodsKeywords": [
+			    "车厘子",
+			    "杏子",
+			    "葡萄"
+			  ],
 			"name": "沃尔玛-南山店",
 			"hasManjian": 1,
 			"serviceArea": {

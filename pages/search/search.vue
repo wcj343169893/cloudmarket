@@ -47,7 +47,12 @@ export default {
 	},
 	methods: {
 		async loadData() {
-			this.historyWords = uni.getStorageSync(this.historyKey);
+			//最多显示50条
+			let words = uni.getStorageSync(this.historyKey);
+			if(!words){
+				words=[];
+			}
+			this.historyWords = words.slice(0,50);
 			this.searchKeyWords = uni.getStorageSync('shopSearchGoodsKeywords');
 		},
 		search(e) {
