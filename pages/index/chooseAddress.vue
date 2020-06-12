@@ -14,7 +14,9 @@
 							<text class="mobile">{{ item.mobile }}</text>
 						</view>
 					</view>
-					<view class="checked" v-if="item.checked"><image src="/static/icon/ok01.png" mode="" class="checked_image"></image></view>
+					<view class="checked" v-if="item.checked">
+						<text class="yticon icon-right"></text>
+					</view>
 				</view>
 			</view>
 		</block>
@@ -29,14 +31,14 @@
 				</view>
 			</view>
 			<view class="dingwei" @click.stop="getLocation(true)">
-				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei"></image>
+				<text class="yticon icon-dingwei"></text>
 				<text>重新定位</text>
 			</view>
 		</view>
 		<view class="list b-b" v-else>
 			<view class="wrapper"><text>定位失败</text></view>
 			<view class="dingwei" @click.stop="getLocation(true)">
-				<image src="/static/icon/dingwei.png" mode="aspectFill" class="btn-dingwei"></image>
+				<text class="yticon icon-dingwei"></text>
 				<text>重新定位</text>
 			</view>
 		</view>
@@ -298,9 +300,8 @@ export default {
 	color: $font-color-light;
 	padding-left: 30upx;
 }
-.checked_image {
-	width: 64upx;
-	height: 64upx;
+.checked {
+	color: #6bc56b;
 }
 .dingwei {
 	color: #6bc56b;

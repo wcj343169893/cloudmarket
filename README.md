@@ -24,6 +24,13 @@
 4. 我的，个人信息修改，头像修改，订单列表，商品浏览记录，地址管理，退出登录
 5. 商品详细信息，加入购物车，立即购买，提前预定
 
+### 系统图标
+用了2个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
+```<text class="yticon icon-dingwei"></text>```  
+**yticon.ttf**主要用在pages.json，定义顶部操作图标  
+![yticon.ttf](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/ttf/ttf01.jpg) 
+**yticon2.ttf**主要用在App.vue 文字图标  
+![yticon2.ttf](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/ttf/ttf02.jpg) 
 ### 抢先预览
 uniCloud 有资源限制，如果获取不到数据属正常现象，现在还没找到升级途径，官方公布
 ```
@@ -37,6 +44,8 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.3
+优化首页文件图标，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)，很方便
 #### 1.0.3.2
 增加markdown说明文档打开页面（首页：最快2小时送达  0起送费。。。）,新增集合`documents`，字段`{_id,title,content}`,  
 增加app内打开http网址，（首页：新人专属福利,跳转到[我的博客](https://www.cjblog.org)）,  

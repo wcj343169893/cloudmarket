@@ -72,13 +72,13 @@ export default {
 		/* auth.getLoginState().then(state => {
 			console.log('auth.getLoginState', state);
 		}); */
+		let userInfoKey = 'userInfo';
 		//根据返回值决定是否要刷新短期访问令牌。
 		auth.shouldRefreshAccessToken(() => {
 			let userInfo = uni.getStorageSync(userInfoKey);
-			console.log('auth.shouldRefreshAccessToken 判断是否可以刷新令牌', userInfo.id);
+			console.log('auth.shouldRefreshAccessToken 判断是否可以刷新令牌', userInfo);
 			return !userInfo || userInfo.id > 0;
 		});
-		let userInfoKey = 'userInfo';
 		uniCloud.on('loginStateExpire', () => {
 			// 尝试重新登录
 			console.error('loginStateExpire,尝试重新登录');
@@ -194,7 +194,7 @@ export default {
 	font-family: yticon;
 	font-weight: normal;
 	font-style: normal;
-	src: url('/static/font_1078604_w4kpxh0rafi.ttf') format('truetype');
+	src: url('/static/yticon2.ttf') format('truetype');
 }
 
 .yticon {
@@ -497,7 +497,21 @@ export default {
 .icon-dianzan-ash:before {
 	content: '\e617';
 }
-
+.icon-right::before {
+	content: '\e801';
+}
+.icon-money::before {
+	content: '\e802';
+}
+.icon-chps::before {
+	content: '\e803';
+}
+.icon-dingwei::before {
+	content: '\e804';
+}
+.icon-dunpai::before {
+	content: '\e805';
+}
 view,
 scroll-view,
 swiper,
