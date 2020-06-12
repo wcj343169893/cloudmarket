@@ -194,7 +194,7 @@ export default {
 	font-family: yticon;
 	font-weight: normal;
 	font-style: normal;
-	src: url('/static/font_1078604_w4kpxh0rafi.ttf') format('truetype');
+	src: url('/static/yticon2.ttf') format('truetype');
 }
 
 .yticon {
@@ -497,7 +497,21 @@ export default {
 .icon-dianzan-ash:before {
 	content: '\e617';
 }
-
+.icon-right::before {
+	content: '\e801';
+}
+.icon-money::before {
+	content: '\e802';
+}
+.icon-chps::before {
+	content: '\e803';
+}
+.icon-dingwei::before {
+	content: '\e804';
+}
+.icon-dunpai::before {
+	content: '\e805';
+}
 view,
 scroll-view,
 swiper,

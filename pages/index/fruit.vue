@@ -23,15 +23,15 @@
 		<!-- 口号 -->
 		<view class="weui-flex kouhao m-t" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
 			<view class="kouhao_item">
-				<image src="../../static/icon/navicon-chps.png" mode=""></image>
+				<text class="yticon icon-chps"></text>
 				<text>最快2小时送达</text>
 			</view>
 			<view class="kouhao_item">
-				<image src="../../static/icon/qian.png" mode=""></image>
+				<text class="yticon icon-money"></text>
 				<text>0起送费0配送费</text>
 			</view>
 			<view class="kouhao_item">
-				<image src="../../static/icon/dunpai.png" mode=""></image>
+				<text class="yticon icon-dunpai"></text>
 				<text>安心退换</text>
 			</view>
 		</view>
