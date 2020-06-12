@@ -11,6 +11,7 @@ const {
 } = require('base-common');
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
+	let beginTime = new Date().getTime();
 	let {
 		customUserId
 	} = await auth.getUserInfo();
@@ -358,6 +359,13 @@ exports.main = async (event, context) => {
 		if (uinfo && uinfo.inviters) {
 			data["inviters"] = uinfo.inviters.slice(0, 2)
 		}
+		let endTime = new Date().getTime();
+		//结算商品消耗时间
+		data["timeConsumingInfo"]={
+			beginTime:beginTime,
+			endTime:endTime,
+			consuming:endTime-beginTime
+		};
 		//保存订单
 		let res = await db.collection("orders").add(data);
 		if (!res.id) {

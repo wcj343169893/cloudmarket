@@ -145,7 +145,7 @@
 		</view>
 
 		<!-- 底部操作菜单 -->
-		<view class="page-bottom" v-if="canAddCart">
+		<view class="page-bottom" :class="{show:canAddCart}">
 			<view class="options">
 				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
 					<text class="yticon icon-gouwuche"><!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
@@ -948,7 +948,7 @@ page {
 .page-bottom {
 	position: fixed;
 	left: 0upx;
-	bottom:var(--window-bottom);
+	bottom:-200upx;
 	z-index: 95;
 	display: flex;
 	justify-content: space-between;
@@ -956,8 +956,12 @@ page {
 	width: 100%;
 	background: rgba(255, 255, 255, 0.9);
 	padding: 16upx 30upx 36upx;
+	transition: 0.4s;
 	.options {
 		flex: 1;
+	}
+	&.show{
+		bottom:var(--window-bottom);
 	}
 }
 .add-btn {

@@ -267,6 +267,12 @@ const searchGoodsByKey = function(data) {
 		isShowMask:true
 	})
 }
+const getDocContent = function(data) {
+	return network({
+		url: "documents",
+		data: data
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -294,5 +300,6 @@ export {
 	mobileAutoLogin,
 	cronCancelOrders,
 	getToken,
-	searchGoodsByKey
+	searchGoodsByKey,
+	getDocContent
 }

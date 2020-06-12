@@ -382,7 +382,19 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/docs/docs",
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        }
+        ,{
+            "path" : "pages/docs/web",
+            "style" : {
+				"navigationBarTitleText": ""
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "爱农",
