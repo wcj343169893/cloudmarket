@@ -167,12 +167,21 @@ exports.main = async (event, context) => {
 		_id:cmd.exists(true)
 	}).remove(); */
 	
-	return await db.collection("goods").where({
+	/* return await db.collection("goods").where({
 		title:new RegExp('鱼')
 	}).limit(10).field({
 		id:1,
 		title:1
-	}).get();
+	}).get(); */
+	/* let content=``;
+	
+	return await db.collection("documents").where({
+		_id:"7c59e15d685c4a2d9a5d81376b2dc47f"
+	}).update({
+	"title":"退换货原则",
+  "content":content
+}); */
+	
 };
 /* 
 

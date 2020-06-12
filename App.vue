@@ -72,13 +72,13 @@ export default {
 		/* auth.getLoginState().then(state => {
 			console.log('auth.getLoginState', state);
 		}); */
+		let userInfoKey = 'userInfo';
 		//根据返回值决定是否要刷新短期访问令牌。
 		auth.shouldRefreshAccessToken(() => {
-			let userInfo = uni.getStorageSync(userInfoKey) || {};
-			console.log('auth.shouldRefreshAccessToken 判断是否可以刷新令牌', userInfo.id);
-			return userInfo.id > 0;
+			let userInfo = uni.getStorageSync(userInfoKey);
+			console.log('auth.shouldRefreshAccessToken 判断是否可以刷新令牌', userInfo);
+			return !userInfo || userInfo.id > 0;
 		});
-		let userInfoKey = 'userInfo';
 		uniCloud.on('loginStateExpire', () => {
 			// 尝试重新登录
 			console.error('loginStateExpire,尝试重新登录');

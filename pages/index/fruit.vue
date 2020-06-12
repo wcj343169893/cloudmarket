@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		<!-- 口号 -->
-		<view class="weui-flex kouhao m-t">
+		<view class="weui-flex kouhao m-t" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
 			<view class="kouhao_item">
 				<image src="../../static/icon/navicon-chps.png" mode=""></image>
 				<text>最快2小时送达</text>
@@ -100,7 +100,8 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber } from '@/common/functions.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber,navToDocPage,
+	navToDocWebPage } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -257,6 +258,7 @@ export default {
 		navToAdPage(item) {
 			//https://ask.dcloud.net.cn/article/35621
 			let link = item.link;
+			//this.$api.msg(link)
 			if (link.indexOf('/pages') === 0) {
 				//跳转指定页面
 				uni.navigateTo({
@@ -264,10 +266,14 @@ export default {
 				});
 			} else if (link.indexOf('http') === 0) {
 				//跳转网页
-				plus.runtime.openURL(link, function(res) {
+				/* plus.runtime.openURL(link, function(res) {
 					console.log(res);
-				});
+				}); */
+				navToDocWebPage(link)
 			}
+		},
+		navToDocPage(id){
+			navToDocPage(id)
 		},
 		navToCategoryPage(id) {
 			this.changeMainCateId(+id);

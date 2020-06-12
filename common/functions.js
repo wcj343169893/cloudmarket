@@ -468,6 +468,24 @@ const navToOrderDetail = function(id) {
 		}
 	});
 }
+/**
+ * 打开markdown说明文档
+ * @param string id 文档id
+ */
+const navToDocPage = function(id){
+	uni.navigateTo({
+		url: `/pages/docs/docs?id=${id}`
+	});
+}
+/**
+ * 打开http网站
+ * @param {Object} url
+ */
+const navToDocWebPage = function(url){
+	uni.navigateTo({
+		url:`/pages/docs/web?url=${url}`
+	})
+}
 
 export {
 	updateCartNumber,
@@ -488,5 +506,7 @@ export {
 	clearCountDownTimer,
 	getOrderStateExp,
 	getOrderTypes,
-	getGoodsTypes
+	getGoodsTypes,
+	navToDocPage,
+	navToDocWebPage
 }
