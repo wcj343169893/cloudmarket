@@ -115,6 +115,7 @@ export default {
 	onReady() {
 		console.log('onReady');
 		if (this.location.latitude > 0) {
+			// #ifdef APP-PLUS
 			this.mapContext = uni.createMapContext('map1', this);
 			//地图搜索
 			this.searchObj = new plus.maps.Search(this.mapContext.$getAppMap());
@@ -131,6 +132,7 @@ export default {
 				latitude: this.latitude,
 				longitude: this.longitude
 			});
+			//#endif
 		}
 	},
 	methods: {
@@ -155,12 +157,23 @@ export default {
 					console.log('获取定位完成', res);
 					this.latitude = res.latitude;
 					this.longitude = res.longitude;
+					//小程序不返回地址信息,需要调用另外的接口来查询位置
+					//#ifdef MP
+					this.currentAddress = {
+						addressName: "",
+						latitude: res.latitude,
+						longitude: res.longitude,
+						address: ""
+					};
+					//#endif
+					//#ifndef MP
 					this.currentAddress = {
 						addressName: res.address.poiName,
 						latitude: res.latitude,
 						longitude: res.longitude,
 						address: res.address.street + '' + res.address.streetNum
 					};
+					//#endif
 					if (isMsg) {
 						this.$api.msg('重新定位成功');
 					}
@@ -180,6 +193,7 @@ export default {
 		//地图视野发生变化
 		regionchange() {
 			console.log('regionchange');
+			//#ifdef APP-PLUS
 			this.centerMaker = [];
 			this.mapContext.getCenterLocation({
 				success: lnglat => {
@@ -198,6 +212,7 @@ export default {
 					console.log('获取getCenterLocation complete');
 				}
 			});
+			//#endif
 		},
 		searchResult(result){
 			this.nearAddressList = [];

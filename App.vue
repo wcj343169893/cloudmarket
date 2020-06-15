@@ -196,6 +196,7 @@ export default {
 	font-style: normal;
 	src: url('/static/yticon2.ttf') format('truetype');
 }
+  /* #ifndef APP-PLUS-NVUE */
 
 .yticon {
 	font-family: 'yticon' !important;
@@ -667,4 +668,5 @@ button[type='default'] {
 		color: $font-color-warning;
 	}
 }
+  /* #endif*/
 </style>

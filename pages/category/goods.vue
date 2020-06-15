@@ -725,6 +725,9 @@ $border-color: #f5f5f5;
 	display: flex;
 	background-color: #f8f8f8;
 	height: 100%;
+	/* #ifdef MP */
+	padding-top: calc(var(--status-bar-height) + 50upx);
+	/* #endif */
 }
 .left-aside {
 	flex-shrink: 0;

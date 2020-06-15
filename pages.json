@@ -3,6 +3,9 @@
 			"path": "pages/index/fruit",
 			"style": {
 				"enablePullDownRefresh": true,
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -77,6 +80,9 @@
 			"path": "pages/product/product",
 			"style": {
 				"navigationBarTitleText": "详情展示",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent"
@@ -211,6 +217,9 @@
 			"path": "pages/category/category",
 			"style": {
 				"navigationBarTitleText": "分类",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -219,6 +228,9 @@
 			"path": "pages/category/goods",
 			"style": {
 				"navigationBarTitleText": "分类",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -397,7 +409,7 @@
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "爱农",
+		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#f8f8f8"
 	},
