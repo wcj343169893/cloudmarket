@@ -105,6 +105,9 @@ export default {
 .container {
 	font-size: $font-base;
 	padding-top: var(--status-bar-height);
+	//#ifdef MP
+	padding-top: calc(var(--status-bar-height) + 120upx);
+	//#endif
 }
 .content {
 	padding: 20upx;

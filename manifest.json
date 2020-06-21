@@ -141,14 +141,15 @@
     "mp-weixin" : {
         /* 小程序特有相关 */
         "usingComponents" : true,
-        "appid" : "",
+        "appid" : "wx59ded2343a9d2e42",
         "setting" : {
             "urlCheck" : true
-        },"permission":{
-			"scope.userLocation": {
-			  "desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
-			}
-		}
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+            }
+        }
     },
     "h5" : {
         "title" : "咕叽农场",

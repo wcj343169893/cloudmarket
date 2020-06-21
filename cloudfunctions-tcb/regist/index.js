@@ -124,7 +124,7 @@ exports.main = async (event, context) => {
 		posid:0
 	}); */
 
-	/* let goods = await db.collection('goods').field({
+	let goods = await db.collection('goods').field({
 		id: 1,
 		skus: 1,
 		miaosha: 1
@@ -160,7 +160,7 @@ exports.main = async (event, context) => {
 		//console.log(da);
 		let res = await db.collection('goods').doc(ele._id).update(da);
 		console.log(res);
-	} */
+	}
 	/* let tokenExpire = new db.serverDate();
 	return tokenExpire; */
 	/* return await db.collection("orders").where({

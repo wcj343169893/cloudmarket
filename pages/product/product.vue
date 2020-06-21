@@ -197,6 +197,7 @@ export default {
 			imgs: [], //轮播图
 			score: 0,
 			price: 0,
+			limit:0,
 			skuname: '',
 			skus: [],
 			originPrice: 0,

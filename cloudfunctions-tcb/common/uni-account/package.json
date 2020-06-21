@@ -1,0 +1,1 @@
+{"name":"uni-account","version":"1.0.2","description":"uniAccount from uniCloud","main":"index.js","homepage":"https://github.com/dcloudio/uniCloud-server-plugin.git","repository":{"type":"git","url":"git+https://github.com/dcloudio/uniCloud-server-plugin.git"},"scripts":{"test":"echo \"Error: no test specified\" && exit 1"},"keywords":[],"author":"","license":"Apache-2.0"}

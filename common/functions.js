@@ -14,8 +14,8 @@ const getOrderStateExp = function(item) {
 			stateTip = '待付款';
 			stateContent = "订单未支付，去付款";
 			stateTipColor = '#fa436a';
-			if(item.yuding){
-				if(item.yuding.state == 1){
+			if (item.yuding) {
+				if (item.yuding.state == 1) {
 					stateContent = "订单已支付定金，等待付尾款";
 				}
 			}
@@ -59,7 +59,7 @@ const getOrderStateExp = function(item) {
  */
 const getOrderTypes = function() {
 	return {
-		'unpaid': "待付款",//改价格
+		'unpaid': "待付款", //改价格
 		'payup': "待发货",
 		//'delivered': '已发货',
 		//'received': '已收货',
@@ -151,22 +151,22 @@ const updateGoodsTags = function(goods, isPrecise) {
 	//console.log("updateGoodsTags");
 	let time = new Date().getTime();
 	if (goods.miaosha) {
-		if(goods.miaosha.beginTime > time+24*3600*1000){
+		if (goods.miaosha.beginTime > time + 24 * 3600 * 1000) {
 			//秒杀提前1天显示，这里不显示
 			delete goods.miaosha;
-		}else if(goods.miaosha.beginTime > time){
-		//秒杀必须是有效的
+		} else if (goods.miaosha.beginTime > time) {
+			//秒杀必须是有效的
 			if (!isPrecise) {
 				tags.push({
-					type:"info",
-					text:"未开始"
+					type: "info",
+					text: "未开始"
 				});
 			}
-		}else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
+		} else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
 			if (!isPrecise) {
 				tags.push({
-					type:"warning",
-					text:"限时"
+					type: "warning",
+					text: "限时"
 				});
 			}
 			//如果是多规格商品
@@ -181,8 +181,8 @@ const updateGoodsTags = function(goods, isPrecise) {
 					});
 					if (isPrecise) {
 						sku.tags = [{
-							type:"warning",
-							text:"限时"
+							type: "warning",
+							text: "限时"
 						}];
 					}
 					if (goods.price > sku.price) {
@@ -198,8 +198,8 @@ const updateGoodsTags = function(goods, isPrecise) {
 			} else {
 				if (isPrecise) {
 					tags.push({
-						type:"warning",
-						text:"限时"
+						type: "warning",
+						text: "限时"
 					});
 				}
 				goods.originPrice = goods.price;
@@ -209,22 +209,21 @@ const updateGoodsTags = function(goods, isPrecise) {
 			}
 			//console.log("goods.miaosha",goods)
 		}
-	}else if(goods.yuding){
-		if(goods.yuding.endTime > time){
-			if(!isPrecise){
+	} else if (goods.yuding) {
+		if (goods.yuding.endTime > time) {
+			if (!isPrecise) {
 				//更新商品价格
-				goods.price = goods.price+goods.yuding.price - goods.yuding.deduction;
+				goods.price = goods.price + goods.yuding.price - goods.yuding.deduction;
 			}
 			tags.push({
-				type:"info",
-				text:"预售"
+				type: "info",
+				text: "预售"
 			});
-		}else{
+		} else {
 			delete goods.yuding;
 		}
 	}
-	if (goods.manjian) {
-	}
+	if (goods.manjian) {}
 	goods["tags"] = tags;
 };
 //获取用户定位信息
@@ -359,17 +358,79 @@ const showLoginDialog = function() {
 }
 //跳转登录
 const navToLoginPage = function(id, sid) {
-	if (isRedirect) {
-		return false;
-	}
-	isRedirect = true;
 	uni.navigateTo({
-		url: `/pages/public/login`,
-		success: function() {
-			isRedirect = false;
+		url: `/pages/public/login`
+	});
+}
+
+const getMicUserInfo = function() {
+	let provider = "weixin";
+	uni.login({
+		provider: provider,
+		scopes: "auth_user",
+		success: function(loginRes) {
+			console.log("getMicUserInfo loginRes", loginRes);
+			//https://developers.weixin.qq.com/community/develop/doc/0000a26e1aca6012e896a517556c01，
+			//此接口即将废弃
+			uni.getUserInfo({
+				provider: provider,
+				success: (res) => {
+					console.log("uni.getUserInfo", res)
+				}
+			})
 		}
 	});
 }
+
+/**
+ * 小程序检测登录和登录
+ * @param {Object} type
+ */
+const navMicLogin = function(type) {
+	const {
+		client,
+		auth
+	} = require("./cloud.js")
+
+	uni.getProvider({
+		service: 'oauth',
+		success(res) {
+			console.log("res.provider", res.provider)
+			uni.login({
+				provider: res.provider[0],
+				success: function(loginRes) {
+					loginRes["type"] = type;
+					console.log("loginRes",loginRes);
+					client.callFunction({
+						name: 'micLogin',
+						data: loginRes,
+						success: result => {
+							console.log("micLogin",result)
+							if (result.code == 200) {
+								//写入缓存
+								uni.setStorage({
+									key: userInfoKey,
+									data: result.data
+								});
+								auth.signInWithTicket(result.data.ticket).then(() => {
+									// 登录成功
+									console.log('客户端登录成功');
+								});
+							} else if (result.code == 404 && result.data) {
+								//在后面的授权登录的时候，传到服务器，自动绑定
+								uni.setStorage({
+									key: "userInfoPlatform",
+									data: result.data
+								});
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
 /** 跳转商品详细页 id商品id，sid型号id*/
 const navToGoodsPage = function(id, sid) {
 	if (isRedirect) {
@@ -472,7 +533,7 @@ const navToOrderDetail = function(id) {
  * 打开markdown说明文档
  * @param string id 文档id
  */
-const navToDocPage = function(id){
+const navToDocPage = function(id) {
 	uni.navigateTo({
 		url: `/pages/docs/docs?id=${id}`
 	});
@@ -481,9 +542,9 @@ const navToDocPage = function(id){
  * 打开http网站
  * @param {Object} url
  */
-const navToDocWebPage = function(url){
+const navToDocWebPage = function(url) {
 	uni.navigateTo({
-		url:`/pages/docs/web?url=${url}`
+		url: `/pages/docs/web?url=${url}`
 	})
 }
 
@@ -508,5 +569,6 @@ export {
 	getOrderTypes,
 	getGoodsTypes,
 	navToDocPage,
-	navToDocWebPage
+	navToDocWebPage,
+	navMicLogin
 }

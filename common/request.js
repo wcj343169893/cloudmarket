@@ -273,6 +273,16 @@ const getDocContent = function(data) {
 		data: data
 	})
 }
+/**
+ * 小程序登录
+ * @param {Object} data
+ */
+const micLogin = function(data){
+	return network({
+		url: "micLogin",
+		data: data
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -301,5 +311,6 @@ export {
 	cronCancelOrders,
 	getToken,
 	searchGoodsByKey,
-	getDocContent
+	getDocContent,
+	micLogin
 }
