@@ -1,5 +1,12 @@
 <template>
 	<view class="container">
+		<!-- 小程序头部兼容 -->
+		<!-- #ifdef MP -->
+		<view class="mp-search-box">
+			<navigator url="chooseAddress" class="yticon icon-icon-test"></navigator>
+			<input class="ser-input" type="text" :value="searchWord" disabled @click="navToSearch"/>
+		</view>
+		<!-- #endif -->
 		<!-- 头部轮播 -->
 		<view class="carousel-section">
 			<!-- 标题栏和状态栏占位符 -->
@@ -58,7 +65,7 @@
 									<text>{{ item.title }}</text>
 								</view>
 								<view class="tags">
-									<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
+									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
 								</view>
 								<view class="">
 									<text class="price">{{ item.price }}</text>
@@ -83,7 +90,7 @@
 							<text>{{ item.title }}</text>
 						</view>
 						<view class="tags">
-							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
+							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
 						</view>
 						<view class="">
 							<text class="price">{{ item.price }}</text>
@@ -100,8 +107,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber,navToDocPage,
-	navToDocWebPage } from '@/common/functions.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber, navToDocPage, navToDocWebPage } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -109,9 +115,9 @@ export default {
 			swiperCurrent: 0,
 			swiperLength: 0,
 			goNext: 1,
-			searchWord:"",
+			searchWord: '',
 			isLoaded: false,
-			searchKeyWords:[],
+			searchKeyWords: [],
 			address: '开启定位获得位置/收货地址',
 			carouselList: [],
 			recommendCategoriesList: [],
@@ -157,7 +163,7 @@ export default {
 		this.goNext += 1;
 	},
 	methods: {
-		...mapMutations(['changeShopId', 'changeMainCateId','setUserLocation']),
+		...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation']),
 		async getUserLocation() {
 			console.log('开始获取定位');
 			//1.如果存在经纬度，则直接访问
@@ -174,13 +180,16 @@ export default {
 					geocode: true,
 					success: res => {
 						console.log('获取定位完成', res);
-						this.setUserLocation({
-							id:false,
-							latitude:res.latitude,
-							longitude:res.longitude,
-							name:res.address.poiName,
-						});
+						this.address = '当前位置';
+						//#ifndef MP
 						this.address = res.address.poiName;
+						//#endif
+						this.setUserLocation({
+							id: false,
+							latitude: res.latitude,
+							longitude: res.longitude,
+							name: this.address
+						});
 						this.loadData();
 					},
 					fail: res => {
@@ -234,16 +243,16 @@ export default {
 					});
 				} */
 				//异步查询购物车总数量，需要过滤库存不足的商品
-				if(this.hasLogin){
+				if (this.hasLogin) {
 					updateCartNumber(res.cart);
 				}
-				if(res.shop){
+				if (res.shop) {
 					this.searchKeyWords = res.shop.searchGoodsKeywords;
 					//同时写入缓存，在分类页面也能调用
 					uni.setStorage({
-						key:"shopSearchGoodsKeywords",
-						data:this.searchKeyWords
-					})
+						key: 'shopSearchGoodsKeywords',
+						data: this.searchKeyWords
+					});
 					this.getDefaultSearchWord();
 				}
 			});
@@ -269,11 +278,11 @@ export default {
 				/* plus.runtime.openURL(link, function(res) {
 					console.log(res);
 				}); */
-				navToDocWebPage(link)
+				navToDocWebPage(link);
 			}
 		},
-		navToDocPage(id){
-			navToDocPage(id)
+		navToDocPage(id) {
+			navToDocPage(id);
 		},
 		navToCategoryPage(id) {
 			this.changeMainCateId(+id);
@@ -295,32 +304,35 @@ export default {
 				url: '/pages/index/seckillGoods'
 			});
 		},
-		getDefaultSearchWord(){
-			if(this.searchKeyWords && this.searchKeyWords.length > 0){
+		navToSearch(){
+			uni.navigateTo({
+				url: `/pages/search/search?key=${this.searchWord}`
+			});
+		},
+		getDefaultSearchWord() {
+			if (this.searchKeyWords && this.searchKeyWords.length > 0) {
 				this.searchWord = this.searchKeyWords[parseInt(Math.random() * this.searchKeyWords.length)];
 			}
-			// #ifdef APP-PLUS  
-			var webView = this.$mp.page.$getAppWebview();  
+			// #ifdef APP-PLUS
+			var webView = this.$mp.page.$getAppWebview();
 			var tn = webView.getStyle().titleNView;
-			tn.searchInput.placeholder = this.searchWord;   
-			 
+			tn.searchInput.placeholder = this.searchWord;
+
 			webView.setStyle({
-				titleNView : tn
+				titleNView: tn
 			});
 			// #endif
 			//10秒换一个
-			setTimeout(()=>{
+			setTimeout(() => {
 				this.getDefaultSearchWord();
-			},10000)
+			}, 10000);
 		}
 	},
 	// #ifndef MP
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
 		//this.$api.msg('点击了搜索框');
-		uni.navigateTo({
-			url:`/pages/search/search?key=${this.searchWord}`
-		})
+		this.navToSearch()
 	},
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
@@ -349,6 +361,50 @@ export default {
 </script>
 
 <style lang="scss">
+/* #ifdef MP */
+.mp-search-box {
+	position: absolute;
+	left: 0;
+	top: calc(var(--status-bar-height) + 50upx);
+	z-index: 9999;
+	width: 50%;
+	padding: 0 20upx;
+	display: flex;
+	align-items: center;
+	.icon-icon-test{
+		font-size: 48upx;
+		color: #FFFFFF;
+		margin-right: 7upx;
+	}
+	.ser-input {
+		flex: 1;
+		height: 56upx;
+		line-height: 56upx;
+		text-align: center;
+		font-size: 28upx;
+		color: $font-color-base;
+		border-radius: 20px;
+		background: rgba(255, 255, 255, 0.6);
+	}
+}
+page {
+	.carousel-section {
+		padding: 0;
+		.titleNview-placing {
+			padding-top: 118upx;
+		}
+		.carousel {
+			.carousel-item {
+				padding: 10upx;
+			}
+		}
+		.swiper-dots {
+			left: 45upx;
+			bottom: 40upx;
+		}
+	}
+}
+/* #endif */
 page {
 	background: #f5f5f5;
 }
@@ -490,14 +546,14 @@ page {
 	.floor-item {
 		background: #fff;
 		width: 280upx;
-		padding:0 0 20upx;
+		padding: 0 0 20upx;
 		margin-right: 20upx;
 		font-size: $font-sm + 2upx;
 		color: $font-color-dark;
 		border-radius: 4%;
 		overflow: hidden;
-		.content{
-			padding:0 20upx;
+		.content {
+			padding: 0 20upx;
 		}
 		image {
 			width: 280upx;

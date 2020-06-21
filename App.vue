@@ -8,7 +8,9 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  */
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
+
 const pushClientInfoKey = 'pushClientInfo';
+const userInfoKey = 'userInfo';
 export default {
 	methods: {
 		...mapMutations(['login', 'setUserLocation']),
@@ -64,15 +66,57 @@ export default {
 					console.log('push.getClientInfoAsync', err);
 				}
 			);
+		},async micLogin(){
+			uni.getProvider({
+				service: 'oauth',
+				success(res) {
+					console.log("res.provider", res.provider)
+					uni.login({
+						provider: res.provider[0],
+						success: function(loginRes) {
+							console.log("loginRes",loginRes);
+							client.callFunction({
+								name: 'micLogin',
+								data: loginRes,
+								success: res => {
+									let result = res.result;
+									console.log("micLogin",result)
+									if (result.code == 200) {
+										//写入缓存
+										uni.setStorage({
+											key: userInfoKey,
+											data: result.data
+										});
+										auth.signInWithTicket(result.data.ticket).then(() => {
+											// 登录成功
+											console.log('客户端登录成功');
+										});
+									} else if (result.code == 404 && result.data) {
+										//在后面的授权登录的时候，传到服务器，自动绑定
+										uni.setStorage({
+											key: "userInfoPlatform",
+											data: result.data
+										});
+									}else{
+										console.log("判断错误")
+									}
+								}
+							});
+						}
+					});
+				}
+			});
 		}
 	},
 	onLaunch: function() {
 		console.log('App.vue 启动');
+		//#ifdef MP
+		this.micLogin()
+		//#endif
 		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
 		/* auth.getLoginState().then(state => {
 			console.log('auth.getLoginState', state);
 		}); */
-		let userInfoKey = 'userInfo';
 		//根据返回值决定是否要刷新短期访问令牌。
 		auth.shouldRefreshAccessToken(() => {
 			let userInfo = uni.getStorageSync(userInfoKey);
@@ -196,6 +240,7 @@ export default {
 	font-style: normal;
 	src: url('/static/yticon2.ttf') format('truetype');
 }
+/* #ifndef APP-PLUS-NVUE */
 
 .yticon {
 	font-family: 'yticon' !important;
@@ -667,4 +712,5 @@ button[type='default'] {
 		color: $font-color-warning;
 	}
 }
+/* #endif*/
 </style>

@@ -291,7 +291,7 @@ export default {
 								uni.hideLoading();
 								if (!result.code) {
 									//上传成功
-									let url = 'https://xxxxxxxxx.tcb.qcloud.la/' + cloudPath;
+									let url = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/' + cloudPath;
 									this.$api.prePage().refreshFile(url);
 									this.$api.msg('上传成功');
 									setTimeout(() => {

@@ -1,0 +1,403 @@
+<template>
+	<view class="container">
+		<!-- 头部轮播 -->
+		<view class="carousel-section">
+			<!-- 标题栏和状态栏占位符 -->
+			<view class="titleNview-placing"></view>
+			<!-- 背景色区域 -->
+			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
+			<!--收货地址-->
+			<view class="titleNview-address" v-if="address != ''">
+				<text class="titleNview-address_text">送至:{{ address }}</text>
+			</view>
+			<swiper class="carousel" circular @change="swiperChange">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)"><image class="carousel-item_image" :src="item.src" /></swiper-item>
+			</swiper>
+			<!-- 自定义swiper指示器 -->
+			<view class="swiper-dots">
+				<text class="num">{{ swiperCurrent + 1 }}</text>
+				<text class="sign">/</text>
+				<text class="num">{{ swiperLength }}</text>
+			</view>
+		</view>
+		<!-- 口号 -->
+		<view class="kouhao" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
+			<view class="kouhao_item">
+				<text class="yticon icon-chps"></text>
+				<text class="kouhao_item_text">最快2小时送达</text>
+			</view>
+			<view class="kouhao_item">
+				<text class="yticon icon-money"></text>
+				<text class="kouhao_item_text">0起送费0配送费</text>
+			</view>
+			<view class="kouhao_item">
+				<text class="yticon icon-dunpai"></text>
+				<text class="kouhao_item_text">安心退换</text>
+			</view>
+		</view>
+		<!-- 分类 -->
+		<view class="cate-section m-t" v-if="recommendCategoriesList.length > 0">
+			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item.id)">
+				<image class="cate-item_image" :src="item.src"></image>
+				<text>{{ item.name }}</text>
+			</view>
+		</view>
+		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
+	</view>
+</template>
+
+<script>
+import { getHomeFruitData } from '@/common/request.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber,navToDocPage,
+	navToDocWebPage } from '@/common/functions.js';
+export default {
+	data() {
+		return {
+			titleNViewBackground: '#ff0000',
+			swiperCurrent: 0,
+			swiperLength: 0,
+			carouselList:[
+				{
+				  "background": "#54b85d",
+				  "link": "/pages/product/product?id=123456",
+				  "posid": 1,
+				  "shopid": 0,
+				  "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6813ba00-639d-11ea-b227-9531cf5e701a.jpg"
+				},
+				{
+				  "background": "#58c15e",
+				  "link": "https://www.cjblog.org",
+				  "posid": 2,
+				  "shopid": 123457,
+				  "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg"
+				}
+			],
+			goNext: 1,
+			searchWord:"",
+			isLoaded: false,
+			searchKeyWords:[],
+			address: '开启定位获得位置/收货地址',
+			recommendCategoriesList: [],
+			miaoshaList: [],
+			newestList: [],
+			location:{}
+		};
+	},
+	onLoad() {
+		this.getUserLocation();
+	},
+	//下拉刷新,不会更新底部附近的店铺
+	onPullDownRefresh() {
+		//this.loadData('refresh');
+		console.log('刷新整页');
+		uni.stopPullDownRefresh();
+		this.loadData();
+	},
+	methods: {
+		async getUserLocation() {
+			console.log('开始获取定位');
+			//1.如果存在经纬度，则直接访问
+			this.location = uni.getStorageSync("userLocationInfo");
+			if (this.location.id) {
+				//存在历史定位，只能是从收货地址填写
+				console.log('存在选择地址', this.location);
+				this.address = this.location.name;
+				this.loadData();
+			} else {
+				//获取定位
+				uni.getLocation({
+					type: 'gcj02',
+					altitude: true,
+					geocode: true,
+					success: res => {
+						console.log('获取定位完成', res);
+						this.setUserLocation({
+							id:false,
+							latitude:res.latitude,
+							longitude:res.longitude,
+							name:res.address.poiName,
+						});
+						this.address = res.address.poiName;
+						this.loadData();
+					},
+					fail: res => {
+						console.log('获取定位失败', res.errMsg);
+						this.loadData();
+					}
+				});
+			}
+		},
+		changeLocationInfo(info) {
+			//this.location = info;
+			console.log(this.location);
+			this.address = this.location.name;
+			//刷新页面数据
+			this.loadData();
+		},
+		setUserLocation(obj){
+			uni.setStorage({
+				key: 'userLocationInfo',
+				data: obj
+			});
+			this.location = obj;
+		},
+		async loadData() {
+			this.isLoaded = false;
+			getHomeFruitData({
+				latitude: this.location.latitude,
+				longitude: this.location.longitude
+			}).then(res => {
+				this.isLoaded = true;
+				//广告
+				if (res.ads) {
+					let ads = res.ads;
+					this.titleNViewBackground = ads[0].background;
+					this.swiperLength = ads.length;
+					this.carouselList = ads;
+				}
+				if (res.categories) {
+					this.recommendCategoriesList = res.categories;
+				}
+				this.miaoshaList = res.miaosha;
+				this.miaoshaList.forEach(item => {
+					updateGoodsTags(item);
+				});
+				this.newestList = res.newest;
+				this.newestList.forEach(item => {
+					updateGoodsTags(item);
+				});
+				//异步查询购物车总数量，需要过滤库存不足的商品
+				if(this.hasLogin){
+					updateCartNumber(res.cart);
+				}
+				if(res.shop){
+					this.searchKeyWords = res.shop.searchGoodsKeywords;
+					//同时写入缓存，在分类页面也能调用
+					uni.setStorage({
+						key:"shopSearchGoodsKeywords",
+						data:this.searchKeyWords
+					})
+					this.getDefaultSearchWord();
+				}
+			});
+		},
+		//轮播图切换修改背景色
+		swiperChange(e) {
+			const index = e.detail.current;
+			this.swiperCurrent = index;
+			this.titleNViewBackground = this.carouselList[index].background;
+		},
+		//广告轮播跳转
+		navToAdPage(item) {
+			//https://ask.dcloud.net.cn/article/35621
+			let link = item.link;
+			//this.$api.msg(link)
+			if (link.indexOf('/pages') === 0) {
+				//跳转指定页面
+				uni.navigateTo({
+					url: `${link}`
+				});
+			} else if (link.indexOf('http') === 0) {
+				//跳转网页
+				/* plus.runtime.openURL(link, function(res) {
+					console.log(res);
+				}); */
+				navToDocWebPage(link)
+			}
+		},
+		navToDocPage(id){
+			navToDocPage(id)
+		},
+		navToCategoryPage(id) {
+			this.changeMainCateId(+id);
+			uni.switchTab({
+				url: `../category/goods`
+			});
+		},
+		navToGoodsPage(item) {
+			//navToGoodsPage(item.id);
+			navToGoodsItemPage(item);
+		},
+		navToSecKillGoods() {
+			//秒杀商品列表,把当前页面数据传过去
+			uni.setStorage({
+				key: 'secKillGoodsList',
+				data: this.miaoshaList
+			});
+			uni.navigateTo({
+				url: '/pages/index/seckillGoods'
+			});
+		},
+		getDefaultSearchWord(){
+			if(this.searchKeyWords && this.searchKeyWords.length > 0){
+				this.searchWord = this.searchKeyWords[parseInt(Math.random() * this.searchKeyWords.length)];
+			}
+			// #ifdef APP-PLUS  
+			var webView = this.$mp.page.$getAppWebview();  
+			var tn = webView.getStyle().titleNView;
+			tn.searchInput.placeholder = this.searchWord;   
+			 
+			webView.setStyle({
+				titleNView : tn
+			});
+			// #endif
+			//10秒换一个
+			setTimeout(()=>{
+				this.getDefaultSearchWord();
+			},10000)
+		}
+	},
+	// #ifndef MP
+	// 标题栏input搜索框点击
+	onNavigationBarSearchInputClicked: async function(e) {
+		//this.$api.msg('点击了搜索框');
+		uni.navigateTo({
+			url:`/pages/search/search?key=${this.searchWord}`
+		})
+	},
+	//点击导航栏 buttons 时触发
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if (index === 0) {
+			uni.navigateTo({
+				url: `/pages/index/chooseAddress`
+			});
+		} else if (index === 1) {
+			// #ifdef APP-PLUS
+			//隐藏红点
+			const pages = getCurrentPages();
+			const page = pages[pages.length - 1];
+			const currentWebview = page.$getAppWebview();
+			currentWebview.hideTitleNViewButtonRedDot({
+				index
+			});
+			// #endif
+			uni.navigateTo({
+				url: '/pages/notice/notice'
+			});
+		}
+	}
+	// #endif
+};
+</script>
+
+<style lang="scss">
+.container {
+	flex: 1;
+	width: 750upx;
+	height: 4000upx;
+	font-size: $font-base;
+}
+/* 头部 轮播图 */
+.carousel-section {
+	position: relative;
+	padding-top: 10px;
+	width: 750upx;
+}
+.titleNview-placing {
+	height:120upx;
+	padding-top: 68upx;
+	background-color: #FFEA7F;
+}
+
+.titleNview-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 750upx;
+	height: 426upx;
+	transition-duration: 0.3s;
+}
+.titleNview-address {
+	position: relative;
+	padding-left: 36upx;
+	padding-bottom: 12upx;
+}
+.titleNview-address_text{
+	font-size: $font-sm;
+	color: #ffffff;
+}
+.carousel {
+	width: 750upx;
+	height: 350upx;
+}
+.carousel-item {
+	width: 750upx;
+	height: 350upx;
+	padding: 0 30upx;
+	overflow: hidden;
+}
+
+.carousel-item_image {
+	width: 690upx;
+	height: 350upx;
+	border-radius: 10upx;
+}
+.swiper-dots {
+	display: flex;
+	position: absolute;
+	left: 60upx;
+	bottom: 15upx;
+	width: 72upx;
+	height: 36upx;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAYAAADDhn8LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTMyIDc5LjE1OTI4NCwgMjAxNi8wNC8xOS0xMzoxMzo0MCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTk4MzlBNjE0NjU1MTFFOUExNjRFQ0I3RTQ0NEExQjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTk4MzlBNjA0NjU1MTFFOUExNjRFQ0I3RTQ0NEExQjMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Q0E3RUNERkE0NjExMTFFOTg5NzI4MTM2Rjg0OUQwOEUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Q0E3RUNERkI0NjExMTFFOTg5NzI4MTM2Rjg0OUQwOEUiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Gh5BPAAACTUlEQVR42uzcQW7jQAwFUdN306l1uWwNww5kqdsmm6/2MwtVCp8CosQtP9vg/2+/gY+DRAMBgqnjIp2PaCxCLLldpPARRIiFj1yBbMV+cHZh9PURRLQNhY8kgWyL/WDtwujjI8hoE8rKLqb5CDJaRMJHokC6yKgSCR9JAukmokIknCQJpLOIrJFwMsBJELFcKHwM9BFkLBMKFxNcBCHlQ+FhoocgpVwwnv0Xn30QBJGMC0QcaBVJiAMiec/dcwKuL4j1QMsVCXFAJE4s4NQA3K/8Y6DzO4g40P7UcmIBJxbEesCKWBDg8wWxHrAiFgT4fEGsB/CwIhYE+AeBAAdPLOcV8HRmWRDAiQVcO7GcV8CLM8uCAE4sQCDAlHcQ7x+ABQEEAggEEAggEEAggEAAgQACASAQQCCAQACBAAIBBAIIBBAIIBBAIABe4e9iAe/xd7EAJxYgEGDeO4j3EODp/cOCAE4sYMyJ5cwCHs4rCwI4sYBxJ5YzC84rCwKcXxArAuthQYDzC2JF0H49LAhwYUGsCFqvx5EF2T07dMaJBetx4cRyaqFtHJ8EIhK0i8OJBQxcECuCVutxJhCRoE0cZwMRyRcFefa/ffZBVPogePihhyCnbBhcfMFFEFM+DD4m+ghSlgmDkwlOgpAl4+BkkJMgZdk4+EgaSCcpVX7bmY9kgXQQU+1TgE0c+QJZUUz1b2T4SBbIKmJW+3iMj2SBVBWz+leVfCQLpIqYbp8b85EskIxyfIOfK5Sf+wiCRJEsllQ+oqEkQfBxmD8BBgA5hVjXyrBNUQAAAABJRU5ErkJggg==);
+	background-size: 100% 100%;
+
+}
+.num {
+	width: 36upx;
+	height: 36upx;
+	border-radius: 50px;
+	font-size: 24upx;
+	color: #fff;
+	text-align: center;
+	line-height: 36upx;
+}
+
+.sign {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	line-height: 36upx;
+	font-size: 12upx;
+	color: #fff;
+	transform: translateX(-50%);
+}
+.kouhao {
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 20upx;
+}
+.kouhao_item {
+	color: #ff0000;
+	flex-direction: row;
+}
+.kouhao_item_text{
+	font-size: $font-sm;
+	color: $base-color;
+}
+/* 分类 */
+.cate-section {
+	justify-content: space-around;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 30upx 22upx 0;
+	background: #fff;
+}
+.cate-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: $font-sm + 2upx;
+	color: $font-color-dark;
+	width: 140upx;
+	padding-bottom: 30upx;
+}
+.cate-item_image {
+	width: 88upx;
+	height: 88upx;
+	margin-bottom: 14upx;
+	border-radius: 50%;
+	box-shadow: 4upx 4upx 20upx rgba(62, 147, 23, 0.3);
+}
+</style>

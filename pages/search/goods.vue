@@ -96,6 +96,13 @@ export default {
 				titleNView: tn
 			});
 			// #endif
+			
+			//#ifdef MP
+			//设置顶部标题
+			uni.setNavigationBarTitle({
+				title:this.searchWord
+			})
+			//#endif
 		}
 	},
 	// #ifndef MP

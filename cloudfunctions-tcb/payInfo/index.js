@@ -67,12 +67,12 @@ exports.main = async (event, context) => {
 			id = order.yuding.id;
 			order.totalMoney = order.yuding.price;
 			order.body = "定金：" + order.body;
-			order.yuding.payType="dingjin";
+			order.yuding.payType = "dingjin";
 		} else {
 			//支付尾款
 			order.totalMoney = order.yuding.finishPaymentPrice;
 			order.body = "尾款：" + order.body;
-			order.yuding.payType="weikuan";
+			order.yuding.payType = "weikuan";
 		}
 	}
 	data["order"] = order;
@@ -88,33 +88,38 @@ exports.main = async (event, context) => {
 		//处理余额为2位小数
 		balance = userInfo.data[0].balance.toFixed(2);
 	}
+	let platform = context.PLATFORM;
 	//支付方式https://uniapp.dcloud.io/api/plugins/provider
-	data["payment"] = [{
+	data["payment"] = [];
+	if (platform != "mp-alipay") {
+		data["payment"].push({
 			id: 1,
 			value: "wxpay",
 			icon: "icon-weixinzhifu",
 			name: "微信支付",
 			usable: true,
-			desc: "推荐使用微信支付"
-		},
-		{
+			desc: ""
+		})
+	}
+	if (platform != "mp-weixin") {
+		data["payment"].push({
 			id: 2,
 			value: "alipay",
 			icon: "icon-alipay",
 			name: "支付宝支付",
 			usable: true,
-			desc: ""
-		},
-		{
-			id: 3,
-			value: "balance",
-			icon: "icon-erjiye-yucunkuan",
-			name: "余额支付",
-			usable: balance >= data.order.totalMoney,
-			usableText: "余额不足,请选择其他支付方式",
-			desc: "可用余额￥" + balance
-		}
-	];
+			desc: "推荐使用"
+		})
+	}
+	data["payment"].push({
+		id: 3,
+		value: "balance",
+		icon: "icon-erjiye-yucunkuan",
+		name: "余额支付",
+		usable: balance >= data.order.totalMoney,
+		usableText: "余额不足,请选择其他支付方式",
+		desc: "可用余额￥" + balance
+	});
 
 	return {
 		"code": 200,

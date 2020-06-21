@@ -72,6 +72,15 @@ export default {
 				this.payment = data;
 				this.payType = data[0].value;
 			}
+			//#ifdef MP
+			//微信小程序需要openid，读取用户信息中的openid
+			uni.getStorage({
+				key:"userInfo",
+				success:(info) =>{
+					this.openid = info.data.openid;
+				}
+			});
+			//#endif
 			payInfo({
 				id: this.id
 			}).then(
