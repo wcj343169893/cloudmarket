@@ -534,6 +534,7 @@ export default {
 			let nameMap = {};
 			//所有存在的规格名称，例如：aabb，bbcc
 			let nameHash = [];
+			let miaoshaSkuName = [];
 			skus.map(sku => {
 				let names = sku.name.split('&gt;');
 				names.map((n, i) => {
@@ -549,6 +550,12 @@ export default {
 				//name排序之后再拼接起来
 				nameHash.push(names.sort().join('&gt;'));
 				nameMap[sku.name] = sku;
+				
+				if (miaoshaSkuName.length == 0) {
+					if (item.miaosha && item.miaosha.sku_id == sku.id) {
+						miaoshaSkuName = names;
+					}
+				}
 			});
 			//默认第一个规格的选中次数
 			item['cart'] = 0;
@@ -558,7 +565,21 @@ export default {
 			item['skuNameHash'] = nameHash;
 			this.skuGoods = item;
 			//默认选中第一个
-			this.selectSku(0, 0);
+			if (miaoshaSkuName.length > 0) {
+				//默认选中秒杀商品，否则第一个
+				skuMap.map((s, i) => {
+					//找到秒杀规格所在位置
+					let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
+					if (i2 < 0) {
+						//没找到对应的型号
+						console.log('默认没找到对应的型号', miaoshaSkuName);
+						i2 = 0;
+					}
+					this.selectSku(i, i2);
+				});
+			} else {
+				this.selectSku(0, 0);
+			}
 			//延时打开
 			this.$nextTick(() => {
 				this.$refs['showsku'].open();
@@ -620,7 +641,7 @@ export default {
 		},
 		/**规格选择**/
 		selectSku(index, index2) {
-			console.log('selectSku');
+			console.log('selectSku',index, index2);
 			//被点击的name
 			let clickName = this.skuGoods.skuNameMap[index]['child'][index2];
 			if (clickName.disabled) {
@@ -887,10 +908,10 @@ $box-height: 60upx;
 	}
 	$yellow-color: $uni-color-success;
 	.skuoptions__item {
-		width: 180upx;
+		/* width: 180upx; */
 		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
-		padding: 8upx;
+		padding: 8upx 18upx;
 		margin-left: 20upx;
 		margin-bottom: 20upx;
 		&.active {

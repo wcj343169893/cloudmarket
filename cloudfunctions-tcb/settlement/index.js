@@ -35,6 +35,10 @@ exports.main = async (event, context) => {
 		data: []
 	};
 	if (event.goods) {
+		//店铺id
+		if (event.shopid) {
+			shopid = +event.shopid;
+		}
 		//单个商品结算,必须存在商品goods_id，型号sku_id，数量amount,price=0
 		carts.data.push({
 			_id: "none",
@@ -44,6 +48,10 @@ exports.main = async (event, context) => {
 			price: 0
 		});
 	} else if (event.goodslist) {
+		//店铺id
+		if (event.shopid) {
+			shopid = +event.shopid;
+		}
 		//多条商品提交订单,订单详情-->再次购买
 		event.goodslist.map(goods => {
 			carts.data.push({
@@ -111,6 +119,23 @@ exports.main = async (event, context) => {
 			"message": "收货地址不存在"
 		};
 	}
+	//查询店铺信息
+	let shopData = await db.collection("shops").where({
+		id: shopid
+	}).field({
+		id: 1,
+		name: 1,
+		src: 1,
+		address: 1,
+		uid: 1
+	}).limit(1).get();
+	if (shopData.data.length == 0) {
+		return {
+			"code": 404,
+			"message": "店铺不存在"
+		};
+	}
+	data["shop"] = shopData.data[0];
 	let ids = [];
 	let cartMap = {};
 	//减少秒杀库存成功
@@ -358,13 +383,27 @@ exports.main = async (event, context) => {
 		data["inviters"] = [];
 		if (uinfo && uinfo.inviters) {
 			data["inviters"] = uinfo.inviters.slice(0, 2)
+		} else if (uid != data.shop.uid) {
+			//默认为店主,logo为店铺,店主不能加自己为上级
+			data["inviters"].push({
+				id: data.shop.uid,
+				shopid: data.shop.id,
+				nickname: data.shop.name,
+				portrait: data.shop.src
+			});
+			//设置到用户信息
+			let res = await db.collection("users").doc(uinfo._id).update({
+				invite:data.shop.uid,
+				inviters: data["inviters"]
+			});
+			console.log("默认加入店铺团队", data["inviters"], res);
 		}
 		let endTime = new Date().getTime();
 		//结算商品消耗时间
-		data["timeConsumingInfo"]={
-			beginTime:beginTime,
-			endTime:endTime,
-			consuming:endTime-beginTime
+		data["timeConsumingInfo"] = {
+			beginTime: beginTime,
+			endTime: endTime,
+			consuming: endTime - beginTime
 		};
 		//保存订单
 		let res = await db.collection("orders").add(data);
