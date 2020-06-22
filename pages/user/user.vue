@@ -126,7 +126,10 @@
 				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></mix-list-cell>
 				<mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips"  @eventClick="joinTeam()"></mix-list-cell>
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
+				<!-- #ifndef MP -->
+				<!-- 小程序不需要退出登录，更新，缓存等 -->
 				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
+				<!-- #endif -->
 			</view>
 		</view>
 		<uni-popup ref="vipPopup" type="center">
@@ -343,9 +346,9 @@ export default {
 			}
 			if(this.userInfo.invite > 0){
 				//跳转团队信息
-				uni.navigateTo({
+				/* uni.navigateTo({
 					url:"./team"
-				})
+				}) */
 			}else{
 				this.$refs.invitePopup.open();
 			}

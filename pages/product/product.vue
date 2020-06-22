@@ -187,6 +187,7 @@ export default {
 	data() {
 		return {
 			id: 0,
+			shopid:0,
 			sku_id: 0,
 			isSubmit: false,
 			default_sku_id: 0,
@@ -531,7 +532,7 @@ export default {
 			this.stock = sku.stock;
 			this.limit = sku.limit;
 			this.price = sku.price;
-			this.originPrice = sku.originPrice;
+			this.originPrice = sku.originPrice>0?sku.originPrice:0;
 			this.amount = this.cart[this.sku_id] > 0 ? this.cart[this.sku_id] : 1;
 			//计算折扣
 			this.getSaleRate();
@@ -554,6 +555,7 @@ export default {
 			uni.setStorage({
 				key: 'settlementCartsIds',
 				data: {
+					shopid:this.shopid,
 					goods: {
 						id: this.id,
 						sku_id: this.sku_id,
@@ -994,14 +996,14 @@ page {
 		flex-wrap: wrap;
 		text-align: center;
 		display: flex;
-		padding-left: 40upx;
+		/* padding-left: 40upx; */
 	}
 	$yellow-color: $uni-color-success;
 	.skuoptions__item {
-		width: 180upx;
+		/* width: 180upx; */
 		border: 1px solid $font-color-disabled;
 		border-radius: 8upx;
-		padding: 8upx;
+		padding: 8upx 18upx;
 		margin-left: 20upx;
 		margin-bottom: 20upx;
 		&.active {

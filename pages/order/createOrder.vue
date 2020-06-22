@@ -200,7 +200,7 @@ export default {
 				return;
 			}
 			settlement({
-				id: this.shopId,
+				id: this.shopId,//对此变量依赖性太强
 				addressid: this.location.id,
 				stationId: this.stationId,
 				...this.ids

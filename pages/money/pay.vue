@@ -75,9 +75,10 @@ export default {
 			//#ifdef MP
 			//微信小程序需要openid，读取用户信息中的openid
 			uni.getStorage({
-				key:"userInfo",
+				key:"userOpenId",
 				success:(info) =>{
-					this.openid = info.data.openid;
+					this.openid = info.data;
+					console.log("openid ",info)
 				}
 			});
 			//#endif

@@ -535,6 +535,7 @@ export default {
 				uni.setStorage({
 					key:"settlementCartsIds",
 					data:{
+						shopid:this.shopId,
 						cartids:cartIds
 					},
 					success:()=> {

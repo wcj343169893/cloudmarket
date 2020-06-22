@@ -87,6 +87,10 @@ export default {
 											key: userInfoKey,
 											data: result.data
 										});
+										uni.setStorage({
+											key: "userOpenId",
+											data: result.data.openid
+										});
 										auth.signInWithTicket(result.data.ticket).then(() => {
 											// 登录成功
 											console.log('客户端登录成功');
