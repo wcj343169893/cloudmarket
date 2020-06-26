@@ -193,6 +193,14 @@ const mobileAutoLogin = function(data) {
 		isShowLoading: true
 	})
 }
+//手机号+验证码登录
+const mobileLogin = function(data) {
+	return network({
+		url: "login",
+		data: data,
+		isShowLoading: true
+	})
+}
 /**
  * 获取自己的信息
  * @param {Object} data
@@ -312,5 +320,6 @@ export {
 	getToken,
 	searchGoodsByKey,
 	getDocContent,
-	micLogin
+	micLogin,
+	mobileLogin
 }

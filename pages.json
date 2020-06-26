@@ -3,6 +3,9 @@
 			"path": "pages/index/fruit",
 			"style": {
 				"enablePullDownRefresh": true,
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent",
@@ -77,6 +80,9 @@
 			"path": "pages/product/product",
 			"style": {
 				"navigationBarTitleText": "详情展示",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent"
@@ -104,10 +110,10 @@
 		}, {
 			"path": "pages/public/login",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
+				"navigationBarTitleText": "登录/注册",
+				//"navigationStyle": "custom",
+				"app-plus": {	
+					//"titleNView": false,
 					"animationType": "slide-in-bottom"
 				}
 			}
@@ -211,6 +217,9 @@
 			"path": "pages/category/category",
 			"style": {
 				"navigationBarTitleText": "分类",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -219,6 +228,9 @@
 			"path": "pages/category/goods",
 			"style": {
 				"navigationBarTitleText": "分类",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -394,10 +406,16 @@
 				"navigationBarTitleText": ""
 			}
         }
+        ,{
+            "path" : "pages/admin/goodsSkusBuilder",
+            "style" : {
+				"navigationBarTitleText": "多规格构造器"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "爱农",
+		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#f8f8f8"
 	},

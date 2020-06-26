@@ -2939,6 +2939,7 @@
 			    "杏子",
 			    "葡萄"
 			  ],
+		  "uid":10000,
 			"name": "沃尔玛-南山店",
 			"hasManjian": 1,
 			"serviceArea": {

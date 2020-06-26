@@ -44,9 +44,9 @@ exports.main = async (event, context) => {
 		score: 1,
 		nickname: 1,
 		portrait: 1,
-		platform: 1,
-		openid: 1,
 		id: 1,
+		platform:1,
+		openid:1,
 		invite: 1,
 		birthday: 1,
 		token: 1

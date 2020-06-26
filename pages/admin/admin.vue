@@ -18,6 +18,9 @@
 			</view>
 		</view>
 		<view class="cover-container">
+			<view class="header">
+				<text>订单管理</text>
+			</view>
 			<!-- 订单信息统计 -->
 			<view class="order-section">
 				<view class="order-item" v-for="(item,index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
@@ -26,6 +29,13 @@
 				</view>
 			</view>
 			<!-- 商品信息统计，今日销售最高的4件商品 -->
+			<view class="header">
+				<text>商品管理</text>
+				<view @click="navToAddGoods()" class="more">
+					<text >新增</text>
+					<text class="yticon icon-you"></text>
+				</view>
+			</view>
 			<view class="order-section m-t">
 				<view class="order-item" v-for="(item,index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{item.number}}</text>
@@ -132,6 +142,12 @@ export default {
 		navToGoods(item) {
 			let shopid = this.shopid;
 			this.navTo(`/pages/admin/goodsList?state=${item.state}&shopid=${shopid}`);
+		},
+		//新增商品
+		navToAddGoods(){
+			uni.navigateTo({
+				url:"/pages/admin/addGoods?isnew=true"
+			});
 		},
 		navTo(url) {
 			/* if (!this.hasLogin) {
@@ -254,5 +270,15 @@ export default {
 }
 .m-t {
 	margin-top: 20upx;
+}
+.header{
+	margin-top: 20upx;
+	font-size: $font-lg;
+	display: flex;
+	justify-content: space-between;
+	.more{
+		font-size: $font-base;
+		color: $font-color-base;
+	}
 }
 </style>

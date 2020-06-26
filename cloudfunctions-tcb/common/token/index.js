@@ -4,39 +4,6 @@ const app = uniCloud.init({
 });
 const auth = app.auth();
 /**
- * 获取登录用户信息
- * @param {Object} data data.accessToken
- */
-const getLoginUser = async function(data) {
-	//临时兼容获取用户信息,从数据库查询
-	/* const db = uniCloud.database();
-	let token = data.token || "unknown";
-	let uid = parseInt(data.uid);
-	let isExists = await db.collection("users").where({
-		id: uid,
-		token: token
-	}).count();
-	if (isExists.total > 0) {
-		return {
-			openId: '',
-			appId: '',
-			uid: '',
-			customUserId: uid
-		};
-	} */
-	let userInfo = await auth.getUserInfo();
-	return {
-		openId: '',
-		appId: '',
-		uid: '',
-		customUserId: +userInfo.customUserId
-	}
-	/* 
-	let info = auth.getUserInfo();
-	console.log(info)
-	return info; */
-}
-/**
  * 生成票据
  * @param {int} id
  */
@@ -54,7 +21,6 @@ const getTokenExpire = function(){
 }
 
 module.exports = {
-	getLoginUser,
 	createTicket,
 	getTokenExpire
 }

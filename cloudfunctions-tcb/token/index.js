@@ -43,13 +43,13 @@ exports.main = async (event, context) => {
 	//30天有效期
 	let tokenExpire = getTokenExpire();
 	let publicKey = `-----BEGIN PUBLIC KEY-----` +
-		`MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCl6oNaichd0m+sSY74RV3ISeWKKAFFk0E4aUjax+a7OJEvISZ4xYKbQIDAQAB` +
+		`MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570FeoU1V6Z1pauHXKIwl3pS+cJbCw1CjBIi3fU5+Qu+3fl6x5aA84IUZYCXYbSRHET0SM3fbrkU47JFm1Mhd3xMMLQSwfa3mciYrPO6l6oNaichd0m+sSY74RV3ISeWKKAFFk0E4aUjax+a7OJEvISZ4xYKbQIDAQAB` +
 		`-----END PUBLIC KEY-----`;
 	let key = new NodeRSA(publicKey);
 	key.setOptions({
 		encryptionScheme: 'pkcs1'
 	});
-	//这里加密的值与登录不一致，但是不影响使用，uid=10000方便测试
+	//这里加密的值与登录不一致，但是不影响使用
 	if(uid != 10000){
 		token = key.encrypt(uid, "base64");
 	}
