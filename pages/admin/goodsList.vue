@@ -66,7 +66,7 @@
 				<block v-if="item.manjian"><button class="action-btn" @click.stop="manjianInfo(item)">满减</button></block>
 				<block v-if="item.skuname"><button class="action-btn" @click.stop="skuInfo(item)">规格</button></block>
 				<button class="action-btn" @click.stop="preview(item)">预览</button>
-				<button class="action-btn" @click.stop="addDelivery(item)">编辑</button>
+				<button class="action-btn" @click.stop="edit(item)">编辑</button>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -150,6 +150,18 @@ export default {
 		//预览商品效果,打开前端显示页面
 		preview(item) {
 			navToGoodsItemPage(item);
+		},
+		//编辑
+		edit(item){
+			uni.setStorage({
+				key:"adminEditGoods",
+				data:item,
+				success: () => {
+					uni.navigateTo({
+						url:"./addGoods"
+					});
+				}
+			})
 		},
 		setNavTitle() {
 			let types = getGoodsTypes();

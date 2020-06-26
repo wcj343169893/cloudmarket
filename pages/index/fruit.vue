@@ -15,7 +15,7 @@
 			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 			<!--收货地址-->
 			<view class="titleNview-address" v-if="address != ''">
-				<text>送至:{{ address }}</text>
+				<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
 			</view>
 			<swiper class="carousel" circular @change="swiperChange">
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)"><image :src="item.src" /></swiper-item>
@@ -182,7 +182,9 @@ export default {
 						console.log('获取定位完成', res);
 						this.address = '当前位置';
 						//#ifndef MP
-						this.address = res.address.poiName;
+						//this.address = res.address.poiName;
+						//百度地图
+						this.address = res.address.street+res.address.streetNum;
 						//#endif
 						this.setUserLocation({
 							id: false,
@@ -332,11 +334,14 @@ export default {
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
 		//this.$api.msg('点击了搜索框');
+		console.log("onNavigationBarSearchInputClicked")
 		this.navToSearch()
 	},
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
+		console.log("onNavigationBarButtonTap")
+		//this.$api.msg(index+" ");
 		if (index === 0) {
 			uni.navigateTo({
 				url: `/pages/index/chooseAddress`

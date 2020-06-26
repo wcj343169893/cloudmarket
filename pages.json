@@ -110,10 +110,10 @@
 		}, {
 			"path": "pages/public/login",
 			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
+				"navigationBarTitleText": "登录/注册",
+				//"navigationStyle": "custom",
+				"app-plus": {	
+					//"titleNView": false,
 					"animationType": "slide-in-bottom"
 				}
 			}
@@ -404,6 +404,12 @@
             "path" : "pages/docs/web",
             "style" : {
 				"navigationBarTitleText": ""
+			}
+        }
+        ,{
+            "path" : "pages/admin/goodsSkusBuilder",
+            "style" : {
+				"navigationBarTitleText": "多规格构造器"
 			}
         }
     ],
