@@ -333,6 +333,7 @@
 		}, {
 			"path": "pages/admin/admin",
 			"style": {
+				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "店铺管理",
 				"app-plus": {
 					/* "bounce": "none", */

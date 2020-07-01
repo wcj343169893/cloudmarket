@@ -7,68 +7,55 @@ import network from "./network.js";
  * 获取店铺信息
  * @param {Object} data
  */
-const getShopInfo = function(data) {
-	return network({
-		url: "adminShopInfo",
-		data: data,
-		auth: true,
-		isShowLoading: true
-	})
-}
-/**
- * 查询订单列表
- * @param {Object} data
- */
-const getOrderList = function(data) {
-	data["type"]="list";
-	return network({
-		url: "adminOrders",
-		data: data,
-		auth: true,
-		isShowLoading: false
-	})
+const shopAdmin = function(action,data) {
+	return adminNetwork("shops",action,data);
 }
 /**
  * 订单管理
  * @param {Object} data
  */
-const orderAdmin = function(data) {
-	return network({
-		url: "adminOrders",
-		data: data,
-		auth: true,
-		isShowLoading: true
-	})
+const orderAdmin = function(action,data) {
+	return adminNetwork("orders",action,data);
 }
-/**
- * 分页获取指定类型的商品
- * @param {Object} data
- */
-const getGoodsList = function(data) {
-	data["type"]="list";
-	return network({
-		url: "adminGoods",
-		data: data,
-		auth: true,
-		isShowLoading: false
-	})
-}
+
 /**
  * 商品信息管理
  * @param {Object} data
  */
-const goodsAdmin = function(data) {
+const goodsAdmin = function(action,data) {
+	return adminNetwork("goods",action,data);
+}
+
+/**
+ * 商品信息管理
+ * @param {Object} data
+ */
+const categoryAdmin = function(action,data) {
+	return adminNetwork("categories",action,data);
+}
+
+const adminNetwork = (module,action,data)=>{
+	//统一读取店铺id,必填项
+	let adminShopId = uni.getStorageSync("adminShopId");
+	if(!adminShopId){
+		return false;
+	}
+	//console.log(adminShopId)
 	return network({
-		url: "adminGoods",
-		data: data,
+		url: "admin",
+		data: {
+			module:module,
+			action:action,
+			data:data,
+			shopid:adminShopId
+		},
 		auth: true,
 		isShowLoading: true
-	})
+	});
 }
 export {
-	getShopInfo,
-	getOrderList,
+	shopAdmin,
 	orderAdmin,
-	getGoodsList,
-	goodsAdmin
+	goodsAdmin,
+	categoryAdmin
 }

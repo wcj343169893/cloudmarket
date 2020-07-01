@@ -8,6 +8,7 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		stationId: 0, //分站id
 		shopId: 123457, //分站店铺id，根据收货地址动态设置
+		adminShopId:0,//管理店铺id
 		categoryId: 0,
 		location: {
 			id: false, //收货地址id
@@ -77,6 +78,14 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key: 'userLocationInfo',
 				data: state.location
+			})
+		},
+		//设置管理店铺id
+		setAdminShop(state,id){
+			state.adminShopId = id;
+			uni.setStorage({
+				key: 'adminShopId',
+				data: id
 			})
 		}
 	},

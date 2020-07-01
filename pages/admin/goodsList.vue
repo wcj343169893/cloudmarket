@@ -1,8 +1,11 @@
 <template>
 	<view class="container">
+		<view class="">
+			<text>{{msg}}</text>
+		</view>
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
 		<view class="order-item" v-for="(item, goodsIndex) in goodsList" :key="goodsIndex">
-			<view class="goods-box-single" @click="navToGoodsDetail(item)">
+			<view class="goods-box-single" @click="preview(item)">
 				<image class="goods-img" :src="item.src" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
@@ -29,9 +32,9 @@
 					</view>
 					<view class="attr-box miaosha" v-if="item.miaosha" :class="[item.miaosha.state]">
 						<text>秒杀:</text>
-						<text>{{ item.miaosha.beginTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
+						<text>{{ item.miaosha.beginTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 						<text class="m-lr">至</text>
-						<text>{{ item.miaosha.endTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
+						<text>{{ item.miaosha.endTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 					</view>
 					<view class="attr-box yuding" v-if="item.yuding" :class="[item.yuding.state]">
 						<text>预售:</text>
@@ -44,13 +47,13 @@
 								<text>付定金:</text>
 								<text>{{ item.yuding.beginTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 								<text class="m-lr">至</text>
-								<text>{{ item.yuding.endTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
+								<text>{{ item.yuding.endTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 							</view>
 							<view class="step1">
 								<text>交尾款:</text>
-								<text>{{ item.yuding.finalPaymentBeginTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
+								<text>{{ item.yuding.finalPaymentBeginTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 								<text class="m-lr">至</text>
-								<text>{{ item.yuding.finalPaymentEndTime | dateFormat('MM-dd hh:mm:ss')  }}</text>
+								<text>{{ item.yuding.finalPaymentEndTime | dateFormat('MM-dd hh:mm:ss') }}</text>
 							</view>
 						</view>
 					</view>
@@ -58,15 +61,38 @@
 						<text>满减:</text>
 						<text>{{ item.manjian.name }}</text>
 					</view>
+					<block v-if="item.modified">
+						<view class="attr-box">
+							<text>修改:</text>
+							<text>{{ item.modified | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+							<text class="m-lr">操作员:</text>
+							<text>{{ item.operator }}</text>
+						</view>
+					</block>
+					<block v-if="item.deleteTime">
+						<view class="attr-box" >
+							<text>删除:</text>
+							<text>{{ item.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+							<text class="m-lr">操作员:</text>
+							<text>{{ item.deleteOperator }}</text>
+						</view>
+					</block>
 				</view>
 			</view>
-			<view class="action-box b-t">
+			<view class="action-box b-t" v-if="state=='delete'">
+				<button class="action-btn warning" @click.stop="cleanItem(item)">彻底删除</button>
+				<button class="action-btn recom" @click.stop="revertItem(item)">恢复售卖</button>
+			</view>
+			<view class="action-box b-t" v-else>
+				<button class="action-btn warning" @click.stop="deleteItem(item)">删除</button>
+				<button class="action-btn warning" v-if="item.isSold" @click.stop="soldOut(item)">下架</button>
+				<button class="action-btn recom" v-if="!item.isSold" @click.stop="soldIn(item)">上架</button>
 				<block v-if="item.miaosha"><button class="action-btn" @click.stop="stopMiaosha(item)">秒杀</button></block>
 				<block v-else-if="item.yuding"><button class="action-btn" @click.stop="yudingInfo(item)">预定</button></block>
 				<block v-if="item.manjian"><button class="action-btn" @click.stop="manjianInfo(item)">满减</button></block>
-				<block v-if="item.skuname"><button class="action-btn" @click.stop="skuInfo(item)">规格</button></block>
+				<!-- <block v-if="item.skuname"><button class="action-btn" @click.stop="skuInfo(item)">规格</button></block> -->
 				<button class="action-btn" @click.stop="preview(item)">预览</button>
-				<button class="action-btn" @click.stop="edit(item)">编辑</button>
+				<button class="action-btn recom" @click.stop="edit(item)">编辑</button>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -74,22 +100,22 @@
 </template>
 
 <script>
-import { getGoodsList, goodsAdmin } from '@/common/admin_request.js';
-import {  navToGoodsItemPage,getGoodsTypes } from '@/common/functions.js';
+import { mapState } from 'vuex';
+import { goodsAdmin } from '@/common/admin_request.js';
+import { navToGoodsItemPage, getGoodsTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
-			shopid: 0,
 			state: '',
 			page: 0,
 			limit: 20,
 			loaded: false,
 			loadingType: 'more',
-			goodsList: []
+			goodsList: [],
+			msg:""
 		};
 	},
 	onLoad(options) {
-		this.shopid = options.shopid;
 		this.state = options.state;
 		this.loadData();
 		//设置标题
@@ -105,8 +131,7 @@ export default {
 		async loadData() {
 			this.loadingType = 'loading';
 			this.page++;
-			getGoodsList({
-				shopid: this.shopid,
+			goodsAdmin('list', {
 				state: this.state,
 				page: this.page,
 				limit: this.limit
@@ -114,7 +139,7 @@ export default {
 				res => {
 					let time = new Date().getTime();
 					//处理秒杀开始，结束时间
-					res.data.forEach(item => {
+					res.forEach(item => {
 						if (item.miaosha) {
 							item.miaosha.state = 'notstart';
 							if (item.miaosha.endTime < time) {
@@ -132,8 +157,8 @@ export default {
 							}
 						}
 					});
-					this.goodsList = this.goodsList.concat(res.data);
-					if (res.data.length < this.limit) {
+					this.goodsList = this.goodsList.concat(res);
+					if (res.length < this.limit) {
 						//没有数据了
 						//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 						this.loaded = true;
@@ -149,25 +174,119 @@ export default {
 		},
 		//预览商品效果,打开前端显示页面
 		preview(item) {
-			navToGoodsItemPage(item);
+			navToGoodsItemPage(item,true);
+		},
+		//下架
+		soldOut(item) {
+			goodsAdmin('soldOut', {
+				_id: item._id
+			}).then(res => {
+				item.isSold = 0;
+				this.$api.msg('下架成功');
+			});
+		},
+		//上架
+		soldIn(item) {
+			goodsAdmin('soldIn', {
+				_id: item._id
+			}).then(res => {
+				item.isSold = 1;
+				this.$api.msg('上架成功');
+				//this.msg="上架成功"+item.title;
+			});
+		},
+		//恢复数据到生产环境
+		revertItem(item){
+			uni.showModal({
+				content: '是否确定恢复到售卖场？',
+				success: res => {
+					if (res.confirm) {
+						goodsAdmin('revert', {
+							_id: item._id
+						}).then(
+							res => {
+								this.$api.msg('恢复成功');
+								setTimeout(() => {
+									this.refreshList();
+								}, 1500);
+							},
+							err => {
+								this.$api.msg('恢复失败');
+							}
+						);
+					}
+				}
+			});
+		},
+		//彻底删除，找不回来了
+		cleanItem(item){
+			uni.showModal({
+				content: '是否确定清理，清理后无法找回？',
+				success: res => {
+					if (res.confirm) {
+						goodsAdmin('clean', {
+							_id: item._id
+						}).then(
+							res => {
+								this.$api.msg('清理成功');
+								setTimeout(() => {
+									this.refreshList();
+								}, 1500);
+							},
+							err => {
+								this.$api.msg('清理失败');
+							}
+						);
+					}
+				}
+			});
+		},
+		//删除
+		deleteItem(item) {
+			uni.showModal({
+				content: '是否确定删除？',
+				success: res => {
+					if (res.confirm) {
+						goodsAdmin('delete', {
+							_id: item._id
+						}).then(
+							res => {
+								this.$api.msg('删除成功');
+								setTimeout(() => {
+									this.refreshList();
+								}, 1500);
+							},
+							err => {
+								this.$api.msg('删除失败');
+							}
+						);
+					}
+				}
+			});
 		},
 		//编辑
-		edit(item){
+		edit(item) {
 			uni.setStorage({
-				key:"adminEditGoods",
-				data:item,
+				key: 'adminEditGoods',
+				data: item,
 				success: () => {
 					uni.navigateTo({
-						url:"./addGoods"
+						url: './addGoods'
 					});
 				}
-			})
+			});
 		},
 		setNavTitle() {
 			let types = getGoodsTypes();
 			uni.setNavigationBarTitle({
 				title: types[this.state]
 			});
+		},
+		//重新刷新页面数据
+		refreshList() {
+			this.page = 0;
+			this.goodsList = [];
+			this.loadData();
 		}
 	}
 };
@@ -242,15 +361,14 @@ page,
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		height: 100upx;
 		position: relative;
-		padding-right: 30upx;
+		flex-wrap: wrap;
+		padding: 20upx 30upx 10upx 0;
 	}
 	.action-btn {
 		height: 60upx;
-		margin: 0;
+		margin: 0 0 10upx 24upx;
 		padding: 0 30upx;
-		margin-left: 24upx;
 		text-align: center;
 		line-height: 60upx;
 		font-size: $font-sm + 2upx;
@@ -266,6 +384,10 @@ page,
 		}
 		&.recom {
 			background: $base-color;
+			color: #fff;
+		}
+		&.warning {
+			background-color: $uni-color-warning;
 			color: #fff;
 		}
 	}

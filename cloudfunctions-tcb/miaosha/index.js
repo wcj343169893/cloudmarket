@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 	//正在秒杀商品5条,必须是有库存的秒杀
 	let miaoshaGoods = await db.collection('goods').where({
 		shopid: shopid,
+		isSold:1,
 		"miaosha.stock": cmd.gt(0),
 		"miaosha.beginTime": cmd.lt(time+24*3600*1000),
 		"miaosha.endTime": cmd.gt(time),
@@ -20,6 +21,7 @@ exports.main = async (event, context) => {
 		id: 1,
 		src: 1,
 		title: 1,
+		isSold:1,
 		miaosha: 1,
 		price: 1,
 		stock: 1

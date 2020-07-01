@@ -7,7 +7,7 @@ exports.main = async (event, context) => {
 	let mobile = event.mobile;
 	let code = event.code;
 	//正常情况需要验证一下，暂时全部通过
-	let data = await loginWithPhone(mobile);
+	let data = await loginWithPhone(mobile,"withcode");
 	//临时输出
 	return {
 		"code": 200,

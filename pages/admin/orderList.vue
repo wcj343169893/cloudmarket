@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { getOrderList,orderAdmin } from '@/common/admin_request.js';
+import { orderAdmin } from '@/common/admin_request.js';
 import { getOrderStateExp,getOrderTypes } from '@/common/functions.js';
 export default {
 	data() {
@@ -100,15 +100,14 @@ export default {
 		async loadData() {
 			this.loadingType = 'loading';
 			this.page++;
-			getOrderList({
-				shopid: this.shopid,
+			orderAdmin("list",{
 				state: this.state,
 				page: this.page,
 				limit: this.limit
 			}).then(
 				res => {
 					//格式化时间
-					res.data.forEach(ele => {
+					res.forEach(ele => {
 						//状态名称 Object.assign
 						let { stateTip, stateTipColor } = this.orderStateExp(ele);
 						ele.stateTip = stateTip;
@@ -118,8 +117,8 @@ export default {
 							ele.priceTitle="预售价";
 						}
 					});
-					this.orderList = this.orderList.concat(res.data);
-					if (res.data.length < this.limit) {
+					this.orderList = this.orderList.concat(res);
+					if (res.length < this.limit) {
 						//没有数据了
 						//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 						this.loaded = true;
@@ -147,10 +146,8 @@ export default {
 		sendPayMessage() {},
 		//发货
 		addDelivery(item) {
-			orderAdmin({
-				shopid: this.shopid,
-				id:item._id,
-				type:"addDelivery"
+			orderAdmin("addDelivery",{
+				_id:item._id,
 			}).then(res=>{
 				this.$api.msg("发货成功");
 				item.state = 2;

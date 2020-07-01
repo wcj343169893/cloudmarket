@@ -6,7 +6,7 @@
 
 ### 导入步骤
 1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
-2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加  
+2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加。[导入数据文档](https://uniapp.dcloud.io/uniCloud/cf-database?id=db)  
 3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传
 4. 云认证：[文档](https://uniapp.dcloud.io/uniCloud/authentication)，官方回复目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid  
 	- 去这里[生成云token](https://unicloud.dcloud.net.cn/token),生成并下载，保存到/cloudfunctions/common/token/ 替换原来的credentials.json文件
@@ -45,11 +45,24 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.7
+* 优化后台云函数结构，由一个函数作为入口，有利于提高访问效率、用户登录权限验证，操作权限验证，统一处理公共参数，例如：shopid，page，limit，operator，[官方优化建议](https://uniapp.dcloud.io/uniCloud/faq?id=%e4%ba%91%e5%87%bd%e6%95%b0%e8%ae%bf%e9%97%ae%e6%97%b6%e5%bf%ab%e6%97%b6%e6%85%a2%e6%80%8e%e4%b9%88%e5%9b%9e%e4%ba%8b%ef%bc%9f)，后台函数理论上不会出现高并发情况。  
+* 增加商品上下架功能，新增goods字段```isSold:1```,1在售，0下架。新增删除goods表，goods_deletes   
+	```
+	//单独一个云函数执行一次，批量更新字段值为上线状态
+	return await db.collection('goods').where({
+		_id:cmd.exists(true)
+	}).update({
+		isSold:1
+	});
+	```
+* 增加店铺商品管理，新增、修改、上架、下架、删除、清理
+* 只有10000用户才有管理店铺权限，登录后，--->我的-->我的门店
+
 #### 1.0.3.6
 * APP增加手机号+验证码登录，在自动登录检测失败情况下。
 * 增加login公共函数，优化jgLogin自动登录和login手机号+验证码登录，同时调用此函数。
 * 修改首页定位信息，兼容百度地图
-
 
 #### 1.0.3.5
 增加首次下单店铺为用户邀请者(settlement)，为将来给邀请者分成做准备  

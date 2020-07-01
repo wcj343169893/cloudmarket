@@ -2,8 +2,7 @@
 	<view class="container">
 		<view class="mix-list-cell b-b">
 			<view class="region">
-				<text>+86</text>
-				<text class="yticon icon-xia"></text>
+				<select-options defaultOption="+86" :options="regionOptions" @eventClick="changeRegion"></select-options>
 			</view>
 			<input type="number" maxlength="11" class="cell-content" v-model="mobile" placeholder="输入手机号(新号码自动注册)" />
 		</view>
@@ -12,15 +11,18 @@
 			<button class="add-btn" :class="{ disabled: disabled || processing }" @click="getCode()">{{ btnGetCodeText }}</button>
 		</view>
 		<view class="mix-list-cell-buttons"><button class="add-btn" :class="{ disabled: disabledLogin }" @click="btnLogin()">登录</button></view>
-		<!-- #ifdef APP-PLUS-->
-		<view class="mix-list-cell-buttons"><button class="add-btn" @click="jgLogin()">本机号码一键登录</button></view>
-		<!-- #endif-->
 
 		<view class="bottom">
-			<text>登录即代表你同意</text>
-			<text class="link" @click="navToDocPage('1229caae5ef574ae0055cfa40630f5c5')">《服务协议》</text>
-			<text>和</text>
-			<text class="link" @click="navToDocPage('a3e75f055ef574c200492faa50335f39')">《隐私协议》</text>
+			<!-- #ifdef APP-PLUS-->
+			<view class="line b-b"><text class="text">快捷登录</text></view>
+			<view class="mix-list-cell-buttons"><button class="add-btn" @click="jgLogin()">本机号码一键登录</button></view>
+			<!-- #endif-->
+			<view class="">
+				<text>登录即代表你同意</text>
+				<text class="link" @click="navToDocPage('1229caae5ef574ae0055cfa40630f5c5')">《服务协议》</text>
+				<text>和</text>
+				<text class="link" @click="navToDocPage('a3e75f055ef574c200492faa50335f39')">《隐私协议》</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -42,6 +44,10 @@ export default {
 			loginErrorText: '检测失败!\n请打开4G网络后再尝试!',
 			ios_uiConfigure: {},
 			logining: false,
+			regionOptions:{
+				"+86":"+86",
+				"+40":"+40",
+			},
 			mobile: '',
 			mobileReg: /^1[3456789]\d{9}$/,
 			disabled: true,
@@ -192,6 +198,9 @@ export default {
 				this.logining = false;
 			}
 		},
+		changeRegion(val){
+			console.log("changeRegion",val)
+		},
 		getCode() {
 			if (this.disabled) {
 				return;
@@ -310,7 +319,6 @@ page {
 }
 .region {
 	font-size: $font-base;
-	margin-right: 8upx;
 	display: flex;
 	align-items: center;
 }
@@ -327,7 +335,7 @@ page {
 	}
 }
 .mix-list-cell-buttons {
-	padding: 40upx;
+	padding: 40upx 100upx;
 }
 .bottom {
 	font-size: $font-sm;
@@ -338,5 +346,17 @@ page {
 }
 .link {
 	color: $base-color;
+}
+.line {
+	position: relative;
+	.text {
+		position: absolute;
+		left: 50%;
+		margin-left: -50upx;
+		background: #ffffff;
+		top: -20upx;
+		z-index: 90;
+		padding: 0 20upx;
+	}
 }
 </style>

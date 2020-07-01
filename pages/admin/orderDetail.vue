@@ -204,7 +204,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { addManyCart, orderAdmin } from '@/common/admin_request.js';
+import { orderAdmin } from '@/common/admin_request.js';
 import { orders } from '@/common/request.js';
 import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
 export default {
@@ -234,9 +234,8 @@ export default {
 				this.orderInfo(item);
 			} else {
 				//从网络获取
-				orders({
-					id: this.id,
-					type: 'detail'
+				orderAdmin("detail",{
+					_id: this.id,
 				}).then(res => {
 					this.orderInfo(res);
 				});
@@ -271,10 +270,8 @@ export default {
 				//单个商品发货
 				this.$api.msg('暂不支持');
 			} else {
-				orderAdmin({
-					shopid: this.shopid,
-					id: this.id,
-					type: 'addDelivery'
+				orderAdmin("addDelivery",{
+					_id: this.id,
 				}).then(
 					res => {
 						this.$api.msg('发货成功',2000,false,"success");

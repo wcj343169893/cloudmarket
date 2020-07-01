@@ -3007,10 +3007,10 @@
 			"IndexName": "index_lonlat",
 			"MgoKeySchema": { 
 				"MgoIndexKeys": [{
-					"Name": "lnglat", // 索引字段
-					"Direction": "2dsphere" // 索引方向，1：ASC-升序，-1：DESC-降序，2dsphere：地理位置
+					"Name": "lnglat",
+					"Direction": "2dsphere"
 				}],
-				"MgoIsUnique": false // 索引是否唯一
+				"MgoIsUnique": false 
 			}
 		}
 	},

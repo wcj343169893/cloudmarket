@@ -378,7 +378,7 @@ export default {
 				data:item
 			});
 			uni.navigateTo({
-				url:`/pages/admin/admin?id=${id}`
+				url:`/pages/admin/admin?shopid=${id}`
 			})
 		},
 		//店铺订单类型页面,进入店铺之后，再跳转订单页面
@@ -389,7 +389,7 @@ export default {
 				data:item
 			});
 			uni.navigateTo({
-				url:`/pages/admin/admin?id=${id}&second=orderList&state=${state}`
+				url:`/pages/admin/admin?shopid=${id}&second=orderList&state=${state}`
 			})
 			
 		}

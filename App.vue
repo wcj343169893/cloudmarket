@@ -13,7 +13,7 @@ const pushClientInfoKey = 'pushClientInfo';
 const userInfoKey = 'userInfo';
 export default {
 	methods: {
-		...mapMutations(['login', 'setUserLocation']),
+		...mapMutations(['login', 'setUserLocation','setAdminShop']),
 		/**
 		 * 初始化极光一键登录
 		 */
@@ -66,7 +66,18 @@ export default {
 					console.log('push.getClientInfoAsync', err);
 				}
 			);
-		},async micLogin(){
+		},
+		async loadAdminShopId(){
+			uni.getStorage({
+				key:"adminShopId",
+				success:(info)=>{
+					if(info.data && info.data > 0){
+						this.setAdminShop(info.data);
+					}
+				}
+			})
+		},
+		async micLogin(){
 			uni.getProvider({
 				service: 'oauth',
 				success(res) {
@@ -117,6 +128,7 @@ export default {
 		//#ifdef MP
 		this.micLogin()
 		//#endif
+		this.loadAdminShopId();
 		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
 		/* auth.getLoginState().then(state => {
 			console.log('auth.getLoginState', state);

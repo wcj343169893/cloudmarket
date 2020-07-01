@@ -73,10 +73,12 @@ const getOrderTypes = function() {
 const getGoodsTypes = function() {
 	return {
 		online: '在售',
+		offline: '下架',
 		miaosha: '秒杀',
 		yuding: '预售',
 		baokuan: '爆款',
-		shouqin: '即将售罄'
+		shouqin: '即将售罄',
+		delete:'已删除'
 	};
 }
 
@@ -400,12 +402,12 @@ const navMicLogin = function(type) {
 				provider: res.provider[0],
 				success: function(loginRes) {
 					loginRes["type"] = type;
-					console.log("loginRes",loginRes);
+					console.log("loginRes", loginRes);
 					client.callFunction({
 						name: 'micLogin',
 						data: loginRes,
 						success: result => {
-							console.log("micLogin",result)
+							console.log("micLogin", result)
 							if (result.code == 200) {
 								//写入缓存
 								uni.setStorage({
@@ -451,8 +453,9 @@ const navToGoodsPage = function(id, sid) {
 /**
  * 跳转商品详细页，并在当前页面添加缓存，详情页优先读取缓存，提升显示速度
  * @param {Object} item
+ * @param {Boolean} preview 是否预览，0否，1是
  */
-const navToGoodsItemPage = function(item) {
+const navToGoodsItemPage = function(item,preview) {
 	if (isRedirect) {
 		return false;
 	}
@@ -466,8 +469,12 @@ const navToGoodsItemPage = function(item) {
 	});
 	let id = item.id;
 	let sid = item.sku_id || 0;
+	let url = `/pages/product/product?id=${id}&sid=${sid}`;
+	if(preview){
+		url = `/pages/product/product?id=${id}&sid=${sid}&preview=1`;
+	}
 	uni.navigateTo({
-		url: `/pages/product/product?id=${id}&sid=${sid}`,
+		url: url,
 		success: function() {
 			isRedirect = false;
 		}
@@ -547,6 +554,50 @@ const navToDocWebPage = function(url) {
 		url: `/pages/docs/web?url=${url}`
 	})
 }
+const fileDomain = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/';
+/**
+ * 批量上传多个文件
+ * @param {Object} name
+ * @param {Object} number
+ * @param {Object} chooseCallback
+ * @param {Object} successCallback
+ */
+const uploadFiles = function(name, number, chooseCallback, successCallback) {
+	let dt = new Date();
+	let pathArr = [name, dateFormat(dt, "yyyy-MM-dd")];
+	uni.chooseImage({
+		count: number,
+		success: res => {
+			let paths = [];
+			console.log(res)
+			if (chooseCallback) {
+				chooseCallback(res.tempFilePaths);
+			}
+			//循环上传
+			res.tempFilePaths.map(filePath => {
+				let fname = (Math.random() + '').substr(2) + '.jpg';
+				let cpath = pathArr.join('/') + '/' + fname;
+				cloudUploadFile(filePath, cpath);
+				paths.push(fileDomain+cpath);
+			})
+			if (paths.length > 0 && successCallback) {
+				//延时回调，免得无法显示
+				setTimeout(()=>{
+					successCallback(paths)
+				},100)
+			}
+		}
+	});
+}
+const cloudUploadFile = async (filePath, cpath) => {
+	let result = await uniCloud.uploadFile({
+		filePath: filePath,
+		cloudPath: cpath,
+		onUploadProgress: pro => {
+			//console.log("onUploadProgress", pro);
+		}
+	});
+};
 
 export {
 	updateCartNumber,
@@ -570,5 +621,6 @@ export {
 	getGoodsTypes,
 	navToDocPage,
 	navToDocWebPage,
-	navMicLogin
+	navMicLogin,
+	uploadFiles
 }

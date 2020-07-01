@@ -1,7 +1,7 @@
 <template>
 	<view class="empty-content">
-		<image class="empty-content-image" :src="setSrc" mode="aspectFit"></image>
 		<view class="content">
+			<image class="empty-content-image" :src="setSrc" mode="aspectFit"></image>
 			<text>{{content}}</text>
 		</view>
 	</view>
@@ -59,5 +59,9 @@
 	.content{
 		font-size: $font-base;
 		color: #909399;
+		height: 300upx;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
 	}
 </style>

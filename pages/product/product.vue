@@ -122,7 +122,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="c-list">
+		<view class="c-list" v-if="isSold==1">
 			<view class="c-row amount b-b">
 				<text class="tit">数量</text>
 				<view class="bz-list con">
@@ -145,20 +145,22 @@
 		</view>
 
 		<!-- 底部操作菜单 -->
-		<view class="page-bottom" :class="{show:canAddCart}">
+		<view class="page-bottom" :class="{ show: canAddCart }">
 			<view class="options">
 				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
 					<text class="yticon icon-gouwuche"><!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
 				</navigator>
 			</view>
-			<block v-if="yuding">
+			<block v-if="isSold==0">
+				<text class="warning">已下架或已删除</text>
+			</block>
+			<block v-else-if="yuding">
 				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
 				<button class="add-btn disabled" v-else>预定未开始</button>
 			</block>
-			<block  v-else>
+			<block v-else>
 				<button class="add-btn" @click="addToCart">加入购物车</button>
 				<button class="add-btn spec" @click="buy">立即购买</button>
-				
 			</block>
 		</view>
 		<!-- 分享 -->
@@ -170,16 +172,7 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
-import {
-	showLoginDialog,
-	navToLoginPage,
-	navToCreateOrder,
-	updateGoodsTags,
-	miaoshaCountDown,
-	incrCartNumber,
-	getCartSumNumber,
-	clearCountDownTimer
-} from '@/common/functions.js';
+import { showLoginDialog, navToLoginPage, navToCreateOrder, updateGoodsTags, miaoshaCountDown, incrCartNumber, getCartSumNumber, clearCountDownTimer } from '@/common/functions.js';
 export default {
 	components: {
 		share
@@ -187,18 +180,20 @@ export default {
 	data() {
 		return {
 			id: 0,
-			shopid:0,
+			shopid: 0,
 			sku_id: 0,
+			preview: undefined, //是否预览
 			isSubmit: false,
 			default_sku_id: 0,
 			title: '',
 			stock: 0,
 			visite: 0,
+			isSold:1,
 			src: '',
 			imgs: [], //轮播图
 			score: 0,
 			price: 0,
-			limit:0,
+			limit: 0,
 			skuname: '',
 			skus: [],
 			originPrice: 0,
@@ -234,6 +229,10 @@ export default {
 			}, 1500);
 			return;
 		}
+		//是否预览
+		if (options.preview) {
+			this.preview = options.preview;
+		}
 		console.log(options);
 		//商品id
 		this.id = options.id;
@@ -242,7 +241,6 @@ export default {
 			this.default_sku_id = +options.sid;
 		}
 		this.loadData();
-		/*this.shareList = await this.$api.json('shareList'); */
 	},
 	onUnload() {
 		console.log('product onUnload');
@@ -257,17 +255,21 @@ export default {
 			//优先读取缓存
 			let info = uni.getStorageSync('goodsInfo');
 			if (info) {
-				try{
+				try {
 					this.buildGoodsInfo(info);
-				}catch(e){
+				} catch (e) {
 					//TODO handle the exception
 					console.log(e);
 				}
 			}
 			//再次读取数据库，获得详细信息
-			getGoodsInfo({ id: this.id }).then(item => {
+			getGoodsInfo({ id: this.id, preview: this.preview }).then(item => {
 				this.buildGoodsInfo(item);
 				this.canAddCart = true;
+			},err=>{
+				//this.$api.msg("商品已删除或下架",20000);
+				this.canAddCart = true;
+				this.isSold = 0;
 			});
 
 			//获得购物车总数量
@@ -275,7 +277,7 @@ export default {
 		},
 		buildGoodsInfo(item) {
 			this.imgs = [];
-			updateGoodsTags(item,true);
+			updateGoodsTags(item, true);
 			this.checkYuding(item);
 			this.checkMiaosha(item);
 			console.log('default_sku_id:', this.default_sku_id);
@@ -368,16 +370,15 @@ export default {
 				isBegin: isBegin,
 				statusSubName: statusSubName
 			});
-			if(!isBegin){
+			if (!isBegin) {
 				//未开始
 				miaoshaCountDown(item.yuding, item.yuding.beginTime, () => {
 					this.checkYuding(item);
 				});
-			}else if(item.yuding.endTime < time){
+			} else if (item.yuding.endTime < time) {
 				//已结束,按正常价格购买
-				item.yuding.statusSubName="已结束";
-				
-			}else{
+				item.yuding.statusSubName = '已结束';
+			} else {
 				item.yuding.startTime = time;
 				miaoshaCountDown(item.yuding, item.yuding.endTime, () => {
 					this.checkYuding(item);
@@ -532,7 +533,7 @@ export default {
 			this.stock = sku.stock;
 			this.limit = sku.limit;
 			this.price = sku.price;
-			this.originPrice = sku.originPrice>0?sku.originPrice:0;
+			this.originPrice = sku.originPrice > 0 ? sku.originPrice : 0;
 			this.amount = this.cart[this.sku_id] > 0 ? this.cart[this.sku_id] : 1;
 			//计算折扣
 			this.getSaleRate();
@@ -555,7 +556,7 @@ export default {
 			uni.setStorage({
 				key: 'settlementCartsIds',
 				data: {
-					shopid:this.shopid,
+					shopid: this.shopid,
 					goods: {
 						id: this.id,
 						sku_id: this.sku_id,
@@ -951,7 +952,7 @@ page {
 .page-bottom {
 	position: fixed;
 	left: 0upx;
-	bottom:-200upx;
+	bottom: -200upx;
 	z-index: 95;
 	display: flex;
 	justify-content: space-between;
@@ -963,8 +964,12 @@ page {
 	.options {
 		flex: 1;
 	}
-	&.show{
-		bottom:var(--window-bottom);
+	&.show {
+		bottom: var(--window-bottom);
+	}
+	.warning{
+		font-size: $font-base;
+		color: $font-color-warning;
 	}
 }
 .add-btn {
@@ -978,7 +983,7 @@ page {
 	&.disabled {
 		background-color: $font-color-disabled;
 	}
-	&.spec{
+	&.spec {
 		background-color: $btn-color-spec;
 	}
 }
