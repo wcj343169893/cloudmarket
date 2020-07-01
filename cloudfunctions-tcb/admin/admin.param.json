@@ -1,5 +1,8 @@
 // 本文件中的json内容将在云函数【上传并运行】时作为参数传给云函数。
-{	"id":123457,
-	"uid":10000,
-	"token":"f84j2ddk38f9u3u423jfwe"
+{	"module":"goods",
+	"action":"list",
+	"data":{
+		"page":1,
+		"limit":10
+	}
 }

@@ -99,17 +99,14 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
 	console.log(res);
 	//更新店铺订单数总计
 	if (shopid > 0) {
-		let res2 = await db.collection("shops").where({
-			id: +shopid
-		}).update(data);
-		console.log(res2);
+		await updateShopStatistics(shopid, data);
 	}
 	return res;
 }
 /**
  * 增加用户积分
- * @param {Object} uid
- * @param {Object} number
+ * @param {Int} uid
+ * @param {Int} number
  */
 const updateUserScore = async function(uid, number) {
 	console.log("updateUserScore", uid, number);
@@ -119,7 +116,36 @@ const updateUserScore = async function(uid, number) {
 		score: cmd.inc(number * 1)
 	});
 }
+/**
+ * 增加/删除店铺商品数量统计
+ * @param {Int} shopid 店铺id
+ * @param {String} type 类型,baokuan，miaosha，online，shouqin，yuding
+ * @param {Number} number 如果是负数，则减少
+ * @param {String} type2 类型转移到下一个类型，与type相反的数值
+ */
+const shopGoodsInc = async (shopid, type, number, type2) => {
+	let data = {
+		goods: {}
+	};
+	data.goods[type] = cmd.inc(+number);
+	if (type2) {
+		data.goods[type2] = cmd.inc(+number * -1);
+	}
+	return await updateShopStatistics(shopid, data);
+}
 
+/**
+ * 更新店铺统计数据
+ * @param {Int} shopid
+ * @param {Object} data
+ */
+const updateShopStatistics = async (shopid, data) => {
+	let res2 = await db.collection("shops").where({
+		id: +shopid
+	}).update(data);
+	console.log("updateShopStatistics", res2);
+	return res2;
+}
 /**
  * 生成唯一id
  * @param {Object} key
@@ -138,7 +164,7 @@ const genIdentityId = async function(key) {
 		"key": key
 	}).field({
 		value: 1
-	}).get();
+	}).limit(1).get();
 	return res2.data[0].value;
 	//生成用户id----结束-----
 }
@@ -210,13 +236,27 @@ const getDateString = function() {
 	return getDateFormat("yyyyMMdd");
 }
 
-
+const filterFields = (event, strinFields, intFields) => {
+	/* let strinFields = ["portrait", "nickname", "birthday"];
+	let intFields = ["sex"]; */
+	for (let f in event) {
+		if (strinFields.indexOf(f) != -1) {
+			//可保存的字段
+			entity[f] = event[f];
+		} else if (intFields.indexOf(f) != -1) {
+			entity[f] = parseInt(event[f]);
+		}
+	}
+	return entity;
+}
 module.exports = {
 	getCollectionNames,
 	updateGoodsMiaoshaStock,
 	updateUserOrderCount,
 	updateUserScore,
 	updateGoodsStock,
+	updateShopStatistics,
+	shopGoodsInc,
 	genIdentityId,
 	addUserBalanceLog,
 	getUserInfoById,

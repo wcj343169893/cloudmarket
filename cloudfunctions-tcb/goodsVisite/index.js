@@ -13,6 +13,9 @@ exports.main = async (event, context) => {
 		uid: uid
 	}).field({
 		_id: 0,
+		title:1,
+		price:1,
+		visite:1,
 		goods_id: 1,
 		src: 1,
 		shopid: 1

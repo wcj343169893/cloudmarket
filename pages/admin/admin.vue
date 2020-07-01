@@ -5,7 +5,7 @@
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="src"></image></view>
 				<view class="info-box">
-					<text class="username">{{ name }}</text>
+					<text class="username">{{ name }}({{shopid}})</text>
 					<view class="desc">
 						<view class="">
 							<text>{{ address }}</text>
@@ -22,7 +22,7 @@
 				<text>订单管理</text>
 			</view>
 			<!-- 订单信息统计 -->
-			<view class="order-section">
+			<view class="order-section m-t">
 				<view class="order-item" v-for="(item,index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{item.name}}</text>
@@ -48,12 +48,14 @@
 </template>
 
 <script>
-import { getShopInfo } from '@/common/admin_request.js';
+import { mapMutations } from 'vuex';
+import { shopAdmin } from '@/common/admin_request.js';
 import { getOrderTypes,getGoodsTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			shopid: 0,
+			isSetTitle:false,
 			name: '',
 			src: '/static/store-face.png',
 			banner: '/static/banner.jpg',
@@ -64,7 +66,9 @@ export default {
 		};
 	},
 	onLoad(options) {
-		this.shopid = options.id;
+		this.shopid = +options.shopid;
+		this.setAdminShop(this.shopid);
+		console.log(this.shopid,options)
 		if (options.second) {
 			//进一步跳转到下一页页面
 			uni.navigateTo({
@@ -73,15 +77,22 @@ export default {
 		}
 		this.loadData();
 	},
+	//下拉刷新,不会更新底部附近的店铺
+	onPullDownRefresh() {
+		//this.loadData('refresh');
+		console.log('刷新整页');
+		uni.stopPullDownRefresh();
+		this.loadData();
+	},
 	methods: {
+		...mapMutations(['setAdminShop']),
 		async loadData() {
 			//优先读取缓存
 			let info = uni.getStorageSync('adminShopInfo');
 			if (info) {
 				this.buildShopInfo(info);
 			}
-			getShopInfo({
-				id: this.shopid
+			shopAdmin("info",{
 			}).then(
 				res => {
 					this.buildShopInfo(res);
@@ -93,9 +104,12 @@ export default {
 			);
 		},
 		buildShopInfo(data) {
-			uni.setNavigationBarTitle({
-				title: data.name
-			});
+			if(!this.isSetTitle && data.name){
+				uni.setNavigationBarTitle({
+					title: data.name
+				});
+				this.isSetTitle = true;
+			}
 			for (let i in data) {
 				this[i] = data[i];
 			}
@@ -156,6 +170,10 @@ export default {
 			uni.navigateTo({
 				url
 			});
+		},
+		//重新加载数据
+		refreshList(){
+			this.loadData();
 		}
 	}
 };
@@ -229,10 +247,11 @@ export default {
 	@extend %section;
 	padding: 28upx 0;
 	flex-wrap: wrap;
+	justify-content: flex-start;
 	// margin-top: 20upx;
 	.order-item {
 		@extend %flex-center;
-		width: 120upx;
+		width: 20%;
 		height: 120upx;
 		border-radius: 10upx;
 		font-size: $font-sm;

@@ -79,15 +79,17 @@ exports.main = async (event, context) => {
 	//正在秒杀商品5条,必须是有库存的秒杀
 	let miaoshaGoods = await db.collection('goods').where({
 		shopid: shopid,
+		isSold:1,
 		miaosha: cmd.exists(true),
 		"miaosha.stock": cmd.gt(0),
 		"miaosha.beginTime": cmd.lt(time+24*3600*1000),
 		"miaosha.endTime": cmd.gt(time),
 	}).field(goodsFields).limit(5).orderBy("miaosha.beginTime","asc").get();
 	dataOut["miaosha"] = miaoshaGoods.data;
-	//最新上架,20条
+	//最新上架/最近更新,20条
 	let newGoods = await db.collection('goods').where({
-		shopid: shopid
+		shopid: shopid,
+		isSold:1
 	}).field(goodsFields).orderBy("onlineTime", "desc").limit(20).get();
 	dataOut["newest"] = newGoods.data;
 	//购物车总数

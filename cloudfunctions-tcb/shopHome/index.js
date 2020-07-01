@@ -63,13 +63,15 @@ exports.main = async (event, context) => {
 	//查询所有商品
 	if(withGoods){
 		let goods = await db.collection(collectionNames['goods']).where({
-			shopid: shopid
+			shopid: shopid,
+			isSold:1
 		}).field({
 			"_id":0,
 			"id": 1,
 			"title": 1,
 			"stock": 1,
 			"src": 1,
+			"isSold":1,
 			"score": 1,
 			"price": 1,
 			"skuname":1,

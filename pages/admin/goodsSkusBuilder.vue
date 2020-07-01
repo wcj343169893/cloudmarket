@@ -20,11 +20,11 @@
 			</view>
 			<view class="mix-list-cell b-b">
 				<text class="cell-tit clamp">统一原价</text>
-				<input type="number" class="cell-content" v-model="originPrice" placeholder="请输入商品原价" />
+				<input type="digit" class="cell-content" v-model="originPrice" placeholder="请输入商品原价,0为不显示" />
 			</view>
 			<view class="mix-list-cell">
 				<text class="cell-tit clamp">统一售价</text>
-				<input type="number" class="cell-content" v-model="price" placeholder="请输入商品售价" />
+				<input type="digit" class="cell-content" v-model="price" placeholder="请输入商品售价" />
 			</view>
 		</view>
 		<view class="specsTitlesBtn">
@@ -39,9 +39,9 @@ export default {
 	data() {
 		return {
 			specsTitlesMap: [],
-			stock:0,
-			originPrice:0,
-			price:0,
+			stock:"",
+			originPrice:"",
+			price:"",
 			data: []
 		};
 	},
@@ -141,14 +141,20 @@ export default {
 				default:
 					break;
 			}
+			if(this.originPrice < this.price){
+				this.originPrice = 0;
+			}
+			let id=10000;
 			this.data = [];
 			for (let s of result) {
 				this.data.push({
-					price: this.price,
-					originPrice: this.originPrice,
-					stock: this.stock,
+					id:id,
+					price: +this.price,
+					originPrice: +this.originPrice,
+					stock: +this.stock,
 					name: s
 				});
+				id++;
 			}
 			console.log(this.data);
 			//显示结果
@@ -190,6 +196,7 @@ page {
 	align-items: center;
 	.name {
 		margin-right: 20upx;
+		color: $font-color-base;
 	}
 	.input {
 		flex: 1;
@@ -200,11 +207,11 @@ page {
 	margin-top: 30upx;
 	padding-bottom: 30upx;
 	display: flex;
+	justify-content: space-between;
 }
 .add-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	flex: 1;
+	margin:0 30upx;
 	font-size: $font-lg;
 	color: #fff;
 	background-color: $btn-color-light;
@@ -257,5 +264,11 @@ page {
 		color: $font-color-light;
 		text-align: right;
 	}
+}
+.icon-shanchu4 {
+	color: $font-color-warning;
+}
+.icon-jia2{
+	color: $font-color-emphasis;
 }
 </style>

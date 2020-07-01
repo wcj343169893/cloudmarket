@@ -36,7 +36,7 @@ exports.main = async (event, context) => {
 		});
 		let mobileName = key.decrypt(result.data.phone, 'utf8');
 		console.log(mobileName);
-		let data = await loginWithPhone(mobileName);
+		let data = await loginWithPhone(mobileName,"fastlogin");
 		//临时输出
 		return {
 			"code": 200,

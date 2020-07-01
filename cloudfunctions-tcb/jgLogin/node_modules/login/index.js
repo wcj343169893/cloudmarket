@@ -4,7 +4,7 @@ const {
 	genIdentityId
 } = require('base-common');
 const {createTicket,getTokenExpire} = require('token');
-const loginWithPhone =async function(mobileName) {
+const loginWithPhone =async function(mobileName,channel) {
 	//成功获得手机号：13332903310
 	const usersCollection = db.collection("users");
 	const fields = {
@@ -47,6 +47,7 @@ const loginWithPhone =async function(mobileName) {
 			score: 0,
 			token: token,
 			tokenExpire: tokenExpire,
+			loginChannel:channel,
 			regist: time,
 			lastLogin: time,
 		};
@@ -65,6 +66,7 @@ const loginWithPhone =async function(mobileName) {
 		//更新token
 		let result = await usersCollection.doc(data._id).update({
 			token: token,
+			loginChannel:channel,
 			tokenExpire: tokenExpire,
 			lastLogin: time,
 		});
