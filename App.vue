@@ -8,12 +8,13 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  */
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
+import { checkAppUpdate } from '@/common/functions.js';
 
 const pushClientInfoKey = 'pushClientInfo';
 const userInfoKey = 'userInfo';
 export default {
 	methods: {
-		...mapMutations(['login', 'setUserLocation','setAdminShop']),
+		...mapMutations(['login', 'setUserLocation', 'setAdminShop']),
 		/**
 		 * 初始化极光一键登录
 		 */
@@ -67,31 +68,33 @@ export default {
 				}
 			);
 		},
-		async loadAdminShopId(){
+		//初始化店铺管理id
+		async loadAdminShopId() {
 			uni.getStorage({
-				key:"adminShopId",
-				success:(info)=>{
-					if(info.data && info.data > 0){
+				key: 'adminShopId',
+				success: info => {
+					if (info.data && info.data > 0) {
 						this.setAdminShop(info.data);
 					}
 				}
-			})
+			});
 		},
-		async micLogin(){
+		//小程序自动更新
+		async micLogin() {
 			uni.getProvider({
 				service: 'oauth',
 				success(res) {
-					console.log("res.provider", res.provider)
+					console.log('res.provider', res.provider);
 					uni.login({
 						provider: res.provider[0],
 						success: function(loginRes) {
-							console.log("loginRes",loginRes);
+							console.log('loginRes', loginRes);
 							client.callFunction({
 								name: 'micLogin',
 								data: loginRes,
 								success: res => {
 									let result = res.result;
-									console.log("micLogin",result)
+									console.log('micLogin', result);
 									if (result.code == 200) {
 										//写入缓存
 										uni.setStorage({
@@ -99,7 +102,7 @@ export default {
 											data: result.data
 										});
 										uni.setStorage({
-											key: "userOpenId",
+											key: 'userOpenId',
 											data: result.data.openid
 										});
 										auth.signInWithTicket(result.data.ticket).then(() => {
@@ -109,11 +112,11 @@ export default {
 									} else if (result.code == 404 && result.data) {
 										//在后面的授权登录的时候，传到服务器，自动绑定
 										uni.setStorage({
-											key: "userInfoPlatform",
+											key: 'userInfoPlatform',
 											data: result.data
 										});
-									}else{
-										console.log("判断错误")
+									} else {
+										console.log('判断错误');
 									}
 								}
 							});
@@ -126,7 +129,7 @@ export default {
 	onLaunch: function() {
 		console.log('App.vue 启动');
 		//#ifdef MP
-		this.micLogin()
+		this.micLogin();
 		//#endif
 		this.loadAdminShopId();
 		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
@@ -233,8 +236,12 @@ export default {
 			this.setUserLocation(userLocationInfo);
 		}
 		//#ifdef APP-PLUS
+		//初始化极光一键登录
 		this.initLogin();
+		//初始化推送
 		this.initPush();
+		//检查应用更新，每日一次
+		checkAppUpdate();
 		//#endif
 	},
 	onShow: function() {

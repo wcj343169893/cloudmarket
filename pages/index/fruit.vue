@@ -146,6 +146,8 @@ export default {
 			console.log('watch location');
 			console.log(this.location);
 			this.address = this.location.name;
+			//重新加载数据
+			this.loadData();
 		}
 	},
 	onLoad() {
@@ -195,6 +197,7 @@ export default {
 						this.loadData();
 					},
 					fail: res => {
+						this.address = '定位失败,将展示默认信息';
 						console.log('获取定位失败', res.errMsg);
 						this.loadData();
 					}

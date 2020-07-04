@@ -122,7 +122,7 @@ export default {
 }
 .mix-list-cell {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	padding: 20upx $page-row-spacing;
 	line-height: 60upx;
 	position: relative;

@@ -29,6 +29,8 @@ const list = async (data, context) => {
 		"imgs": 1, //轮播图
 		"score": 1,
 		"price": 1,
+		"isSold":1,
+		"default_checked_sku_id": 1, //多规格默认选中
 		"isSold": 1,
 		"skuname": 1,
 		"skus": 1,
@@ -160,7 +162,12 @@ const deletes = async (data) => {
 	}).remove();
 	if (res.deleted == 1) {
 		//增加店铺商品统计
-		await shopGoodsInc(data.shopid, "delete", 1, "online");
+		let type = "online";
+		if (!goods.isSold) {
+			//已下架商品
+			type = "offline";
+		}
+		await shopGoodsInc(data.shopid, "delete", 1, type);
 	}
 	return res;
 }
@@ -193,7 +200,12 @@ const reverts = async (data) => {
 	}).remove();
 	if (res.deleted == 1) {
 		//增加店铺商品统计
-		await shopGoodsInc(data.shopid, "online", 1, "delete");
+		let type = "online";
+		if (!goods.isSold) {
+			//已下架商品
+			type = "offline";
+		}
+		await shopGoodsInc(data.shopid, type, 1, "delete");
 	}
 	return res;
 }

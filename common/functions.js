@@ -78,7 +78,7 @@ const getGoodsTypes = function() {
 		yuding: '预售',
 		baokuan: '爆款',
 		shouqin: '即将售罄',
-		delete:'已删除'
+		delete: '已删除'
 	};
 }
 
@@ -215,7 +215,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 		if (goods.yuding.endTime > time) {
 			if (!isPrecise) {
 				//更新商品价格
-				goods.price = goods.price + goods.yuding.price - goods.yuding.deduction;
+				goods.price = (goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2);
 			}
 			tags.push({
 				type: "info",
@@ -247,7 +247,13 @@ const getUserLocation = function(state) {
  * @param {Object} fmt
  */
 const dateFormat = function(value, fmt) {
-	let getDate = new Date(value);
+	let getDate;
+	if (value) {
+		getDate = new Date(value);
+	} else {
+		//当前时间
+		getDate = new Date();
+	}
 	let o = {
 		'M+': getDate.getMonth() + 1,
 		'd+': getDate.getDate(),
@@ -455,7 +461,7 @@ const navToGoodsPage = function(id, sid) {
  * @param {Object} item
  * @param {Boolean} preview 是否预览，0否，1是
  */
-const navToGoodsItemPage = function(item,preview) {
+const navToGoodsItemPage = function(item, preview) {
 	if (isRedirect) {
 		return false;
 	}
@@ -470,7 +476,7 @@ const navToGoodsItemPage = function(item,preview) {
 	let id = item.id;
 	let sid = item.sku_id || 0;
 	let url = `/pages/product/product?id=${id}&sid=${sid}`;
-	if(preview){
+	if (preview) {
 		url = `/pages/product/product?id=${id}&sid=${sid}&preview=1`;
 	}
 	uni.navigateTo({
@@ -578,13 +584,13 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				let fname = (Math.random() + '').substr(2) + '.jpg';
 				let cpath = pathArr.join('/') + '/' + fname;
 				cloudUploadFile(filePath, cpath);
-				paths.push(fileDomain+cpath);
+				paths.push(fileDomain + cpath);
 			})
 			if (paths.length > 0 && successCallback) {
 				//延时回调，免得无法显示
-				setTimeout(()=>{
+				setTimeout(() => {
 					successCallback(paths)
-				},100)
+				}, 100)
 			}
 		}
 	});
@@ -598,6 +604,49 @@ const cloudUploadFile = async (filePath, cpath) => {
 		}
 	});
 };
+/**
+ * 检测app是否需要升级
+ */
+const checkAppUpdate = (isForce,callback) => {
+	let checkUpdateKey = 'checkAppUpdate';
+	let dt = new Date();
+	//年月日
+	let today = dt.getFullYear() + '' + (dt.getMonth() + 1) + '' + dt.getDate();
+	let isChecked = uni.getStorageSync(checkUpdateKey);
+	console.log("检查更新", isChecked);
+	if (!isChecked || isChecked != today || isForce) {
+		uni.setStorage({
+			key: checkUpdateKey,
+			data: today
+		});
+		uniCloud.callFunction({
+			name: 'chb-check-update',
+			data: {
+				appid: plus.runtime.appid,
+				version: plus.runtime.version
+			},
+			success(e) {
+				if (e.result.isUpdate) {
+					//需要更新
+					// 提醒用户更新
+					uni.showModal({
+						title: '更新提示',
+						content: e.result.note ? e.result.note : '是否选择更新',
+						success: ee => {
+							if (ee.confirm) {
+								plus.runtime.openURL(e.result.url);
+							}
+						}
+					});
+				} else {
+					if (callback) {
+						callback("已经是最新版")
+					}
+				}
+			}
+		});
+	}
+}
 
 export {
 	updateCartNumber,
@@ -622,5 +671,6 @@ export {
 	navToDocPage,
 	navToDocWebPage,
 	navMicLogin,
-	uploadFiles
+	uploadFiles,
+	checkAppUpdate
 }

@@ -7,12 +7,12 @@
 ### 导入步骤
 1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
 2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加。[导入数据文档](https://uniapp.dcloud.io/uniCloud/cf-database?id=db)  
-3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传
+3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传,如果在调用过程中找不到公共函数，请重新安装此公共函数，[安装文档](https://uniapp.dcloud.io/uniCloud/cf-common)  
 4. 云认证：[文档](https://uniapp.dcloud.io/uniCloud/authentication)，官方回复目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid  
 	- 去这里[生成云token](https://unicloud.dcloud.net.cn/token),生成并下载，保存到/cloudfunctions/common/token/ 替换原来的credentials.json文件
 	- ~~修改前端/common/cloud.js，spaceId填写自己当前项目的服务空间id，~~官方已支持    
 	- 修改云函数/cloudfunctions/common/token/index.js，spaceId   
-	- 如果报错```当前私钥未包含env_id 信息， 请前往腾讯云云开发控制台，获取自定义登录最新私钥```,则在credentials.json中增加字段```"env_id":"spaceId"```
+	- 如果报错```当前私钥未包含env_id 信息， 请前往腾讯云云开发控制台，获取自定义登录最新私钥```,则在credentials.json中增加字段```"env_id":"spaceId"```。**完成以上4步，可以运行项目**   
 5. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
 默认：iOS和H5自动登录，id为10000，Android需要使用极光登录，也可以修改`/pages/public/login.vue`，`onload`方法
 6. 支付功能：/cloudfunctions/common/configs/index.js，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
@@ -24,6 +24,8 @@
 3. 购物车，增减购物车商品数量，清空，结算，支持微信、支付宝、余额付款
 4. 我的，个人信息修改，头像修改，订单列表，商品浏览记录，地址管理，退出登录
 5. 商品详细信息，加入购物车，立即购买，提前预定
+6. 店铺商品管理，新增、修改、上架、下架、删除、清理
+7. 店铺订单管理
 
 ### 系统图标
 用了2个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
@@ -39,12 +41,23 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 ```
 
 #### Android版本
-
 ![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/apk_qrcode.png)
+
+#### H5预览
+![h5预览](http://market.cjblog.org/preview.png)   
+只是预览 app效果，如果实际运用，还需要很多特殊优化，例如顶部导航  
+
+#### 微信小程序体验（个人认证，无法上架）
+![体验码](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/tiyan.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.8
+* 增加商品预售
+* 优化首页，分类页，商品详情页价格显示
+* 增加每日首次启动自动检测升级，设置页面手动检测，参考插件：[云函数实现App的升级检查](https://ext.dcloud.net.cn/plugin?id=2226)
+
 #### 1.0.3.7
 * 优化后台云函数结构，由一个函数作为入口，有利于提高访问效率、用户登录权限验证，操作权限验证，统一处理公共参数，例如：shopid，page，limit，operator，[官方优化建议](https://uniapp.dcloud.io/uniCloud/faq?id=%e4%ba%91%e5%87%bd%e6%95%b0%e8%ae%bf%e9%97%ae%e6%97%b6%e5%bf%ab%e6%97%b6%e6%85%a2%e6%80%8e%e4%b9%88%e5%9b%9e%e4%ba%8b%ef%bc%9f)，后台函数理论上不会出现高并发情况。  
 * 增加商品上下架功能，新增goods字段```isSold:1```,1在售，0下架。新增删除goods表，goods_deletes   
