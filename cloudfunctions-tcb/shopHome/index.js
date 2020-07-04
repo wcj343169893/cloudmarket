@@ -74,6 +74,7 @@ exports.main = async (event, context) => {
 			"isSold":1,
 			"score": 1,
 			"price": 1,
+			"default_checked_sku_id":1,//多规格默认选中
 			"skuname":1,
 			"skus":1,
 			"originPrice": 1,

@@ -18,6 +18,98 @@
 				</block>
 			</block>
 		</view>
+		<mix-list-select
+			title="*销售类型"
+			:options="saleTypes"
+			:border="saleType == 'normal' ? 'b-b' : ''"
+			:defaultOption="saleType"
+			@eventClick="changeSaleType"
+		></mix-list-select>
+		<!-- saleType预定设置 -->
+		<block v-if="saleType == 'yuding'">
+			<view class="yuding-section">
+				<view class="yuding-content">
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*定金</text>
+						<input type="digit" class="cell-content" v-model="yuding.price" placeholder="请输入定金" />
+					</view>
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*抵扣</text>
+						<input type="digit" class="cell-content" v-model="yuding.deduction" placeholder="请输入抵扣" />
+					</view>
+					<!-- 多规格商品选择支持的规格 -->
+					<block v-if="specsType == 'multiple'">
+						<mix-list-select
+							title="*支持规格"
+							:options="getSkuNames"
+							:defaultOption="yuding.sku_ids"
+							selectType="checkbox"
+							@eventClick="changeYudingSku"
+						></mix-list-select>
+					</block>
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*开始预定</text>
+						<picker
+							mode="date"
+							:value="yuding.beginTime | dateFormat('yyyy-MM-dd')"
+							:start="yudingBeginTimeStartDate"
+							:end="yudingBeginTimeEndDate"
+							class="cell-tip"
+							@change="bindYudingBeginDateChange"
+						>
+							<view class="uni-input" v-if="yuding.beginTime">{{ yuding.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择日期</view>
+						</picker>
+						<text class="yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*结束预定</text>
+						<picker
+							mode="date"
+							:value="yuding.endTime | dateFormat('yyyy-MM-dd')"
+							:start="yudingEndTimeStartDate"
+							:end="yudingEndTimeEndDate"
+							class="cell-tip"
+							@change="bindYudingEndDateChange"
+						>
+							<view class="uni-input" v-if="yuding.endTime">{{ yuding.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择日期</view>
+						</picker>
+						<text class="yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*开始付尾款</text>
+						<picker
+							mode="date"
+							:value="yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd')"
+							:start="yudingFinalPaymentBeginTimeStartDate"
+							:end="yudingFinalPaymentBeginTimeEndDate"
+							class="cell-tip"
+							@change="bindYudingFinalPaymentBeginDateChange"
+						>
+							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择日期</view>
+						</picker>
+						<text class="yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell">
+						<text class="cell-tit clamp">*结束付尾款</text>
+						<picker
+							mode="date"
+							:value="yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd')"
+							:start="yudingFinalPaymentEndTimeStartDate"
+							:end="yudingFinalPaymentEndTimeEndDate"
+							class="cell-tip"
+							@change="bindYudingFinalPaymentEndDateChange"
+						>
+							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择日期</view>
+						</picker>
+						<text class="yticon icon-you"></text>
+					</view>
+				</view>
+			</view>
+		</block>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
 			<view class="cell-content"></view>
@@ -46,9 +138,9 @@
 		<view class="tmp submit"></view>
 		<view class="specsTitlesBtn submit"><button class="add-btn" @click="save">提交</button></view>
 		<uni-popup ref="showCateory" type="bottom">
-			<view class="specsTitlesBtn selectCategory">
-				<button class="add-btn cancel" @click="cancelSelectCategory">取消</button>
-				<button class="add-btn" @click="savaSelectCategory">确定</button>
+			<view class="specsTitlesBtn selectCategory b-b">
+				<text class="add-btn cancel" @click="cancelSelectCategory">取消</text>
+				<text class="add-btn" @click="savaSelectCategory">确定</text>
 			</view>
 			<view class="catespopup">
 				<scroll-view scroll-y="true" class="catespopupScroll">
@@ -102,7 +194,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { uploadFiles } from '@/common/functions.js';
+import { uploadFiles, dateFormat } from '@/common/functions.js';
 import { goodsAdmin, categoryAdmin } from '@/common/admin_request.js';
 export default {
 	data() {
@@ -169,21 +261,106 @@ export default {
 			srcPreview: '',
 			stock: '',
 			title: '',
-			submiting: false
+			submiting: false,
+			saleType: 'normal',
+			saleTypes: {
+				normal: '正常销售',
+				yuding: '提前预定'
+			},
+			yuding: {}
 		};
+	},
+	computed: {
+		getSkuNames() {
+			let da = {};
+			if (this.skus) {
+				this.skus.map(sku => {
+					da[sku.id] = sku.name.replace('&gt;', '-');
+				});
+			}
+			return da;
+		},
+		yudingBeginTimeStartDate() {
+			return dateFormat(false, 'yyyy-MM-dd');
+		},
+		//预定开始时间，默认1年内，如果设置了结束日期，则最大是结束
+		yudingBeginTimeEndDate() {
+			if (this.yuding.endTime) {
+				return dateFormat(this.yuding.endTime, 'yyyy-MM-dd');
+			}
+			return this.getDefaultEndDate();
+		},
+		//预定结束日期开始，如果设置了开始日期，则必须大于等于开始
+		yudingEndTimeStartDate() {
+			if (this.yuding.beginTime) {
+				return dateFormat(this.yuding.beginTime, 'yyyy-MM-dd');
+			}
+			return dateFormat(false, 'yyyy-MM-dd');
+		},
+		yudingEndTimeEndDate() {
+			//预定时间一定小于付尾款时间,减少一天
+			if (this.yuding.finalPaymentBeginTime) {
+				return dateFormat(this.yuding.finalPaymentBeginTime - 3600 * 24 * 1000, 'yyyy-MM-dd');
+			}
+			return this.getDefaultEndDate();
+		},
+		yudingFinalPaymentBeginTimeStartDate() {
+			if (this.yuding.endTime) {
+				//增加1秒，即可到第二天
+				return dateFormat(this.yuding.endTime + 1000, 'yyyy-MM-dd');
+			} else if (this.yuding.beginTime) {
+				//增加1天
+				return dateFormat(this.yuding.beginTime + 3600 * 24 * 1000, 'yyyy-MM-dd');
+			}
+			return dateFormat(false, 'yyyy-MM-dd');
+		},
+		yudingFinalPaymentBeginTimeEndDate() {
+			if (this.yuding.finalPaymentEndTime) {
+				return dateFormat(this.yuding.finalPaymentEndTime, 'yyyy-MM-dd');
+			}
+			return this.getDefaultEndDate();
+		},
+		yudingFinalPaymentEndTimeStartDate() {
+			if (this.yuding.finalPaymentBeginTime) {
+				return dateFormat(this.yuding.finalPaymentBeginTime, 'yyyy-MM-dd');
+			} else if (this.yuding.endTime) {
+				return dateFormat(this.yuding.endTime, 'yyyy-MM-dd');
+			} else if (this.yuding.beginTime) {
+				return dateFormat(this.yuding.beginTime, 'yyyy-MM-dd');
+			}
+			return dateFormat(false, 'yyyy-MM-dd');
+		},
+		yudingFinalPaymentEndTimeEndDate() {
+			return this.getDefaultEndDate();
+		}
+	},
+	watch: {
+		yuding: {
+			handler: (val, oldval) => {
+				console.log('watch yuding', val);
+			},
+			deep: true //对象内部的属性监听，也叫深度监听
+			//immediate: true
+		},
+		'yuding.beginTime': val => {
+			console.log('watch beginTime', val);
+			//结束预定日期必须大于开始预定日期
+			//this.yudingEndTimeStartDate = dateFormat(val,"yyyy-MM-dd");
+		}
 	},
 	onLoad(options) {
 		if (!options.isnew) {
 			//编辑
-			this.loadData();
 			uni.setNavigationBarTitle({
 				title: '编辑商品'
 			});
+			this.loadData();
 		} else {
 			uni.setNavigationBarTitle({
 				title: '新增商品'
 			});
 			//默认单规格信息为主信息
+			this.saleType = 'normal';
 			this.loadSkuInfo();
 		}
 		this.loadCategory();
@@ -208,6 +385,11 @@ export default {
 				if (this.categories.length > 0) {
 					this.categoryName = this.categories[this.categories.length - 1].name;
 				}
+				if (this.yuding && this.yuding.price > 0) {
+					this.saleType = 'yuding';
+				} else {
+					this.saleType = 'normal';
+				}
 				console.log(data);
 			}
 			//默认单规格信息为主信息
@@ -225,7 +407,7 @@ export default {
 							chi.checked = this.categories.findIndex(f => f.id == chi.id) != -1;
 						});
 					});
-					console.log(res);
+					//console.log(res);
 					this.categoriesData = res;
 				},
 				err => {
@@ -290,13 +472,23 @@ export default {
 				}
 			});
 		},
+		//关闭分类选择
 		cancelSelectCategory() {
 			this.$refs['showCateory'].close();
 		},
+		//确定选择的分类
 		savaSelectCategory() {
 			if (this.categoryIdTmp.length > 0) {
 				this.categories = this.categoryIdTmp;
 				this.categoryName = this.categoryIdTmp[this.categoryIdTmp.length - 1].name;
+
+				//默认选中
+				this.categoriesData.forEach(ele => {
+					ele.children.forEach(chi => {
+						chi.checked = this.categories.findIndex(f => f.id == chi.id) != -1;
+					});
+				});
+
 				this.$refs['showCateory'].close();
 			} else {
 				this.$api.msg('请选择分类');
@@ -386,6 +578,10 @@ export default {
 				this.skus[index] = info;
 			}
 		},
+		changeSaleType(val) {
+			console.log('changeSaleType', val);
+			this.saleType = val;
+		},
 		//上传图片
 		uploadSrc() {
 			uploadFiles(
@@ -440,24 +636,48 @@ export default {
 				});
 				info.stock = 0;
 				info.price = -1;
+				info.default_sku_id = 0;
 				this.skus.map(sku => {
 					//价格取sku最低价
 					if (info.price < 0 || info.price > sku.price) {
 						info.price = sku.price;
 						info.originPrice = +sku.originPrice;
+						info.default_checked_sku_id = sku.id;
 					}
 					//库存累加
 					info.stock += +sku.stock;
 				});
 			}
+			let fields = {
+				title: '标题',
+				categories: '分类',
+				src: '封面图',
+				stock: '库存',
+				price: '销售价格'
+			};
 			//判断必填项
-			if (!info.title) {
-				this.$api.msg('标题不能为空');
+			if (!this.checkFields(info, fields)) {
+				this.submiting = false;
 				return;
 			}
-			if (!info.src) {
-				this.$api.msg('主图不能为空');
-				return;
+			//开启预定功能
+			if (this.saleType == 'yuding') {
+				info.yuding = this.yuding;
+				fields = {
+					price: '定金',
+					deduction: '抵扣金额',
+					beginTime: '开始预定时间',
+					endTime: '结束预定时间',
+					finalPaymentBeginTime: '开始付尾款时间',
+					finalPaymentEndTime: '结束付尾款时间'
+				};
+				if (!this.checkFields(info.yuding, fields)) {
+					this.submiting = false;
+					return;
+				}
+				//强转价格类型
+				info.yuding.price = +info.yuding.price;
+				info.yuding.deduction = +info.yuding.deduction;
 			}
 			goodsAdmin('save', info).then(
 				res => {
@@ -475,6 +695,56 @@ export default {
 					this.$api.msg(err.message || '提交失败');
 				}
 			);
+		},
+		//检查字段是否为空
+		checkFields(data, fields) {
+			for (let fie in fields) {
+				if (typeof data[fie] == 'undefined' || data[fie] == '') {
+					this.$api.msg(fields[fie] + '不能为空');
+					return false;
+				}
+			}
+			return true;
+		},
+		//获取默认结尾日期
+		getDefaultEndDate() {
+			let d = new Date();
+			d.setFullYear(d.getFullYear() + 1);
+			return dateFormat(d, 'yyyy-MM-dd');
+		},
+		//预定开始时间
+		bindYudingBeginDateChange(e) {
+			console.log(e);
+			let time = new Date(e.detail.value + ' 00:00:00').getTime();
+			//https://www.jianshu.com/p/991a5e979709  解决set之后页面不刷新问题
+			this.$set(this.yuding, 'beginTime', time);
+		},
+		//预定结束时间
+		bindYudingEndDateChange(e) {
+			console.log(e);
+			//这一天的最后一秒
+			let time = new Date(e.detail.value + ' 23:59:59').getTime();
+			this.$set(this.yuding, 'endTime', time);
+		}, //付尾款开始时间
+		bindYudingFinalPaymentBeginDateChange(e) {
+			console.log(e);
+			let time = new Date(e.detail.value + ' 00:00:00').getTime();
+			this.$set(this.yuding, 'finalPaymentBeginTime', time);
+		},
+		//付尾款结束时间
+		bindYudingFinalPaymentEndDateChange(e) {
+			console.log(e);
+			//这一天的最后一秒
+			let time = new Date(e.detail.value + ' 23:59:59').getTime();
+			this.$set(this.yuding, 'finalPaymentEndTime', time);
+		},
+		changeYudingSku(e) {
+			//全部强转为int类型
+			this.yuding.sku_ids = [];
+			e.map(ele => {
+				this.yuding.sku_ids.push(+ele);
+			});
+			console.log('changeYudingSku', this.yuding.sku_ids);
 		}
 	}
 };
@@ -487,6 +757,7 @@ export default {
 .mix-list-cell {
 	display: flex;
 	align-items: baseline;
+	align-items: center;
 	padding: 20upx $page-row-spacing;
 	line-height: 60upx;
 	position: relative;
@@ -580,19 +851,23 @@ export default {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		z-index: 99;
+		z-index: 98;
 		background: #ffffff;
 	}
 	&.selectCategory {
 		background: #ffffff;
 		justify-content: space-between;
-		padding: 10upx 30upx 10upx;
+		padding: 20upx 30upx 20upx;
+		position: relative;
+		height: 90upx;
 		.add-btn {
+			color: #007aff;
 			flex: none;
+			background: none;
 			margin: 0;
-			height: 60upx;
-			line-height: 60upx;
-			font-size: $font-base;
+			&.cancel {
+				color: #888888;
+			}
 		}
 	}
 }
@@ -615,6 +890,8 @@ export default {
 	padding-bottom: 20upx;
 	&.submit {
 		padding-bottom: 160upx;
+		color: #ffffff;
+		text-align: center;
 	}
 }
 .withImages {
@@ -653,6 +930,15 @@ export default {
 	}
 	.cates {
 		padding-bottom: 20upx;
+	}
+}
+.yuding-section {
+	padding: 20upx;
+	background-color: #f5f5f5;
+	.yuding-content {
+		border-radius: 10px;
+		position: relative;
+		background-color: #ffffff;
 	}
 }
 </style>

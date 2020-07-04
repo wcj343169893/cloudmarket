@@ -16,7 +16,7 @@
 					</view>
 					<view class="">
 						<text class="name">预售价</text>
-						<text class="price">{{ price - yuding.deduction + yuding.price }}</text>
+						<text class="price">{{ yudingPrice }}</text>
 					</view>
 				</view>
 				<view class="time-area">
@@ -44,7 +44,7 @@
 				<view class="info-box">
 					<text class="name">尾款</text>
 					<view class="desc">
-						<text class="price">{{ price - yuding.deduction }}</text>
+						<text class="price">{{ yudingFinalPay }}</text>
 						<text>({{ yuding.finalPaymentBeginTime | dateFormat('MM月dd日hh:mm') }}-{{ yuding.finalPaymentEndTime | dateFormat('MM月dd日hh:mm') }})</text>
 					</view>
 				</view>
@@ -122,7 +122,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="c-list" v-if="isSold==1">
+		<view class="c-list" v-if="isSold == 1">
 			<view class="c-row amount b-b">
 				<text class="tit">数量</text>
 				<view class="bz-list con">
@@ -151,12 +151,10 @@
 					<text class="yticon icon-gouwuche"><!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
 				</navigator>
 			</view>
-			<block v-if="isSold==0">
-				<text class="warning">已下架或已删除</text>
-			</block>
+			<block v-if="isSold == 0"><text class="warning">已下架或已删除</text></block>
 			<block v-else-if="yuding">
 				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
-				<button class="add-btn disabled" v-else>预定未开始</button>
+				<button class="add-btn disabled" v-else>预售未开始</button>
 			</block>
 			<block v-else>
 				<button class="add-btn" @click="addToCart">加入购物车</button>
@@ -188,7 +186,7 @@ export default {
 			title: '',
 			stock: 0,
 			visite: 0,
-			isSold:1,
+			isSold: 1,
 			src: '',
 			imgs: [], //轮播图
 			score: 0,
@@ -218,7 +216,15 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['hasLogin'])
+		...mapState(['hasLogin']),
+		//定金
+		yudingPrice() {
+			return (this.price - this.yuding.deduction + this.yuding.price).toFixed(2);
+		},
+		//尾款
+		yudingFinalPay() {
+			return (this.price - this.yuding.deduction).toFixed(2);
+		}
 	},
 	async onLoad(options) {
 		if (!options.id) {
@@ -263,14 +269,17 @@ export default {
 				}
 			}
 			//再次读取数据库，获得详细信息
-			getGoodsInfo({ id: this.id, preview: this.preview }).then(item => {
-				this.buildGoodsInfo(item);
-				this.canAddCart = true;
-			},err=>{
-				//this.$api.msg("商品已删除或下架",20000);
-				this.canAddCart = true;
-				this.isSold = 0;
-			});
+			getGoodsInfo({ id: this.id, preview: this.preview }).then(
+				item => {
+					this.buildGoodsInfo(item);
+					this.canAddCart = true;
+				},
+				err => {
+					//this.$api.msg("商品已删除或下架",20000);
+					this.canAddCart = true;
+					this.isSold = 0;
+				}
+			);
 
 			//获得购物车总数量
 			this.cartSumCount = getCartSumNumber();
@@ -319,8 +328,13 @@ export default {
 					//寻找秒杀商品的定位
 					if (miaoshaSkuName.length == 0) {
 						if (this.default_sku_id > 0 && this.default_sku_id == sku.id) {
+							//强制选中型号
 							miaoshaSkuName = names;
 						} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
+							//秒杀默认选中
+							miaoshaSkuName = names;
+						}else if(this.default_checked_sku_id == sku.id ){
+							//本身默认选中
 							miaoshaSkuName = names;
 						}
 					}
@@ -498,7 +512,7 @@ export default {
 		//支付一件的定金,判断是否有效
 		payDingjin() {
 			if (!this.yuding.isBegin) {
-				this.$api.msg('预定未开始');
+				this.$api.msg('预售未开始');
 				return;
 			}
 			this.buy();
@@ -584,7 +598,7 @@ page {
 	color: #888;
 }
 .carousel {
-	height: 722upx;
+	height: 750upx;
 	position: relative;
 	swiper {
 		height: 100%;
@@ -967,7 +981,7 @@ page {
 	&.show {
 		bottom: var(--window-bottom);
 	}
-	.warning{
+	.warning {
 		font-size: $font-base;
 		color: $font-color-warning;
 	}

@@ -1,34 +1,50 @@
 'use strict';
 const db = uniCloud.database();
-const cmd = db.command;
+/**
+ * 登录https://unicloud.dcloud.net.cn/cloud-database，
+ * 按F12，
+ * 打开云数据库，
+ * 查看网络请求： https://unicloud.dcloud.net.cn/unicloud/api/database/collections
+ * 复制返回内容到config文件
+ */
+const conf = require("./config");
+/**
+ * 导出集合数据
+ */
 exports.main = async (event, context) => {
-	let withData = ["goods", "goods_categories", "identity", "shops", "users"];
-	let collections = [
-		"addresses",
-		"ads",
-		"carts",
-		"goods",
-		"goods_activities",
-		"goods_categories",
-		"goods_day_sales",
-		"goods_shop_day_sales",
-		"goods_visites",
-		"identity",
-		"order_refunds",
-		"orders",
-		"shop_categories",
-		"shop_comments",
-		"shops",
-		"user_balance_logs",
-		"user_often_buy_shops",
-		"user_recommend_shops",
-		"users"
-	];
+	let collections = conf["main"]["data"]["collections"];
 	let data = {};
 	for (let m of collections) {
-		data[m] = {};
-		let da = await db.collection(m).limit(30).get();
-		data[m].data = da.data;
+		data[m.name] = {};
+		//限制条数
+		let limit = limits[m.name] ? limits[m.name] : 100;
+		let da = await db.collection(m.name).limit(limit).get();
+		data[m.name].data = da.data;
+		//设置索引
+		if (indexs[m.name]) {
+			data[m.name].index = indexs[m.name];
+		}
 	}
 	return data;
 };
+/**
+ * 限制导出条数
+ */
+const limits = {
+	"users": 3
+}
+/**
+ * 必备索引
+ */
+const indexs = {
+	"shops": {
+		"IndexName": "index_lonlat",
+		"MgoKeySchema": {
+			"MgoIndexKeys": [{
+				"Name": "lnglat",
+				"Direction": "2dsphere"
+			}],
+			"MgoIsUnique": false
+		}
+	}
+}

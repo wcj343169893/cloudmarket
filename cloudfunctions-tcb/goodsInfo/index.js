@@ -5,8 +5,10 @@ const auth = uniCloud.auth();
  * 商品详情页面
  */
 exports.main = async (event, context) => {
-	let {customUserId} = await auth.getUserInfo();
-	console.log("getClientIP",auth.getClientIP());
+	let {
+		customUserId
+	} = await auth.getUserInfo();
+	console.log("getClientIP", auth.getClientIP());
 	let id = +event.id;
 	let uid = +customUserId;
 	const collection = db.collection('goods');
@@ -16,10 +18,7 @@ exports.main = async (event, context) => {
 		console.log('Unhandled Rejection at:', 'reason:', reason);
 		console.log(p);
 	});
-
-	let goods = await collection.where({
-		id: id
-	}).field({
+	let fields = {
 		"id": 1,
 		"title": 1,
 		"stock": 1,
@@ -31,6 +30,7 @@ exports.main = async (event, context) => {
 		"price": 1,
 		"skuname": 1,
 		"skus": 1,
+		"default_checked_sku_id": 1,
 		"originPrice": 1,
 		"monthlySale": 1,
 		"categories": 1,
@@ -38,7 +38,10 @@ exports.main = async (event, context) => {
 		"manjian": 1,
 		"description": 1,
 		"yuding": 1
-	}).get();
+	};
+	let goods = await collection.where({
+		id: id
+	}).field(fields).get();
 	if (goods.data.length == 0) {
 		return {
 			"code": 404,

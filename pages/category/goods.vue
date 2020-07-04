@@ -554,6 +554,9 @@ export default {
 				if (miaoshaSkuName.length == 0) {
 					if (item.miaosha && item.miaosha.sku_id == sku.id) {
 						miaoshaSkuName = names;
+					}else if(item.default_checked_sku_id == sku.id ){
+						//本身默认选中
+						miaoshaSkuName = names;
 					}
 				}
 			});

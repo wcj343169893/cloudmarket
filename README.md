@@ -41,12 +41,23 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 ```
 
 #### Android版本
-
 ![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/apk_qrcode.png)
+
+#### H5预览
+![h5预览](http://market.cjblog.org/preview.png)   
+只是预览 app效果，如果实际运用，还需要很多特殊优化，例如顶部导航  
+
+#### 微信小程序体验（个人认证，无法上架）
+![体验码](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/tiyan.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.8
+* 增加商品预售
+* 优化首页，分类页，商品详情页价格显示
+* 增加每日首次启动自动检测升级，设置页面手动检测，参考插件：[云函数实现App的升级检查](https://ext.dcloud.net.cn/plugin?id=2226)
+
 #### 1.0.3.7
 * 优化后台云函数结构，由一个函数作为入口，有利于提高访问效率、用户登录权限验证，操作权限验证，统一处理公共参数，例如：shopid，page，limit，operator，[官方优化建议](https://uniapp.dcloud.io/uniCloud/faq?id=%e4%ba%91%e5%87%bd%e6%95%b0%e8%ae%bf%e9%97%ae%e6%97%b6%e5%bf%ab%e6%97%b6%e6%85%a2%e6%80%8e%e4%b9%88%e5%9b%9e%e4%ba%8b%ef%bc%9f)，后台函数理论上不会出现高并发情况。  
 * 增加商品上下架功能，新增goods字段```isSold:1```,1在售，0下架。新增删除goods表，goods_deletes   

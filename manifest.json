@@ -68,12 +68,7 @@
                 "push" : {
                     "unipush" : {}
                 },
-                "maps" : {
-                    "baidu" : {
-                        "appkey_ios" : "7bIuSjKTi0mk7r6PreYwbXVxB0U7ZMMl",
-                        "appkey_android" : "7bIuSjKTi0mk7r6PreYwbXVxB0U7ZMMl"
-                    }
-                }
+                "maps" : {}
             }
         },
         "safearea" : {
