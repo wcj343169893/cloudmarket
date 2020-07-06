@@ -9,6 +9,7 @@ const jv = uni.requireNativePlugin('JG-JVerification');
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
 import { checkAppUpdate } from '@/common/functions.js';
+import { channelLogin } from '@/common/request.js';
 
 const pushClientInfoKey = 'pushClientInfo';
 const userInfoKey = 'userInfo';
@@ -85,40 +86,29 @@ export default {
 				service: 'oauth',
 				success(res) {
 					console.log('res.provider', res.provider);
+					let provider = res.provider[0];
 					uni.login({
-						provider: res.provider[0],
+						provider: provider,
 						success: function(loginRes) {
 							console.log('loginRes', loginRes);
-							client.callFunction({
-								name: 'micLogin',
-								data: loginRes,
-								success: res => {
-									let result = res.result;
-									console.log('micLogin', result);
-									if (result.code == 200) {
-										//写入缓存
-										uni.setStorage({
-											key: userInfoKey,
-											data: result.data
-										});
-										uni.setStorage({
-											key: 'userOpenId',
-											data: result.data.openid
-										});
-										auth.signInWithTicket(result.data.ticket).then(() => {
-											// 登录成功
-											console.log('客户端登录成功');
-										});
-									} else if (result.code == 404 && result.data) {
-										//在后面的授权登录的时候，传到服务器，自动绑定
-										uni.setStorage({
-											key: 'userInfoPlatform',
-											data: result.data
-										});
-									} else {
-										console.log('判断错误');
-									}
-								}
+							//小程序自动登录
+							channelLogin({
+								channel:provider,
+								code:loginRes.code
+							}).then(res=>{
+								//写入缓存
+								uni.setStorage({
+									key: userInfoKey,
+									data: res
+								});
+								uni.setStorage({
+									key: 'userOpenId',
+									data: res.openid
+								});
+								auth.signInWithTicket(res.ticket).then(() => {
+									// 登录成功
+									console.log('客户端登录成功');
+								});
 							});
 						}
 					});
@@ -156,34 +146,31 @@ export default {
 					});
 					return;
 				}
-				client
-					.callFunction({
-						name: 'token',
-						data: {
-							uid: userInfo.id,
-							token: userInfo.token
-						}
-					})
-					.then(
-						res => {
-							console.log(res);
-							//写入缓存
-							uni.setStorage({
-								key: userInfoKey,
-								data: res
-							});
-							auth.signInWithTicket(res.ticket).then(() => {
-								// 登录成功
-								console.log('客户端登录成功');
-							});
-						},
-						err => {
-							//登录信息失效
-							uni.removeStorage({
-								key: userInfoKey
-							});
-						}
-					);
+				//token自动登录
+				channelLogin({
+					channel:"token",
+					uid: userInfo.id,
+					token: userInfo.token
+				}).then(
+					res => {
+						console.log(res);
+						//写入缓存
+						uni.setStorage({
+							key: userInfoKey,
+							data: res
+						});
+						auth.signInWithTicket(res.ticket).then(() => {
+							// 登录成功
+							console.log('客户端登录成功');
+						});
+					},
+					err => {
+						//登录信息失效
+						uni.removeStorage({
+							key: userInfoKey
+						});
+					}
+				);
 			} else {
 				console.log('本地没有历史登录信息');
 			}
@@ -449,6 +436,9 @@ export default {
 .icon-weixinzhifu:before {
 	content: '\e61a';
 }
+.icon-wxpay:before {
+	content: '\e61a';
+}
 
 .icon-comment:before {
 	content: '\e64f';
@@ -463,6 +453,9 @@ export default {
 }
 
 .icon-erjiye-yucunkuan:before {
+	content: '\e623';
+}
+.icon-balance:before {
 	content: '\e623';
 }
 

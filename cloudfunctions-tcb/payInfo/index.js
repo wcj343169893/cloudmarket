@@ -1,6 +1,9 @@
 'use strict';
 const db = uniCloud.database();
 const auth = uniCloud.auth();
+const {
+	getPaymentConfig
+} = require('configs');
 /**
  * 订单支付,余额支付,扣款成功后，统一回调订单处理
  */
@@ -91,36 +94,22 @@ exports.main = async (event, context) => {
 	let platform = context.PLATFORM;
 	//支付方式https://uniapp.dcloud.io/api/plugins/provider
 	data["payment"] = [];
-	if (platform != "mp-alipay") {
-		data["payment"].push({
-			id: 1,
-			value: "wxpay",
-			icon: "icon-weixinzhifu",
-			name: "微信支付",
-			usable: true,
-			desc: ""
-		})
-	}
-	if (platform != "mp-weixin") {
-		data["payment"].push({
-			id: 2,
-			value: "alipay",
-			icon: "icon-alipay",
-			name: "支付宝支付",
-			usable: true,
-			desc: "推荐使用"
-		})
-	}
-	data["payment"].push({
-		id: 3,
-		value: "balance",
-		icon: "icon-erjiye-yucunkuan",
-		name: "余额支付",
-		usable: balance >= data.order.totalMoney,
-		usableText: "余额不足,请选择其他支付方式",
-		desc: "可用余额￥" + balance
-	});
 
+	//获取支付配置
+	let config = getPaymentConfig(context.PLATFORM);
+	let index = 1;
+	for (let payname in config) {
+		data["payment"].push({
+			id: index,
+			value: payname,
+			icon: "icon-" + payname,
+			name: config[payname].name + "支付",
+			usable: payname == 'balance' ? balance >= data.order.totalMoney : true,
+			usableText: payname == 'balance' ? "余额不足,请选择其他支付方式" : "",
+			desc: payname == 'balance' ? "可用余额￥" + balance : ""
+		});
+		index++;
+	}
 	return {
 		"code": 200,
 		"message": "操作成功",

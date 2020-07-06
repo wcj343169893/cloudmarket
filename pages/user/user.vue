@@ -256,7 +256,7 @@ export default {
 				},err=>{
 					this.logout();
 				});
-				getGoodsVisites().then(
+				getGoodsVisites({}).then(
 					res => {
 						this.hasVisiteGoods = true;
 						this.visiteGoodsList = res;

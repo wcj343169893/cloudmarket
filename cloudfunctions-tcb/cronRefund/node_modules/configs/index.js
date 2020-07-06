@@ -1,26 +1,31 @@
 /**
- * 获得支付宝配置
+ * 支付配置文件
  */
-const getAlipayConfig = function() {
-	return {
-		appId: '2015120800934089',
-		privateKey: 'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCy6ZYSHQtZ8bpedWQ9z5Lkitwoku/Y+Lv30sIYUVWcf8AtFS1myPexbs3RYOr9Ei7SFOm+tTOi3djODYnxBWyMCtS5iwVZEeTYlMVFj5qslZ7fm0FKOMA3IjQNH7sWJJfJ8LogaBKvzMIWf7H6MZ1DhSA3FjTDMqpol3TJXMoHGgaa045KjY7Tnn5deXhySaKegGGH5q69q+wxwIi1dCSyXXO8Sylf9Jn30hnjAVV6g6YGmGwg0Eanj6zNf27h+y9QHcxMJaDzhnssEk88krDZQ2AI0YBaQO3PhabBDXWsIe5TYP+nE0Ud2kPeElosOoCcRX/iFUENh/B5VX0J+R0NAgMBAAECggEBAJG/wtacvJuYVfgPcAr+p67xBGs1UJkUAKTiF+aRk8m7NMZFQ0hBna75EkhoyOZDQss36DfJC/i4+57Y3q/veD8Zr7Q7ca7e6ewaPh7t3taLyPJmWyjo1IXVokuytslSJCmJp0cxIU//4XlMq6OjeXcA436c43zFMJemEqjbo2VmTHdDIkRXcl0sd/U3PAz5IMja2EZIsrDShDUA8FXAl7/EJa7CRN3YeVIW5FmDJ5cXrWIYRi+3wvj4VPps1aeooEPba3eIRYsuhtbOVvyayPu7UjYK6VF64xvbQlXuEOBNy1V+B+iajoekNpbZwz3g2TG4QPf5C1oUt7IOVJTsLs0CgYEA3Dz1yYn2ZHYoSaXigr1op+5SemB37dujsyj7zio9wZwx2ynx3ylThXeize4OyDeVspWskuEoFd9deQ5DYBmgNs1OILcRwamiEujBgdyhsjeGw02Njfp08BnFIWOngj94OG61RrEFapA/58d8ZdGeu5+E9vXJaofVOzMyjcH2JXcCgYEAz/bEJrKIbo+zIC6DpO8R7X9Lzc1h/AgQpb+pzGH2IbgxlTEQOIO3e0Os+ema2dEw4JB1qQVIcNby51XLJky6vJwNt0cOAfCdJhSxauevGpMU8OzSM/VRdPjp7MDtEK/BjsnnQ8wUz4TWxVBoK+Qr8e7Q0LtW2vY6CJVTYB7mgpsCgYBVg9oP+mDQm0yDZETybOdBJXmjCOgoVHtYqpYzdBVsouB87+l5tEs47L4rZb8ZoPOgVxueIIz3CTb7NT2WB/08qjUm4M6lOt+ypevVJ70lPQg3t1o6gcB8JhV0JIS7PzfH+byriTrIKOCXd87mniEbSxJO7hraIYn7JaMAhgq0ewKBgQCs3WY29HhLzs8KlR+AXej9Da8pJuun39xWqnauGU/Kv50Xcm0VTQebQqnqIrBBFo4WXH4xPN72TPYkLUBsWaNvXBhanImcOzGlkdXYEzWOVWw2x+QCpIxNOwrXbZahJDc0RcgipuU1iiosYaX1tfiBZg3VM6QC5mFe+SEQ6R6auQKBgBcqIDcpc1okglBJN19lnjwBYzqp3UUo7RBC+a3QSZEbvuvlNM9jqGxOpn5yZXMd+ETpT4/7w2u9ySR4lL5cBtQdev5xZTWqOsX7jG1CaAb9xksdNU4BUvVbhxGg1afw26oNhHFSyoZKnp8oEcwOHfAwYQXt9y95XybLnWsgxCsp',
-		alipayPublicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh5ZDnGE1Glc5uKN70+aU2LULpdpmmWEZo/vqiv41+DJFAs0xZH89wI5Ix2lDhjcT+OIDMM7D6dK1B5qe3MIJ+sut3BS182AO4cYzYhYdXnRIuumzYorze1ahL6IcEDlQ3c+8m049c74PeAL6Xix1vQc2/lqROptfncKyGC90yUn8pIg6os23MbHb+aaP4rN5vQnFhaKBgOekM9hd9lPnKlVMgUag2XNON0UdJKVDIVR3IqrqjS4EmNwwxaprwNSpkouBSBDCgwDi9wkT458R+R6VrLO6E+OIdAjwCE6NiPdGhuSCQ98ePPQUba5vMgfLLnGLJ7iULh57U30nmsaOcwIDAQAB', // 使用支付时需传递此值做返回结果验签
-	};
+const config = require("./config.json")
+/**
+ * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 
+ * @param {String} platform 运行平台，返回值为 mp-weixin、app-plus等
+ * @param {String} provider 服务供应商：alipay，wxpay 
+ * @tutorial https://uniapp.dcloud.io/api/plugins/provider?id=getprovider
+ * @tutorial https://uniapp.dcloud.io/uniCloud/http
+ */
+const getPaymentNotifyUrl = (platform, provider) => {
+	//notify-floder为自定义目录，防止被攻击,建议修改成无意义的字符串，然后在后台云函数那里填写
+	//设置URL的PATH部分:/market_notify，在请求的时候，
+	//支付宝app回调地址为:http://www.mydomain.com/market_notify/app-plus/alipay 
+	return [config["domain"], config["notify-floder"], platform, provider].join("/");
 }
 /**
- * 获得微信支付配置
+ * 返回支付配置
  */
-const getWxPayConfig = function() {
-	return {
-		appId: 'wxa8e2090ff8638329',
-		mchId: '1529560471',
-		key: 'f750595974cd96e5dbac50718a452242',
-		//pfx: fs.readFileSync('/path/to/your/pfxfile'), // p12文件路径，使用微信退款时需要，需要注意的是阿里云目前不支持以相对路径读取文件，请使用绝对路径的形式
-	};
+const getPaymentConfig = (platform, provider) => {
+	if (!provider) {
+		return config[platform]["payment"];
+	}
+	return config[platform]["payment"][provider];
 }
 
 module.exports = {
-	getAlipayConfig,
-	getWxPayConfig
+	getPaymentConfig,
+	getPaymentNotifyUrl
 }

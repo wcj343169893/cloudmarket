@@ -1,0 +1,56 @@
+{
+	"domain": "http://www.mydomain.com",
+	"notify-floder": "market_notify",
+	"app-plus": {
+		"payment": {
+			"alipay": {
+				"uniPay": "initAlipay",
+				"name": "支付宝",
+				"appId": "201916540934089",
+				"privateKey": "MIIEvgIBADANBgkqhki",
+				"alipayPublicKey": "MIIBIjANBgkqhkiG"
+			},
+			"wxpay": {
+				"uniPay": "initWeixin",
+				"name": "微信",
+				"appId": "weixin appid",
+				"mchId": "15295677371",
+				"key": "f750595974cd90718a452242"
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额"
+			}
+		}
+	},
+	"mp-weixin": {
+		"payment": {
+			"wxpay": {
+				"uniPay": "initWeixin",
+				"name": "微信",
+				"appId": "weixin appid",
+				"mchId": "15295677371",
+				"key": "f750595974cd90718a452242"
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额"
+			}
+		}
+	},
+	"mp-alipay": {
+		"payment": {
+			"alipay": {
+				"uniPay": "initAlipay",
+				"name": "支付宝",
+				"appId": "alipay appid",
+				"privateKey": "alipay privateKey",
+				"alipayPublicKey": "alipay publicKey"
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额"
+			}
+		}
+	}
+}

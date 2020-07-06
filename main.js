@@ -89,6 +89,21 @@ Vue.filter('dateFormat', function(value, fmt) {
 	}
 	return fmt;
 })
+/**
+ * 格式化数字
+ * @param {Object} value
+ * @param {Object} num
+ */
+Vue.filter('toFixed', function(value, num) {
+	if(!num){
+		//默认2位小数
+		num=2;
+	}
+	if(typeof(value)=="number"){
+		return value.toFixed(num);
+	}
+	return value;
+});
 
 App.mpType = 'app'
 

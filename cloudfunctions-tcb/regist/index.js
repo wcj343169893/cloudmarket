@@ -162,11 +162,12 @@ exports.main = async (event, context) => {
 		console.log(res);
 	} */
 	
+	/* 
 	return await db.collection('goods').where({
 		_id:cmd.exists(true)
 	}).update({
 		isSold:1
-	});
+	}); */
 	/* let tokenExpire = new db.serverDate();
 	return tokenExpire; */
 	/* return await db.collection("orders").where({

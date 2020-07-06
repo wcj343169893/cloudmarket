@@ -19,23 +19,23 @@
 							</view>
 							<view class="desc weui-flex__item">
 								<view class="">
-									<text class="title">{{ item.title }}</text>
+									<text class="title">{{ item.title | toFixed }}</text>
 								</view>
 								<view class="">
 									<text>{{ item.subName }}</text>
 									<text class="" v-if="item.cutPrice > 0">
 										<text class="unit">比加入时便宜</text>
-										<text class="price emphasis">{{ item.cutPrice }}</text>
+										<text class="price emphasis">{{ item.cutPrice | toFixed }}</text>
 									</text>
 								</view>
 								<view class="buttons" v-if="item.originPrice > 0">
 									<view class="">
 										<text class="unit">原价</text>
-										<text class="price del">{{ item.originPrice }}</text>
+										<text class="price del">{{ item.originPrice | toFixed }}</text>
 									</view>
 								</view>
 								<view>
-									<text class="price">{{ item.price }}</text>
+									<text class="price">{{ item.price | toFixed }}</text>
 									<text>X {{ item.amount }}</text>
 								</view>
 							</view>
