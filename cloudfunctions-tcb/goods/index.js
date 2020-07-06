@@ -3,6 +3,7 @@ const modules = {
 	detail: require('./detail'),
 	search: require('./search'),
 	visite: require('./visite'),
+	miaosha: require('./miaosha'),
 };
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
