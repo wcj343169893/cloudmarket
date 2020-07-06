@@ -1,5 +1,5 @@
 const app = uniCloud.init({
-	spaceId: 'cloud-market-00000',
+	spaceId: 'cloud-market-3c5868',
 	credentials: require('./credentials.json')
 });
 const auth = app.auth();

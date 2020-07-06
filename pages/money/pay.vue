@@ -291,10 +291,10 @@ export default {
 		width: 100upx;
 		font-size: 52upx;
 	}
-	.icon-erjiye-yucunkuan {
+	.icon-balance {
 		color: #fe8e2e;
 	}
-	.icon-weixinzhifu {
+	.icon-wxpay {
 		color: #36cb59;
 	}
 	.icon-alipay {

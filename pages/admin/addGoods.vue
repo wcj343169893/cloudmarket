@@ -42,7 +42,7 @@
 						<mix-list-select
 							title="*支持规格"
 							:options="getSkuNames"
-							:defaultOption="yuding.sku_ids"
+							:defaultOptions="yuding.sku_ids"
 							selectType="checkbox"
 							@eventClick="changeYudingSku"
 						></mix-list-select>
@@ -332,20 +332,6 @@ export default {
 		},
 		yudingFinalPaymentEndTimeEndDate() {
 			return this.getDefaultEndDate();
-		}
-	},
-	watch: {
-		yuding: {
-			handler: (val, oldval) => {
-				console.log('watch yuding', val);
-			},
-			deep: true //对象内部的属性监听，也叫深度监听
-			//immediate: true
-		},
-		'yuding.beginTime': val => {
-			console.log('watch beginTime', val);
-			//结束预定日期必须大于开始预定日期
-			//this.yudingEndTimeStartDate = dateFormat(val,"yyyy-MM-dd");
 		}
 	},
 	onLoad(options) {
@@ -715,7 +701,8 @@ export default {
 		//预定开始时间
 		bindYudingBeginDateChange(e) {
 			console.log(e);
-			let time = new Date(e.detail.value + ' 00:00:00').getTime();
+			//https://www.cnblogs.com/qiu-Ann/p/11358803.html,IOS系统只识别 " / " 不识别 " - ". 
+			let time = new Date(e.detail.value.replace(/-/g, '/') + ' 00:00:00').getTime();
 			//https://www.jianshu.com/p/991a5e979709  解决set之后页面不刷新问题
 			this.$set(this.yuding, 'beginTime', time);
 		},
@@ -723,19 +710,19 @@ export default {
 		bindYudingEndDateChange(e) {
 			console.log(e);
 			//这一天的最后一秒
-			let time = new Date(e.detail.value + ' 23:59:59').getTime();
+			let time = new Date(e.detail.value.replace(/-/g, '/') + ' 23:59:59').getTime();
 			this.$set(this.yuding, 'endTime', time);
 		}, //付尾款开始时间
 		bindYudingFinalPaymentBeginDateChange(e) {
 			console.log(e);
-			let time = new Date(e.detail.value + ' 00:00:00').getTime();
+			let time = new Date(e.detail.value.replace(/-/g, '/') + ' 00:00:00').getTime();
 			this.$set(this.yuding, 'finalPaymentBeginTime', time);
 		},
 		//付尾款结束时间
 		bindYudingFinalPaymentEndDateChange(e) {
 			console.log(e);
 			//这一天的最后一秒
-			let time = new Date(e.detail.value + ' 23:59:59').getTime();
+			let time = new Date(e.detail.value.replace(/-/g, '/') + ' 23:59:59').getTime();
 			this.$set(this.yuding, 'finalPaymentEndTime', time);
 		},
 		changeYudingSku(e) {

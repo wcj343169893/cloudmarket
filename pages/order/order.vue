@@ -12,7 +12,7 @@
 					<!-- 订单列表 -->
 					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 						<view class="i-top b-b">
-							<text class="time">{{ item.created | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
+							<text class="time">{{ item.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
 						</view>
 						<view class="">
@@ -29,8 +29,8 @@
 									</view>
 									<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 									<view class="attr-box">
-										<text>{{item.priceTitle}}:</text>
-										<text class="price">{{ goodsItem.price }}</text>
+										<text>{{ item.priceTitle }}:</text>
+										<text class="price">{{ goodsItem.price | toFixed }}</text>
 										<text>数量:</text>
 										<text>{{ goodsItem.amount }}</text>
 									</view>
@@ -38,18 +38,18 @@
 							</view>
 						</view>
 						<view class="price-box">
-							<text>共</text>	
+							<text>共</text>
 							<text class="num">{{ item.cartCount }}</text>
-							<text>件商品</text>	
+							<text>件商品</text>
 							<block v-if="item.yuding">
 								<text class="m-l">定金</text>
-								<text class="price warning">{{ item.yuding.price }}</text>
+								<text class="price warning">{{ item.yuding.price | toFixed }}</text>
 								<text class="m-l">尾款</text>
-								<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
+								<text class="price warning">{{ item.yuding.finishPaymentPrice | toFixed }}</text>
 							</block>
 							<block v-else>
-								<text class="m-l">实付款</text>	
-								<text class="price warning">{{ item.totalMoney }}</text>
+								<text class="m-l">实付款</text>
+								<text class="price warning">{{ item.totalMoney  | toFixed}}</text>
 							</block>
 						</view>
 						<!-- 已取消 -->
@@ -58,19 +58,28 @@
 						<view class="action-box b-t" v-if="item.state == 0">
 							<button class="action-btn" @click.stop="cancelOrderConfirm(item, index)">取消订单</button>
 							<block v-if="item.yuding">
-								<button class="action-btn recom" v-if="item.yuding.state == 0" @click.stop="payOrder(item)">去支付定金<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
-								<button class="action-btn recom" v-else-if="item.yuding.finalpay == 1" @click.stop="payOrder(item)">去支付尾款<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
+								<button class="action-btn recom" v-if="item.yuding.state == 0" @click.stop="payOrder(item)">
+									去支付定金
+									<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text>
+								</button>
+								<button class="action-btn recom" v-else-if="item.yuding.finalpay == 1" @click.stop="payOrder(item)">
+									去支付尾款
+									<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text>
+								</button>
 								<button class="action-btn disabled" v-else>去支付尾款</button>
 							</block>
-							<button class="action-btn recom" v-else @click.stop="payOrder(item)">去支付<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text></button>
+							<button class="action-btn recom" v-else @click.stop="payOrder(item)">
+								去支付
+								<text class="time">{{ item.payment.minute }}:{{ item.payment.second }}</text>
+							</button>
 						</view>
 						<!-- 已付款 -->
 						<block v-if="item.state == 1">
-							<view class="action-box b-t" ><button class="action-btn" @click.stop="pusheDelivery(item)">催发货</button></view>
+							<view class="action-box b-t"><button class="action-btn" @click.stop="pusheDelivery(item)">催发货</button></view>
 						</block>
 						<!-- 已发货 -->
 						<block v-if="item.state == 2">
-							<view class="action-box b-t" ><button class="action-btn" @click.stop="confirmOrder(item)">确定收货</button></view>
+							<view class="action-box b-t"><button class="action-btn" @click.stop="confirmOrder(item)">确定收货</button></view>
 						</block>
 						<!-- 已收货，待评价 -->
 						<view class="action-box b-t" v-if="item.state == 3">
@@ -88,7 +97,7 @@
 
 <script>
 import { orders } from '@/common/request.js';
-import { navToPayOrder, navToOrderGoodsList, miaoshaCountDown, navToOrderDetail,getOrderStateExp,clearCountDownTimer } from '@/common/functions.js';
+import { navToPayOrder, navToOrderGoodsList, miaoshaCountDown, navToOrderDetail, getOrderStateExp, clearCountDownTimer } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -151,8 +160,8 @@ export default {
 		}
 		// #endif
 	},
-	onUnload(){
-		console.log("order onUnload")
+	onUnload() {
+		console.log('order onUnload');
 		//关闭秒杀定时器
 		clearCountDownTimer();
 	},
@@ -184,21 +193,21 @@ export default {
 				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
-						console.log(ele)
+						console.log(ele);
 						let isPay = true;
-						ele.priceTitle="单价";
+						ele.priceTitle = '单价';
 						//预定yuding  item.yuding.finalpay
 						ele.showPayMoney = ele.totalMoney;
-						if(ele.yuding){
-							ele.priceTitle="预售价";
+						if (ele.yuding) {
+							ele.priceTitle = '预售价';
 							ele.yuding.finalpay = 0;
 							//定金
 							ele.showPayMoney = ele.yuding.price;
-							if(ele.yuding.finalPaymentBeginTime < time){
+							if (ele.yuding.finalPaymentBeginTime < time) {
 								ele.yuding.finalpay = 1;
 								//尾款
 								ele.showPayMoney = ele.yuding.finishPaymentPrice;
-							}else if(ele.yuding.state == 1){
+							} else if (ele.yuding.state == 1) {
 								//已支付定金，但是未开始支付尾款间隙
 								isPay = false;
 							}
@@ -206,8 +215,8 @@ export default {
 						//支付倒计时
 						if (ele.state == 0 && isPay) {
 							ele.payment = {
-								id:ele._id,
-								subId:index+"",
+								id: ele._id,
+								subId: index + '',
 								startTime: time,
 								minute: '00',
 								second: '00'
@@ -225,7 +234,7 @@ export default {
 									type: 'cancel',
 									style: 'auto'
 								}).then(res => {
-									console.log("自动取消订单")
+									console.log('自动取消订单');
 								});
 							}
 						}
@@ -270,7 +279,7 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id, item.showPayMoney,"order");
+			navToPayOrder(item._id, item.showPayMoney, 'order');
 		},
 		//删除订单
 		deleteOrder(item) {
@@ -322,45 +331,48 @@ export default {
 				id: item._id,
 				type: 'cancel',
 				style: style
-			}).then(res => {
-				console.log(res);
-				this.$api.msg("取消订单申请提交成功!")
-				//刷新当前列表数据 
-				//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
-				//更改所有订单的状态
-				this.navList.map((tabs, index) => {
-					tabs.orderList.map((ord, index2) => {
-						if (ord._id == item._id) {
-							//ord.state= -1;
-							if (index == 1) {
-								//如果在待付款列表，则直接删除掉
-								this.navList[index].orderList.splice(index2, 1);
-							} else {
-								let state = -1;
-								ord.state = state;
-								//状态名称 Object.assign
-								let { stateTip, stateTipColor } = this.orderStateExp(ord);
-								Object.assign(this.navList[index].orderList[index2], {
-									state,
-									stateTip,
-									stateTipColor
-								});
+			}).then(
+				res => {
+					console.log(res);
+					this.$api.msg('取消订单申请提交成功!');
+					//刷新当前列表数据
+					//this.navList[this.tabCurrentIndex].orderList[index].state = -1;
+					//更改所有订单的状态
+					this.navList.map((tabs, index) => {
+						tabs.orderList.map((ord, index2) => {
+							if (ord._id == item._id) {
+								//ord.state= -1;
+								if (index == 1) {
+									//如果在待付款列表，则直接删除掉
+									this.navList[index].orderList.splice(index2, 1);
+								} else {
+									let state = -1;
+									ord.state = state;
+									//状态名称 Object.assign
+									let { stateTip, stateTipColor } = this.orderStateExp(ord);
+									Object.assign(this.navList[index].orderList[index2], {
+										state,
+										stateTip,
+										stateTipColor
+									});
+								}
 							}
-						}
+						});
 					});
-				});
-			},err=>{
-				console.log("取消订单失败");
-				this.$api.msg("取消订单申请提交失败!")
-				//重新刷新页面数据
-				this.refreshList();
-			});
+				},
+				err => {
+					console.log('取消订单失败');
+					this.$api.msg('取消订单申请提交失败!');
+					//重新刷新页面数据
+					this.refreshList();
+				}
+			);
 		},
-		pusheDelivery(ele){
-			this.$api.msg("已发送消息给商家,请耐心等待");
+		pusheDelivery(ele) {
+			this.$api.msg('已发送消息给商家,请耐心等待');
 		},
 		//确定收货
-		confirmOrder(ele){
+		confirmOrder(ele) {
 			uni.showModal({
 				content: '是否确认收到货物？',
 				success: res => {
@@ -372,8 +384,8 @@ export default {
 							//重新刷新页面
 							ele.state = 3;
 							let { stateTip, stateTipColor } = this.orderStateExp(ele);
-							ele.stateTip=stateTip;
-							ele.stateTipColor =stateTipColor;
+							ele.stateTip = stateTip;
+							ele.stateTipColor = stateTipColor;
 							//this.loadData();
 						});
 					}
@@ -389,23 +401,23 @@ export default {
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail
-			if(item.state == 0){
-				if(item.yuding){
+			if (item.state == 0) {
+				if (item.yuding) {
 					//支付定金或者支付尾款
-					if(item.yuding.state == 0 || item.yuding.finalpay == 1){
-						console.log(item.yuding)
+					if (item.yuding.state == 0 || item.yuding.finalpay == 1) {
+						console.log(item.yuding);
 						this.payOrder(item);
 						return;
 					}
-				}else{
+				} else {
 					this.payOrder(item);
 					return;
-				} 
+				}
 			}
 			uni.setStorage({
-				key:"orderDetail",
-				data:item
-			})
+				key: 'orderDetail',
+				data: item
+			});
 			navToOrderDetail(item._id);
 		},
 		showGoods(item) {
@@ -588,7 +600,7 @@ page,
 		color: $font-color-dark;
 		background: #fff;
 		border-radius: 100px;
-		.time{
+		.time {
 			width: 72upx;
 			display: inline-block;
 		}
@@ -599,7 +611,7 @@ page,
 			background: $base-color;
 			color: #fff;
 		}
-		&.disabled{
+		&.disabled {
 			background-color: $font-color-disabled;
 			color: #fff;
 		}
@@ -737,7 +749,7 @@ page,
 		opacity: 0.2;
 	}
 }
-.m-l{
+.m-l {
 	margin-left: 20upx;
 }
 </style>

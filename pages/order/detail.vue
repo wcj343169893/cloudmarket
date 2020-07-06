@@ -17,7 +17,7 @@
 				<!-- 付尾款提示 ,只有付了定金，才能进入此详细页面-->
 				<view class="" v-if="info.yuding && info.state == 0">
 					<text>应付尾款：</text>
-					<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+					<text class="price">{{ info.yuding.finishPaymentPrice  | toFixed}}</text>
 					<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 				</view>
 				<!-- 退款进度 -->
@@ -84,7 +84,7 @@
 							<view class="desc weui-flex__item">
 								<view class="weui-flex">
 									<text class="title weui-flex__item">{{ item.title }}</text>
-									<text class="price warning">{{ item.price * item.amount }}</text>
+									<text class="price warning">{{ (item.price * item.amount) | toFixed }}</text>
 								</view>
 								<view class="">
 									<text>{{ item.subName }}</text>
@@ -92,7 +92,7 @@
 								<view class=" prices">
 									<view class="">
 										<text>{{ priceTitle }}:</text>
-										<text class="price">{{ item.price }}</text>
+										<text class="price">{{ item.price | toFixed}}</text>
 										<text>数量:</text>
 										<text>{{ item.amount }}</text>
 									</view>
@@ -130,25 +130,25 @@
 
 					<view class="weui-flex">
 						<text>阶段2：尾款</text>
-						<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+						<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
 					</view>
 				</block>
 				<block v-else>
 					<view class="weui-flex">
 						<text class="">商品金额</text>
-						<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+						<text class="price">{{ (info.totalMoney + info.totalDiscount ) | toFixed}}</text>
 					</view>
 				</block>
 				<view class="weui-flex">
 					<view class=""><text>优惠金额</text></view>
 					<view class="">
 						<text>-</text>
-						<text class="price">{{ info.totalDiscount }}</text>
+						<text class="price">{{ info.totalDiscount | toFixed }}</text>
 					</view>
 				</view>
 				<view class="weui-flex">
 					<view class=""><text>实付金额</text></view>
-					<text class="price warning">{{ info.totalMoney }}</text>
+					<text class="price warning">{{ info.totalMoney | toFixed }}</text>
 				</view>
 			</view>
 		</view>

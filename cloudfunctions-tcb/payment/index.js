@@ -6,8 +6,8 @@
 const uniPay = require('unipay');
 const db = uniCloud.database();
 const {
-	getAlipayConfig,
-	getWxPayConfig
+	getPaymentNotifyUrl,
+	getPaymentConfig
 } = require('configs');
 
 const {
@@ -32,7 +32,6 @@ exports.main = async (event, context) => {
 		};
 	}
 	let uid = +customUserId;
-	let uniPayIns;
 	let id = event.id; //订单号,需要获取订单金额
 	let order = await db.collection("orders").doc(id).field({
 		id: 1,
@@ -95,26 +94,21 @@ exports.main = async (event, context) => {
 		deduction:100
 	} */
 	console.log(event);
-	// 支付结果通知地址,经过测试，http地址也能作为通知地址
-	// let domain = "https://cloud-market-000.service.tcloudbase.com/";
-	let domain = "http://api.baidu.org/";
-	let notifyUrl = "";
-	if (event.provider == "wxpay") {
-		notifyUrl = domain + "notify/wxpay"
-		uniPayIns = uniPay.initWeixin(getWxPayConfig());
-	} else if (event.provider == "alipay") {
-		notifyUrl = domain + "notify/alipay"
-		uniPayIns = uniPay.initAlipay(getAlipayConfig())
-	} else if (event.provider == "balance") {
+	if (event.provider == "balance") {
 		//直接扣费
 		return await balancePay(uid, order, id);
-	} else {
+	}
+	let config = getPaymentConfig(context.PLATFORM, event.provider);
+	if (!config) {
+		//其他支付
 		return {
 			code: 404,
 			message: "支付方式错误"
 		}
 	}
-
+	let uniPayIns = uniPay[config["uniPay"]](config);
+	// 支付结果通知地址,经过测试，http地址也能作为通知地址
+	let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, event.provider);
 	let orderInfo = await uniPayIns.getOrderInfo({
 		openid: event.openid ? event.openid : "", //支付宝小程序、微信小程序必填
 		subject: order.body, // 微信支付时不可填写此项

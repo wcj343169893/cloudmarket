@@ -224,7 +224,7 @@ exports.main = async (event, context) => {
 				//总定金
 				yuding.price = yuding.price * ele.amount;
 				//总尾款=预订价-定金
-				yuding.finishPaymentPrice = ele.price * ele.amount - yuding.price;
+				yuding.finishPaymentPrice = (ele.price * ele.amount - yuding.price).toFixed(2);
 
 				data.yuding = yuding;
 				//购物车总金额=总定金+总尾款

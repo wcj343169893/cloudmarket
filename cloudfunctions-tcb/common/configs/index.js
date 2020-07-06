@@ -1,26 +1,31 @@
 /**
- * 获得支付宝配置
+ * 支付配置文件
  */
-const getAlipayConfig = function() {
-	return {
-		appId: '1234567890',
-		privateKey: 'MI.........................sp',
-		alipayPublicKey: 'MIIBIjA................B', // 使用支付时需传递此值做返回结果验签
-	};
+const config = require("./config.json")
+/**
+ * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 
+ * @param {String} platform 运行平台，返回值为 mp-weixin、app-plus等
+ * @param {String} provider 服务供应商：alipay，wxpay 
+ * @tutorial https://uniapp.dcloud.io/api/plugins/provider?id=getprovider
+ * @tutorial https://uniapp.dcloud.io/uniCloud/http
+ */
+const getPaymentNotifyUrl = (platform, provider) => {
+	//notify-floder为自定义目录，防止被攻击,建议修改成无意义的字符串，然后在后台云函数那里填写
+	//设置URL的PATH部分:/market_notify，在请求的时候，
+	//支付宝app回调地址为:http://www.mydomain.com/market_notify/app-plus/alipay 
+	return [config["domain"], config["notify-floder"], platform, provider].join("/");
 }
 /**
- * 获得微信支付配置
+ * 返回支付配置
  */
-const getWxPayConfig = function() {
-	return {
-		appId: 'wxa8e200000000000',
-		mchId: '15295600000',
-		key: 'aaaaaaaaaaaaaaa',
-		//pfx: fs.readFileSync('/path/to/your/pfxfile'), // p12文件路径，使用微信退款时需要，需要注意的是阿里云目前不支持以相对路径读取文件，请使用绝对路径的形式
-	};
+const getPaymentConfig = (platform, provider) => {
+	if (!provider) {
+		return config[platform]["payment"];
+	}
+	return config[platform]["payment"][provider];
 }
 
 module.exports = {
-	getAlipayConfig,
-	getWxPayConfig
+	getPaymentConfig,
+	getPaymentNotifyUrl
 }

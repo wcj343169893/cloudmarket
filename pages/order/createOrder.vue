@@ -55,7 +55,7 @@
 						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 						<view class="attr-box">
 							<text>{{ priceTitle }}:</text>
-							<text class="price">{{ goodsItem.originPrice > 0 ? goodsItem.originPrice : goodsItem.price }}</text>
+							<text class="price">{{ (goodsItem.originPrice > 0 ? goodsItem.originPrice : goodsItem.price) | toFixed }}</text>
 							<text>数量:</text>
 							<text>{{ goodsItem.amount }}</text>
 						</view>
@@ -84,13 +84,13 @@
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">阶段1：定金</text>
 					<text class="cell-tip">
-						<text class="price">{{ yuding.price }}</text>
+						<text class="price">{{ yuding.price | toFixed }}</text>
 					</text>
 				</view>
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">阶段2：尾款</text>
 					<text class="cell-tip">
-						<text class="price">{{ yuding.finishPaymentPrice }}</text>
+						<text class="price">{{ yuding.finishPaymentPrice | toFixed }}</text>
 					</text>
 				</view>
 			</block>
@@ -125,7 +125,7 @@
 		<!-- 底部 -->
 		<view class="footer">
 			<view class="price-content">
-				<text>{{totalTitle}}</text>
+				<text>{{ totalTitle }}</text>
 				<text class="price warning">{{ totalMoney }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
@@ -200,7 +200,7 @@ export default {
 				return;
 			}
 			settlement({
-				id: this.shopId,//对此变量依赖性太强
+				id: this.shopId, //对此变量依赖性太强
 				addressid: this.location.id,
 				stationId: this.stationId,
 				...this.ids
@@ -223,7 +223,7 @@ export default {
 					this.yuding = res.yuding;
 					if (this.yuding) {
 						this.priceTitle = '预售价';
-						this.totalTitle = "定金";
+						this.totalTitle = '定金';
 						this.totalMoney = this.yuding.price;
 					}
 					if (this.stockNotEnough.length > 0) {

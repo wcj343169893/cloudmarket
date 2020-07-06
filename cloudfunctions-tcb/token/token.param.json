@@ -1,4 +1,0 @@
-// 本文件中的json内容将在云函数【上传并运行】时作为参数传给云函数。
-{	"uid":10000,
-	"token":"VCjcvvEcigSXPwgECoOcemoxtOZuRgPR5Y4x3yBgssJHYWRLF/6qbKUhgxS3WwvrHe1NtWuyVIEB4ZWmmbXA+yNbociDw/y7gPf/1569x/iAdUmxVtnfkVZGXQ8Kj/2D5LifxTsYxmbckfZbAuZuZEXj6sv2yPCzENKV8XN6xLA="
-}

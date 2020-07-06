@@ -13,7 +13,7 @@
 					<checkbox-group name="" @change="checkSpecsType">
 						<label class="mix-list-cell b-b" v-for="(item, index) in options" :key="index">
 							<text class="cell-tit clamp">{{ item }}</text>
-							<checkbox :value="index + ''" :checked="checkedList.indexOf(index) != -1" />
+							<checkbox :value="index + ''" :checked="isChecked(index)" />
 						</label>
 					</checkbox-group>
 					<view class="specsTitlesBtn">
@@ -32,7 +32,10 @@ export default {
 		return {
 			tips2: '',
 			def: '',
-			checkedList: []
+			//多选已选择
+			checkedList: [],
+			//多选临时选择
+			checkedListTmp: []
 		};
 	},
 	props: {
@@ -57,8 +60,12 @@ export default {
 			default: {}
 		},
 		defaultOption: {
-			type: String || Array,
+			type: String,
 			default: ''
+		},
+		defaultOptions: {
+			type: Array,
+			default: () => []
 		},
 		//单选还是多选
 		selectType: {
@@ -72,6 +79,9 @@ export default {
 			this.tips2 = this.options[this.defaultOption];
 			this.def = this.defaultOption;
 			//console.log(this.tips2)
+		} else if (this.defaultOptions) {
+			this.$set(this, 'checkedList', this.defaultOptions);
+			this.setTips2();
 		} else {
 			this.tips2 = this.tips;
 		}
@@ -88,24 +98,34 @@ export default {
 			this.$refs['showSpecsType'].close();
 		},
 		checkSpecsType(n) {
-			this.checkedList = n.detail.value;
+			this.checkedListTmp = n.detail.value;
 		},
 		canceled() {
 			this.$refs['showSpecsType'].close();
 		},
 		next() {
+			this.checkedList = this.checkedListTmp;
+			this.setTips2();
+			this.$emit('eventClick', this.checkedList);
+			this.$refs['showSpecsType'].close();
+		},
+		isChecked(index) {
+			if (this.checkedList.length > 0) {
+				return this.checkedList.indexOf(+index) != -1;
+			}
+			return false;
+		},
+		setTips2() {
 			let checkedName = [];
-			this.checkedList.forEach(e=>{
+			this.checkedList.forEach(e => {
 				checkedName.push(this.options[e]);
-			})
-			if(checkedName.length >0){
-				this.tips2 = checkedName.join(",");
-			}else{
+			});
+			if (checkedName.length > 0) {
+				this.tips2 = checkedName.join(',');
+			} else {
 				//默认提示
 				this.tips2 = this.tips;
 			}
-			this.$emit('eventClick', this.checkedList);
-			this.$refs['showSpecsType'].close();
 		}
 	}
 };

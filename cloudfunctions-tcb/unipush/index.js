@@ -1,16 +1,14 @@
 'use strict';
-const appId = '';
-const appkey = '';
-const appSecret = '';
-const packageName = '';
-const mastersecret = '';
+const appId = 'N5wQHWUKnv8POOTCnGtFU8';
+const appkey = 't318VmJI2p84991gl61VY4';
+const appSecret = 'wF9SqqDvk3ANRMoMtrbPm1';
+const packageName = 'com.gengyun';
+const mastersecret = 'udzQP1wLwWAQEeozJgYZ15';
 const auth = uniCloud.auth();
 const db = uniCloud.database();
 const cmd = db.command;
 let authtoken;
-/**
- * 推送功能，测试ok，但是还需要优化
- */
+
 exports.main = async (event, context) => {
 	let type = event.type;
 	let {
@@ -131,7 +129,7 @@ const notice = async function(clientID, data) {
 					"big_style": 1,
 					"big_image_url": "大图地址",
 					"logo": "logo.png",
-					"logourl": "https://xxxxxxxxx.tcb.qcloud.la/user/images/2020/5/27/1590561024816.jpg",
+					"logourl": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/5/27/1590561024816.jpg",
 					"is_ring": true,
 					"is_vibrate": true,
 					"is_clearable": true,

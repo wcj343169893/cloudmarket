@@ -1,6 +1,6 @@
 'use strict';
 const db = uniCloud.database();
-const auth = uniCloud.auth()
+const auth = uniCloud.auth();
 /**
  * 收货地址处理，增加，修改，删除，列表
  */
