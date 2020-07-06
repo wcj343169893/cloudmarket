@@ -1,3 +1,5 @@
 // 本文件中的json内容将在云函数【上传并运行】时作为参数传给云函数。
-{	"token":"A3-v7l3nambShQoBlgZKkaNXzZANqjU5amYZ-HlbbCW4n6QV792McGeiT-Yce6sYmzLciPWlyh0H20MQwDIGkgJrhqNjpVSgUeUhKBwPVx8jjuUQLx8E93xNEhAL4P7NbTBBzDpsg13XHtaLRsE5CLmu8uDye86MqTmCwIJvE3U3d17fM5fZCM1KxjHYpllPiTp3GSOCqo_t4JJuhVxxEKLaw"
+{
+	"channel":"token",
+	"mobile":"13996045444",	"token":"D1xbKlvRR+WwP4uhGoBwuTZ6l92aBH/ZDkUyzm3SAw9b/mPRjziVof/5AGcJfzUijPKHX0A88CZieo0wHdJ9HtpEo7yhXsqg0J27J1wS9qu90W1ZqlyvYh5qv9p3fCko20lresW51MkcTMoD3DWTAQu0ekbdWYaBOyiQMi2mLkY="
 }
