@@ -29,7 +29,7 @@ const list = async (data, context) => {
 		"imgs": 1, //轮播图
 		"score": 1,
 		"price": 1,
-		"isSold":1,
+		"isSold": 1,
 		"default_checked_sku_id": 1, //多规格默认选中
 		"isSold": 1,
 		"skuname": 1,
@@ -275,6 +275,17 @@ const soldIn = async (data) => {
 	return res;
 }
 /**
+ * 查询一条商品信息，本店铺
+ */
+const info = async (data) => {
+	console.log("goods info",data);
+	return await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	});
+}
+
+/**
  * 检查商品是否存在
  */
 const checkExists = async (_id, shopid) => {
@@ -288,9 +299,7 @@ const checkExists = async (_id, shopid) => {
  * 根据条件，查询一条商品
  */
 const getOneGoods = async (conditions) => {
-	const goods = await goodsCollection.where({
-		conditions
-	}).get();
+	const goods = await goodsCollection.where(conditions).get();
 	if (goods.data.length == 0) {
 		return false;
 	}
@@ -304,5 +313,6 @@ module.exports = {
 	revert: reverts,
 	clean: cleans,
 	soldOut: soldOut,
-	soldIn: soldIn
+	soldIn: soldIn,
+	info: info
 }

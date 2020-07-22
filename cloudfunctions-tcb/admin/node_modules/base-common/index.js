@@ -149,15 +149,17 @@ const updateShopStatistics = async (shopid, data) => {
 /**
  * 生成唯一id
  * @param {Object} key
+ * @param {Int} inc 递增数字,默认1
  */
-const genIdentityId = async function(key) {
+const genIdentityId = async function(key, inc) {
 	//生成用户id----开始-----
 	const identity = db.collection("identity");
 	//获取用户id
+	inc = inc ? +inc : 1;
 	let res = await identity.where({
 		"key": key
 	}).update({
-		value: cmd.inc(1)
+		value: cmd.inc(inc)
 	});
 	//立马查询出来，可能值是对的
 	let res2 = await identity.where({

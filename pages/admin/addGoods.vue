@@ -112,7 +112,7 @@
 		</block>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
-			<view class="cell-content"></view>
+			<view class="cell-tip">尺寸800*800</view>
 			<text class="yticon icon-you"></text>
 		</view>
 		<view class="imgs b-b">
@@ -122,7 +122,7 @@
 		</view>
 		<view class="mix-list-cell imgs" @click="uploadImgs">
 			<text class="cell-tit clamp">轮播图</text>
-			<view class="cell-content"></view>
+			<view class="cell-tip">尺寸800*800</view>
 			<text class="yticon icon-you"></text>
 		</view>
 		<view class="imgs b-b">
@@ -130,11 +130,18 @@
 				<view v-for="(item, index) in imgsPreview" :key="index" class="h-list-image"><image :src="item" mode="aspectFill"></image></view>
 			</scroll-view>
 		</view>
-		<view class="mix-list-cell b-b" @click="uploadDescImgs">
+		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
-			<view class="cell-content"></view>
+			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
 			<text class="yticon icon-you"></text>
 		</view>
+		<view class="imgs">
+			<view v-for="(item, index) in descriptionImgs" :key="index" class="d-list-image">
+				<text class="number">{{index+1}}</text>
+				<image :src="item" mode="aspectFill"></image>
+			</view>
+		</view>
+		
 		<view class="tmp submit"></view>
 		<view class="specsTitlesBtn submit"><button class="add-btn" @click="save">提交</button></view>
 		<uni-popup ref="showCateory" type="bottom">
@@ -252,6 +259,7 @@ export default {
 			skuname: [],
 			skunameTmp: [],
 			description: '',
+			descriptionImgs:[],//图文
 			id: false,
 			imgs: [],
 			imgsPreview: [],
@@ -376,7 +384,18 @@ export default {
 				} else {
 					this.saleType = 'normal';
 				}
-				console.log(data);
+				this.categoryIdTmp=this.categories;
+				//异步查询商品详细
+				goodsAdmin("info",{
+					_id:this._id,
+					shopid:this.shopid
+				}).then(res=>{
+					this.description = res.description;
+					if(res.description.trim()!=""){
+						//多图
+						this.descriptionImgs =  res.description.split(";")
+					}
+				})
 			}
 			//默认单规格信息为主信息
 			this.loadSkuInfo();
@@ -594,8 +613,19 @@ export default {
 				}
 			);
 		},
-		//多图新开一页
-		uploadDescImgs() {},
+		//多图
+		uploadDescImgs() {
+			uploadFiles(
+				'goods_imgs',
+				20,
+				srcs => {
+					this.descriptionImgs = srcs;
+				},
+				srcs => {
+					this.description = srcs.join(";");
+				}
+			);
+		},
 		//提交到服务器
 		save() {
 			if (this.submiting) {
@@ -926,6 +956,15 @@ export default {
 		border-radius: 10px;
 		position: relative;
 		background-color: #ffffff;
+	}
+}
+.d-list-image{
+	text-align: center;
+	position: relative;
+	.number{
+		position: absolute;
+		left: 10rpx;
+		top: 0;
 	}
 }
 </style>

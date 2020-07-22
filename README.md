@@ -44,8 +44,7 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 ![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/apk_qrcode.png)
 
 #### H5预览
-![h5预览](http://market.cjblog.org/preview.png)   
-只是预览 app效果，如果实际运用，还需要很多特殊优化，例如顶部导航  
+可以发布，但是免费资源有限，不再开放    
 
 #### 微信小程序体验（个人认证，无法上架）
 ![体验码](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/tiyan.jpg)  
@@ -53,6 +52,10 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.10
+* 增加限时抢购购物车，增加云函数判断商品限购
+* 增加商品图文介绍,图片地址之间用分号隔开，在商品详情页面，再分割显示
+* 增加商品分类管理
 #### 1.0.3.9
 * 合并功能有关联的云函数，例如goods，login，
 * 优化支付流程，payInfo，payment，paymentNotify

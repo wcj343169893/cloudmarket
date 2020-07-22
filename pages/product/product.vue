@@ -293,6 +293,14 @@ export default {
 			for (let field in item) {
 				this[field] = item[field];
 			}
+			if(this.description.trim()!=""){
+				let desMap=[];
+				this.description.split(";").map(ele=>{
+					desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`)
+				});
+				console.log(desMap);
+				this.description = desMap.join("");
+			}
 			this.imgs.unshift(item.src);
 			if (item.hasSku) {
 				//多规格
