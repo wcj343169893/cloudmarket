@@ -5,7 +5,7 @@
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="src"></image></view>
 				<view class="info-box">
-					<text class="username">{{ name }}({{shopid}})</text>
+					<text class="username">{{ name }}({{ shopid }})</text>
 					<view class="desc">
 						<view class="">
 							<text>{{ address }}</text>
@@ -18,57 +18,57 @@
 			</view>
 		</view>
 		<view class="cover-container">
-			<view class="header">
-				<text>订单管理</text>
-			</view>
+			<view class="header"><text>订单管理</text></view>
 			<!-- 订单信息统计 -->
 			<view class="order-section m-t">
-				<view class="order-item" v-for="(item,index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" v-for="(item, index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
-					<text>{{item.name}}</text>
+					<text>{{ item.name }}</text>
 				</view>
 			</view>
 			<!-- 商品信息统计，今日销售最高的4件商品 -->
 			<view class="header">
 				<text>商品管理</text>
 				<view @click="navToAddGoods()" class="more">
-					<text >新增</text>
+					<text>新增</text>
 					<text class="yticon icon-you"></text>
 				</view>
 			</view>
 			<view class="order-section m-t">
-				<view class="order-item" v-for="(item,index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover" :hover-stay-time="50">
-					<text class="number">{{item.number}}</text>
-					<text>{{item.name}}</text>
+				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover" :hover-stay-time="50">
+					<text class="number">{{ item.number }}</text>
+					<text>{{ item.name }}</text>
 				</view>
 			</view>
-			<!-- 今日收入统计 -->
 		</view>
+		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/category')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/category')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/category')" tips="首页滚动广告图"></mix-list-cell>
 	</view>
 </template>
 
 <script>
 import { mapMutations } from 'vuex';
 import { shopAdmin } from '@/common/admin_request.js';
-import { getOrderTypes,getGoodsTypes } from '@/common/functions.js';
+import { getOrderTypes, getGoodsTypes } from '@/common/functions.js';
 export default {
 	data() {
 		return {
 			shopid: 0,
-			isSetTitle:false,
+			isSetTitle: false,
 			name: '',
 			src: '/static/store-face.png',
 			banner: '/static/banner.jpg',
 			address: '',
 			notice: '',
 			orderTypes: [],
-			goodsTypes:[]
+			goodsTypes: []
 		};
 	},
 	onLoad(options) {
 		this.shopid = +options.shopid;
 		this.setAdminShop(this.shopid);
-		console.log(this.shopid,options)
+		console.log(this.shopid, options);
 		if (options.second) {
 			//进一步跳转到下一页页面
 			uni.navigateTo({
@@ -92,8 +92,7 @@ export default {
 			if (info) {
 				this.buildShopInfo(info);
 			}
-			shopAdmin("info",{
-			}).then(
+			shopAdmin('info', {}).then(
 				res => {
 					this.buildShopInfo(res);
 				},
@@ -104,7 +103,7 @@ export default {
 			);
 		},
 		buildShopInfo(data) {
-			if(!this.isSetTitle && data.name){
+			if (!this.isSetTitle && data.name) {
 				uni.setNavigationBarTitle({
 					title: data.name
 				});
@@ -116,36 +115,36 @@ export default {
 			let sum = 0;
 			//1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 			let types = getOrderTypes();
-			this.orderTypes=[];
+			this.orderTypes = [];
 			for (let k in types) {
 				let number = 0;
 				if (this.order[k]) {
 					sum += number = this.order[k];
 				}
 				this.orderTypes.push({
-					name:types[k],
-					state:k,
-					number:number
-				})
+					name: types[k],
+					state: k,
+					number: number
+				});
 			}
 			this.orderTypes.unshift({
-				name:"全部",
-				state:"all",
-				number:sum
-			})
+				name: '全部',
+				state: 'all',
+				number: sum
+			});
 			this.order['sum'] = sum;
 			//商品类型,"online"在售,"miaosha"秒杀,"yuding"预售,"baokuan"爆款,"shouqin"即将售罄
 			let goodsTypes = getGoodsTypes();
-			this.goodsTypes=[];
+			this.goodsTypes = [];
 			for (let gk in goodsTypes) {
 				let number = 0;
 				if (this.goods && this.goods[gk]) {
 					number = this.goods[gk];
 				}
 				this.goodsTypes.push({
-					name:goodsTypes[gk],
-					state:gk,
-					number:number
+					name: goodsTypes[gk],
+					state: gk,
+					number: number
 				});
 			}
 		},
@@ -158,9 +157,9 @@ export default {
 			this.navTo(`/pages/admin/goodsList?state=${item.state}&shopid=${shopid}`);
 		},
 		//新增商品
-		navToAddGoods(){
+		navToAddGoods() {
 			uni.navigateTo({
-				url:"/pages/admin/addGoods?isnew=true"
+				url: '/pages/admin/addGoods?isnew=true'
 			});
 		},
 		navTo(url) {
@@ -172,7 +171,7 @@ export default {
 			});
 		},
 		//重新加载数据
-		refreshList(){
+		refreshList() {
 			this.loadData();
 		}
 	}
@@ -290,12 +289,12 @@ export default {
 .m-t {
 	margin-top: 20upx;
 }
-.header{
+.header {
 	margin-top: 20upx;
 	font-size: $font-lg;
 	display: flex;
 	justify-content: space-between;
-	.more{
+	.more {
 		font-size: $font-base;
 		color: $font-color-base;
 	}

@@ -1,8 +1,13 @@
 'use strict';
 const db = uniCloud.database();
+const cmd = db.command;
 const auth = uniCloud.auth();
+const goodsCollection = db.collection("goods");
+const cartCollection = db.collection("carts");
 exports.main = async (event, context) => {
-	let {customUserId} = await auth.getUserInfo();
+	let {
+		customUserId
+	} = await auth.getUserInfo();
 	if (customUserId < 1) {
 		return {
 			"code": 401,
@@ -22,7 +27,6 @@ exports.main = async (event, context) => {
 	//获取所有collection名称
 	//let collectionNames = getCollectionNames(event);
 	let data = [];
-	let cartCollection = db.collection("carts");
 
 	const cmd = db.command;
 	if (opt == "list") {
@@ -65,7 +69,7 @@ exports.main = async (event, context) => {
 				ids.push(carts.data[i].goods_id);
 			}
 			//查询实时商品信息
-			let goods = await db.collection("goods").where({
+			let goods = await goodsCollection.where({
 				shopid: shopid,
 				id: cmd.in(ids)
 			}).field({
@@ -188,6 +192,8 @@ exports.main = async (event, context) => {
 		event.price = +event.price;
 		//默认选中
 		event.checked = event.checked ? true : false;
+		//如果存在，是否累加
+		event.appends = event.appends ? true : false;
 		if (event.goods_id < 1) {
 			return {
 				"code": 404,
@@ -195,6 +201,12 @@ exports.main = async (event, context) => {
 			};
 		}
 		data = await saveCartInfo(event, shopid, uid, new Date());
+		if (!data) {
+			return {
+				"code": 404,
+				"message": event.message,
+			};
+		}
 	}
 	return {
 		"code": 200,
@@ -204,7 +216,13 @@ exports.main = async (event, context) => {
 };
 
 const saveCartInfo = async function(ele, shopid, uid, date) {
-	let cartCollection = db.collection("carts");
+	let goodsInfo = await getGoodsById(ele.goods_id);
+	if (!goodsInfo) {
+		return {
+			"code": 404,
+			"message": "商品不存在",
+		};
+	}
 	//查询是否存在，否则新增
 	let cartsOld = await cartCollection.where({
 		shopid: shopid,
@@ -215,6 +233,26 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		amount: 1,
 		checked: 1
 	}).limit(1).get();
+	if (ele.amount < 1) {
+		//删除购物车
+		return await cartCollection.doc(cartsOld.data[0]._id).remove();
+	}
+	let amount = ele.amount;
+	if (cartsOld.data.length > 0 && ele.appends) {
+		amount += cartsOld.data[0].amount;
+	}
+	//判断库存是否充足
+	if (goodsInfo.stock < amount) {
+		ele.message = "商品库存不足";
+		return false;
+	}
+	//判断是否限购，只有秒杀商品指定型号,支持没有型号情况
+	if (goodsInfo.miaosha && (!ele.sku_id || ele.sku_id == goodsInfo.miaosha.sku_id) && goodsInfo.miaosha.limit > 0 &&
+		goodsInfo.miaosha.limit <
+		amount) {
+		ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
+		return false;
+	}
 	if (cartsOld.data.length == 0) {
 		//新增
 		return await cartCollection.add({
@@ -232,13 +270,10 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 			modified: date.toISOString(),
 			created: date.toISOString()
 		});
-	} else if (ele.amount < 1) {
-		//删除购物车
-		return await cartCollection.doc(cartsOld.data[0]._id).remove();
 	} else {
 		//更新
 		return await cartCollection.doc(cartsOld.data[0]._id).update({
-			amount: ele.amount,
+			amount: ele.appends ? cmd.inc(ele.amount) : ele.amount,
 			checked: ele.checked,
 			src: ele.src ? ele.src : "",
 			price: ele.price ? +ele.price : 0,
@@ -246,4 +281,22 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 			modified: date.toISOString()
 		});
 	}
+}
+
+const getGoodsById = async function(id) {
+	const goodsInfo = await goodsCollection.where({
+		id: id,
+		isSold: 1
+	}).field({
+		id: 1,
+		title: 1,
+		src: 1,
+		price: 1,
+		stock: 1,
+		miaosha: 1
+	}).limit(1).get();
+	if (goodsInfo.data.length == 0) {
+		return false;
+	}
+	return goodsInfo.data[0];
 }

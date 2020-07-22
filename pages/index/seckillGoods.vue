@@ -14,6 +14,7 @@
 						<view class="">
 							<text class="price">{{ item.price }}</text>
 							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item,item.miaosha.sku_id)"></text>
 						</view>
 					</view>
 				</view>
@@ -25,8 +26,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getMiaosha } from '@/common/request.js';
-import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber } from '@/common/functions.js';
+import { getMiaosha,editCart } from '@/common/request.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber,showLoginDialog } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -37,7 +38,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['shopId'])
+		...mapState(['hasLogin',  'stationId', 'shopId'])
 	},
 	onLoad() {
 		this.loadCache();
@@ -80,6 +81,33 @@ export default {
 				}
 			);
 		},
+		//更新购物车数据到服务器
+		saveCartAmount(item,sku_id) {
+			let number = 1;
+			if(!this.hasLogin){
+				showLoginDialog();
+				return;
+			}
+			console.log(item)
+			editCart({
+				id: this.shopId,
+				stationId: this.stationId,
+				goods_id: item.id,
+				sku_id: +sku_id,
+				price: item.price,
+				title: item.title,
+				appends:1,
+				subTitle: item.subName,
+				src: item.src,
+				checked: 1,
+				amount: number
+			}).then(res => {
+				console.log(res);
+				this.$api.msg("加入成功",2000,true,"success")
+			},err=>{
+				this.$api.msg(err.message);
+			});
+		},
 		navToGoodsPage(item) {
 			navToGoodsItemPage(item);
 		}
@@ -118,5 +146,11 @@ page {
 	font-size: $font-sm;
 	color: $font-color-disabled;
 	padding: 20upx;
+}
+.sku_btn {
+	color: $btn-color-light;
+	font-size: $font-lg;
+	line-height: 40rpx;
+	float: right;
 }
 </style>

@@ -626,6 +626,7 @@ const checkAppUpdate = (isForce,callback) => {
 				version: plus.runtime.version
 			},
 			success(e) {
+				uni.hideLoading();
 				if (e.result.isUpdate) {
 					//需要更新
 					// 提醒用户更新

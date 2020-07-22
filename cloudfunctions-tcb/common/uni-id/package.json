@@ -1,0 +1,10 @@
+{
+  "name": "uni-id",
+  "version": "1.0.8",
+  "description": "uni-id for uniCloud",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0"
+}

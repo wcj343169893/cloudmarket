@@ -1,6 +1,6 @@
 /* const client = uniCloud.init({
 	provider: 'tencent',
-	spaceId: 'xxxxxxxx',
+	spaceId: 'cloud-market-3c5868',
 	debugFunction: false
 }); */
 const client = uniCloud;

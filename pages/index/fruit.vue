@@ -4,7 +4,7 @@
 		<!-- #ifdef MP -->
 		<view class="mp-search-box">
 			<navigator url="chooseAddress" class="yticon icon-icon-test"></navigator>
-			<input class="ser-input" type="text" :value="searchWord" disabled @click="navToSearch"/>
+			<input class="ser-input" type="text" :value="searchWord" disabled @click="navToSearch" />
 		</view>
 		<!-- #endif -->
 		<!-- 头部轮播 -->
@@ -70,6 +70,7 @@
 								<view class="">
 									<text class="price">{{ item.price }}</text>
 									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+									<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item,item.miaosha.sku_id)"></text>
 								</view>
 							</view>
 						</view>
@@ -106,8 +107,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { getHomeFruitData } from '@/common/request.js';
-import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber, navToDocPage, navToDocWebPage } from '@/common/functions.js';
+import { getHomeFruitData, editCart } from '@/common/request.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber, navToDocPage, navToDocWebPage,showLoginDialog } from '@/common/functions.js';
+
 export default {
 	data() {
 		return {
@@ -186,7 +188,7 @@ export default {
 						//#ifndef MP
 						//this.address = res.address.poiName;
 						//百度地图
-						this.address = res.address.street+res.address.streetNum;
+						this.address = res.address.street + res.address.streetNum;
 						//#endif
 						this.setUserLocation({
 							id: false,
@@ -309,7 +311,7 @@ export default {
 				url: '/pages/index/seckillGoods'
 			});
 		},
-		navToSearch(){
+		navToSearch() {
 			uni.navigateTo({
 				url: `/pages/search/search?key=${this.searchWord}`
 			});
@@ -331,19 +333,46 @@ export default {
 			setTimeout(() => {
 				this.getDefaultSearchWord();
 			}, 10000);
+		},
+		//更新购物车数据到服务器
+		saveCartAmount(item,sku_id) {
+			let number = 1;
+			if(!this.hasLogin){
+				showLoginDialog();
+				return;
+			}
+			console.log(item)
+			editCart({
+				id: this.shopId,
+				stationId: this.stationId,
+				goods_id: item.id,
+				sku_id: +sku_id,
+				price: item.price,
+				title: item.title,
+				appends:1,
+				subTitle: item.subName,
+				src: item.src,
+				checked: 1,
+				amount: number
+			}).then(res => {
+				console.log(res);
+				this.$api.msg("加入成功",2000,true,"success")
+			},err=>{
+				this.$api.msg(err.message);
+			});
 		}
 	},
 	// #ifndef MP
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
 		//this.$api.msg('点击了搜索框');
-		console.log("onNavigationBarSearchInputClicked")
-		this.navToSearch()
+		console.log('onNavigationBarSearchInputClicked');
+		this.navToSearch();
 	},
 	//点击导航栏 buttons 时触发
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
-		console.log("onNavigationBarButtonTap")
+		console.log('onNavigationBarButtonTap');
 		//this.$api.msg(index+" ");
 		if (index === 0) {
 			uni.navigateTo({
@@ -379,9 +408,9 @@ export default {
 	padding: 0 20upx;
 	display: flex;
 	align-items: center;
-	.icon-icon-test{
+	.icon-icon-test {
 		font-size: 48upx;
-		color: #FFFFFF;
+		color: #ffffff;
 		margin-right: 7upx;
 	}
 	.ser-input {
@@ -628,5 +657,11 @@ page {
 	font-size: $font-sm;
 	color: $font-color-disabled;
 	padding: 20upx;
+}
+.sku_btn {
+	color: $btn-color-light;
+	font-size: $font-lg;
+	line-height: 40rpx;
+	float: right;
 }
 </style>

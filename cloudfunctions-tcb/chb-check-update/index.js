@@ -25,7 +25,7 @@ exports.main = async (event, context) => {
 		const collection = db.collection('uni-app-version')
 		const record = await collection.where({
 			appid: appid
-		}).limit(1).get()
+		}).orderBy("created", "desc").limit(1).get()
 
 		if (record && record.data && record.data.length > 0) {
 			let versionInDb = record.data[0][os]
@@ -55,11 +55,15 @@ exports.main = async (event, context) => {
 function compare(v1, v2) {
 	let arr_1 = v1.split('.')
 	let arr_2 = v2.split('.')
+	//如果增加了小版本，也需要升级
+	if (arr_1.length > arr_2.length) {
+		return 1;
+	}
 	for (var i = 0; i < arr_1.length; i++) {
 		if (parseInt(arr_1[i]) > parseInt(arr_2[i])) {
-			return 1
+			return 1;
 		} else if (parseInt(arr_1[i]) < parseInt(arr_2[i])) {
-			return -1
+			return -1;
 		}
 	}
 	return 0

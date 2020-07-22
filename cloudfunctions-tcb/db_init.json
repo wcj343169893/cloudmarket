@@ -10313,7 +10313,7 @@
 			"hasManjian": 1,
 			"id": 123457
 		}],
-		"index": {
+		"index": [{
 			"IndexName": "index_lonlat",
 			"MgoKeySchema": {
 				"MgoIndexKeys": [{
@@ -10322,7 +10322,7 @@
 				}],
 				"MgoIsUnique": false
 			}
-		}
+		}]
 	},
 	"user_balance_logs": {
 		"data": [{

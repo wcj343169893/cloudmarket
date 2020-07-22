@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 地址 -->
-		<navigator v-if="addressData.uid" url="/pages/address/address?source=settlement" class="address-section">
+		<navigator v-if="addressData._id" url="/pages/address/address?source=settlement" class="address-section">
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
 				<view class="cen">

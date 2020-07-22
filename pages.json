@@ -413,6 +413,12 @@
 				"navigationBarTitleText": "多规格构造器"
 			}
         }
+        ,{
+            "path" : "pages/admin/category",
+            "style" : {
+				"navigationBarTitleText": "分类管理"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

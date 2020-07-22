@@ -270,6 +270,7 @@ export default {
 							number+=ct.amount;
 						}else{
 							ct["notice"] = "商品已下架";
+							ct['cartId'] = ct._id;
 							ct['cart'] = ct.amount;
 							ct["subName"] = ct.subTitle;
 							this.notEnoughCartList.push(ct);
@@ -494,6 +495,7 @@ export default {
 						let cartIds =this.notEnoughCartList.map(m => {
 							return m.cartId;
 						});
+						console.log(this.notEnoughCartList)
 						//批量取消选择
 						if (cartIds.length > 0) {
 							console.log("移除失效商品",cartIds);
