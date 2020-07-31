@@ -41,9 +41,9 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/category')" tips=""></mix-list-cell>
-		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/category')" tips=""></mix-list-cell>
-		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/category')" tips="首页滚动广告图"></mix-list-cell>
+		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/goods/miaosha/list')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 	</view>
 </template>
 
@@ -150,16 +150,16 @@ export default {
 		},
 		navToOrder(item) {
 			let shopid = this.shopid;
-			this.navTo(`/pages/admin/orderList?state=${item.state}&shopid=${shopid}`);
+			this.navTo(`/pages/admin/order/list?state=${item.state}&shopid=${shopid}`);
 		},
 		navToGoods(item) {
 			let shopid = this.shopid;
-			this.navTo(`/pages/admin/goodsList?state=${item.state}&shopid=${shopid}`);
+			this.navTo(`/pages/admin/goods/list?state=${item.state}&shopid=${shopid}`);
 		},
 		//新增商品
 		navToAddGoods() {
 			uni.navigateTo({
-				url: '/pages/admin/addGoods?isnew=true'
+				url: '/pages/admin/goods/add?isnew=true'
 			});
 		},
 		navTo(url) {

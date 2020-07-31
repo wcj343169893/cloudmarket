@@ -5,6 +5,7 @@ const modules = {
 	categories: require("./categories"),
 	orders: require("./orders"),
 	shops: require("./shops"),
+	ads: require("./ads"),
 };
 const auth = uniCloud.auth();
 /**

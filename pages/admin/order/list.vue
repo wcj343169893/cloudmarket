@@ -164,7 +164,7 @@ export default {
 				data: item
 			});
 			uni.navigateTo({
-				url: `/pages/admin/orderDetail?id=${item._id}`
+				url: `/pages/admin/order/detail?id=${item._id}`
 			});
 		},
 		//订单状态文字和颜色

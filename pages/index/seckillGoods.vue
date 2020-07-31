@@ -8,6 +8,9 @@
 						<view class="title clamp">
 							<text>{{ item.title }}</text>
 						</view>
+						<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
+							<text>{{item.subTitle}}</text>
+						</view>
 						<view class="tags">
 							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 						</view>
@@ -152,5 +155,10 @@ page {
 	font-size: $font-lg;
 	line-height: 40rpx;
 	float: right;
+}
+
+.sub-title{
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

@@ -1,8 +1,5 @@
 <template>
 	<view class="container">
-		<view class="">
-			<text>{{msg}}</text>
-		</view>
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
 		<view class="order-item" v-for="(item, goodsIndex) in goodsList" :key="goodsIndex">
 			<view class="goods-box-single" @click="preview(item)">
@@ -10,6 +7,9 @@
 				<view class="right">
 					<view class="">
 						<text class="title clamp">{{ item.title }}</text>
+					</view>
+					<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+						<text>{{ item.subTitle }}</text>
 					</view>
 					<view class="attr-box">
 						<text>单价:</text>
@@ -36,28 +36,11 @@
 						<text class="m-lr">至</text>
 						<text>{{ item.miaosha.endTime | dateFormat('MM-dd hh:mm') }}</text>
 					</view>
-					<view class="attr-box yuding" v-if="item.yuding" :class="[item.yuding.state]">
-						<text>预售:</text>
-						<view class="steps">
-							<view class="">
-								<text>定金:</text>
-								<text class="price">{{ item.yuding.price }}</text>
-								<text class="m-lr">抵扣:</text>
-								<text class="price">{{ item.yuding.deduction }}</text>
-							</view>
-							<view class="step1">
-								<text>付定金:</text>
-								<text>{{ item.yuding.beginTime | dateFormat('MM-dd hh:mm') }}</text>
-								<text class="m-lr">至</text>
-								<text>{{ item.yuding.endTime | dateFormat('MM-dd hh:mm') }}</text>
-							</view>
-							<view class="step1">
-								<text>交尾款:</text>
-								<text>{{ item.yuding.finalPaymentBeginTime | dateFormat('MM-dd hh:mm') }}</text>
-								<text class="m-lr">至</text>
-								<text>{{ item.yuding.finalPaymentEndTime | dateFormat('MM-dd hh:mm') }}</text>
-							</view>
-						</view>
+					<view class="attr-box miaosha ended" v-if="item.miaoshaBackUp">
+						<text>秒杀:</text>
+						<text>{{ item.miaoshaBackUp.beginTime | dateFormat('MM-dd hh:mm') }}</text>
+						<text class="m-lr">至</text>
+						<text>{{ item.miaoshaBackUp.endTime | dateFormat('MM-dd hh:mm') }}</text>
 					</view>
 					<view class="attr-box manjian" v-if="item.manjian">
 						<text>满减:</text>
@@ -72,7 +55,7 @@
 						</view>
 					</block>
 					<block v-if="item.deleteTime">
-						<view class="attr-box" >
+						<view class="attr-box">
 							<text>删除:</text>
 							<text>{{ item.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 							<text class="m-lr">操作员:</text>
@@ -81,20 +64,16 @@
 					</block>
 				</view>
 			</view>
-			<view class="action-box b-t" v-if="state=='delete'">
-				<button class="action-btn warning" @click.stop="cleanItem(item)">彻底删除</button>
-				<button class="action-btn recom" @click.stop="revertItem(item)">恢复售卖</button>
-			</view>
-			<view class="action-box b-t" v-else>
-				<button class="action-btn warning" @click.stop="deleteItem(item)">删除</button>
-				<button class="action-btn warning" v-if="item.isSold" @click.stop="soldOut(item)">下架</button>
-				<button class="action-btn recom" v-if="!item.isSold" @click.stop="soldIn(item)">上架</button>
-				<block v-if="item.miaosha"><button class="action-btn" @click.stop="stopMiaosha(item)">秒杀</button></block>
-				<block v-else-if="item.yuding"><button class="action-btn" @click.stop="yudingInfo(item)">预定</button></block>
-				<block v-if="item.manjian"><button class="action-btn" @click.stop="manjianInfo(item)">满减</button></block>
-				<!-- <block v-if="item.skuname"><button class="action-btn" @click.stop="skuInfo(item)">规格</button></block> -->
-				<button class="action-btn" @click.stop="preview(item)">预览</button>
-				<button class="action-btn recom" @click.stop="edit(item)">编辑</button>
+			<view class="action-box b-t">
+				<block v-if="item.miaosha">
+					<button class="action-btn warning" @click.stop="pause(item)">暂停</button>
+					<button class="action-btn error" @click.stop="canceled(item)">删除</button>
+					<button class="action-btn recom" @click.stop="edit(item, 1)">编辑</button>
+				</block>
+				<block v-else-if="item.miaoshaBackUp">
+					<button class="action-btn warning" @click.stop="restart(item)">开始</button>
+					<button class="action-btn recom" @click.stop="edit(item, 2)">编辑</button>
+				</block>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -102,33 +81,46 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { goodsAdmin } from '@/common/admin_request.js';
-import { navToGoodsItemPage, getGoodsTypes } from '@/common/functions.js';
+import { navToGoodsItemPage } from '@/common/functions.js';
 export default {
 	data() {
 		return {
-			state: '',
+			state: 'miaoshaAdmin',
+			redirect: false,
 			page: 0,
 			limit: 20,
 			loaded: false,
 			loadingType: 'more',
-			goodsList: [],
-			msg:""
+			goodsList: []
 		};
 	},
-	onLoad(options) {
-		this.state = options.state;
-		this.loadData();
-		//设置标题
-		this.setNavTitle();
+	onShow() {
+		this.redirect = false;
 	},
+	onLoad() {
+		this.loadData();
+	},
+	// #ifndef MP
+	//点击导航栏 buttons 时触发
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		console.log('onNavigationBarButtonTap');
+		//this.$api.msg(index+" ");
+		if (index === 0) {
+			uni.navigateTo({
+				url: `/pages/admin/goods/miaosha/add`
+			});
+		}
+	},
+	// #endif
 	//滑到底部加载更多
 	onReachBottom() {
 		if (this.loadingType != 'noMore') {
 			this.loadData();
 		}
 	},
+
 	methods: {
 		async loadData() {
 			this.loadingType = 'loading';
@@ -150,14 +142,6 @@ export default {
 								item.miaosha.state = 'started';
 							}
 						}
-						if (item.yuding) {
-							item.yuding.state = 'notstart';
-							if (item.yuding.finalPaymentEndTime < time) {
-								item.yuding.state = 'ended';
-							} else if (item.yuding.beginTime < time) {
-								item.yuding.state = 'started';
-							}
-						}
 					});
 					this.goodsList = this.goodsList.concat(res);
 					if (res.length < this.limit) {
@@ -176,117 +160,89 @@ export default {
 		},
 		//预览商品效果,打开前端显示页面
 		preview(item) {
-			navToGoodsItemPage(item,true);
+			navToGoodsItemPage(item, true);
 		},
-		//下架
-		soldOut(item) {
-			goodsAdmin('soldOut', {
+		restart(item) {
+			//重新开始秒杀
+			goodsAdmin('restartMiaosha', {
 				_id: item._id
-			}).then(res => {
-				item.isSold = 0;
-				this.$api.msg('下架成功');
-			});
+			}).then(
+				res => {
+					this.$api.msg('重启成功', 2000, true, 'success');
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1
+						});
+					}, 2500);
+				},
+				err => {
+					this.$api.msg(err.message);
+				}
+			);
 		},
-		//上架
-		soldIn(item) {
-			goodsAdmin('soldIn', {
+		pause(item) {
+			//暂停秒杀,移动秒杀到备份
+			goodsAdmin('pauseMiaosha', {
 				_id: item._id
-			}).then(res => {
-				item.isSold = 1;
-				this.$api.msg('上架成功');
-				//this.msg="上架成功"+item.title;
-			});
+			}).then(
+				res => {
+					this.$api.msg('暂停成功', 2000, true, 'success');
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1
+						});
+					}, 2500);
+				},
+				err => {
+					this.$api.msg(err.message);
+				}
+			);
 		},
-		//恢复数据到生产环境
-		revertItem(item){
+		canceled(item) {
 			uni.showModal({
-				content: '是否确定恢复到售卖场？',
+				content: '是否确定删除秒杀信息,删除后无法恢复,商品原信息不影响。',
 				success: res => {
 					if (res.confirm) {
-						goodsAdmin('revert', {
+						//清理秒杀
+						goodsAdmin('cancelMiaosha', {
 							_id: item._id
 						}).then(
 							res => {
-								this.$api.msg('恢复成功');
+								this.$api.msg('删除成功', 2000, true, 'success');
 								setTimeout(() => {
-									this.refreshList();
-								}, 1500);
+									uni.navigateBack({
+										delta: 1
+									});
+								}, 2500);
 							},
 							err => {
-								this.$api.msg('恢复失败');
+								this.$api.msg(err.message);
 							}
 						);
 					}
 				}
 			});
 		},
-		//彻底删除，找不回来了
-		cleanItem(item){
-			uni.showModal({
-				content: '是否确定清理，清理后无法找回？',
-				success: res => {
-					if (res.confirm) {
-						goodsAdmin('clean', {
-							_id: item._id
-						}).then(
-							res => {
-								this.$api.msg('清理成功');
-								setTimeout(() => {
-									this.refreshList();
-								}, 1500);
-							},
-							err => {
-								this.$api.msg('清理失败');
-							}
-						);
-					}
-				}
-			});
-		},
-		//删除
-		deleteItem(item) {
-			uni.showModal({
-				content: '是否确定删除？',
-				success: res => {
-					if (res.confirm) {
-						goodsAdmin('delete', {
-							_id: item._id
-						}).then(
-							res => {
-								this.$api.msg('删除成功');
-								setTimeout(() => {
-									this.refreshList();
-								}, 1500);
-							},
-							err => {
-								this.$api.msg('删除失败');
-							}
-						);
-					}
-				}
-			});
-		},
-		//编辑
-		edit(item) {
+		edit(item, type) {
+			if (this.redirect) {
+				return false;
+			}
+			this.redirect = true;
 			uni.setStorage({
-				key: 'adminEditGoods',
+				key: 'goodsMiaoshaEdit',
 				data: item,
 				success: () => {
+					//编辑秒杀信息
 					uni.navigateTo({
-						url: './addGoods'
+						url: `/pages/admin/goods/miaosha/add?id=${item._id}&type=${type}`
 					});
 				}
 			});
 		},
-		setNavTitle() {
-			let types = getGoodsTypes();
-			uni.setNavigationBarTitle({
-				title: types[this.state]
-			});
-		},
-		//重新刷新页面数据
-		refreshList() {
+		refreshList(data,type) {
 			this.page = 0;
+			this.loaded = false;
+			this.loadingType = 'more';
 			this.goodsList = [];
 			this.loadData();
 		}
@@ -392,6 +348,10 @@ page,
 			background-color: $uni-color-warning;
 			color: #fff;
 		}
+		&.error {
+			background-color: $uni-color-error;
+			color: #fff;
+		}
 	}
 	.skunames {
 		margin-right: 14upx;
@@ -408,5 +368,9 @@ page,
 	.steps {
 		flex: 1;
 	}
+}
+.sub-title {
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

@@ -2,7 +2,11 @@
 	<view class="container">
 		<view class="mix-list-cell b-b">
 			<text class="cell-tit clamp">*商品名称</text>
-			<input type="text" class="cell-content" v-model="title" placeholder="请输入商品名称" />
+			<input type="text" class="cell-content" maxlength="40" v-model="title" placeholder="请输入商品名称" />
+		</view>
+		<view class="mix-list-cell b-b">
+			<text class="cell-tit clamp">商品副标题</text>
+			<input type="text" class="cell-content" maxlength="30" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
@@ -60,7 +64,7 @@
 							<view class="uni-input" v-if="yuding.beginTime">{{ yuding.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
 							<view class="uni-input" v-else>选择日期</view>
 						</picker>
-						<text class="yticon icon-you"></text>
+						<text class="cell-more yticon icon-you"></text>
 					</view>
 					<view class="mix-list-cell b-b">
 						<text class="cell-tit clamp">*结束预定</text>
@@ -75,7 +79,7 @@
 							<view class="uni-input" v-if="yuding.endTime">{{ yuding.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
 							<view class="uni-input" v-else>选择日期</view>
 						</picker>
-						<text class="yticon icon-you"></text>
+						<text class="cell-more yticon icon-you"></text>
 					</view>
 					<view class="mix-list-cell b-b">
 						<text class="cell-tit clamp">*开始付尾款</text>
@@ -90,7 +94,7 @@
 							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
 							<view class="uni-input" v-else>选择日期</view>
 						</picker>
-						<text class="yticon icon-you"></text>
+						<text class="cell-more yticon icon-you"></text>
 					</view>
 					<view class="mix-list-cell">
 						<text class="cell-tit clamp">*结束付尾款</text>
@@ -105,15 +109,30 @@
 							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
 							<view class="uni-input" v-else>选择日期</view>
 						</picker>
-						<text class="yticon icon-you"></text>
+						<text class="cell-more yticon icon-you"></text>
 					</view>
 				</view>
 			</view>
 		</block>
+		<view class="mix-list-cell b-b">
+			<text class="cell-tit clamp">配送</text>
+			<view class="cell-content content-right">
+				<checkbox-group name="delivery_tags" @change="changeDeliveryTags">
+					<label class="m-r">
+						<checkbox value="iceNeed" />
+						<text>加冰</text>
+					</label>
+					<label>
+						<checkbox value="package" />
+						<text>独立包装</text>
+					</label>
+				</checkbox-group>
+			</view>
+		</view>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
 			<view class="cell-tip">尺寸800*800</view>
-			<text class="yticon icon-you"></text>
+			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="imgs b-b">
 			<view class="h-list" v-if="srcPreview && srcPreview != ''">
@@ -123,7 +142,7 @@
 		<view class="mix-list-cell imgs" @click="uploadImgs">
 			<text class="cell-tit clamp">轮播图</text>
 			<view class="cell-tip">尺寸800*800</view>
-			<text class="yticon icon-you"></text>
+			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="imgs b-b">
 			<scroll-view scroll-x class="h-list" v-if="imgsPreview.length > 0">
@@ -133,15 +152,15 @@
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
-			<text class="yticon icon-you"></text>
+			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="imgs">
 			<view v-for="(item, index) in descriptionImgs" :key="index" class="d-list-image">
-				<text class="number">{{index+1}}</text>
+				<text class="number">{{ index + 1 }}</text>
 				<image :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
-		
+
 		<view class="tmp submit"></view>
 		<view class="specsTitlesBtn submit"><button class="add-btn" @click="save">提交</button></view>
 		<uni-popup ref="showCateory" type="bottom">
@@ -259,7 +278,8 @@ export default {
 			skuname: [],
 			skunameTmp: [],
 			description: '',
-			descriptionImgs:[],//图文
+			descriptionImgs: [], //图文
+			deliveryTags: [],
 			id: false,
 			imgs: [],
 			imgsPreview: [],
@@ -269,6 +289,7 @@ export default {
 			srcPreview: '',
 			stock: '',
 			title: '',
+			subTitle: '',
 			submiting: false,
 			saleType: 'normal',
 			saleTypes: {
@@ -384,18 +405,18 @@ export default {
 				} else {
 					this.saleType = 'normal';
 				}
-				this.categoryIdTmp=this.categories;
+				this.categoryIdTmp = this.categories;
 				//异步查询商品详细
-				goodsAdmin("info",{
-					_id:this._id,
-					shopid:this.shopid
-				}).then(res=>{
+				goodsAdmin('info', {
+					_id: this._id,
+					shopid: this.shopid
+				}).then(res => {
 					this.description = res.description;
-					if(res.description.trim()!=""){
+					if (res.description.trim() != '') {
 						//多图
-						this.descriptionImgs =  res.description.split(";")
+						this.descriptionImgs = res.description.split(';');
 					}
-				})
+				});
 			}
 			//默认单规格信息为主信息
 			this.loadSkuInfo();
@@ -556,7 +577,7 @@ export default {
 		},
 		navToSkuBuilder() {
 			uni.navigateTo({
-				url: '/pages/admin/goodsSkusBuilder',
+				url: '/pages/admin/goods/skusBuilder',
 				success: () => {
 					this.cancelSkuBuilder();
 				}
@@ -622,7 +643,7 @@ export default {
 					this.descriptionImgs = srcs;
 				},
 				srcs => {
-					this.description = srcs.join(";");
+					this.description = srcs.join(';');
 				}
 			);
 		},
@@ -642,7 +663,9 @@ export default {
 				price: this.price,
 				src: this.src,
 				stock: this.stock,
-				title: this.title
+				title: this.title,
+				subTitle: this.subTitle,
+				deliveryTags: this.deliveryTags
 			};
 			//多规格
 			if (this.skus && this.skus.length > 0) {
@@ -731,7 +754,7 @@ export default {
 		//预定开始时间
 		bindYudingBeginDateChange(e) {
 			console.log(e);
-			//https://www.cnblogs.com/qiu-Ann/p/11358803.html,IOS系统只识别 " / " 不识别 " - ". 
+			//https://www.cnblogs.com/qiu-Ann/p/11358803.html,IOS系统只识别 " / " 不识别 " - ".
 			let time = new Date(e.detail.value.replace(/-/g, '/') + ' 00:00:00').getTime();
 			//https://www.jianshu.com/p/991a5e979709  解决set之后页面不刷新问题
 			this.$set(this.yuding, 'beginTime', time);
@@ -762,6 +785,9 @@ export default {
 				this.yuding.sku_ids.push(+ele);
 			});
 			console.log('changeYudingSku', this.yuding.sku_ids);
+		},
+		changeDeliveryTags(e) {
+			this.deliveryTags = e.detail.value;
 		}
 	}
 };
@@ -808,6 +834,9 @@ export default {
 	.cell-content {
 		flex: 1;
 		font-size: $font-sm + 2upx;
+		&.content-right {
+			text-align: right;
+		}
 	}
 	.cell-tip {
 		flex: 1;
@@ -958,10 +987,10 @@ export default {
 		background-color: #ffffff;
 	}
 }
-.d-list-image{
+.d-list-image {
 	text-align: center;
 	position: relative;
-	.number{
+	.number {
 		position: absolute;
 		left: 10rpx;
 		top: 0;

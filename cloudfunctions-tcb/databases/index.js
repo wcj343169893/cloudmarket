@@ -15,11 +15,15 @@ exports.main = async (event, context) => {
 	let collections = conf["main"]["data"]["collections"];
 	let data = {};
 	for (let m of collections) {
-		data[m.name] = {};
+		data[m.name] = {
+			data: []
+		};
 		//限制条数
-		let limit = limits[m.name] ? limits[m.name] : 100;
-		let da = await db.collection(m.name).limit(limit).get();
-		data[m.name].data = da.data;
+		let limit = limits[m.name] != undefined ? limits[m.name] : 1;
+		if (limit > 0) {
+			let da = await db.collection(m.name).limit(limit).get();
+			data[m.name].data = da.data;
+		}
 		//设置索引
 		if (indexs[m.name]) {
 			data[m.name].index = indexs[m.name];
@@ -31,13 +35,22 @@ exports.main = async (event, context) => {
  * 限制导出条数
  */
 const limits = {
-	"users": 3
+	"users": 3,
+	"identity": 30,
+	"goods_visites": 0,
+	"goods_deletes": 0,
+	"goods_day_sales": 0,
+	"goods_shop_day_sales": 0,
+	"user_balance_logs": 0,
+	"carts": 0,
+	"orders": 0,
+	"order_refunds": 0
 }
 /**
- * 必备索引
+ * 必备索引,索引是数组
  */
 const indexs = {
-	"shops": {
+	"shops": [{
 		"IndexName": "index_lonlat",
 		"MgoKeySchema": {
 			"MgoIndexKeys": [{
@@ -46,5 +59,5 @@ const indexs = {
 			}],
 			"MgoIsUnique": false
 		}
-	}
+	}]
 }

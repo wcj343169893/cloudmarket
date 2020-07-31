@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="select-container">
 		<mix-list-cell :title="title" :tips="tips2" :border="border" :navigateType="navigateType" @eventClick="selectSpecsType()"></mix-list-cell>
 		<uni-popup ref="showSpecsType" type="center">
 			<view class="popup">
@@ -26,6 +26,7 @@
 	</view>
 </template>
 
+<!-- 与select-options的区别在于，这里可以单选或者多选，title为左边名称，tip为选中文字 -->
 <script>
 export default {
 	data() {
@@ -73,13 +74,20 @@ export default {
 			default: 'radio'
 		}
 	},
+	watch:{
+		defaultOption(val){
+			console.log("watch",val)
+		}
+	},
 	created() {
 		if (this.defaultOption != '') {
-			//console.log('this.defaultOption', this.defaultOption,this.options);
+			//单选默认值
+			console.log('this.defaultOption', this.defaultOption,this.options);
 			this.tips2 = this.options[this.defaultOption];
 			this.def = this.defaultOption;
 			//console.log(this.tips2)
 		} else if (this.defaultOptions) {
+			//多选，默认值
 			this.$set(this, 'checkedList', this.defaultOptions);
 			this.setTips2();
 		} else {
@@ -131,44 +139,46 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.mix-list-cell {
-	display: flex;
-	align-items: baseline;
-	padding: 20upx $page-row-spacing;
-	line-height: 60upx;
-	position: relative;
+<style lang="scss" scoped>
+.select-container {
+	.mix-list-cell {
+		display: flex;
+		align-items: baseline;
+		padding: 20upx $page-row-spacing;
+		line-height: 60upx;
+		position: relative;
 
-	&.cell-hover {
-		background: #fafafa;
+		&.cell-hover {
+			background: #fafafa;
+		}
+		.cell-tit {
+			font-size: $font-base;
+			color: $font-color-dark;
+			margin-right: 20upx;
+		}
 	}
-	.cell-tit {
-		font-size: $font-base;
-		color: $font-color-dark;
-		margin-right: 20upx;
+	.popup {
+		width: 700upx;
+		background: #ffffff;
+		border-radius: 12upx;
+		.cell-tit {
+			flex: 1;
+		}
 	}
-}
-.popup {
-	width: 700upx;
-	background: #ffffff;
-	border-radius: 12upx;
-	.cell-tit {
-		flex: 1;
-	}
-}
 
-.specsTitlesBtn {
-	display: flex;
-	padding: 30upx 30upx 30upx;
-	.add-btn {
-		flex: 1;
-		margin: 0 30upx;
-		font-size: $font-lg;
-		color: #fff;
-		background-color: $btn-color-light;
-		border-radius: 10upx;
-		&.cancel {
-			background-color: $btn-color-spec;
+	.specsTitlesBtn {
+		display: flex;
+		padding: 30upx 30upx 30upx;
+		.add-btn {
+			flex: 1;
+			margin: 0 30upx;
+			font-size: $font-lg;
+			color: #fff;
+			background-color: $btn-color-light;
+			border-radius: 10upx;
+			&.cancel {
+				background-color: $btn-color-spec;
+			}
 		}
 	}
 }

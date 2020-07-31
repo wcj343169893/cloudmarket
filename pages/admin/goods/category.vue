@@ -25,7 +25,7 @@
 			</view>
 		</view>
 
-		<view class="specsTitlesBtn">
+		<view class="specsTitlesBtn" v-if="isLoaded">
 			<button class="add-btn cancel" @click="addParent">增加主分类</button>
 			<button class="add-btn" @click="save">保存</button>
 		</view>
@@ -39,7 +39,9 @@ export default {
 	data() {
 		return {
 			categoriesData: [],
-			cateImgs:{}
+			cateImgs: {},
+			submit: false,
+			isLoaded: false
 		};
 	},
 	onLoad() {
@@ -51,14 +53,15 @@ export default {
 				res => {
 					//console.log(res);
 					//处理图片
-					res.map((ele,index)=>{
-						if(ele.src && ele.src !=""){
-							this.$set(this.cateImgs,index,ele.src);
-						}else{
-							this.$set(this.cateImgs,index,"/static/errorImage.jpg");
+					res.map((ele, index) => {
+						if (ele.src && ele.src != '') {
+							this.$set(this.cateImgs, index, ele.src);
+						} else {
+							this.$set(this.cateImgs, index, '/static/errorImage.jpg');
 						}
-					})
+					});
 					this.categoriesData = res;
+					this.isLoaded = true;
 				},
 				err => {
 					//没有分类
@@ -106,14 +109,18 @@ export default {
 				'category_icon',
 				1,
 				srcs => {
-					this.$set(this.cateImgs,index,srcs[0]);
+					this.$set(this.cateImgs, index, srcs[0]);
 				},
 				srcs => {
-					this.$set(this.categoriesData[index],"src",srcs[0]);
+					this.$set(this.categoriesData[index], 'src', srcs[0]);
 				}
 			);
 		},
 		save() {
+			if (this.submit) {
+				return;
+			}
+			this.submit = true;
 			//提取修改、新增，删除，由服务器处理
 			categoryAdmin('save', {
 				data: this.categoriesData
@@ -128,6 +135,7 @@ export default {
 				},
 				err => {
 					this.$api.msg(err.messsage || '保存失败');
+					this.submit = false;
 				}
 			);
 		}
@@ -138,7 +146,7 @@ export default {
 <style lang="scss">
 .container {
 	font-size: $font-base;
-	padding: 20rpx 30rpx;
+	padding: 20rpx 30rpx 110rpx;
 }
 .title {
 	font-size: $font-lg;
@@ -176,18 +184,24 @@ export default {
 }
 
 .specsTitlesBtn {
-	margin-top: 30upx;
-	padding-bottom: 30upx;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 20upx;
 	display: flex;
 	justify-content: space-between;
+	background: #fff;
 }
 .add-btn {
 	flex: 1;
 	margin: 0 30upx;
-	font-size: $font-lg;
+	font-size: $font-base;
 	color: #fff;
 	background-color: $btn-color-light;
 	border-radius: 10upx;
+	height: 60rpx;
+	line-height: 60rpx;
 	&.cancel {
 		background-color: $btn-color-spec;
 	}

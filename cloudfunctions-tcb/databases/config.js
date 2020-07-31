@@ -37,6 +37,10 @@ exports.main = {
 		}, {
 			"name": "shops"
 		}, {
+			"name": "uni-app-version"
+		}, {
+			"name": "uni-id-users"
+		}, {
 			"name": "user_balance_logs"
 		}, {
 			"name": "user_often_buy_shops"

@@ -21,7 +21,7 @@
 			</view>
 		</block>
 		<view class="sec-header"><text>当前地址</text></view>
-		<view class="list b-b" v-if="currentAddress.address.length > 0" @click="checkAddress(currentAddress)">
+		<view class="list b-b" v-if="currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
 			<view class="wrapper">
 				<view class="address-box">
 					<text class="address">{{ currentAddress.addressName }}</text>
@@ -167,11 +167,18 @@ export default {
 					};
 					//#endif
 					//#ifndef MP
+					let address="";
+					if(res.address.street){
+						address+=res.address.street;
+					}
+					if(res.address.streetNum){
+						address+=res.address.streetNum;
+					}
 					this.currentAddress = {
 						addressName: res.address.poiName,
 						latitude: res.latitude,
 						longitude: res.longitude,
-						address: res.address.street + '' + res.address.streetNum
+						address: address
 					};
 					//#endif
 					if (isMsg) {

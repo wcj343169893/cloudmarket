@@ -21,17 +21,18 @@ exports.main = async (event, context) => {
 	let nearestShops = await db.collection("shops").where({
 		lnglat: cmd.geoNear({
 			geometry: new db.Geo.Point(longitude, latitude),
-			minDistance: 0,
-			maxDistance: 10000,
+			// minDistance: 0,
+			// maxDistance: 10000,
 		})
 	}).field({
 		id: 1,
 		address: 1,
 		name: 1,
+		delivery:1,
 		notice: 1,
 		searchGoodsKeywords: 1,
 		src: 1
-	}).limit(5).get();
+	}).limit(1).get();
 	if (nearestShops.data.length > 0) {
 		shopid = nearestShops.data[0].id;
 		dataOut["shop"] = nearestShops.data[0];
@@ -69,6 +70,7 @@ exports.main = async (event, context) => {
 		id: 1,
 		src: 1,
 		title: 1,
+		subTitle:1,
 		miaosha: 1,
 		manjian: 1,
 		price: 1,

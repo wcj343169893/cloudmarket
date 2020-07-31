@@ -12,10 +12,12 @@
 		"id": 10002,
 		"name": "快餐"
 	}],
-	"deliveryMin": 20,
-	"deliveryMoney": 5,
-	"deliveryMoneyBefore": 0,
-	"deliveryTime": 30,
+	"delivery": {
+		"time":30,
+		"minPrice":20,
+		"money":5,
+		"freeMoney":20
+	},
 	"hasManjian": 1,
 	"id": 123457,
 	"latitude": 22.123456,

@@ -22,11 +22,11 @@ exports.main = async (event, context) => {
 	}
 	//30分钟送达
 	if((index & 2) == 2){
-		where["deliveryTime"] = db.command.lte(30);
+		where["delivery.time"] = db.command.lte(30);
 	}
 	//减配送费===>改为免配送费
 	if((index & 4) == 4){
-		where["deliveryMoney"] = 0;
+		where["delivery.money"] = 0;
 	}
 	//评分
 	if((index & 8) == 8){
@@ -43,9 +43,7 @@ exports.main = async (event, context) => {
 		src: 1,
 		score: 1,
 		monthSale: 1,
-		deliveryMin: 1,
-		deliveryMoney: 1,
-		deliveryMoneyBefore:1,
+		delivery:1,
 		perCapita: 1,
 		hasManjian: 1,
 		"manjians.name": 1
