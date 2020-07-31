@@ -11,6 +11,7 @@ exports.main = async (event, context, uid) => {
 	let fields = {
 		"id": 1,
 		"title": 1,
+		"subTitle":1,
 		"stock": 1,
 		"visite": 1,
 		"src": 1,

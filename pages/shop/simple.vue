@@ -73,8 +73,8 @@
 			</scroll-view>
 		</view>
 		<view class="cart" v-if="hasLogin && inited">
-			<view class="notice" v-if="shopinfo.deliveryMin > cartInfo.sumPrice">
-				<text>还差￥{{shopinfo.deliveryMin - cartInfo.sumPrice}}达到起送金额</text>
+			<view class="notice" v-if="shopinfo.delivery.minPrice > cartInfo.sumPrice">
+				<text>还差￥{{shopinfo.minPrice - cartInfo.sumPrice}}达到起送金额</text>
 			</view>
 			<view class="weui-flex">
 				<view class="btn btn_tel">
@@ -201,8 +201,7 @@ export default {
 				perCapita:0,
 				score:0,
 				monthSale:0,
-				deliveryMoney:0,
-				deliveryMin:0
+				delivery:{				}
 			},
 			inited:false,//是否获得了店铺数据
 			headHeight: 100,
@@ -684,7 +683,7 @@ export default {
 			let sumCount=0;
 			let sumPrice=0;
 			let sumDiscount=0;
-			let sumDeliveryMoney=this.shopinfo.deliveryMoney;
+			let sumDeliveryMoney=this.shopinfo.delivery.money;
 			this.cartInfo.dataList.forEach(goods=>{
 				//商品数量
 				sumCount+=goods.cart;
@@ -701,7 +700,7 @@ export default {
 			}
 			//如果店铺存在满减运费,则减少相应的运费
 			if(+this.shopinfo.deliveryMinusMoney > 0 && this.shopinfo.deliveryMinusMoney <= sumPrice){
-				let money = this.shopinfo.deliveryMoney - this.shopinfo.deliveryMinusMoney;
+				let money = this.shopinfo.delivery.money - this.shopinfo.deliveryMinusMoney;
 				sumDeliveryMoney = money > 0 ? money:0;
 			}
 			this.cartInfo.sumCart = sumCount;

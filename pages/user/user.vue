@@ -389,7 +389,7 @@ export default {
 				data:item
 			});
 			uni.navigateTo({
-				url:`/pages/admin/admin?shopid=${id}&second=orderList&state=${state}`
+				url:`/pages/admin/admin?shopid=${id}&second=order/list&state=${state}`
 			})
 			
 		}

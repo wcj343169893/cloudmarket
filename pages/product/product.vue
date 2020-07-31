@@ -34,6 +34,9 @@
 			</view>
 			<view class="introduce-section">
 				<text class="title">{{ title }}</text>
+				<view class="sub-title" v-if="subTitle && subTitle != ''">
+					<text>{{ subTitle }}</text>
+				</view>
 				<view class="info-box" v-if="!yuding.isBegin">
 					<text class="name">定金</text>
 					<view class="desc">
@@ -73,9 +76,12 @@
 			</block>
 			<view class="introduce-section">
 				<text class="title">{{ title }}</text>
+				<view class="sub-title" v-if="subTitle && subTitle != ''">
+					<text>{{ subTitle }}</text>
+				</view>
 				<view class="price-box">
 					<text class="price">{{ price }}</text>
-					<block v-if="originPrice > 0">
+					<block v-if="originPrice > 0 && originPrice > price">
 						<text class="price del">{{ originPrice }}</text>
 						<text class="coupon-tip">{{ zhekou }}折</text>
 					</block>
@@ -184,6 +190,7 @@ export default {
 			isSubmit: false,
 			default_sku_id: 0,
 			title: '',
+			subTitle: '',
 			stock: 0,
 			visite: 0,
 			isSold: 1,
@@ -271,6 +278,8 @@ export default {
 			//再次读取数据库，获得详细信息
 			getGoodsInfo({ id: this.id, preview: this.preview }).then(
 				item => {
+					this.miaosha = {};
+					this.yuding = false;
 					this.buildGoodsInfo(item);
 					this.canAddCart = true;
 				},
@@ -285,6 +294,7 @@ export default {
 			this.cartSumCount = getCartSumNumber();
 		},
 		buildGoodsInfo(item) {
+			console.log(item);
 			this.imgs = [];
 			updateGoodsTags(item, true);
 			this.checkYuding(item);
@@ -293,13 +303,12 @@ export default {
 			for (let field in item) {
 				this[field] = item[field];
 			}
-			if(this.description.trim()!=""){
-				let desMap=[];
-				this.description.split(";").map(ele=>{
-					desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`)
+			if (this.description.trim() != '') {
+				let desMap = [];
+				this.description.split(';').map(ele => {
+					desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`);
 				});
-				console.log(desMap);
-				this.description = desMap.join("");
+				this.description = desMap.join('');
 			}
 			this.imgs.unshift(item.src);
 			if (item.hasSku) {
@@ -341,7 +350,7 @@ export default {
 						} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
 							//秒杀默认选中
 							miaoshaSkuName = names;
-						}else if(this.default_checked_sku_id == sku.id ){
+						} else if (this.default_checked_sku_id == sku.id) {
 							//本身默认选中
 							miaoshaSkuName = names;
 						}
@@ -376,6 +385,7 @@ export default {
 			if (!item.yuding) {
 				return false;
 			}
+			console.log('有預定');
 			let time = new Date().getTime();
 			let isBegin = item.yuding.beginTime < time;
 			let statusSubName = '距预售开始';
@@ -504,14 +514,20 @@ export default {
 				price: this.price,
 				src: this.src,
 				checked: 1,
+				appends: 1,
 				amount: this.cart[this.sku_id]
-			}).then(res => {
-				this.$api.msg('加入成功', 1500, false, 'success');
-				console.log(res);
-				//这里算不准
-				//this.cartSumCount = incrCartNumber(1);
-				//this.cartSumCount = incrCartNumber(this.amount);
-			});
+			}).then(
+				res => {
+					this.$api.msg('加入成功', 1500, false, 'success');
+					console.log(res);
+					//这里算不准
+					//this.cartSumCount = incrCartNumber(1);
+					//this.cartSumCount = incrCartNumber(this.amount);
+				},
+				err => {
+					this.$api.msg(err.message || '加入失败');
+				}
+			);
 		},
 		bindChange(number, id) {
 			console.log(number, id);
@@ -1110,6 +1126,7 @@ page {
 	}
 	.sub-title {
 		font-size: 1.2em;
+		color: #fff;
 	}
 	.time-area {
 		width: 266upx;
@@ -1137,5 +1154,10 @@ page {
 }
 .icon-gouwuche {
 	font-size: 48upx;
+}
+
+.sub-title {
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

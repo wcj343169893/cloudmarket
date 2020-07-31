@@ -13,9 +13,8 @@
 					<text class="ops">月售{{ shopinfo.monthSale }}</text>
 				</view>
 				<view class="">
-					<text class="ops">起送￥{{ shopinfo.deliveryMin }}</text>
-					<text class="ops">配送￥{{ shopinfo.deliveryMoney }}</text>
-					<text v-if="shopinfo.deliveryMoneyBefore > 0" class="del ops">{{ shopinfo.deliveryMoneyBefore }}</text>
+					<text class="ops">起送￥{{ shopinfo.delivery.minPrice }}</text>
+					<text class="ops">配送￥{{ shopinfo.delivery.money }}</text>
 					<text class="ops">人均￥{{ shopinfo.perCapita }}</text>
 				</view>
 				<view class="youhui" v-if="shopinfo.hasManjian">

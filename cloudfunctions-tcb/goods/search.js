@@ -23,6 +23,7 @@ exports.main = async (event, context, uid) => {
 		id: 1,
 		src: 1,
 		title: 1,
+		subTitle:1,
 		miaosha: 1,
 		yuding: 1,
 		price: 1,

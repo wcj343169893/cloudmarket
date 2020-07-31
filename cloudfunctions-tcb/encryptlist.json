@@ -1,6 +1,6 @@
 {
 	"encryptFunctionList": [
-		"admin", "settlement", "payment", "paymentNotify"
+		"settlement", "payment", "paymentNotify"
 	],
 	"encryptModuleList": [
 		"unipay"

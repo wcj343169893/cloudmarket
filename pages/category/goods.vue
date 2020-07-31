@@ -25,6 +25,9 @@
 									<view class="" @click="navToGoodsPage(item)">
 										<text class="title">{{ item.title }}</text>
 									</view>
+									<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
+										<text>{{item.subTitle}}</text>
+									</view>
 									<view class="desc2">
 										<text>月售{{ item.monthlySale }}</text>
 										<text class="m-l">好评度{{ item.score * 100 }}%</text>
@@ -133,8 +136,7 @@ export default {
 				perCapita: 0,
 				score: 0,
 				monthSale: 0,
-				deliveryMoney: 0,
-				deliveryMin: 0
+				delivery:{}
 			},
 			inited: false, //是否获得了店铺数据
 			searchWord:"",
@@ -1050,5 +1052,9 @@ $box-height: 60upx;
 	height: 670upx;
 	background: #fff;
 	padding: 6upx;
+}
+.sub-title{
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

@@ -73,11 +73,11 @@ const getOrderTypes = function() {
 const getGoodsTypes = function() {
 	return {
 		online: '在售',
-		offline: '下架',
-		miaosha: '秒杀',
-		yuding: '预售',
 		baokuan: '爆款',
+		miaosha: '正在秒杀',
+		yuding: '预售',
 		shouqin: '即将售罄',
+		offline: '已下架',
 		delete: '已删除'
 	};
 }

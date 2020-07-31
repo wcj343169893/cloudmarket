@@ -28,14 +28,15 @@
 			</view>
 		</view>
 		<!-- 口号 -->
-		<view class="weui-flex kouhao m-t" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
+		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
 			<view class="kouhao_item">
 				<text class="yticon icon-chps"></text>
-				<text>最快2小时送达</text>
+				<text>最快{{shop.delivery.time}}分钟送达</text>
 			</view>
 			<view class="kouhao_item">
 				<text class="yticon icon-money"></text>
-				<text>0起送费0配送费</text>
+				<text>{{shop.delivery.minPrice}}元起送</text>
+				<text v-if="shop.delivery.money==0">{{shop.delivery.money}}配送费</text>
 			</view>
 			<view class="kouhao_item">
 				<text class="yticon icon-dunpai"></text>
@@ -64,6 +65,9 @@
 								<view class="title clamp">
 									<text>{{ item.title }}</text>
 								</view>
+								<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
+									<text>{{item.subTitle}}</text>
+								</view>
 								<view class="tags">
 									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
 								</view>
@@ -89,6 +93,9 @@
 					<view class="content">
 						<view class="title clamp">
 							<text>{{ item.title }}</text>
+						</view>
+						<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
+							<text>{{item.subTitle}}</text>
 						</view>
 						<view class="tags">
 							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
@@ -124,7 +131,8 @@ export default {
 			carouselList: [],
 			recommendCategoriesList: [],
 			miaoshaList: [],
-			newestList: []
+			newestList: [],
+			shop:{}
 		};
 	},
 	computed: {
@@ -186,9 +194,9 @@ export default {
 						console.log('获取定位完成', res);
 						this.address = '当前位置';
 						//#ifndef MP
-						//this.address = res.address.poiName;
+						this.address = res.address.poiName;
 						//百度地图
-						this.address = res.address.street + res.address.streetNum;
+						//this.address = res.address.street + res.address.streetNum;
 						//#endif
 						this.setUserLocation({
 							id: false,
@@ -254,6 +262,7 @@ export default {
 					updateCartNumber(res.cart);
 				}
 				if (res.shop) {
+					this.shop = res.shop;
 					this.searchKeyWords = res.shop.searchGoodsKeywords;
 					//同时写入缓存，在分类页面也能调用
 					uni.setStorage({
@@ -272,6 +281,7 @@ export default {
 		},
 		//广告轮播跳转
 		navToAdPage(item) {
+			console.log(item)
 			//https://ask.dcloud.net.cn/article/35621
 			let link = item.link;
 			//this.$api.msg(link)
@@ -663,5 +673,9 @@ page {
 	font-size: $font-lg;
 	line-height: 40rpx;
 	float: right;
+}
+.sub-title{
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

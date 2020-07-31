@@ -112,7 +112,7 @@
 			"style": {
 				"navigationBarTitleText": "登录/注册",
 				//"navigationStyle": "custom",
-				"app-plus": {	
+				"app-plus": {
 					//"titleNView": false,
 					"animationType": "slide-in-bottom"
 				}
@@ -343,22 +343,34 @@
 				}
 			}
 		}, {
-			"path": "pages/admin/goodsList",
+			"path": "pages/admin/goods/list",
 			"style": {
-				"navigationBarTitleText": "商品列表"
+				"navigationBarTitleText": "商品列表",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
 			}
 		}, {
-			"path": "pages/admin/addGoods",
+			"path": "pages/admin/goods/add",
 			"style": {
 				"navigationBarTitleText": "增加商品"
 			}
 		}, {
-			"path": "pages/admin/orderList",
+			"path": "pages/admin/order/list",
 			"style": {
 				"navigationBarTitleText": "订单列表"
 			}
 		}, {
-			"path": "pages/admin/orderDetail",
+			"path": "pages/admin/order/detail",
 			"style": {
 				"navigationBarTitleText": "订单详情",
 				"navigationStyle": "custom"
@@ -387,39 +399,86 @@
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
 							"placeholder": "",
-							"align":"left",
+							"align": "left",
 							"disabled": true,
 							"placeholderColor": "#787a7d"
 						}
 					}
 				}
 			}
-		}
-	    ,{
-            "path" : "pages/docs/docs",
-            "style" : {
+		}, {
+			"path": "pages/docs/docs",
+			"style": {
 				"navigationBarTitleText": ""
 			}
-        }
-        ,{
-            "path" : "pages/docs/web",
-            "style" : {
+		}, {
+			"path": "pages/docs/web",
+			"style": {
 				"navigationBarTitleText": ""
 			}
-        }
-        ,{
-            "path" : "pages/admin/goodsSkusBuilder",
-            "style" : {
+		}, {
+			"path": "pages/admin/goods/skusBuilder",
+			"style": {
 				"navigationBarTitleText": "多规格构造器"
 			}
-        }
-        ,{
-            "path" : "pages/admin/category",
-            "style" : {
+		}, {
+			"path": "pages/admin/goods/category",
+			"style": {
 				"navigationBarTitleText": "分类管理"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/admin/goods/miaosha/list",
+			"style": {
+				"navigationBarTitleText": "秒杀管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60a",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "pages/admin/ad/list",
+			"style": {
+				"navigationBarTitleText": "广告图管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+						{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60f",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}
+						]
+					}
+				}
+			}
+		}, {
+			"path": "pages/admin/ad/add",
+			"style": {
+				"navigationBarTitleText": "新增广告图"
+			}
+		}, {
+			"path": "pages/admin/goods/miaosha/add",
+			"style": {
+				"navigationBarTitleText": "新增秒杀"
+			}
+		}, {
+			"path": "pages/admin/docs/list",
+			"style": {
+				"navigationBarTitleText": "文档管理"
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

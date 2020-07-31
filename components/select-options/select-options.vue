@@ -1,6 +1,10 @@
 <template>
-	<view class="container">
-		<mix-list-cell :title="title" border="" :navigateType="navigateType" @eventClick="selectSpecsType()"></mix-list-cell>
+	<view class="select-container">
+		<view class="mix-list-cell" :class="border" @click="selectSpecsType" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit clamp">{{ title }}</text>
+			<text class="cell-more yticon" :class="typeList[navigateType]"></text>
+		</view>
+
 		<uni-popup ref="showSpecsType" type="center">
 			<view class="popup">
 				<radio-group name="" @change="changeSpecsType">
@@ -16,18 +20,29 @@
 	</view>
 </template>
 
+<!-- 与mix-list-select的区别在于，这里只有title,而且只有单选 -->
 <script>
 export default {
 	data() {
 		return {
 			title: '请选择',
-			def: ''
+			def: '',
+			typeList: {
+				left: 'icon-zuo',
+				right: 'icon-you',
+				up: 'icon-shang',
+				down: 'icon-xia'
+			}
 		};
 	},
 	props: {
 		navigateType: {
 			type: String,
 			default: 'down'
+		},
+		border: {
+			type: String,
+			default: ''
 		},
 		options: {
 			type: Object,
@@ -38,14 +53,23 @@ export default {
 			default: ''
 		}
 	},
-	created() {
-		if (this.defaultOption != '') {
-			console.log('this.defaultOption', this.defaultOption);
-			this.title = this.options[this.defaultOption];
-			this.def = this.defaultOption;
+	watch: {
+		options(op) {
+			console.log('select options changed');
+			this.setDefaultValue();
 		}
 	},
+	created() {
+		this.setDefaultValue();
+	},
 	methods: {
+		setDefaultValue() {
+			if (this.defaultOption != '') {
+				console.log('this.defaultOption', this.defaultOption);
+				this.title = this.options[this.defaultOption];
+				this.def = this.defaultOption;
+			}
+		},
 		selectSpecsType() {
 			this.$refs['showSpecsType'].open();
 		},
@@ -60,13 +84,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mix-list-cell {
 	display: flex;
 	align-items: baseline;
-	padding: 20upx $page-row-spacing;
+	padding: 20upx 10upx;
 	line-height: 60upx;
 	position: relative;
+	margin-right: 10upx;
 
 	&.cell-hover {
 		background: #fafafa;
@@ -74,7 +99,7 @@ export default {
 	.cell-tit {
 		font-size: $font-base;
 		color: $font-color-dark;
-		margin-right: 20upx;
+		margin-right: 10upx;
 	}
 }
 .popup {

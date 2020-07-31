@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="cell-content">
 		<view class="mix-list-cell" :class="border" @click="eventClick" hover-class="cell-hover" :hover-stay-time="50">
 			<text
 				v-if="icon"
@@ -72,48 +72,50 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.icon .mix-list-cell.b-b:after {
-	left: 90upx;
-}
-.mix-list-cell {
-	display: flex;
-	align-items: center;
-	padding: 20upx $page-row-spacing;
-	line-height: 60upx;
-	position: relative;
+<style lang="scss" scoped>
+.cell-content {
+	.icon .mix-list-cell.b-b:after {
+		left: 90upx;
+	}
+	.mix-list-cell {
+		display: flex;
+		align-items: center;
+		padding: 20upx $page-row-spacing;
+		line-height: 60upx;
+		position: relative;
 
-	&.cell-hover {
-		background: #fafafa;
-	}
-	&.b-b:after {
-		left: 30upx;
-	}
+		&.cell-hover {
+			background: #fafafa;
+		}
+		&.b-b:after {
+			left: 30upx;
+		}
 
-	.cell-icon {
-		align-self: center;
-		width: 56upx;
-		max-height: 60upx;
-		font-size: 38upx;
-	}
-	.cell-more {
-		align-self: center;
-		font-size: 30upx;
-		color: $font-color-base;
-		margin-left: $uni-spacing-row-sm;
-	}
-	.cell-tit {
-		flex: 1;
-		font-size: $font-base;
-		color: $font-color-dark;
-		margin-right: 10upx;
-	}
-	.cell-tip {
-		font-size: $font-sm + 2upx;
-		color: $font-color-light;
-		max-width: 400upx;
-		text-align: right;
-		line-height: 1.2;
+		.cell-icon {
+			align-self: center;
+			width: 56upx;
+			max-height: 60upx;
+			font-size: 38upx;
+		}
+		.cell-more {
+			align-self: center;
+			font-size: 30upx;
+			color: $font-color-base;
+			margin-left: $uni-spacing-row-sm;
+		}
+		.cell-tit {
+			flex: 1;
+			font-size: $font-base;
+			color: $font-color-dark;
+			margin-right: 10upx;
+		}
+		.cell-tip {
+			font-size: $font-sm + 2upx;
+			color: $font-color-light;
+			max-width: 400upx;
+			text-align: right;
+			line-height: 1.2;
+		}
 	}
 }
 </style>

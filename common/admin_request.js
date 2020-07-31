@@ -15,7 +15,7 @@ const shopAdmin = function(action,data) {
  * @param {Object} data
  */
 const orderAdmin = function(action,data) {
-	return adminNetwork("orders",action,data);
+	return adminNetwork("orders",action,data,false);
 }
 
 /**
@@ -23,7 +23,7 @@ const orderAdmin = function(action,data) {
  * @param {Object} data
  */
 const goodsAdmin = function(action,data) {
-	return adminNetwork("goods",action,data);
+	return adminNetwork("goods",action,data,false);
 }
 
 /**
@@ -31,10 +31,18 @@ const goodsAdmin = function(action,data) {
  * @param {Object} data
  */
 const categoryAdmin = function(action,data) {
-	return adminNetwork("categories",action,data);
+	return adminNetwork("categories",action,data,false);
+}
+/**
+ * 店铺广告信息
+ * @param {Object} data
+ */
+const adsAdmin = function(action,data) {
+	return adminNetwork("ads",action,data,false);
 }
 
-const adminNetwork = (module,action,data)=>{
+const adminNetwork = (module,action,data,isShowLoading)=>{
+	isShowLoading = isShowLoading!= undefined ?isShowLoading:true;
 	//统一读取店铺id,必填项
 	let adminShopId = uni.getStorageSync("adminShopId");
 	if(!adminShopId){
@@ -50,12 +58,13 @@ const adminNetwork = (module,action,data)=>{
 			shopid:adminShopId
 		},
 		auth: true,
-		isShowLoading: true
+		isShowLoading: isShowLoading
 	});
 }
 export {
 	shopAdmin,
 	orderAdmin,
 	goodsAdmin,
-	categoryAdmin
+	categoryAdmin,
+	adsAdmin
 }

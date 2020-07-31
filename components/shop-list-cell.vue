@@ -18,11 +18,10 @@
 						<text class="ops">月售{{ item.monthSale }}</text>
 					</view>
 					<view class="">
-						<text class="ops">起送￥{{ item.deliveryMin }}</text>
-						<text v-if="item.deliveryMoney == 0" class="ops ops1">免配送费</text>
+						<text class="ops">起送￥{{ item.delivery.minPrice }}</text>
+						<text v-if="item.delivery.money == 0" class="ops ops1">免配送费</text>
 						<text v-else>
-							<text class="ops">配送￥{{ item.deliveryMoney }}</text>
-							<text v-if="item.deliveryMoneyBefore > 0" class="del ops">{{ item.deliveryMoneyBefore }}</text>
+							<text class="ops">配送￥{{ item.delivery.money }}</text>
 						</text>
 						<text class="ops">人均￥{{ item.perCapita }}</text>
 					</view>

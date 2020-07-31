@@ -1,6 +1,6 @@
 ## 云上商城 
 身边的线上生活超市，根据当前定位，就近匹配仓库，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。  
-后续会完善商家端，骑手端，供应商端  
+功能正在紧张开发中，后续会完善商家端，骑手端，供应商端  
 本商城是基于[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)前端框架二次开发，增加云函数，成为一个完整的app，导入即可使用  
 交流QQ群：298724327  
 
@@ -31,27 +31,29 @@
 用了2个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
 ```<text class="yticon icon-dingwei"></text>```  
 **yticon.ttf**主要用在pages.json，定义顶部操作图标  
-![yticon.ttf](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/ttf/ttf01.jpg) 
+![yticon.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c6deb20-cc7f-11ea-b997-9918a5dda011.jpg) 
 **yticon2.ttf**主要用在App.vue 文字图标  
-![yticon2.ttf](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/ttf/ttf02.jpg) 
+![yticon2.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c705c20-cc7f-11ea-8ff1-d5dcf8779628.jpg) 
 ### 抢先预览
-uniCloud 有资源限制，如果获取不到数据属正常现象，现在还没找到升级途径，官方公布
-```
-uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上线后，收费标准也会低于传统云主机租用费用
-```
+uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/apk_qrcode.png)
+![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/52950e60-cc7d-11ea-b997-9918a5dda011.png)
 
 #### H5预览
-可以发布，但是免费资源有限，不再开放    
+![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
 #### 微信小程序体验（个人认证，无法上架）
-![体验码](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/tiyan.jpg)  
+![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.11
+* 增加商品副标题，优化db_init.json
+* 增加商品秒杀管理
+* 增加店铺首页广告图管理,支持跳转网站，商品详细页
+* 店铺增加起送费，配送费，配送范围delivery等
 #### 1.0.3.10
 * 增加限时抢购购物车，增加云函数判断商品限购
 * 增加商品图文介绍,图片地址之间用分号隔开，在商品详情页面，再分割显示
@@ -89,7 +91,7 @@ uniCloud 目前计费系统还未开发完毕，暂时免费。计费系统上�
 增加首次下单店铺为用户邀请者(settlement)，为将来给邀请者分成做准备  
 店铺shops增加店主uid字段  
 降低全局shopId权重，在商品详情，购物车，订单详情，单独传递店铺id，为将来多店铺做准备  
-**重要，微信个人用户申请的小程序，无法上架**，如需体验，可以扫码申请 ![体验码](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/tiyan.jpg)  
+**重要，微信个人用户申请的小程序，无法上架**，如需体验，可以扫码申请 ![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
 
 ```
 1: 小程序服务提供的内容涉及电商模式（如：含购物车或涉及订单按钮，含立即购买流程等），属于个人小程序未开放内容，建议选择申请企业主体小程序。

@@ -21,6 +21,7 @@ const list = async (data, context) => {
 	let fields = {
 		"id": 1,
 		"title": 1,
+		"subTitle": 1,
 		"stock": 1,
 		"visite": 1,
 		"src": 1,
@@ -42,6 +43,7 @@ const list = async (data, context) => {
 		"modified": 1,
 		"yuding": 1,
 	};
+	let time = new Date().getTime();
 	switch (state) {
 		case "online":
 			//1所有
@@ -58,8 +60,29 @@ const list = async (data, context) => {
 			goodsCollection2 = goodsDeleteCollection;
 			break;
 		case "miaosha":
-			//2秒杀
+			//2秒杀,必须是有效的
 			conditions["miaosha"] = cmd.exists(true);
+			conditions["miaosha.endTime"] = cmd.gt(time);
+			order = ["miaosha.beginTime", "asc"];
+			break;
+		case "miaoshaAdmin":
+			//2秒杀,必须是有效的
+			conditions = cmd.or({
+				shopid: data.shopid,
+				miaosha: cmd.exists(true)
+			}, {
+				shopid: data.shopid,
+				miaoshaBackUp: cmd.exists(true)
+			});
+			//conditions["miaosha"] = cmd.exists(true);
+			order = ["miaosha.beginTime", "desc"];
+			//秒杀备份，用于暂停
+			fields["miaoshaBackUp"] = 1;
+			break;
+		case "exmiaosha":
+			//排除秒杀商品
+			conditions["miaosha"] = cmd.exists(false);
+			conditions["miaoshaBackUp"] = cmd.exists(false);
 			break;
 		case "yuding":
 			//预售
@@ -67,7 +90,7 @@ const list = async (data, context) => {
 			break;
 		case "baokuan":
 			//爆款,按销量排序
-			order = ["sales", "desc"];
+			order = ["monthlySale", "desc"];
 			break;
 		case "shouqin":
 			//即将售罄，库存小于10
@@ -227,6 +250,7 @@ const cleans = async (data) => {
 		_id: data._id,
 		shopid: data.shopid
 	}).remove();
+	await shopGoodsInc(data.shopid, "delete", -1);
 	console.log("清理已删除商品", res)
 	return res;
 }
@@ -278,13 +302,92 @@ const soldIn = async (data) => {
  * 查询一条商品信息，本店铺
  */
 const info = async (data) => {
-	console.log("goods info",data);
+	console.log("goods info", data);
 	return await getOneGoods({
 		_id: data._id,
 		shopid: +data.shopid
 	});
 }
-
+/**
+ * 暂停秒杀miaoshaBackUp
+ */
+const pauseMiaosha = async (data) => {
+	const goods = await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	}, {
+		miaosha: 1
+	});
+	if (!goods) {
+		data.message = "原商品不存在";
+		return false;
+	}
+	return await goodsCollection.doc(data._id).update({
+		miaosha: cmd.remove(),
+		miaoshaBackUp: goods.miaosha
+	});
+}
+/**
+ * 删除商品秒杀
+ */
+const cancelMiaosha = async (data) => {
+	const goods = await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	}, {
+		miaosha: 1
+	});
+	if (!goods) {
+		data.message = "原商品不存在";
+		return false;
+	}
+	return await goodsCollection.doc(data._id).update({
+		miaosha: cmd.remove()
+	});
+}
+/**
+ * 重新开始秒杀
+ */
+const restartMiaosha = async (data) => {
+	const goods = await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	}, {
+		miaoshaBackUp: 1
+	});
+	if (!goods) {
+		data.message = "原商品不存在";
+		return false;
+	}
+	return await goodsCollection.doc(data._id).update({
+		miaoshaBackUp: cmd.remove(),
+		miaosha: goods.miaoshaBackUp
+	});
+}
+/**
+ * 新增/修改秒杀
+ */
+const addMiaosha = async (data) => {
+	const goods = await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	}, {
+		id: 1
+	});
+	if (!goods) {
+		data.message = "原商品不存在";
+		return false;
+	}
+	let saveData = {};
+	saveData[data.field] = data.miaosha;
+	//商品变化了,移除旧商品的秒杀信息
+	if (data.oldId && data.oldId != data._id) {
+		let removeData = {};
+		removeData[data.field] = cmd.remove();
+		goodsCollection.doc(data._id).update(removeData);
+	}
+	return await goodsCollection.doc(data._id).update(saveData);
+}
 /**
  * 检查商品是否存在
  */
@@ -298,8 +401,12 @@ const checkExists = async (_id, shopid) => {
 /**
  * 根据条件，查询一条商品
  */
-const getOneGoods = async (conditions) => {
-	const goods = await goodsCollection.where(conditions).get();
+const getOneGoods = async (conditions, fields) => {
+	const goodsQuery = goodsCollection.where(conditions)
+	if (fields) {
+		goodsQuery.field(fields);
+	}
+	const goods = await goodsQuery.limit(1).get();
 	if (goods.data.length == 0) {
 		return false;
 	}
@@ -314,5 +421,9 @@ module.exports = {
 	clean: cleans,
 	soldOut: soldOut,
 	soldIn: soldIn,
-	info: info
+	info: info,
+	pauseMiaosha: pauseMiaosha,
+	restartMiaosha: restartMiaosha,
+	addMiaosha: addMiaosha,
+	cancelMiaosha: cancelMiaosha
 }
