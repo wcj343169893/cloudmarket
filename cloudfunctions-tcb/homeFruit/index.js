@@ -74,7 +74,8 @@ exports.main = async (event, context) => {
 		miaosha: 1,
 		manjian: 1,
 		price: 1,
-		//skus:1,
+		skus:1,
+		skuname:1,
 		yuding:1,
 		stock: 1
 	};

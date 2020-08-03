@@ -57,6 +57,8 @@ const list = async (data, context) => {
 		cartCount: 1,
 		address: 1,
 		cancelStyle: 1,
+		deliveryType:1,
+		deliveryHour:1,
 		remark: 1,
 		shopid: 1,
 		"payInfo.time": 1,
@@ -102,7 +104,7 @@ const detail = async (data) => {
 const getOrderById = async (data, field) => {
 	let conditions = {
 		_id: data._id,
-		shopid: shopid
+		shopid: data.shopid
 	};
 	if (!field) {
 		field = {

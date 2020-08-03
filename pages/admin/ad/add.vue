@@ -200,7 +200,7 @@ export default {
 }
 .specsTitlesBtn {
 	display: flex;
-	padding: 10upx 30upx 30upx;
+	padding: 50upx 30upx 30upx;
 	&.submit {
 		position: fixed;
 		bottom: 0;

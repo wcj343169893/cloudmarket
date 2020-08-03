@@ -4,7 +4,8 @@ const cmd = db.command;
 const {
 	updateGoodsMiaoshaStock,
 	updateGoodsStock,
-	updateUserOrderCount
+	updateUserOrderCount,
+	updateUserScore
 } = require('base-common');
 const auth = uniCloud.auth();
 /**
@@ -72,6 +73,7 @@ exports.main = async (event, context) => {
 		data = await orderCollection.where(conditions).field({
 			id: 1,
 			totalMoney: 1,
+			freight:1,
 			totalDiscount: 1,
 			state: 1,
 			created: 1,
@@ -81,6 +83,9 @@ exports.main = async (event, context) => {
 			cancelStyle: 1,
 			remark: 1,
 			shopid: 1,
+			deliveryHour:1,
+			deliveryType:1,
+			shop:1,
 			yuding: 1,
 			"payInfo.time": 1,
 			"payInfo.name": 1,
@@ -206,7 +211,7 @@ exports.main = async (event, context) => {
 			let resUser = await updateUserOrderCount(uid, "received", 1, "delivered", order.shopid);
 			//增加用户积分
 			await updateUserScore(uid,order.totalMoney);
-			//@todo 资金解冻
+			//@todo 资金解冻,付款给商家，定时器处理，避免重复执行付款
 		} else if (type == "detail") {
 			//查询详细
 			data = order;

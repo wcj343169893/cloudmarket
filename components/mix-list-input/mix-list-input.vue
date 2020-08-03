@@ -1,6 +1,6 @@
 <template>
 	<view class="input-container">
-		<view class="mix-list-cell b-b">
+		<view class="mix-list-cell b-b" :class="{ textarea: type == 'textarea' }">
 			<text class="cell-tit clamp">
 				<text v-if="isMust">*</text>
 				{{ title }}
@@ -9,6 +9,14 @@
 			<input v-else-if="type == 'digit'" type="digit" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
 			<input v-else-if="type == 'number'" type="number" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
 			<input v-else-if="type == 'idcard'" type="idcard" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
+			<block v-else-if="type == 'textarea'">
+				<view class="">
+					<textarea  maxlength="9999" v-model="content" class="cell-content" @input="changeContent" :placeholder="placeholder" />
+					<view class="desc">
+						<text>支持markdown语法，最多输入9999字符</text>
+					</view>
+				</view>
+			</block>
 		</view>
 	</view>
 </template>
@@ -36,13 +44,19 @@ export default {
 		placeholder: {
 			type: String,
 			default: '请输入'
-		},defContent:{
-			type:String,
-			default:""
+		},
+		defContent: {
+			type: String,
+			default: ''
+		}
+	},
+	watch: {
+		defContent(val) {
+			this.content = this.defContent;
 		}
 	},
 	created() {
-		if(this.defContent){
+		if (this.defContent) {
 			this.content = this.defContent;
 		}
 	},
@@ -83,6 +97,17 @@ export default {
 				text-align: right;
 			}
 		}
+		&.textarea {
+			align-items: inherit;
+			.cell-content {
+				padding-top: 10rpx;
+				height: 500rpx;
+			}
+		}
 	}
+}
+.desc{
+	font-size: $font-sm;
+	color: $font-color-disabled;
 }
 </style>

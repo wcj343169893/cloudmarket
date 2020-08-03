@@ -37,12 +37,14 @@ exports.main = async (event, context) => {
 const limits = {
 	"users": 3,
 	"identity": 30,
+	"documents": 30,
 	"goods_visites": 0,
 	"goods_deletes": 0,
 	"goods_day_sales": 0,
 	"goods_shop_day_sales": 0,
 	"user_balance_logs": 0,
 	"carts": 0,
+	"shops": 2,
 	"orders": 0,
 	"order_refunds": 0
 }

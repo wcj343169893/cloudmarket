@@ -3,6 +3,7 @@
 功能正在紧张开发中，后续会完善商家端，骑手端，供应商端  
 本商城是基于[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)前端框架二次开发，增加云函数，成为一个完整的app，导入即可使用  
 交流QQ群：298724327  
+如您已购买本产品，请联系作者加入售后群，联系作者QQ：343169893   
 
 ### 导入步骤
 1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
@@ -49,6 +50,17 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 1.0.3.12
+* 增加文档管理，优化app必要文档
+```
+	app_service:"APP服务协议",
+	app_goods_charge:"APP退换货原则",
+	app_user_private:"APP隐私政策",
+```
+* 增加预计送货到达时间
+* 店铺增加免费送货距离，超过之后按每公里增加费用
+* 店铺支持自提，提货码,店铺增加字段deliverySupportType支持的配送方式，1配送到家，2自提，3配送+自提
+* 首页新品增加加入购物车
 #### 1.0.3.11
 * 增加商品副标题，优化db_init.json
 * 增加商品秒杀管理

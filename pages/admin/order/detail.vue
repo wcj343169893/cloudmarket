@@ -17,7 +17,7 @@
 					</block>
 					<block v-else>
 						<text>应付尾款：</text>
-						<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+						<text class="price">{{ info.yuding.finishPaymentPrice | toFixed}}</text>
 						<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 					</block>
 				</view>
@@ -41,7 +41,26 @@
 			</view>
 		</view>
 		<view class="section ab m-t important">
-			<view class="weui-flex address b-b" v-if="info.address" @click="openMap(info.address)">
+			<view class="weui-flex address b-b" v-if="info.deliveryHour">
+				<view><text>预约时间</text></view>
+				<view class="content">
+					<view>
+						<text>{{ info.deliveryHour.name }}</text>
+						<text class="m-l">{{ info.deliveryHour.time }}</text>
+					</view>
+				</view>
+			</view>
+			<block v-if="info.deliveryType == 2">
+				<view class="weui-flex address b-b">
+					<view><text>提货码</text></view>
+					<view class="content">
+						<view class="warning"><text>{{ info.deliveryHour.password }}</text></view>
+						<view class="warning"><text>{{ info.deliveryHour.number }}</text></view>
+						<view><text>请勿泄露他人</text></view>
+					</view>
+				</view>
+			</block>
+			<view class="weui-flex address b-b" v-else-if="info.address" @click="openMap(info.address)">
 				<view class=""><text>收货地址</text></view>
 				<view class="content">
 					<view class="">
@@ -67,7 +86,7 @@
 			<block v-if="info.yuding">
 				<view class="weui-flex">
 					<text>阶段1：定金</text>
-					<text class="price">{{ info.yuding.price }}</text>
+					<text class="price">{{ info.yuding.price | toFixed }}</text>
 				</view>
 				<block v-if="info.yuding.payInfo">
 					<view class="weui-flex">
@@ -82,13 +101,13 @@
 			
 				<view class="weui-flex">
 					<text>阶段2：尾款</text>
-					<text class="price">{{ info.yuding.finishPaymentPrice }}</text>
+					<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
 				</view>
 			</block>
 			<block v-else>
 				<view class="weui-flex">
 					<text class="">商品金额</text>
-					<text class="price">{{ info.totalMoney + info.totalDiscount }}</text>
+					<text class="price">{{ info.totalMoney + info.totalDiscount  | toFixed}}</text>
 				</view>
 			</block>
 			<view class="weui-flex">
@@ -101,7 +120,7 @@
 			<view class="weui-flex b-b">
 				<view class=""><text>实付金额</text></view>
 				<view class="">
-					<text class="price warning">{{ info.totalMoney }}</text>
+					<text class="price warning">{{ info.totalMoney  | toFixed}}</text>
 				</view>
 			</view>
 			<view class="weui-flex">
@@ -137,7 +156,7 @@
 							<view class="desc weui-flex__item">
 								<view class="weui-flex">
 									<text class="title weui-flex__item">{{ item.title }}</text>
-									<text class="price warning">{{ item.price * item.amount }}</text>
+									<text class="price warning">{{ item.price * item.amount | toFixed }}</text>
 								</view>
 								<view class="">
 									<text>{{ item.subName }}</text>
@@ -145,7 +164,7 @@
 								<view class=" prices">
 									<view class="">
 										<text>单价:</text>
-										<text class="price">{{ item.price }}</text>
+										<text class="price">{{ item.price | toFixed }}</text>
 										<text>数量:</text>
 										<text class="important">{{ item.amount }}</text>
 									</view>
@@ -206,7 +225,7 @@
 import { mapState } from 'vuex';
 import { orderAdmin } from '@/common/admin_request.js';
 import { orders } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp,checkDeliveryHour } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -252,6 +271,7 @@ export default {
 			this.info = res;
 			this.goodsList = res.goods;
 			this.shopid = this.info.shopid;
+			checkDeliveryHour(this.info)
 		},
 		navToGoodsPage(item) {
 			navToGoodsItemPage(item);

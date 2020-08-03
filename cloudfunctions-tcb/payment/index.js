@@ -37,6 +37,7 @@ exports.main = async (event, context) => {
 		id: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
+		freight: 1,
 		state: 1,
 		body: 1, //商品描述，100字以内
 		yuding: 1,
@@ -76,10 +77,12 @@ exports.main = async (event, context) => {
 			console.log("定金", id, order.yuding);
 		} else {
 			//支付尾款
-			order.totalMoney = order.yuding.finishPaymentPrice;
+			order.totalMoney = order.yuding.finishPaymentPrice + order.freight;
 			order.body = "尾款：" + order.body;
 			console.log("尾款", order.yuding);
 		}
+	}else{
+		order.totalMoney +=order.freight;
 	}
 	//预定结构
 	/* {

@@ -98,7 +98,9 @@ exports.main = async (event, context) => {
 		"totalMoney": 0,
 		"stockNotEnough": [],
 		"totalDiscount": 0,
-		"freight": 0, //运费
+		"deliveryType": event.deliveryType ? +event.deliveryType : 1, //1配送，2自提
+		"freight": event.freight ? +event.freight : 0, //运费
+		"juli": event.juli ? +event.juli : 0, //用户与商家之间的距离，由地图接口计算得来
 		"address": {},
 		"goods": []
 	}
@@ -112,8 +114,8 @@ exports.main = async (event, context) => {
 	let address = await db.collection('addresses').where(addressCondition).orderBy("default", "desc").limit(1).get();
 	if (address.data.length > 0) {
 		data["address"] = address.data[0];
-	} else if (type == "submit") {
-		//收货地址不存在
+	} else if (type == "submit" && event.deliveryType == 1) {
+		//配送订单，收货地址不存在
 		return {
 			"code": 404,
 			"message": "收货地址不存在"
@@ -127,7 +129,11 @@ exports.main = async (event, context) => {
 		name: 1,
 		src: 1,
 		address: 1,
-		uid: 1
+		uid: 1,
+		latitude: 1,
+		longitude: 1,
+		delivery: 1,
+		deliverySupportType: 1
 	}).limit(1).get();
 	if (shopData.data.length == 0) {
 		return {
@@ -224,11 +230,11 @@ exports.main = async (event, context) => {
 				//总定金
 				yuding.price = yuding.price * ele.amount;
 				//总尾款=预订价-定金
-				yuding.finishPaymentPrice = (ele.price * ele.amount - yuding.price).toFixed(2);
+				yuding.finishPaymentPrice = Number((ele.price * ele.amount - yuding.price).toFixed(2));
 
 				data.yuding = yuding;
 				//购物车总金额=总定金+总尾款
-				data.totalMoney += data.yuding.price + data.yuding.finishPaymentPrice;
+				data.totalMoney += Number(data.yuding.price) + Number(data.yuding.finishPaymentPrice);
 				data.goods.push(ele);
 				data.cartCount += ele.amount;
 				lastPayTimeMinute = 30;
@@ -294,6 +300,7 @@ exports.main = async (event, context) => {
 	}
 	//格式化数字
 	data.totalDiscount = Number(data.totalDiscount.toFixed(2));
+	//增加运费
 	data.totalMoney = Number(data.totalMoney.toFixed(2));
 	//提交订单
 	if (type && type == "submit") {
@@ -350,6 +357,15 @@ exports.main = async (event, context) => {
 		const day = new Date().toISOString();
 		data["created"] = day;
 		data["modified"] = day;
+		//如果是自提，需要生成提货码
+		if (data.deliveryType == 2) {
+			//顺序编号
+			event.deliveryHour.number = await genIdentityId("order_ziti");
+			//随机8位密码
+			event.deliveryHour.password = (Math.random() + "").substr(2, 8);
+		}
+		//预计送达时间
+		data["deliveryHour"] = event.deliveryHour;
 		//最后支付时间，否则自动取消订单,5分钟支付时间,预定订单30分钟
 		data["lastPayTime"] = (new Date()).getTime() + lastPayTimeMinute * 60 * 1000;
 		//用户设备信息
@@ -393,7 +409,7 @@ exports.main = async (event, context) => {
 			});
 			//设置到用户信息
 			let res = await db.collection("users").doc(uinfo._id).update({
-				invite:data.shop.uid,
+				invite: data.shop.uid,
 				inviters: data["inviters"]
 			});
 			console.log("默认加入店铺团队", data["inviters"], res);

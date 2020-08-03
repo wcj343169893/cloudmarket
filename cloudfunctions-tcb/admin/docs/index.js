@@ -1,0 +1,82 @@
+'use strict';
+const db = uniCloud.database();
+const cmd = db.command;
+const docCollection = db.collection("documents");
+
+/**
+ * 分页查询文档
+ */
+const list = async (data) => {
+	let page = +data.page;
+	let limit = +data.limit;
+	const result = await docCollection.where({
+		shopid: data.shopid
+	}).field({
+		title: 1
+	}).skip((page - 1) * limit).limit(limit).orderBy("modified", "desc").get();
+	if (result.data.length == 0) {
+		data.message = "暂无数据";
+		return false;
+	}
+	return result.data;
+}
+/**
+ * 增加/修改
+ */
+const add = async (data) => {
+	let _id = data._id;
+	//update操作，不能有_id参数
+	delete data._id;
+	if (_id) {
+		//修改
+		const result = await docCollection.where({
+			shopid: data.shopid,
+			_id: _id
+		}).limit(1).get();
+		if (result.data.length == 0) {
+			data.message = "原数据不存在";
+			return false;
+		}
+		data.modified = new Date().toISOString();
+		return await docCollection.where({
+			shopid: data.shopid,
+			_id: _id
+		}).update(data);
+	}
+	data.created = new Date().toISOString();
+	return await docCollection.add(data);
+}
+/**
+ * 查询详细
+ */
+const detail = async (data) => {
+	const result = await docCollection.where({
+		shopid: data.shopid,
+		_id: data._id
+	}).get();
+	if (result.data.length == 0) {
+		data.message = "数据不存在";
+		return false;
+	}
+	return result.data[0];
+}
+/**
+ * 删除
+ */
+const deletes = async (data) => {
+	if (data.ids) {
+		return await docCollection.where({
+			shopid: data.shopid,
+			_id: cmd.in(data.ids)
+		}).remove();
+	}
+	data.message = "ID不存在";
+	return false;
+}
+
+module.exports = {
+	list: list,
+	add: add,
+	delete: deletes,
+	detail
+}

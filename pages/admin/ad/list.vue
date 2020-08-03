@@ -32,7 +32,7 @@ export default {
 	onNavigationBarButtonTap(e) {
 		const index = e.index;
 		if (index === 0) {
-			this.isEdit = true;
+			this.isEdit = !this.isEdit;
 		}
 	},
 	// #endif

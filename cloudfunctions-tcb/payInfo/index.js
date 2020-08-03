@@ -34,6 +34,7 @@ exports.main = async (event, context) => {
 		id: 1,
 		lastPayTime: 1,
 		totalMoney: 1,
+		freight:1,
 		totalDiscount: 1,
 		body: 1,
 		yuding: 1,
@@ -73,10 +74,12 @@ exports.main = async (event, context) => {
 			order.yuding.payType = "dingjin";
 		} else {
 			//支付尾款
-			order.totalMoney = order.yuding.finishPaymentPrice;
+			order.totalMoney = order.yuding.finishPaymentPrice + order.freight;
 			order.body = "尾款：" + order.body;
 			order.yuding.payType = "weikuan";
 		}
+	}else{
+		order.totalMoney +=order.freight;
 	}
 	data["order"] = order;
 	//如果是预定订单，需要在有效期内支付

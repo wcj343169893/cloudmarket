@@ -1,7 +1,5 @@
 <template>
-	<view class="container">
-		<view class="markdown-body" v-html="content"></view>
-	</view>
+	<view class="container"><view class="markdown-body" v-html="content"></view></view>
 </template>
 
 <script>
@@ -10,18 +8,26 @@ import { getDocContent } from '@/common/request.js';
 export default {
 	data() {
 		return {
-			id: '',
+			id: false,
+			type:false,
 			content:""
 		};
 	},
 	onLoad(e) {
-		this.id = e.id;
+		if(e.id){
+			this.id = e.id;
+		}else if(e.type){
+			this.type = e.type;
+		}else{
+			return;
+		}
 		this.loadData();
 	},
 	methods: {
 		async loadData() {
 			getDocContent({
-				id: this.id
+				id: this.id,
+				type:this.type
 			}).then(res => {
 				uni.setNavigationBarTitle({
 					title:res.title

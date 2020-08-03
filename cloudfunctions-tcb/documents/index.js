@@ -3,42 +3,36 @@ const db = uniCloud.database();
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
 	let type = event.type;
-	if (!type) {
-		//查询一条
-		let data = await db.collection("documents").doc(event.id).field({
+	let query = db.collection("documents");
+	let data;
+	if (event.id) {
+		data = await query.doc(event.id).field({
 			title: 1,
 			content: 1
 		}).get();
-		if (data.data.length == 0) {
-			return {
-				"code": 404,
-				"message": "文档不存在",
-			};
-		}
+	} else if (event.type) {
+		data = await query.where({
+			type: event.type
+		}).field({
+			title: 1,
+			content: 1
+		}).limit(10).get();
+	}
+	//查询一条
+	if (data.data.length == 0) {
 		return {
-			code: 200,
-			message: "操作成功",
-			data: data.data[0]
+			"code": 404,
+			"message": "文档不存在",
 		};
 	}
-	let {
-		customUserId
-	} = await auth.getUserInfo();
-	if (customUserId < 1) {
-		return {
-			"code": 401,
-			"message": "用户信息不存在",
-		};
+	let index = 0;
+	//随机返回一条
+	if (data.data.length > 1) {
+		index = parseInt(Math.random() * data.data.length);
 	}
-	if (type == "add") {
-		let data = await db.collection("documents").add({
-			...event.data,
-			uid: +customUserId
-		});
-		return {
-			code: 200,
-			message: "添加成功",
-			data: data
-		};
-	}
+	return {
+		code: 200,
+		message: "操作成功",
+		data: data.data[index]
+	};
 };

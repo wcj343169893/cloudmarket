@@ -18,6 +18,15 @@
 			</view>
 		</view>
 		<view class="cover-container">
+			<view class="header"><text>快捷功能</text></view>
+			<view class="fast-section m-t">
+				<view class="fast-actions"  @click="btnZiti()" hover-class="common-hover" :hover-stay-time="50">
+					<text class="">自提输入</text>
+				</view>
+				<view class="fast-actions"  @click="btnZitiScan()" hover-class="common-hover" :hover-stay-time="50">
+					<text class="">自提扫码</text>
+				</view>
+			</view>
 			<view class="header"><text>订单管理</text></view>
 			<!-- 订单信息统计 -->
 			<view class="order-section m-t">
@@ -41,9 +50,10 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')" tips=""></mix-list-cell>
-		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/goods/miaosha/list')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')" tips="商品分类"></mix-list-cell>
+		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/goods/miaosha/list')" tips="商品活动"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
+		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="说明文档" @eventClick="navTo('/pages/admin/docs/list')" tips=""></mix-list-cell>
 	</view>
 </template>
 
@@ -168,6 +178,22 @@ export default {
 			} */
 			uni.navigateTo({
 				url
+			});
+		},
+		//自提输码
+		btnZiti(){
+			
+		},
+		//自提扫码
+		btnZitiScan(){
+			// 只允许通过相机扫码
+			uni.scanCode({
+			    onlyFromCamera: true,
+			    success: function (res) {
+			        console.log('条码类型：' + res.scanType);
+			        console.log('条码内容：' + res.result);
+					this.$api.msg(res.result)
+			    }
 			});
 		},
 		//重新加载数据
@@ -297,6 +323,16 @@ export default {
 	.more {
 		font-size: $font-base;
 		color: $font-color-base;
+	}
+}
+.fast-section{
+	display: flex;
+	font-size: $font-base;
+	background: #FFFFFF;
+	padding: 20rpx;
+	border-radius: 10rpx;
+	.fast-actions{
+		padding: 10rpx 20rpx;
 	}
 }
 </style>

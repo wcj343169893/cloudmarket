@@ -40,6 +40,14 @@ const categoryAdmin = function(action,data) {
 const adsAdmin = function(action,data) {
 	return adminNetwork("ads",action,data,false);
 }
+/**
+ * 文档管理
+ * @param {Object} action
+ * @param {Object} data
+ */
+const docsAdmin = function(action,data) {
+	return adminNetwork("docs",action,data,false);
+}
 
 const adminNetwork = (module,action,data,isShowLoading)=>{
 	isShowLoading = isShowLoading!= undefined ?isShowLoading:true;
@@ -66,5 +74,6 @@ export {
 	orderAdmin,
 	goodsAdmin,
 	categoryAdmin,
-	adsAdmin
+	adsAdmin,
+	docsAdmin
 }

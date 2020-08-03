@@ -19,9 +19,9 @@
 			<!-- #endif-->
 			<view class="">
 				<text>登录即代表你同意</text>
-				<text class="link" @click="navToDocPage('1229caae5ef574ae0055cfa40630f5c5')">《服务协议》</text>
+				<text class="link" @click="navToDocPageByType('app_service')">《服务协议》</text>
 				<text>和</text>
-				<text class="link" @click="navToDocPage('a3e75f055ef574c200492faa50335f39')">《隐私协议》</text>
+				<text class="link" @click="navToDocPageByType('app_user_private')">《隐私协议》</text>
 			</view>
 		</view>
 	</view>
@@ -35,7 +35,7 @@ const jv = uni.requireNativePlugin('JG-JVerification');
 import { mobileAutoLogin, getToken, mobileLogin } from '@/common/request.js';
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
-import { navToDocPage } from '@/common/functions.js';
+import { navToDocPageByType } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -164,8 +164,8 @@ export default {
 		navBack() {
 			uni.navigateBack();
 		},
-		navToDocPage(id) {
-			navToDocPage(id);
+		navToDocPageByType(type) {
+			navToDocPageByType(type);
 		},
 		async toLogin() {
 			this.logining = true;

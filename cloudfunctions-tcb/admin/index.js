@@ -6,6 +6,7 @@ const modules = {
 	orders: require("./orders"),
 	shops: require("./shops"),
 	ads: require("./ads"),
+	docs: require("./docs"),
 };
 const auth = uniCloud.auth();
 /**
@@ -52,7 +53,7 @@ exports.main = async (event, context) => {
 	try {
 		data = await modules[event.module][event.action](event.data, context);
 	} catch (e) {
-		console.log("error",e);
+		console.log("error",event,e);
 		//TODO handle the exception
 		return {
 			code: 500,

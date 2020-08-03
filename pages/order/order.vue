@@ -44,12 +44,20 @@
 							<block v-if="item.yuding">
 								<text class="m-l">定金</text>
 								<text class="price warning">{{ item.yuding.price | toFixed }}</text>
+								<block v-if="item.freight>0">
+									<text class="m-l">运费</text>
+									<text class="price warning">{{ item.freight | toFixed}}</text>
+								</block>
 								<text class="m-l">尾款</text>
 								<text class="price warning">{{ item.yuding.finishPaymentPrice | toFixed }}</text>
 							</block>
 							<block v-else>
+								<block v-if="item.freight>0">
+									<text class="m-l">运费</text>
+									<text class="price warning">{{ item.freight | toFixed}}</text>
+								</block>
 								<text class="m-l">实付款</text>
-								<text class="price warning">{{ item.totalMoney  | toFixed}}</text>
+								<text class="price warning">{{ item.totalMoney +item.freight | toFixed}}</text>
 							</block>
 						</view>
 						<!-- 已取消 -->
@@ -197,7 +205,7 @@ export default {
 						let isPay = true;
 						ele.priceTitle = '单价';
 						//预定yuding  item.yuding.finalpay
-						ele.showPayMoney = ele.totalMoney;
+						ele.showPayMoney = ele.totalMoney +ele.freight;
 						if (ele.yuding) {
 							ele.priceTitle = '预售价';
 							ele.yuding.finalpay = 0;
@@ -206,7 +214,7 @@ export default {
 							if (ele.yuding.finalPaymentBeginTime < time) {
 								ele.yuding.finalpay = 1;
 								//尾款
-								ele.showPayMoney = ele.yuding.finishPaymentPrice;
+								ele.showPayMoney = ele.yuding.finishPaymentPrice+ele.freight;
 							} else if (ele.yuding.state == 1) {
 								//已支付定金，但是未开始支付尾款间隙
 								isPay = false;
