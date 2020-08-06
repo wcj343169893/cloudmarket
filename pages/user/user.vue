@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="user-section">
+		<view class="user-section" v-if="isLoaded">
 			<image class="bg" src="/static/user-bg2.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
@@ -33,7 +33,7 @@
 			</view>
 		</view>
 
-		<view class="cover-container">
+		<view class="cover-container"  v-if="isLoaded">
 			<image class="arc" src="/static/arc.png"></image>
 
 			<view class="tj-sction">
@@ -160,6 +160,7 @@ let startY = 0,
 export default {
 	data() {
 		return {
+			isLoaded: false,
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			vipnumber:"",
@@ -217,11 +218,12 @@ export default {
 	},
 	// #endif
 	computed: {
-		...mapState(['hasLogin', 'userInfo'])
+		...mapState(['hasLogin','shopId', 'userInfo'])
 	},
 	methods: {
 		...mapMutations(['login','logout']),
 		async loadData() {
+			this.isLoaded = true;
 			if (this.hasLogin) {
 				cronCancelOrders()
 					.then(res => {

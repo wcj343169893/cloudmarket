@@ -38,20 +38,20 @@
 							</view>
 						</view>
 						<view class="price-box">
-							<text>共</text>
-							<text class="num">{{ item.cartCount }}</text>
-							<text>件商品</text>
 							<block v-if="item.yuding">
 								<text class="m-l">定金</text>
-								<text class="price warning">{{ item.yuding.price | toFixed }}</text>
+								<text class="price warning">{{ (item.yuding?item.yuding.price:0) | toFixed }}</text>
 								<block v-if="item.freight>0">
 									<text class="m-l">运费</text>
 									<text class="price warning">{{ item.freight | toFixed}}</text>
 								</block>
 								<text class="m-l">尾款</text>
-								<text class="price warning">{{ item.yuding.finishPaymentPrice | toFixed }}</text>
+								<text class="price warning">{{ (item.yuding?item.yuding.finishPaymentPrice:'') | toFixed }}</text>
 							</block>
 							<block v-else>
+								<text>共</text>
+								<text class="num">{{ item.cartCount }}</text>
+								<text>件商品</text>
 								<block v-if="item.freight>0">
 									<text class="m-l">运费</text>
 									<text class="price warning">{{ item.freight | toFixed}}</text>
@@ -83,7 +83,7 @@
 						</view>
 						<!-- 已付款 -->
 						<block v-if="item.state == 1">
-							<view class="action-box b-t"><button class="action-btn" @click.stop="pusheDelivery(item)">催发货</button></view>
+							<view class="action-box b-t"><button class="action-btn" @click.stop="pusheDelivery(item)">催一催</button></view>
 						</block>
 						<!-- 已发货 -->
 						<block v-if="item.state == 2">

@@ -573,6 +573,30 @@ export default {
 .icon-dunpai::before {
 	content: '\e805';
 }
+.icon-piliang::before {
+	content: '\e806';
+}
+.icon-piliang-zhuanfa::before {
+	content: '\e807';
+}
+.icon-dingdan::before {
+	content: '\e808';
+}
+.icon-history::before {
+	content: '\e809';
+}
+.icon-setting::before {
+	content: '\e810';
+}
+.icon-shangpin::before {
+	content: '\e811';
+}
+.icon-shangpin2::before {
+	content: '\e812';
+}
+.icon-tongji::before {
+	content: '\e813';
+}
 view,
 scroll-view,
 swiper,

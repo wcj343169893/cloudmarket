@@ -505,7 +505,8 @@
 		"selectedColor": "#54b85d",
 		"borderStyle": "black",
 		"backgroundColor": "#f9f9f9",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/fruit",
 				"iconPath": "static/tab-home.png",
 				"selectedIconPath": "static/tab-home-current.png",

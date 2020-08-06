@@ -35,7 +35,11 @@
 			<view class="buttons">
 				<button type="default" class="action-btn" @click="printTicket">打印小票</button>
 				<block v-if="info.state == 1"><button type="default" class="action-btn" @click="addDelivery(false)">确定发货</button></block>
-				<block v-else-if="info.state == 2"></block>
+				<block v-else-if="info.state == 2">
+					<block v-if="info.deliveryType == 2">
+						<button type="default" class="action-btn" @click="selftakeOrder()">确定提货</button>
+					</block>
+				</block>
 				<block v-else-if="info.state == 4"><button type="default" class="action-btn recom" @click="evaluateOrder">查看评价</button></block>
 				<block v-else></block>
 			</view>
@@ -51,12 +55,14 @@
 				</view>
 			</view>
 			<block v-if="info.deliveryType == 2">
-				<view class="weui-flex address b-b">
-					<view><text>提货码</text></view>
+				<view class="weui-flex address b-b" v-if="info.deliveryHour">
+					<view>
+						<text>提货码:</text>
+						<text>{{ info.deliveryHour.number }}</text>
+					</view>
 					<view class="content">
-						<view class="warning"><text>{{ info.deliveryHour.password }}</text></view>
-						<view class="warning"><text>{{ info.deliveryHour.number }}</text></view>
-						<view><text>请勿泄露他人</text></view>
+						<text>密码:</text>
+						<text>{{ info.deliveryHour.password }}</text>
 					</view>
 				</view>
 			</block>
@@ -230,6 +236,8 @@ export default {
 	data() {
 		return {
 			id: 0,
+			number:false,
+			password:false,
 			goodsList: [],
 			goodsCount: 0,
 			maxShowCount: 3,
@@ -238,7 +246,13 @@ export default {
 		};
 	},
 	onLoad(options) {
-		this.id = options.id;
+		console.log(options)
+		if(options.number){
+			this.number = options.number;
+			this.password = options.password;
+		}else{
+			this.id = options.id;	
+		}
 		this.loadData();
 	},
 	computed: {
@@ -246,18 +260,28 @@ export default {
 	},
 	methods: {
 		async loadData() {
-			//优先从缓存读取，有助于显示速度
-			let item = uni.getStorageSync('orderDetail');
-			if (item) {
-				//从缓存读取
-				this.orderInfo(item);
-			} else {
+			if(this.number){
 				//从网络获取
 				orderAdmin("detail",{
-					_id: this.id,
+					number: this.number,
+					password:this.password
 				}).then(res => {
 					this.orderInfo(res);
 				});
+			}else{
+				//优先从缓存读取，有助于显示速度
+				let item = uni.getStorageSync('orderDetail');
+				if (item) {
+					//从缓存读取
+					this.orderInfo(item);
+				} else {
+					//从网络获取
+					orderAdmin("detail",{
+						_id: this.id
+					}).then(res => {
+						this.orderInfo(res);
+					});
+				}
 			}
 		},
 		orderInfo(res) {
@@ -266,6 +290,7 @@ export default {
 			res.stateTip = stateTip;
 			res.stateTipColor = stateTipColor;
 			res.stateContent = stateContent;
+			this.id = res._id;
 			//this.moreGoodsCount = res.goods.length - this.maxShowCount;
 			this.goodsCount=res.goods.length;
 			this.info = res;
@@ -308,7 +333,25 @@ export default {
 			}
 		},
 		//确定收货
-		confirmOrder(ele) {},
+		confirmOrder() {},
+		//确定自提，相当于商家确定收货
+		selftakeOrder() {
+			orderAdmin("selftake",{
+				_id: this.id,
+			}).then(
+				res => {
+					this.$api.msg('提货完成',2000,false,"success");
+					this.info.state = 3;
+					let { stateTip, stateTipColor } = getOrderStateExp(this.info);
+					this.info.stateTip = stateTip;
+					this.info.stateTipColor = stateTipColor;
+					this.$api.prePage().refreshList();
+				},
+				err => {
+					this.$api.msg('提货失败');
+				}
+			);
+		},
 		//打印小票,需要小票插件
 		printTicket() {},
 		//查看评价

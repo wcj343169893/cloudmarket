@@ -2,13 +2,13 @@
 	<view class="container">
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
-		<view class="mp-search-box">
+		<view class="mp-search-box" v-if="isLoaded">
 			<navigator url="chooseAddress" class="yticon icon-icon-test"></navigator>
 			<input class="ser-input" type="text" :value="searchWord" disabled @click="navToSearch" />
 		</view>
 		<!-- #endif -->
 		<!-- 头部轮播 -->
-		<view class="carousel-section">
+		<view class="carousel-section" v-if="isLoaded">
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
 			<!-- 背景色区域 -->
@@ -842,7 +842,7 @@ page {
 	padding: 4rpx 8rpx;
 	border-radius: 8rpx;
 	&.yticon{
-		font-size: $font-llg;
+		font-size: 48rpx;
 		color: $btn-color-light;
 		background: none;
 	}

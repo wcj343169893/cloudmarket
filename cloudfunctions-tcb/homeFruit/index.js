@@ -3,18 +3,24 @@ const db = uniCloud.database();
 const auth = uniCloud.auth();
 exports.main = async (event, context) => {
 	const cmd = db.command;
-	let {customUserId} = await auth.getUserInfo();
+	let {
+		customUserId
+	} = await auth.getUserInfo();
 	//console.log(event)
 	let longitude = event.longitude ? +event.longitude : 113.92246555717469;
 	let latitude = event.latitude ? +event.latitude : 22.489059185437284;
 	let dataOut = {
-		uid:+customUserId,
+		uid: +customUserId,
 		cart: 0,
 		shopId: 0,
 		categories: [],
 		miaosha: [],
-		newest: []
+		newest: [],
 	};
+	//微信小程序特有，只用来应付审核
+	if(context.PLATFORM == "mp-weixin" && !0){
+	}
+
 	//根据用户收货地址查询最近的一家店铺
 	let shopid = 123457;
 	//10公里以内
@@ -28,7 +34,7 @@ exports.main = async (event, context) => {
 		id: 1,
 		address: 1,
 		name: 1,
-		delivery:1,
+		delivery: 1,
 		notice: 1,
 		searchGoodsKeywords: 1,
 		src: 1
@@ -38,7 +44,7 @@ exports.main = async (event, context) => {
 		dataOut["shop"] = nearestShops.data[0];
 	}
 	let uid = 0;
-	if (customUserId>0) {
+	if (customUserId > 0) {
 		uid = +customUserId;
 	}
 	dataOut["shopId"] = shopid;
@@ -65,34 +71,34 @@ exports.main = async (event, context) => {
 	}).orderBy("posid", "asc").limit(10).get();
 	dataOut["categories"] = categories.data;
 	let time = new Date().getTime();
-	let goodsFields={
+	let goodsFields = {
 		_id: 0,
 		id: 1,
 		src: 1,
 		title: 1,
-		subTitle:1,
+		subTitle: 1,
 		miaosha: 1,
 		manjian: 1,
 		price: 1,
-		skus:1,
-		skuname:1,
-		yuding:1,
+		skus: 1,
+		skuname: 1,
+		yuding: 1,
 		stock: 1
 	};
 	//正在秒杀商品5条,必须是有库存的秒杀
 	let miaoshaGoods = await db.collection('goods').where({
 		shopid: shopid,
-		isSold:1,
+		isSold: 1,
 		miaosha: cmd.exists(true),
 		"miaosha.stock": cmd.gt(0),
-		"miaosha.beginTime": cmd.lt(time+24*3600*1000),
+		"miaosha.beginTime": cmd.lt(time + 24 * 3600 * 1000),
 		"miaosha.endTime": cmd.gt(time),
-	}).field(goodsFields).limit(5).orderBy("miaosha.beginTime","asc").get();
+	}).field(goodsFields).limit(5).orderBy("miaosha.beginTime", "asc").get();
 	dataOut["miaosha"] = miaoshaGoods.data;
 	//最新上架/最近更新,20条
 	let newGoods = await db.collection('goods').where({
 		shopid: shopid,
-		isSold:1
+		isSold: 1
 	}).field(goodsFields).orderBy("onlineTime", "desc").limit(20).get();
 	dataOut["newest"] = newGoods.data;
 	//购物车总数

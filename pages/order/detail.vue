@@ -15,10 +15,10 @@
 			<view class="sub-title">
 				<text>{{ info.stateContent }}</text>
 				<!-- 付尾款提示 ,只有付了定金，才能进入此详细页面-->
-				<view v-if="info.yuding && info.state == 0">
+				<view v-if="isYuding && info.state == 0">
 					<text>应付尾款：</text>
-					<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
-					<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
+					<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
+					<text class="m-l">{{ (info.yuding ? info.yuding.finalPaymentBeginTime : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 				</view>
 				<!-- 退款进度 -->
 				<view class="apply-list" v-if="info.cancelApply">
@@ -33,7 +33,7 @@
 			</view>
 			<view class="buttons">
 				<block v-if="info.state == 0">
-					<block v-if="info.yuding"><button class="action-btn disabled">去支付尾款</button></block>
+					<block v-if="isYuding"><button class="action-btn disabled">去支付尾款</button></block>
 				</block>
 				<block v-else-if="info.state == 1"><button type="default" class="action-btn" @click="pusheDelivery">催一催</button></block>
 				<block v-else-if="info.state == 2"><button type="default" class="action-btn" @click="confirmOrder">确定收货</button></block>
@@ -66,16 +66,16 @@
 					</view>
 					<text class="yticon icon-you"></text>
 				</view>
-				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)">
-					<view><text>提货码</text></view>
+				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)" v-if="info.deliveryHour">
+					<view class="warning">
+						<text>提货码:</text>
+						<text>{{ info.deliveryHour.number }}</text>
+					</view>
 					<view class="content">
 						<view class="warning">
+							<text>密码:</text>
 							<text>{{ info.deliveryHour.password }}</text>
 						</view>
-						<view class="warning">
-							<text>{{ info.deliveryHour.number }}</text>
-						</view>
-						<view><text>请勿泄露他人</text></view>
 					</view>
 					<text class="yticon icon-you"></text>
 				</view>
@@ -134,7 +134,7 @@
 								</view>
 								<view class="buttons">
 									<button type="default" v-if="info.state > 0" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
-									<block v-if="info.yuding"></block>
+									<block v-if="isYuding"></block>
 									<block v-else><button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button></block>
 								</view>
 							</view>
@@ -147,7 +147,7 @@
 				<text class="yticon icon-jiantour-copy"></text>
 			</view>
 			<view class="section ab">
-				<block v-if="info.yuding">
+				<block v-if="isYuding">
 					<view class="weui-flex">
 						<text>阶段1：定金</text>
 						<text class="price">{{ info.yuding.price }}</text>
@@ -159,13 +159,13 @@
 						</view>
 						<view class="weui-flex">
 							<text class="m-l2">支付时间</text>
-							<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+							<text>{{ (info.yuding && info.yuding.payInfo ? info.yuding.payInfo.time : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
 					</block>
 
 					<view class="weui-flex">
 						<text>阶段2：尾款</text>
-						<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
+						<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
 					</view>
 				</block>
 				<block v-else>
@@ -223,13 +223,13 @@
 				<view class="weui-flex">
 					<view><text>支付时间</text></view>
 					<view>
-						<text>{{ info.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+						<text>{{ (info.payInfo ? info.payInfo.time : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 					</view>
 				</view>
 			</block>
 		</view>
 		<uni-popup ref="showCode" type="center">
-			<view class="code-section">
+			<view class="code-section" v-if="info.deliveryHour">
 				<tki-qrcode
 					v-if="qrcode.ifShow"
 					cid="qrcode1"
@@ -250,12 +250,13 @@
 				/>
 
 				<view class="warning">
-					<text>{{ info.deliveryHour.password }}</text>
-				</view>
-				<view class="warning">
 					<text>{{ info.deliveryHour.number }}</text>
 				</view>
-				<view><text>提供给店员扫码</text></view>
+				<view class="warning">
+					<text>{{ info.deliveryHour.password }}</text>
+				</view>
+				<view><text>仅提供给店员提货扫码</text></view>
+				<view><text>请勿泄露给他人</text></view>
 			</view>
 		</uni-popup>
 	</view>
@@ -274,6 +275,7 @@ export default {
 			priceTitle: '单价',
 			maxShowCount: 3,
 			info: {},
+			isYuding: false,
 			qrcode: {
 				ifShow: false,
 				val: '二维码', // 要生成的二维码值
@@ -333,6 +335,7 @@ export default {
 				this.goodsList = res.goods;
 			}
 			if (this.info.yuding) {
+				this.isYuding = true;
 				this.priceTitle = '预售价';
 			}
 			checkDeliveryHour(this.info);
@@ -488,7 +491,7 @@ export default {
 		},
 		//放大提货码，并生成二维码
 		zoomCode(info) {
-			this.qrcode.val = 'ziti::' + [info.password, info.number].join('_');
+			this.qrcode.val = 'ziti::' + [info.number, info.password].join('_');
 			this.qrcode.ifShow = true;
 			this.$refs.showCode.open();
 		},

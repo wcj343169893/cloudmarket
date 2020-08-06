@@ -21,7 +21,7 @@
 			</view>
 		</block>
 		<view class="sec-header"><text>当前地址</text></view>
-		<view class="list b-b" v-if="currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
+		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
 			<view class="wrapper">
 				<view class="address-box">
 					<text class="address">{{ currentAddress.addressName }}</text>

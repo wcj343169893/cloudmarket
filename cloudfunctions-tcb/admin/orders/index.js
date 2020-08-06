@@ -57,8 +57,8 @@ const list = async (data, context) => {
 		cartCount: 1,
 		address: 1,
 		cancelStyle: 1,
-		deliveryType:1,
-		deliveryHour:1,
+		deliveryType: 1,
+		deliveryHour: 1,
 		remark: 1,
 		shopid: 1,
 		"payInfo.time": 1,
@@ -77,7 +77,11 @@ const list = async (data, context) => {
  * 订单发货
  */
 const addDelivery = async (data) => {
-	let order = await getOrderById(data);
+	let conditions = {
+		_id: data._id,
+		shopid: data.shopid
+	};
+	let order = await getOrderById(conditions);
 	if (!order) {
 		data.message = "订单不存在";
 		return false;
@@ -88,6 +92,8 @@ const addDelivery = async (data) => {
 	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update({
+		deliveredTime:new Date().toISOString(),
+		deliveredUid:data.operator,
 		state: 2
 	});
 	//更新用户已发货和已收货
@@ -95,17 +101,49 @@ const addDelivery = async (data) => {
 	return res;
 }
 /**
- * 查詢单个訂單信息
+ * 查詢单个訂單信息，支持提货码查询商品
  */
 const detail = async (data) => {
-	//所有字段
-	return await getOrderById(data, {});
+	//必须是本店铺信息
+	let conditions = {
+		shopid: data.shopid
+	};
+	if (data._id) {
+		conditions["_id"] = data._id;
+	} else if (data.number) {
+		//提货码
+		conditions["deliveryHour.number"] = +data.number;
+	}
+	return await getOrderById(conditions, {});
 }
-const getOrderById = async (data, field) => {
+/**
+ * 自提订单
+ */
+const selftake = async (data) => {
 	let conditions = {
 		_id: data._id,
 		shopid: data.shopid
 	};
+	let order = await getOrderById(conditions);
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	if (order.state != 2) {
+		data.message = "订单状态异常" + order.state;
+		return false;
+	}
+	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
+	let res = await orderCollection.doc(order._id).update({
+		receivedTime:new Date().toISOString(),
+		receivedUid:data.operator,
+		state: 3
+	});
+	//更新用户已发货和已收货
+	let resUser = await updateUserOrderCount(order.uid, "received", 1, "delivered", order.shopid);
+	return res;
+}
+const getOrderById = async (conditions, field) => {
 	if (!field) {
 		field = {
 			state: 1,
@@ -113,7 +151,7 @@ const getOrderById = async (data, field) => {
 			uid: 1
 		};
 	}
-	data = await orderCollection.where(conditions).field(field).get();
+	let data = await orderCollection.where(conditions).field(field).limit(1).get();
 	if (data.data.length == 0) {
 		return false;
 	}
@@ -123,5 +161,6 @@ const getOrderById = async (data, field) => {
 module.exports = {
 	list: list,
 	detail: detail,
-	addDelivery: addDelivery
+	addDelivery: addDelivery,
+	selftake
 }

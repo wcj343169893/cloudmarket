@@ -34,7 +34,7 @@
 **yticon.ttf**主要用在pages.json，定义顶部操作图标  
 ![yticon.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c6deb20-cc7f-11ea-b997-9918a5dda011.jpg) 
 **yticon2.ttf**主要用在App.vue 文字图标  
-![yticon2.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c705c20-cc7f-11ea-8ff1-d5dcf8779628.jpg) 
+[预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)
 ### 抢先预览
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
@@ -50,6 +50,10 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### IOS暂时没有开发者账号，没有发布
 
 ### 更新日志
+#### 下次更新
+* 增加商品upc
+* 增加商品海报
+* 用户申请退款，商家审核退款
 #### 1.0.3.12
 * 增加文档管理，优化app必要文档
 ```
@@ -103,7 +107,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 增加首次下单店铺为用户邀请者(settlement)，为将来给邀请者分成做准备  
 店铺shops增加店主uid字段  
 降低全局shopId权重，在商品详情，购物车，订单详情，单独传递店铺id，为将来多店铺做准备  
-**重要，微信个人用户申请的小程序，无法上架**，如需体验，可以扫码申请 ![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
+**重要，微信个人用户申请的小程序，无法上架**，如需体验，请下载app
 
 ```
 1: 小程序服务提供的内容涉及电商模式（如：含购物车或涉及订单按钮，含立即购买流程等），属于个人小程序未开放内容，建议选择申请企业主体小程序。

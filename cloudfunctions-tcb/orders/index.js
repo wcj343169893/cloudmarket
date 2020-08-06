@@ -126,6 +126,8 @@ exports.main = async (event, context) => {
 				lastPayTime: 1,
 				cancelStyle: 1,
 				shopid: 1,
+				deliveryHour:1,
+				deliveryType:1,
 				modified: 1,
 				payInfo: 1,
 				yuding: 1
