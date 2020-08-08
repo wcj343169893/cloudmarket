@@ -7,6 +7,7 @@ const jv = uni.requireNativePlugin('JG-JVerification');
  * vuex管理登陆状态，具体可以参考官方登陆模板示例
  */
 import { mapMutations } from 'vuex';
+import Vue from 'vue';
 import { client, auth } from '@/common/cloud.js';
 import { checkAppUpdate } from '@/common/functions.js';
 import { channelLogin } from '@/common/request.js';
@@ -16,6 +17,26 @@ const userInfoKey = 'userInfo';
 export default {
 	methods: {
 		...mapMutations(['login', 'setUserLocation', 'setAdminShop']),
+		/**
+		 * 存储设备信息 参考colorUI
+		 * @param {Object} 
+		 */
+		initSize(e){
+			const systemInfo = e;
+			let navigationBarHeight;
+			let custom = {};
+			// #ifndef MP
+			custom = {height: 36,width: 88};
+			navigationBarHeight = 44;
+			// #endif
+			// #ifdef MP-WEIXIN
+			custom = wx.getMenuButtonBoundingClientRect();
+			navigationBarHeight = custom.bottom + custom.top - e.statusBarHeight * 2;
+			// #endif	
+			systemInfo.custom = custom;
+			systemInfo.navigationBarHeight = navigationBarHeight;
+			Vue.prototype.systemInfo = systemInfo;
+		},
 		/**
 		 * 初始化极光一键登录
 		 */
@@ -121,6 +142,13 @@ export default {
 		//#ifdef MP
 		this.micLogin();
 		//#endif
+		
+		uni.getSystemInfo({
+			success: e=> {
+				this.initSize(e);
+			}
+		})
+		
 		this.loadAdminShopId();
 		//检查登录状态,如果有效，则刷新accessToken和refreshToken，这个是unicloud自己存的，每次返回不一样
 		/* auth.getLoginState().then(state => {
@@ -647,14 +675,58 @@ video {
 		}
 	}
 }
-
 .clamp {
+	/* #ifdef APP-PLUS-NVUE */
+	lines: 1;
+	/* #endif */
+	/* #ifndef APP-PLUS-NVUE */
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	display: block;
+	/* #endif */
+}
+.clamp2 {
+	/* #ifdef APP-PLUS-NVUE */
+	lines: 2;
+	/* #endif */
+	/* #ifndef APP-PLUS-NVUE */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	/* #endif */
 }
 
+/* 布局 */
+.row{
+	/* #ifndef APP-PLUS-NVUE */
+	display:flex;
+	/* #endif */
+	flex-direction:row;
+	align-items: center;
+}
+.column{
+	/* #ifndef APP-PLUS-NVUE */
+	display:flex;
+	/* #endif */
+	flex-direction: column;
+}
+.center{
+	/* #ifndef APP-PLUS-NVUE */
+	display:flex;
+	/* #endif */
+	align-items: center;
+	justify-content: center;
+}
+.fill{
+	flex: 1;
+}
+
+/* input */
+.placeholder{
+	color: #999 !important;
+}
 .common-hover {
 	background: #f5f5f5;
 }

@@ -24,8 +24,19 @@ const getPaymentConfig = (platform, provider) => {
 	}
 	return config[platform]["payment"][provider];
 }
+/**
+ * 登录配置
+ */
+const getLoginConfig = (platform, provider) => {
+	if (!provider) {
+		return config[platform]["oauth"];
+	}
+	return config[platform]["oauth"][provider];
+}
 
 module.exports = {
+	config,
 	getPaymentConfig,
-	getPaymentNotifyUrl
+	getPaymentNotifyUrl,
+	getLoginConfig
 }

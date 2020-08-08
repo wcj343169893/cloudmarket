@@ -116,6 +116,25 @@ exports.main = async (event, context) => {
 			dataOut["cart"] = res2.data[0].totalAmount;
 		}
 	}
+	//获取小程序默认分享信息
+	let docs = await db.collection("documents").where({
+		type:"mp_share",
+		shopid: shopid,
+		pageLink:"/pages/index/fruit"
+	}).field({
+		pageLinkQuery:1,
+		title:1
+	}).limit(10).get();
+	if(docs.data.length > 0){
+		//随机返回一条
+		let index = parseInt(Math.random()*docs.data.length)
+		dataOut["share"] = docs.data[index];
+	}else{
+		dataOut["share"] = {
+			pageLinkQuery:"",
+			title:""
+		}
+	}
 	return {
 		"code": 200,
 		"message": "操作成功",

@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container"><!-- 标题栏和状态栏占位符 -->
 		<view class="deliver-section">
 			<view class="delivery-types">
 				<view class="items" :class="{ current: deliveryType == 1 }" v-if="(deliverySupportType & 1) == 1" @click="changeDtype(1)"><text>配送到家</text></view>
@@ -112,13 +112,13 @@
 				<view class="yt-list-cell b-b" v-if="yuding.price">
 					<text class="cell-tit clamp">阶段1：定金</text>
 					<text class="cell-tip">
-						<text class="price">{{ yuding.price  }}</text>
+						<text class="price">{{ (yuding?yuding.price:"") | toFixed }}</text>
 					</text>
 				</view>
 				<view class="yt-list-cell b-b" v-if="yuding.finishPaymentPrice">
 					<text class="cell-tit clamp">阶段2：尾款</text>
 					<text class="cell-tip">
-						<text class="price">{{ yuding.finishPaymentPrice }}</text>
+						<text class="price">{{ (yuding?yuding.finishPaymentPrice:"") | toFixed}}</text>
 					</text>
 				</view>
 			</block>
@@ -126,7 +126,7 @@
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">商品金额</text>
 					<text class="cell-tip">
-						<text class="price">{{ totalMoney + totalDiscount }}</text>
+						<text class="price">{{ (totalMoney + totalDiscount) | toFixed}}</text>
 					</text>
 				</view>
 			</block>
@@ -478,7 +478,7 @@ export default {
 		//提交订单，并跳转到支付页面
 		submit() {
 			//判断收货地址
-			if (!this.addressData || !this.addressData._id) {
+			if (this.deliveryType == 1 && (!this.addressData || !this.addressData._id)) {
 				this.$api.msg('请填写收货地址');
 				return;
 			}
@@ -1058,4 +1058,5 @@ page {
 		}
 	}
 }
+
 </style>

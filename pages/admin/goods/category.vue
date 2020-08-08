@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view v-for="(item, index) in categoriesData" :key="index">
+		<view v-for="(item, index) in categoriesData" :key="index" class="main b-b">
 			<view class="title">
 				<view class="subname">
 					<text class="num">{{ index + 1 }}</text>
@@ -174,10 +174,11 @@ export default {
 	padding-bottom: 30rpx;
 }
 .child-line {
-	padding-top: 20upx;
+	padding: 20upx 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	position: relative;
 	input {
 		font-size: $font-base;
 	}
@@ -200,8 +201,6 @@ export default {
 	color: #fff;
 	background-color: $btn-color-light;
 	border-radius: 10upx;
-	height: 60rpx;
-	line-height: 60rpx;
 	&.cancel {
 		background-color: $btn-color-spec;
 	}
@@ -214,5 +213,12 @@ export default {
 }
 .icon-jia2 {
 	color: $font-color-emphasis;
+}
+.yticon{
+	font-size: $font-llg;
+}
+.main{
+	position: relative;
+	margin-bottom: 26rpx;
 }
 </style>

@@ -8,7 +8,9 @@ const modules = {
 const NodeRSA = require('node-rsa');
 const db = uniCloud.database();
 const usersCollection = db.collection("users");
-const config = require("./config.json");
+const {
+	getLoginConfig
+} = require("configs");
 const {
 	createTicket,
 	getTokenExpire
@@ -120,7 +122,8 @@ const genToken = function(data) {
 	if (data.tokenExpire) {
 		delete data.tokenExpire;
 	}
-	let key = new NodeRSA(config["publicKey"]);
+	let configs = getLoginConfig("basic", "token");
+	let key = new NodeRSA(configs["publicKey"]);
 	key.setOptions({
 		encryptionScheme: 'pkcs1'
 	});

@@ -76,19 +76,9 @@ export default {
 		}
 	},
 	onLoad() {
-		/* this.platform = uni.getSystemInfoSync().platform;
-		//测试阶段，自动登录
-		if(this.platform  == "ios"){
-			this.toLogin();
-			return;
-		} */
 		//在应用初始化调用
 		//#ifdef APP-PLUS
 		this.jgLogin();
-		//#endif
-
-		//#ifdef H5
-		//this.toLogin();
 		//#endif
 		//this.getPhoneInfo();
 	},
@@ -166,37 +156,6 @@ export default {
 		},
 		navToDocPageByType(type) {
 			navToDocPageByType(type);
-		},
-		async toLogin() {
-			this.logining = true;
-			//const { mobile, password } = this;
-			const result = await this.$api.json('userInfo');
-			if (result.status === 1) {
-				this.$api.msg('登录成功', 2000, false, 'success');
-				//this.login(result.data);
-				getToken({
-					uid: result.data.id,
-					token: result.data.token
-				}).then(
-					res => {
-						console.log(res);
-						//写入缓存
-						this.loginSuccess(res);
-					},
-					err => {
-						//登录信息失效
-						uni.removeStorage({
-							key: 'userInfo'
-						});
-					}
-				);
-				setTimeout(() => {
-					uni.navigateBack();
-				}, 2000);
-			} else {
-				this.$api.msg(result.msg);
-				this.logining = false;
-			}
 		},
 		changeRegion(val){
 			console.log("changeRegion",val)

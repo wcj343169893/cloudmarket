@@ -16,8 +16,8 @@
 	- 如果报错```当前私钥未包含env_id 信息， 请前往腾讯云云开发控制台，获取自定义登录最新私钥```,则在credentials.json中增加字段```"env_id":"spaceId"```。**完成以上4步，可以运行项目**   
 5. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
 默认：iOS和H5自动登录，id为10000，Android需要使用极光登录，也可以修改`/pages/public/login.vue`，`onload`方法
-6. 支付功能：/cloudfunctions/common/configs/index.js，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
-7. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)
+6. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
+7. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -44,8 +44,8 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序体验（个人认证，无法上架）
-![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
+#### 微信小程序体验
+![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)
 
 #### IOS暂时没有开发者账号，没有发布
 
@@ -54,6 +54,8 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 增加商品upc
 * 增加商品海报
 * 用户申请退款，商家审核退款
+* 接入uni-id
+
 #### 1.0.3.12
 * 增加文档管理，优化app必要文档
 ```

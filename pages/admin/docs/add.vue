@@ -1,6 +1,10 @@
 <template>
 	<view class="container">
-		<mix-list-select border="b-b" @eventClick="changeMiaoshaSku" title="类型" :options="types" :defaultOption="type"></mix-list-select>
+		<mix-list-select border="b-b" @eventClick="changeTypes" title="类型" :options="types" :defaultOption="type"></mix-list-select>
+		<block v-if="type == 'mp_share'">
+			<mix-list-input :isMust="!0" title="分享页面" :defContent="pageLink" placeholder="请输入分享页面地址" @change="changePageLink"></mix-list-input>
+			<mix-list-input title="分享参数" :defContent="pageLinkQuery" placeholder="请输入分享页面默认参数" @change="changePageLinkQuery"></mix-list-input>
+		</block>
 		<mix-list-input :isMust="!0" title="标题" :defContent="title" placeholder="请输入标题" @change="changeTitle"></mix-list-input>
 		<mix-list-input :defContent="content" type="textarea" :isMust="!0" title="内容" placeholder="请输入内容" @change="changeContent"></mix-list-input>
 		<view class="specsTitlesBtn"><button class="add-btn" @click="save">提交保存</button></view>
@@ -18,9 +22,12 @@ export default {
 				app_about: 'APP-关于我们',
 				app_goods_charge: 'APP-退换货原则',
 				app_user_private: 'APP-隐私政策',
+				mp_share: '小程序分享页面',
 				normal: '普通文档'
 			},
 			type: 'normal',
+			pageLink: '',
+			pageLinkQuery:'',
 			title: '',
 			content: '',
 			submiting: false
@@ -42,6 +49,9 @@ export default {
 					console.log(res);
 					this.title = res.title;
 					this.content = res.content;
+
+					this.pageLink=res.pageLink;
+					this.pageLinkQuery = res.pageLinkQuery;
 					if (res.type) {
 						this.type = res.type;
 					}
@@ -51,11 +61,20 @@ export default {
 				}
 			);
 		},
+		changeTypes(val){
+			this.type = val
+		},
 		changeTitle(val) {
 			this.title = val;
 		},
 		changeContent(val) {
 			this.content = val;
+		},
+		changePageLink(val) {
+			this.pageLink = val;
+		},
+		changePageLinkQuery(val){
+			this.pageLinkQuery = val;
 		},
 		save() {
 			if (this.submiting) {
@@ -64,6 +83,9 @@ export default {
 			this.submiting = true;
 			docsAdmin('add', {
 				_id: this._id,
+				type:this.type,
+				pageLink: this.pageLink,
+				pageLinkQuery: this.pageLinkQuery,
 				title: this.title,
 				content: this.content
 			}).then(

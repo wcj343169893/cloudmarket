@@ -1,9 +1,12 @@
 'use strict';
 const NodeRSA = require('node-rsa');
-const configs = require("../config.json");
+const {
+	getLoginConfig
+} = require("configs");
 const cmd = uniCloud.database().command;
 const checkInfo = async function(data) {
 	let token = data.token;
+	let configs = getLoginConfig("basic", "token");
 	//解密token
 	let key = new NodeRSA(configs["privateKey"]);
 	//这一步很关键：encryptionScheme — padding scheme for encrypt/decrypt. Can be 'pkcs1_oaep' or 'pkcs1'. Default 'pkcs1_oaep'.

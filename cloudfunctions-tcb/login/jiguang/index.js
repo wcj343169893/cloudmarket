@@ -1,10 +1,12 @@
 'use strict';
 const NodeRSA = require('node-rsa');
 //极光配置，公钥需要设置到极光后台，app包名需要对应上，否则无法验证
-const config = require('../config.json');
-const checkInfo = async function(data) {
+const {
+	getLoginConfig
+} = require("configs");
+const checkInfo = async function(data,context) {
 	//只有app端支持极光
-	let configs = config["app-plus"]["oauth"]["jiguang"];
+	let configs = getLoginConfig(context.PLATFORM, "jiguang");
 	let token = data.token;
 	//Authorization 在网上可以生成
 	const result = await uniCloud.httpclient.request(configs["url"], {

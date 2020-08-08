@@ -109,6 +109,7 @@ exports.main = async (event, context) => {
 			message: "支付方式错误"
 		}
 	}
+	console.log(config);
 	let uniPayIns = uniPay[config["uniPay"]](config);
 	// 支付结果通知地址,经过测试，http地址也能作为通知地址
 	let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, event.provider);

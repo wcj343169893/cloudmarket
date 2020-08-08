@@ -1,5 +1,6 @@
 'use strict';
-const config = require("../config.json");/**
+const {getLoginConfig} = require("configs");
+/**
  * https://ext.dcloud.net.cn/plugin?id=1834
  */
 const uniAccount = require('uni-account');
@@ -11,7 +12,8 @@ const uniAccount = require('uni-account');
 const checkInfo = async function(data, context) {
 	let platform = context.PLATFORM;
 	let provider = data.channel;
-	let uniAccountIns = uniAccount.initWeixin(config[platform]["oauth"][provider]);
+	
+	let uniAccountIns = uniAccount.initWeixin(getLoginConfig(platform,provider));
 	const {
 		openid
 	} = await uniAccountIns.code2Session(data.code);
