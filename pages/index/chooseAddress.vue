@@ -148,8 +148,7 @@ export default {
 		...mapMutations(['setUserLocation']),
 		async loadData() {
 			address({
-				type: 'list'
-			}).then(res => {
+			},'list').then(res => {
 				res.forEach(ele => {
 					ele.checked = ele._id == this.location.id;
 				});

@@ -305,7 +305,7 @@ exports.main = async (event, context) => {
 	//提交订单
 	if (type && type == "submit") {
 		//检查是否存在库存不足的商品
-		if (data.stockNotEnough.lengt > 0) {
+		if (data.stockNotEnough.length > 0) {
 			//归还秒杀库存1
 			decrStockMiaoshaGoodsSuccess.map(async (ele) => {
 				return await updateGoodsMiaoshaStock(ele, -1);

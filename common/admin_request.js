@@ -58,7 +58,7 @@ const adminNetwork = (module,action,data,isShowLoading)=>{
 	}
 	//console.log(adminShopId)
 	return network({
-		url: "admin",
+		url: "cloud-admin",
 		data: {
 			module:module,
 			action:action,

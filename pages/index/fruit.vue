@@ -235,15 +235,21 @@ export default {
 				this.loadData();
 			} else {
 				//获取定位
+				uni.showLoading({
+					title:"正在定位"
+				})
 				uni.getLocation({
 					type: 'gcj02',
 					altitude: true,
 					geocode: true,
 					success: res => {
+						uni.hideLoading();
 						console.log('获取定位完成', res);
 						this.address = '当前位置';
 						//#ifndef MP
-						this.address = res.address.poiName;
+						if(res.address){
+							this.address = res.address.poiName;
+						}
 						//百度地图
 						//this.address = res.address.street + res.address.streetNum;
 						//#endif
@@ -256,6 +262,7 @@ export default {
 						this.loadData();
 					},
 					fail: res => {
+						uni.hideLoading();
 						this.address = '定位失败,将展示默认信息';
 						console.log('获取定位失败', res.errMsg);
 						this.loadData();

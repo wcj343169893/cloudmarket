@@ -86,5 +86,13 @@
 				"alipayPublicKey": "alipay publicKey"
 			}
 		}
+	},
+	"h5": {
+		"payment": {
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额"
+			}
+		}
 	}
 }

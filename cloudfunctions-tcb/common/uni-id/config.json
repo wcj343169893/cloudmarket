@@ -1,7 +1,7 @@
 {
 	"passwordSecret": "passwordSecret-demo",
 	"tokenSecret": "tokenSecret-demo",
-	"tokenExpiresIn": 7200,
+	"tokenExpiresIn": 14400,
 	"passwordErrorLimit": 6,
 	"passwordErrorRetryTime": 3600,
 	"app-plus": {
@@ -16,8 +16,8 @@
 	"mp-weixin": {
 		"oauth": {
 			"weixin": {
-				"appid": "weixin appid",
-				"appsecret": "weixin appsecret"
+				"appid": "wx399393ad0d5e4d31",
+				"appsecret": "2732931e00e58d0605d96a11d2b62430"
 			}
 		}
 	},
@@ -31,10 +31,10 @@
 	},
 	"service": {
 		"sms": {
-			"name": "your app name",
+			"name": "云商商城",
 			"codeExpiresIn": 180,
-			"smsKey": "your sms key",
-			"smsSecret": "your sms secret"
+			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
+			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"
 		}
 	}
 }

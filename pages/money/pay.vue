@@ -167,9 +167,9 @@ export default {
 		confirmPay() {
 			if (this.payType == 'balance') {
 				//余额支付，单独调用接口
-				balancePay({
+				payment({
 					id: this.id
-				}).then(
+				},"balance").then(
 					res => {
 						this.paySuccess();
 					},
@@ -183,7 +183,7 @@ export default {
 				openid: this.openid,
 				provider: this.payType,
 				id: this.id
-			}).then(
+			},this.payType).then(
 				res => {
 					console.log(res);
 					uni.requestPayment({

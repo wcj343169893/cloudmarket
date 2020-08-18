@@ -32,7 +32,7 @@
 //极光登录插件
 const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
-import { mobileAutoLogin, getToken, mobileLogin } from '@/common/request.js';
+import { mobileAutoLogin, getToken, mobileLogin,sendSms } from '@/common/request.js';
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
 import { navToDocPageByType } from '@/common/functions.js';
@@ -161,7 +161,7 @@ export default {
 			console.log("changeRegion",val)
 		},
 		getCode() {
-			if (this.disabled) {
+			if (this.disabled || this.processing) {
 				return;
 			}
 			//再次验证手机号码
@@ -171,7 +171,15 @@ export default {
 			}
 			//发送短信,但是需要企业信息,这里做假的功能,假如调用云函数，发送短信成功....
 			//this.$api.msg("发送短信成功！",3000);
-			this.$api.msg('测试例子，任意验证码都能通过', 3000);
+			//this.$api.msg('测试例子，任意验证码都能通过', 3000);
+			sendSms({
+				mobile:this.mobile
+			}).then(res=>{
+				this.$api.msg("发送成功")
+				this.code = res;
+			},err=>{
+				this.$api.msg(err.message)
+			})
 			//倒计时60秒
 			this.daojishi(this.daojishiTotal);
 		},
@@ -216,15 +224,7 @@ export default {
 		},
 		loginSuccess(res) {
 			this.$api.msg('登录成功', 2000, false, 'success');
-			//写入缓存
-			uni.setStorage({
-				key: 'userInfo',
-				data: res
-			});
-			auth.signInWithTicket(res.ticket).then(() => {
-				// 登录成功
-				console.log('客户端登录成功');
-			});
+			this.login(res);
 			this.navTimeBack();
 		}
 	}

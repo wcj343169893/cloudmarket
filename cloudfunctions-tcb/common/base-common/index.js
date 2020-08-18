@@ -1,5 +1,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
+const userCollection = db.collection("uni-id-users");
+const shopCollection = db.collection("shops");
 /**
  * 获取集合名称,更好管理多地区分站
  * @param {Object} event
@@ -93,9 +95,7 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
 	console.log(uid, shopid, JSON.stringify(data));
-	let res = await db.collection("users").where({
-		id: +uid
-	}).update(data);
+	let res = await userCollection.doc(uid).update(data);
 	console.log(res);
 	//更新店铺订单数总计
 	if (shopid > 0) {
@@ -110,9 +110,7 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
  */
 const updateUserScore = async function(uid, number) {
 	console.log("updateUserScore", uid, number);
-	return await db.collection("users").where({
-		id: +uid
-	}).update({
+	return await userCollection.doc(uid).update({
 		score: cmd.inc(number * 1)
 	});
 }
@@ -140,7 +138,7 @@ const shopGoodsInc = async (shopid, type, number, type2) => {
  * @param {Object} data
  */
 const updateShopStatistics = async (shopid, data) => {
-	let res2 = await db.collection("shops").where({
+	let res2 = await shopCollection.where({
 		id: +shopid
 	}).update(data);
 	console.log("updateShopStatistics", res2);
@@ -186,13 +184,11 @@ const addUserBalanceLog = async function(data) {
  * @param {int} id
  * @param {Object} field 
  */
-const getUserInfoById = async function(id, field) {
+const getUserInfoById = async function(uid, field) {
 	field = field || {
 		nickname: 1
 	}
-	let data = await db.collection("users").where({
-		id: +id
-	}).field(field).limit(1).get();
+	let data = await userCollection.doc(uid).field(field).limit(1).get();
 	if (data.data.length > 0) {
 		return data.data[0];
 	}

@@ -151,7 +151,7 @@
 	</view>
 </template>
 <script>
-import { getGoodsVisites, getUserInfo,saveUserInfo, cronCancelOrders } from '@/common/request.js';
+import { getGoodsVisites, getUserStatistics,saveUserInfo, cronCancelOrders } from '@/common/request.js';
 import { navToGoodsItemPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
@@ -224,40 +224,40 @@ export default {
 		...mapMutations(['login','logout']),
 		async loadData() {
 			this.isLoaded = true;
+			console.log("加载用户信息",this.hasLogin)
 			if (this.hasLogin) {
-				cronCancelOrders()
+				/* cronCancelOrders()
 					.then(res => {
 						console.log('清理过期订单', res);
 					})
 					.catch(err => {
 						console.log(err);
-					});
+					}); */
 				//自己的信息
-				getUserInfo().then(res => {
 					//this.userInfo = res;
 					//this.order = res.order;
-					this.login(res);
-					//免费会员期限
-					this.freeVip = res.lastFreeVip>res.time;
-					//会员价格/年费
-					this.vipPrice = res.vipPrice;
-					if (res.order) {
-						//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
-						for (let t in res.order) {
-							this.order[t] = res.order[t];
+					//this.login(res);
+					getUserStatistics({}).then(res=>{
+						//免费会员期限
+						this.freeVip = res.lastFreeVip>res.time;
+						//会员价格/年费
+						this.vipPrice = res.vipPrice; 
+						if (res.order) {
+							//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+							for (let t in res.order) {
+								this.order[t] = res.order[t];
+							}
+							this.order.receive = this.order.payup + this.order.delivered;
+						} else {
+							for (let t in this.order) {
+								this.order[t] = 0;
+							}
 						}
-						this.order.receive = this.order.payup + this.order.delivered;
-					} else {
-						for (let t in this.order) {
-							this.order[t] = 0;
-						}
-					}
+					})
+					
 					if(this.userInfo.invite > 0){
 						this.teamTips="已加入团队:"+this.userInfo.invite;
 					}
-				},err=>{
-					this.logout();
-				});
 				getGoodsVisites({}).then(
 					res => {
 						this.hasVisiteGoods = true;

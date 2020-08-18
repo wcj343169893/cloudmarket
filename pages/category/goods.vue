@@ -125,7 +125,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { getShopHome, editCart, cleanCart, getCartList } from '@/common/request.js';
+import { getAllCategories, editCart, cleanCart, getCartList } from '@/common/request.js';
 import { updateCartNumber, navToGoodsItemPage, navToLoginPage, showLoginDialog, updateGoodsTags } from '@/common/functions.js';
 export default {
 	data() {
@@ -208,7 +208,7 @@ export default {
 		},
 		getShopInfo() {
 			//一并查询所有商品
-			getShopHome({
+			getAllCategories({
 				id: this.shopId,
 				stationId: this.stationId,
 				withGoods: 1,
