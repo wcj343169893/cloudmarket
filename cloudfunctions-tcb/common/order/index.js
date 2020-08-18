@@ -1,5 +1,8 @@
 const db = uniCloud.database();
 const cmd = db.command;
+const orderCollection = db.collection("cloud_orders");
+const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
+const goodsShopDaySalesCollection = db.collection("goods_shop_day_sales");
 const {
 	updateUserOrderCount,
 	getDateString
@@ -13,10 +16,10 @@ const updateOrderPaymentInfo = async function(event) {
 	//reserve_
 	let outTradeNo = event.outTradeNo;
 	let conditions1 = {
-		_id: outTradeNo
+		id: outTradeNo
 	};
 	let conditions = {
-		_id: outTradeNo,
+		id: outTradeNo,
 		state: 0
 	};
 	let updateData = {
@@ -47,12 +50,12 @@ const updateOrderPaymentInfo = async function(event) {
 			modified: time
 		}
 	}
-	//console.log(conditions);
-	//console.log(updateData);
-	let data = await db.collection("orders").where(conditions).update(updateData);
+	console.log(conditions);
+	console.log(updateData);
+	let data = await orderCollection.where(conditions).update(updateData);
 	//首次修改状态
 	if (data.updated == 1) {
-		let orderData = await db.collection("orders").where(conditions1).field({
+		let orderData = await orderCollection.where(conditions1).field({
 			uid: 1,
 			goods: 1,
 			shopid: 1,
@@ -62,7 +65,7 @@ const updateOrderPaymentInfo = async function(event) {
 		let order = orderData.data[0];
 		if (type == "yuding") {
 			//更新支付倒计时lastPayTime=yuding.finalPaymentEndTime
-			let res = await db.collection("orders").doc(order._id).update({
+			let res = await orderCollection.doc(order._id).update({
 				lastPayTime: order.yuding.finalPaymentEndTime
 			});
 			console.log("更新预定订单尾款最后支付时间", res);
@@ -88,12 +91,12 @@ const updateOrderPaymentInfo = async function(event) {
 		let dayTime = getDateString();
 
 		//商品销量
-		let saleRes = await db.collection("goods_day_sales").where({
+		let saleRes = await goodsDaySalesCollection.where({
 			day: dayTime
 		}).update(up);
 		console.log("saleRes", saleRes);
 		//店铺每日销量
-		saleRes = await db.collection("goods_shop_day_sales").where({
+		saleRes = await goodsShopDaySalesCollection.where({
 			day: dayTime
 		}).update(shopSales);
 		console.log("saleRes", saleRes);

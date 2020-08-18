@@ -9,8 +9,8 @@ const {
 	genIdentityId,
 	genOrderNo
 } = require('base-common');
-const orderCollection = db.collection("orders");
-const cartCollection = db.collection('carts');
+const orderCollection = db.collection("cloud_orders");
+const cartCollection = db.collection('cloud_carts');
 /**
  * 用户中心统一插件，位于common目录
  * @url https://ext.dcloud.net.cn/plugin?id=2116
@@ -89,9 +89,10 @@ const list = async (data, context) => {
 const cancel = async (data) => {
 	const {
 		uid,
-		_id
+		id,
+		style,
 	} = data;
-	let field = {
+	let fields = {
 		state: 1,
 		totalMoney: 1,
 		shopid: 1,
@@ -103,7 +104,7 @@ const cancel = async (data) => {
 	let conditions = {
 		uid: uid,
 		isDelete: 0,
-		_id: _id,
+		_id: id,
 		state: cmd.in([0, -1])
 	};
 	let order = await getOrderByConditions(conditions, fields);
@@ -123,7 +124,7 @@ const cancel = async (data) => {
 	//取消未付款订单
 	let result = await orderCollection.doc(order._id).update({
 		state: -1,
-		cancelStyle: event.style
+		cancelStyle: style
 	});
 	//取消申请
 	await pushOrderCancelInfo(order._id, "您的取消申请已提交。");
@@ -163,9 +164,9 @@ const cancel = async (data) => {
 const detail = async (data) => {
 	const {
 		uid,
-		_id
+		id
 	} = data;
-	let field = {
+	let fields = {
 		id: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
@@ -178,6 +179,7 @@ const detail = async (data) => {
 		lastPayTime: 1,
 		cancelStyle: 1,
 		shopid: 1,
+		shop:1,
 		deliveryHour: 1,
 		deliveryType: 1,
 		modified: 1,
@@ -187,7 +189,7 @@ const detail = async (data) => {
 	let conditions = {
 		uid: uid,
 		isDelete: 0,
-		_id: _id
+		_id: id
 	};
 	let order = await getOrderByConditions(conditions, fields);
 	if (!order) {
@@ -203,12 +205,12 @@ const detail = async (data) => {
 const deletes = async (data) => {
 	const {
 		uid,
-		_id
+		id
 	} = data;
 	let conditions = {
 		uid: uid,
 		isDelete: 0,
-		_id: _id,
+		_id: id,
 	};
 	let field = {
 		state: 1,
@@ -236,12 +238,12 @@ const deletes = async (data) => {
 const makesure = async (data, context) => {
 	const {
 		uid,
-		_id
+		id
 	} = data;
 	let conditions = {
 		uid: uid,
 		isDelete: 0,
-		_id: _id,
+		_id: id,
 	};
 	let field = {
 		state: 1,
@@ -375,7 +377,6 @@ const settlement = async (event, context) => {
 			"price": 1,
 			"amount": 1
 		}).get();
-
 	}
 	if (carts.data.length == 0) {
 		event.message = "结算商品不存在";

@@ -2,7 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const uniID = require('uni-id');
-const shopCollection = db.collection("shops");
+const shopCollection = db.collection("cloud_shops");
 const userCollection = db.collection("uni-id-users");
 const models = {
 	//我的信息

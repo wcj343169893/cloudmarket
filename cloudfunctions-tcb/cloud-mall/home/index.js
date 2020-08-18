@@ -2,11 +2,11 @@
 const uniID = require('uni-id');
 const db = uniCloud.database();
 const cmd = db.command;
-const cartCollection = db.collection('carts');
-const goodsCollection = db.collection('goods');
-const goodsCategoryCollection = db.collection('goods_categories');
-const adCollection = db.collection('ads');
-const shopCollection = db.collection("shops");
+const cartCollection = db.collection('cloud_carts');
+const goodsCollection = db.collection('cloud_goods');
+const goodsCategoryCollection = db.collection('cloud_goods_categories');
+const adCollection = db.collection('cloud_ads');
+const shopCollection = db.collection("cloud_shops");
 
 //文档公开方法，直接可以调用
 const documents = require("../document");

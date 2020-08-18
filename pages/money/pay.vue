@@ -127,7 +127,11 @@ export default {
 						//this.cancelOrder(ele, index, 'auto');
 						if (this.comefrom == 'order') {
 							//默认切换到第一个选项卡，保证返回后一定有数据
-							this.$api.prePage().tabClick(0);
+							try{
+								this.$api.prePage().tabClick(0);
+							}catch(e){
+								//TODO handle the exception
+							}
 						}
 						orders({
 							id: this.orderInfo._id,

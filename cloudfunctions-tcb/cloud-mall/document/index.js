@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const documentCollection = db.collection('documents');
+const documentCollection = db.collection('cloud_documents');
 /**
  * 根据文档id查询
  */

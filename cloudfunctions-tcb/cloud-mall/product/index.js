@@ -1,9 +1,9 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const goodsCollection = db.collection("goods");
-const goodsVisiteCollection = db.collection('goods_visites');
-const cartCollection = db.collection('carts');
+const goodsCollection = db.collection("cloud_goods");
+const goodsVisiteCollection = db.collection('cloud_goods_visites');
+const cartCollection = db.collection('cloud_carts');
 const models = {
 	//查询商品详情
 	async detail(data) {

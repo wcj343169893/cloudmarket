@@ -15,13 +15,13 @@ const {
 const {
 	updateOrderPaymentInfo
 } = require('order');
-const orderCollection = db.collection("orders");
-const userCollection = db.collection("users");
+const orderCollection = db.collection("cloud_orders");
+const userCollection = db.collection("uni-id-users");
 /**
  * 微信、支付宝支付
  */
 const unipayment = async (data, context) => {
-	const order =await checkOrder(data);
+	const order = await checkOrder(data);
 	if (!order) {
 		return false;
 	}
@@ -41,7 +41,7 @@ const unipayment = async (data, context) => {
 		openid: data.openid ? data.openid : "", //支付宝小程序、微信小程序必填
 		subject: order.body, // 微信支付时不可填写此项
 		body: order.body,
-		outTradeNo: id, //订单号
+		outTradeNo: order.payid, //订单号
 		totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
 		notifyUrl: notifyUrl // 支付结果通知地址
 	});
@@ -51,11 +51,11 @@ const unipayment = async (data, context) => {
  * 余额支付
  */
 const balance = async (data, context) => {
-	const order = checkOrder(data);
+	const order = await checkOrder(data);
 	if (!order) {
 		return false;
 	}
-	return await balancePay(order, context.userInfo);
+	return await balancePay(order, data.uid, context.userInfo);
 }
 /**
  * 订单支付信息
@@ -63,7 +63,7 @@ const balance = async (data, context) => {
  * @param {Object} context
  */
 const info = async (data, context) => {
-	const order =await checkOrder(data);
+	const order = await checkOrder(data);
 	if (!order) {
 		return false;
 	}
@@ -116,6 +116,7 @@ const checkOrder = async (data) => {
 		data.message = "订单不存在";
 		return false;
 	}
+	order.payid = order.id;
 	if (order.state !== 0) {
 		data.message = "订单" + (order.state = 1 ? "已支付" : "已取消");
 		return false;
@@ -131,9 +132,9 @@ const checkOrder = async (data) => {
 			}
 			//支付预定订单
 			order.totalMoney = order.yuding.price;
-			id = order.yuding.id;
+			order.payid = order.yuding.id;
 			order.body = "定金：" + order.body;
-			console.log("定金", id, order.yuding);
+			console.log("定金", order.yuding);
 		} else {
 			//支付尾款
 			order.totalMoney = order.yuding.finishPaymentPrice + order.freight;
@@ -163,7 +164,7 @@ const getOrderByConditions = async (conditions, fields) => {
  * @param {Object} order 订单信息
  * @param {Object} id 支付单号
  */
-const balancePay = async (order, userInfo) => {
+const balancePay = async (order, uid, userInfo) => {
 	console.log("余额支付");
 	let balance = 0;
 	if (userInfo.balance && userInfo.balance > 0) {
@@ -179,7 +180,7 @@ const balancePay = async (order, userInfo) => {
 	if (order.totalMoney > 0) {
 		const cmd = db.command;
 		let res = await userCollection.where({
-			id: uid,
+			_id: uid,
 			balance: cmd.gte(order.totalMoney)
 		}).update({
 			balance: cmd.inc(order.totalMoney * -1)
@@ -197,13 +198,14 @@ const balancePay = async (order, userInfo) => {
 		uid: uid,
 		type: 0, //0支出，1收入
 		balance: yue,
-		orderId: id,
+		orderId: order.payid,
 		money: order.totalMoney,
 		description: "购买:" + order.body,
 	});
+	console.log("addUserBalanceLog", log)
 	//调用订单处理方法
 	let resultData = await updateOrderPaymentInfo({
-		outTradeNo: id,
+		outTradeNo: order.payid,
 		transactionId: log.id,
 		uid: uid,
 		tradeStatus: "TRADE_SUCCESS",
@@ -212,7 +214,7 @@ const balancePay = async (order, userInfo) => {
 		name: "余额支付",
 		balance: yue,
 	});
-	console.log(resultData);
+	console.log("updateOrderPaymentInfo", resultData);
 	return resultData;
 }
 

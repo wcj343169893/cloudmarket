@@ -1,10 +1,10 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const goodsCollection = db.collection("goods");
-const goodsCategoryCollection = db.collection("goods_categories");
-const cartCollection = db.collection("carts");
-const shopCollection = db.collection("shops");
+const goodsCollection = db.collection("cloud_goods");
+const goodsCategoryCollection = db.collection("cloud_goods_categories");
+const cartCollection = db.collection("cloud_carts");
+const shopCollection = db.collection("cloud_shops");
 const main = async (event) => {
 	let shopid = parseInt(event.id);
 	const {

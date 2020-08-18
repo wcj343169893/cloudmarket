@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const addressCollection = db.collection('addresses');
+const addressCollection = db.collection('cloud_addresses');
 /**
  * 新增
  * @param {Object} data

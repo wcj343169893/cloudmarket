@@ -344,6 +344,10 @@ export default {
 		},
 		//检查收货地址是否在配送范围内
 		checkAddress() {
+			if(!this.addressData || !this.addressData.latitude){
+				console.log("没有收货地址")
+				return false;
+			}
 			//计算2点的距离
 			let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' + this.location.longitude];
 			mapDistance(fromLng.join(';'), this.shop.latitude + ',' + this.shop.longitude).then(res => {

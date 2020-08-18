@@ -1,8 +1,8 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const goodsCollection = db.collection("goods");
-const cartCollection = db.collection("carts");
+const goodsCollection = db.collection("cloud_goods");
+const cartCollection = db.collection("cloud_carts");
 const models = {
 	//列表
 	async list(data) {
@@ -146,7 +146,7 @@ const models = {
 	},
 	async edit(event) {
 		const {
-			shopid,
+			id,
 			uid
 		} = event;
 
@@ -169,7 +169,7 @@ const models = {
 				"message": "商品不存在",
 			};
 		}
-		let result = await saveCartInfo(event, shopid, uid, new Date());
+		let result = await saveCartInfo(event, id, uid, new Date());
 		if (!result) {
 			return false;
 		}

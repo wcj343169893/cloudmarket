@@ -201,7 +201,7 @@ export default {
 				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
-						console.log(ele);
+						//console.log(ele);
 						let isPay = true;
 						ele.priceTitle = '单价';
 						//预定yuding  item.yuding.finalpay

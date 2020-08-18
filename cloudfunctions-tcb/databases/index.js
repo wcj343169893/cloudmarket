@@ -19,11 +19,22 @@ exports.main = async (event, context) => {
 			data: []
 		};
 		//限制条数
-		let limit = limits[m.name] != undefined ? limits[m.name] : 1;
-		if (limit > 0) {
-			let da = await db.collection(m.name).limit(limit).get();
-			data[m.name].data = da.data;
+		//let limit = limits[m.name] != undefined ? limits[m.name] : 1;
+		let limit = 200;
+		let collectionName = "cloud_"+m.name;
+		//判断集合是否存在
+		try{
+			await db.createCollection(collectionName);
+			let result = await db.collection(m.name).limit(limit).get();
+			//data[m.name].data = result.data;
+			for (let da of result.data) {
+				await db.collection(collectionName).add(da);
+			}
+		}catch(e){
+			//TODO handle the exception
 		}
+		
+		
 		//设置索引
 		if (indexs[m.name]) {
 			data[m.name].index = indexs[m.name];
