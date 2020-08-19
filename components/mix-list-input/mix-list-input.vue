@@ -5,10 +5,10 @@
 				<text v-if="isMust">*</text>
 				{{ title }}
 			</text>
-			<input v-if="type == 'text'" type="text" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'digit'" type="digit" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'number'" type="number" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'idcard'" type="idcard" class="cell-content" @input="changeContent" v-model="content" :placeholder="placeholder" />
+			<input v-if="type == 'text'" type="text" class="cell-content" :class="[textAlign]" @blur="blurContent" @input="changeContent" v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'digit'" type="digit" class="cell-content" @input="changeContent" @blur="blurContent" v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'number'" type="number" class="cell-content" @input="changeContent" @blur="blurContent" v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'idcard'" type="idcard" class="cell-content" @input="changeContent" @blur="blurContent" v-model="content" :placeholder="placeholder" />
 			<block v-else-if="type == 'textarea'">
 				<view class="">
 					<textarea  maxlength="9999" v-model="content" class="cell-content" @input="changeContent" :placeholder="placeholder" />
@@ -45,6 +45,10 @@ export default {
 			type: String,
 			default: '请输入'
 		},
+		textAlign:{
+			type: String,
+			default: ''
+		},
 		defContent: {
 			type: String,
 			default: ''
@@ -64,12 +68,15 @@ export default {
 		changeContent(e) {
 			//console.log('changeContent', e);
 			this.$emit('change', e.detail.value);
+		},
+		blurContent(e){
+			this.$emit('blur', e.detail.value);
 		}
 	}
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .input-container {
 	.mix-list-cell {
 		display: flex;
@@ -95,6 +102,9 @@ export default {
 			font-size: $font-sm + 2upx;
 			&.content-right {
 				text-align: right;
+			}
+			&.light{
+				color: $font-color-light;
 			}
 		}
 		&.textarea {

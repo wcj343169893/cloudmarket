@@ -7,8 +7,8 @@ const userCollection = db.collection("uni-id-users");
 const models = {
 	//我的信息
 	async mine(data, context) {
-		let res =  await getUserInfo(data.uid, ["nickname", "gender", "status", "mobile", "email", "mobile_confirmed",
-			"email_confirmed", "avatar", "comment"
+		let res = await getUserInfo(data.uid, ["nickname", "gender", "status", "mobile", "email", "mobile_confirmed",
+			"email_confirmed", "avatar", "comment", "birthday"
 		]);
 		if (res.code > 0) {
 			return res;
@@ -23,7 +23,7 @@ const models = {
 		}
 		let info = res.userInfo;
 		//处理余额为2位小数
-		info.balance = info.balance? info.balance.toFixed(2):0;
+		info.balance = info.balance ? info.balance.toFixed(2) : 0;
 		if (info.admin) {
 			//查询店铺的订单统计情况,以及店铺信息
 			let shops = await shopCollection.where({
@@ -46,6 +46,33 @@ const models = {
 		//88/年
 		info.vipPrice = 88;
 		return info;
+	},
+	//开通会员，后续完成
+	async vip(data) {
+		//限时开通途径，free
+		let channel = data.channel;
+		data.message = "开通失败";
+		return false;
+	},
+	//修改用户信息
+	async save(data) {
+		let strinFields = ["avatar", "nickname", "birthday"];
+		let intFields = ["gender"];
+		let entity = {};
+		for (let f in data) {
+			if (strinFields.indexOf(f) != -1) {
+				//可保存的字段
+				entity[f] = data[f];
+			} else if (intFields.indexOf(f) != -1) {
+				entity[f] = parseInt(data[f]);
+			}
+		}
+		console.log("保存用户基本信息", entity);
+		//保存更改
+		return await uniID.updateUser({
+			uid: data.uid,
+			...entity
+		});
 	}
 }
 /**

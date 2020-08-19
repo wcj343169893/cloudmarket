@@ -20,7 +20,7 @@ exports.main = async (event, context) => {
 	//统一用户权限验证，进入里面，所有必须登录，某些接口，需要特殊验证
 	const {
 		module, 
-		operation, 
+		action, 
 		data, 
 		shopid,
 		uniIdToken

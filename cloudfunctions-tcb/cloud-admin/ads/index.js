@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const adCollection = db.collection("ads");
+const adCollection = db.collection("cloud_ads");
 
 /**
  * 查询店铺所有的广告，最多支持5条，一次性查询完

@@ -244,15 +244,6 @@ const getGoodsVisites = function(data) {
 		isShowLoading: false
 	})
 }
-//极光手机号自动登录
-const mobileAutoLogin = function(data) {
-	data["channel"] = "jiguang";
-	return network({
-		url: "login",
-		data: data,
-		isShowLoading: true
-	})
-}
 //手机号+验证码登录
 const mobileLogin = function(data) {
 	return network({
@@ -262,16 +253,6 @@ const mobileLogin = function(data) {
 			action: "mobile",
 			data
 		},
-		isShowLoading: true
-	})
-}
-/**
- * token自动登录，有有效期限制
- */
-const channelLogin = function(data) {
-	return network({
-		url: "login",
-		data: data,
 		isShowLoading: true
 	})
 }
@@ -321,11 +302,14 @@ const sendSms = function(data) {
  * 修改自己的信息
  * @param {Object} data
  */
-const saveUserInfo = function(data) {
-	data["type"] = data.type || "save";
+const saveUserInfo = function(data,action) {
 	return network({
-		url: "users",
-		data: data,
+		url: "cloud-user",
+		data: {
+			module: "info",
+			action: action,
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
@@ -415,14 +399,12 @@ export {
 	getUserInfo,
 	saveUserInfo,
 	getGoodsVisites,
-	mobileAutoLogin,
 	cronCancelOrders,
 	getToken,
 	searchGoodsByKey,
 	getDocContent,
 	micLogin,
 	mobileLogin,
-	channelLogin,
 	sendSms,
 	getUserStatistics
 }

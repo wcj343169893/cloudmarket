@@ -3,7 +3,7 @@
 		<view class="user-section" v-if="isLoaded">
 			<image class="bg" src="/static/user-bg2.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
+				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.avatar"></image></view>
 				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
 					<text class="username">{{ userInfo.nickname }}</text>
 					<view class="account">
@@ -76,11 +76,11 @@
 				</view>
 			</view>
 			<!-- 管理的店铺列表 -->
-			<view class="admin-section" v-if="userInfo.admin && userInfo.admin.length > 0">
+			<view class="admin-section" v-if="admin && admin.length > 0">
 				<view class="title">
 					<text>我的门店</text>
 				</view>
-				<view v-for="(item,index) in userInfo.admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
+				<view v-for="(item,index) in admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
 					<image :src="item.src" mode="aspectFill"></image>
 					<view class="right">
 						<view class="content">
@@ -176,6 +176,7 @@ export default {
 				receive: 0,
 				refund: 0
 			},
+			admin:[],
 			teamTips:"加入团队",
 			moving: false
 		};
@@ -242,6 +243,7 @@ export default {
 						this.freeVip = res.lastFreeVip>res.time;
 						//会员价格/年费
 						this.vipPrice = res.vipPrice; 
+						this.admin = res.admin;
 						if (res.order) {
 							//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 							for (let t in res.order) {
@@ -285,7 +287,7 @@ export default {
 			uni.previewImage({
 				indicator:"none",
 				urls:[
-					this.userInfo.portrait
+					this.userInfo.avatar
 				]
 			})
 		},
@@ -312,9 +314,8 @@ export default {
 				return;
 			}
 			saveUserInfo({
-				type:"vip",
 				channel:"free"
-			}).then(res=>{
+			},"vip").then(res=>{
 				this.loadData();
 				this.$api.msg("开通成功",1500,true,"success");
 			},err=>{
@@ -328,9 +329,8 @@ export default {
 			if(n>1){
 				this.$refs.vipPopup.close();
 				saveUserInfo({
-					type:"vip",
 					fuid:n
-				}).then(res=>{
+				},"vip").then(res=>{
 					this.loadData();
 					this.$api.msg("开通成功",1500,true,"success");
 				},err=>{
@@ -360,9 +360,8 @@ export default {
 			if(n>1){
 				this.$refs.invitePopup.close();
 				saveUserInfo({
-					type:"invite",
 					fuid:n
-				}).then(res=>{
+				},"invite").then(res=>{
 					this.loadData();
 					this.$api.msg("加入成功",1500,true,"success");
 				},err=>{

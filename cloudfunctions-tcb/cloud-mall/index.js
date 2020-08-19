@@ -27,8 +27,8 @@ const mustLoginActions = {
 	cart: [
 		"list", "settlement", "edit", "addmany", "clean", "selected", "full"
 	],
-	order:["list","cancel","detail","delete","makesure","settlement"],
-	payment:["wxpay","alipay","balance","info"],
+	order: ["list", "cancel", "detail", "delete", "makesure", "settlement"],
+	payment: ["wxpay", "alipay", "balance", "info"],
 	product: ["visite"],
 }
 /**
@@ -51,7 +51,7 @@ exports.main = async (event, context) => {
 		data,
 		uniIdToken
 	} = event;
-	if (mustLoginActions[module] && mustLoginActions[module].includes(action)) {
+	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(action))) {
 		//token检查，必须登录
 		let payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
@@ -65,7 +65,8 @@ exports.main = async (event, context) => {
 		data.uid = payload.uid;
 		//userInfo为连带查询数据，后续接口可能会用到
 		context.userInfo = payload.userInfo;
-	} else if (getUserInfoActions[module] && getUserInfoActions[module].includes(action)) {
+	} else if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
+			action))) {
 		//仅仅是获得的用户信息，有可能没有
 		let payload = await uniID.checkToken(uniIdToken);
 		data.uid = payload.uid;
@@ -101,13 +102,6 @@ exports.main = async (event, context) => {
 			code: 404,
 			message: result.msg || "暂无数据",
 		}
-	} else if (result.code == 0) {
-		return Object.assign({
-			...result
-		}, {
-			code: 200,
-			message: "操作成功"
-		})
 	}
 	return {
 		code: 200,

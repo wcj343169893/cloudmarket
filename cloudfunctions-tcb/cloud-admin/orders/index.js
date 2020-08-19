@@ -4,7 +4,7 @@ const cmd = db.command;
 const {
 	updateUserOrderCount
 } = require('base-common');
-const orderCollection = db.collection("orders");
+const orderCollection = db.collection("cloud_orders");
 const list = async (data, context) => {
 	let page = +data.page;
 	let limit = +data.limit;

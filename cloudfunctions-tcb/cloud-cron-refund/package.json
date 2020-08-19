@@ -1,0 +1,18 @@
+{
+  "name": "cloud-cron-refund",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "base-common": "file:../common/base-common",
+    "configs": "file:../common/configs",
+    "unipay": "file:../common/unipay"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

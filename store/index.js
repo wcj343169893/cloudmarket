@@ -8,9 +8,10 @@ import {
 } from '@/common/request.js';
 const baseUserInfo = {
 	nickname: "游客",
-	portrait: "/static/missing-face.png",
+	avatar: "/static/missing-face.png",
 	balance: 0,
 	score: 0,
+	birthday: '',
 	coupons: 0
 };
 const store = new Vuex.Store({

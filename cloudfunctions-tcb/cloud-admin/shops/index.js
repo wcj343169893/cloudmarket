@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const shopCollection = db.collection("shops");
+const shopCollection = db.collection("cloud_shops");
 const info = async (data, context) => {
 	let res = await shopCollection.where({
 		id: data.shopid

@@ -186,7 +186,7 @@ export default {
 		daojishi(sec) {
 			if (sec > 0) {
 				sec--;
-				this.btnGetCodeText = sec + 's';
+				this.btnGetCodeText = sec + 's后获取';
 				this.processing = true;
 				setTimeout(() => {
 					this.daojishi(sec);

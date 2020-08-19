@@ -1,7 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const categoryCollection = db.collection("goods_categories");
+const categoryCollection = db.collection("cloud_goods_categories");
 const {
 	genIdentityId
 } = require('base-common');

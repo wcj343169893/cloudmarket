@@ -1,8 +1,8 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const goodsCollection = db.collection("goods");
-const goodsDeleteCollection = db.collection("goods_deletes");
+const goodsCollection = db.collection("cloud_goods");
+const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const {
 	genIdentityId,
 	shopGoodsInc
