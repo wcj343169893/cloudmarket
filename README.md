@@ -8,16 +8,11 @@
 ### 导入步骤
 1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
 2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加。[导入数据文档](https://uniapp.dcloud.io/uniCloud/cf-database?id=db)  
-3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传,如果在调用过程中找不到公共函数，请重新安装此公共函数，[安装文档](https://uniapp.dcloud.io/uniCloud/cf-common)  
-4. 云认证：[文档](https://uniapp.dcloud.io/uniCloud/authentication)，官方回复目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid  
-	- 去这里[生成云token](https://unicloud.dcloud.net.cn/token),生成并下载，保存到/cloudfunctions/common/token/ 替换原来的credentials.json文件
-	- ~~修改前端/common/cloud.js，spaceId填写自己当前项目的服务空间id，~~官方已支持    
-	- 修改云函数/cloudfunctions/common/token/index.js，spaceId   
-	- 如果报错```当前私钥未包含env_id 信息， 请前往腾讯云云开发控制台，获取自定义登录最新私钥```,则在credentials.json中增加字段```"env_id":"spaceId"```。**完成以上4步，可以运行项目**   
-5. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
+3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传,如果在调用过程中找不到公共函数，请重新安装此公共函数，[安装文档](https://uniapp.dcloud.io/uniCloud/cf-common)   
+4. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
 默认：iOS和H5自动登录，id为10000，Android需要使用极光登录，也可以修改`/pages/public/login.vue`，`onload`方法
-6. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
-7. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
+5. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
+6. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -54,7 +49,10 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 增加商品upc
 * 增加商品海报
 * 用户申请退款，商家审核退款
+
+#### 1.0.3.13
 * 接入uni-id
+* 重构云函数结构，增加权限验证  
 
 #### 1.0.3.12
 * 增加文档管理，优化app必要文档
@@ -67,15 +65,18 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 店铺增加免费送货距离，超过之后按每公里增加费用
 * 店铺支持自提，提货码,店铺增加字段deliverySupportType支持的配送方式，1配送到家，2自提，3配送+自提
 * 首页新品增加加入购物车
+
 #### 1.0.3.11
 * 增加商品副标题，优化db_init.json
 * 增加商品秒杀管理
 * 增加店铺首页广告图管理,支持跳转网站，商品详细页
 * 店铺增加起送费，配送费，配送范围delivery等
+
 #### 1.0.3.10
 * 增加限时抢购购物车，增加云函数判断商品限购
 * 增加商品图文介绍,图片地址之间用分号隔开，在商品详情页面，再分割显示
 * 增加商品分类管理
+
 #### 1.0.3.9
 * 合并功能有关联的云函数，例如goods，login，
 * 优化支付流程，payInfo，payment，paymentNotify

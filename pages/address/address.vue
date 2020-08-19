@@ -1,5 +1,6 @@
 <template>
 	<view class="content b-t">
+		<empty v-if="isLoaded && addressList.length == 0"></empty>
 		<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
 			<view v-if="isEdit" class="">
 				<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click.stop="check(index)"></view>
@@ -36,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				isLoaded:false,
 				isEdit: false,
 				source: 0,
 				checkedCount: 0,
@@ -53,7 +55,10 @@
 		methods: {
 			async loadData() {
 				address({}, 'list').then(res => {
+					this.isLoaded = true;
 					this.addressList = res;
+				},err=>{
+					this.isLoaded = true;
 				});
 			},
 			//选择地址

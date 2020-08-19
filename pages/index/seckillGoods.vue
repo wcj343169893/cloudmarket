@@ -152,7 +152,7 @@ page {
 }
 .sku_btn {
 	color: $btn-color-light;
-	font-size: $font-lg;
+	font-size: 48rpx;
 	line-height: 40rpx;
 	float: right;
 }

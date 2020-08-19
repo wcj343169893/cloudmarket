@@ -38,7 +38,7 @@
 				<!-- 地址 -->
 				<view class="address-section b-b" @click="navToLocation(shop)">
 					<view class="order-content">
-						<text class="yticon icon-shouhuodizhi"></text>
+						<image :src="shop.src" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
 							<view class="top">
 								<text class="name">{{ shop.name }}</text>
@@ -639,6 +639,12 @@ page {
 	.tag {
 		font-size: $font-sm;
 		margin-left: 10upx;
+	}
+	.shoplogo{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 8rpx;
+		margin-right: 16rpx;
 	}
 }
 .time-section {
