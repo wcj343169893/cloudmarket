@@ -11,7 +11,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="vip-card-box">
+			<!-- <view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
 				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">
 					<block v-if="freeVip">
@@ -30,7 +30,7 @@
 				<text class="e-m"></text>
 				<text class="m-l" v-if="userInfo.vip">卡号:{{userInfo.id}}</text>
 				<text class="e-b" v-else>开通会员享受会员专属价格</text>
-			</view>
+			</view> -->
 		</view>
 
 		<view class="cover-container"  v-if="isLoaded">
@@ -414,6 +414,7 @@ export default {
 
 .user-section {
 	height: 520upx;
+	height: 360upx;
 	padding: 100upx 30upx 0;
 	position: relative;
 	.bg {

@@ -1,7 +1,7 @@
 {
 	"passwordSecret": "passwordSecret-demo",
 	"tokenSecret": "tokenSecret-demo",
-	"tokenExpiresIn": 14400,
+	"tokenExpiresIn": 2592000,
 	"passwordErrorLimit": 6,
 	"passwordErrorRetryTime": 3600,
 	"app-plus": {

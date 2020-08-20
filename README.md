@@ -34,7 +34,7 @@
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/52950e60-cc7d-11ea-b997-9918a5dda011.png)
+![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6c427d90-e1f7-11ea-9dfb-6da8e309e0d8.png)
 
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
@@ -46,9 +46,15 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 
 ### 更新日志
 #### 下次更新
-* 增加商品upc
 * 增加商品海报
 * 用户申请退款，商家审核退款
+
+#### 1.0.3.15
+* 修改极光自动登录bug
+* 增加商品条码
+
+#### 1.0.3.14
+更新db  
 
 #### 1.0.3.13
 * 接入uni-id

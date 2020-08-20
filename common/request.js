@@ -256,6 +256,18 @@ const mobileLogin = function(data) {
 		isShowLoading: true
 	})
 }
+//手机号+验证码登录
+const mobileAutoLogin = function(data) {
+	return network({
+		url: "cloud-user",
+		data: {
+			module: "login",
+			action: "jiguang",
+			data
+		},
+		isShowLoading: true
+	})
+}
 /**
  * 获取自己的信息
  * @param {Object} data
@@ -405,6 +417,7 @@ export {
 	getDocContent,
 	micLogin,
 	mobileLogin,
+	mobileAutoLogin,
 	sendSms,
 	getUserStatistics
 }

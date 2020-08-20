@@ -53,28 +53,7 @@ const models = {
 			await saveGoodsVisiter(data, uid);
 			//favorite  是否收藏
 			//查询已加入购物车信息amount
-			let carts = await cartCollection.where({
-				shopid: data.shopid,
-				goods_id: data.id,
-				uid: uid
-			}).field({
-				"_id": 0,
-				"sku_id": 1,
-				"amount": 1
-			}).get();
-			if (carts.data.length > 0) {
-				data["cart"] = {};
-				//处理成规格对于数量
-				carts.data.map(c => {
-					if (c.sku_id) {
-						data["cart"][c.sku_id] = c.amount;
-					} else {
-						data["cart"]["0"] = c.amount;
-					}
-				});
-			} else {
-				data["cart"] = {};
-			}
+			//await getGoodsCart(data,uid);
 		}
 		return data;
 	},
@@ -201,4 +180,32 @@ const saveGoodsVisiter = async (item, uid) => {
 		console.log("updateVisite", updateVisite);
 	}
 }
+/**
+ * 查询用户商品的购物车信息
+ */
+const getGoodsCart = async (data, uid) => {
+	let carts = await cartCollection.where({
+		shopid: data.shopid,
+		goods_id: data.id,
+		uid: uid
+	}).field({
+		"_id": 0,
+		"sku_id": 1,
+		"amount": 1
+	}).get();
+	if (carts.data.length > 0) {
+		data["cart"] = {};
+		//处理成规格对于数量
+		carts.data.map(c => {
+			if (c.sku_id) {
+				data["cart"][c.sku_id] = c.amount;
+			} else {
+				data["cart"]["0"] = c.amount;
+			}
+		});
+	} else {
+		data["cart"] = {};
+	}
+}
+
 module.exports = models;

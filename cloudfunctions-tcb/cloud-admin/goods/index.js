@@ -24,6 +24,7 @@ const list = async (data, context) => {
 		"subTitle": 1,
 		"stock": 1,
 		"visite": 1,
+		upc:1,
 		"src": 1,
 		"shopid": 1,
 		"operator": 1,

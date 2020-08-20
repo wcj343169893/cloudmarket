@@ -2,7 +2,7 @@ const db = uniCloud.database();
 const cmd = db.command;
 const orderCollection = db.collection("cloud_orders");
 const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
-const goodsShopDaySalesCollection = db.collection("goods_shop_day_sales");
+const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
 const {
 	updateUserOrderCount,
 	getDateString

@@ -11,6 +11,10 @@ const {
 } = require('base-common');
 const orderCollection = db.collection("cloud_orders");
 const cartCollection = db.collection('cloud_carts');
+const goodsCollection = db.collection('cloud_goods');
+const orderRefundsCollection = db.collection("cloud_order_refunds");
+const addressCollection = db.collection('cloud_addresses');
+const shopCollection = db.collection('cloud_shops');
 /**
  * 用户中心统一插件，位于common目录
  * @url https://ext.dcloud.net.cn/plugin?id=2116
@@ -302,7 +306,7 @@ const pushOrderCancelInfo = async function(id, message) {
  */
 const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc) {
 	//order_refunds
-	return await db.collection("order_refunds").add({
+	return await orderRefundsCollection.add({
 		...payInfo,
 		uid: uid,
 		refundStatus: "refunding",
@@ -402,7 +406,7 @@ const settlement = async (event, context) => {
 	if (addressid) {
 		addressCondition["_id"] = addressid;
 	}
-	let address = await db.collection('addresses').where(addressCondition).orderBy("default", "desc").limit(1).get();
+	let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
 	if (address.data.length > 0) {
 		data["address"] = address.data[0];
 	} else if (type == "submit" && event.deliveryType == 1) {
@@ -411,7 +415,7 @@ const settlement = async (event, context) => {
 		return false;
 	}
 	//查询店铺信息
-	let shopData = await db.collection("shops").where({
+	let shopData = await shopCollection.where({
 		id: shopid
 	}).field({
 		id: 1,
@@ -446,7 +450,6 @@ const settlement = async (event, context) => {
 		ids.push(ct.goods_id);
 		cartIds.push(ct._id);
 	});
-	const goodsCollection = db.collection('goods');
 	//查询实时商品信息
 	let goods = await goodsCollection.where({
 		shopid: shopid,
