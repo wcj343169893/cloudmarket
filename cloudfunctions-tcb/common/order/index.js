@@ -7,11 +7,12 @@ const {
 	updateUserOrderCount,
 	getDateString
 } = require('base-common');
+const {print} = require('printers');
 /**
  * 订单支付完成之后
  */
 const updateOrderPaymentInfo = async function(event) {
-	console.log(event);
+	//console.log(event);
 	let time = new Date().toISOString();
 	//reserve_
 	let outTradeNo = event.outTradeNo;
@@ -50,16 +51,28 @@ const updateOrderPaymentInfo = async function(event) {
 			modified: time
 		}
 	}
-	console.log(conditions);
-	console.log(updateData);
+	//console.log(conditions);
+	//console.log(updateData);
 	let data = await orderCollection.where(conditions).update(updateData);
 	//首次修改状态
 	if (data.updated == 1) {
 		let orderData = await orderCollection.where(conditions1).field({
 			uid: 1,
+			id:1,
 			goods: 1,
 			shopid: 1,
 			yuding: 1,
+			shop:1,
+			juli:1,
+			address:1,
+			deliveryType:1,
+			deliveryHour:1,
+			created:1,
+			remark:1,
+			totalMoney:1,
+			totalDiscount:1,
+			deduction:1,
+			freight:1,
 			cartCount: 1
 		}).limit(1).get();
 		let order = orderData.data[0];
@@ -73,6 +86,9 @@ const updateOrderPaymentInfo = async function(event) {
 			//更新用户订单统计，用户待付款订单数
 			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid);
 			console.log("updateUserOrderCount", res);
+			// 打印订单
+			res = await print(order,order.shopid);
+			console.log("print", res);
 		}
 
 		//商品销量日志

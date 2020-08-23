@@ -33,10 +33,17 @@ const getLoginConfig = (platform, provider) => {
 	}
 	return config[platform]["oauth"][provider];
 }
+/**
+ * 获取打印机配置
+ */
+const getPrinterConfig = (name) => {
+	return config["printer"][name];
+}
 
 module.exports = {
 	config,
 	getPaymentConfig,
 	getPaymentNotifyUrl,
-	getLoginConfig
+	getLoginConfig,
+	getPrinterConfig
 }

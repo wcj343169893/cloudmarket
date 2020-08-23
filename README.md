@@ -1,18 +1,32 @@
 ## 云上商城 
 身边的线上生活超市，根据当前定位，就近匹配仓库，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。  
-功能正在紧张开发中，后续会完善商家端，骑手端，供应商端  
-本商城是基于[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)前端框架二次开发，增加云函数，成为一个完整的app，导入即可使用  
-交流QQ群：298724327  
-如您已购买本产品，请联系作者加入售后群，联系作者QQ：343169893   
+目前已完成**客户用户使用界面**，**手机版店铺管理**，其他功能正在紧张开发中，后续会完善PC店铺管理，骑手端，供应商端  
 
-### 导入步骤
-1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
-2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加。[导入数据文档](https://uniapp.dcloud.io/uniCloud/cf-database?id=db)  
-3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传,如果在调用过程中找不到公共函数，请重新安装此公共函数，[安装文档](https://uniapp.dcloud.io/uniCloud/cf-common)   
-4. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
-默认：iOS和H5自动登录，id为10000，Android需要使用极光登录，也可以修改`/pages/public/login.vue`，`onload`方法
-5. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
-6. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
+### 咨询与售后
+* 交流QQ群：298724327  
+* 如您已购买本产品，请联系作者加入售后群，联系作者QQ：343169893   
+
+### 柔然科技承接软件定制开发
+* 联系人：文经理
+* QQ：343169893
+
+### 自动导入步骤
+1. 点击购买或者试用
+2. 选择绑定服务空间，支持阿里云和腾讯云
+3. 勾选``立即部署本插件的云函数到服务空间,立即根据本插件包含的db_init.json初始化服务空间的数据库``,点击直接部署服务空间，如果提示有存在模块，覆盖并重新部署，然后泡一杯茶，静静等待  
+4. 导入到HBuilderX
+5. 查看云端函数是否与本地一直，如果不同，则把没有的上传  
+6. 查看数据库是否与db_init.json一致  
+
+### 手动导入步骤
+1. 右键执行`db_init.json`导入测试数据。如果多次导入，会提示集合冲突或者id冲突，需要全部删除，再导入  
+2. 上传所有云函数，如果存在报错，请删掉云端所有云函数，先一个个上传公共函数，再上传普通函数，因为普通函数在上传后，会安装公共函数，如果找不到，就安装失败了  
+
+### 非必要步骤
+1. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用，然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。  
+2. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)  
+3. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
+4. 小程序配置：/cloudfunctions/common/configs/config.json
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -43,6 +57,15 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)
 
 #### IOS暂时没有开发者账号，没有发布
+
+### 参考项目和包含插件
+[uni-id](https://ext.dcloud.net.cn/plugin?id=2116)  
+[uniPay](https://ext.dcloud.net.cn/plugin?id=1835)  
+[极光认证官方SDK](https://ext.dcloud.net.cn/plugin?id=1356)  
+[日期时间选择 DateTime](https://ext.dcloud.net.cn/plugin?id=1496)  
+[搜索框组件](https://ext.dcloud.net.cn/plugin?id=94)  
+[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)  
+[国云商城](https://ext.dcloud.net.cn/plugin?id=2413)  
 
 ### 更新日志
 #### 下次更新

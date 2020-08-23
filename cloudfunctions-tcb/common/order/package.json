@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "base-common": "file:../base-common"
+    "base-common": "file:../base-common",
+    "printers": "file:../printers"
   }
 }

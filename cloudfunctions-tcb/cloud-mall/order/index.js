@@ -331,7 +331,7 @@ const settlement = async (event, context) => {
 	let carts = {
 		data: []
 	};
-	console.log(event);
+	//console.log(event);
 	if (event.goods) {
 		//店铺id
 		if (event.shopid) {
@@ -381,6 +381,7 @@ const settlement = async (event, context) => {
 			"price": 1,
 			"amount": 1
 		}).get();
+		console.log("carts",carts);
 	}
 	if (carts.data.length == 0) {
 		event.message = "结算商品不存在";
@@ -461,6 +462,7 @@ const settlement = async (event, context) => {
 		"src": 1,
 		"price": 1,
 		"skus": 1,
+		"upc":1,
 		"originPrice": 1,
 		"miaosha": 1,
 		"yuding": 1,

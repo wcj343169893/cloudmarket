@@ -94,5 +94,11 @@
 				"name": "余额"
 			}
 		}
+	},
+	"printer": {
+		"yilianyun": {
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214"
+		}
 	}
 }

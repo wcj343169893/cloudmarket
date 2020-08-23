@@ -5,6 +5,7 @@ const shopCollection = db.collection("cloud_shops");
 const goodsCollection = db.collection('cloud_goods');
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const identityCollection = db.collection("cloud_identity");
+const cacheCollection = db.collection("cloud_identity");
 
 /**
  * 获取店铺信息
@@ -182,9 +183,15 @@ const genOrderNo = function() {
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
  * @param {Object} fmt
+ * @param {Object} time
  */
-const getDateFormat = function(fmt) {
-	let getDate = new Date();
+const getDateFormat = function(fmt, time) {
+	let getDate;
+	if (time) {
+		getDate = new Date(time);
+	} else {
+		getDate = new Date();
+	}
 	let o = {
 		'M+': getDate.getMonth() + 1,
 		'd+': getDate.getDate(),
@@ -203,6 +210,25 @@ const getDateFormat = function(fmt) {
 		}
 	}
 	return fmt;
+}
+const dateFormat = function(time, fmt) {
+	return getDateFormat(fmt, time);
+}
+/**
+ * 处理送达时间的名称，到底是显示今天还是日期
+ * @param {Object} info
+ */
+const checkDeliveryHour = function(info) {
+	if (!info || !info.deliveryHour) {
+		return;
+	}
+	let deliDay = dateFormat(info.deliveryHour.id, 'MM月dd日');
+	let today = dateFormat(false, 'MM月dd日');
+	if (deliDay == today) {
+		info.deliveryHour.name = '今天';
+	} else {
+		info.deliveryHour.name = deliDay;
+	}
 }
 
 /**
@@ -225,6 +251,49 @@ const filterFields = (event, strinFields, intFields) => {
 	}
 	return entity;
 }
+/**
+ * 缓存
+ * @param {Object} key
+ * @param {Object} data
+ * @param {Object} expires 有效期，以秒为单位，默认1小时
+ */
+const cache = async (key, data, expires) => {
+	//默认增加前缀
+	key = "cache_" + key;
+	let time = new Date().getTime();
+	//读取
+	const result = await cacheCollection.where({
+		key: key
+	}).field({
+		data: 1,
+		expires: 1
+	}).limit(1).get();
+	if (!data) {
+		if (result.data.length > 0 && result.data[0].expires > time) {
+			return result.data[0].data;
+		}
+		//没有可用的数据,或者数据过期
+		return false;
+	}
+	//写入
+	expires = !expires ? 3600000 + time : expires * 1000 + time;
+	if (result.data.length > 0) {
+		//修改
+		return await cacheCollection.where({
+			key: key
+		}).update({
+			data,
+			expires
+		});
+	}
+	//新增
+	return await cacheCollection.add({
+		key,
+		data,
+		expires
+	});
+}
+
 module.exports = {
 	updateGoodsMiaoshaStock,
 	updateUserOrderCount,
@@ -237,5 +306,7 @@ module.exports = {
 	getUserInfoById,
 	genOrderNo,
 	getDateFormat,
-	getDateString
+	getDateString,
+	cache,
+	checkDeliveryHour
 }
