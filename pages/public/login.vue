@@ -176,7 +176,7 @@ export default {
 				mobile:this.mobile
 			}).then(res=>{
 				this.$api.msg("发送成功")
-				this.code = res;
+				//this.code = res;
 			},err=>{
 				this.$api.msg(err.message)
 			})

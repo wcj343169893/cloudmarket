@@ -67,16 +67,12 @@
 						<view class="attr-box">
 							<text>修改:</text>
 							<text>{{ item.modified | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
-							<text class="m-lr">操作员:</text>
-							<text>{{ item.operator }}</text>
 						</view>
 					</block>
 					<block v-if="item.deleteTime">
 						<view class="attr-box">
 							<text>删除:</text>
 							<text>{{ item.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
-							<text class="m-lr">操作员:</text>
-							<text>{{ item.deleteOperator }}</text>
 						</view>
 					</block>
 				</view>

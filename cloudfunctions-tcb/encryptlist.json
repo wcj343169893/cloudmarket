@@ -1,6 +1,6 @@
 {
 	"encryptFunctionList": [
-		"cloud-admin","cloud-mall","cloud-user","payment-notify"
+		"cloud-admin","cloud-mall","cloud-payment-notify"
 	],
 	"encryptModuleList": [
 		"unipay"

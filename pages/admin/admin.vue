@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="basic-section">
 			<image class="bg" :src="banner"></image>
-			<view class="user-info-box">
+			<view class="user-info-box" @click="navToSet">
 				<view class="portrait-box"><image class="portrait" :src="src"></image></view>
 				<view class="info-box">
 					<text class="username">{{ name }}({{ shopid }})</text>
@@ -89,25 +89,36 @@ export default {
 				url: `/pages/admin/${options.second}?shopid=${options.id}&state=${options.state}`
 			});
 		}
-		this.loadData();
+		this.loadData(true);
 	},
 	//下拉刷新,不会更新底部附近的店铺
 	onPullDownRefresh() {
-		//this.loadData('refresh');
 		console.log('刷新整页');
 		uni.stopPullDownRefresh();
-		this.loadData();
+		this.loadData(true);
 	},
+	// #ifndef MP
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if (index === 0) {
+			this.navToSet();
+		}
+	},
+	// #endif
 	methods: {
 		...mapMutations(['setAdminShop']),
-		async loadData() {
+		async loadData(showLoading) {
 			//优先读取缓存
 			let info = uni.getStorageSync('adminShopInfo');
 			if (info) {
 				this.buildShopInfo(info);
 			}
-			shopAdmin('info', {}).then(
+			shopAdmin('info', {},showLoading).then(
 				res => {
+					uni.setStorage({
+						key:"adminShopInfo",
+						data:res
+					})
 					this.buildShopInfo(res);
 				},
 				err => {
@@ -115,6 +126,9 @@ export default {
 					console.log('获取店铺信息失败');
 				}
 			);
+		},
+		navToSet(){
+			this.navTo('/pages/admin/set/set');
 		},
 		buildShopInfo(data) {
 			if (!this.isSetTitle && data.name) {
@@ -216,7 +230,7 @@ export default {
 		},
 		//重新加载数据
 		refreshList() {
-			this.loadData();
+			this.loadData(false);
 		}
 	}
 };

@@ -7,8 +7,8 @@ import network from "./network.js";
  * 获取店铺信息
  * @param {Object} data
  */
-const shopAdmin = function(action,data) {
-	return adminNetwork("shops",action,data);
+const shopAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("shops",action,data,isShowLoading);
 }
 /**
  * 订单管理

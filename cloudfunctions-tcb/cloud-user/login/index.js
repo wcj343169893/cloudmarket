@@ -56,19 +56,12 @@ const jiguang = async (data, context) => {
  * 发送验证码，type：login、其他
  */
 const sendSms = async (data) => {
-	/* return await uniID.sendSmsCode({
+	return await uniID.sendSmsCode({
 		mobile: data.mobile,
+		type: data.type || "login",
 		code: (Math.random() + "").substr(2, 6),
-		type: data.type || "login"
-	}); */
-	let params = {
-		mobile: data.mobile,
-		type:"login",
-		code: (Math.random() + "").substr(2, 6),
-		expiresIn: 180,
-	}
-	await uniID.setVerifyCode(params);
-	return params.code;
+		expiresIn: 180
+	});
 }
 /**
  * 手机号+验证码登录,

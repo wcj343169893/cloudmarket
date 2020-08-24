@@ -1,11 +1,11 @@
 <template>
 	<view class="container"><!-- 标题栏和状态栏占位符 -->
 		<view class="deliver-section">
-			<view class="delivery-types">
-				<view class="items" :class="{ current: deliveryType == 1 }" v-if="(deliverySupportType & 1) == 1" @click="changeDtype(1)"><text>配送到家</text></view>
-				<view class="items" :class="{ current: deliveryType == 2 }" v-if="(deliverySupportType & 2) == 2" @click="changeDtype(2)"><text>到店自提</text></view>
+			<view class="delivery-types" v-if="deliveryTypes.length > 1">
+				<view class="items" :class="{ current: deliveryType == 'deliveryHome' }" v-if="deliveryTypes.indexOf('deliveryHome') != -1" @click="changeDtype('deliveryHome')"><text>配送到家</text></view>
+				<view class="items" :class="{ current: deliveryType == 'selfRaising' }" v-if="deliveryTypes.indexOf('selfRaising') != -1" @click="changeDtype('selfRaising')"><text>到店自提</text></view>
 			</view>
-			<block v-if="deliveryType == 1">
+			<block v-if="deliveryType == 'deliveryHome'">
 				<!-- 地址 -->
 				<navigator v-if="addressData._id" url="/pages/address/address?source=settlement" class="address-section b-b">
 					<view class="order-content">
@@ -34,7 +34,7 @@
 				</navigator>
 				<mix-list-cell title="预计送达时间" border="" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
 			</block>
-			<block v-if="deliveryType == 2">
+			<block v-if="deliveryType == 'selfRaising'">
 				<!-- 地址 -->
 				<view class="address-section b-b" @click="navToLocation(shop)">
 					<view class="order-content">
@@ -242,7 +242,7 @@ export default {
 			juli: 0,
 			zitiJuli: 0,
 			deliveryType: 1, //配送类型，1配送，2自提
-			deliverySupportType: 1, //店铺支持的配送类型，1配送，2自提，3配送和自提
+			deliveryTypes: [1], //店铺支持的配送类型，1配送，2自提，默认支持配送
 			deliveryDays: [], //天列表
 			deliveryDayIndex: 0, //选中的天index
 			deliveryHour: {
@@ -288,7 +288,8 @@ export default {
 					this.totalDiscount = res.totalDiscount;
 					this.stockNotEnough = res.stockNotEnough;
 					//支持的配送方式
-					this.deliverySupportType = res.shop.deliverySupportType;
+					this.deliveryTypes = res.shop.deliveryTypes;
+					this.deliveryType = this.deliveryTypes[0];
 					//this.freight = res.freight;
 					this.yuding = res.yuding;
 					if (this.yuding) {

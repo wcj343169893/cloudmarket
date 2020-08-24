@@ -48,6 +48,7 @@ const network = function(options) {
 					return;
 				} else if (res.result.code === 401) {
 					//登录信息错误,需要重新登录
+					//#ifndef MP
 					if (showLoginDialog) {
 						uni.showModal({
 							title: "温馨提示",
@@ -63,6 +64,7 @@ const network = function(options) {
 							}
 						});
 					}
+					//#endif
 				}
 				return Promise.reject(new Error(res.result.message));
 			}

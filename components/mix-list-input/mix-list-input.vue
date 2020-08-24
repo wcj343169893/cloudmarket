@@ -21,7 +21,8 @@
 					</view>
 				</view>
 			</block>
-			<text v-if="withScan" class="cell-more yticon icon-saomiao" @click="upcScan"></text>
+			<text v-if="withScan" class="cell-more yticon icon-saomiao" @click="btnScan"></text>
+			<text v-else-if="withLocation" class="cell-more yticon icon-shouhuodizhi" @click="btnSelectLocation"></text>
 			<slot></slot>
 		</view>
 	</view>
@@ -48,6 +49,10 @@ export default {
 			default: false
 		},
 		withScan: {
+			type: Boolean,
+			default: false
+		},	
+		withLocation: {
 			type: Boolean,
 			default: false
 		},
@@ -83,7 +88,7 @@ export default {
 		blurContent(e){
 			this.$emit('blur', e.detail.value);
 		},
-		upcScan() {
+		btnScan() {
 			// 调起条码扫描
 			uni.scanCode({
 				scanType: ['barCode'],
@@ -95,6 +100,20 @@ export default {
 				}
 			});
 		},
+		btnSelectLocation(){
+			uni.chooseLocation({
+				success: data => {
+					let noNeedName = ["我的位置","地图位置"];
+					console.log(data,noNeedName.indexOf(data.name))
+					if(noNeedName.indexOf(data.name) > -1){
+						this.$api.msg("所选地址无效");
+						console.log("地址无效")
+						return;
+					}
+					this.$emit('change', data);
+				}
+			});
+		}
 	}
 };
 </script>
@@ -123,11 +142,13 @@ export default {
 		.cell-content {
 			flex: 1;
 			font-size: $font-sm + 2upx;
-			&.content-right {
-				text-align: right;
+			color: $font-color-light;
+			text-align: right;
+			&.content-left {
+				text-align: left;
 			}
-			&.light{
-				color: $font-color-light;
+			&.normal{
+				color: $font-color-dark;
 			}
 		}
 		&.textarea {
@@ -143,7 +164,7 @@ export default {
 	font-size: $font-sm;
 	color: $font-color-disabled;
 }
-.icon-saomiao{
+.icon-saomiao,.icon-shouhuodizhi{
 	font-size: $font-llg;
 }
 </style>

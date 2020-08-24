@@ -427,7 +427,8 @@ const settlement = async (event, context) => {
 		latitude: 1,
 		longitude: 1,
 		delivery: 1,
-		deliverySupportType: 1
+		deliverySupportType: 1,//仅仅兼容之前测试版本，将来去掉
+		deliveryTypes:1
 	}).limit(1).get();
 	if (shopData.data.length == 0) {
 		event.message = "店铺不存在";

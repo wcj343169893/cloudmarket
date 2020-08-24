@@ -258,11 +258,19 @@
 			"path": "pages/admin/admin",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "店铺管理",
+				"navigationBarTitleText": "",
 				"app-plus": {
-					/* "bounce": "none", */
+					"bounce": "none",
 					"titleNView": {
-						"type": "transparent"
+						"type": "transparent",
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60f",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -409,6 +417,16 @@
 			"path": "pages/admin/docs/add",
 			"style": {
 				"navigationBarTitleText": "新增文档"
+			}
+		}, {
+			"path": "pages/admin/set/set",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		}, {
+			"path": "pages/admin/set/delivery",
+			"style": {
+				"navigationBarTitleText": "配送到家设置"
 			}
 		}
 	],

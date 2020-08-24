@@ -43,19 +43,13 @@ exports.main = async (event, context) => {
 	//在权限验证完成之后，强制设置操作店铺id,相当于转换为int类型
 	data.shopid = shopid;
 	//统一处理page和limit，不允许出现错误的值，必须是int类型
+	//预防有分页查询的接口，提前过滤page的有效性
 	if (data.page) {
-		if (data.page < 1) {
-			data.page = 1;
-		} else {
-			data.page = +data.page;
-		}
+		data.page = data.page < 1 ? 1 : +data.page;
 	}
+	//预防有分页查询的接口，提前过滤limit的有效性
 	if (data.limit) {
-		if (data.limit < 1) {
-			data.limit = 20;
-		} else {
-			data.limit = +data.limit;
-		}
+		data.limit = data.limit < 1 ? 20 : +data.limit;
 	}
 	let result=false;
 	try {
@@ -70,9 +64,14 @@ exports.main = async (event, context) => {
 	if (!result) {
 		return {
 			code: 404,
-			message: data.message || "暂无数据"
+			message: "暂无数据",
+			...data
 		};
-
+	} else if (result.code > 0) {
+		return {
+			code: 404,
+			message: result.msg || "暂无数据",
+		}
 	}
 	return {
 		code: 200,

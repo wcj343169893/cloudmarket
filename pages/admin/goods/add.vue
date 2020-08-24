@@ -893,7 +893,7 @@
 	}
 
 	.m-r {
-		margin-right: 8upx;
+		margin-right: 16upx;
 	}
 
 	.specsTitlesBtn {
