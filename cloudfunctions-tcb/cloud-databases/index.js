@@ -18,7 +18,7 @@ exports.main = async (event, context) => {
 			data: []
 		};
 		//限制条数
-		let limit = limits[m.name] != undefined ? limits[m.name] : 1;
+		let limit = limits[m.name] ? limits[m.name] : 1;
 		//let collectionName = "cloud_"+m.name;
 		let result = await db.collection(m.name).limit(limit).get();
 		data[m.name].data = result.data;
@@ -36,15 +36,15 @@ const limits = {
 	"cloud_users": 3,
 	"cloud_identity": 30,
 	"cloud_documents": 30,
-	"cloud_goods_visites": 0,
-	"cloud_goods_deletes": 0,
-	"cloud_goods_day_sales": 0,
-	"cloud_goods_shop_day_sales": 0,
-	"cloud_user_balance_logs": 0,
-	"cloud_carts": 0,
+	"cloud_goods_visites": 1,
+	"cloud_goods_deletes": 1,
+	"cloud_goods_day_sales": 1,
+	"cloud_goods_shop_day_sales": 1,
+	"cloud_user_balance_logs": 1,
+	"cloud_carts": 1,
 	"cloud_shops": 2,
-	"cloud_orders": 0,
-	"cloud_order_refunds": 0
+	"cloud_orders": 1,
+	"cloud_order_refunds": 1
 }
 /**
  * 必备索引,索引是数组
@@ -94,17 +94,11 @@ const configs = {
 		}, {
 			"name": "cloud_orders"
 		}, {
-			"name": "cloud_shop_categories"
-		}, {
 			"name": "cloud_shop_comments"
 		}, {
 			"name": "cloud_shops"
 		}, {
 			"name": "cloud_user_balance_logs"
-		}, {
-			"name": "cloud_user_often_buy_shops"
-		}, {
-			"name": "cloud_user_recommend_shops"
 		}, {
 			"name": "uni-app-version"
 		}, {
@@ -113,5 +107,4 @@ const configs = {
 			"name": "uni-verify"
 		}]
 	}
-}
-;
+};
