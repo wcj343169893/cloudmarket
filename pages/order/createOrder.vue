@@ -241,8 +241,8 @@ export default {
 			shop: {},
 			juli: 0,
 			zitiJuli: 0,
-			deliveryType: 1, //配送类型，1配送，2自提
-			deliveryTypes: [1], //店铺支持的配送类型，1配送，2自提，默认支持配送
+			deliveryType: "deliveryHome", //配送类型，1配送deliveryHome，2自提selfRaising
+			deliveryTypes: ["deliveryHome"], //店铺支持的配送类型，1配送，2自提，默认支持配送
 			deliveryDays: [], //天列表
 			deliveryDayIndex: 0, //选中的天index
 			deliveryHour: {
@@ -444,7 +444,7 @@ export default {
 		},
 		//计算运费
 		getFreight() {
-			if (this.deliveryType == 2) {
+			if (this.deliveryType == "selfRaising") {
 				this.freight = 0;
 				//this.juli = 0;
 				return;
@@ -483,7 +483,7 @@ export default {
 		//提交订单，并跳转到支付页面
 		submit() {
 			//判断收货地址
-			if (this.deliveryType == 1 && (!this.addressData || !this.addressData._id)) {
+			if (this.deliveryType == "deliveryHome" && (!this.addressData || !this.addressData._id)) {
 				this.$api.msg('请填写收货地址');
 				return;
 			}
@@ -497,8 +497,8 @@ export default {
 				type: 'submit',
 				remark: this.remark,
 				juli: this.juli,
-				deliveryType: this.deliveryType, //1配送，2自提
-				freight: this.deliveryType == 1 ? this.freight : 0, //本机计算运费，如果交给服务器，还需要再去计算2点的距离,但是本地计算不靠谱
+				deliveryType: this.deliveryType, 
+				freight: this.deliveryType == "deliveryHome" ? this.freight : 0, //本机计算运费，如果交给服务器，还需要再去计算2点的距离,但是本地计算不靠谱
 				deliveryHour: this.deliveryHour,
 				addressid: this.addressData._id,
 				...this.ids

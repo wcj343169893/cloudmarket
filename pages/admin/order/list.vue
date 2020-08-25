@@ -29,7 +29,7 @@
 				</view>
 			</view>
 			
-			<block v-if="item.deliveryType == 2">
+			<block v-if="item.deliveryType == 'selfRaising'">
 				<view class="address" v-if="item.deliveryHour">
 					<text class="m-r">预约提货时间:</text>
 					<text class="m-r">{{item.deliveryHour.name}} {{item.deliveryHour.time}}</text>
@@ -327,7 +327,8 @@ page,
 		&.recom {
 			background: $base-color;
 			color: #fff;
-		}&.warning {
+		}
+		&.warning {
 			background: $btn-color-warning;
 			color: #fff;
 		}

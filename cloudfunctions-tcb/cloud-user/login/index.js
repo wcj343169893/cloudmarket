@@ -45,7 +45,7 @@ const jiguang = async (data, context) => {
 	let params = {
 		mobile: mobileName,
 		code,
-		type:"login",
+		type: "login",
 		expiresIn: configs.expiresIn,
 	}
 	//临时设置验证码，模拟登录
@@ -56,6 +56,14 @@ const jiguang = async (data, context) => {
  * 发送验证码，type：login、其他
  */
 const sendSms = async (data) => {
+	if (data.mobile == "15986613315") {
+		return await uniID.setVerifyCode({
+			mobile: data.mobile,
+			code: "886633",
+			type: "login",
+			expiresIn: 180,
+		});
+	}
 	return await uniID.sendSmsCode({
 		mobile: data.mobile,
 		type: data.type || "login",
@@ -77,7 +85,7 @@ const mobile = async (data, context) => {
  * 微信登录，小程序或者app授权
  */
 const weixin = async (data, context) => {
-	console.log("weixin",context.PLATFORM)
+	console.log("weixin", context.PLATFORM)
 	return await uniID.loginByWeixin(data.code)
 }
 

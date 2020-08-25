@@ -73,8 +73,9 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 用户申请退款，商家审核退款
 
 #### 1.0.3.16
-* 店铺增加``配送方式deliveryTypes[1配送到家，2自提]``，放弃字段deliverySupportType
+* **重大更改**，店铺增加``配送方式deliveryTypes[1配送到家deliveryHome，2自提selfRaising]``，放弃字段deliverySupportType，修改原订单deliveryType类型为字符串，必须删除原数据，否则无法保存  
 * 增加打印机，支持：易联云wifi打印机，k4机型
+* 独立支付模块cloud-payment，支持多种支付方式或者多种支付类型，舍弃原cloud-mall下的payment模块，舍弃cloud-payment-notify
 
 #### 1.0.3.15
 * 修改极光自动登录bug

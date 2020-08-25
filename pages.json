@@ -226,7 +226,7 @@
 						"buttons": [{
 							"text": "保存",
 							"fontSize": "16",
-							"color": "#54b85d",
+							"color": "#303133",
 							"width": "46px",
 							"background": "rgba(0,0,0,0)"
 						}]
@@ -240,10 +240,10 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"text": "新增地址",
+							"text": "新增",
 							"fontSize": "16",
-							"color": "#54b85d",
-							"width": "88px",
+							"color": "#303133",
+							"width": "46px",
 							"background": "rgba(0,0,0,0)"
 						}]
 					}
@@ -429,7 +429,30 @@
 				"navigationBarTitleText": "配送到家设置"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/admin/set/printer/add",
+            "style" : {
+				"navigationBarTitleText": "新增打印终端"
+			}
+        }
+        ,{
+            "path" : "pages/admin/set/printer/list",
+            "style" : {
+				"navigationBarTitleText": "打印终端管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "新增",
+							"fontSize": "16",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

@@ -36,7 +36,7 @@
 				<button type="default" class="action-btn" @click="printTicket">打印小票</button>
 				<block v-if="info.state == 1"><button type="default" class="action-btn" @click="addDelivery(false)">确定发货</button></block>
 				<block v-else-if="info.state == 2">
-					<block v-if="info.deliveryType == 2">
+					<block v-if="info.deliveryType == 'selfRaising'">
 						<button type="default" class="action-btn" @click="selftakeOrder()">确定提货</button>
 					</block>
 				</block>
@@ -54,7 +54,7 @@
 					</view>
 				</view>
 			</view>
-			<block v-if="info.deliveryType == 2">
+			<block v-if="info.deliveryType == 'selfRaising'">
 				<view class="weui-flex address b-b" v-if="info.deliveryHour">
 					<view>
 						<text>提货码:</text>

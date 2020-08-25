@@ -27,7 +27,13 @@
 			</view>
 		</view>
 		<mix-list-cell title="配送到家" tips="" @eventClick="navTo('/pages/admin/set/delivery')" v-if="deliveryTypes.indexOf('deliveryHome') != -1"></mix-list-cell>
-		<mix-list-cell title="打印机" :tips="printersName" @eventClick="joinTeam()"></mix-list-cell>
+		<view class="mix-list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">是否开启打印机</text>
+			<view class="cell-content content-right">
+				<switch :checked="isPrint" @change="changePrinter" />
+			</view>
+		</view>
+		<mix-list-cell v-if="isPrint" title="打印终端" :tips="printersName" @eventClick="navTo('/pages/admin/set/printer/list')"></mix-list-cell>
 	</view>
 </template>
 <script>
@@ -44,6 +50,7 @@
 				phone: "",
 				notice: "",
 				deliveryTypes: [],
+				isPrint:false,
 				printers: [],
 				printersName: "",
 			}
@@ -135,6 +142,13 @@
 					}
 				});
 			},
+			changePrinter(e){
+				console.log(e)
+				this.isPrint = !!e.detail.value;
+				this.save({
+					isPrint: this.isPrint
+				});
+			},
 			refreshFile(file) {
 				this.src = file;
 				this.save({
@@ -148,7 +162,7 @@
 			},
 			save(data) {
 				shopAdmin("save", data).then(res => {
-					this.$api.msg("修改成功", 1500, true, "success");
+					this.$api.success("修改成功");
 					setTimeout(() => {
 						//上一个页面刷新
 						this.$api.prePage().refreshList();
@@ -232,5 +246,7 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 10rpx;
+	}
+	.sub-menu{
 	}
 </style>

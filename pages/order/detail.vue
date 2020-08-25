@@ -54,7 +54,7 @@
 					</view>
 				</view>
 			</view>
-			<block v-if="info.deliveryType == 2">
+			<block v-if="info.deliveryType == 'selfRaising'">
 				<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
 					<view><text>店铺地址</text></view>
 					<view class="content">

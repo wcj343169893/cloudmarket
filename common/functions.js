@@ -25,7 +25,7 @@ const getOrderStateExp = function(item) {
 			stateContent = "订单已支付，等待商家完成分拣";
 			break;
 		case 2:
-			if (item.deliveryType == 2) {
+			if (item.deliveryType == "selfRaising") {
 				stateTip = '待提货';
 				stateContent = "订单已完成分拣，请前往提货";
 			} else {

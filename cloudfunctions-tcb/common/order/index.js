@@ -1,3 +1,4 @@
+'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
 const orderCollection = db.collection("cloud_orders");

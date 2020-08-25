@@ -123,7 +123,7 @@ const models = {
 		content.push("<MN>1</MN>");
 		content.push(`<center>** ${order.shop.name} **</center>\n`);
 		let sendName = "预计送达";
-		if (order.deliveryType == 2) {
+		if (order.deliveryType == "selfRaising") {
 			//自提订单
 			content.push(`<center>用户自提</center>`);
 			sendName = "预约提货";

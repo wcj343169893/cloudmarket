@@ -131,7 +131,7 @@
 			saveInfo(info) {
 				Object.assign(this.userInfo, info);
 				saveUserInfo(info, "save").then(res => {
-					this.$api.msg("修改成功");
+					this.$api.success("修改成功");
 				});
 			},
 

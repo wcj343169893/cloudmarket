@@ -394,7 +394,7 @@ const settlement = async (event, context) => {
 		"totalMoney": 0,
 		"stockNotEnough": [],
 		"totalDiscount": 0,
-		"deliveryType": event.deliveryType ? +event.deliveryType : 1, //1配送，2自提
+		"deliveryType": event.deliveryType ? event.deliveryType : "deliveryHome", //1配送，2自提
 		"freight": event.freight ? +event.freight : 0, //运费
 		"juli": event.juli ? +event.juli : 0, //用户与商家之间的距离，由地图接口计算得来
 		"address": {},
@@ -410,7 +410,7 @@ const settlement = async (event, context) => {
 	let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
 	if (address.data.length > 0) {
 		data["address"] = address.data[0];
-	} else if (type == "submit" && event.deliveryType == 1) {
+	} else if (type == "submit" && event.deliveryType == "deliveryHome") {
 		//配送订单，收货地址不存在
 		event.message = "收货地址不存在";
 		return false;
@@ -645,7 +645,7 @@ const settlement = async (event, context) => {
 		data["created"] = day;
 		data["modified"] = day;
 		//如果是自提，需要生成提货码
-		if (data.deliveryType == 2) {
+		if (data.deliveryType == "selfRaising") {
 			//顺序编号
 			event.deliveryHour.number = await genIdentityId("order_ziti");
 			//随机8位密码

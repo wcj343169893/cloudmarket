@@ -190,11 +190,11 @@ const address = function(data,action) {
 	})
 }
 //支付查询
-const payInfo = function(data) {
+const payInfo = function(data,module) {
 	return network({
-		url: "cloud-mall",
+		url: "cloud-payment",
 		data: {
-			module: "payment",
+			module: module,
 			action: "info",
 			data
 		},
@@ -204,12 +204,12 @@ const payInfo = function(data) {
 	})
 }
 //获取支付参数
-const payment = function(data,action) {
+const payment = function(data,module,action) {
 	return network({
-		url: "cloud-mall",
+		url: "cloud-payment",
 		data: {
-			module: "payment",
-			action: action,
+			module: module,
+			action: "pay",
 			data
 		},
 		isShowLoading: true,
