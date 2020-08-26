@@ -1,9 +1,9 @@
 {
-    "name" : "云上商城",
-    "appid" : "",
+    "name" : "咕叽农场",
+    "appid" : "__UNI__9900639",
     "description" : "",
-    "versionName" : "1.0.2",
-    "versionCode" : 102,
+    "versionName" : "2.0.0",
+    "versionCode" : 106,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
@@ -58,7 +58,11 @@
             "sdkConfigs" : {
                 "ad" : {},
                 "payment" : {
-                    "alipay" : {}
+                    "alipay" : {},
+                    "weixin" : {
+                        "appid" : "wxa8e2090ff8638329",
+                        "UniversalLinks" : ""
+                    }
                 },
                 "speech" : {},
                 "push" : {
@@ -66,8 +70,8 @@
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "3d849a0036b58b5a4f4a0c37d665df85",
-                        "appkey_android" : "e077c90008359e13eb32920f1693a77d"
+                        "appkey_ios" : "3d849a7a36b58b5a4f4a0c37d665df85",
+                        "appkey_android" : "e077c938b8359e13eb32920f1693a77d"
                     }
                 }
             }
@@ -90,14 +94,14 @@
             "JG-JVerification" : {
                 "JPUSH_CHANNEL_ANDROID" : "developer-default",
                 "JPUSH_APPKEY_IOS" : "0000000000",
-                "JPUSH_APPKEY_ANDROID" : "0000000000",
+                "JPUSH_APPKEY_ANDROID" : "d3552898cb41098811589dc6",
                 "JPUSH_CHANNEL_IOS" : "developer-default",
                 "__plugin_info__" : {
                     "name" : "极光认证官方SDK",
                     "description" : "极光认证官方SDK HBuilder插件版本",
                     "platforms" : "Android,iOS",
                     "url" : "https://ext.dcloud.net.cn/plugin?id=1356",
-                    "android_package_name" : "com.qq",
+                    "android_package_name" : "com.gengyun",
                     "ios_bundle_id" : "",
                     "isCloud" : true,
                     "bought" : 1,
@@ -137,18 +141,18 @@
     "mp-weixin" : {
         /* 小程序特有相关 */
         "usingComponents" : true,
-        "appid" : "",
+        "appid" : "wx399393ad0d5e4d31",
         "setting" : {
             "urlCheck" : true
         },
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "你的位置信息将用于小程序位置接口的效果展示" 
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
             }
         }
     },
     "h5" : {
-        "title" : "弄弄弄",
+        "title" : "咕叽农场",
         "domain" : "market.cjblog.org",
         "router" : {
             "mode" : "history"

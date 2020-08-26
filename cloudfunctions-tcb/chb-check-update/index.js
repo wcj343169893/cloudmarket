@@ -55,16 +55,16 @@ exports.main = async (event, context) => {
 function compare(v1, v2) {
 	let arr_1 = v1.split('.')
 	let arr_2 = v2.split('.')
-	//如果增加了小版本，也需要升级
-	if (arr_1.length > arr_2.length) {
-		return 1;
-	}
 	for (var i = 0; i < arr_1.length; i++) {
 		if (parseInt(arr_1[i]) > parseInt(arr_2[i])) {
 			return 1;
 		} else if (parseInt(arr_1[i]) < parseInt(arr_2[i])) {
 			return -1;
 		}
+	}
+	//如果增加了小版本，也需要升级
+	if (arr_1.length > arr_2.length) {
+		return 1;
 	}
 	return 0
 }

@@ -15,10 +15,10 @@
 			<view class="sub-title">
 				<text>{{ info.stateContent }}</text>
 				<!-- 付尾款提示 ,只有付了定金，才能进入此详细页面-->
-				<view class="" v-if="info.yuding && info.state == 0">
+				<view v-if="isYuding && info.state == 0">
 					<text>应付尾款：</text>
-					<text class="price">{{ info.yuding.finishPaymentPrice  | toFixed}}</text>
-					<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
+					<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
+					<text class="m-l">{{ (info.yuding ? info.yuding.finalPaymentBeginTime : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 				</view>
 				<!-- 退款进度 -->
 				<view class="apply-list" v-if="info.cancelApply">
@@ -33,9 +33,9 @@
 			</view>
 			<view class="buttons">
 				<block v-if="info.state == 0">
-					<block v-if="info.yuding"><button class="action-btn disabled">去支付尾款</button></block>
+					<block v-if="isYuding"><button class="action-btn disabled">去支付尾款</button></block>
 				</block>
-				<block v-else-if="info.state == 1"><button type="default" class="action-btn" @click="pusheDelivery">催发货</button></block>
+				<block v-else-if="info.state == 1"><button type="default" class="action-btn" @click="pusheDelivery">催一催</button></block>
 				<block v-else-if="info.state == 2"><button type="default" class="action-btn" @click="confirmOrder">确定收货</button></block>
 				<block v-else-if="info.state == 3"><button type="default" class="action-btn recom" @click="evaluateOrder">评价一下</button></block>
 				<block v-else>
@@ -45,10 +45,45 @@
 			</view>
 		</view>
 		<view class="section ab m-t">
-			<view class="weui-flex address b-b" v-if="info.address">
-				<view class=""><text>收货地址</text></view>
+			<view class="weui-flex address b-b" v-if="info.deliveryHour">
+				<view><text>预约时间</text></view>
 				<view class="content">
-					<view class="">
+					<view>
+						<text>{{ info.deliveryHour.name }}</text>
+						<text class="m-l">{{ info.deliveryHour.time }}</text>
+					</view>
+				</view>
+			</view>
+			<block v-if="info.deliveryType == 'selfRaising'">
+				<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
+					<view><text>店铺地址</text></view>
+					<view class="content">
+						<view>
+							<text>{{ info.shop.name }}</text>
+							<text class="m-l">{{ info.shop.phone }}</text>
+						</view>
+						<text>{{ info.shop.address }}</text>
+					</view>
+					<text class="yticon icon-you"></text>
+				</view>
+				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)" v-if="info.deliveryHour">
+					<view class="warning">
+						<text>提货码:</text>
+						<text>{{ info.deliveryHour.number }}</text>
+					</view>
+					<view class="content">
+						<view class="warning">
+							<text>密码:</text>
+							<text>{{ info.deliveryHour.password }}</text>
+						</view>
+					</view>
+					<text class="yticon icon-you"></text>
+				</view>
+			</block>
+			<view class="weui-flex address b-b" v-else-if="info.address">
+				<view><text>收货地址</text></view>
+				<view class="content">
+					<view>
 						<text>{{ info.address.name }}</text>
 						<text class="m-l">{{ info.address.mobile }}</text>
 					</view>
@@ -56,8 +91,8 @@
 				</view>
 			</view>
 			<view class="weui-flex">
-				<view class=""><text>备注</text></view>
-				<view class="">
+				<view><text>备注</text></view>
+				<view>
 					<text>{{ info.remark || '无' }}</text>
 				</view>
 			</view>
@@ -86,20 +121,20 @@
 									<text class="title weui-flex__item">{{ item.title }}</text>
 									<text class="price warning">{{ (item.price * item.amount) | toFixed }}</text>
 								</view>
-								<view class="">
+								<view>
 									<text>{{ item.subName }}</text>
 								</view>
 								<view class=" prices">
-									<view class="">
+									<view>
 										<text>{{ priceTitle }}:</text>
-										<text class="price">{{ item.price | toFixed}}</text>
+										<text class="price">{{ item.price | toFixed }}</text>
 										<text>数量:</text>
 										<text>{{ item.amount }}</text>
 									</view>
 								</view>
 								<view class="buttons">
 									<button type="default" v-if="info.state > 0" class="action-btn" @click.stop="refundOrder(item)">申请退款</button>
-									<block v-if="info.yuding"></block>
+									<block v-if="isYuding"></block>
 									<block v-else><button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button></block>
 								</view>
 							</view>
@@ -112,7 +147,7 @@
 				<text class="yticon icon-jiantour-copy"></text>
 			</view>
 			<view class="section ab">
-				<block v-if="info.yuding">
+				<block v-if="isYuding">
 					<view class="weui-flex">
 						<text>阶段1：定金</text>
 						<text class="price">{{ info.yuding.price }}</text>
@@ -124,76 +159,113 @@
 						</view>
 						<view class="weui-flex">
 							<text class="m-l2">支付时间</text>
-							<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+							<text>{{ (info.yuding && info.yuding.payInfo ? info.yuding.payInfo.time : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
 					</block>
 
 					<view class="weui-flex">
 						<text>阶段2：尾款</text>
-						<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
+						<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
 					</view>
 				</block>
 				<block v-else>
 					<view class="weui-flex">
-						<text class="">商品金额</text>
-						<text class="price">{{ (info.totalMoney + info.totalDiscount ) | toFixed}}</text>
+						<text>商品金额</text>
+						<text class="price">{{ (info.totalMoney + info.totalDiscount) | toFixed }}</text>
 					</view>
 				</block>
 				<view class="weui-flex">
-					<view class=""><text>优惠金额</text></view>
-					<view class="">
+					<view><text>运费</text></view>
+					<view>
+						<text class="price">{{ info.freight | toFixed }}</text>
+					</view>
+				</view>
+				<view class="weui-flex">
+					<view><text>优惠金额</text></view>
+					<view>
 						<text>-</text>
 						<text class="price">{{ info.totalDiscount | toFixed }}</text>
 					</view>
 				</view>
 				<view class="weui-flex">
-					<view class=""><text>实付金额</text></view>
-					<text class="price warning">{{ info.totalMoney | toFixed }}</text>
+					<view><text>实付金额</text></view>
+					<text class="price warning">{{ (info.totalMoney + info.freight) | toFixed }}</text>
 				</view>
 			</view>
 		</view>
 		<view class="m-t"></view>
 		<view class="section ab">
 			<view class="weui-flex">
-				<view class=""><text>订单编号</text></view>
-				<view class="">
+				<view><text>订单编号</text></view>
+				<view>
 					<text>{{ info.id }}</text>
 				</view>
 			</view>
 			<view class="weui-flex">
-				<view class=""><text>支付编号</text></view>
-				<view class="">
+				<view><text>支付编号</text></view>
+				<view>
 					<text>{{ info._id }}</text>
 				</view>
 			</view>
 			<view class="weui-flex">
-				<view class=""><text>下单时间</text></view>
-				<view class="">
-					<text class="">{{ info.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+				<view><text>下单时间</text></view>
+				<view>
+					<text>{{ info.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 				</view>
 			</view>
 			<block v-if="info.payInfo">
 				<view class="weui-flex">
-					<view class=""><text>支付方式</text></view>
-					<view class="">
+					<view><text>支付方式</text></view>
+					<view>
 						<text>{{ info.payInfo.name }}</text>
 					</view>
 				</view>
 				<view class="weui-flex">
-					<view class=""><text>支付时间</text></view>
-					<view class="">
-						<text>{{ info.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
+					<view><text>支付时间</text></view>
+					<view>
+						<text>{{ (info.payInfo ? info.payInfo.time : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 					</view>
 				</view>
 			</block>
 		</view>
+		<uni-popup ref="showCode" type="center">
+			<view class="code-section" v-if="info.deliveryHour">
+				<tki-qrcode
+					v-if="qrcode.ifShow"
+					cid="qrcode1"
+					ref="qrcode"
+					:val="qrcode.val"
+					:size="qrcode.size"
+					:unit="qrcode.unit"
+					:background="qrcode.background"
+					:foreground="qrcode.foreground"
+					:pdground="qrcode.pdground"
+					:icon="qrcode.icon"
+					:iconSize="qrcode.iconsize"
+					:lv="qrcode.lv"
+					:onval="qrcode.onval"
+					:loadMake="qrcode.loadMake"
+					:usingComponents="true"
+					@result="qrR"
+				/>
+
+				<view class="warning">
+					<text>{{ info.deliveryHour.number }}</text>
+				</view>
+				<view class="warning">
+					<text>{{ info.deliveryHour.password }}</text>
+				</view>
+				<view><text>仅提供给店员提货扫码</text></view>
+				<view><text>请勿泄露给他人</text></view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { orders, addManyCart } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp } from '@/common/functions.js';
+import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp, dateFormat, checkDeliveryHour } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -202,7 +274,23 @@ export default {
 			moreGoodsCount: 0,
 			priceTitle: '单价',
 			maxShowCount: 3,
-			info: {}
+			info: {},
+			isYuding: false,
+			qrcode: {
+				ifShow: false,
+				val: '二维码', // 要生成的二维码值
+				size: 200, // 二维码大小
+				unit: 'upx', // 单位
+				background: '#ffffff', // 背景色
+				foreground: '#000000', // 前景色
+				pdground: '#000000', // 角标色
+				icon: '', // 二维码图标
+				iconsize: 40, // 二维码图标大小
+				lv: 3, // 二维码容错级别 ， 一般不用设置，默认就行
+				onval: false, // val值变化时自动重新生成二维码
+				loadMake: true, // 组件加载完成后自动生成二维码
+				src: '' // 二维码生成后的图片地址或base64
+			}
 		};
 	},
 	onLoad(options) {
@@ -237,7 +325,7 @@ export default {
 			res.stateContent = stateContent;
 			this.moreGoodsCount = res.goods.length - this.maxShowCount;
 			//颠倒顺序
-			if(res.cancelApply){
+			if (res.cancelApply) {
 				res.cancelApply = res.cancelApply.reverse();
 			}
 			this.info = res;
@@ -247,8 +335,10 @@ export default {
 				this.goodsList = res.goods;
 			}
 			if (this.info.yuding) {
+				this.isYuding = true;
 				this.priceTitle = '预售价';
 			}
+			checkDeliveryHour(this.info);
 		},
 		showAllGoods() {
 			this.goodsList = this.info.goods;
@@ -310,7 +400,7 @@ export default {
 				uni.setStorage({
 					key: 'settlementCartsIds',
 					data: {
-						shopid:this.info.shopid,
+						shopid: this.info.shopid,
 						goodslist: goods
 					},
 					success: () => {
@@ -370,10 +460,10 @@ export default {
 		},
 		//评价
 		evaluateOrder() {
-			uni.showLoading({
+			/* uni.showLoading({
 				title: '请稍后',
 				mask: true
-			});
+			}); */
 		},
 		//监听image加载完成
 		onImageLoad(key, index) {
@@ -389,6 +479,24 @@ export default {
 		},
 		navBack() {
 			uni.navigateBack();
+		},
+		navToLocation(shop) {
+			uni.openLocation({
+				latitude: shop.latitude,
+				longitude: shop.longitude,
+				success: function() {
+					console.log('success');
+				}
+			});
+		},
+		//放大提货码，并生成二维码
+		zoomCode(info) {
+			this.qrcode.val = 'ziti::' + [info.number, info.password].join('_');
+			this.qrcode.ifShow = true;
+			this.$refs.showCode.open();
+		},
+		qrR(src) {
+			//console.log('qr', src);
 		}
 	}
 };
@@ -569,6 +677,10 @@ page {
 	padding-bottom: 14upx;
 	.content {
 		text-align: right;
+		flex: 1;
+	}
+	.warning {
+		color: $font-color-warning;
 	}
 }
 .more-btn {
@@ -590,7 +702,7 @@ page {
 	}
 }
 .apply-list {
-	.title{
+	.title {
 		font-weight: 500;
 	}
 	.apply-list-content {
@@ -601,10 +713,16 @@ page {
 			flex-direction: column;
 			align-items: inherit;
 			margin-bottom: 10upx;
-			&:nth-child(1){
+			&:nth-child(1) {
 				color: $base-color;
 			}
 		}
 	}
+}
+.code-section {
+	background: #ffffff;
+	padding: 20rpx;
+	border-radius: 10rpx;
+	text-align: center;
 }
 </style>

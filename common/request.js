@@ -3,19 +3,15 @@
  * 各个 数据请求 方法
  */
 import network from "./network.js";
-//获取首页数据
-const getHomeData = function(data) {
-	return network({
-		url: "home",
-		data: data,
-		isShowLoading: false
-	})
-}
 //获取水果首页数据
 const getHomeFruitData = function(data) {
 	return network({
-		url: "homeFruit",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "home",
+			action: "index",
+			data
+		},
 		isShowLoading: false
 	})
 }
@@ -24,10 +20,13 @@ const getHomeFruitData = function(data) {
  * @param {Object} data
  */
 const getMiaosha = function(data) {
-	data["action"] = "miaosha";
 	return network({
-		url: "goods",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "product",
+			action: "miaosha",
+			data
+		},
 		isShowLoading: false
 	})
 }
@@ -55,6 +54,17 @@ const getShopHome = function(data) {
 		isShowLoading: true
 	})
 }
+const getAllCategories = function(data) {
+	return network({
+		url: "cloud-mall",
+		data: {
+			module:"category",
+			action:"main",
+			data
+		},
+		isShowLoading: true
+	})
+}
 const getGoodsByCid = function(data) {
 	return network({
 		url: "getGoodsByCid",
@@ -66,67 +76,88 @@ const getGoodsByCid = function(data) {
  * @param {Object} data
  */
 const getGoodsInfo = function(data) {
-	data["action"] = "detail";
 	return network({
-		url: "goods",
-		data: data
+		url: "cloud-mall",
+		data: {
+			module:"product",
+			action:"detail",
+			data
+		},
 	})
 }
 //单独获取购物车数据
 const getCartList = function(data) {
-	data["opt"] = data.opt || "list";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: data.opt || "list",
+			data
+		},
 		auth: true,
 		isShowLoading: data.showLoading
 	})
 }
 //修改购物车数量，0为删除
 const editCart = function(data) {
-	data["opt"] = "edit";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: "edit",
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 const addManyCart = function(data) {
-	data["opt"] = "addmany";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: "addmany",
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 //清空购物车数量，0为删除
 const cleanCart = function(data) {
-	data["opt"] = "clean";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: "clean",
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 //批量选择购物车
 const selectCart = function(data) {
-	data["opt"] = "selected";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: "selected",
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 //购物车结算
 const settlementCart = function(data) {
-	data["opt"] = "settlement";
 	return network({
-		url: "carts",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "cart",
+			action: "settlement",
+			data
+		},
 		auth: true,
 		isShowLoading: true,
 		isShowMask: true
@@ -135,36 +166,52 @@ const settlementCart = function(data) {
 //预结算、结算提交订单
 const settlement = function(data) {
 	return network({
-		url: "settlement",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "order",
+			action: "settlement",
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 //收货地址管理,新增，删除，修改，列表
-const address = function(data) {
+const address = function(data,action) {
 	return network({
-		url: "address",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "address",
+			action: action,
+			data
+		},
 		auth: true,
 		isShowLoading: true
 	})
 }
 //支付查询
-const payInfo = function(data) {
+const payInfo = function(data,module) {
 	return network({
-		url: "payInfo",
-		data: data,
+		url: "cloud-payment",
+		data: {
+			module: module,
+			action: "info",
+			data
+		},
 		auth: true,
 		isShowLoading: true,
 		isShowMask: true
 	})
 }
 //获取支付参数
-const payment = function(data) {
+const payment = function(data,module,action) {
 	return network({
-		url: "payment",
-		data: data,
+		url: "cloud-payment",
+		data: {
+			module: module,
+			action: "pay",
+			data
+		},
 		isShowLoading: true,
 		isShowMask: true
 	})
@@ -173,8 +220,12 @@ const payment = function(data) {
 const orders = function(data) {
 	let isShowLoading = data["type"] != "list";
 	return network({
-		url: "orders",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module: "order",
+			action: data.type,
+			data
+		},
 		auth: true,
 		isShowLoading: isShowLoading,
 		isShowMask: true
@@ -182,39 +233,38 @@ const orders = function(data) {
 }
 //最近浏览记录
 const getGoodsVisites = function(data) {
-	data["action"] = "visite";
 	return network({
-		url: "goods",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module:"product",
+			action:"visite",
+			data
+		},
 		auth: true,
 		isShowLoading: false
 	})
 }
-//极光手机号自动登录
-const mobileAutoLogin = function(data) {
-	data["channel"] = "jiguang";
+//手机号+验证码登录
+const mobileLogin = function(data) {
 	return network({
-		url: "login",
-		data: data,
+		url: "cloud-user",
+		data: {
+			module: "login",
+			action: "mobile",
+			data
+		},
 		isShowLoading: true
 	})
 }
 //手机号+验证码登录
-const mobileLogin = function(data) {
-	data["channel"] = "mobile";
+const mobileAutoLogin = function(data) {
 	return network({
-		url: "login",
-		data: data,
-		isShowLoading: true
-	})
-}
-/**
- * token自动登录，有有效期限制
- */
-const channelLogin = function(data) {
-	return network({
-		url: "login",
-		data: data,
+		url: "cloud-user",
+		data: {
+			module: "login",
+			action: "jiguang",
+			data
+		},
 		isShowLoading: true
 	})
 }
@@ -224,9 +274,39 @@ const channelLogin = function(data) {
  */
 const getUserInfo = function(data) {
 	return network({
-		url: "users",
-		data: data,
+		url: "cloud-user",
+		data: {
+			module: "info",
+			action: "mine",
+			data
+		},
 		auth: true,
+		isShowLoading: true
+	})
+}
+const getUserStatistics = function(data) {
+	return network({
+		url: "cloud-user",
+		data: {
+			module: "info",
+			action: "statistics",
+			data
+		},
+		auth: true,
+	})
+}
+/**
+ * 发送短信
+ * @param {Object} data
+ */
+const sendSms = function(data) {
+	return network({
+		url: "cloud-user",
+		data: {
+			module: "login",
+			action: "sendSms",
+			data
+		},
 		isShowLoading: true
 	})
 }
@@ -234,27 +314,16 @@ const getUserInfo = function(data) {
  * 修改自己的信息
  * @param {Object} data
  */
-const saveUserInfo = function(data) {
-	data["type"] = data.type || "save";
+const saveUserInfo = function(data,action) {
 	return network({
-		url: "users",
-		data: data,
+		url: "cloud-user",
+		data: {
+			module: "info",
+			action: action,
+			data
+		},
 		auth: true,
 		isShowLoading: true
-	})
-}
-/**
- * 余额支付
- * @param {Object} data
- */
-const balancePay = function(data) {
-	data["provider"] = "balance";
-	return network({
-		url: "payment",
-		data: data,
-		auth: true,
-		isShowLoading: true,
-		isShowMask: true
 	})
 }
 /**
@@ -285,28 +354,39 @@ const getToken = function(data) {
  * @param {Object} data
  */
 const searchGoodsByKey = function(data) {
-	data["action"] = "search";
 	return network({
-		url: "goods",
-		data: data,
+		url: "cloud-mall",
+		data: {
+			module:"product",
+			action:"search",
+			data
+		},
 		isShowLoading: true,
 		isShowMask: true
 	})
 }
-const getDocContent = function(data) {
+const getDocContent = function(data,action) {
 	return network({
-		url: "documents",
-		data: data
+		url: "cloud-mall",
+		data: {
+			module:"document",
+			action:action,
+			data
+		},
 	})
 }
 /**
  * 小程序登录
  * @param {Object} data
  */
-const micLogin = function(data) {
+const micLogin = function(data, provider) {
 	return network({
-		url: "micLogin",
-		data: data
+		url: "cloud-user",
+		data: {
+			module: "login",
+			action: provider,
+			data
+		}
 	})
 }
 export {
@@ -314,8 +394,7 @@ export {
 	getMiaosha,
 	getCategoryByPid,
 	getShopsByCid,
-	getHomeData,
-	getShopHome,
+	getShopHome,getAllCategories,
 	getGoodsInfo,
 	getGoodsByCid,
 	getCartList,
@@ -332,13 +411,13 @@ export {
 	getUserInfo,
 	saveUserInfo,
 	getGoodsVisites,
-	balancePay,
-	mobileAutoLogin,
 	cronCancelOrders,
 	getToken,
 	searchGoodsByKey,
 	getDocContent,
 	micLogin,
 	mobileLogin,
-	channelLogin
+	mobileAutoLogin,
+	sendSms,
+	getUserStatistics
 }

@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="basic-section">
 			<image class="bg" :src="banner"></image>
-			<view class="user-info-box">
+			<view class="user-info-box" @click="navToSet">
 				<view class="portrait-box"><image class="portrait" :src="src"></image></view>
 				<view class="info-box">
 					<text class="username">{{ name }}({{ shopid }})</text>
@@ -18,32 +18,46 @@
 			</view>
 		</view>
 		<view class="cover-container">
-			<view class="header"><text>订单管理</text></view>
+			<view class="fast-section m-t">
+				<view class="fast-actions" @click="btnZitiScan()">
+					<text class="yticon icon-saomiao"></text>
+					<text class="">扫码验证</text>
+				</view>
+				<view class="fast-actions" @click="btnZiti()">
+					<text class="yticon icon-bianji"></text>
+					<text class="">输码验证</text>
+				</view>
+				<view class="fast-actions" @click="btnZiti()">
+					<text class="yticon icon-daifukuan"></text>
+					<text class="">财务结算</text>
+				</view>
+			</view>
+		</view>
+		<mix-list-cell icon="icon-dingdan" border="" iconColor="#54b4ef" title="订单管理" @eventClick="navToOrder('all')" tips="全部"></mix-list-cell>
+		<view class="cover-container">
 			<!-- 订单信息统计 -->
-			<view class="order-section m-t">
-				<view class="order-item" v-for="(item, index) in orderTypes" :key="index" @click="navToOrder(item)" hover-class="common-hover" :hover-stay-time="50">
+			<view class="order-section">
+				<view class="order-item" v-for="(item, index) in orderTypes" :key="index" @click="navToOrder(item.state)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
-			<!-- 商品信息统计，今日销售最高的4件商品 -->
-			<view class="header">
-				<text>商品管理</text>
-				<view @click="navToAddGoods()" class="more">
-					<text>新增</text>
-					<text class="yticon icon-you"></text>
-				</view>
-			</view>
-			<view class="order-section m-t">
+		</view>
+		<mix-list-cell icon="icon-shangpin" iconColor="#54b4ef" title="商品管理" @eventClick="navToAddGoods()" tips="新增"></mix-list-cell>
+
+		<view class="cover-container">
+			<view class="order-section">
 				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')" tips=""></mix-list-cell>
-		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/goods/miaosha/list')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')" tips="商品分类"></mix-list-cell>
+		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="营销活动" @eventClick="navTo('/pages/admin/goods/miaosha/list')" tips="限时秒杀"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
+		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="说明文档" @eventClick="navTo('/pages/admin/docs/list')" tips=""></mix-list-cell>
+		<mix-list-cell icon="icon-tongji" iconColor="#54b4ef" title="经营数据" @eventClick="navTo('/pages/admin/docs/list')" tips=""></mix-list-cell>
 	</view>
 </template>
 
@@ -75,25 +89,36 @@ export default {
 				url: `/pages/admin/${options.second}?shopid=${options.id}&state=${options.state}`
 			});
 		}
-		this.loadData();
+		this.loadData(true);
 	},
 	//下拉刷新,不会更新底部附近的店铺
 	onPullDownRefresh() {
-		//this.loadData('refresh');
 		console.log('刷新整页');
 		uni.stopPullDownRefresh();
-		this.loadData();
+		this.loadData(true);
 	},
+	// #ifndef MP
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if (index === 0) {
+			this.navToSet();
+		}
+	},
+	// #endif
 	methods: {
 		...mapMutations(['setAdminShop']),
-		async loadData() {
+		async loadData(showLoading) {
 			//优先读取缓存
 			let info = uni.getStorageSync('adminShopInfo');
 			if (info) {
 				this.buildShopInfo(info);
 			}
-			shopAdmin('info', {}).then(
+			shopAdmin('info', {},showLoading).then(
 				res => {
+					uni.setStorage({
+						key:"adminShopInfo",
+						data:res
+					})
 					this.buildShopInfo(res);
 				},
 				err => {
@@ -101,6 +126,9 @@ export default {
 					console.log('获取店铺信息失败');
 				}
 			);
+		},
+		navToSet(){
+			this.navTo('/pages/admin/set/set');
 		},
 		buildShopInfo(data) {
 			if (!this.isSetTitle && data.name) {
@@ -148,9 +176,9 @@ export default {
 				});
 			}
 		},
-		navToOrder(item) {
+		navToOrder(state) {
 			let shopid = this.shopid;
-			this.navTo(`/pages/admin/order/list?state=${item.state}&shopid=${shopid}`);
+			this.navTo(`/pages/admin/order/list?state=${state}&shopid=${shopid}`);
 		},
 		navToGoods(item) {
 			let shopid = this.shopid;
@@ -170,9 +198,39 @@ export default {
 				url
 			});
 		},
+		//自提输码
+		btnZiti() {},
+		//自提扫码
+		btnZitiScan() {
+			// 只允许通过相机扫码
+			uni.scanCode({
+				onlyFromCamera: true,
+				success: res => {
+					console.log('条码类型：' + res.scanType);
+					console.log('条码内容：' + res.result);
+					if (res.result.indexOf('ziti::') === 0) {
+						let code = res.result.substr(6).split('_');
+						console.log(code);
+						uni.navigateTo({
+							url: `/pages/admin/order/detail?password=${code[1]}&number=${code[0]}`
+						});
+					} else {
+						setTimeout(() => {
+							this.$api.msg('二维码无法识别');
+						}, 100);
+					}
+				},
+				fail: () => {
+					console.log('扫码失败');
+					setTimeout(() => {
+						this.$api.msg('二维码无法识别');
+					}, 100);
+				}
+			});
+		},
 		//重新加载数据
 		refreshList() {
-			this.loadData();
+			this.loadData(false);
 		}
 	}
 };
@@ -291,12 +349,35 @@ export default {
 }
 .header {
 	margin-top: 20upx;
-	font-size: $font-lg;
+	font-size: $font-base;
 	display: flex;
 	justify-content: space-between;
 	.more {
 		font-size: $font-base;
 		color: $font-color-base;
+	}
+	.yticon {
+		margin-right: 16rpx;
+		font-size: 38rpx;
+		color: #54b4ef;
+	}
+}
+.fast-section {
+	display: flex;
+	font-size: $font-base;
+	background: $base-color;
+	padding: 20rpx;
+	color: #ffffff;
+	border-radius: 10rpx;
+	justify-content: space-between;
+	.fast-actions {
+		padding: 10rpx 20rpx;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+	}
+	.yticon {
+		font-size: 80rpx;
 	}
 }
 </style>

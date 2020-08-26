@@ -21,12 +21,17 @@ const getOrderStateExp = function(item) {
 			}
 			break;
 		case 1:
-			stateTip = '待发货';
-			stateContent = "订单已支付，等待发货";
+			stateTip = '待拣货';
+			stateContent = "订单已支付，等待商家完成分拣";
 			break;
 		case 2:
-			stateTip = '已发货';
-			stateContent = "订单已发货，等待收货";
+			if (item.deliveryType == "selfRaising") {
+				stateTip = '待提货';
+				stateContent = "订单已完成分拣，请前往提货";
+			} else {
+				stateTip = '正在配送中';
+				stateContent = "订单已完成分拣，正在配送中";
+			}
 			break;
 		case 3:
 			stateTip = '已完成';
@@ -244,7 +249,7 @@ const getUserLocation = function(state) {
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
  * @param {Object} value
- * @param {Object} fmt
+ * @param {String} fmt yyyy-MM-dd hh:mm:ss
  */
 const dateFormat = function(value, fmt) {
 	let getDate;
@@ -552,6 +557,15 @@ const navToDocPage = function(id) {
 	});
 }
 /**
+ * 根据类型打开一个文档，如果存在多条，则随机显示
+ * @param {Object} type
+ */
+const navToDocPageByType = function(type) {
+	uni.navigateTo({
+		url: `/pages/docs/docs?type=${type}`
+	});
+}
+/**
  * 打开http网站
  * @param {Object} url
  */
@@ -607,7 +621,7 @@ const cloudUploadFile = async (filePath, cpath) => {
 /**
  * 检测app是否需要升级
  */
-const checkAppUpdate = (isForce,callback) => {
+const checkAppUpdate = (isForce, callback) => {
 	let checkUpdateKey = 'checkAppUpdate';
 	let dt = new Date();
 	//年月日
@@ -648,6 +662,49 @@ const checkAppUpdate = (isForce,callback) => {
 		});
 	}
 }
+/**
+ * 计算2点的距离
+ * @param {Object} fromLatlng
+ * @param {Object} toLatlng
+ */
+const mapDistance = function(fromLatlng, toLatlng) {
+	return new Promise((resolve, reject) => {
+		console.log(fromLatlng)
+		uni.request({
+			url: `https://apis.map.qq.com/ws/distance/v1/matrix`,
+			data: {
+				mode: "bicycling",
+				from: fromLatlng,
+				to: toLatlng,
+				key: "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5"
+			},
+			success: (res) => {
+				console.log(res)
+				resolve(res.data.result.rows);
+			},
+			fail: (err) => {
+				console.log(err)
+				reject();
+			}
+		})
+	})
+}
+/**
+ * 处理送达时间的名称，到底是显示今天还是日期
+ * @param {Object} info
+ */
+const checkDeliveryHour=function(info){
+	if(!info.deliveryHour){
+		return;
+	}
+	let deliDay = dateFormat(info.deliveryHour.id, 'MM月dd日');
+	let today = dateFormat(false, 'MM月dd日');
+	if (deliDay == today) {
+		info.deliveryHour.name = '今天';
+	} else {
+		info.deliveryHour.name = deliDay;
+	}
+}
 
 export {
 	updateCartNumber,
@@ -670,8 +727,11 @@ export {
 	getOrderTypes,
 	getGoodsTypes,
 	navToDocPage,
+	navToDocPageByType,
 	navToDocWebPage,
 	navMicLogin,
 	uploadFiles,
-	checkAppUpdate
+	checkAppUpdate,
+	mapDistance,
+	checkDeliveryHour
 }

@@ -566,9 +566,12 @@ page {
 	background: #f5f5f5;
 }
 .container {
-	padding-bottom: calc(60upx + var(--window-bottom));
+	padding-bottom: calc(80upx + var(--window-bottom));
 	//#ifdef APP-PLUS
 	padding-bottom: calc(130upx + var(--window-bottom));
+	//#endif
+	//#ifdef MP
+	padding-bottom: calc(150upx + var(--window-bottom));
 	//#endif
 	/* 空白页 */
 	.empty {

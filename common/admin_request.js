@@ -7,8 +7,8 @@ import network from "./network.js";
  * 获取店铺信息
  * @param {Object} data
  */
-const shopAdmin = function(action,data) {
-	return adminNetwork("shops",action,data);
+const shopAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("shops",action,data,isShowLoading);
 }
 /**
  * 订单管理
@@ -40,6 +40,14 @@ const categoryAdmin = function(action,data) {
 const adsAdmin = function(action,data) {
 	return adminNetwork("ads",action,data,false);
 }
+/**
+ * 文档管理
+ * @param {Object} action
+ * @param {Object} data
+ */
+const docsAdmin = function(action,data) {
+	return adminNetwork("docs",action,data,false);
+}
 
 const adminNetwork = (module,action,data,isShowLoading)=>{
 	isShowLoading = isShowLoading!= undefined ?isShowLoading:true;
@@ -50,7 +58,7 @@ const adminNetwork = (module,action,data,isShowLoading)=>{
 	}
 	//console.log(adminShopId)
 	return network({
-		url: "admin",
+		url: "cloud-admin",
 		data: {
 			module:module,
 			action:action,
@@ -66,5 +74,6 @@ export {
 	orderAdmin,
 	goodsAdmin,
 	categoryAdmin,
-	adsAdmin
+	adsAdmin,
+	docsAdmin
 }

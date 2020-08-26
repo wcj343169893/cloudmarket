@@ -30,7 +30,8 @@ export default {
 				left: 'icon-zuo',
 				right: 'icon-you',
 				up: 'icon-shang',
-				down: 'icon-xia'
+				down: 'icon-xia',
+				address:'icon-shouhuodizhi'
 			}
 		};
 	},

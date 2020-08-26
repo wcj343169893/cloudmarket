@@ -1,22 +1,32 @@
 ## 云上商城 
 身边的线上生活超市，根据当前定位，就近匹配仓库，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。  
-功能正在紧张开发中，后续会完善商家端，骑手端，供应商端  
-本商城是基于[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)前端框架二次开发，增加云函数，成为一个完整的app，导入即可使用  
-交流QQ群：298724327  
+目前已完成**客户用户使用界面**，**手机版店铺管理**，其他功能正在紧张开发中，后续会完善PC店铺管理，骑手端，供应商端  
 
-### 导入步骤
-1. 免费启用[unicloud](https://uniapp.dcloud.io/uniCloud/README)，并选择腾讯云（里面涉及到geo和云认证，阿里云不支持）,[申请地址](https://unicloud.dcloud.net.cn/home)
-2. 导入测试数据：执行`db_init.json`，**重要，重要，重要，**，有可能地理位置索引未导入成功，shops集合需增加地理位置索引，否则报错`unable to find index fo $geoNear query`，	**索引字段：lnglat，非唯一，地理位置**。其他集合自己看情况增加。[导入数据文档](https://uniapp.dcloud.io/uniCloud/cf-database?id=db)  
-3. 上传所有云函数，注意查看上传日志，如果有报错，需要重新上传,如果在调用过程中找不到公共函数，请重新安装此公共函数，[安装文档](https://uniapp.dcloud.io/uniCloud/cf-common)  
-4. 云认证：[文档](https://uniapp.dcloud.io/uniCloud/authentication)，官方回复目前云认证有问题，必须这样初始化unicloud，否则无法在服务端获取登录的customid  
-	- 去这里[生成云token](https://unicloud.dcloud.net.cn/token),生成并下载，保存到/cloudfunctions/common/token/ 替换原来的credentials.json文件
-	- ~~修改前端/common/cloud.js，spaceId填写自己当前项目的服务空间id，~~官方已支持    
-	- 修改云函数/cloudfunctions/common/token/index.js，spaceId   
-	- 如果报错```当前私钥未包含env_id 信息， 请前往腾讯云云开发控制台，获取自定义登录最新私钥```,则在credentials.json中增加字段```"env_id":"spaceId"```。**完成以上4步，可以运行项目**   
-5. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用,然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。也可以不使用此插件，用原始的登录框，但是要自己完善，  
-默认：iOS和H5自动登录，id为10000，Android需要使用极光登录，也可以修改`/pages/public/login.vue`，`onload`方法
-6. 支付功能：/cloudfunctions/common/configs/index.js，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)
-7. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)
+### 咨询与售后
+* 交流QQ群：298724327  
+* 如您已购买本产品，请联系作者加入售后群，联系作者QQ：343169893   
+
+### 柔然科技承接软件定制开发
+* 联系人：文经理
+* QQ：343169893
+
+### 自动导入步骤
+1. 点击购买或者试用
+2. 选择绑定服务空间，支持阿里云和腾讯云
+3. 勾选``立即部署本插件的云函数到服务空间,立即根据本插件包含的db_init.json初始化服务空间的数据库``,点击直接部署服务空间，如果提示有存在模块，覆盖并重新部署，然后泡一杯茶，静静等待  
+4. 导入到HBuilderX
+5. 查看云端函数是否与本地一直，如果不同，则把没有的上传  
+6. 查看数据库是否与db_init.json一致  
+
+### 手动导入步骤
+1. 右键执行`db_init.json`导入测试数据。如果多次导入，会提示集合冲突或者id冲突，需要全部删除，再导入  
+2. 上传所有云函数，如果存在报错，请删掉云端所有云函数，先一个个上传公共函数，再上传普通函数，因为普通函数在上传后，会安装公共函数，如果找不到，就安装失败了  
+
+### 非必要步骤
+1. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用，然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。  
+2. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)  
+3. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
+4. 小程序配置：/cloudfunctions/common/configs/config.json
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -33,31 +43,76 @@
 **yticon.ttf**主要用在pages.json，定义顶部操作图标  
 ![yticon.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c6deb20-cc7f-11ea-b997-9918a5dda011.jpg) 
 **yticon2.ttf**主要用在App.vue 文字图标  
-![yticon2.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c705c20-cc7f-11ea-8ff1-d5dcf8779628.jpg) 
+[预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)
 ### 抢先预览
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/52950e60-cc7d-11ea-b997-9918a5dda011.png)
+![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6c427d90-e1f7-11ea-9dfb-6da8e309e0d8.png)
 
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序体验（个人认证，无法上架）
-![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
+#### 微信小程序体验
+![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)
 
 #### IOS暂时没有开发者账号，没有发布
 
+### 参考项目和包含插件
+[uni-id](https://ext.dcloud.net.cn/plugin?id=2116)  
+[uniPay](https://ext.dcloud.net.cn/plugin?id=1835)  
+[极光认证官方SDK](https://ext.dcloud.net.cn/plugin?id=1356)  
+[日期时间选择 DateTime](https://ext.dcloud.net.cn/plugin?id=1496)  
+[搜索框组件](https://ext.dcloud.net.cn/plugin?id=94)  
+[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)  
+[国云商城](https://ext.dcloud.net.cn/plugin?id=2413)  
+
 ### 更新日志
+#### 下次更新
+* 增加商品海报
+* 用户申请退款，商家审核退款
+
+#### 1.0.3.17
+* 增加打印机，支持：易联云wifi打印机，k4机型
+
+#### 1.0.3.16
+* **重大更改**，店铺增加``配送方式deliveryTypes[1配送到家deliveryHome，2自提selfRaising]``，放弃字段deliverySupportType，修改原订单deliveryType类型为字符串，必须删除原数据，否则无法保存  
+* 独立支付模块cloud-payment，支持多种支付方式或者多种支付类型，舍弃原cloud-mall下的payment模块，舍弃cloud-payment-notify
+
+#### 1.0.3.15
+* 修改极光自动登录bug
+* 增加商品条码
+
+#### 1.0.3.14
+更新db  
+
+#### 1.0.3.13
+* 接入uni-id
+* 重构云函数结构，增加权限验证  
+
+#### 1.0.3.12
+* 增加文档管理，优化app必要文档
+```
+	app_service:"APP服务协议",
+	app_goods_charge:"APP退换货原则",
+	app_user_private:"APP隐私政策",
+```
+* 增加预计送货到达时间
+* 店铺增加免费送货距离，超过之后按每公里增加费用
+* 店铺支持自提，提货码,店铺增加字段deliverySupportType支持的配送方式，
+* 首页新品增加加入购物车
+
 #### 1.0.3.11
 * 增加商品副标题，优化db_init.json
 * 增加商品秒杀管理
 * 增加店铺首页广告图管理,支持跳转网站，商品详细页
 * 店铺增加起送费，配送费，配送范围delivery等
+
 #### 1.0.3.10
 * 增加限时抢购购物车，增加云函数判断商品限购
 * 增加商品图文介绍,图片地址之间用分号隔开，在商品详情页面，再分割显示
 * 增加商品分类管理
+
 #### 1.0.3.9
 * 合并功能有关联的云函数，例如goods，login，
 * 优化支付流程，payInfo，payment，paymentNotify
@@ -91,7 +146,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 增加首次下单店铺为用户邀请者(settlement)，为将来给邀请者分成做准备  
 店铺shops增加店主uid字段  
 降低全局shopId权重，在商品详情，购物车，订单详情，单独传递店铺id，为将来多店铺做准备  
-**重要，微信个人用户申请的小程序，无法上架**，如需体验，可以扫码申请 ![体验码](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/f42ee100-cc7e-11ea-9dfb-6da8e309e0d8.jpg)  
+**重要，微信个人用户申请的小程序，无法上架**，如需体验，请下载app
 
 ```
 1: 小程序服务提供的内容涉及电商模式（如：含购物车或涉及订单按钮，含立即购买流程等），属于个人小程序未开放内容，建议选择申请企业主体小程序。

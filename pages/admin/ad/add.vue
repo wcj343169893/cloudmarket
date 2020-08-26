@@ -29,7 +29,7 @@ export default {
 				docs: '文档详情页'
 			},
 			rtDef: 'none',
-			url: '',
+			link: '',
 			background: '',
 			goods: {},
 			docs: {},
@@ -82,7 +82,7 @@ export default {
 			});
 		},
 		changeUrl(url) {
-			this.url = url;
+			this.link = url;
 		},
 		changeBgcolor(e) {
 			this.background = e;
@@ -95,7 +95,7 @@ export default {
 			adsAdmin('add', {
 				_id: this._id,
 				src: this.src,
-				url: this.url,
+				link: this.link,
 				goods: this.goods,
 				redirectType: this.redirectType,
 				docs: this.docs,
@@ -200,7 +200,7 @@ export default {
 }
 .specsTitlesBtn {
 	display: flex;
-	padding: 10upx 30upx 30upx;
+	padding: 50upx 30upx 30upx;
 	&.submit {
 		position: fixed;
 		bottom: 0;

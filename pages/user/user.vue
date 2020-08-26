@@ -1,9 +1,9 @@
 <template>
 	<view class="container">
-		<view class="user-section">
+		<view class="user-section" v-if="isLoaded">
 			<image class="bg" src="/static/user-bg2.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.portrait"></image></view>
+				<view class="portrait-box" @click="previewAvatar"><image class="portrait" :src="userInfo.avatar"></image></view>
 				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
 					<text class="username">{{ userInfo.nickname }}</text>
 					<view class="account">
@@ -11,7 +11,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="vip-card-box">
+			<!-- <view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
 				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">
 					<block v-if="freeVip">
@@ -30,10 +30,10 @@
 				<text class="e-m"></text>
 				<text class="m-l" v-if="userInfo.vip">卡号:{{userInfo.id}}</text>
 				<text class="e-b" v-else>开通会员享受会员专属价格</text>
-			</view>
+			</view> -->
 		</view>
 
-		<view class="cover-container">
+		<view class="cover-container"  v-if="isLoaded">
 			<image class="arc" src="/static/arc.png"></image>
 
 			<view class="tj-sction">
@@ -76,11 +76,11 @@
 				</view>
 			</view>
 			<!-- 管理的店铺列表 -->
-			<view class="admin-section" v-if="userInfo.admin && userInfo.admin.length > 0">
+			<view class="admin-section" v-if="admin && admin.length > 0">
 				<view class="title">
 					<text>我的门店</text>
 				</view>
-				<view v-for="(item,index) in userInfo.admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
+				<view v-for="(item,index) in admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
 					<image :src="item.src" mode="aspectFill"></image>
 					<view class="right">
 						<view class="content">
@@ -151,7 +151,7 @@
 	</view>
 </template>
 <script>
-import { getGoodsVisites, getUserInfo,saveUserInfo, cronCancelOrders } from '@/common/request.js';
+import { getGoodsVisites, getUserStatistics,saveUserInfo, cronCancelOrders } from '@/common/request.js';
 import { navToGoodsItemPage } from '@/common/functions.js';
 import { mapState, mapMutations } from 'vuex';
 let startY = 0,
@@ -160,6 +160,7 @@ let startY = 0,
 export default {
 	data() {
 		return {
+			isLoaded: false,
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			vipnumber:"",
@@ -175,6 +176,7 @@ export default {
 				receive: 0,
 				refund: 0
 			},
+			admin:[],
 			teamTips:"加入团队",
 			moving: false
 		};
@@ -217,45 +219,47 @@ export default {
 	},
 	// #endif
 	computed: {
-		...mapState(['hasLogin', 'userInfo'])
+		...mapState(['hasLogin','shopId', 'userInfo'])
 	},
 	methods: {
 		...mapMutations(['login','logout']),
 		async loadData() {
+			this.isLoaded = true;
+			console.log("加载用户信息",this.hasLogin)
 			if (this.hasLogin) {
-				cronCancelOrders()
+				/* cronCancelOrders()
 					.then(res => {
 						console.log('清理过期订单', res);
 					})
 					.catch(err => {
 						console.log(err);
-					});
+					}); */
 				//自己的信息
-				getUserInfo().then(res => {
 					//this.userInfo = res;
 					//this.order = res.order;
-					this.login(res);
-					//免费会员期限
-					this.freeVip = res.lastFreeVip>res.time;
-					//会员价格/年费
-					this.vipPrice = res.vipPrice;
-					if (res.order) {
-						//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
-						for (let t in res.order) {
-							this.order[t] = res.order[t];
+					//this.login(res);
+					getUserStatistics({}).then(res=>{
+						//免费会员期限
+						this.freeVip = res.lastFreeVip>res.time;
+						//会员价格/年费
+						this.vipPrice = res.vipPrice; 
+						this.admin = res.admin;
+						if (res.order) {
+							//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+							for (let t in res.order) {
+								this.order[t] = res.order[t];
+							}
+							this.order.receive = this.order.payup + this.order.delivered;
+						} else {
+							for (let t in this.order) {
+								this.order[t] = 0;
+							}
 						}
-						this.order.receive = this.order.payup + this.order.delivered;
-					} else {
-						for (let t in this.order) {
-							this.order[t] = 0;
-						}
-					}
+					})
+					
 					if(this.userInfo.invite > 0){
 						this.teamTips="已加入团队:"+this.userInfo.invite;
 					}
-				},err=>{
-					this.logout();
-				});
 				getGoodsVisites({}).then(
 					res => {
 						this.hasVisiteGoods = true;
@@ -283,7 +287,7 @@ export default {
 			uni.previewImage({
 				indicator:"none",
 				urls:[
-					this.userInfo.portrait
+					this.userInfo.avatar
 				]
 			})
 		},
@@ -310,9 +314,8 @@ export default {
 				return;
 			}
 			saveUserInfo({
-				type:"vip",
 				channel:"free"
-			}).then(res=>{
+			},"vip").then(res=>{
 				this.loadData();
 				this.$api.msg("开通成功",1500,true,"success");
 			},err=>{
@@ -326,9 +329,8 @@ export default {
 			if(n>1){
 				this.$refs.vipPopup.close();
 				saveUserInfo({
-					type:"vip",
 					fuid:n
-				}).then(res=>{
+				},"vip").then(res=>{
 					this.loadData();
 					this.$api.msg("开通成功",1500,true,"success");
 				},err=>{
@@ -358,9 +360,8 @@ export default {
 			if(n>1){
 				this.$refs.invitePopup.close();
 				saveUserInfo({
-					type:"invite",
 					fuid:n
-				}).then(res=>{
+				},"invite").then(res=>{
 					this.loadData();
 					this.$api.msg("加入成功",1500,true,"success");
 				},err=>{
@@ -413,6 +414,7 @@ export default {
 
 .user-section {
 	height: 520upx;
+	height: 360upx;
 	padding: 100upx 30upx 0;
 	position: relative;
 	.bg {

@@ -1,5 +1,5 @@
 {
-	"addresses": {
+	"cloud_addresses": {
 		"data": [{
 			"_id": "37e26adb5ec2644e00f4dbf739124417",
 			"uid": 10000,
@@ -14,7 +14,7 @@
 			"type": "edit"
 		}]
 	},
-	"ads": {
+	"cloud_ads": {
 		"data": [{
 			"_id": "364e77648fcb441199a471034ee689e8",
 			"background": "#54b85d",
@@ -24,17 +24,87 @@
 			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6813ba00-639d-11ea-b227-9531cf5e701a.jpg"
 		}]
 	},
-	"carts": {
-		"data": []
+	"cloud_carts": {
+		"data": [{
+			"_id": "c57dfbdc5f3b8f41000f90d74057dd72",
+			"shopid": 123457,
+			"uid": "d4c8b12b5f3b8f3e001043df2462a57c",
+			"goods_id": 10001,
+			"sku_id": 10004,
+			"amount": 1,
+			"title": "新货新疆葡萄干500g特级超大无核绿葡萄干免洗即食新疆吐鲁番特产",
+			"checked": true,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/3-1.jpg",
+			"price": 17.6,
+			"settlement": false,
+			"modified": "2020-08-18T08:20:17.429Z",
+			"created": "2020-08-18T08:20:17.429Z"
+		}]
 	},
-	"documents": {
+	"cloud_documents": {
 		"data": [{
 			"_id": "7c59e15d685c4a2d9a5d81376b2dc47f",
 			"content": "Q：是否支持无理由退换货？  \nA：生鲜产品（包括蔬菜水果、鲜蛋肉禽、水产海鲜等）、乳品（鲜奶）因时效性较强，不支持无理由退换货，仅支持质量问题退换货；非生鲜类产品，在未拆封、损坏等不影响二次销售的情况下，支持无理由退换货。  \n\nQ：商品申请退换货时效？  \nA：生鲜商品如有质量问题请于收到商品起24小时内提出退换货申请； 非生鲜类商品自顾客收到商品起48小时内，如符合以下条件，我们将提供退换货服务：  \n（1）商品无损坏、无缺少，不影响二次销售；  \n（2）若您购买的商品有赠品，办理退换货时，须同时将赠品全部退回。  \n\nQ：不支持退换货的情形有哪些？  \nA：（1）参加限时抢购、特价促销的商品，非质量问题不支持退换货；  \n   （2）任何因用户保管储藏导致出现质量问题的商品，商品已使用或损坏等影响二次销售的情况，不支持退换货；  \n   （3）主张实物与网站图片存在一定色差的，不支持退换货；  \n   （4）非所售卖的商品，不支持退换货；  \n   （5）加工类商品、水产类等商品非本身质量问题，不支持退换货；  \n\nQ：是否需要保留原商品？  \nA：申请退款后须完整保留好原商品和小票，如需取货我们将在您选择的取货时间内上门取回，如遇特殊情况可能会延迟上门取货；如无需取回我们会发送短信通知您，感谢您的理解与支持  \n\nQ：是否取货要在原订单地址？  \nA：取货是按照您的订单地址上门取货。  \n\nQ：申请退货时是否需要另行支付运费？  \nA：本APP提供免费上门取货服务。  \n\nQ：购买商品时已支付运费在申请退货时是否退还？  \nA：若用户仅申请部分退款，运费不退还。  \n\nQ：如何取消退换货？  \nA：如果您申请了退换货后，需要取消，请您联系客服为您处理。  ",
-			"title": "退换货原则"
+			"shopid": 123457,
+			"title": "退换货原则",
+			"type": "app_goods_charge"
+		}, {
+			"_id": "1229caae5ef574ae0055cfa40630f5c5",
+			"content": "服务协议正文 ",
+			"shopid": 123457,
+			"title": "服务协议",
+			"type": "app_service"
+		}, {
+			"_id": "a3e75f055ef574c200492faa50335f39",
+			"content": "隐私政策正文 ",
+			"shopid": 123457,
+			"title": "隐私政策",
+			"type": "app_user_private"
+		}, {
+			"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+			"content": "对于企业来说，这场百年不遇的疫情，其实就是一场大考。\n\n只有在成绩公布的那一天，你才能看清楚这个企业的真正斤两。\n\n事实证明，苹果的确是一个重量级的优等生。\n\n\n美国时间 7 月 30 日，苹果公布了截至 2020 年 6 月 30 日第三财季业绩，这份成绩单可以用一个字来形容：",
+			"title": "苹果大丰收，库克真应该感谢中国",
+			"operator": 10000,
+			"shopid": 123457
+		}, {
+			"_id": "84e72bb95f24dd00003d654153e96bcd",
+			"content": "央广网北京8月1日消息 据中央广播电视总台中国之声《新闻和报纸摘要》报道，中央人民政府7月29日就香港特别行政区第七届立法会选举推迟有关事宜表明意见。2020-8-1 新闻和报纸摘要全文>>>\n\n《关于香港特别行政区2020年立法会换届选举押后事宜的报告》收悉。中央人民政府对近期",
+			"title": "中央人民政府就香港特别行政区第七届立法会选举推迟有关事宜表明意见",
+			"operator": 10000,
+			"shopid": 123457
+		}, {
+			"_id": "cb1a2f465f2552b700391b2f6d894c99",
+			"content": "## 关于我们的一切\n我没就是好好阿雷克斯  \n### 二级菜单\n水电开发水利水电  \n三段论法 上来的 水电费  ",
+			"title": "关于我们",
+			"operator": 10000,
+			"shopid": 123457,
+			"created": "2020-08-01T11:32:07.325Z",
+			"modified": "2020-08-02T23:07:58.007Z"
+		}, {
+			"_id": "abd27dd45f2e1ca6004121bd628e6849",
+			"content": "",
+			"pageLink": "/pages/index/fruit",
+			"pageLinkQuery": "",
+			"title": "胡萝卜1块一斤，不买后悔一星期",
+			"type": "mp_share",
+			"operator": 10000,
+			"shopid": 123457,
+			"created": "2020-08-08T03:31:50.911Z",
+			"modified": "2020-08-08T10:25:42.000Z"
+		}, {
+			"_id": "043ba0325f2e887a0039aeeb71f2f340",
+			"content": "",
+			"pageLink": "/pages/index/fruit",
+			"pageLinkQuery": "",
+			"title": "波士顿龙虾🦞29.9一只，限售85只，每人限购一只",
+			"type": "mp_share",
+			"operator": 10000,
+			"shopid": 123457,
+			"created": "2020-08-08T11:11:54.887Z",
+			"modified": "2020-08-08T11:17:12.526Z"
 		}]
 	},
-	"goods": {
+	"cloud_goods": {
 		"data": [{
 			"_id": "99ee0d4152644f368f0001619e9c628e",
 			"categories": [{
@@ -45,37 +115,42 @@
 				"name": "小分类yi"
 			}],
 			"price": 127,
+			"visite": 1337,
+			"id": 10000,
 			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.1.jpg",
 				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.2.jpg",
 				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.3.jpg"
 			],
+			"isSold": 1,
 			"shopid": 123457,
-			"visite": 1281,
-			"description": "",
-			"score": 0.98,
 			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.jpg",
+			"stock": 336,
+			"monthlySale": 151,
+			"originPrice": 0,
+			"score": 0.98,
+			"description": "",
+			"posid": 1,
 			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
-			"id": 10000,
 			"miaosha": {
-				"stock": 53,
 				"beginTime": 1589358599810,
-				"endTime": 1598314811039,
+				"endTime": 1598889600000,
 				"id": "5e75bd15b1e402004d1dbbce",
 				"limit": 2,
-				"price": 99,
-				"sales": 47
+				"price": "97.79",
+				"rate": 77,
+				"sales": 56,
+				"stock": 44
 			},
-			"monthlySale": 142,
-			"originPrice": 0,
-			"posid": 1,
-			"stock": 345,
-			"isSold": 1
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": ""
 		}]
 	},
-	"goods_activities": {
+	"cloud_goods_activities": {
 		"data": []
 	},
-	"goods_categories": {
+	"cloud_goods_categories": {
 		"data": [{
 			"_id": "6ef3d54a1fea4a448813ec392297f38a",
 			"children": [{
@@ -105,22 +180,54 @@
 			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg"
 		}]
 	},
-	"goods_day_sales": {
+	"cloud_goods_day_sales": {
+		"data": [{
+			"_id": "9098d0ed5ec5fef700132fcc35faa5ae",
+			"goods": {
+				"cb1edbd6b6b149548723380ae750ebc7": 13,
+				"42f0188ccf664932b940199863bdac88": 1,
+				"715cb406eac54b08a3bbc39bd994ae6e": 2,
+				"a3acf55ce3a841baa17e0f3e46ade561": 1,
+				"fc1abe0b8fe4484e920ffd51478ee9a4": 5,
+				"99ee0d4152644f368f0001619e9c628e": 20,
+				"9f0568ab21644e0793d9e0c6cc2adf96": 1,
+				"c752ff5387f549daba0537fca12097c7": 6,
+				"909c7153a9384c319cfd2ab409a88d27": 1,
+				"b2ed1c2c7df44d2da164aef2ff2c79f9": 3,
+				"1746c490997e47aaa08f3673cbdc5509": 1,
+				"9c44bc3a70f04f9f9b9547818a7c2ce9": 2
+			},
+			"day": "20200521"
+		}]
+	},
+	"cloud_goods_deletes": {
 		"data": []
 	},
-	"goods_deletes": {
-		"data": []
+	"cloud_goods_shop_day_sales": {
+		"data": [{
+			"_id": "7853e7b85ec5fef70018e33f0598e679",
+			"day": "20200521",
+			"shops": {
+				"123457": 13
+			}
+		}]
 	},
-	"goods_shop_day_sales": {
-		"data": []
+	"cloud_goods_visites": {
+		"data": [{
+			"_id": "5e847ab25ec2610a0132c6f00e7b63ae",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.jpg",
+			"time": 1596706195583,
+			"uid": 10001,
+			"goods_id": 10000,
+			"shopid": 123457,
+			"price": 127,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+		}]
 	},
-	"goods_visites": {
-		"data": []
-	},
-	"identity": {
+	"cloud_identity": {
 		"data": [{
 			"_id": "f3839539a8ee428489fbc3bc5e250166",
-			"value": 10138,
+			"value": 10374,
 			"key": "users",
 			"name": "用户编号"
 		}, {
@@ -137,31 +244,252 @@
 			"_id": "f11f525b5ef98b8a000131654205f85b",
 			"key": "goods",
 			"name": "商品编号",
-			"value": 10042
+			"value": 10043
 		}, {
 			"_id": "1503f3385f1790ee0065f782131eb074",
 			"key": "goods_categories",
 			"name": "商品分类",
-			"value": 10059
+			"value": 10063
+		}, {
+			"_id": "0d06a2fd5f27b29c00449da06510005a",
+			"name": "订单自提",
+			"value": 1018277831,
+			"key": "order_ziti"
+		}, {
+			"_id": "aa133ce55f40c8290016d565265a595e",
+			"key": "cache_yilianyun_1053604898_access_token",
+			"data": "34e4cbfea92e43f29a2322c39a6cae1c",
+			"expires": 1598366345791
 		}]
 	},
-	"order_refunds": {
+	"cloud_order_refunds": {
+		"data": [{
+			"_id": "38d78ca75edb6cee0057c965411c5173",
+			"refundStatus": "success",
+			"refundFee": 100,
+			"refundDesc": "取消订单",
+			"created": "2020-06-06T10:16:14.002Z",
+			"balance": 99993,
+			"name": "余额支付",
+			"outTradeNo": "YD_2020060610154052365114",
+			"time": "2020-06-06T10:15:46.590Z",
+			"totalFee": 100,
+			"tradeStatus": "TRADE_SUCCESS",
+			"transactionId": "38d78ca75edb6cd10057c8837b026eaa",
+			"type": "balance",
+			"uid": 10004,
+			"id": "5a93cec95edb6ccc004f0e692e5dc5c6",
+			"modified": "2020-06-06T10:33:17.289Z"
+		}]
+	},
+	"cloud_orders": {
+		"data": [{
+			"_id": "8a6c3bf65f44da19003eb7135cfef368",
+			"shopid": 123457,
+			"uid": "9ffb2a485f38964200999b1f07cb7b80",
+			"cartCount": 1,
+			"totalMoney": 43.5,
+			"stockNotEnough": [],
+			"totalDiscount": 0,
+			"deliveryType": "deliveryHome",
+			"freight": 99,
+			"juli": 103.078,
+			"address": {
+				"_id": "cfe347375f38f816008c7d1c38867cba",
+				"address": "兴隆镇金星社区兴星街77号附1号",
+				"addressName": "南川区兴隆邮政所",
+				"area": "23",
+				"default": false,
+				"latitude": 29.169123000000003,
+				"longitude": 107.008297,
+				"mobile": "15986613315",
+				"name": "苏东浦",
+				"uid": "9ffb2a485f38964200999b1f07cb7b80"
+			},
+			"goods": [{
+				"_id": "f9c2a5db50f148a3b648c9d67951856a",
+				"stock": 267,
+				"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/cheliz.jpg",
+				"originPrice": null,
+				"id": 10005,
+				"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+				"price": 43.5,
+				"yuding": {
+					"sales": 100,
+					"sku_ids": [10001, 10003],
+					"beginTime": 1593792000000,
+					"deduction": 20,
+					"endTime": 1594396799000,
+					"finalPaymentBeginTime": 1594396800000,
+					"finalPaymentEndTime": 1594655999000,
+					"price": 1,
+					"state": "ended"
+				},
+				"upc": "",
+				"sku_id": 10000,
+				"cartId": "6518b7395f4396c00038447a7f968935",
+				"cartPrice": 43.5,
+				"amount": 1,
+				"name": "配可乐&gt;原味",
+				"sales": 26,
+				"hasSku": true,
+				"sku_index": 0,
+				"subName": "配可乐 原味",
+				"cutPrice": 0
+			}],
+			"shop": {
+				"_id": "faf20935850e4e81a3fc8ce87548948f",
+				"delivery": {
+					"maxDistance": 5000,
+					"minDistance": 5,
+					"money": 5,
+					"perMoney": 1,
+					"time": 30,
+					"deliveryDay": 4,
+					"deliveryPeriod": [{
+						"begin": 28800,
+						"end": 43200
+					}, {
+						"begin": 43200,
+						"end": 64800
+					}, {
+						"begin": 64800,
+						"end": 79200
+					}],
+					"freeMoney": 20,
+					"minPrice": 20
+				},
+				"deliveryTypes": ["deliveryHome", "selfRaising"],
+				"id": 123457,
+				"address": "重庆市渝中区上清寺中山四路上曾家岩24号",
+				"name": "重客隆超市-渝中区",
+				"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/24/1598257519258.jpg",
+				"latitude": 29.565183,
+				"longitude": 106.551766,
+				"uid": 10000,
+				"deliverySupportType": 3
+			},
+			"remark": "发发发",
+			"created": "2020-08-25T09:30:01.505Z",
+			"modified": "2020-08-25T09:30:01.505Z",
+			"deliveryHour": {
+				"checked": true,
+				"endTime": 1598364000000,
+				"id": 1598349600000,
+				"name": "今天 ",
+				"time": "18:00-22:00"
+			},
+			"lastPayTime": 1598348101505,
+			"platform": "ios,h5",
+			"state": -1,
+			"isDelete": 0,
+			"id": "2020082509300175397839",
+			"body": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮配可乐 原味",
+			"inviters": [{
+				"id": 10000,
+				"nickname": "沃尔玛-南山店",
+				"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg",
+				"shopid": 123457
+			}],
+			"timeConsumingInfo": {
+				"beginTime": 1598347801266,
+				"endTime": 1598347801505,
+				"consuming": 239
+			},
+			"cancelStyle": "auto",
+			"cancelApply": [{
+				"message": "您的取消申请已提交。",
+				"time": 1598348103195
+			}, {
+				"message": "您的订单已取消。",
+				"time": 1598348103312
+			}]
+		}]
+	},
+	"cloud_shop_comments": {
 		"data": []
 	},
-	"orders": {
-		"data": []
-	},
-	"shop_categories": {
-		"data": []
-	},
-	"shop_comments": {
-		"data": []
-	},
-	"shops": {
+	"cloud_shops": {
 		"data": [{
 			"_id": "faf20935850e4e81a3fc8ce87548948f",
+			"delivery": {
+				"maxDistance": 5000,
+				"minDistance": 5,
+				"money": 5,
+				"perMoney": 1,
+				"time": 30,
+				"deliveryDay": 4,
+				"deliveryPeriod": [{
+					"begin": 28800,
+					"end": 43200
+				}, {
+					"begin": 43200,
+					"end": 64800
+				}, {
+					"begin": 64800,
+					"end": 79200
+				}],
+				"freeMoney": 20,
+				"minPrice": 20
+			},
+			"deliveryTypes": ["deliveryHome", "selfRaising"],
+			"order": {
+				"canceled": 235,
+				"deleted": 8,
+				"delivered": 2,
+				"payup": 35,
+				"received": 2,
+				"refunded": 0,
+				"unpaid": 3
+			},
+			"addressName": "雾都宾馆",
+			"goods": {
+				"offline": 4,
+				"online": 33,
+				"shouqin": 0,
+				"yuding": 1,
+				"baokuan": 12,
+				"delete": 1,
+				"miaosha": 4
+			},
+			"id": 123457,
+			"lnglat": {
+				"type": "Point",
+				"coordinates": [106.551766, 29.565183]
+			},
+			"monthSale": 123,
+			"notice": "春节不打烊哈，暖心一座城",
 			"perCapita": 30,
+			"phone": "15986613313",
+			"address": "重庆市渝中区上清寺中山四路上曾家岩24号",
+			"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+			"name": "重客隆超市-渝中区",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/24/1598257519258.jpg",
 			"searchGoodsKeywords": ["车厘子", "杏子", "葡萄"],
+			"categories": [{
+				"name": "美食",
+				"id": 10000
+			}, {
+				"id": 1007,
+				"name": "火锅"
+			}, {
+				"id": 10002,
+				"name": "快餐"
+			}],
+			"latitude": 29.565183,
+			"longitude": 106.551766,
+			"manjians": [{
+				"id": 123456,
+				"name": "49减19",
+				"amount": 19,
+				"condition": 49
+			}, {
+				"amount": 25,
+				"condition": 69,
+				"id": 123456,
+				"name": "69减25"
+			}],
 			"serviceArea": {
 				"type": "Polygon",
 				"coordinates": [
@@ -190,66 +518,18 @@
 					]
 				]
 			},
-			"name": "沃尔玛-南山店",
-			"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
-			"deliveryMin": 20,
-			"deliveryMoneyBefore": 0,
-			"deliveryTime": 30,
-			"latitude": 22.123456,
-			"longitude": 113.123455,
-			"monthSale": 123,
-			"score": 4.8,
-			"stationId": 500119,
 			"uid": 10000,
-			"address": "兰家康城7号",
-			"goods": {
-				"baokuan": 12,
-				"delete": 2,
-				"miaosha": 4,
-				"offline": 4,
-				"online": 33,
-				"shouqin": 0,
-				"yuding": 1
-			},
-			"lnglat": {
-				"type": "Point",
-				"coordinates": [113.91934346588, 22.487874584531]
-			},
-			"manjians": [{
-				"amount": 19,
-				"condition": 49,
-				"id": 123456,
-				"name": "49减19"
-			}, {
-				"amount": 25,
-				"condition": 69,
-				"id": 123456,
-				"name": "69减25"
+			"deliverySupportType": 3,
+			"printers": [{
+				"name": "易联云",
+				"machine": "4004648355",
+				"module": "yilianyun"
 			}],
-			"notice": "春节不打烊，暖心一座城",
-			"order": {
-				"received": 0,
-				"refunded": 0,
-				"unpaid": 0,
-				"canceled": 101,
-				"deleted": 2,
-				"delivered": 1,
-				"payup": 10
-			},
-			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg",
-			"categories": [{
-				"id": 10000,
-				"name": "美食"
-			}, {
-				"id": 1007,
-				"name": "火锅"
-			}, {
-				"id": 10002,
-				"name": "快餐"
-			}],
-			"deliveryMoney": 0,
+			"score": 4.8,
 			"hasManjian": 1,
-			"id": 123457
+			"stationId": 500119,
+			"isPrint": false,
+			"online": true
 		}],
 		"index": [{
 			"IndexName": "index_lonlat",
@@ -260,6 +540,18 @@
 				}],
 				"MgoIsUnique": false
 			}
+		}]
+	},
+	"cloud_user_balance_logs": {
+		"data": [{
+			"_id": "7853e7b85ec4a0470005b2635feec773",
+			"created": "2020-05-20T03:13:11.804Z",
+			"uid": 10000,
+			"type": 0,
+			"balance": 1056.5,
+			"orderId": "09fe6ef05ec4a0420005570d44d35b04",
+			"money": 38.5,
+			"description": "购买:酸菜a鱼"
 		}]
 	},
 	"uni-app-version": {
@@ -283,106 +575,64 @@
 		}]
 	},
 	"uni-id-users": {
-		"data": []
-	},
-	"user_balance_logs": {
-		"data": []
-	},
-	"user_often_buy_shops": {
-		"data": []
-	},
-	"user_recommend_shops": {
-		"data": []
-	},
-	"users": {
 		"data": [{
-			"_id": "fda81d579598474e91966f708bc88153",
-			"balance": 0,
-			"coupons": 0,
-			"id": 10001,
-			"lastLogin": "2020-05-05T06:32:20.560Z",
-			"mobile": "13332903310",
-			"nickname": "抠脚大汉！",
-			"portrait": "/static/missing-face.png",
-			"regist": "2020-05-05T06:32:20.560Z",
-			"score": 0
-		}, {
-			"_id": "29ce6e168a89414daf110a96b4300c02",
-			"admin": [123457, 123458],
-			"nickname": "胡同里的一颗小黄豆",
-			"lastLogin": "2020-07-22T00:47:12.372Z",
-			"sex": 1,
-			"uid": 10000,
-			"birthday": "1989-05-22",
-			"invite": 10004,
-			"messageCount": 0,
-			"password": "f84j2k38f9u3u423jfwe",
-			"portrait": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/6/27/1593252892200.jpg",
-			"vipEndTime": 1522444916718,
-			"balance": 995316.7,
-			"id": 10000,
+			"_id": "abd27dd45f37c61900a6f6f23404b674",
+			"register_date": 1597490713479,
+			"register_ip": "125.62.5.114",
+			"invite_code": 10000,
 			"inviters": [{
-				"id": 10004,
-				"nickname": "纵行人生",
-				"portrait": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/5/27/1590561024816.jpg"
-			}, {
-				"id": 10001,
-				"nickname": "抠脚大汉！",
-				"portrait": "/static/missing-face.png"
+				"id": 10000,
+				"nickname": "沃尔玛-南山店",
+				"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg",
+				"shopid": 123457
 			}],
+			"last_login_date": 1598348782595,
+			"last_login_ip": "125.62.6.51",
 			"order": {
-				"delivered": 0,
-				"payup": 8,
-				"received": 0,
-				"unpaid": 0,
-				"canceled": 42,
-				"deleted": 0
+				"canceled": 2,
+				"unpaid": 0
 			},
-			"score": 102,
-			"vip": 0,
-			"fav": 100,
-			"mobile": "18888888888",
-			"shop_recommend_uid": 10000,
-			"tokenExpire": 1626914832372,
-			"type": "save",
-			"count": {
-				"fav": 2
+			"token": [
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTI4MDEsImV4cCI6MTYwMDg0NDgwMX0.RMRuLq8CfvXXrlKqyjnHR4uB3dGF5nvbpIt83Q_DhQE",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTI4ODEsImV4cCI6MTYwMDg0NDg4MX0.vMfpXLPxPoFS0tFHqWA2XgnD4Fj2xawXUBWmonG4-pY",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTMyMDYsImV4cCI6MTYwMDg0NTIwNn0.Kfj2Il299VzhYy4FdyCIE-RGPWJJF_vgGNlQ51lKysY",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTcwOTIsImV4cCI6MTYwMDg0OTA5Mn0.hKf-smPordM3Fm6MfgMpzX-eS8sKyeq5shiYW61or9k",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTcxMjQsImV4cCI6MTYwMDg0OTEyNH0.44kVFc6Kg6J9qiNBr44uvBVFCiXEbYr1VR0OP7G8fqg",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTcxNjcsImV4cCI6MTYwMDg0OTE2N30.6cdAlBb7nNSrGXno1v9CxLDGdcSG2bDtbwXajtpgdS8",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTczMzUsImV4cCI6MTYwMDg0OTMzNX0.xzY8eP9kr_6dL83NOAXqSMoVzpDWK4e-_cABn6ViwxQ",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTczNTYsImV4cCI6MTYwMDg0OTM1Nn0.tWVSwK8RHZaOUfuzYX-r1Ju6KYWqRMdOysKik7wxRTY",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTczOTMsImV4cCI6MTYwMDg0OTM5M30.JMp-m8AtcJgyz8StaAM-3BdcDWLlIAFt_rb8_9AxquA",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc0MDUsImV4cCI6MTYwMDg0OTQwNX0.nLe-7A_rRf8W8QILez44XTvrCQCMVmss1ZFxAADhAwI",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc0MTAsImV4cCI6MTYwMDg0OTQxMH0.XhYEOOmesQ96Mjyzm1j2q28HVm7XZthxVRosGl6CPy8",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc0OTUsImV4cCI6MTYwMDg0OTQ5NX0.twzSlJO7SSFYqrCDalv41B-YWtVxwXS2D_qF65W00BE",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc3MzEsImV4cCI6MTYwMDg0OTczMX0.M_BdJ2O4XyAIiLucd_fYco1HeW8yhQY_XfxUqCZfZ24",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc4OTIsImV4cCI6MTYwMDg0OTg5Mn0.ew_oNjOyAbXGoP7vroWUbQuDact5chcrIz2bQt2LIUE",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTc5NTEsImV4cCI6MTYwMDg0OTk1MX0.PX14PeFFjBn24uzQbuN_NLKdMBojJCg8j4iYVkwD9fw",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNTgwMDAsImV4cCI6MTYwMDg1MDAwMH0.lMyUibwwHv2Vi8Ita89dSJT1eK3LUJOsMHRbzJ5SmNM",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNjE1NDksImV4cCI6MTYwMDg1MzU0OX0.NzD1I3R0fLhpV9rUNjD02Iu6tJFuTqqgc6cdWTEpORI",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgyNjE1NzksImV4cCI6MTYwMDg1MzU3OX0.Mvx2lvG0ACnwwQhFZM8azOumbXm3UqjG8ibEbD-SmL4",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiZGVmN2QzZDhhZDM2ZDViMTMzMjg0YzUxMzc5MDU1YzEiLCJpYXQiOjE1OTgzMTU1MjAsImV4cCI6MTYwMDkwNzUyMH0.I6Q_Q-n3rUcnt1ykS_k9qzBCeGOTtYW-P3hwoab9uL0",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiZGVmN2QzZDhhZDM2ZDViMTMzMjg0YzUxMzc5MDU1YzEiLCJpYXQiOjE1OTgzNDUyMTYsImV4cCI6MTYwMDkzNzIxNn0.YiT-EXdkfiOnyvAKLxdzLNOs4MV3TQZhOLAxzZNvSSA",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgzNDg1NjAsImV4cCI6MTYwMDk0MDU2MH0.Odk3OlxHknNWGAV1zhgjGpThCb7GKMt4wA2jfsQSlxk",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYmQyN2RkNDVmMzdjNjE5MDBhNmY2ZjIzNDA0YjY3NCIsImNsaWVudElkIjoiOWM4NDA0MjIwYTcxNTNmN2QxZGNkYjZhYTRmN2UyMDEiLCJpYXQiOjE1OTgzNDg3ODIsImV4cCI6MTYwMDk0MDc4Mn0.trUwAYqbKvjdakl0gQWDXtBVKZcqBAXGuvDOQdCAcoc"
+			],
+			"wx_openid": {
+				"mp-weixin": "otGKY5JVaWZ-rh4-qyVe1h0zNVWA"
 			},
-			"coupons": 2,
-			"regist": "2020-03-12T01:30:14.081Z",
-			"loginChannel": "mobile",
-			"push": {
-				"pPyZWvH3Fa6PXba10aJ009": {
-					"uniIdToken": "",
-					"appid": "pPyZWvH3Fa6PXba10aJ009",
-					"appkey": "b7dOGlNPHR7pqwUxDhpTi4",
-					"clientid": "3f465d1cb641a0d02f8317447af6442b",
-					"id": "unipush",
-					"token": "69a0c6c9a14df71033d637bfdd44013e4c2a8c75b06d02a5c9945dd4621afe38",
-					"type": "regist"
-				},
-				"N5wQHWUKnv8POOTCnGtFU8": {
-					"appid": "N5wQHWUKnv8POOTCnGtFU8",
-					"appkey": "t318VmJI2p84991gl61VY4",
-					"clientid": "acc55ad1b445becf9e4a91ef154f8896",
-					"id": "unipush",
-					"token": "acc55ad1b445becf9e4a91ef154f8896",
-					"type": "regist",
-					"uniIdToken": ""
-				}
-			},
-			"token": "VMFF5t+4DVJSkymo5I+R/K1oIgTeNAvIpHf7WJiXkL+7DRotmUmCGgE9TCMWt9HSlDMRgDrkoRDx/78Swcv1bML2U1aT88vxopGnh69EW+th5NJ4ml7Va643QQAw4zmnIc2wwIV31wwTAnpWEPWD0PgUIV5JVRvhw2Zet7oUudw="
-		}, {
-			"_id": "a3a4495a19ec49fa9a8f16c7502c9ed6",
-			"balance": 0,
-			"coupons": 0,
-			"id": 10003,
-			"lastLogin": "2020-05-12T02:51:44.088Z",
-			"mobile": "13828809970",
-			"nickname": "七禾",
-			"portrait": "/static/missing-face.png",
-			"regist": "2020-05-12T02:51:44.088Z",
-			"score": 0
+			"nickname": "游客",
+			"gender": 1
+		}]
+	},
+	"uni-verify": {
+		"data": [{
+			"_id": "3adec2825f3894d600ca4e1d02fc2e7d",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "108069",
+			"state": 0,
+			"ip": "125.62.5.114",
+			"created_at": 1597543638506,
+			"expired_at": 1597543818506
 		}]
 	}
 }

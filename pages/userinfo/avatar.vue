@@ -39,7 +39,7 @@
 
 <script>
 let sysInfo = uni.getSystemInfoSync();
-console.log(sysInfo);
+console.log("avatar",sysInfo);
 let SCREEN_WIDTH = sysInfo.screenWidth;
 let SCREEN_HEIGHT = sysInfo.screenHeight;
 let PAGE_X, // 手按下的x位置

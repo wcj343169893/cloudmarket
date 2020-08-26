@@ -19,9 +19,9 @@
 			<!-- #endif-->
 			<view class="">
 				<text>登录即代表你同意</text>
-				<text class="link" @click="navToDocPage('1229caae5ef574ae0055cfa40630f5c5')">《服务协议》</text>
+				<text class="link" @click="navToDocPageByType('app_service')">《服务协议》</text>
 				<text>和</text>
-				<text class="link" @click="navToDocPage('a3e75f055ef574c200492faa50335f39')">《隐私协议》</text>
+				<text class="link" @click="navToDocPageByType('app_user_private')">《隐私协议》</text>
 			</view>
 		</view>
 	</view>
@@ -32,10 +32,10 @@
 //极光登录插件
 const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
-import { mobileAutoLogin, getToken, mobileLogin } from '@/common/request.js';
+import { mobileAutoLogin, getToken, mobileLogin,sendSms } from '@/common/request.js';
 import { mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
-import { navToDocPage } from '@/common/functions.js';
+import { navToDocPageByType } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -76,19 +76,9 @@ export default {
 		}
 	},
 	onLoad() {
-		/* this.platform = uni.getSystemInfoSync().platform;
-		//测试阶段，自动登录
-		if(this.platform  == "ios"){
-			this.toLogin();
-			return;
-		} */
 		//在应用初始化调用
 		//#ifdef APP-PLUS
 		this.jgLogin();
-		//#endif
-
-		//#ifdef H5
-		//this.toLogin();
 		//#endif
 		//this.getPhoneInfo();
 	},
@@ -164,45 +154,14 @@ export default {
 		navBack() {
 			uni.navigateBack();
 		},
-		navToDocPage(id) {
-			navToDocPage(id);
-		},
-		async toLogin() {
-			this.logining = true;
-			//const { mobile, password } = this;
-			const result = await this.$api.json('userInfo');
-			if (result.status === 1) {
-				this.$api.msg('登录成功', 2000, false, 'success');
-				//this.login(result.data);
-				getToken({
-					uid: result.data.id,
-					token: result.data.token
-				}).then(
-					res => {
-						console.log(res);
-						//写入缓存
-						this.loginSuccess(res);
-					},
-					err => {
-						//登录信息失效
-						uni.removeStorage({
-							key: 'userInfo'
-						});
-					}
-				);
-				setTimeout(() => {
-					uni.navigateBack();
-				}, 2000);
-			} else {
-				this.$api.msg(result.msg);
-				this.logining = false;
-			}
+		navToDocPageByType(type) {
+			navToDocPageByType(type);
 		},
 		changeRegion(val){
 			console.log("changeRegion",val)
 		},
 		getCode() {
-			if (this.disabled) {
+			if (this.disabled || this.processing) {
 				return;
 			}
 			//再次验证手机号码
@@ -212,14 +171,22 @@ export default {
 			}
 			//发送短信,但是需要企业信息,这里做假的功能,假如调用云函数，发送短信成功....
 			//this.$api.msg("发送短信成功！",3000);
-			this.$api.msg('测试例子，任意验证码都能通过', 3000);
+			//this.$api.msg('测试例子，任意验证码都能通过', 3000);
+			sendSms({
+				mobile:this.mobile
+			}).then(res=>{
+				this.$api.msg("发送成功")
+				//this.code = res;
+			},err=>{
+				this.$api.msg(err.message)
+			})
 			//倒计时60秒
 			this.daojishi(this.daojishiTotal);
 		},
 		daojishi(sec) {
 			if (sec > 0) {
 				sec--;
-				this.btnGetCodeText = sec + 's';
+				this.btnGetCodeText = sec + 's后获取';
 				this.processing = true;
 				setTimeout(() => {
 					this.daojishi(sec);
@@ -257,15 +224,7 @@ export default {
 		},
 		loginSuccess(res) {
 			this.$api.msg('登录成功', 2000, false, 'success');
-			//写入缓存
-			uni.setStorage({
-				key: 'userInfo',
-				data: res
-			});
-			auth.signInWithTicket(res.ticket).then(() => {
-				// 登录成功
-				console.log('客户端登录成功');
-			});
+			this.login(res);
 			this.navTimeBack();
 		}
 	}

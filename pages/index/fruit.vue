@@ -2,13 +2,11 @@
 	<view class="container">
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
-		<view class="mp-search-box">
-			<navigator url="chooseAddress" class="yticon icon-icon-test"></navigator>
-			<input class="ser-input" type="text" :value="searchWord" disabled @click="navToSearch" />
-		</view>
+		<!-- 顶部栏 -->
+		<page-header :showFillView="true"></page-header>
 		<!-- #endif -->
 		<!-- 头部轮播 -->
-		<view class="carousel-section">
+		<view class="carousel-section" v-if="isLoaded">
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
 			<!-- 背景色区域 -->
@@ -21,22 +19,22 @@
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)"><image :src="item.src" /></swiper-item>
 			</swiper>
 			<!-- 自定义swiper指示器 -->
-			<view class="swiper-dots">
+			<view class="swiper-dots" v-if="carouselList && carouselList.length > 0">
 				<text class="num">{{ swiperCurrent + 1 }}</text>
 				<text class="sign">/</text>
 				<text class="num">{{ swiperLength }}</text>
 			</view>
 		</view>
 		<!-- 口号 -->
-		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0" @click="navToDocPage('7c59e15d685c4a2d9a5d81376b2dc47f')">
+		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0" @click="navToDocPageByType('app_goods_charge')">
 			<view class="kouhao_item">
 				<text class="yticon icon-chps"></text>
-				<text>最快{{shop.delivery.time}}分钟送达</text>
+				<text>最快{{ shop.delivery.time }}分钟送达</text>
 			</view>
 			<view class="kouhao_item">
 				<text class="yticon icon-money"></text>
-				<text>{{shop.delivery.minPrice}}元起送</text>
-				<text v-if="shop.delivery.money==0">{{shop.delivery.money}}配送费</text>
+				<text>{{ shop.delivery.minPrice }}元起送</text>
+				<text v-if="shop.delivery.money == 0">{{ shop.delivery.money }}配送费</text>
 			</view>
 			<view class="kouhao_item">
 				<text class="yticon icon-dunpai"></text>
@@ -65,8 +63,8 @@
 								<view class="title clamp">
 									<text>{{ item.title }}</text>
 								</view>
-								<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
-									<text>{{item.subTitle}}</text>
+								<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+									<text>{{ item.subTitle }}</text>
 								</view>
 								<view class="tags">
 									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
@@ -74,7 +72,7 @@
 								<view class="">
 									<text class="price">{{ item.price }}</text>
 									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
-									<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item,item.miaosha.sku_id)"></text>
+									<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
 								</view>
 							</view>
 						</view>
@@ -89,35 +87,83 @@
 			</view>
 			<view class="newest-section">
 				<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-					<image :src="item.src" mode="aspectFill"></image>
+					<image :src="item.src" mode="aspectFill" lazy-load="true"></image>
 					<view class="content">
 						<view class="title clamp">
 							<text>{{ item.title }}</text>
 						</view>
-						<view class="sub-title" v-if="item.subTitle && item.subTitle !=''">
-							<text>{{item.subTitle}}</text>
+						<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+							<text>{{ item.subTitle }}</text>
 						</view>
-						<view class="tags">
-							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
-						</view>
-						<view class="">
-							<text class="price">{{ item.price }}</text>
-							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+						<view class="weui-flex">
+							<view class="weui-flex__item">
+								<view class="tags">
+									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
+								</view>
+								<view class="">
+									<text class="price">{{ item.price }}</text>
+									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+								</view>
+							</view>
+							<view class="buttons">
+								<text class="sku_btn" v-if="item.yuding">查看</text>
+								<text class="sku_btn" v-else-if="item.hasSku" @click.stop="openSku(item)">选规格</text>
+								<text class="sku_btn yticon icon-gouwuche_" v-else @click.stop="saveCartAmount(item, 0)"></text>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</block>
 		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
+		<!-- 选规格 -->
+		<uni-popup ref="showsku" type="center" :mask-click="true">
+			<view class="skuDialogPanel">
+				<view class="title">
+					<text>{{ skuGoods.title }}</text>
+				</view>
+				<view v-for="(item, index) in skuGoods.skuNameMap" :key="index">
+					<view class="skuname">
+						<text>{{ item.name }}</text>
+					</view>
+					<view class="skuoptions">
+						<view
+							v-for="(sname, index2) in item.child"
+							:key="index2"
+							class="skuoptions__item"
+							:class="{ active: item.active == index2, disabled: sname.disabled }"
+							@click="selectSku(index, index2)"
+						>
+							<text>{{ sname.value }}</text>
+						</view>
+					</view>
+				</view>
+				<view class="sku_selected">
+					<text>已选择规格：{{ skuGoodsSelected }}</text>
+				</view>
+				<view class="sku_prices_buttons">
+					<view class="sku_prices_buttons__price ">
+						<text class="price">{{ skuGoods.showPrice }}</text>
+						<text class="price del m-l" v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
+					</view>
+					<view class="sku_prices_buttons__btn"><text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(skuGoods, skuGoods.selectedSkuId)"></text></view>
+				</view>
+			</view>
+			<view class="uni-image-close" @click="closeSkuDialog()"><uni-icons type="clear" color="#fff" size="40" /></view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import pageHeader from './components/page-header.vue';
 import { getHomeFruitData, editCart } from '@/common/request.js';
-import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber, navToDocPage, navToDocWebPage,showLoginDialog } from '@/common/functions.js';
+import { navToGoodsItemPage, updateGoodsTags, incrCartNumber, updateCartNumber, navToDocPageByType, navToDocWebPage, showLoginDialog } from '@/common/functions.js';
 
 export default {
+	components: {
+		pageHeader
+	},
 	data() {
 		return {
 			titleNViewBackground: '',
@@ -132,7 +178,10 @@ export default {
 			recommendCategoriesList: [],
 			miaoshaList: [],
 			newestList: [],
-			shop:{}
+			shop: {},
+			skuGoods: {},
+			share: {},
+			skuGoodsSelected: ''
 		};
 	},
 	computed: {
@@ -186,15 +235,21 @@ export default {
 				this.loadData();
 			} else {
 				//获取定位
+				uni.showLoading({
+					title:"正在定位"
+				})
 				uni.getLocation({
 					type: 'gcj02',
 					altitude: true,
 					geocode: true,
 					success: res => {
+						uni.hideLoading();
 						console.log('获取定位完成', res);
 						this.address = '当前位置';
 						//#ifndef MP
-						this.address = res.address.poiName;
+						if(res.address){
+							this.address = res.address.poiName;
+						}
 						//百度地图
 						//this.address = res.address.street + res.address.streetNum;
 						//#endif
@@ -207,6 +262,7 @@ export default {
 						this.loadData();
 					},
 					fail: res => {
+						uni.hideLoading();
 						this.address = '定位失败,将展示默认信息';
 						console.log('获取定位失败', res.errMsg);
 						this.loadData();
@@ -222,7 +278,6 @@ export default {
 			this.loadData();
 		},
 		async loadData() {
-			this.isLoaded = false;
 			getHomeFruitData({
 				stationId: this.stationId,
 				latitude: this.location.latitude,
@@ -271,6 +326,7 @@ export default {
 					});
 					this.getDefaultSearchWord();
 				}
+				this.share = res.share;
 			});
 		},
 		//轮播图切换修改背景色
@@ -281,7 +337,7 @@ export default {
 		},
 		//广告轮播跳转
 		navToAdPage(item) {
-			console.log(item)
+			console.log(item);
 			//https://ask.dcloud.net.cn/article/35621
 			let link = item.link;
 			//this.$api.msg(link)
@@ -298,13 +354,13 @@ export default {
 				navToDocWebPage(link);
 			}
 		},
-		navToDocPage(id) {
-			navToDocPage(id);
+		navToDocPageByType(id) {
+			navToDocPageByType(id);
 		},
 		navToCategoryPage(id) {
 			this.changeMainCateId(+id);
 			uni.switchTab({
-				url: `../category/goods`
+				url: `/pages/index/category`
 			});
 		},
 		navToGoodsPage(item) {
@@ -345,13 +401,13 @@ export default {
 			}, 10000);
 		},
 		//更新购物车数据到服务器
-		saveCartAmount(item,sku_id) {
+		saveCartAmount(item, sku_id) {
 			let number = 1;
-			if(!this.hasLogin){
+			if (!this.hasLogin) {
 				showLoginDialog();
 				return;
 			}
-			console.log(item)
+			console.log(item);
 			editCart({
 				id: this.shopId,
 				stationId: this.stationId,
@@ -359,19 +415,157 @@ export default {
 				sku_id: +sku_id,
 				price: item.price,
 				title: item.title,
-				appends:1,
+				appends: 1,
 				subTitle: item.subName,
 				src: item.src,
 				checked: 1,
 				amount: number
-			}).then(res => {
-				console.log(res);
-				this.$api.msg("加入成功",2000,true,"success")
-			},err=>{
-				this.$api.msg(err.message);
+			}).then(
+				res => {
+					console.log(res);
+					this.$api.msg('加入成功', 2000, true, 'success');
+					incrCartNumber(1);
+				},
+				err => {
+					this.$api.msg(err.message);
+				}
+			);
+		},
+		openSku(item) {
+			if (!this.hasLogin) {
+				this.showLoginDialog();
+				return;
+			}
+			//处理规格结构
+			let skus = item.skus;
+			console.log(skus);
+			let skuMap = [];
+			for (let n in item.skuname) {
+				skuMap.push({
+					name: item.skuname[n],
+					active: 0, //相当于默认选中第一个，一定存在
+					child: [],
+					childName: []
+				});
+			}
+			console.log(skuMap);
+			let nameMap = {};
+			//所有存在的规格名称，例如：aabb，bbcc
+			let nameHash = [];
+			let miaoshaSkuName = [];
+			skus.map(sku => {
+				let names = sku.name.split('&gt;');
+				names.map((n, i) => {
+					if (skuMap[i]['childName'].indexOf(n) == -1) {
+						skuMap[i]['child'].push({
+							value: n,
+							stock: sku.stock,
+							disabled: false
+						});
+						skuMap[i]['childName'].push(n);
+					}
+				});
+				//name排序之后再拼接起来
+				nameHash.push(names.sort().join('&gt;'));
+				nameMap[sku.name] = sku;
+
+				if (miaoshaSkuName.length == 0) {
+					if (item.miaosha && item.miaosha.sku_id == sku.id) {
+						miaoshaSkuName = names;
+					} else if (item.default_checked_sku_id == sku.id) {
+						//本身默认选中
+						miaoshaSkuName = names;
+					}
+				}
 			});
+			//默认第一个规格的选中次数
+			item['cart'] = 0;
+			item['skuNameIds'] = nameMap;
+			item['skuNameMap'] = skuMap;
+			item['skuNameHash'] = nameHash;
+			this.skuGoods = item;
+			//默认选中第一个
+			if (miaoshaSkuName.length > 0) {
+				//默认选中秒杀商品，否则第一个
+				skuMap.map((s, i) => {
+					//找到秒杀规格所在位置
+					let i2 = s.childName.findIndex(sitem => miaoshaSkuName.indexOf(sitem) != -1);
+					if (i2 < 0) {
+						//没找到对应的型号
+						console.log('默认没找到对应的型号', miaoshaSkuName);
+						i2 = 0;
+					}
+					this.selectSku(i, i2);
+				});
+			} else {
+				this.selectSku(0, 0);
+			}
+			//延时打开
+			this.$nextTick(() => {
+				this.$refs['showsku'].open();
+			});
+		},
+		/**关闭sku选择弹窗**/
+		closeSkuDialog() {
+			this.$refs['showsku'].close();
+		},
+		/**规格选择**/
+		selectSku(index, index2) {
+			console.log('selectSku', index, index2);
+			//被点击的name
+			let clickName = this.skuGoods.skuNameMap[index]['child'][index2];
+			if (clickName.disabled) {
+				console.log(clickName);
+				return false;
+			}
+			//skuNameIds
+			this.skuGoods.skuNameMap[index].active = index2;
+			//更新已选择规格
+			let names = [];
+			this.skuGoods.skuNameMap.forEach((skuname, ind) => {
+				names.push(skuname['child'][skuname.active].value);
+				skuname['child'].forEach(n2 => {
+					//点击的其他行
+					if (ind != index) {
+						let joinName = [clickName.value, n2.value].sort().join('&gt;');
+						//不存在组合或者库存不足
+						n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock < 1;
+					}
+				});
+			});
+			//匹配skuid
+			let selectSku = this.skuGoods['skuNameIds'][names.join('&gt;')];
+			this.skuGoods['selectedSkuId'] = selectSku.id;
+			//更新商品价格
+			this.skuGoods['showPrice'] = selectSku.price;
+			//库存和限购
+			this.skuGoods['stock'] = selectSku.stock;
+			this.skuGoods['limit'] = selectSku.limit;
+			this.skuGoods['showOriginPrice'] = selectSku.originPrice ? selectSku.originPrice : 0;
+			//console.log(this.skuGoods)
+			this.skuGoodsSelected = names.join('、');
 		}
 	},
+	// #ifdef MP-WEIXIN
+	onShareAppMessage(res) {
+		if (res.from === 'button') {
+			// 来自页面内分享按钮
+			console.log(res.target);
+		}
+		let query = [];
+		if (this.userInfo) {
+			query.push('uid=' + this.userInfo.id);
+		}
+		if (this.share.pageLinkQuery) {
+			query.push(this.share.pageLinkQuery);
+		}
+		return {
+			title: this.share.title,
+			path: '/pages/index/fruit?' + query.join('&')
+		};
+	},
+	//#endif
+
 	// #ifndef MP
 	// 标题栏input搜索框点击
 	onNavigationBarSearchInputClicked: async function(e) {
@@ -409,45 +603,15 @@ export default {
 
 <style lang="scss">
 /* #ifdef MP */
-.mp-search-box {
-	position: absolute;
-	left: 0;
-	top: calc(var(--status-bar-height) + 50upx);
-	z-index: 9999;
-	width: 50%;
-	padding: 0 20upx;
-	display: flex;
-	align-items: center;
-	.icon-icon-test {
-		font-size: 48upx;
-		color: #ffffff;
-		margin-right: 7upx;
-	}
-	.ser-input {
-		flex: 1;
-		height: 56upx;
-		line-height: 56upx;
-		text-align: center;
-		font-size: 28upx;
-		color: $font-color-base;
-		border-radius: 20px;
-		background: rgba(255, 255, 255, 0.6);
-	}
-}
 page {
 	.carousel-section {
 		padding: 0;
 		.titleNview-placing {
-			padding-top: 118upx;
+			padding: 0;
+			height: 16rpx;
 		}
-		.carousel {
-			.carousel-item {
-				padding: 10upx;
-			}
-		}
-		.swiper-dots {
-			left: 45upx;
-			bottom: 40upx;
+		.titleNview-background {
+			height: 380rpx;
 		}
 	}
 }
@@ -590,9 +754,10 @@ page {
 		flex-direction: row;
 		padding-left: 20upx;
 	}
+	$width: 320rpx;
 	.floor-item {
 		background: #fff;
-		width: 280upx;
+		width: $width;
 		padding: 0 0 20upx;
 		margin-right: 20upx;
 		font-size: $font-sm + 2upx;
@@ -603,8 +768,8 @@ page {
 			padding: 0 20upx;
 		}
 		image {
-			width: 280upx;
-			height: 280upx;
+			width: $width;
+			height: $width;
 		}
 	}
 }
@@ -660,6 +825,9 @@ page {
 			width: 344upx;
 			height: 344upx;
 		}
+		.title {
+			margin-bottom: 4rpx;
+		}
 	}
 }
 .bottom {
@@ -669,13 +837,77 @@ page {
 	padding: 20upx;
 }
 .sku_btn {
-	color: $btn-color-light;
-	font-size: $font-lg;
-	line-height: 40rpx;
+	color: #ffffff;
+	background: $btn-color-light;
+	font-size: $font-sm;
 	float: right;
+	padding: 4rpx 8rpx;
+	border-radius: 8rpx;
+	&.yticon {
+		font-size: 48rpx;
+		color: $btn-color-light;
+		background: none;
+	}
 }
-.sub-title{
+.sub-title {
 	font-size: $font-sm;
 	color: $font-color-disabled;
+}
+.skuDialogPanel {
+	background: #ffffff;
+	width: 670upx;
+	border-radius: 20upx;
+	padding: 30upx 20upx;
+	font-size: $font-base;
+	.title {
+		font-size: $font-lg;
+		color: $font-color-dark;
+	}
+	.skuname {
+		margin: 8upx 0;
+		color: $font-color-light;
+	}
+	.skuoptions {
+		flex-wrap: wrap;
+		text-align: center;
+		display: flex;
+	}
+	$yellow-color: $uni-color-success;
+	.skuoptions__item {
+		/* width: 180upx; */
+		border: 1px solid $font-color-disabled;
+		border-radius: 8upx;
+		padding: 8upx 18upx;
+		margin-left: 20upx;
+		margin-bottom: 20upx;
+		&.active {
+			border: 1px solid $yellow-color;
+			color: $font-color-emphasis;
+		}
+		&.disabled {
+			border-color: #e8e8e8;
+			color: $font-color-disabled;
+		}
+	}
+	.sku_selected {
+		background: #fafafa;
+		margin: 20upx -20upx;
+		padding: 12upx 20upx;
+		border: 2upx solid #f3f3f3;
+		border-left: none;
+		border-right: none;
+	}
+	.sku_prices_buttons {
+		display: flex;
+	}
+	.sku_prices_buttons__price {
+		flex: 1;
+	}
+	.sku_prices_buttons__btn {
+	}
+}
+.uni-image-close {
+	margin-top: 20upx;
+	text-align: center;
 }
 </style>

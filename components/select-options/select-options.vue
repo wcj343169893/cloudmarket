@@ -65,7 +65,7 @@ export default {
 	methods: {
 		setDefaultValue() {
 			if (this.defaultOption != '') {
-				console.log('this.defaultOption', this.defaultOption);
+				//console.log('this.defaultOption', this.defaultOption);
 				this.title = this.options[this.defaultOption];
 				this.def = this.defaultOption;
 			}

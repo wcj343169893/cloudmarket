@@ -21,27 +21,40 @@
 						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 						<view class="attr-box">
 							<text>{{item.priceTitle}}:</text>
-							<text class="price">{{ goodsItem.price }}</text>
+							<text class="price">{{ goodsItem.price | toFixed}}</text>
 							<text>数量:</text>
 							<text>{{ goodsItem.amount }}</text>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="address" v-if="item.state ==1 && item.address">
-				<text class="m-r">{{item.address.name}}</text>
-				<text class="m-r">{{item.address.mobile}}</text>
-				<text>{{item.address.addressName}}{{item.address.area}}</text>
-			</view>
+			
+			<block v-if="item.deliveryType == 'selfRaising'">
+				<view class="address" v-if="item.deliveryHour">
+					<text class="m-r">预约提货时间:</text>
+					<text class="m-r">{{item.deliveryHour.name}} {{item.deliveryHour.time}}</text>
+				</view>
+			</block>
+			<block v-else>
+				<view class="address" v-if="item.deliveryHour">
+					<text class="m-r">预约送达时间:</text>
+					<text class="m-r">{{item.deliveryHour.name}} {{item.deliveryHour.time}}</text>
+				</view>
+				<view class="address" v-if="item.address">
+					<text class="m-r">{{item.address.name}}</text>
+					<text class="m-r">{{item.address.mobile}}</text>
+					<text>{{item.address.addressName}}{{item.address.area}}</text>
+				</view>
+			</block>
 			<view class="price-box">
 				<text>共</text>	
 				<text class="num">{{ item.cartCount }}</text>
 				<text>件商品</text>	
 				<block v-if="item.yuding">
 					<text class="m-l"><text v-if="item.yuding.state==1">已付</text>定金</text>
-					<text class="price warning">{{ item.yuding.price }}</text>
+					<text class="price warning">{{ item.yuding.price | toFixed}}</text>
 					<text class="m-l">尾款</text>
-					<text class="price warning">{{ item.yuding.finishPaymentPrice }}</text>
+					<text class="price warning">{{ item.yuding.finishPaymentPrice | toFixed}}</text>
 				</block>
 				<block v-else>
 					<text class="m-l">实付款</text>	
@@ -51,12 +64,12 @@
 			<!-- 已取消 -->
 			<!-- 未付款 -->
 			<view class="action-box b-t" v-if="item.state == 0">
-				<button class="action-btn" @click.stop="editOrderMoney(item)">改价格</button>
-				<button class="action-btn" @click.stop="sendPayMessage(item, index)">发送付款提醒</button>
+				<button class="action-btn warning" @click.stop="editOrderMoney(item)">改价格</button>
+				<button class="action-btn recom" @click.stop="sendPayMessage(item, index)">发送付款提醒</button>
 			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
-				<view class="action-box b-t"><button class="action-btn" @click.stop="addDelivery(item)">确定发货</button></view>
+				<view class="action-box b-t"><button class="action-btn recom" @click.stop="addDelivery(item)">确定发货</button></view>
 			</block>
 			<!-- 已发货 -->
 			<block v-if="item.state == 2"></block>
@@ -70,7 +83,7 @@
 
 <script>
 import { orderAdmin } from '@/common/admin_request.js';
-import { getOrderStateExp,getOrderTypes } from '@/common/functions.js';
+import { getOrderStateExp,getOrderTypes,checkDeliveryHour } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -116,6 +129,7 @@ export default {
 						if(ele.yuding){
 							ele.priceTitle="预售价";
 						}
+						checkDeliveryHour(ele)
 					});
 					this.orderList = this.orderList.concat(res);
 					if (res.length < this.limit) {
@@ -312,6 +326,10 @@ page,
 		}
 		&.recom {
 			background: $base-color;
+			color: #fff;
+		}
+		&.warning {
+			background: $btn-color-warning;
 			color: #fff;
 		}
 	}

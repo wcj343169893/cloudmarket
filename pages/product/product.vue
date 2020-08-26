@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<pageHeader ref="pageHeader"></pageHeader>
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">
 				<swiper-item class="swiper-item" v-for="(item, index) in imgs" :key="index">
@@ -144,7 +145,15 @@
 				</view>
 			</view>
 		</view>
-
+		<!-- 评价 -->
+		<view id="rating" class="rating-wrap column" :class="{ 'no-data': !ratingData.data }">
+			<view class="e-header">
+				<text class="tit">商品评价</text>
+				<text>({{ ratingData.count || 0 }})</text>
+				<text class="tip">好评率 {{ score * 100 }}%</text>
+				<text class="yticon icon-you"></text>
+			</view>
+		</view>
 		<view class="detail-desc">
 			<view class="d-header"><text>图文详情</text></view>
 			<rich-text :nodes="description"></rich-text>
@@ -176,10 +185,13 @@
 import { mapState } from 'vuex';
 import share from '@/components/share';
 import { getGoodsInfo, editCart } from '@/common/request.js';
+import pageHeader from './components/detail-page-header'; //页面头
 import { showLoginDialog, navToLoginPage, navToCreateOrder, updateGoodsTags, miaoshaCountDown, incrCartNumber, getCartSumNumber, clearCountDownTimer } from '@/common/functions.js';
+let _anchorList = [];
 export default {
 	components: {
-		share
+		share,
+		pageHeader
 	},
 	data() {
 		return {
@@ -219,7 +231,8 @@ export default {
 			nameMap: {},
 			cart: {},
 			cartSumCount: 0,
-			canAddCart: false
+			canAddCart: false,
+			ratingData: {}
 		};
 	},
 	computed: {
@@ -263,6 +276,9 @@ export default {
 	onShow() {
 		this.isSubmit = false;
 	},
+	onPageScroll(e) {
+		this.$refs.pageHeader && this.$refs.pageHeader.pageScroll(e);
+	},
 	methods: {
 		async loadData() {
 			//优先读取缓存
@@ -282,6 +298,7 @@ export default {
 					this.yuding = false;
 					this.buildGoodsInfo(item);
 					this.canAddCart = true;
+					this.calcAnchor();
 				},
 				err => {
 					//this.$api.msg("商品已删除或下架",20000);
@@ -607,7 +624,24 @@ export default {
 			});
 		},
 		refreshList() {},
-		stopPrevent() {}
+		stopPrevent() {},
+		//计算锚点参数
+		async calcAnchor() {
+			const size = await new Promise(res => {
+				uni.createSelectorQuery()
+					.select('#rating')
+					.boundingClientRect(data => {
+						res(data);
+					})
+					.exec();
+			});
+			const headerHeight = this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight;
+			const a1 = (size ? size.top : 0) - headerHeight;
+			const a2 = (size ? size.bottom : 0) + uni.upx2px(12) - headerHeight;
+			this.$refs.pageHeader.anchorList[1].top = a1;
+			this.$refs.pageHeader.anchorList[2].top = a2;
+			_anchorList = [0, a1, a2];
+		}
 	}
 };
 </script>
@@ -1159,5 +1193,42 @@ page {
 .sub-title {
 	font-size: $font-sm;
 	color: $font-color-disabled;
+}
+/* 评价 */
+.rating-wrap {
+	padding: 20rpx 30rpx 0rpx;
+	background: #fff;
+	margin-top: 12rpx;
+
+	&.no-data {
+		padding: 10rpx 30rpx 10rpx;
+	}
+	.e-header {
+		display: flex;
+		align-items: center;
+		height: 70rpx;
+		font-size: 28rpx;
+		color: #333;
+	}
+	.tit {
+		font-size: 32rpx;
+		color: #333;
+		font-weight: 700;
+		margin-right: 4rpx;
+	}
+	.tip {
+		flex: 1;
+		font-size: 26rpx;
+		color: #999;
+		text-align: right;
+	}
+	.icon-you {
+		margin-left: 8rpx;
+		font-size: 24rpx;
+		color: #999;
+	}
+	.mix-rating-item::after {
+		border: 0;
+	}
 }
 </style>
