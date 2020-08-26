@@ -438,18 +438,7 @@
         ,{
             "path" : "pages/admin/set/printer/list",
             "style" : {
-				"navigationBarTitleText": "打印终端管理",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "新增",
-							"fontSize": "16",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
+				"navigationBarTitleText": "打印终端管理"
 			}
         }
     ],

@@ -117,7 +117,7 @@
 					</view>
 					<scroll-view scroll-x class="h-list">
 						<view v-for="(item, index) in visiteGoodsList" :key="index" class="h-list-image">
-							<image :src="item.src" @click="navToGoods(item)" mode="aspectFill"></image>
+							<image :src="item.src" @click="navToGoods(item)" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 						</view>
 					</scroll-view>
 				</block>

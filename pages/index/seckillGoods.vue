@@ -3,7 +3,7 @@
 		<block v-if="goodsList.length > 0">
 			<view class="seckill-section">
 				<view v-for="(item, index) in goodsList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-					<image :src="item.src" mode="aspectFill"></image>
+					<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 					<view class="content">
 						<view class="title clamp">
 							<text>{{ item.title }}</text>

@@ -48,7 +48,7 @@
 </script>
 
 <style lang="scss">
-	@import '@/common/github-markdown.css';
+	@import '@/common/css/github-markdown.css';
 
 	.container {}
 

@@ -234,7 +234,7 @@
 				let comefrom = this.comefrom;
 				let id = this.id;
 				uni.redirectTo({
-					url: `/pages/money/paySuccess?id=${id}&comefrom=${comefrom}`
+					url: `/pages/money/paySuccess?id=${id}&comefrom=${comefrom}&module=${this.module}`
 				});
 			},
 			//支付失败，可以另外选择支付方式

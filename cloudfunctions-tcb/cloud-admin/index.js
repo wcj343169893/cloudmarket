@@ -7,6 +7,7 @@ const modules = {
 	shops: require("./shops"),
 	ads: require("./ads"),
 	docs: require("./docs"),
+	printer: require("./printer"),
 };
 const uniID = require('uni-id');
 /**

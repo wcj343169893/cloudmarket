@@ -287,7 +287,7 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id, item.showPayMoney, 'order');
+			navToPayOrder(item._id, item.showPayMoney, 'order','mall');
 		},
 		//删除订单
 		deleteOrder(item) {

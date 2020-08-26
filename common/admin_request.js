@@ -10,6 +10,9 @@ import network from "./network.js";
 const shopAdmin = function(action,data,isShowLoading) {
 	return adminNetwork("shops",action,data,isShowLoading);
 }
+const printerAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("printer",action,data,isShowLoading);
+}
 /**
  * 订单管理
  * @param {Object} data
@@ -71,6 +74,7 @@ const adminNetwork = (module,action,data,isShowLoading)=>{
 }
 export {
 	shopAdmin,
+	printerAdmin,
 	orderAdmin,
 	goodsAdmin,
 	categoryAdmin,

@@ -41,14 +41,12 @@ const print = async (data, shopid) => {
 	if (printers.length > 1) {
 		index = parseInt(Math.random() * printers.length);
 	}
+	//module 为统一名称，表示打印机类型
 	const {
-		machine,
 		module
 	} = printers[index];
-	//设备id
-	data.machine = machine;
 	//调用子模块方法
-	return await modules[module]["print"](data);
+	return await modules[module]["print"](data, printers[index]);
 }
 /**
  * 添加打印设备

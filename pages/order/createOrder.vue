@@ -514,7 +514,7 @@ export default {
 						//TODO handle the exception
 					}
 					uni.redirectTo({
-						url: `/pages/money/pay?id=${id}&money=${money}&comefrom=cart`
+						url: `/pages/money/pay?id=${id}&money=${money}&comefrom=cart&module=mall`
 					});
 				},
 				err => {

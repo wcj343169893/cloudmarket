@@ -1,10 +1,6 @@
 'use strict';
 const uuidv4 = require('uuid/v4');
 const md5 = require('md5');
-//主要是这里报错
-const {
-	getPrinterConfig
-} = require("configs");
 const {
 	getDateFormat,
 	checkDeliveryHour,
@@ -29,7 +25,6 @@ const models = {
 		if (isRefresh) {
 			this.access_token = "";
 		}
-		this.config = getPrinterConfig(this.name);
 		//单次请求，如果已经拿到直接返回
 		if (this.access_token != "") {
 			return this.access_token;
@@ -62,7 +57,8 @@ const models = {
 	 * 获取终端状态接口
 	 * @param {Object} data
 	 */
-	async getPrintStatus(data) {
+	async getPrintStatus(data, config) {
+		this.config = config;
 		return await this.send({
 			machine_code: data.machine, //"4004648355",
 		}, "/printer/getprintstatus");
@@ -72,7 +68,8 @@ const models = {
 	 * @param {Object} data
 	 * @link http://doc2.10ss.net/371770#___55
 	 */
-	async addPrinter(data) {
+	async addPrinter(data, config) {
+		this.config = config;
 		return await this.send({
 			machine_code: data.machine, //"4004648355",
 			msign: data.msign //"189541803678",
@@ -83,7 +80,8 @@ const models = {
 	 * @param {Object} data
 	 * @link http://doc2.10ss.net/343932
 	 */
-	async scanCodeModel(data) {
+	async scanCodeModel(data, config) {
+		this.config = config;
 		return await this.send({
 			machine_code: data.machine,
 			qr_key: data.qr_key,
@@ -94,7 +92,8 @@ const models = {
 	 * 删除终端
 	 * @param {Object} data
 	 */
-	async deletePrinter(data) {
+	async deletePrinter(data, config) {
+		this.config = config;
 		return await this.send({
 			machine_code: data.machine,
 		}, "/printer/deleteprinter");
@@ -103,11 +102,12 @@ const models = {
 	 * 打印文本
 	 * @param {Object} order 订单信息
 	 */
-	async print(order) {
+	async print(order, config) {
+		this.config = config;
 		///print/index  打印文本
 		return await this.send({
 			content: this.getContentWithTemplate(order),
-			machine_code: order.machine,
+			machine_code: this.config.machine,
 			origin_id: new Date().getTime()
 		}, "/print/index");
 	},

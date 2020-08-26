@@ -170,6 +170,8 @@
 				}, err => {
 					this.$api.msg("修改失败");
 				})
+			},refreshList(){
+				this.$api.prePage().refreshList();
 			}
 		}
 	}

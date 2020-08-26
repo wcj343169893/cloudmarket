@@ -60,6 +60,7 @@ let PAGE_X, // 手按下的x位置
 	INIT_DRAG_POSITION = 100, // 初始化屏幕宽度和裁剪区域的宽度之差，用于设置初始化裁剪的宽度
 	DRAW_IMAGE_W = sysInfo.screenWidth; // 设置生成的图片宽度
 
+import { fileDomain } from '@/common/functions.js';
 export default {
 	/**
 	 * 页面的初始数据
@@ -291,7 +292,7 @@ export default {
 								uni.hideLoading();
 								if (!result.code) {
 									//上传成功
-									let url = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/' + cloudPath;
+									let url = fileDomain + cloudPath;
 									this.$api.prePage().refreshFile(url);
 									this.$api.msg('上传成功');
 									setTimeout(() => {

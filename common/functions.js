@@ -1,5 +1,6 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
 var isRedirect = false;
+const fileDomain = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/';
 /**
  * 订单状态
  * @param {Object} ele
@@ -505,13 +506,13 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id, money, comefrom) {
+const navToPayOrder = function(id, money, comefrom,module) {
 	if (isRedirect) {
 		return false;
 	}
 	isRedirect = true;
 	uni.navigateTo({
-		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}`,
+		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}&module=${module}`,
 		success: function() {
 			isRedirect = false;
 		}
@@ -574,7 +575,7 @@ const navToDocWebPage = function(url) {
 		url: `/pages/docs/web?url=${url}`
 	})
 }
-const fileDomain = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/';
+
 /**
  * 批量上传多个文件
  * @param {Object} name
@@ -733,5 +734,6 @@ export {
 	uploadFiles,
 	checkAppUpdate,
 	mapDistance,
-	checkDeliveryHour
+	checkDeliveryHour,
+	fileDomain
 }

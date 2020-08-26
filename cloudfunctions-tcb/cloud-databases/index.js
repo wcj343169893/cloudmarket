@@ -36,6 +36,7 @@ const limits = {
 	"cloud_users": 3,
 	"cloud_identity": 30,
 	"cloud_documents": 30,
+	"cloud_goods": 1,
 	"cloud_goods_visites": 1,
 	"cloud_goods_deletes": 1,
 	"cloud_goods_day_sales": 1,

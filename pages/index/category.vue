@@ -27,7 +27,7 @@
 					<view class="t-list">
 						<view v-for="(item, index) in category.goods" :key="index" class="goodsList">
 							<view class="weui-flex">
-								<view class="image-wrapper" @click="navToGoodsPage(item)"><image :src="item.src" mode="aspectFill"></image></view>
+								<view class="image-wrapper" @click="navToGoodsPage(item)"><image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image></view>
 								<view class="desc weui-flex__item">
 									<view class="" @click="navToGoodsPage(item)">
 										<text class="title">{{ item.title }}</text>
