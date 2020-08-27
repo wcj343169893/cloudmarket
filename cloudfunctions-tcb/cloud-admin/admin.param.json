@@ -1,8 +1,0 @@
-// 本文件中的json内容将在云函数【上传并运行】时作为参数传给云函数。
-{	"module":"goods",
-	"action":"list",
-	"data":{
-		"page":1,
-		"limit":10
-	}
-}

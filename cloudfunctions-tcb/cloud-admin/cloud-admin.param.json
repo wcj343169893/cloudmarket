@@ -1,0 +1,18 @@
+// 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
+// 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
+{
+	"action": "checkStatus",
+	"data": {
+		"clientId": "1053604898",
+		"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+		"machine": "44444444444",
+		"module": "yilianyun",
+		"msign": "333333",
+		"name": "易联云k4",
+		"operator": "9ffb2a485f38964200999b1f07cb7b80",
+		"shopid": 123457
+	},
+	"module": "printer",
+	"shopid": 123457,
+	"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE1OTg0ODY5MTYsImV4cCI6MTYwMTA3ODkxNn0.1bdsERenuO97x8Mpzw1wNMsSCZJPpmkNrk5PEvTcXes"
+}

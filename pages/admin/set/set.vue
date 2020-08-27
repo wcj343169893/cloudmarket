@@ -64,13 +64,18 @@
 				for (let i in info) {
 					this[i] = info[i];
 				}
+				let names = [];
 				if (this.printers) {
-					let names = [];
 					this.printers.map((e, index) => {
-						names.push(e.name);
+						if(e.enable){
+							names.push(e.name);
+						}
 					});
-					this.printersName = names.join("\n")
 				}
+				if(names.length == 0){
+					names.push("无可用终端")
+				}
+				this.printersName = names.join("\n")
 			},
 			changeName(e) {
 				if (e.trim() == "") {
@@ -170,8 +175,10 @@
 				}, err => {
 					this.$api.msg("修改失败");
 				})
-			},refreshList(){
-				this.$api.prePage().refreshList();
+			},
+			refreshList(){
+				this.loadData();
+				//this.$api.prePage().refreshList();
 			}
 		}
 	}

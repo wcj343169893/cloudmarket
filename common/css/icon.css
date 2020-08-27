@@ -8,7 +8,6 @@
 	src: url('/static/yticon2.ttf') format('truetype');
 }
 
-/* #ifndef APP-PLUS-NVUE */
 
 .yticon {
 	font-family: 'yticon' !important;

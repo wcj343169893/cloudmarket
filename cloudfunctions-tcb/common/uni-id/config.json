@@ -3,29 +3,32 @@
 	"tokenSecret": "tokenSecret-demo",
 	"tokenExpiresIn": 2592000,
 	"passwordErrorLimit": 6,
+	"bindTokenToDevice": false,
 	"passwordErrorRetryTime": 3600,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
 	"app-plus": {
 		"tokenExpiresIn": 2592000,
-		"oauth": {
-			"weixin": {
-				"appid": "weixin appid",
-				"appsecret": "weixin appsecret"
+		"oauth" : {
+			"weixin" : {
+				"appid" : "weixin appid",
+				"appsecret" : "weixin appsecret"
 			}
 		}
 	},
 	"mp-weixin": {
-		"oauth": {
-			"weixin": {
+		"oauth" : {
+			"weixin" : {
 				"appid": "wx399393ad0d5e4d31",
 				"appsecret": "2732931e00e58d0605d96a11d2b62430"
 			}
 		}
 	},
 	"mp-alipay": {
-		"oauth": {
-			"alipay": {
-				"appid": "alipay appid",
-				"privateKey": "alipay privateKey"
+		"oauth" : {
+			"alipay" : {
+				"appid" : "alipay appid",
+				"privateKey" : "alipay privateKey"
 			}
 		}
 	},

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "base-common": "file:../common/base-common",
+    "printers": "file:../common/printers",
     "uni-id": "file:../common/uni-id"
   },
   "devDependencies": {},

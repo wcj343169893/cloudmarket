@@ -70,6 +70,7 @@ const actions = {
 		if (!order) {
 			return false;
 		}
+		data.module = module;
 		//支付方式构造支付参数
 		let res = await payments[provider].app(order, data, context);
 		if (!res) {

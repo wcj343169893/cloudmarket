@@ -13,6 +13,7 @@
     "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
     "order": "file:../common/order",
+    "printers": "file:../common/printers",
     "uni-id": "file:../common/uni-id",
     "unipay": "file:../common/unipay"
   }

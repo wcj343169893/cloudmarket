@@ -22,13 +22,17 @@ const models = {
 			data.message = "支付方式错误";
 			return false;
 		}
+		let openid = "";
+		if (context.userInfo.wx_openid) {
+			openid = context.userInfo.wx_openid[context.PLATFORM];
+		}
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		// 支付结果通知地址,经过测试，http地址也能作为通知地址
-		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.model);
+		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module);
 		return await uniPayIns.getOrderInfo({
-			openid: data.openid ? data.openid : "", //支付宝小程序、微信小程序必填
-			subject: order.body, // 微信支付时不可填写此项
-			body: order.body,
+			openid: openid, //支付宝小程序、微信小程序必填
+			subject: order.body.substr(0,20), // 微信支付时不可填写此项
+			body: order.body.substr(0,30),
 			outTradeNo: order.payid, //订单号
 			totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址

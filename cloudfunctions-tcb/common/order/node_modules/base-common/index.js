@@ -253,11 +253,11 @@ const filterFields = (event, strinFields, intFields) => {
 }
 /**
  * 缓存
- * @param {Object} key
+ * @param {String} key
  * @param {Object} data
- * @param {Object} expires 有效期，以秒为单位，默认1小时
+ * @param {int} expires 有效期，以秒为单位，默认1小时
  */
-const cache = async (key, data, expires) => {
+const dbcache = async function(key, data, expires) {
 	//默认增加前缀
 	key = "cache_" + key;
 	let time = new Date().getTime();
@@ -293,6 +293,9 @@ const cache = async (key, data, expires) => {
 		expires
 	});
 }
+const testName = async(data)=>{
+	return data;
+}
 
 module.exports = {
 	updateGoodsMiaoshaStock,
@@ -307,6 +310,6 @@ module.exports = {
 	genOrderNo,
 	getDateFormat,
 	getDateString,
-	cache,
+	dbcache,testName,
 	checkDeliveryHour
 }

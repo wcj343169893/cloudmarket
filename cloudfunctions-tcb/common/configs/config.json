@@ -50,8 +50,8 @@
 				"uniPay": "initWeixin",
 				"name": "微信",
 				"appId": "wx399393ad0d5e4d31",
-				"mchId": "15295677371",
-				"key": "2732931e00e58d0605d96a11d2b62430"
+				"mchId": "1576725141",
+				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ"
 			},
 			"balance": {
 				"uniPay": "initBalance",

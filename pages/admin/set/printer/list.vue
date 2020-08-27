@@ -3,17 +3,22 @@
 		<empty v-if="loaded && printers.length == 0"></empty>
 		<view v-for="(item,index) in printers" :key="index" class="mix-list-cell b-b" hover-class="cell-hover"
 		 :hover-stay-time="50">
-			<view class="">
-				<text class="cell-tit">{{item.name}}</text>
-				<text class="status success" v-if="item.enable">启用</text>
-				<text class="status error" v-else>未启用</text>
-				<text class="status success" v-if="item.online">运行中</text>
-				<text class="status error" v-else>已掉线</text>
+			<view class="cell-tit">
+				<view class="">
+					<text>{{item.name}}</text>
+					<text class="subname">{{item.machine}}</text>
+				</view>
+				<view class="">
+					<text class="status success" v-if="item.enable">启用</text>
+					<text class="status error" v-else>未启用</text>
+					<text class="status success" v-if="item.online">运行中</text>
+					<text class="status error" v-else>已掉线</text>
+				</view>
 			</view>
 			<view class="cell-more">
 				<button class="action-btn" v-if="item.enable" @click="btnEnable(item,false,index)">暂停</button>
 				<button class="action-btn recom" v-else @click="btnEnable(item,true,index)">启用</button>
-				<button class="action-btn warning" @click="btnDelete(item)">删除</button>
+				<button class="action-btn warning" @click="btnDelete(item,index)">删除</button>
 			</view>
 		</view>
 		<view class="specsTitlesBtn">
@@ -29,6 +34,7 @@
 	export default {
 		data() {
 			return {
+				shopCacheKey: "adminShopInfo",
 				printers: []
 			}
 		},
@@ -37,10 +43,13 @@
 		},
 		methods: {
 			async loadData() {
-				let info = uni.getStorageSync('adminShopInfo');
-				console.log(info.printers)
+				let info = uni.getStorageSync(this.shopCacheKey);
 				this.printers = info.printers;
 				this.loaded = true;
+				printerAdmin("checkStatus",{}).then(res=>{
+					console.log(res)
+					this.printers = res;
+				});
 			},
 			btnEnable(item, enable, index) {
 				item.enable = enable;
@@ -49,21 +58,35 @@
 					info: item
 				})
 			},
-			btnDelete(item) {
-
+			btnDelete(item, index) {
+				printerAdmin("delete", item).then(res => {
+					this.$api.success("删除成功");
+					this.printers.splice(index, 1);
+				}, err => {
+					this.$api.msg("修改失败");
+				});
 			},
 			save(data) {
 				printerAdmin("save", data).then(res => {
 					this.$api.success("修改成功");
-					setTimeout(() => {
-						//上一个页面刷新
-						this.$api.prePage().refreshList();
-					}, 2000)
+					this.updateCache();
+					this.$api.prePage().refreshList();
 				}, err => {
 					this.$api.msg("修改失败");
 				})
 			},
-			refreshList(data) {}
+			refreshList(data) {
+				this.printers.push(data);
+				this.updateCache();
+			},
+			updateCache() {
+				let info = uni.getStorageSync(this.shopCacheKey);
+				info.printers = this.printers;
+				uni.setStorage({
+					key: this.shopCacheKey,
+					data: info
+				})
+			}
 		}
 	}
 </script>
@@ -114,6 +137,13 @@
 			font-size: $font-base;
 			color: $font-color-dark;
 			margin-right: 20upx;
+			line-height: 1.2;
+
+			.subname {
+				font-size: 0.8em;
+				margin-left: 20rpx;
+				color: $font-color-light;
+			}
 		}
 
 		.cell-content {
@@ -191,7 +221,7 @@
 
 	.status {
 		font-size: $font-sm;
-		margin-left: 20rpx;
+		margin-right: 20rpx;
 
 		&.error {
 			color: $font-color-warning;

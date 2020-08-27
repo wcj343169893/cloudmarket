@@ -448,7 +448,7 @@
 			},
 			openSku(item) {
 				if (!this.hasLogin) {
-					this.showLoginDialog();
+					showLoginDialog();
 					return;
 				}
 				//处理规格结构

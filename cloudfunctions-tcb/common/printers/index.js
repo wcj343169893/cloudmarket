@@ -52,11 +52,17 @@ const print = async (data, shopid) => {
  * 添加打印设备
  */
 const addPrinter = async (data) => {
-
+	const {
+		module
+	} = data;
+	return await modules[module]["addPrinter"](data);
 }
 const getPrintStatus = async (data) => {
+	const {
+		module
+	} = data;
 	//调用子模块方法
-	return await modules["yilianyun"]["getPrintStatus"](data);
+	return await modules[module]["getPrintStatus"](data);
 }
 module.exports = {
 	addPrinter,

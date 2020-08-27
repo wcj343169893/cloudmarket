@@ -126,12 +126,6 @@
 								micLogin({
 									code: loginRes.code
 								}, provider).then(res => {
-									//写入缓存
-									/*
-									uni.setStorage({
-										key: 'userOpenId',
-										data: res.openid
-									}); */
 									console.log("login success", res);
 									this.login(res);
 								});
@@ -432,6 +426,4 @@
 			color: $font-color-warning;
 		}
 	}
-
-	/* #endif*/
 </style>

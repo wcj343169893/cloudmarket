@@ -4,8 +4,8 @@ const md5 = require('md5');
 const {
 	getDateFormat,
 	checkDeliveryHour,
-	cache
-} = require("base-common")
+	dbcache
+} = require("base-common");
 /**
  * 易联云
  * @link http://doc2.10ss.net/336832  打印指令
@@ -33,7 +33,8 @@ const models = {
 		//优先读取缓存
 		let cdata = false;
 		if (!isRefresh) {
-			cdata = await cache(key);
+			cdata = await dbcache(key);
+			console.log("读取cache",key,cdata)
 		}
 		if (!cdata) {
 			//请求接口
@@ -48,7 +49,7 @@ const models = {
 			}
 			this.access_token = result.access_token;
 			//缓存5小时
-			await cache(key, this.access_token, this.cacheExpires);
+			await dbcache(key, this.access_token, this.cacheExpires);
 			return this.access_token;
 		}
 		return this.access_token = cdata;
@@ -57,8 +58,8 @@ const models = {
 	 * 获取终端状态接口
 	 * @param {Object} data
 	 */
-	async getPrintStatus(data, config) {
-		this.config = config;
+	async getPrintStatus(data) {
+		this.config = data;
 		return await this.send({
 			machine_code: data.machine, //"4004648355",
 		}, "/printer/getprintstatus");
@@ -68,8 +69,8 @@ const models = {
 	 * @param {Object} data
 	 * @link http://doc2.10ss.net/371770#___55
 	 */
-	async addPrinter(data, config) {
-		this.config = config;
+	async addPrinter(data) {
+		this.config = data;
 		return await this.send({
 			machine_code: data.machine, //"4004648355",
 			msign: data.msign //"189541803678",
@@ -80,8 +81,8 @@ const models = {
 	 * @param {Object} data
 	 * @link http://doc2.10ss.net/343932
 	 */
-	async scanCodeModel(data, config) {
-		this.config = config;
+	async scanCodeModel(data) {
+		this.config = data;
 		return await this.send({
 			machine_code: data.machine,
 			qr_key: data.qr_key,
@@ -92,8 +93,8 @@ const models = {
 	 * 删除终端
 	 * @param {Object} data
 	 */
-	async deletePrinter(data, config) {
-		this.config = config;
+	async deletePrinter(data) {
+		this.config = data;
 		return await this.send({
 			machine_code: data.machine,
 		}, "/printer/deleteprinter");
@@ -189,7 +190,8 @@ const models = {
 			//没有body返回值，默认true，表示请求成功
 			return true;
 		} else {
-			data.message = res.data.error_description;
+			//message = res.data.error_description;
+			console.log(res.data.error_description);
 			if (res.data.error == "18") {
 				//token过期了
 				console.log("token 过期了，重新刷新");
