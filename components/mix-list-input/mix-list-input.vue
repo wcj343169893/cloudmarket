@@ -72,7 +72,7 @@ export default {
 	watch: {
 		defContent(val) {
 			this.content = val;
-			console.log(val)
+			//console.log(val)
 		}
 	},
 	created() {
@@ -164,7 +164,8 @@ export default {
 	font-size: $font-sm;
 	color: $font-color-disabled;
 }
-.icon-saomiao,.icon-shouhuodizhi{
+.cell-more.yticon{
 	font-size: $font-llg;
+	margin-left: 16rpx;
 }
 </style>

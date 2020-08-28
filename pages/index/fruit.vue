@@ -568,14 +568,20 @@
 				console.log(res.target);
 			}
 			let query = [];
+			let title = "";
 			if (this.userInfo) {
-				query.push('uid=' + this.userInfo.id);
+				query.push('u=' + this.userInfo.my_invite_code);
 			}
-			if (this.share.pageLinkQuery) {
-				query.push(this.share.pageLinkQuery);
+			if (this.share) {
+				if (this.share.pageLinkQuery) {
+					query.push(this.share.pageLinkQuery);
+				}
+				if (this.share.title) {
+					title = this.share.title;
+				}
 			}
 			return {
-				title: this.share.title,
+				title: title,
 				path: '/pages/index/fruit?' + query.join('&')
 			};
 		},

@@ -22,9 +22,7 @@
 				</block>
 			</block>
 		</view>
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" placeholder="请输入商品条码" @change="changeUpc">
-
-		</mix-list-input>
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" placeholder="请输入商品条码" @change="changeUpc"></mix-list-input>
 		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''" :defaultOption="saleType"
 		 @eventClick="changeSaleType"></mix-list-select>
 		<!-- saleType预定设置 -->
@@ -122,6 +120,7 @@
 				</view>
 			</scroll-view>
 		</view>
+		<mix-list-input title="分享语"  :defContent="share" placeholder="请输入分享语" @change="changeShare">	</mix-list-input>
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
@@ -263,6 +262,7 @@
 				deliveryTags: [],
 				id: false,
 				upc: "", //商品条码
+				share:"",//分享语
 				imgs: [],
 				imgsPreview: [],
 				originPrice: 0,
@@ -635,6 +635,9 @@
 			changeUpc(e) {
 				this.upc = e;
 			},
+			changeShare(e){
+				this.share = e;
+			},
 			//提交到服务器
 			save() {
 				if (this.submiting) {
@@ -654,6 +657,7 @@
 					stock: this.stock,
 					title: this.title,
 					subTitle: this.subTitle,
+					share:this.share,
 					deliveryTags: this.deliveryTags
 				};
 				//多规格

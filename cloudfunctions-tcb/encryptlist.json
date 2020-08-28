@@ -1,8 +1,6 @@
 {
 	"encryptFunctionList": [
-		"cloud-admin","cloud-mall"
+		"cloud-admin","cloud-payment"
 	],
-	"encryptModuleList": [
-		"unipay"
-	]
+	"encryptModuleList": []
 }

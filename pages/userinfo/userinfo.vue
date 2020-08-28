@@ -21,6 +21,7 @@
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
+		<!-- #ifndef MP -->
 		<view class="list-cell" @click="bindWx" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">绑定微信账号</text>
 			<view class="cell-more">
@@ -28,6 +29,7 @@
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
+		<!-- #endif -->
 
 		<uni-calendar ref="calendar" :insert="false" @confirm="saveBirthday" />
 		<uni-popup ref="mobilePopup" type="bottom">
@@ -53,11 +55,11 @@
 			return {
 				nickname: '',
 				mobile: '',
-				gender: "3",
+				gender: "0", //用户性别：0 未知 1 男性 2 女性
 				genders: {
 					"1": "男",
 					"2": "女",
-					"3": "未知",
+					"0": "未知",
 				},
 				genderName: ''
 			};
@@ -71,7 +73,7 @@
 		},
 		methods: {
 			async loadData() {
-				this.gender = this.userInfo.gender+"";
+				this.gender = this.userInfo.gender + "";
 				this.getSexName();
 			},
 			changeAvatar() {
@@ -96,7 +98,7 @@
 			refreshFile(file) {
 				this.userInfo.portrait = file;
 				this.saveInfo({
-					portrait: file
+					avatar: file
 				});
 			},
 			saveNickname(nickname) {

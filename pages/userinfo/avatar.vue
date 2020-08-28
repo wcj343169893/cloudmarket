@@ -60,7 +60,7 @@ let PAGE_X, // 手按下的x位置
 	INIT_DRAG_POSITION = 100, // 初始化屏幕宽度和裁剪区域的宽度之差，用于设置初始化裁剪的宽度
 	DRAW_IMAGE_W = sysInfo.screenWidth; // 设置生成的图片宽度
 
-import { fileDomain } from '@/common/functions.js';
+import { cloudUploadFile } from '@/common/functions.js';
 export default {
 	/**
 	 * 页面的初始数据
@@ -279,7 +279,21 @@ export default {
 							title: '图片上传中'
 						});
 						//上传到服务器
-						uniCloud
+						cloudUploadFile(res.tempFilePath,cloudPath).then(url=>{
+							this.$api.prePage().refreshFile(url);
+							this.$api.msg('上传成功');
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								});
+							}, 1500);
+						},err=>{
+							uni.showModal({
+								title: '上传失败',
+								showCancel: false
+							});
+						})
+						/* uniCloud
 							.uploadFile({
 								filePath: res.tempFilePath,
 								cloudPath: cloudPath, //文件的绝对路径，包含文件名	阿里云非必填，腾讯云必填
@@ -307,7 +321,7 @@ export default {
 										showCancel: false
 									});
 								}
-							});
+							}); */
 						//this.$api.prePage().refreshFile(res.tempFilePath);
 						// 成功获得地址的地方
 						/* uni.previewImage({

@@ -1,6 +1,5 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
 var isRedirect = false;
-const fileDomain = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/';
 /**
  * 订单状态
  * @param {Object} ele
@@ -594,29 +593,54 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 			if (chooseCallback) {
 				chooseCallback(res.tempFilePaths);
 			}
+			let promises=[];
 			//循环上传
-			res.tempFilePaths.map(filePath => {
+			res.tempFilePaths.map((filePath) => {
 				let fname = (Math.random() + '').substr(2) + '.jpg';
 				let cpath = pathArr.join('/') + '/' + fname;
-				cloudUploadFile(filePath, cpath);
-				paths.push(fileDomain + cpath);
+				let uploadPromise =cloudUploadFile(filePath, cpath);
+				promises.push(uploadPromise)
 			})
-			if (paths.length > 0 && successCallback) {
-				//延时回调，免得无法显示
-				setTimeout(() => {
-					successCallback(paths)
-				}, 100)
-			}
+			Promise.all(promises).then(res=>{
+				console.log(res);
+				if(successCallback){
+					successCallback(res)
+				}
+			});
 		}
 	});
 }
-const cloudUploadFile = async (filePath, cpath) => {
-	let result = await uniCloud.uploadFile({
-		filePath: filePath,
-		cloudPath: cpath,
-		onUploadProgress: pro => {
-			//console.log("onUploadProgress", pro);
-		}
+/**
+ * 上传到云端储存
+ * @param {File}   filePath 本地文件
+ * @param {String}   cpath 云端文件名称，腾讯云为文件实际地址
+ * @link https://uniapp.dcloud.io/uniCloud/storage?id=uploadfile
+ */
+const cloudUploadFile = (filePath, cpath) => {
+	return new Promise((resolve, reject) => {
+		let result =uniCloud.uploadFile({
+			filePath: filePath,
+			cloudPath: cpath,
+			onUploadProgress: pro => {
+			},success:res=>{
+				console.log("cloudUploadFile",res)
+				if(res.fileID.indexOf("cloud://") != -1){
+					//用这个转换一下，有一个隐藏的好处，可以等待文件发布到cdn，避免立即访问不到
+					uniCloud.getTempFileURL({
+						fileList:[res.fileID]
+					}).then(res2=>{
+						resolve(res2.fileList[0].tempFileURL);	
+					})
+				}else{
+					//延时返回，可以等待文件发布到cdn，避免立即访问不到
+					setTimeout(()=>{
+						resolve(res.fileID);	
+					},200);
+				}
+			},fail:()=>{
+				reject(false);
+			}
+		});
 	});
 };
 /**
@@ -731,9 +755,8 @@ export {
 	navToDocPageByType,
 	navToDocWebPage,
 	navMicLogin,
-	uploadFiles,
+	uploadFiles,cloudUploadFile,
 	checkAppUpdate,
 	mapDistance,
-	checkDeliveryHour,
-	fileDomain
+	checkDeliveryHour
 }
