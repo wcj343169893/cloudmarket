@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<pageHeader ref="pageHeader"></pageHeader>
+		<pageHeader ref="pageHeader" :referer="referer"></pageHeader>
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">
 				<swiper-item class="swiper-item" v-for="(item, index) in imgs" :key="index">
@@ -181,7 +181,7 @@
 
 <script>
 	import {
-		mapState
+		mapState,mapMutations
 	} from 'vuex';
 	import share from '@/components/share';
 	import {
@@ -245,6 +245,7 @@
 				cartSumCount: 0,
 				canAddCart: false,
 				share:"",//分享语
+				referer:"",
 				ratingData: {}
 			};
 		},
@@ -279,6 +280,12 @@
 			if (options.sid) {
 				this.default_sku_id = +options.sid;
 			}
+			if(options.referer){
+				this.referer = options.referer;
+			}
+			if(options.u){
+				this.setInvite(options.u)
+			}
 			this.loadData();
 		},
 		onUnload() {
@@ -298,12 +305,12 @@
 				// 来自页面内分享按钮
 				console.log(res.target);
 			}
-			let query = [`id=${this.id}`];
+			let query = [`id=${this.id}`,'referer=share'];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}
 			let title = this.title;
-			if (this.userInfo) {
+			if (this.userInfo && this.userInfo.my_invite_code) {
 				query.push('u=' + this.userInfo.my_invite_code);
 			}
 			if (this.share && this.share.title) {
@@ -316,6 +323,7 @@
 		},
 		//#endif
 		methods: {
+			...mapMutations(['setInvite']),
 			async loadData() {
 				//优先读取缓存
 				let info = uni.getStorageSync('goodsInfo');

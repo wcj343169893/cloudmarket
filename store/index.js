@@ -28,6 +28,7 @@ const store = new Vuex.Store({
 			longitude: 0, //经度
 			name: "" //地址名称
 		},
+		inviteCode:"",
 		userInfo: baseUserInfo,
 	},
 	mutations: {
@@ -100,6 +101,14 @@ const store = new Vuex.Store({
 				key: 'adminShopId',
 				data: id
 			})
+		},
+		/**
+		 * 设置邀请码
+		 * @param {Object} state
+		 * @param {Object} code
+		 */
+		setInvite(state,code){
+			state.inviteCode = code
 		}
 	},
 	actions: {

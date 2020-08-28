@@ -224,7 +224,11 @@
 				this.loadData();
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			console.log("fruit onload",options)
+			if(options.u){
+				this.setInvite(options.u)
+			}
 			this.getUserLocation();
 		},
 		//下拉刷新,不会更新底部附近的店铺
@@ -239,7 +243,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation']),
+			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation','setInvite']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问
@@ -569,7 +573,7 @@
 			}
 			let query = [];
 			let title = "";
-			if (this.userInfo) {
+			if (this.userInfo && this.userInfo.my_invite_code) {
 				query.push('u=' + this.userInfo.my_invite_code);
 			}
 			if (this.share) {
