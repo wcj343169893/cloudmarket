@@ -104,7 +104,7 @@
 						<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 					</view>
 				</block>
-			
+
 				<view class="weui-flex">
 					<text>阶段2：尾款</text>
 					<text class="price">{{ info.yuding.finishPaymentPrice | toFixed }}</text>
@@ -149,14 +149,8 @@
 						<view class="weui-flex start">
 							<view class="weui-flex-check">
 								<view class="image-wrapper">
-									<image
-										:src="item.src"
-										:class="[item.loaded]"
-										mode="aspectFill"
-										lazy-load
-										@load="onImageLoad('goodsList', index)"
-										@error="onImageError('goodsList', index)"
-									></image>
+									<image :src="item.src" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
+									 @error="onImageError('goodsList', index)"></image>
 								</view>
 							</view>
 							<view class="desc weui-flex__item">
@@ -228,373 +222,443 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { orderAdmin } from '@/common/admin_request.js';
-import { orders } from '@/common/request.js';
-import { navToGoodsItemPage, navToCreateOrder, getOrderStateExp,checkDeliveryHour } from '@/common/functions.js';
-export default {
-	data() {
-		return {
-			id: 0,
-			number:false,
-			password:false,
-			goodsList: [],
-			goodsCount: 0,
-			maxShowCount: 3,
-			shopid:0,
-			info: {}
-		};
-	},
-	onLoad(options) {
-		console.log(options)
-		if(options.number){
-			this.number = options.number;
-			this.password = options.password;
-		}else{
-			this.id = options.id;	
-		}
-		this.loadData();
-	},
-	computed: {
-		...mapState(['stationId'])
-	},
-	methods: {
-		async loadData() {
-			if(this.number){
-				//从网络获取
-				orderAdmin("detail",{
-					number: this.number,
-					password:this.password
-				}).then(res => {
-					this.orderInfo(res);
-				});
-			}else{
-				//优先从缓存读取，有助于显示速度
-				let item = uni.getStorageSync('orderDetail');
-				if (item) {
-					//从缓存读取
-					this.orderInfo(item);
-				} else {
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		orderAdmin
+	} from '@/common/admin_request.js';
+	import {
+		orders
+	} from '@/common/request.js';
+	import {
+		navToGoodsItemPage,
+		navToCreateOrder,
+		getOrderStateExp,
+		checkDeliveryHour
+	} from '@/common/functions.js';
+	export default {
+		data() {
+			return {
+				id: 0,
+				number: false,
+				password: false,
+				goodsList: [],
+				goodsCount: 0,
+				maxShowCount: 3,
+				shopid: 0,
+				info: {}
+			};
+		},
+		onLoad(options) {
+			console.log(options)
+			if (options.number) {
+				this.number = options.number;
+				this.password = options.password;
+			} else {
+				this.id = options.id;
+			}
+			this.loadData();
+		},
+		computed: {
+			...mapState(['stationId'])
+		},
+		methods: {
+			async loadData() {
+				if (this.number) {
 					//从网络获取
-					orderAdmin("detail",{
-						_id: this.id
+					orderAdmin("detail", {
+						number: this.number,
+						password: this.password
 					}).then(res => {
 						this.orderInfo(res);
 					});
+				} else {
+					//优先从缓存读取，有助于显示速度
+					let item = uni.getStorageSync('orderDetail');
+					if (item) {
+						//从缓存读取
+						this.orderInfo(item);
+					} else {
+						//从网络获取
+						orderAdmin("detail", {
+							_id: this.id
+						}).then(res => {
+							this.orderInfo(res);
+						});
+					}
 				}
-			}
-		},
-		orderInfo(res) {
-			//订单状态
-			let { stateTip, stateTipColor, stateContent } = getOrderStateExp(res);
-			res.stateTip = stateTip;
-			res.stateTipColor = stateTipColor;
-			res.stateContent = stateContent;
-			this.id = res._id;
-			//this.moreGoodsCount = res.goods.length - this.maxShowCount;
-			this.goodsCount=res.goods.length;
-			this.info = res;
-			this.goodsList = res.goods;
-			this.shopid = this.info.shopid;
-			checkDeliveryHour(this.info)
-		},
-		navToGoodsPage(item) {
-			navToGoodsItemPage(item);
-		},
-		//申请退款
-		refundOrder(item) {
-			uni.showToast({
-				title: '请联系管理员!',
-				icon: 'none'
-			});
-		},
-		//发货
-		addDelivery(item) {
-			let data = [];
-			if (item) {
-				//单个商品发货
-				this.$api.msg('暂不支持');
-			} else {
-				orderAdmin("addDelivery",{
+			},
+			orderInfo(res) {
+				//订单状态
+				let {
+					stateTip,
+					stateTipColor,
+					stateContent
+				} = getOrderStateExp(res);
+				res.stateTip = stateTip;
+				res.stateTipColor = stateTipColor;
+				res.stateContent = stateContent;
+				this.id = res._id;
+				//this.moreGoodsCount = res.goods.length - this.maxShowCount;
+				this.goodsCount = res.goods.length;
+				this.info = res;
+				this.goodsList = res.goods;
+				this.shopid = this.info.shopid;
+				checkDeliveryHour(this.info)
+			},
+			navToGoodsPage(item) {
+				navToGoodsItemPage(item);
+			},
+			//申请退款
+			refundOrder(item) {
+				uni.showToast({
+					title: '请联系管理员!',
+					icon: 'none'
+				});
+			},
+			//发货
+			addDelivery(item) {
+				let data = [];
+				if (item) {
+					//单个商品发货
+					this.$api.msg('暂不支持');
+				} else {
+					orderAdmin("addDelivery", {
+						_id: this.id,
+					}).then(
+						res => {
+							this.$api.msg('发货成功', 2000, false, "success");
+							this.info.state = 2;
+							let {
+								stateTip,
+								stateTipColor
+							} = getOrderStateExp(this.info);
+							this.info.stateTip = stateTip;
+							this.info.stateTipColor = stateTipColor;
+							this.$api.prePage().refreshList();
+						},
+						err => {
+							this.$api.msg('发货失败');
+						}
+					);
+				}
+			},
+			//确定收货
+			confirmOrder() {},
+			//确定自提，相当于商家确定收货
+			selftakeOrder() {
+				orderAdmin("selftake", {
 					_id: this.id,
 				}).then(
 					res => {
-						this.$api.msg('发货成功',2000,false,"success");
-						this.info.state = 2;
-						let { stateTip, stateTipColor } = getOrderStateExp(this.info);
+						this.$api.msg('提货完成', 2000, false, "success");
+						this.info.state = 3;
+						let {
+							stateTip,
+							stateTipColor
+						} = getOrderStateExp(this.info);
 						this.info.stateTip = stateTip;
 						this.info.stateTipColor = stateTipColor;
 						this.$api.prePage().refreshList();
 					},
 					err => {
-						this.$api.msg('发货失败');
+						this.$api.msg('提货失败');
 					}
 				);
+			},
+			//打印小票,需要小票插件
+			printTicket() {
+				orderAdmin("print", {
+					_id: this.id,
+				},true).then(res => {
+					this.$api.success("打印完成")
+				}, err => {
+					this.$api.msg("打印失败")
+				})
+			},
+			//查看评价
+			evaluateOrder() {
+				uni.showLoading({
+					title: '请稍后',
+					mask: true
+				});
+			},
+			//监听image加载完成
+			onImageLoad(key, index) {
+				this.$set(this[key][index], 'loaded', 'loaded');
+			},
+			//监听image加载失败
+			onImageError(key, index) {
+				this[key][index].image = '/static/errorImage.jpg';
+			},
+			//刷新数据
+			refreshList() {
+				this.loadData();
+			},
+			//打开地图
+			openMap(address) {
+				uni.openLocation({
+					name: address.addressName,
+					address: address.address,
+					latitude: address.latitude,
+					longitude: address.longitude,
+					success() {
+						console.log("打开地图成功")
+					}
+				})
+			},
+			navBack() {
+				uni.navigateBack();
 			}
-		},
-		//确定收货
-		confirmOrder() {},
-		//确定自提，相当于商家确定收货
-		selftakeOrder() {
-			orderAdmin("selftake",{
-				_id: this.id,
-			}).then(
-				res => {
-					this.$api.msg('提货完成',2000,false,"success");
-					this.info.state = 3;
-					let { stateTip, stateTipColor } = getOrderStateExp(this.info);
-					this.info.stateTip = stateTip;
-					this.info.stateTipColor = stateTipColor;
-					this.$api.prePage().refreshList();
-				},
-				err => {
-					this.$api.msg('提货失败');
-				}
-			);
-		},
-		//打印小票,需要小票插件
-		printTicket() {},
-		//查看评价
-		evaluateOrder() {
-			uni.showLoading({
-				title: '请稍后',
-				mask: true
-			});
-		},
-		//监听image加载完成
-		onImageLoad(key, index) {
-			this.$set(this[key][index], 'loaded', 'loaded');
-		},
-		//监听image加载失败
-		onImageError(key, index) {
-			this[key][index].image = '/static/errorImage.jpg';
-		},
-		//刷新数据
-		refreshList() {
-			this.loadData();
-		},
-		//打开地图
-		openMap(address){
-			uni.openLocation({
-				name:address.addressName,
-				address:address.address,
-				latitude:address.latitude,
-				longitude:address.longitude,
-				success() {
-					console.log("打开地图成功")
-				}
-			})
-		},
-		navBack() {
-			uni.navigateBack();
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-page {
-	background: #f5f5f5;
-	font-size: $font-base;
-	color: $font-color-dark;
-}
-.container {
-	padding: 20upx;
-	padding-top: calc(160upx + var(--status-bar-height));
-}
-.m-t {
-	margin-top: 20upx;
-}
-.weui-flex {
-	display: flex;
-	align-items: center;
-	&.start {
-		align-items: flex-start;
-	}
-}
-.weui-flex__item {
-	flex: 1;
-}
-.header {
-	position: fixed;
-	background: #f5f5f5;
-	width: 100%;
-	top: 0;
-	left: 0;
-	z-index: 99;
-	padding-left: 20upx;
-	padding-top: calc(40upx + var(--status-bar-height));
-}
-.header_title {
-	font-size: $font-llg;
-	display: flex;
-	align-items: center;
-	padding-top: 30upx;
-	margin-bottom: 16upx;
-	.icon-you {
-		color: #9e9e9e;
-		margin-top: 8upx;
-	}
-}
-.section {
-	background: #ffffff;
-	padding: 20upx 30upx;
-	border-radius: 20upx;
-}
-.message_notice {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-.action-btn {
-	height: 60upx;
-	margin: 0;
-	padding: 0 30upx;
-	margin-left: 24upx;
-	text-align: center;
-	line-height: 60upx;
-	font-size: $font-sm + 2upx;
-	color: $font-color-dark;
-	background: #fff;
-	border-radius: 100px;
-	&:after {
-		border-radius: 100px;
-	}
-	&.recom {
-		background: $base-color;
-		color: #fff;
-	}
-}
-.sub-title {
-	font-weight: 500;
-	margin-bottom: 40upx;
-}
-.buttons {
-	display: flex;
-	justify-content: flex-end;
-}
-.cart-list {
-	flex: 1;
-	overflow: hidden;
-	background: #ffffff;
-	border-radius: 20upx;
-	.space {
-		padding-top: var(--window-bottom);
-	}
-	.s-item {
-		display: flex;
-		align-items: center;
-		height: 70upx;
-		font-size: 28upx;
+	page {
+		background: #f5f5f5;
+		font-size: $font-base;
 		color: $font-color-dark;
 	}
-	.goodsList {
-		position: relative;
-		background: #ffffff;
-		padding: 20upx 20upx 20upx;
-		border-radius: 12upx;
-		margin-bottom: 8upx;
-		.start {
-			flex: 1;
-		}
-		.sub-catename {
-			padding-bottom: 10upx;
-		}
+
+	.container {
+		padding: 20upx;
+		padding-top: calc(160upx + var(--status-bar-height));
 	}
-	.image-wrapper {
-		width: 120upx;
-		height: 120upx;
-		border-radius: 4%;
-		overflow: hidden;
-		margin-right: 22upx;
-		flex-shrink: 0;
-		image {
-			width: 100%;
-			height: 100%;
-			opacity: 1;
-		}
+
+	.m-t {
+		margin-top: 20upx;
 	}
-	.weui-flex-check {
+
+	.weui-flex {
 		display: flex;
 		align-items: center;
-	}
-	.checkbox {
-		z-index: 8;
-		font-size: 44upx;
-		line-height: 1;
-		padding: 4upx;
-		border-radius: 50px;
-		margin-right: 10upx;
-	}
-	.desc {
-		flex: 1;
-		font-size: $font-sm;
-		color: $font-color-light;
-		.title {
-			font-size: $font-base;
-			color: $font-color-dark;
-			line-height: 1.1;
-			font-weight: 400;
-			padding-right: 20upx;
+
+		&.start {
+			align-items: flex-start;
 		}
-		.desc2 {
-			padding: 4upx 0 0;
+	}
+
+	.weui-flex__item {
+		flex: 1;
+	}
+
+	.header {
+		position: fixed;
+		background: #f5f5f5;
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 99;
+		padding-left: 20upx;
+		padding-top: calc(40upx + var(--status-bar-height));
+	}
+
+	.header_title {
+		font-size: $font-llg;
+		display: flex;
+		align-items: center;
+		padding-top: 30upx;
+		margin-bottom: 16upx;
+
+		.icon-you {
+			color: #9e9e9e;
+			margin-top: 8upx;
+		}
+	}
+
+	.section {
+		background: #ffffff;
+		padding: 20upx 30upx;
+		border-radius: 20upx;
+	}
+
+	.message_notice {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.action-btn {
+		height: 60upx;
+		margin: 0;
+		padding: 0 30upx;
+		margin-left: 24upx;
+		text-align: center;
+		line-height: 60upx;
+		font-size: $font-sm + 2upx;
+		color: $font-color-dark;
+		background: #fff;
+		border-radius: 100px;
+
+		&:after {
+			border-radius: 100px;
 		}
 
-		.buttons {
-			margin-top: 12upx;
-			.empty {
-				flex: 1;
-			}
+		&.recom {
+			background: $base-color;
+			color: #fff;
 		}
 	}
-	.prices {
-		justify-content: space-between;
+
+	.sub-title {
+		font-weight: 500;
+		margin-bottom: 40upx;
 	}
-}
-.m-l {
-	margin-left: 10upx;
-}
-.m-l2 {
-	margin-left: 20upx;
-}
-.address {
-	position: relative;
-	padding-bottom: 14upx;
-	.content {
-		text-align: right;
+
+	.buttons {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.cart-list {
 		flex: 1;
-		margin-right: 12upx;
+		overflow: hidden;
+		background: #ffffff;
+		border-radius: 20upx;
+
+		.space {
+			padding-top: var(--window-bottom);
+		}
+
+		.s-item {
+			display: flex;
+			align-items: center;
+			height: 70upx;
+			font-size: 28upx;
+			color: $font-color-dark;
+		}
+
+		.goodsList {
+			position: relative;
+			background: #ffffff;
+			padding: 20upx 20upx 20upx;
+			border-radius: 12upx;
+			margin-bottom: 8upx;
+
+			.start {
+				flex: 1;
+			}
+
+			.sub-catename {
+				padding-bottom: 10upx;
+			}
+		}
+
+		.image-wrapper {
+			width: 120upx;
+			height: 120upx;
+			border-radius: 4%;
+			overflow: hidden;
+			margin-right: 22upx;
+			flex-shrink: 0;
+
+			image {
+				width: 100%;
+				height: 100%;
+				opacity: 1;
+			}
+		}
+
+		.weui-flex-check {
+			display: flex;
+			align-items: center;
+		}
+
+		.checkbox {
+			z-index: 8;
+			font-size: 44upx;
+			line-height: 1;
+			padding: 4upx;
+			border-radius: 50px;
+			margin-right: 10upx;
+		}
+
+		.desc {
+			flex: 1;
+			font-size: $font-sm;
+			color: $font-color-light;
+
+			.title {
+				font-size: $font-base;
+				color: $font-color-dark;
+				line-height: 1.1;
+				font-weight: 400;
+				padding-right: 20upx;
+			}
+
+			.desc2 {
+				padding: 4upx 0 0;
+			}
+
+			.buttons {
+				margin-top: 12upx;
+
+				.empty {
+					flex: 1;
+				}
+			}
+		}
+
+		.prices {
+			justify-content: space-between;
+		}
 	}
-}
-.more-btn {
-	background: #fff;
-	text-align: center;
-	padding: 20upx;
-	position: relative;
-	.important{
-		font-size: 1.2em;
-		padding: 0 4upx;
+
+	.m-l {
+		margin-left: 10upx;
 	}
-}
-.ab {
-	.weui-flex {
-		justify-content: space-between;
-		margin-bottom: 14upx;
+
+	.m-l2 {
+		margin-left: 20upx;
+	}
+
+	.address {
 		position: relative;
+		padding-bottom: 14upx;
+
+		.content {
+			text-align: right;
+			flex: 1;
+			margin-right: 12upx;
+		}
 	}
-}
-.price {
-	color: $font-color-dark;
-	&.warning {
-		color: $font-color-warning;
+
+	.more-btn {
+		background: #fff;
+		text-align: center;
+		padding: 20upx;
+		position: relative;
+
+		.important {
+			font-size: 1.2em;
+			padding: 0 4upx;
+		}
 	}
-}
-.important {
-	color: $font-color-warning;
-	font-weight: 500;
+
+	.ab {
+		.weui-flex {
+			justify-content: space-between;
+			margin-bottom: 14upx;
+			position: relative;
+		}
+	}
+
 	.price {
-		color: $font-color-warning;
+		color: $font-color-dark;
+
+		&.warning {
+			color: $font-color-warning;
+		}
 	}
-}
+
+	.important {
+		color: $font-color-warning;
+		font-weight: 500;
+
+		.price {
+			color: $font-color-warning;
+		}
+	}
 </style>

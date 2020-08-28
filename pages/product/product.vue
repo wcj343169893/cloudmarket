@@ -526,9 +526,9 @@
 				}
 			},
 			//分享
-			share() {
+		/* 	share() {
 				this.$refs.share.toggleMask();
-			},
+			}, */
 			//收藏
 			toFavorite() {
 				this.favorite = !this.favorite;

@@ -17,8 +17,8 @@ const printerAdmin = function(action,data,isShowLoading) {
  * 订单管理
  * @param {Object} data
  */
-const orderAdmin = function(action,data) {
-	return adminNetwork("orders",action,data,false);
+const orderAdmin = function(action,data,isShowLoading=false) {
+	return adminNetwork("orders",action,data,isShowLoading);
 }
 
 /**

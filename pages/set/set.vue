@@ -81,7 +81,7 @@ export default {
 			uni.showLoading({
 				title:"检查中"
 			});
-			checkAppUpdate(true,msg => {
+			checkAppUpdate(true,this.systemInfo,msg => {
 				uni.hideLoading();
 				this.$api.msg(msg, 5000);
 			});

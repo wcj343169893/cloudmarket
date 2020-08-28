@@ -5,6 +5,9 @@ const {
 	updateUserOrderCount
 } = require('base-common');
 const orderCollection = db.collection("cloud_orders");
+const {
+	print
+} = require('printers');
 const list = async (data, context) => {
 	let page = +data.page;
 	let limit = +data.limit;
@@ -92,8 +95,8 @@ const addDelivery = async (data) => {
 	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update({
-		deliveredTime:new Date().toISOString(),
-		deliveredUid:data.operator,
+		deliveredTime: new Date().toISOString(),
+		deliveredUid: data.operator,
 		state: 2
 	});
 	//更新用户已发货和已收货
@@ -135,8 +138,8 @@ const selftake = async (data) => {
 	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update({
-		receivedTime:new Date().toISOString(),
-		receivedUid:data.operator,
+		receivedTime: new Date().toISOString(),
+		receivedUid: data.operator,
 		state: 3
 	});
 	//更新用户已发货和已收货
@@ -157,10 +160,28 @@ const getOrderById = async (conditions, field) => {
 	}
 	return data.data[0];
 }
-
+/**
+ * 打印订单
+ */
+const printOrder = async (data) => {
+	let conditions = {
+		_id: data._id,
+		shopid: data.shopid
+	};
+	//查询订单
+	const order = await getOrderById(conditions, {});
+	if(!order){
+		return false;
+	}
+	//打印小票
+	const res = await print(order, order.shopid);
+	console.log("print", res);
+	return res;
+}
 module.exports = {
 	list: list,
 	detail: detail,
 	addDelivery: addDelivery,
-	selftake
+	selftake,
+	print:printOrder
 }

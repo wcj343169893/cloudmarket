@@ -47,6 +47,7 @@
 				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
+				console.log(systemInfo)
 				Vue.prototype.systemInfo = systemInfo;
 			},
 			/**
@@ -144,6 +145,11 @@
 			uni.getSystemInfo({
 				success: e => {
 					this.initSize(e);
+					
+					//#ifdef APP-PLUS
+					//检查应用更新，每日一次
+					checkAppUpdate(false,this.systemInfo);
+					//#endif
 				}
 			})
 
@@ -166,8 +172,6 @@
 			this.initLogin();
 			//初始化推送
 			this.initPush();
-			//检查应用更新，每日一次
-			checkAppUpdate();
 			//#endif
 		},
 		onShow: function() {

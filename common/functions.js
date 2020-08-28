@@ -505,7 +505,7 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id, money, comefrom,module) {
+const navToPayOrder = function(id, money, comefrom, module) {
 	if (isRedirect) {
 		return false;
 	}
@@ -593,17 +593,17 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 			if (chooseCallback) {
 				chooseCallback(res.tempFilePaths);
 			}
-			let promises=[];
+			let promises = [];
 			//循环上传
 			res.tempFilePaths.map((filePath) => {
 				let fname = (Math.random() + '').substr(2) + '.jpg';
 				let cpath = pathArr.join('/') + '/' + fname;
-				let uploadPromise =cloudUploadFile(filePath, cpath);
+				let uploadPromise = cloudUploadFile(filePath, cpath);
 				promises.push(uploadPromise)
 			})
-			Promise.all(promises).then(res=>{
+			Promise.all(promises).then(res => {
 				console.log(res);
-				if(successCallback){
+				if (successCallback) {
 					successCallback(res)
 				}
 			});
@@ -618,26 +618,27 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
  */
 const cloudUploadFile = (filePath, cpath) => {
 	return new Promise((resolve, reject) => {
-		let result =uniCloud.uploadFile({
+		let result = uniCloud.uploadFile({
 			filePath: filePath,
 			cloudPath: cpath,
-			onUploadProgress: pro => {
-			},success:res=>{
-				console.log("cloudUploadFile",res)
-				if(res.fileID.indexOf("cloud://") != -1){
+			onUploadProgress: pro => {},
+			success: res => {
+				console.log("cloudUploadFile", res)
+				if (res.fileID.indexOf("cloud://") != -1) {
 					//用这个转换一下，有一个隐藏的好处，可以等待文件发布到cdn，避免立即访问不到
 					uniCloud.getTempFileURL({
-						fileList:[res.fileID]
-					}).then(res2=>{
-						resolve(res2.fileList[0].tempFileURL);	
+						fileList: [res.fileID]
+					}).then(res2 => {
+						resolve(res2.fileList[0].tempFileURL);
 					})
-				}else{
+				} else {
 					//延时返回，可以等待文件发布到cdn，避免立即访问不到
-					setTimeout(()=>{
-						resolve(res.fileID);	
-					},200);
+					setTimeout(() => {
+						resolve(res.fileID);
+					}, 200);
 				}
-			},fail:()=>{
+			},
+			fail: () => {
 				reject(false);
 			}
 		});
@@ -646,13 +647,13 @@ const cloudUploadFile = (filePath, cpath) => {
 /**
  * 检测app是否需要升级
  */
-const checkAppUpdate = (isForce, callback) => {
+const checkAppUpdate = (isForce, systemInfo, callback) => {
 	let checkUpdateKey = 'checkAppUpdate';
 	let dt = new Date();
 	//年月日
 	let today = dt.getFullYear() + '' + (dt.getMonth() + 1) + '' + dt.getDate();
 	let isChecked = uni.getStorageSync(checkUpdateKey);
-	console.log("检查更新", isChecked);
+	console.log("检查更新", isChecked, systemInfo);
 	if (!isChecked || isChecked != today || isForce) {
 		uni.setStorage({
 			key: checkUpdateKey,
@@ -674,7 +675,48 @@ const checkAppUpdate = (isForce, callback) => {
 						content: e.result.note ? e.result.note : '是否选择更新',
 						success: ee => {
 							if (ee.confirm) {
-								plus.runtime.openURL(e.result.url);
+								if (systemInfo.platform == "ios") {
+									plus.runtime.openURL(e.result.url);
+								} else {
+									uni.showLoading({
+										title: "正在下载"
+									});
+									const task = uni.downloadFile({
+										url: e.result.url,
+										success: (downloadResult) => {
+											uni.hideLoading();
+											if (downloadResult.statusCode === 200) {
+												plus.runtime.install(downloadResult.tempFilePath, {
+													force: false
+												}, (e) => {
+													uni.showModal({
+														showCancel: false,
+														confirmText: "重启",
+														content: "安装完成",
+														success: (r) => {
+															if (r.confirm) {
+																plus.runtime.restart();
+															}
+														}
+													})
+												}, (err) => {
+													uni.showModal({
+														showCancel: false,
+														confirmText: "确定",
+														content: "安装失败"
+													});
+												});
+											}
+										},
+										fail: err => {
+											//this.downloadError(err);
+										}
+									});
+
+									task.onProgressUpdate((e) => {
+
+									});
+								}
 							}
 						}
 					});
@@ -718,8 +760,8 @@ const mapDistance = function(fromLatlng, toLatlng) {
  * 处理送达时间的名称，到底是显示今天还是日期
  * @param {Object} info
  */
-const checkDeliveryHour=function(info){
-	if(!info.deliveryHour){
+const checkDeliveryHour = function(info) {
+	if (!info.deliveryHour) {
 		return;
 	}
 	let deliDay = dateFormat(info.deliveryHour.id, 'MM月dd日');
@@ -755,7 +797,8 @@ export {
 	navToDocPageByType,
 	navToDocWebPage,
 	navMicLogin,
-	uploadFiles,cloudUploadFile,
+	uploadFiles,
+	cloudUploadFile,
 	checkAppUpdate,
 	mapDistance,
 	checkDeliveryHour
