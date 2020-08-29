@@ -206,6 +206,30 @@ const models = {
 		}).update({
 			settlement: true,
 		});
+	},
+	/**
+	 * 查询购物车总数量
+	 * @param {Object} data
+	 */
+	async total(data){
+		const {
+			shopid,
+			uid
+		} = data;
+		const $ = db.command.aggregate
+		let res2 = await cartCollection.aggregate()
+			.match({
+				shopid: shopid,
+				uid: uid
+			}).group({
+				_id: null,
+				totalAmount: $.sum('$amount')
+			})
+			.end();
+		if (res2.data.length > 0) {
+			return  res2.data[0].totalAmount;
+		}
+		return 0
 	}
 }
 

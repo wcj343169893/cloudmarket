@@ -25,7 +25,7 @@ const mustLoginActions = {
 		"new", "delete", "deleteAll", "detail", "edit", "default", "list"
 	],
 	cart: [
-		"list", "settlement", "edit", "addmany", "clean", "selected", "full"
+		"list", "settlement", "edit", "addmany", "clean", "selected", "full","total"
 	],
 	order: ["list", "cancel", "detail", "delete", "makesure", "settlement"],
 	payment: ["wxpay", "alipay", "balance", "info"],

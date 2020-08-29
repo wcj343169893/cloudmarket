@@ -101,7 +101,7 @@ const models = {
 		}).field(goodsFields).orderBy("onlineTime", "desc").limit(20).get();
 		dataOut["newest"] = newGoods.data;
 		//购物车总数
-		if (uid) {
+	/* 	if (uid) {
 			const $ = db.command.aggregate
 			let res2 = await cartCollection.aggregate()
 				.match({
@@ -114,7 +114,7 @@ const models = {
 			if (res2.data.length > 0) {
 				dataOut["cart"] = res2.data[0].totalAmount;
 			}
-		}
+		} */
 		//查询首页的分享语
 		dataOut["share"] = await documents.share({
 			shopid,

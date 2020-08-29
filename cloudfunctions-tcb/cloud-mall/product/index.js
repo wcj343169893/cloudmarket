@@ -30,6 +30,7 @@ const models = {
 			"categories": 1,
 			"miaosha": 1,
 			"manjian": 1,
+			"share":1,
 			"description": 1,
 			"yuding": 1
 		};

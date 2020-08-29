@@ -163,7 +163,8 @@
 	import pageHeader from './components/page-header.vue';
 	import {
 		getHomeFruitData,
-		editCart
+		editCart,
+		getCartList
 	} from '@/common/request.js';
 	import {
 		navToGoodsItemPage,
@@ -213,7 +214,8 @@
 				console.log('watch 登录状态改变,刷新当前页面');
 				setTimeout(() => {
 					//this.loadData();
-					this.getUserLocation();
+					//this.getUserLocation();
+					this.getCartNumber();
 				}, 100);
 			},
 			location() {
@@ -327,10 +329,6 @@
 							text:res.cart+""
 						});
 					} */
-					//异步查询购物车总数量，需要过滤库存不足的商品
-					if (this.hasLogin) {
-						updateCartNumber(res.cart);
-					}
 					if (res.shop) {
 						this.shop = res.shop;
 						this.searchKeyWords = res.shop.searchGoodsKeywords;
@@ -342,7 +340,23 @@
 						this.getDefaultSearchWord();
 					}
 					this.share = res.share;
+					this.$nextTick(()=>{
+						this.getCartNumber();
+					})
 				});
+			},
+			//异步查询购物车总数量，需要过滤库存不足的商品
+			getCartNumber() {
+				if (this.hasLogin) {
+					getCartList({
+						shopid: this.shopId,
+						opt: "total"
+					}).then(res => {
+						updateCartNumber(res);
+					},err=>{
+						updateCartNumber(0);
+					})
+				}
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
