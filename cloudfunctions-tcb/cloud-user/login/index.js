@@ -45,6 +45,7 @@ const jiguang = async (data, context) => {
 	let params = {
 		mobile: mobileName,
 		code,
+		inviteCode:data.inviteCode?data.inviteCode:false,
 		type: "login",
 		expiresIn: configs.expiresIn,
 	}
@@ -86,7 +87,17 @@ const mobile = async (data, context) => {
  */
 const weixin = async (data, context) => {
 	console.log("weixin", context.PLATFORM)
-	return await uniID.loginByWeixin(data.code)
+	console.log("inviteCode", data.inviteCode);
+	const res =  await uniID.loginByWeixin(data.code);
+	if(res.code == 0 && res.type =="type" &&  data.inviteCode){
+		//设置邀请码
+		await uniID.acceptInvite({
+			uid:res.uid,
+			inviteCode:data.inviteCode
+		});
+		console.log("设置微信用户邀请码",res.uid,data.inviteCode)
+	}
+	return res;
 }
 
 

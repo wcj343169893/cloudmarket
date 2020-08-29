@@ -7,7 +7,10 @@ const userCollection = db.collection("uni-id-users");
 const models = {
 	//我的信息
 	async mine(data, context) {
-		let res = await getUserInfo(data.uid, ["nickname", "gender", "status", "mobile", "email", "mobile_confirmed",
+		let res = await getUserInfo(data.uid, [
+			"nickname", "my_invite_code",
+			"gender", "status", "mobile", "email",
+			"mobile_confirmed",
 			"email_confirmed", "avatar", "comment", "birthday"
 		]);
 		if (res.code > 0) {

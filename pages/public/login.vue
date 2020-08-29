@@ -33,7 +33,7 @@
 const jv = uni.requireNativePlugin('JG-JVerification');
 //#endif
 import { mobileAutoLogin, getToken, mobileLogin,sendSms } from '@/common/request.js';
-import { mapMutations } from 'vuex';
+import { mapState,mapMutations } from 'vuex';
 import { client, auth } from '@/common/cloud.js';
 import { navToDocPageByType } from '@/common/functions.js';
 export default {
@@ -81,6 +81,9 @@ export default {
 		this.jgLogin();
 		//#endif
 		//this.getPhoneInfo();
+	},
+	computed: {
+		...mapState(['inviteCode'])
 	},
 	methods: {
 		...mapMutations(['login']),
@@ -133,7 +136,8 @@ export default {
 		},
 		loginWithToken(token) {
 			mobileAutoLogin({
-				token: token
+				token: token,
+				inviteCode:this.inviteCode
 			}).then(
 				res => {
 					console.log(res);
@@ -208,7 +212,8 @@ export default {
 			//登录，手机号+验证码
 			mobileLogin({
 				mobile: this.mobile,
-				code: this.code
+				code: this.code,
+				inviteCode:this.inviteCode
 			}).then(
 				res => {
 					console.log(res);

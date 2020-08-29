@@ -7,7 +7,7 @@
 	 * vuex管理登陆状态，具体可以参考官方登陆模板示例
 	 */
 	import {
-		mapMutations
+		mapState,mapMutations
 	} from 'vuex';
 	import Vue from 'vue';
 	import {
@@ -24,6 +24,9 @@
 	const pushClientInfoKey = 'pushClientInfo';
 	const userInfoKey = 'userInfo';
 	export default {
+		computed: {
+			...mapState(['inviteCode'])
+			},
 		methods: {
 			...mapMutations(['login', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
 			/**
@@ -47,7 +50,6 @@
 				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
-				console.log(systemInfo)
 				Vue.prototype.systemInfo = systemInfo;
 			},
 			/**
@@ -123,8 +125,10 @@
 							provider: provider,
 							success: (loginRes) => {
 								console.log('loginRes', loginRes);
+								console.log('inviteCode', this.inviteCode);
 								//小程序自动登录
 								micLogin({
+									inviteCode:this.inviteCode,
 									code: loginRes.code
 								}, provider).then(res => {
 									console.log("login success", res);
@@ -138,9 +142,6 @@
 		},
 		onLaunch: function() {
 			console.log('App.vue 启动');
-			//#ifdef MP
-			this.micLogin();
-			//#endif
 
 			uni.getSystemInfo({
 				success: e => {
@@ -162,10 +163,15 @@
 			let token = uni.getStorageSync("uni_id_token");
 			let tokenExpired = uni.getStorageSync("uni_id_token_expires");
 			if (token && tokenExpired > new Date().getTime()) {
+				//本地已经登录过，不再调用登录接口
 				this.login({
 					"token": token,
 					"tokenExpired": tokenExpired
 				});
+			}else{
+				//#ifdef MP
+				this.micLogin();
+				//#endif
 			}
 			//#ifdef APP-PLUS
 			//初始化极光一键登录
