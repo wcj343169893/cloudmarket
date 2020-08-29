@@ -212,16 +212,15 @@
 					this.$api.msg('手机号格式不正确');
 					return;
 				}
-				//发送短信,但是需要企业信息,这里做假的功能,假如调用云函数，发送短信成功....
-				//this.$api.msg("发送短信成功！",3000);
-				//this.$api.msg('测试例子，任意验证码都能通过', 3000);
-				sendSms({
-					mobile: this.mobile
-				}).then(res => {
-					this.$api.msg("发送成功")
-					//this.code = res;
-				}, err => {
-					this.$api.msg(err.message)
+				this.$api.throttle(() => {
+					sendSms({
+						mobile: this.mobile
+					}).then(res => {
+						this.$api.msg("发送成功")
+						//this.code = res;
+					}, err => {
+						this.$api.msg(err.message)
+					})
 				})
 				//倒计时60秒
 				this.daojishi(this.daojishiTotal);
@@ -248,6 +247,7 @@
 					this.$api.msg('手机号格式不正确');
 					return;
 				}
+				this.disabledLogin = true;
 				//登录，手机号+验证码
 				mobileLogin({
 					mobile: this.mobile,
@@ -255,11 +255,11 @@
 					inviteCode: this.inviteCode
 				}).then(
 					res => {
-						console.log(res);
 						this.loginSuccess(res);
 					},
 					err => {
 						this.$api.msg('登录失败');
+						this.disabledLogin = false;
 					}
 				);
 			},
@@ -267,7 +267,7 @@
 				return this.mobileReg.test(this.mobile);
 			},
 			loginSuccess(res) {
-				this.$api.msg('登录成功', 2000, false, 'success');
+				this.$api.success('登录成功');
 				this.login(res);
 				this.navTimeBack();
 			}

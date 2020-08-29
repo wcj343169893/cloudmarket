@@ -65,7 +65,7 @@ export default {
 			default: ''
 		},
 		defContent: {
-			type: String,
+			type: [String , Number],
 			default: ''
 		}
 	},

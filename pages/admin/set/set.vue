@@ -26,7 +26,7 @@
 				</checkbox-group>
 			</view>
 		</view>
-		<mix-list-cell title="配送到家" tips="" @eventClick="navTo('/pages/admin/set/delivery')" v-if="deliveryTypes.indexOf('deliveryHome') != -1"></mix-list-cell>
+		<mix-list-cell title="配送到家" :tips="delivery.minPrice+'元起送'" @eventClick="navTo('/pages/admin/set/delivery')" v-if="deliveryTypes.indexOf('deliveryHome') != -1"></mix-list-cell>
 		<view class="mix-list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">是否开启打印机</text>
 			<view class="cell-content content-right">
@@ -49,6 +49,7 @@
 				addressFull: "",
 				phone: "",
 				notice: "",
+				delivery:{},
 				serviceTime: "",
 				deliveryTypes: [],
 				isPrint: false,

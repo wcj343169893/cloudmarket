@@ -45,7 +45,7 @@ export default {
 			default: '标题'
 		},
 		tips: {
-			type: String,
+			type: [String,Number],
 			default: ''
 		},
 		navigateType: {

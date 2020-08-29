@@ -27,6 +27,14 @@ export default{
 				url
 			})
 		},
+		navTimeBack(fn) {
+			setTimeout(() => {
+				uni.navigateBack({})
+				if(fn){
+					fn();
+				}
+			}, 2000);
+		},
 		imageOnLoad(data, key){
 			//这里有问题，页面数据重新刷新后，图片地址为改变的时候，不触发图片的load事件，
 			setTimeout(()=>{
