@@ -27,6 +27,8 @@
 2. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)  
 3. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
 4. 小程序配置：/cloudfunctions/common/configs/config.json
+5. 开启自动取消过期订单定时器，cloud-cron-cancel-orders，增加定时器触发``[{"name":"cancelOrderTrigger","type":"timer","config":"12 * * * * * *"}]``,每分钟执行一次
+6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -71,6 +73,9 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### 日后更新
 * 增加商品海报
 * 用户申请退款，商家审核退款
+
+#### 1.0.3.20
+* 优化分享邀请
 
 #### 1.0.3.19
 * 移除历史残留目录

@@ -31,8 +31,8 @@ const models = {
 		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module);
 		return await uniPayIns.getOrderInfo({
 			openid: openid, //支付宝小程序、微信小程序必填
-			subject: order.body.substr(0,20), // 微信支付时不可填写此项
-			body: order.body.substr(0,30),
+			subject: order.body.substr(0, 20), // 微信支付时不可填写此项
+			body: order.body.substr(0, 30),
 			outTradeNo: order.payid, //订单号
 			totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址
@@ -53,6 +53,17 @@ const models = {
 		}
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		return await uniPayIns.verifyPaymentNotify(data);
+	},
+	/**
+	 * 获取支付工具的名字，如果unipay支持更多方式，这里需要再增加一些
+	 * @param {Object} provider
+	 */
+	getName(provider) {
+		let names = {
+			wxpay: "微信",
+			alipay: "支付宝"
+		};
+		return names[provider]
 	}
 }
 module.exports = models;

@@ -52,7 +52,7 @@ const models = {
 		});
 		console.log("addUserBalanceLog", log);
 		return {
-			callback:"paySuccess",
+			callback: "paySuccess",
 			outTradeNo: order.payid,
 			transactionId: log.id,
 			uid: uid,
@@ -69,6 +69,9 @@ const models = {
 	 * @param {Object} platform
 	 * @param {Object} provider
 	 */
-	async verify(data, platform, provider) {}
+	async verify(data, platform, provider) {},
+	getName(provider) {
+		return "余额"
+	}
 }
 module.exports = models;

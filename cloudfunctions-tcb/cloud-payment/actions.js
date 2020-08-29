@@ -90,7 +90,7 @@ const actions = {
 		}
 		//平台app-plus
 		let platform = paths[1];
-		//支付类型，wxpay，alipay
+		//支付类型，wxpay，alipay，balance
 		let provider = paths[2];
 		//新增第三个参数，支付模块
 		let module = paths[3];
@@ -102,7 +102,8 @@ const actions = {
 		//验证成功
 		if (res.resultCode == "SUCCESS") {
 			res["type"] = provider;
-			res["name"] = config["name"] + "支付";
+			//获取支付工具的名字
+			res["name"] = payments[provider].getName(provider) + "支付";
 			this.paySuccess(res, module);
 		}
 		return "success";

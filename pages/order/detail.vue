@@ -307,17 +307,19 @@ export default {
 			if (item) {
 				//从缓存读取
 				this.orderInfo(item);
-			} else {
-				//从网络获取
-				orders({
-					id: this.id,
-					type: 'detail'
-				}).then(res => {
-					this.orderInfo(res);
-				});
 			}
+			//强制从网络获取
+			orders({
+				id: this.id,
+				type: 'detail'
+			}).then(res => {
+				this.orderInfo(res);
+			});
 		},
 		orderInfo(res) {
+			if(!res.goods){
+				return false;
+			}
 			//订单状态
 			let { stateTip, stateTipColor, stateContent } = getOrderStateExp(res);
 			res.stateTip = stateTip;

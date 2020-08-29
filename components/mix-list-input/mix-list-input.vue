@@ -70,8 +70,10 @@ export default {
 		}
 	},
 	watch: {
-		defContent(val) {
-			this.content = val;
+		defContent(val,oldVal) {
+			if(val != oldVal){
+				this.content = val;
+			}
 			//console.log(val)
 		}
 	},

@@ -162,8 +162,8 @@
 			//设置登录状态
 			let token = uni.getStorageSync("uni_id_token");
 			let tokenExpired = uni.getStorageSync("uni_id_token_expires");
-			if (token && tokenExpired > new Date().getTime()) {
-				//本地已经登录过，不再调用登录接口
+			if (token && tokenExpired > new Date().getTime()+24*3600*1000) {
+				//本地已经登录过，不再调用登录接口，有效期至少保证有1天时间
 				this.login({
 					"token": token,
 					"tokenExpired": tokenExpired

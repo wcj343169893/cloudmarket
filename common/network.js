@@ -47,8 +47,13 @@ const network = function(options) {
 					reject(res.result);
 					return;
 				} else if (res.result.code === 401) {
+					uni.removeStorage({
+						key:"uni_id_token"
+					});
+					uni.removeStorage({
+						key:"uni_id_token_expires"
+					});
 					//登录信息错误,需要重新登录
-					//#ifndef MP
 					if (showLoginDialog) {
 						uni.showModal({
 							title: "温馨提示",
@@ -63,8 +68,8 @@ const network = function(options) {
 								}
 							}
 						});
+						return;
 					}
-					//#endif
 				}
 				return Promise.reject(new Error(res.result.message));
 			}
