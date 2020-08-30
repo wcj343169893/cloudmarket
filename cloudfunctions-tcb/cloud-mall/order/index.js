@@ -183,12 +183,16 @@ const detail = async (data) => {
 		lastPayTime: 1,
 		cancelStyle: 1,
 		shopid: 1,
-		shop:1,
+		shop: 1,
+		freight:1,
 		deliveryHour: 1,
 		deliveryType: 1,
 		modified: 1,
 		payInfo: 1,
-		yuding: 1
+		yuding: 1,
+		lastPayTime: 1,
+		cancelApply: 1,
+		refundApply: 1
 	};
 	let conditions = {
 		uid: uid,
@@ -381,7 +385,7 @@ const settlement = async (event, context) => {
 			"price": 1,
 			"amount": 1
 		}).get();
-		console.log("carts",carts);
+		console.log("carts", carts);
 	}
 	if (carts.data.length == 0) {
 		event.message = "结算商品不存在";
@@ -395,7 +399,7 @@ const settlement = async (event, context) => {
 		"stockNotEnough": [],
 		"totalDiscount": 0,
 		"deliveryType": event.deliveryType ? event.deliveryType : "deliveryHome", //1配送，2自提
-		"freight": event.freight ? +event.freight : 0, //运费
+		//"freight": event.freight ? +event.freight : 0, //运费
 		"juli": event.juli ? +event.juli : 0, //用户与商家之间的距离，由地图接口计算得来
 		"address": {},
 		"goods": []
@@ -427,14 +431,16 @@ const settlement = async (event, context) => {
 		latitude: 1,
 		longitude: 1,
 		delivery: 1,
-		deliverySupportType: 1,//仅仅兼容之前测试版本，将来去掉
-		deliveryTypes:1
+		deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
+		deliveryTypes: 1
 	}).limit(1).get();
 	if (shopData.data.length == 0) {
 		event.message = "店铺不存在";
 		return false;
 	}
 	data["shop"] = shopData.data[0];
+	//计算运费
+	data.freight = getFreight(data);
 	let ids = [];
 	let cartMap = {};
 	//减少秒杀库存成功
@@ -463,7 +469,7 @@ const settlement = async (event, context) => {
 		"src": 1,
 		"price": 1,
 		"skus": 1,
-		"upc":1,
+		"upc": 1,
 		"originPrice": 1,
 		"miaosha": 1,
 		"yuding": 1,
@@ -728,7 +734,41 @@ const settlement = async (event, context) => {
 	}
 	return data;
 }
-
+/**
+ * 根据店铺与客户之间的距离，计算运费
+ */
+const getFreight = (data) => {
+	const {
+		deliveryType,
+		juli,
+		totalMoney,
+		shop
+	} = data;
+	let freight = 0;
+	if (deliveryType == "selfRaising") {
+		return freight;
+	}
+	let delivery = shop.delivery;
+	//是否达到免配送费,但是超过起送距离，也要加运费
+	if (totalMoney >= delivery.freeMoney) {
+		if (juli <= delivery.minDistance) {
+			console.log('免费配送区域');
+			return freight;
+		}
+		//超出最低配送范围
+		freight = Math.ceil(juli - delivery.minDistance) * delivery.perMoney;
+		console.log('超出免费配送区域', freight);
+	} else {
+		if (juli <= delivery.minDistance) {
+			freight = delivery.money;
+			console.log('免费配送区域2');
+			return freight;
+		}
+		//超出最低配送范围
+		freight = delivery.money + Math.ceil(juli - delivery.minDistance) * delivery.perMoney;
+	}
+	return freight;
+}
 
 module.exports = {
 	list,

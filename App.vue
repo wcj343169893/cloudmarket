@@ -225,7 +225,24 @@
 		padding: 20upx 0;
 		border-radius: 8upx;
 	}
-
+	.image-content{
+		position: relative;
+		image {
+			position: relative;
+			z-index: 1;
+		}
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-image: url('/static/loadingbg.jpg');
+			background-size: 100% 100%;
+			opacity: 0.3;
+		}
+	}
 	/* 图片载入替代方案 */
 	.image-wrapper {
 		font-size: 0;
@@ -358,8 +375,8 @@
 	/* button样式改写 */
 	uni-button,
 	button {
-		height: 80upx;
-		line-height: 80upx;
+		height: 70upx;
+		line-height: 70upx;
 		font-size: $font-lg + 2upx;
 		font-weight: normal;
 

@@ -330,6 +330,10 @@ export default {
 			if (res.cancelApply) {
 				res.cancelApply = res.cancelApply.reverse();
 			}
+			//处理运费
+			if(!res.freight){
+				res.freight = 0;
+			}
 			this.info = res;
 			if (this.moreGoodsCount > 0) {
 				this.goodsList = res.goods.slice(0, this.maxShowCount);

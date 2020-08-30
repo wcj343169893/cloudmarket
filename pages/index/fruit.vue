@@ -60,7 +60,9 @@
 				<scroll-view class="floor-list" scroll-x>
 					<view class="scoll-wrapper">
 						<view v-for="(item, index) in miaoshaList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-							<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+							<view class="image-content">
+								<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+							</view>
 							<view class="content">
 								<view class="title clamp">
 									<text>{{ item.title }}</text>
@@ -90,7 +92,9 @@
 			<scroll-view scroll-y="true">
 				<view class="newest-section">
 					<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+						<view class="image-content">
+							<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+						</view>
 						<view class="content">
 							<view class="title clamp">
 								<text>{{ item.title }}</text>
