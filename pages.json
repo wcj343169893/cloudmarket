@@ -441,6 +441,12 @@
 				"navigationBarTitleText": "打印终端管理"
 			}
         }
+        ,{
+            "path" : "pages/admin/order/numbers",
+            "style" : {
+				"navigationBarTitleText": "输码验证"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

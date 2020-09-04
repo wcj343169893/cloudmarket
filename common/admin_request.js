@@ -25,8 +25,8 @@ const orderAdmin = function(action,data,isShowLoading=false) {
  * 商品信息管理
  * @param {Object} data
  */
-const goodsAdmin = function(action,data) {
-	return adminNetwork("goods",action,data,false);
+const goodsAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("goods",action,data,isShowLoading);
 }
 
 /**

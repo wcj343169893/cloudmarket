@@ -50,7 +50,7 @@
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6c427d90-e1f7-11ea-9dfb-6da8e309e0d8.png)
+![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/c114175dc318dc33bde616bfc61362da.png)
 
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
@@ -73,6 +73,10 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### 日后更新
 * 增加商品海报
 * 用户申请退款，商家审核退款
+
+#### 1.0.3.21
+* 增加手动输码验证自提订单
+* 增加复制商品
 
 #### 1.0.3.21
 * 增加店铺配送参数

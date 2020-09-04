@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
-		<view class="order-item" v-for="(item, goodsIndex) in goodsList" :key="goodsIndex">
+		<view class="order-item" v-for="(item, index) in goodsList" :key="index">
 			<view class="goods-box-single" @click="preview(item)">
 				<image class="goods-img" :src="item.src" mode="aspectFill"></image>
 				<view class="right">
@@ -96,6 +96,7 @@
 				<!-- <block v-if="item.skuname"><button class="action-btn" @click.stop="skuInfo(item)">规格</button></block> -->
 				<!-- <button class="action-btn" @click.stop="preview(item)">预览</button> -->
 				<button class="action-btn recom" @click.stop="edit(item)">编辑</button>
+				<button class="action-btn" @click.stop="copy(item,index)">复制</button>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
@@ -279,6 +280,20 @@ export default {
 						url: '/pages/admin/goods/add'
 					});
 				}
+			});
+		},//复制
+		copy(item,index) {
+			if(this.isLoading){
+				return false;
+			}
+			this.isLoading = true;
+			goodsAdmin('copy', {
+				_id: item._id
+			},true).then(res => {
+				this.isLoading = false;
+				this.$api.success('复制成功');
+				let newItem = {...item,_id:res};
+				this.goodsList.splice(index,0,newItem);
 			});
 		},
 		//编辑秒杀

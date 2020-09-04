@@ -24,7 +24,7 @@ const list = async (data, context) => {
 		"subTitle": 1,
 		"stock": 1,
 		"visite": 1,
-		upc:1,
+		upc: 1,
 		"src": 1,
 		"shopid": 1,
 		"operator": 1,
@@ -158,6 +158,20 @@ const save = async (data, context) => {
 		await shopGoodsInc(data.shopid, "online", 1);
 	}
 	return res.id;
+}
+/**
+ * 复制一条数据
+ */
+const copy = async (data, context) => {
+	let goods = await getOneGoods({
+		_id: data._id,
+		shopid: +data.shopid
+	});
+	if (!goods) {
+		return false;
+	}
+	delete goods._id;
+	return await save(goods, context);
 }
 /**
  * 删除，delete是关键词
@@ -418,6 +432,7 @@ module.exports = {
 	list: list,
 	save: save,
 	delete: deletes,
+	copy,
 	revert: reverts,
 	clean: cleans,
 	soldOut: soldOut,
