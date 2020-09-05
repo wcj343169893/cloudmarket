@@ -69,6 +69,18 @@ Vue.filter('toFixed', function(value, num) {
 	}
 	return value;
 });
+/**
+ * 动态处理缩略图
+ * @param {Object} value
+ * @param {Object} num
+ */
+Vue.filter('thumbImg', (value, fmt) =>{
+	if(!fmt){
+		//腾讯云   ?imageMogr2/thumbnail/!200x200r/|imageMogr2/gravity/center/crop/200x200/interlace/0
+		fmt="";
+	}
+	return value;
+});
 
 App.mpType = 'app'
 

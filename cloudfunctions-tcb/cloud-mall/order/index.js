@@ -220,7 +220,7 @@ const deletes = async (data) => {
 		isDelete: 0,
 		_id: id,
 	};
-	let field = {
+	let fields = {
 		state: 1,
 		totalMoney: 1,
 		shopid: 1
@@ -253,7 +253,7 @@ const makesure = async (data, context) => {
 		isDelete: 0,
 		_id: id,
 	};
-	let field = {
+	let fields = {
 		state: 1,
 		totalMoney: 1,
 		shopid: 1
