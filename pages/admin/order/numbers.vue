@@ -29,6 +29,9 @@
 </template>
 
 <script>
+	import {
+		orderAdmin
+	} from '@/common/admin_request.js';
 	export default {
 		data() {
 			return {
@@ -57,8 +60,25 @@
 				}
 			},
 			submit() {
-				uni.redirectTo({
-					url: `/pages/admin/order/detail?number=${this.number}`
+				if (this.isSubmit) {
+					return;
+				}
+				this.isSubmit = true;
+				orderAdmin("detail", {
+					number: this.number
+				}, true).then(res => {
+					uni.setStorage({
+						key:"orderDetail",
+						data:res,
+						success() {
+							uni.redirectTo({
+								url: `/pages/admin/order/detail?id=${res.id}`
+							});
+						}
+					})
+				}, err => {
+					this.$api.msg("订单不存在")
+					this.isSubmit = false;
 				});
 			}
 		}
@@ -107,7 +127,9 @@
 					border-radius: $size;
 				}
 			}
+
 			$size:130rpx;
+
 			.submit {
 				width: 400rpx;
 				height: $size;

@@ -581,7 +581,15 @@
 				this.skuGoods['showOriginPrice'] = selectSku.originPrice ? selectSku.originPrice : 0;
 				//console.log(this.skuGoods)
 				this.skuGoodsSelected = names.join('、');
+			},
+			cleanCache(){
+				uni.removeStorage({
+					key:"goodsInfo"
+				})
 			}
+		},
+		onShow() {
+			this.cleanCache();
 		},
 		// #ifdef MP-WEIXIN
 		onShareAppMessage(res) {

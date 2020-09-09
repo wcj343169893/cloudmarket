@@ -35,7 +35,7 @@ const models = {
 			"yuding": 1
 		};
 		let goods = await goodsCollection.where({
-			id: id
+			id: +id
 		}).field(fields).limit(1).get();
 		if (goods.data.length == 0) {
 			data.message = "商品不存在";

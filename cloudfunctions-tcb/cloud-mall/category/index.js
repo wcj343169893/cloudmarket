@@ -41,7 +41,8 @@ const main = async (event) => {
 	};
 	//查询分类
 	let categories = await goodsCategoryCollection.where({
-		shopid: shopid
+		shopid: shopid,
+		isShow: 1,
 	}).field({
 		"_id": 0,
 		"id": 1,

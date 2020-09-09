@@ -6,6 +6,7 @@ export default{
 			loadingType: 1, //0加载前 1加载中 2没有更多
 			isLoading: false, //刷新数据
 			loaded: false, //加载完毕
+			isSubmit:false,//是否正在提交数据
 		}
 	},
 	methods: {

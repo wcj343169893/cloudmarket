@@ -61,6 +61,7 @@ const models = {
 		//店铺推荐分类
 		let categories = await goodsCategoryCollection.where({
 			shopid: shopid,
+			isShow:1,
 			isRecommend: 1
 		}).field({
 			"_id": 0,

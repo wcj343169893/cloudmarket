@@ -273,7 +273,7 @@
 			if (options.preview) {
 				this.preview = options.preview;
 			}
-			console.log(options);
+			console.log("product",options);
 			//商品id
 			this.id = options.id;
 			//商品规格
