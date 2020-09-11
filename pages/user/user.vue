@@ -196,6 +196,11 @@
 		onLoad() {
 			this.loadData();
 		},
+		onShow() {
+			if(!this.isLoading){
+				this.loadData();
+			}
+		},
 		//下拉刷新
 		onPullDownRefresh() {
 			console.log('刷新整页');
@@ -237,6 +242,7 @@
 			...mapMutations(['login', 'logout']),
 			async loadData() {
 				this.isLoaded = true;
+				this.isLoading = true;
 				console.log("加载用户信息", this.hasLogin)
 				if (this.hasLogin) {
 					//自己的统计信息
@@ -257,6 +263,7 @@
 								this.order[t] = 0;
 							}
 						}
+						this.isLoading = false;
 					})
 
 					if (this.userInfo.invite > 0) {

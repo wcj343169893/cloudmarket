@@ -45,6 +45,19 @@
 			</view>
 		</view>
 		<view class="section ab m-t">
+			<view class="weui-flex address " >
+				<view @click="navToLocation(info.shop)">
+					<text>{{ info.shop.name }}</text>
+				</view>
+				<view class="" @click="tel(info.shop.phone)" v-if="info.shop.phone">
+					<text class="yticon icon-dianhua-copy" ></text>
+					<text class="m-l">联系</text>
+				</view>
+			</view>
+			<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
+				<text>{{ info.shop.address }}</text>
+				<text class="yticon icon-you"></text>
+			</view>
 			<view class="weui-flex address b-b" v-if="info.deliveryHour">
 				<view><text>预约时间</text></view>
 				<view class="content">
@@ -55,17 +68,6 @@
 				</view>
 			</view>
 			<block v-if="info.deliveryType == 'selfRaising'">
-				<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
-					<view><text>店铺地址</text></view>
-					<view class="content">
-						<view>
-							<text>{{ info.shop.name }}</text>
-							<text class="m-l">{{ info.shop.phone }}</text>
-						</view>
-						<text>{{ info.shop.address }}</text>
-					</view>
-					<text class="yticon icon-you"></text>
-				</view>
 				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)" v-if="info.deliveryHour">
 					<view class="warning">
 						<text>提货码:</text>
@@ -375,10 +377,18 @@ export default {
 		},
 		//申请退款
 		refundOrder(item) {
-			uni.showToast({
-				title: '请联系管理员!',
-				icon: 'none'
-			});
+			//7天内可以退款
+			let makesureTime = (new Date(this.info.makesureTime)).getTime();
+			let t = new Date().getTime();
+			if((t - makesureTime)/1000/3600/24 > 7){
+				uni.showModal({
+					showCancel:false,
+					title:"无法申请退款",
+					content:"订单完成后7天内可申请退款，现已超过7天，如有售后需求，请联系客服"
+				});
+				return;
+			}
+			//提交申请
 		},
 		//再次购买
 		buyAgain(item) {
@@ -393,7 +403,7 @@ export default {
 					amount: item.amount
 				});
 				addManyCart({
-					id: this.info.shopid,
+					shopid: this.info.shopid,
 					stationId: this.stationId,
 					data: data
 				}).then(res => {
@@ -485,6 +495,11 @@ export default {
 		},
 		navBack() {
 			uni.navigateBack();
+		},
+		tel(phone){
+			uni.makePhoneCall({
+				phoneNumber:phone
+			})
 		},
 		navToLocation(shop) {
 			uni.openLocation({

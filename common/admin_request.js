@@ -33,8 +33,8 @@ const goodsAdmin = function(action,data,isShowLoading) {
  * 商品信息管理
  * @param {Object} data
  */
-const categoryAdmin = function(action,data) {
-	return adminNetwork("categories",action,data,false);
+const categoryAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("categories",action,data,isShowLoading);
 }
 /**
  * 店铺广告信息

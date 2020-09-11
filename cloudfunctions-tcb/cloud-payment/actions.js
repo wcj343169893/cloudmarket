@@ -102,6 +102,7 @@ const actions = {
 		//验证成功
 		if (res.resultCode == "SUCCESS") {
 			res["type"] = provider;
+			res["couponCount"]=res.couponList?res.couponList.length:0;
 			//获取支付工具的名字
 			res["name"] = payments[provider].getName(provider) + "支付";
 			this.paySuccess(res, module);

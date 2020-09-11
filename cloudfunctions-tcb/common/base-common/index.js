@@ -192,6 +192,9 @@ const getDateFormat = function(fmt, time) {
 	} else {
 		getDate = new Date();
 	}
+	//兼容时区问题，增加8小时
+	getDate.setHours(getDate.getHours()+8);
+	
 	let o = {
 		'M+': getDate.getMonth() + 1,
 		'd+': getDate.getDate(),

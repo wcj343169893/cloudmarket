@@ -6,7 +6,8 @@
 					<text class="num">{{ index + 1 }}</text>
 					<input type="text" value="" v-model="item.name" placeholder="请输入主分类名称" />
 				</view>
-
+				<button type="default" v-if="!item.isRecommend" class="add-btn small" @click="changeRecommend(index,1)">推荐</button>	
+				<button type="default" v-else class="add-btn small disable" @click="changeRecommend(index,0)">不推</button>	
 				<image class="cate-image" :src="cateImgs[index]" mode="aspectFill" @click="changeIcon(index)"></image>
 				<view class="">
 					<text v-if="!item.children || item.children.length == 0" class="yticon icon-jia2" @click.stop="addChild(index)"></text>
@@ -104,6 +105,9 @@ export default {
 		delChild(childIndex, index) {
 			this.categoriesData[index].children.splice(childIndex, 1);
 		},
+		changeRecommend(index,isRecommend){
+			this.$set(this.categoriesData[index], 'isRecommend', +isRecommend);
+		},
 		changeIcon(index) {
 			uploadFiles(
 				'category_icon',
@@ -124,14 +128,10 @@ export default {
 			//提取修改、新增，删除，由服务器处理
 			categoryAdmin('save', {
 				data: this.categoriesData
-			}).then(
+			},true).then(
 				res => {
-					this.$api.msg('保存成功');
-					setTimeout(() => {
-						uni.navigateBack({
-							delta: 1
-						});
-					}, 2000);
+					this.$api.success('保存成功');
+					this.navTimeBack();
 				},
 				err => {
 					this.$api.msg(err.messsage || '保存失败');
@@ -203,6 +203,15 @@ export default {
 	border-radius: 10upx;
 	&.cancel {
 		background-color: $btn-color-spec;
+	}
+	&.small{
+		flex: none;
+		line-height: 40rpx;
+		height: 40rpx;
+		font-size: $font-sm;
+	}
+	&.disable{
+		background-color: $font-color-disabled;
 	}
 }
 .m-l {

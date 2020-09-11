@@ -11,7 +11,7 @@ const {
 const jiguang = async (data, context) => {
 	//只有app端支持极光context.PLATFORM
 	let configs = getLoginConfig("app-plus", "jiguang");
-	//Authorization 在网上可以生成
+	//Authorization 在网上可以生成 http://web.chacuo.net/safebasicauth
 	const result = await uniCloud.httpclient.request(configs["url"], {
 		method: 'POST',
 		headers: {
@@ -24,6 +24,8 @@ const jiguang = async (data, context) => {
 		dataType: 'json'
 	});
 	if (result.data.code != 8000) {
+		console.log("jiguang result.data",result.data)
+		console.log(configs)
 		data.message = result.data.content;
 		return false;
 	}
@@ -38,6 +40,7 @@ const jiguang = async (data, context) => {
 	let mobileName = key.decrypt(result.data.phone, 'utf8');
 	if (!mobileName) {
 		data.message = "手机号解码错误";
+		console.log("jiguang decrypt",data.message)
 		return false;
 	}
 	console.log(mobileName);
@@ -51,6 +54,7 @@ const jiguang = async (data, context) => {
 	}
 	//临时设置验证码，模拟登录
 	let res = await uniID.setVerifyCode(params);
+	delete params.type;
 	return await uniID.loginBySms(params);
 }
 /**

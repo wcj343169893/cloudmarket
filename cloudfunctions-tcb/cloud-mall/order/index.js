@@ -76,6 +76,8 @@ const list = async (data, context) => {
 		deliveryType: 1,
 		shop: 1,
 		yuding: 1,
+		created: 1,
+		modified: 1,
 		"payInfo.time": 1,
 		"payInfo.name": 1,
 		lastPayTime: 1,
@@ -184,10 +186,11 @@ const detail = async (data) => {
 		cancelStyle: 1,
 		shopid: 1,
 		shop: 1,
-		freight:1,
+		freight: 1,
 		deliveryHour: 1,
 		deliveryType: 1,
 		modified: 1,
+		makesureTime: 1,
 		payInfo: 1,
 		yuding: 1,
 		lastPayTime: 1,
@@ -304,6 +307,34 @@ const pushOrderCancelInfo = async function(id, message) {
 		})
 	});
 }
+/**
+ * 申请退款
+ */
+const addRefundApply = async (data) => {
+	//refundApply
+	const {
+		uid,
+		id,
+		style,
+	} = data;
+
+	let fields = {
+		state: 1,
+		totalMoney: 1,
+		goods: 1,
+		refundApply: 1,
+	};
+	let conditions = {
+		uid: uid,
+		isDelete: 0,
+		_id: id,
+		state: cmd.in([1, 2, 3])
+	};
+	let order = await getOrderByConditions(conditions, fields);
+	if(!order){
+		return false;
+	}
+};
 /**
  * 创建退款
  * @param {Object} payInfo 
@@ -428,6 +459,7 @@ const settlement = async (event, context) => {
 		src: 1,
 		address: 1,
 		uid: 1,
+		phone: 1,
 		latitude: 1,
 		longitude: 1,
 		delivery: 1,
@@ -776,5 +808,6 @@ module.exports = {
 	detail,
 	delete: deletes,
 	makesure,
+	addRefundApply,
 	settlement
 }

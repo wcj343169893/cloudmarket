@@ -92,7 +92,7 @@
 		onLoad() {
 			//在应用初始化调用
 			//#ifdef APP-PLUS
-			this.jgLogin();
+			//this.jgLogin();
 			//#endif
 			//#ifdef MP
 			//重新加载app，即可自动登录
