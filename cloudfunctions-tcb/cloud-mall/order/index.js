@@ -311,11 +311,10 @@ const pushOrderCancelInfo = async function(id, message) {
  * 申请退款
  */
 const addRefundApply = async (data) => {
-	//refundApply
 	const {
 		uid,
 		id,
-		style,
+		gid
 	} = data;
 
 	let fields = {

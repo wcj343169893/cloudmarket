@@ -91,12 +91,12 @@ export default {
 			if (this.isInit) {
 				//初始化
 				this.isInit = false;
-				//console.log('inputValue初始化', newVal, +newVal, oldVal, +oldVal);
+				console.log('inputValue初始化', newVal, +newVal, oldVal, +oldVal);
 			}else if(this.isFocus && +newVal == 0){
 				console.log("删除干净了",+newVal,+oldVal);
 			}else if (+newVal !== +oldVal) {
 				//正在编辑中，不调用
-				//console.log('inputValue', newVal, +newVal, oldVal, +oldVal);
+				console.log('inputValue', newVal, +newVal, oldVal, +oldVal);
 				this.$emit('change', +newVal, this.keys);
 			}
 		}
@@ -105,7 +105,11 @@ export default {
 		//传入的值不是0
 		if (+this.value > 0) {
 			this.isInit = true;
+			setTimeout(()=>{
+				this.isInit = false;
+			},100)
 		}
+		console.log('inputValue初始化 created',this.isInit);
 		this.inputValue = +this.value;
 	},
 	methods: {
@@ -113,6 +117,8 @@ export default {
 			this.isFocus = true;
 		},
 		_calcValue(type) {
+			this.isInit = false;
+			console.log(type,this.disabled);
 			if (this.disabled) {
 				this.$emit('disabledEvent', this.keys);
 				return;
@@ -164,8 +170,8 @@ export default {
 					value = this.min * scale;
 				}
 			}
-
 			this.inputValue = String(value / scale);
+			console.log(this.inputValue);
 		},
 		_getDecimalScale() {
 			let scale = 1;

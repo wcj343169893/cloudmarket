@@ -499,13 +499,15 @@ export default {
 		changeCartDataList(pid, gid, sid, num) {
 			//得到当前选中的skuid，往下传递的num，应该是所有规格的总数
 			if (!this.skuCart[gid]) {
-				this.skuCart[gid] = {};
+				//this.skuCart[gid] = {};
+				this.$set(this.skuCart,gid,{})
 			}
 			if (this.skuCart[gid][sid] == num) {
 				console.log('多规格商品数量没有改变');
 				return;
 			}
-			this.skuCart[gid][sid] = num;
+			this.$set(this.skuCart[gid],sid,num)
+			//this.skuCart[gid][sid] = num;
 			//console.log(this.skuCart);
 			//计算所有规格的总数
 			let gnumber = 0;
@@ -632,6 +634,8 @@ export default {
 				amount: number
 			}).then(res => {
 				console.log(res);
+			},err=>{
+				this.$api.msg(err.message)
 			});
 		},
 		/**计算主分类总数量**/

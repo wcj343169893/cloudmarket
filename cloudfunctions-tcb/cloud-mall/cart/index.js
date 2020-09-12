@@ -271,10 +271,11 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		ele.message = "商品库存不足";
 		return false;
 	}
-	//判断是否限购，只有秒杀商品指定型号,支持没有型号情况
+	let time = new Date().getTime();
+	//判断是否限购，只有秒杀商品指定型号,支持没有型号情况，必须在秒杀期间
 	if (goodsInfo.miaosha && (!ele.sku_id || ele.sku_id == goodsInfo.miaosha.sku_id) && goodsInfo.miaosha.limit > 0 &&
 		goodsInfo.miaosha.limit <
-		amount) {
+		amount && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime ) {
 		ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
 		return false;
 	}
