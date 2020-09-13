@@ -48,7 +48,7 @@
 			<text class="cell-tit clamp">*开始时间</text>
 			<kx-datetime
 				class="cell-tip"
-				:data="miaosha.beginTime | dateFormat('yyyy-MM-dd hh:mm')"
+				:time="miaosha.beginTime | dateFormat('yyyy-MM-dd hh:mm')"
 				:end="beginTimeEndDate"
 				@rundata="beginTimeChange"
 				:start="beginTimeStartDate"
@@ -60,7 +60,7 @@
 			<text class="cell-tit clamp">*结束时间</text>
 			<kx-datetime
 				class="cell-tip"
-				:data="miaosha.endTime | dateFormat('yyyy-MM-dd hh:mm')"
+				:time="miaosha.endTime | dateFormat('yyyy-MM-dd hh:mm')"
 				:end="endTimeEndDate"
 				@rundata="endTimeChange"
 				:start="endTimeStartDate"

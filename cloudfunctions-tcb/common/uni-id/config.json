@@ -3,7 +3,7 @@
 	"tokenSecret": "4e50313a45f5fbe0",
 	"tokenExpiresIn": 2592000,
 	"passwordErrorLimit": 6,
-	"bindTokenToDevice": true,
+	"bindTokenToDevice": false,
 	"passwordErrorRetryTime": 3600,
 	"autoSetInviteCode": true,
 	"forceInviteCode": false,

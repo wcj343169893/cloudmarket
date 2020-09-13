@@ -3,11 +3,12 @@ import {
 	client,
 	auth
 } from './cloud.js';
+import store from '../store';
 /**
  * @param {Object} options
  * 网络请求 模块
  */
-const network = function(options) {
+const network = (options)=> {
 	return new Promise((resolve, reject) => {
 		let data = {};
 		if (options.data) {
@@ -19,21 +20,21 @@ const network = function(options) {
 			let uni_id_token_expires = uni.getStorageSync("uni_id_token_expires");
 			if (uni_id_token_expires < new Date().getTime()) {
 				//没有合理的登录信息，对于必须验证登录的接口，直接返回404
+				store.commit("logout")
 				reject({
-					code: 404,
+					code: 401,
 					message: "未登录:"+uni_id_token_expires
 				});
 				return;
 			}
 		}
-
 		if (options.isShowLoading) { //是否需要显示  loading(true:不显示，false:显示)
 			uni.showLoading({
 				title: "加载中",
 				mask: options.isShowMask
 			});
 		}
-
+		console.log("network",JSON.stringify(options));
 		client.callFunction({
 			name: options.url,
 			data: data
@@ -47,12 +48,7 @@ const network = function(options) {
 					reject(res.result);
 					return;
 				} else if (res.result.code === 401) {
-					uni.removeStorage({
-						key:"uni_id_token"
-					});
-					uni.removeStorage({
-						key:"uni_id_token_expires"
-					});
+					store.commit("logout");
 					//登录信息错误,需要重新登录
 					if (showLoginDialog) {
 						uni.showModal({

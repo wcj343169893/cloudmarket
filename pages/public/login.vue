@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<!-- #ifndef MP -->
 		<view class="mix-list-cell b-b">
 			<view class="region">
 				<select-options defaultOption="+86" :options="regionOptions" @eventClick="changeRegion"></select-options>
@@ -11,6 +12,12 @@
 			<button class="add-btn" :class="{ disabled: disabled || processing }" @click="getCode()">{{ btnGetCodeText }}</button>
 		</view>
 		<view class="mix-list-cell-buttons"><button class="add-btn" :class="{ disabled: disabledLogin }" @click="btnLogin()">登录</button></view>
+		<!-- #endif -->
+		<!-- #ifdef MP -->
+		<view class="mix-list-cell center">
+			<text>自动登录中，请稍后...</text>
+		</view>
+		<!-- #endif -->
 
 		<view class="bottom">
 			<!-- #ifdef APP-PLUS-->
@@ -36,7 +43,8 @@
 		mobileAutoLogin,
 		getToken,
 		mobileLogin,
-		sendSms
+		sendSms,
+		micLogin
 	} from '@/common/request.js';
 	import {
 		mapState,
@@ -47,8 +55,7 @@
 		auth
 	} from '@/common/cloud.js';
 	import {
-		navToDocPageByType,
-		micLogin
+		navToDocPageByType
 	} from '@/common/functions.js';
 	export default {
 		data() {
@@ -98,7 +105,6 @@
 			//重新加载app，即可自动登录
 			this.micLogin();
 			//#endif
-			//this.getPhoneInfo();
 		},
 		computed: {
 			...mapState(['inviteCode'])
@@ -106,6 +112,10 @@
 		methods: {
 			...mapMutations(['login']),
 			async micLogin() {
+				uni.showLoading({
+					mask: true,
+					title: "正在登录"
+				});
 				uni.getProvider({
 					service: 'oauth',
 					success: (res) => {
@@ -216,7 +226,7 @@
 					sendSms({
 						mobile: this.mobile
 					}).then(res => {
-						this.$api.msg("发送成功")
+						this.$api.success("发送成功")
 						//this.code = res;
 					}, err => {
 						this.$api.msg(err.message)
@@ -267,6 +277,7 @@
 				return this.mobileReg.test(this.mobile);
 			},
 			loginSuccess(res) {
+				uni.hideLoading();
 				this.$api.success('登录成功');
 				this.login(res);
 				this.navTimeBack();
@@ -374,5 +385,9 @@
 			z-index: 90;
 			padding: 0 20upx;
 		}
+	}
+	.center{
+		text-align: center;
+		padding: 50rpx 0;
 	}
 </style>
