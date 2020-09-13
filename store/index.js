@@ -43,12 +43,14 @@ const store = new Vuex.Store({
 			}
 		},
 		login(state, provider) {
-			state.hasLogin = true;
+			console.log("store login")
 			//state.userInfo = provider;
 			uni.setStorageSync('uniIdToken', provider.token);
 			uni.setStorageSync('uni_id_token', provider.token);
 			//本地保持有效期
 			uni.setStorageSync('uni_id_token_expires', provider.tokenExpired);
+			//设置登录状态
+			state.hasLogin = true;
 			//更新用户信息
 			this.dispatch('getUserInfo');
 			//缓存用户登陆状态
@@ -57,6 +59,13 @@ const store = new Vuex.Store({
 				data: provider
 			}) */
 			//console.log(state.userInfo);
+		},
+		checkLogin(state,provider){
+			console.log("store checkLogin")
+			//设置登录状态
+			state.hasLogin = true;
+			//更新用户信息
+			this.dispatch('getUserInfo');
 		},
 		logout(state) {
 			state.hasLogin = false;
@@ -127,7 +136,7 @@ const store = new Vuex.Store({
 				});
 				state.userInfo = info;
 			}, err => {
-				console.log("获取信息失败")
+				console.log("获取信息失败",err)
 			});
 		},
 	}

@@ -3,7 +3,7 @@
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<!-- 顶部栏 -->
-		<page-header :showFillView="true"></page-header>
+		<page-header :showFillView="true" :bgColor="titleNViewBackground"></page-header>
 		<!-- #endif -->
 		<!-- 头部轮播 -->
 		<view class="carousel-section" v-if="isLoaded">
@@ -217,8 +217,6 @@
 			hasLogin() {
 				console.log('watch 登录状态改变,刷新当前页面');
 				setTimeout(() => {
-					//this.loadData();
-					//this.getUserLocation();
 					this.getCartNumber();
 				}, 100);
 			},
@@ -284,7 +282,7 @@
 								longitude: res.longitude,
 								name: this.address
 							});
-							this.loadData();
+							//this.loadData();
 						},
 						fail: res => {
 							uni.hideLoading();
@@ -303,6 +301,7 @@
 				this.loadData();
 			},
 			async loadData() {
+				console.log("开始获取首页数据")
 				getHomeFruitData({
 					stationId: this.stationId,
 					latitude: this.location.latitude,

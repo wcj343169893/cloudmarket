@@ -5,7 +5,8 @@
 			:style="{
 				paddingRight: headerPaddingRight + 'px',
 				paddingTop: statusBarHeight + 'px',
-				height: navigationBarHeight + statusBarHeight + 'px'
+				height: navigationBarHeight + statusBarHeight + 'px',
+				backgroundColor:bgColor
 			}" :class="{emptyLocation:!showLocationView}"
 		>
 			<view v-if="showLocationView" class="btn center" @click="navTo('/pages/index/chooseAddress')">
@@ -33,6 +34,9 @@ export default {
 		showFillView: {
 			type: Boolean,
 			default: true
+		},bgColor: {
+			type: String,
+			default: "#ffffff"
 		},
 		showLocationView: {
 			type: Boolean,
@@ -80,6 +84,7 @@ export default {
 	z-index: 95;
 	width: 100%;
 	background-color: #fff;
+	transition: 0.4s;
 }
 .emptyLocation{
 	padding-left: 8px;

@@ -55,6 +55,7 @@ exports.main = async (event, context) => {
 		//token检查，必须登录
 		let payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
+			console.log("登录失效",event,payload)
 			return {
 				code: 401,
 				event,

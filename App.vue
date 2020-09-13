@@ -7,7 +7,8 @@
 	 * vuex管理登陆状态，具体可以参考官方登陆模板示例
 	 */
 	import {
-		mapState,mapMutations
+		mapState,
+		mapMutations
 	} from 'vuex';
 	import Vue from 'vue';
 	import {
@@ -23,12 +24,13 @@
 
 	const pushClientInfoKey = 'pushClientInfo';
 	const userInfoKey = 'userInfo';
+	let isCheckLogin=false;
 	export default {
 		computed: {
 			...mapState(['inviteCode'])
-			},
+		},
 		methods: {
-			...mapMutations(['login', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
+			...mapMutations(['login','checkLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
 			/**
 			 * 存储设备信息 参考colorUI
 			 * @param {Object} 
@@ -50,6 +52,7 @@
 				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
+				console.log(systemInfo);
 				Vue.prototype.systemInfo = systemInfo;
 			},
 			/**
@@ -117,9 +120,11 @@
 			},
 			//小程序如果用户曾经
 			async micLogin() {
+				console.log("小程序用户自动登录开始")
 				uni.getProvider({
 					service: 'oauth',
 					success: (res) => {
+						console.log(res)
 						let provider = res.provider[0];
 						uni.login({
 							provider: provider,
@@ -128,7 +133,7 @@
 								console.log('inviteCode', this.inviteCode);
 								//小程序自动登录
 								micLogin({
-									inviteCode:this.inviteCode,
+									inviteCode: this.inviteCode,
 									code: loginRes.code
 								}, provider).then(res => {
 									console.log("login success", res);
@@ -138,37 +143,36 @@
 						});
 					}
 				});
-			},checkLogin(){
+			},
+			checkLogin() {
 				//设置登录状态
 				let token = uni.getStorageSync("uni_id_token");
 				let tokenExpired = uni.getStorageSync("uni_id_token_expires");
-				if (token && tokenExpired > new Date().getTime()+24*3600*1000) {
+				if (token && tokenExpired > new Date().getTime() + 24 * 3600 * 1000) {
 					//本地已经登录过，不再调用登录接口，有效期至少保证有1天时间
-					this.login({
+					this.checkLogin({
 						"token": token,
 						"tokenExpired": tokenExpired
 					});
-				}else{
+				} else {
 					//#ifdef MP
 					this.micLogin();
 					//#endif
 				}
+				setTimeout(()=>{
+					isCheckLogin = true;
+				},100)
 			}
 		},
 		onLaunch: function() {
 			console.log('App.vue 启动');
 
-			uni.getSystemInfo({
-				success: e => {
-					this.initSize(e);
-					
-					//#ifdef APP-PLUS
-					//检查应用更新，每日一次
-					checkAppUpdate(false,this.systemInfo);
-					//#endif
-				}
-			})
-
+			let info = uni.getSystemInfoSync();
+			this.initSize(info);
+			//#ifdef APP-PLUS
+			//检查应用更新，每日一次
+			checkAppUpdate(false, this.systemInfo);
+			//#endif
 			this.loadAdminShopId();
 			let userLocationInfo = uni.getStorageSync('userLocationInfo') || {};
 			if (userLocationInfo.latitude > 0) {
@@ -184,10 +188,13 @@
 		},
 		onShow: function() {
 			console.log('App Show');
-			this.checkLogin();
+			if(isCheckLogin){
+				this.checkLogin();
+			}
 		},
 		onHide: function() {
 			console.log('App Hide');
+			isCheckLogin = true;
 		}
 	};
 </script>
@@ -228,12 +235,15 @@
 		padding: 20upx 0;
 		border-radius: 8upx;
 	}
-	.image-content{
+
+	.image-content {
 		position: relative;
+
 		image {
 			position: relative;
 			z-index: 1;
 		}
+
 		&:after {
 			content: '';
 			position: absolute;
@@ -246,6 +256,7 @@
 			opacity: 0.3;
 		}
 	}
+
 	/* 图片载入替代方案 */
 	.image-wrapper {
 		font-size: 0;

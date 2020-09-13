@@ -21,7 +21,7 @@ const network = function(options) {
 				//没有合理的登录信息，对于必须验证登录的接口，直接返回404
 				reject({
 					code: 404,
-					message: "未登录"
+					message: "未登录:"+uni_id_token_expires
 				});
 				return;
 			}
