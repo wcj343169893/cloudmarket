@@ -197,7 +197,7 @@
 			this.loadData();
 		},
 		onShow() {
-			if(!this.isLoading){
+			if (!this.isLoading) {
 				this.loadData();
 			}
 		},
@@ -271,7 +271,7 @@
 					}
 					getGoodsVisites({}).then(
 						res => {
-							this.hasVisiteGoods = true;
+							this.hasVisiteGoods = res && res.length > 0;
 							this.visiteGoodsList = res;
 						},
 						err => {
@@ -281,6 +281,7 @@
 					);
 				} else {
 					this.hasVisiteGoods = false;
+					this.admin = [];
 					this.visiteGoodsList = [];
 					for (let t in this.order) {
 						this.order[t] = 0;

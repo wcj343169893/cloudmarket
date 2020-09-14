@@ -85,6 +85,7 @@ export default {
 	width: 100%;
 	background-color: #fff;
 	transition: 0.4s;
+	transition-property:background-color;
 }
 .emptyLocation{
 	padding-left: 8px;

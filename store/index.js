@@ -60,7 +60,7 @@ const store = new Vuex.Store({
 			}) */
 			//console.log(state.userInfo);
 		},
-		checkLogin(state,provider){
+		checkStoreLogin(state,provider){
 			console.log("store checkLogin")
 			//设置登录状态
 			state.hasLogin = true;
@@ -68,6 +68,7 @@ const store = new Vuex.Store({
 			this.dispatch('getUserInfo');
 		},
 		logout(state) {
+			console.log("退出登录")
 			state.hasLogin = false;
 			state.userInfo = baseUserInfo;
 			//重置收货地址
@@ -79,6 +80,15 @@ const store = new Vuex.Store({
 			};
 			uni.removeStorage({
 				key: 'userLocationInfo'
+			});
+			uni.removeStorage({
+				key:"uni_id_token"
+			});
+			uni.removeStorage({
+				key:"uniIdToken"
+			});
+			uni.removeStorage({
+				key:"uni_id_token_expires"
 			});
 		},
 		loginPage() {

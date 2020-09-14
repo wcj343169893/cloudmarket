@@ -357,7 +357,7 @@ export default {
 						if (this.categoryId) {
 							setTimeout(() => {
 								this.tabtap({ id: this.categoryId });
-							}, 200);
+							}, 500);
 						}
 					});
 					//this.goodsList = res.goods;

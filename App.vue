@@ -30,7 +30,7 @@
 			...mapState(['inviteCode'])
 		},
 		methods: {
-			...mapMutations(['login','checkLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
+			...mapMutations(['login','checkStoreLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
 			/**
 			 * 存储设备信息 参考colorUI
 			 * @param {Object} 
@@ -109,6 +109,7 @@
 			},
 			//初始化店铺管理id
 			async loadAdminShopId() {
+				console.log("loadAdminShopId")
 				uni.getStorage({
 					key: 'adminShopId',
 					success: info => {
@@ -145,12 +146,14 @@
 				});
 			},
 			checkLogin() {
+				console.log("checkLogin");
 				//设置登录状态
 				let token = uni.getStorageSync("uni_id_token");
 				let tokenExpired = uni.getStorageSync("uni_id_token_expires");
+				console.log(token,tokenExpired)
 				if (token && tokenExpired > new Date().getTime() + 24 * 3600 * 1000) {
 					//本地已经登录过，不再调用登录接口，有效期至少保证有1天时间
-					this.checkLogin({
+					this.checkStoreLogin({
 						"token": token,
 						"tokenExpired": tokenExpired
 					});
