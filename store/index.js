@@ -67,8 +67,23 @@ const store = new Vuex.Store({
 			//更新用户信息
 			this.dispatch('getUserInfo');
 		},
+		checkLogout(state){
+			console.log("checkLogout")
+			state.hasLogin = false;
+			state.userInfo = baseUserInfo;
+			
+			uni.removeStorage({
+				key:"uni_id_token"
+			});
+			uni.removeStorage({
+				key:"uniIdToken"
+			});
+			uni.removeStorage({
+				key:"uni_id_token_expires"
+			});
+		},
 		logout(state) {
-			console.log("退出登录")
+			console.log("logout")
 			state.hasLogin = false;
 			state.userInfo = baseUserInfo;
 			//重置收货地址

@@ -20,10 +20,12 @@ const network = (options)=> {
 			let uni_id_token_expires = uni.getStorageSync("uni_id_token_expires");
 			if (uni_id_token_expires < new Date().getTime()) {
 				//没有合理的登录信息，对于必须验证登录的接口，直接返回404
-				store.commit("logout")
+				if(uni_id_token_expires > 0){
+					store.commit("checkLogout")
+				}
 				reject({
 					code: 401,
-					message: "未登录:"+uni_id_token_expires
+					message: "未登录"+uni_id_token_expires
 				});
 				return;
 			}
