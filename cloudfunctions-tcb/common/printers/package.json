@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "base-common": "file:../base-common",
+    "crypto": "^1.0.1",
     "md5": "^2.0.0",
     "uuid": "^3.4.0"
   },
