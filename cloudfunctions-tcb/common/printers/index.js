@@ -2,7 +2,8 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const modules = {
-	yilianyun: require("./yilianyun")
+	yilianyun: require("./yilianyun"),
+	feieyun: require("./feieyun"),
 };
 const shopCollection = db.collection("cloud_shops");
 /**
@@ -57,6 +58,9 @@ const addPrinter = async (data) => {
 	} = data;
 	return await modules[module]["addPrinter"](data);
 }
+/**
+ * 获取打印机状态
+ */
 const getPrintStatus = async (data) => {
 	const {
 		module
@@ -64,8 +68,18 @@ const getPrintStatus = async (data) => {
 	//调用子模块方法
 	return await modules[module]["getPrintStatus"](data);
 }
+/**
+ * 直接打印内容
+ */
+const println = async (data, config) => {
+	const {
+		module
+	} = config;
+	return await modules[module]["print"](data, config);
+}
 module.exports = {
 	addPrinter,
 	print,
+	println,
 	getPrintStatus
 }
