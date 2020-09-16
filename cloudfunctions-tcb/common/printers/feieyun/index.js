@@ -1,5 +1,9 @@
 'use strict';
 const crypto = require('crypto');
+const {
+	getDateFormat,
+	checkDeliveryHour,
+} = require("base-common");
 /**
  * 飞蛾云
  * @link http://www.feieyun.com/
@@ -78,25 +82,49 @@ const models = {
 		}
 	},
 	getContentWithTemplate(order) {
-		let orderInfo = "<CB>001号单</CB><BR>"; //标题字体如需居中放大,就需要用标签套上
-		orderInfo += "名称　　　　　 单价  数量 金额<BR>";
-		orderInfo += "--------------------------------<BR>";
-		orderInfo += "番　　　　　　 1.0    1   1.0<BR>";
-		orderInfo += "番茄　　　　　 10.0   10  10.0<BR>";
-		orderInfo += "番茄炒　　　　 10.0   100 100.0<BR>";
-		orderInfo += "番茄炒粉　　　 100.0  100 100.0<BR>";
-		orderInfo += "番茄炒粉粉　　 1000.0 1   100.0<BR>";
-		orderInfo += "番茄炒粉粉粉粉 100.0  100 100.0<BR>";
-		orderInfo += "番茄炒粉粉粉粉 15.0   1   15.0<BR>";
-		orderInfo += "备注：快点送到xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<BR>";
-		orderInfo += "--------------------------------<BR>";
-		orderInfo += "合计：xx.0元<BR>";
-		orderInfo += "送货地点：xxxxxxxxxxxxxxxxx<BR>";
-		orderInfo += "联系电话：138000000000<BR>";
-		orderInfo += "订餐时间：2011-01-06 19:30:10<BR><BR>";
-		orderInfo += "----------请扫描二维码----------";
-		orderInfo += "<QR>http://www.dzist.com</QR>"; //把二维码字符串用标签套上即可自动生成二维码
-		return orderInfo;
+		let content = [];
+		checkDeliveryHour(order);
+		let createdDay = getDateFormat("yyyy-MM-dd", order.created);
+		let createdTime = getDateFormat("hh:mm:ss", order.created);
+		content.push(`<CB>${order.shop.name}</CB><BR>`);
+		let sendName = "预计送达";
+		if (order.deliveryType == "selfRaising") {
+			//自提订单
+			content.push(`<C>用户自提</C>`);
+			sendName = "预约提货";
+		}
+		content.push(`订单编号:${order.id}<BR>日 \t 期:${createdDay}<BR>时 \t 间:${createdTime}`);
+		if (order.address) {
+			content.push(
+				`<BR>姓 \t 名:${order.address.name}<BR>手 \t 机:${order.address.mobile}<BR>配送地址:${order.address.address}（${order.address.addressName}）${order.juli}km`
+			);
+		}
+		if (order.deliveryHour) {
+			content.push(`<BR>${sendName}:${order.deliveryHour.name} ${order.deliveryHour.time}`);
+		}
+		content.push(`<BR><BOLD>订单备注:</BOLD>${order.remark}<BR>`);
+		content.push(`--------------------------------<BR>`);
+		content.push(`商品　　　　　 数量  单价 金额<BR>`);
+		for (let goods of order.goods) {
+			content.push(`${goods.title} ${goods.subName}`);
+			if (goods.upc) {
+				content.push(`<BR>UPC ${goods.upc}`);
+			}
+			let total = (goods.price * goods.amount).toFixed(2);
+			content.push(`<RIGHT>${goods.amount} ${goods.price} ${total}</RIGHT><BR>`);
+		}
+		content.push(`--------------------------------<BR>`);
+		let total = order.totalMoney + order.totalDiscount;
+		//抵扣
+		let deduction = order.deduction ? order.deduction : "0.00";
+		content.push(`合计:￥${total}<BR>优惠:￥${order.totalDiscount}<BR>`);
+		content.push(`运费:￥${order.freight}<BR>抵扣:￥${deduction}<BR>`);
+		total = order.totalMoney + order.freight;
+		content.push(`<RIGHT>实际支付:￥${total}</RIGHT>`);
+		content.push(`<C>***********完***********</C>`);
+		
+		content.push(`<BR><CUT>`);
+		return content.join("");
 	}
 }
 module.exports = models;

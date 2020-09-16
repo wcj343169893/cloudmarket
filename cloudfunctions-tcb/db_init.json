@@ -406,6 +406,22 @@
 			}]
 		}]
 	},
+	"cloud_printer_types": {
+		"data": [
+			{
+			  "clientId": "10536333898",
+			  "clientSecret": "99812223f7d0b29c5981ccedd2b214",
+			  "module": "yilianyun",
+			  "name": "易联云k4"
+			},
+			{
+			  "clientId": "10536333898@qq.com",
+			  "clientSecret": "UeCQX3s5AVCbhark",
+			  "module": "feieyun",
+			  "name": "飞蛾云"
+			}
+		]
+	},
 	"cloud_shop_comments": {
 		"data": []
 	},

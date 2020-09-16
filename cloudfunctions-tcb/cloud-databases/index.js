@@ -93,7 +93,9 @@ const configs = {
 		}, {
 			"name": "cloud_order_refunds"
 		}, {
-			"name": "cloud_orders"
+			"name": "cloud_orders",
+		}, {
+			"name": "cloud_printer_types"
 		}, {
 			"name": "cloud_shop_comments"
 		}, {
