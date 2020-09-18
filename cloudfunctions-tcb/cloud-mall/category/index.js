@@ -82,6 +82,7 @@ const main = async (event) => {
 			"miaosha": 1,
 			"yuding": 1,
 			"manjian": 1,
+			tuangou:1,
 		}).orderBy("posid", "asc").get();
 		if (goods.data.length > 0) {
 			shopInfo["goods"] = goods.data;
