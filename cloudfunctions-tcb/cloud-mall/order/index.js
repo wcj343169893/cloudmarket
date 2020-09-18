@@ -330,7 +330,7 @@ const addRefundApply = async (data) => {
 		state: cmd.in([1, 2, 3])
 	};
 	let order = await getOrderByConditions(conditions, fields);
-	if(!order){
+	if (!order) {
 		return false;
 	}
 };
@@ -504,13 +504,20 @@ const settlement = async (event, context) => {
 		"originPrice": 1,
 		"miaosha": 1,
 		"yuding": 1,
+		"tuangou": 1,
 		"manjian": 1,
+		"onlySelfTake": 1
 	}).get();
-
+	//判断是否存在只能自提的商品
+	let onlySelfTake = false;
 	if (goods.data.length > 0) {
 		let goodsOut = [];
 		//处理选中数量
 		goods.data.map(ele => {
+			//商品只能自提
+			if (ele.onlySelfTake) {
+				onlySelfTake = true;
+			}
 			if (ele.skus && ele.skus.length > 0) {
 				ele.skus.map((sku, index) => {
 					let key = ele.id + '_' + sku.id;
@@ -544,6 +551,17 @@ const settlement = async (event, context) => {
 				goodsOut.push(ele);
 			}
 		});
+		if (onlySelfTake) {
+			//仅支持自提
+			data["shop"]["deliveryTypes"] = ["selfRaising"];
+		}
+		if (type == "submit") {
+			//判断配送类型是否支持deliveryType
+			if (data["shop"]["deliveryTypes"].indexOf(data.deliveryType) == -1) {
+				event.message = "店铺配送方式不支持";
+				return false;
+			}
+		}
 		let time = new Date().getTime();
 		for (let ele of goodsOut) {
 			//提前预定，有折扣
@@ -599,6 +617,17 @@ const settlement = async (event, context) => {
 						delete ele.miaosha.endTime; */
 						//秒杀与满减不同享
 						delete ele.manjian;
+					}
+				} else if (ele.tuangou) {
+					if(time > ele.tuangou.endTime){
+						event.message = "团购已结束";
+						return false;
+					}else if (time > ele.tuangou.beginTime) {
+						ele.originPrice = ele.price;
+						ele.price = ele.tuangou.price;
+					}
+					if(!data.pickup || data.pickup < ele.tuangou.pickup){
+						data.pickup = ele.tuangou.pickup;
 					}
 				}
 				//检查库存是否不足

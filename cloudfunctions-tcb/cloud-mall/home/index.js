@@ -61,7 +61,7 @@ const models = {
 		//店铺推荐分类
 		let categories = await goodsCategoryCollection.where({
 			shopid: shopid,
-			isShow:1,
+			isShow: 1,
 			isRecommend: 1
 		}).field({
 			"_id": 0,
@@ -83,6 +83,7 @@ const models = {
 			skus: 1,
 			skuname: 1,
 			yuding: 1,
+			tuangou:1,
 			stock: 1
 		};
 		//正在秒杀商品5条,必须是有库存的秒杀
@@ -101,21 +102,16 @@ const models = {
 			isSold: 1
 		}).field(goodsFields).orderBy("onlineTime", "desc").limit(20).get();
 		dataOut["newest"] = newGoods.data;
-		//购物车总数
-	/* 	if (uid) {
-			const $ = db.command.aggregate
-			let res2 = await cartCollection.aggregate()
-				.match({
-					uid: uid
-				}).group({
-					_id: null,
-					totalAmount: $.sum('$amount')
-				})
-				.end();
-			if (res2.data.length > 0) {
-				dataOut["cart"] = res2.data[0].totalAmount;
-			}
-		} */
+
+		let tuangou = await goodsCollection.where({
+			shopid: shopid,
+			isSold: 1,
+			tuangou: cmd.exists(true),
+			"tuangou.beginTime": cmd.lt(time + 24 * 3600 * 1000),
+			"tuangou.endTime": cmd.gt(time),
+		}).field(goodsFields).orderBy("tuangou.beginTime", "asc").limit(3).get();
+
+		dataOut["tuangou"] = tuangou.data;
 		//查询首页的分享语
 		dataOut["share"] = await documents.share({
 			shopid,

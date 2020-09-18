@@ -69,6 +69,7 @@ const models = {
 				"miaosha": 1,
 				"manjian": 1,
 				"yuding": 1,
+				"tuangou":1
 			}).get();
 			return {
 				"cart": carts.data,
@@ -278,6 +279,8 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		amount && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime ) {
 		ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
 		return false;
+	}else if(goodsInfo.tuangou && time < goodsInfo.tuangou.endTime && time > goodsInfo.tuangou.beginTime){
+		goodsInfo.price = goodsInfo.tuangou.price;
 	}
 	if (cartsOld.data.length == 0) {
 		//新增
@@ -319,7 +322,8 @@ const getGoodsById = async function(id) {
 		src: 1,
 		price: 1,
 		stock: 1,
-		miaosha: 1
+		miaosha: 1,
+		tuangou:1
 	}).limit(1).get();
 	if (goodsInfo.data.length == 0) {
 		return false;

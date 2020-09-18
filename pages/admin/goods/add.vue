@@ -5,8 +5,8 @@
 			<input type="text" class="cell-content" maxlength="40" v-model="title" placeholder="请输入商品名称" />
 		</view>
 		<view class="mix-list-cell b-b">
-			<text class="cell-tit clamp">商品副标题</text>
-			<input type="text" class="cell-content" maxlength="30" v-model="subTitle" placeholder="请输入副标题" />
+			<text class="cell-tit clamp">副  标  题</text>
+			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
@@ -31,53 +31,88 @@
 				<view class="yuding-content">
 					<view class="mix-list-cell b-b">
 						<text class="cell-tit clamp">*定金</text>
-						<input type="digit" class="cell-content" v-model="yuding.price" placeholder="请输入定金" />
+						<input type="digit" class="cell-tip" v-model="yuding.price" placeholder="请输入定金" />
 					</view>
 					<view class="mix-list-cell b-b">
 						<text class="cell-tit clamp">*抵扣</text>
-						<input type="digit" class="cell-content" v-model="yuding.deduction" placeholder="请输入抵扣" />
+						<input type="digit" class="cell-tip" v-model="yuding.deduction" placeholder="请输入抵扣" />
 					</view>
 					<!-- 多规格商品选择支持的规格 -->
 					<block v-if="specsType == 'multiple'">
 						<mix-list-select title="*支持规格" :options="getSkuNames" :defaultOptions="yuding.sku_ids" selectType="checkbox"
 						 @eventClick="changeYudingSku"></mix-list-select>
 					</block>
-					<view class="mix-list-cell b-b">
+					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.beginTime')">
 						<text class="cell-tit clamp">*开始预定</text>
-						<picker mode="date" :value="yuding.beginTime | dateFormat('yyyy-MM-dd')" :start="yudingBeginTimeStartDate" :end="yudingBeginTimeEndDate"
-						 class="cell-tip" @change="bindYudingBeginDateChange">
+						<view class="cell-tip">
 							<view class="uni-input" v-if="yuding.beginTime">{{ yuding.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
-							<view class="uni-input" v-else>选择日期</view>
-						</picker>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
 						<text class="cell-more yticon icon-you"></text>
 					</view>
-					<view class="mix-list-cell b-b">
+					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.endTime')">
 						<text class="cell-tit clamp">*结束预定</text>
-						<picker mode="date" :value="yuding.endTime | dateFormat('yyyy-MM-dd')" :start="yudingEndTimeStartDate" :end="yudingEndTimeEndDate"
-						 class="cell-tip" @change="bindYudingEndDateChange">
+						<view class="cell-tip">
 							<view class="uni-input" v-if="yuding.endTime">{{ yuding.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
-							<view class="uni-input" v-else>选择日期</view>
-						</picker>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
 						<text class="cell-more yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.finalPaymentBeginTime')">
+						<text class="cell-tit clamp">*开始付尾款</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell" @click="selectDatePicker('yuding.finalPaymentEndTime')">
+						<text class="cell-tit clamp">*结束付尾款</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
+				</view>
+			</view>
+		</block>
+		<block v-if="saleType == 'tuangou'">
+			<view class="yuding-section">
+				<view class="yuding-content">
+					<view class="mix-list-cell b-b">
+						<text class="cell-tit clamp">*折扣价</text>
+						<input type="digit" class="cell-tip" v-model="tuangou.price" placeholder="请输入折扣价" />
 					</view>
 					<view class="mix-list-cell b-b">
-						<text class="cell-tit clamp">*开始付尾款</text>
-						<picker mode="date" :value="yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd')" :start="yudingFinalPaymentBeginTimeStartDate"
-						 :end="yudingFinalPaymentBeginTimeEndDate" class="cell-tip" @change="bindYudingFinalPaymentBeginDateChange">
-							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
-							<view class="uni-input" v-else>选择日期</view>
-						</picker>
+						<text class="cell-tit clamp">单位</text>
+						<input type="text" class="cell-tip" v-model="tuangou.unit" placeholder="请输入单位" />
+					</view>
+					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.beginTime')">
+						<text class="cell-tit clamp">*开始团购</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="tuangou.beginTime">{{ tuangou.beginTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
 						<text class="cell-more yticon icon-you"></text>
 					</view>
-					<view class="mix-list-cell">
-						<text class="cell-tit clamp">*结束付尾款</text>
-						<picker mode="date" :value="yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd')" :start="yudingFinalPaymentEndTimeStartDate"
-						 :end="yudingFinalPaymentEndTimeEndDate" class="cell-tip" @change="bindYudingFinalPaymentEndDateChange">
-							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
-							<view class="uni-input" v-else>选择日期</view>
-						</picker>
+					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.endTime')">
+						<text class="cell-tit clamp">*结束团购</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="tuangou.endTime">{{ tuangou.endTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
 						<text class="cell-more yticon icon-you"></text>
 					</view>
+					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.pickup')">
+						<text class="cell-tit clamp">*开始提货</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="tuangou.pickup">{{ tuangou.pickup  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
+
 				</view>
 			</view>
 		</block>
@@ -96,6 +131,15 @@
 				</checkbox-group>
 			</view>
 		</view>
+		<label class="mix-list-cell b-b">
+			<text class="cell-tit clamp">仅支持自提</text>
+			<view class="cell-content content-right">
+				<checkbox-group name="onlySelfTake" @change="changeOnlySelfTake">
+					<checkbox value="1" :checked="onlySelfTake==1"/>
+				</checkbox-group>
+			</view>
+		</label>
+		<mix-list-input title="分享语" :defContent="share" placeholder="请输入分享语" @change="changeShare"> </mix-list-input>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
 			<view class="cell-tip">尺寸800*800</view>
@@ -120,7 +164,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<mix-list-input title="分享语"  :defContent="share" placeholder="请输入分享语" @change="changeShare">	</mix-list-input>
+		
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
@@ -187,6 +231,8 @@
 				</block>
 			</view>
 		</uni-popup>
+		<bory-dateTimePicker ref='date-time' :startYear="startYear" :endYear="endYear" :datestring="dateString"
+		 :indicatorStyle='indicatorStyle' type='datetime' @change='dateTimeChange'></bory-dateTimePicker>
 	</view>
 </template>
 
@@ -262,7 +308,7 @@
 				deliveryTags: [],
 				id: false,
 				upc: "", //商品条码
-				share:"",//分享语
+				share: "", //分享语
 				imgs: [],
 				imgsPreview: [],
 				originPrice: 0,
@@ -276,9 +322,14 @@
 				saleType: 'normal',
 				saleTypes: {
 					normal: '正常销售',
-					yuding: '提前预定'
+					yuding: '提前预定',
+					tuangou: '社区团购',
 				},
-				yuding: {}
+				yuding: {},
+				tuangou: {},
+				dateKey: "",
+				dateString: "",
+				onlySelfTake:"0"
 			};
 		},
 		computed: {
@@ -291,58 +342,17 @@
 				}
 				return da;
 			},
-			yudingBeginTimeStartDate() {
-				return dateFormat(false, 'yyyy-MM-dd');
+			indicatorStyle() {
+				return {
+					background: 'rgba(255,0,0,.2)',
+					height: '40px',
+				};
 			},
-			//预定开始时间，默认1年内，如果设置了结束日期，则最大是结束
-			yudingBeginTimeEndDate() {
-				if (this.yuding.endTime) {
-					return dateFormat(this.yuding.endTime, 'yyyy-MM-dd');
-				}
-				return this.getDefaultEndDate();
+			startYear() {
+				return new Date().getFullYear()
 			},
-			//预定结束日期开始，如果设置了开始日期，则必须大于等于开始
-			yudingEndTimeStartDate() {
-				if (this.yuding.beginTime) {
-					return dateFormat(this.yuding.beginTime, 'yyyy-MM-dd');
-				}
-				return dateFormat(false, 'yyyy-MM-dd');
-			},
-			yudingEndTimeEndDate() {
-				//预定时间一定小于付尾款时间,减少一天
-				if (this.yuding.finalPaymentBeginTime) {
-					return dateFormat(this.yuding.finalPaymentBeginTime - 3600 * 24 * 1000, 'yyyy-MM-dd');
-				}
-				return this.getDefaultEndDate();
-			},
-			yudingFinalPaymentBeginTimeStartDate() {
-				if (this.yuding.endTime) {
-					//增加1秒，即可到第二天
-					return dateFormat(this.yuding.endTime + 1000, 'yyyy-MM-dd');
-				} else if (this.yuding.beginTime) {
-					//增加1天
-					return dateFormat(this.yuding.beginTime + 3600 * 24 * 1000, 'yyyy-MM-dd');
-				}
-				return dateFormat(false, 'yyyy-MM-dd');
-			},
-			yudingFinalPaymentBeginTimeEndDate() {
-				if (this.yuding.finalPaymentEndTime) {
-					return dateFormat(this.yuding.finalPaymentEndTime, 'yyyy-MM-dd');
-				}
-				return this.getDefaultEndDate();
-			},
-			yudingFinalPaymentEndTimeStartDate() {
-				if (this.yuding.finalPaymentBeginTime) {
-					return dateFormat(this.yuding.finalPaymentBeginTime, 'yyyy-MM-dd');
-				} else if (this.yuding.endTime) {
-					return dateFormat(this.yuding.endTime, 'yyyy-MM-dd');
-				} else if (this.yuding.beginTime) {
-					return dateFormat(this.yuding.beginTime, 'yyyy-MM-dd');
-				}
-				return dateFormat(false, 'yyyy-MM-dd');
-			},
-			yudingFinalPaymentEndTimeEndDate() {
-				return this.getDefaultEndDate();
+			endYear() {
+				return new Date().getFullYear() + 1;
 			}
 		},
 		onLoad(options) {
@@ -365,6 +375,7 @@
 		methods: {
 			async loadData() {
 				let data = uni.getStorageSync('adminEditGoods');
+				console.log(data)
 				if (data) {
 					for (let index in data) {
 						this[index] = data[index];
@@ -382,14 +393,12 @@
 					if (this.categories.length > 0) {
 						this.categoryName = this.categories[this.categories.length - 1].name;
 					}
-					if (this.yuding && this.yuding.price > 0) {
+					if (this.yuding && this.yuding.beginTime > 0) {
 						this.saleType = 'yuding';
-					} else {
-						this.saleType = 'normal';
 					}
 					this.categoryIdTmp = this.categories;
 					//异步查询商品详细
-					goodsAdmin('info', {
+					/* goodsAdmin('info', {
 						_id: this._id,
 						shopid: this.shopid
 					}).then(res => {
@@ -398,7 +407,11 @@
 							//多图
 							this.descriptionImgs = res.description.split(';');
 						}
-					});
+					}); */
+					if (this.description.trim() != '') {
+						//多图
+						this.descriptionImgs = this.description.split(';');
+					}
 				}
 				//默认单规格信息为主信息
 				this.loadSkuInfo();
@@ -635,7 +648,7 @@
 			changeUpc(e) {
 				this.upc = e;
 			},
-			changeShare(e){
+			changeShare(e) {
 				this.share = e;
 			},
 			//提交到服务器
@@ -650,14 +663,16 @@
 					description: this.description,
 					id: this.id,
 					imgs: this.imgs,
-					upc:this.upc,
+					upc: this.upc,
 					originPrice: this.originPrice,
 					price: this.price,
 					src: this.src,
 					stock: this.stock,
 					title: this.title,
 					subTitle: this.subTitle,
-					share:this.share,
+					share: this.share,
+					saleType:this.saleType,
+					onlySelfTake:this.onlySelfTake,//是否仅支持自提
 					deliveryTags: this.deliveryTags
 				};
 				//多规格
@@ -710,6 +725,20 @@
 					//强转价格类型
 					info.yuding.price = +info.yuding.price;
 					info.yuding.deduction = +info.yuding.deduction;
+				}else if(this.saleType == "tuangou"){
+					info.tuangou = this.tuangou;
+					fields = {
+						price: '折扣价',
+						beginTime: '开始团购时间',
+						endTime: '结束团购时间',
+						pickup: '提货时间',
+					};
+					if (!this.checkFields(info.tuangou, fields)) {
+						this.submiting = false;
+						return;
+					}
+					//强转价格类型
+					info.tuangou.price = +info.tuangou.price;
 				}
 				goodsAdmin('save', info).then(
 					res => {
@@ -720,7 +749,7 @@
 							});
 						}, 2000);
 						this.$api.prePage().refreshList();
-						this.$api.msg('提交成功');
+						this.$api.success('提交成功');
 					},
 					err => {
 						this.submiting = false;
@@ -781,6 +810,40 @@
 			},
 			changeDeliveryTags(e) {
 				this.deliveryTags = e.detail.value;
+			},
+			changeOnlySelfTake(e) {
+				this.onlySelfTake = +e.detail.value;
+			},
+			selectDatePicker(key) {
+				this.dateKey = key;
+				this.dateString = dateFormat(this.getArrData(key), 'yyyy-MM-dd hh:mm:ss');
+				console.log(this.dateString);
+				this.$refs['date-time'].show();
+			},
+			dateTimeChange(e) {
+				console.log("dateTimeChange", e);
+				e = new Date(e.replace(/-/g, '/')).getTime();
+				console.log("dateTimeChange", e);
+				let arr = this.dateKey.split(".");
+				console.log(arr);
+				if (arr.length == 1) {
+					this.$set(this, arr[0], e)
+				} else if (arr.length == 2) {
+					this.$set(this[arr[0]], arr[1], e)
+				} else if (arr.length == 3) {
+					this.$set(this[arr[0]][arr[1]], arr[2], e)
+				}
+				console.log(this[arr[0]])
+			},
+			getArrData(string) {
+				let arr = string.split(".");
+				if (arr.length == 1) {
+					return this[arr[0]];
+				} else if (arr.length == 2) {
+					return this[arr[0]] ? this[arr[0]][arr[1]] : "";
+				} else if (arr.length == 3) {
+					return this[arr[0]] && this[arr[0]][arr[1]] ? this[arr[0]][arr[1]][arr[2]] : "";
+				}
 			}
 		}
 	};

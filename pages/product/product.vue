@@ -10,73 +10,10 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<block v-if="yuding">
-			<view class="yuding-section" :class="{ ready: !yuding.isBegin }">
-				<view class="title">
-					<view class="sub-title">
-						<text class="name">定&nbsp;金</text>
-						<text class="price">{{ yuding.price }}</text>
-					</view>
-					<view class="">
-						<text class="name">预售价</text>
-						<text class="price">{{ yudingPrice }}</text>
-					</view>
-				</view>
-				<view class="time-area">
-					<view class="">
-						<text>{{ yuding.statusSubName }}:</text>
-					</view>
-					<view class="time">
-						<text class="ti hour">{{ yuding.hour }}</text>
-						<text>:</text>
-						<text class="ti minute">{{ yuding.minute }}</text>
-						<text>:</text>
-						<text class="ti second">{{ yuding.second }}</text>
-					</view>
-				</view>
-			</view>
-			<view class="introduce-section">
-				<text class="title">{{ title }}</text>
-				<view class="sub-title" v-if="subTitle && subTitle != ''">
-					<text>{{ subTitle }}</text>
-				</view>
-				<view class="info-box" v-if="!yuding.isBegin">
-					<text class="name">定金</text>
-					<view class="desc">
-						<text class="price">{{ yuding.price }}</text>
-						<text>({{ yuding.beginTime | dateFormat('MM月dd日hh:mm') }}-{{ yuding.endTime | dateFormat('MM月dd日hh:mm') }})</text>
-					</view>
-				</view>
-				<view class="info-box">
-					<text class="name">尾款</text>
-					<view class="desc">
-						<text class="price">{{ yudingFinalPay }}</text>
-						<text>({{ yuding.finalPaymentBeginTime | dateFormat('MM月dd日hh:mm') }}-{{ yuding.finalPaymentEndTime | dateFormat('MM月dd日hh:mm') }})</text>
-					</view>
-				</view>
-				<view class="info-box">
-					<text class="name">流程</text>
-					<text>1.付定金-2.付尾款-3.发货</text>
-				</view>
-			</view>
-		</block>
+		<yudingPage v-if="yuding" :yuding="yuding" :price="price" :title="title" :subTitle="subTitle"></yudingPage>
+		<tuangouPage v-if="tuangou" :tuangou="tuangou" :price="price" :title="title" :subTitle="subTitle" :monthlySale="monthlySale" :stock="stock" ></tuangouPage>
 		<block v-else>
-			<block v-if="hasMiaosha">
-				<view class="miaosha-section" :class="{ ready: !miaosha.isStart }">
-					<view class="title">
-						<text class="name">限时抢购</text>
-						<text class="status">{{ miaosha.statusName }}</text>
-					</view>
-					<view class="time" v-if="!miaosha.isEnd">
-						<text>{{ miaosha.statusSubName }}</text>
-						<text class="ti hour">{{ miaosha.hour }}</text>
-						<text>:</text>
-						<text class="ti minute">{{ miaosha.minute }}</text>
-						<text>:</text>
-						<text class="ti second">{{ miaosha.second }}</text>
-					</view>
-				</view>
-			</block>
+			<miaoshaPage v-if="hasMiaosha" :miaosha="miaosha"></miaoshaPage>
 			<view class="introduce-section">
 				<text class="title">{{ title }}</text>
 				<view class="sub-title" v-if="subTitle && subTitle != ''">
@@ -169,6 +106,13 @@
 				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
 				<button class="add-btn disabled" v-else>预售未开始</button>
 			</block>
+			<block v-else-if="tuangou">
+				<block v-if="tuangou.isBegin">
+					<button class="add-btn" @click="addToCart">加入购物车</button>
+					<button class="add-btn spec" @click="buy">立即购买</button>
+				</block>
+				<button class="add-btn disabled" v-else>团购未开始</button>
+			</block>
 			<block v-else>
 				<button class="add-btn" @click="addToCart">加入购物车</button>
 				<button class="add-btn spec" @click="buy">立即购买</button>
@@ -181,7 +125,8 @@
 
 <script>
 	import {
-		mapState,mapMutations
+		mapState,
+		mapMutations
 	} from 'vuex';
 	import share from '@/components/share';
 	import {
@@ -189,6 +134,9 @@
 		editCart
 	} from '@/common/request.js';
 	import pageHeader from './components/detail-page-header'; //页面头
+	import yudingPage from './components/yuding'; //预定页面
+	import tuangouPage from './components/tuangou'; //团购页面
+	import miaoshaPage from './components/miaosha'; //秒杀页面
 	import {
 		showLoginDialog,
 		navToLoginPage,
@@ -203,7 +151,10 @@
 	export default {
 		components: {
 			share,
-			pageHeader
+			pageHeader,
+			yudingPage,
+			miaoshaPage,
+			tuangouPage
 		},
 		data() {
 			return {
@@ -239,13 +190,14 @@
 				shareList: [],
 				skuMap: [],
 				yuding: false,
+				tuangou: false,
 				hasMiaosha: false,
 				nameMap: {},
 				cart: {},
 				cartSumCount: 0,
 				canAddCart: false,
-				share:"",//分享语
-				referer:"",
+				share: "", //分享语
+				referer: "",
 				ratingData: {}
 			};
 		},
@@ -273,17 +225,17 @@
 			if (options.preview) {
 				this.preview = options.preview;
 			}
-			console.log("product",options);
+			console.log("product", options);
 			//商品id
 			this.id = options.id;
 			//商品规格
 			if (options.sid) {
 				this.default_sku_id = +options.sid;
 			}
-			if(options.referer){
+			if (options.referer) {
 				this.referer = options.referer;
 			}
-			if(options.u){
+			if (options.u) {
 				this.setInvite(options.u)
 			}
 			this.loadData();
@@ -305,7 +257,7 @@
 				// 来自页面内分享按钮
 				console.log(res.target);
 			}
-			let query = [`id=${this.id}`,'referer=share'];
+			let query = [`id=${this.id}`, 'referer=share'];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}
@@ -362,6 +314,7 @@
 				this.imgs = [];
 				updateGoodsTags(item, true);
 				this.checkYuding(item);
+				this.checkTuangou(item);
 				this.checkMiaosha(item);
 				console.log('default_sku_id:', this.default_sku_id);
 				for (let field in item) {
@@ -481,6 +434,42 @@
 					});
 				}
 			},
+			checkTuangou(item) {
+				if (!item.tuangou) {
+					return false;
+				}
+				console.log('有預定');
+				let time = new Date().getTime();
+				let isBegin = item.tuangou.beginTime < time;
+				let statusSubName = '距团购开始';
+				if (isBegin) {
+					statusSubName = '距团购结束';
+				}
+				//如果预定没开始，是不能预定的，在预定时间内，价格为预订价
+				//处理付尾款时间
+				Object.assign(item.tuangou, {
+					hour: '00',
+					minute: '00',
+					second: '00',
+					startTime: time,
+					isBegin: isBegin,
+					statusSubName: statusSubName
+				});
+				if (!isBegin) {
+					//未开始
+					miaoshaCountDown(item.tuangou, item.tuangou.beginTime, () => {
+						this.checkTuangou(item);
+					});
+				} else if (item.tuangou.endTime < time) {
+					//已结束,按正常价格购买
+					item.tuangou.statusSubName = '已结束';
+				} else {
+					item.tuangou.startTime = time;
+					miaoshaCountDown(item.tuangou, item.tuangou.endTime, () => {
+						this.checkTuangou(item);
+					});
+				}
+			},
 			checkMiaosha(item) {
 				if (!item.miaosha) {
 					return false;
@@ -534,9 +523,9 @@
 				}
 			},
 			//分享
-		/* 	share() {
-				this.$refs.share.toggleMask();
-			}, */
+			/* 	share() {
+					this.$refs.share.toggleMask();
+				}, */
 			//收藏
 			toFavorite() {
 				this.favorite = !this.favorite;

@@ -56,32 +56,72 @@
 				<view class="tit-box"><text class="tit">限时抢购</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="seckill-section">
-				<scroll-view class="floor-list" scroll-x>
-					<view class="scoll-wrapper">
-						<view v-for="(item, index) in miaoshaList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-							<view class="image-content">
-								<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
-							</view>
-							<view class="content">
-								<view class="title clamp">
-									<text>{{ item.title }}</text>
-								</view>
-								<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
-									<text>{{ item.subTitle }}</text>
-								</view>
-								<view class="tags">
-									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
-								</view>
-								<view class="">
-									<text class="price">{{ item.price }}</text>
-									<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
-									<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
-								</view>
-							</view>
+			<view class="seckill-section2">
+				<view v-for="(item,index) in miaoshaList" :key="index" @click="navToGoodsPage(item)" class="sec2">
+					<view class="image-content">
+						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+					</view>
+					<view class="content">
+						<view class="title clamp">
+							<text>{{ item.title }}</text>
+						</view>
+						<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+							<text>{{ item.subTitle }}</text>
+						</view>
+						<view class="tags">
+							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
+						</view>
+						<view class="miaoshaTime" v-if="item.miaosha.isBegin">
+							<text>结束：</text><text>{{item.miaosha.endTime | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
+						<view class="miaoshaTime basc" v-if="!item.miaosha.isBegin">
+							<text>开始：</text><text>{{item.miaosha.beginTime | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
+						<view class="">
+							<text class="price">{{ item.price }}</text>
+							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
 						</view>
 					</view>
-				</scroll-view>
+				</view>
+			</view>
+		</block>
+		<block v-if="tuangouList.length > 0">
+			<view class="f-header m-t">
+				<view class="icon">&nbsp;</view>
+				<view class="tit-box"><text class="tit">社区团购</text></view>
+				<text class="yticon icon-you"></text>
+			</view>
+			<view class="seckill-section2">
+				<view v-for="(item,index) in tuangouList" :key="index" @click="navToGoodsPage(item)" class="sec2 sec3">
+					<view class="image-content">
+						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+					</view>
+					<view class="content">
+						<view class="title clamp">
+							<text>{{ item.title }}</text>
+						</view>
+						<view class="miaoshaTime">
+							<text>预售：</text><text>{{item.tuangou.endTime | dateFormat('MM-dd hh:mm')}}</text>
+							<text class="m-lr">~</text>
+							<text>{{item.tuangou.beginTime | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
+						<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+							<text>{{ item.subTitle }}</text>
+						</view>
+						<view class="tags">
+							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
+						</view>
+						<view class="">
+							<text class="price">{{ item.price }}</text>
+							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
+						</view>
+						<view class="miaoshaTime basc">
+							<text>提货：</text><text>{{item.tuangou.pickup | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
+					</view>
+				</view>
 			</view>
 		</block>
 		<block v-if="newestList.length > 0">
@@ -198,6 +238,7 @@
 				recommendCategoriesList: [],
 				miaoshaList: [],
 				newestList: [],
+				tuangouList: [],
 				shop: {},
 				skuGoods: {},
 				share: {},
@@ -229,8 +270,8 @@
 			}
 		},
 		onLoad(options) {
-			console.log("fruit onload",options)
-			if(options.u){
+			console.log("fruit onload", options)
+			if (options.u) {
 				this.setInvite(options.u)
 			}
 			this.getUserLocation();
@@ -247,7 +288,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation','setInvite']),
+			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'setInvite']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问
@@ -328,6 +369,10 @@
 					this.newestList.forEach(item => {
 						updateGoodsTags(item);
 					});
+					this.tuangouList = res.tuangou;
+					this.tuangouList.forEach(item => {
+						updateGoodsTags(item);
+					});
 					//this.address = res.address;
 					//购物车总数量
 					/* if(res.cart > 0){
@@ -347,7 +392,7 @@
 						this.getDefaultSearchWord();
 					}
 					this.share = res.share;
-					this.$nextTick(()=>{
+					this.$nextTick(() => {
 						this.getCartNumber();
 					})
 				});
@@ -360,7 +405,7 @@
 						opt: "total"
 					}).then(res => {
 						updateCartNumber(res);
-					},err=>{
+					}, err => {
 						updateCartNumber(0);
 					})
 				}
@@ -581,9 +626,9 @@
 				//console.log(this.skuGoods)
 				this.skuGoodsSelected = names.join('、');
 			},
-			cleanCache(){
+			cleanCache() {
 				uni.removeStorage({
-					key:"goodsInfo"
+					key: "goodsInfo"
 				})
 			}
 		},
@@ -805,6 +850,68 @@
 			margin-bottom: 14upx;
 			border-radius: 50%;
 			box-shadow: 4upx 4upx 20upx rgba(62, 147, 23, 0.3);
+		}
+	}
+
+	.seckill-section2 {
+		padding: 20rpx 20rpx 0;
+
+		.sec2 {
+			margin-bottom: 20rpx;
+			display: flex;
+			font-size: $font-sm + 2upx;
+			background: #fff;
+			border-radius: 20rpx;
+			overflow: hidden;
+		}
+
+		.content {
+			padding: 20upx 20rpx 0;
+			overflow: hidden;
+			flex: 1;
+		}
+
+		.m-lr {
+			margin: 0 12rpx;
+		}
+
+		.miaoshaTime {
+			font-size: $font-sm;
+			margin: 8rpx 0;
+			color: $font-color-warning;
+			font-weight: 500;
+
+			&.basc {
+				color: $base-color;
+			}
+		}
+
+		$width: 220rpx;
+
+		.image-content {
+			width: $width;
+			height: $width;
+		}
+
+		image {
+			width: $width;
+			height: $width;
+		}
+
+		.sec3 {
+			flex-direction: column;
+			$width: 710rpx;
+			$height: 350rpx;
+
+			.image-content {
+				width: $width;
+				height: $height;
+			}
+
+			image {
+				width: $width;
+				height: $height;
+			}
 		}
 	}
 

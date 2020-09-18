@@ -250,7 +250,8 @@ export default {
 				time: ''
 			},
 			deliveryHourTmp: {}, //临时选中的配送时间
-			deliveryHours: [] //所有配送时段
+			deliveryHours: [], //所有配送时段
+			pickup:false,
 		};
 	},
 	onLoad(option) {
@@ -296,6 +297,9 @@ export default {
 						this.priceTitle = '预售价';
 						this.totalTitle = '定金';
 						this.totalMoney = this.yuding.price;
+					}
+					if(res.pickup){
+						this.pickup = res.pickup;
 					}
 					if (this.stockNotEnough.length > 0) {
 						uni.showModal({
@@ -376,12 +380,16 @@ export default {
 			let day = new Date();
 			let baseDay = 0;
 			//如果商品是预售，提货时间自动推迟到付尾款时间开始
+			let todayTime = new Date(dateFormat(false, 'yyyy/MM/dd')).getTime();
 			if (this.yuding) {
 				//计算与今天差多少天
-				let todayTime = new Date(dateFormat(false, 'yyyy/MM/dd')).getTime();
 				let beginTime = new Date(dateFormat(this.yuding.finalPaymentBeginTime, 'yyyy/MM/dd')).getTime();
 				baseDay = (beginTime - todayTime) / 1000 / 3600 / 24;
 				day = new Date(this.yuding.finalPaymentBeginTime);
+			}else if(this.pickup){
+				let beginTime = new Date(dateFormat(this.pickup, 'yyyy/MM/dd')).getTime();
+				baseDay = (beginTime - todayTime) / 1000 / 3600 / 24;
+				day = new Date(this.pickup);
 			}
 			for (let i = baseDay; i < delivery.deliveryDay + baseDay; i++) {
 				let name = '';
@@ -389,7 +397,7 @@ export default {
 					name = dayNames[i] + ' ';
 				}
 				//今日0时时间戳
-				let todayTime = new Date(dateFormat(day, 'yyyy/MM/dd')).getTime();
+				todayTime = new Date(dateFormat(day, 'yyyy/MM/dd')).getTime();
 				let info = {
 					id: dateFormat(day, 'yyyyMMdd'),
 					name: name,

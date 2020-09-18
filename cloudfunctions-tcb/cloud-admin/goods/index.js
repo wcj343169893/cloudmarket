@@ -42,7 +42,11 @@ const list = async (data, context) => {
 		"miaosha": 1,
 		"manjian": 1,
 		"modified": 1,
+		saleType: 1,
+		onlySelfTake:1,
 		"yuding": 1,
+		"tuangou": 1,
+		description:1
 	};
 	let time = new Date().getTime();
 	switch (state) {

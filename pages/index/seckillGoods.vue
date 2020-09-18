@@ -16,6 +16,12 @@
 						<view class="tags">
 							<text v-for="(tag,tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{tag.text}}</text>
 						</view>
+						<view class="miaoshaTime" v-if="item.miaosha.isBegin">
+							<text>结束时间:</text><text>{{item.miaosha.endTime | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
+						<view class="miaoshaTime" v-if="!item.miaosha.isBegin">
+							<text>开始时间:</text><text>{{item.miaosha.beginTime | dateFormat('MM-dd hh:mm')}}</text>
+						</view>
 						<view class="">
 							<text class="price">{{ item.price }}</text>
 							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
@@ -144,6 +150,10 @@ page {
 			width: 344upx;
 			height: 344upx;
 		}
+	}
+	.miaoshaTime{
+		font-size: $font-sm;
+		margin: 8rpx 0;
 	}
 }
 .bottom {

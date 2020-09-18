@@ -162,6 +162,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 			//秒杀提前1天显示，这里不显示
 			delete goods.miaosha;
 		} else if (goods.miaosha.beginTime > time) {
+			goods.miaosha.isBegin = false;
 			//秒杀必须是有效的
 			if (!isPrecise) {
 				tags.push({
@@ -170,10 +171,12 @@ const updateGoodsTags = function(goods, isPrecise) {
 				});
 			}
 		} else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
+			goods.miaosha.isBegin = true;
+			goods.miaosha.isEnd = false;
 			if (!isPrecise) {
 				tags.push({
 					type: "warning",
-					text: "限时"
+					text: "抢购中"
 				});
 			}
 			//如果是多规格商品
@@ -189,7 +192,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 					if (isPrecise) {
 						sku.tags = [{
 							type: "warning",
-							text: "限时"
+							text: "抢购中"
 						}];
 					}
 					if (goods.price > sku.price) {
@@ -206,7 +209,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 				if (isPrecise) {
 					tags.push({
 						type: "warning",
-						text: "限时"
+						text: "抢购中"
 					});
 				}
 				goods.originPrice = goods.price;
@@ -215,6 +218,9 @@ const updateGoodsTags = function(goods, isPrecise) {
 				goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
 			}
 			//console.log("goods.miaosha",goods)
+		}else{
+			goods.miaosha.isBegin = true;
+			goods.miaosha.isEnd = true;
 		}
 	} else if (goods.yuding) {
 		if (goods.yuding.endTime > time) {
@@ -229,6 +235,13 @@ const updateGoodsTags = function(goods, isPrecise) {
 		} else {
 			delete goods.yuding;
 		}
+	}else if(goods.tuangou){
+		tags.push({
+			type: "info",
+			text: "团购"
+		});
+		goods.originPrice = goods.price;
+		goods.price = goods.tuangou.price;
 	}
 	if (goods.manjian) {}
 	goods["tags"] = tags;
