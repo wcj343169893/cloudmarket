@@ -11,7 +11,8 @@
 			</swiper>
 		</view>
 		<yudingPage v-if="yuding" :yuding="yuding" :price="price" :title="title" :subTitle="subTitle"></yudingPage>
-		<tuangouPage v-if="tuangou" :tuangou="tuangou" :price="originPrice" :title="title" :subTitle="subTitle" :monthlySale="monthlySale" :stock="stock" ></tuangouPage>
+		<tuangouPage v-else-if="tuangou" :tuangou="tuangou" :price="originPrice" :title="title" :subTitle="subTitle"
+		 :monthlySale="monthlySale" :stock="stock"></tuangouPage>
 		<block v-else>
 			<miaoshaPage v-if="hasMiaosha" :miaosha="miaosha"></miaoshaPage>
 			<view class="introduce-section">
@@ -683,7 +684,8 @@
 </script>
 
 <style lang="scss" scoped>
-	page {
+	page,
+	.container {
 		background: $page-color-base;
 		padding-bottom: 100upx;
 	}
