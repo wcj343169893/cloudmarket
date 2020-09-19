@@ -30,6 +30,21 @@ const getMiaosha = function(data) {
 		isShowLoading: false
 	})
 }
+/**
+ * 分页查询最近的团购商品
+ * @param {Object} data
+ */
+const getTuangou = function(data) {
+	return network({
+		url: "cloud-mall",
+		data: {
+			module: "product",
+			action: "tuangou",
+			data
+		},
+		isShowLoading: false
+	})
+}
 //根据上级id，查询二级分类
 const getCategoryByPid = function(data) {
 	return network({
@@ -58,8 +73,8 @@ const getAllCategories = function(data) {
 	return network({
 		url: "cloud-mall",
 		data: {
-			module:"category",
-			action:"main",
+			module: "category",
+			action: "main",
 			data
 		},
 		isShowLoading: true
@@ -79,8 +94,8 @@ const getGoodsInfo = function(data) {
 	return network({
 		url: "cloud-mall",
 		data: {
-			module:"product",
-			action:"detail",
+			module: "product",
+			action: "detail",
 			data
 		},
 	})
@@ -177,7 +192,7 @@ const settlement = function(data) {
 	})
 }
 //收货地址管理,新增，删除，修改，列表
-const address = function(data,action) {
+const address = function(data, action) {
 	return network({
 		url: "cloud-mall",
 		data: {
@@ -190,7 +205,7 @@ const address = function(data,action) {
 	})
 }
 //支付查询
-const payInfo = function(data,module) {
+const payInfo = function(data, module) {
 	return network({
 		url: "cloud-payment",
 		data: {
@@ -204,7 +219,7 @@ const payInfo = function(data,module) {
 	})
 }
 //获取支付参数
-const payment = function(data,module,action) {
+const payment = function(data, module, action) {
 	return network({
 		url: "cloud-payment",
 		data: {
@@ -236,8 +251,8 @@ const getGoodsVisites = function(data) {
 	return network({
 		url: "cloud-mall",
 		data: {
-			module:"product",
-			action:"visite",
+			module: "product",
+			action: "visite",
 			data
 		},
 		auth: true,
@@ -314,7 +329,7 @@ const sendSms = function(data) {
  * 修改自己的信息
  * @param {Object} data
  */
-const saveUserInfo = function(data,action) {
+const saveUserInfo = function(data, action) {
 	return network({
 		url: "cloud-user",
 		data: {
@@ -357,20 +372,20 @@ const searchGoodsByKey = function(data) {
 	return network({
 		url: "cloud-mall",
 		data: {
-			module:"product",
-			action:"search",
+			module: "product",
+			action: "search",
 			data
 		},
 		isShowLoading: true,
 		isShowMask: true
 	})
 }
-const getDocContent = function(data,action) {
+const getDocContent = function(data, action) {
 	return network({
 		url: "cloud-mall",
 		data: {
-			module:"document",
-			action:action,
+			module: "document",
+			action: action,
 			data
 		},
 	})
@@ -392,9 +407,11 @@ const micLogin = function(data, provider) {
 export {
 	getHomeFruitData,
 	getMiaosha,
+	getTuangou,
 	getCategoryByPid,
 	getShopsByCid,
-	getShopHome,getAllCategories,
+	getShopHome,
+	getAllCategories,
 	getGoodsInfo,
 	getGoodsByCid,
 	getCartList,

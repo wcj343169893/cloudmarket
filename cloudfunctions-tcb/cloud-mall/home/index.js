@@ -75,6 +75,7 @@ const models = {
 			_id: 0,
 			id: 1,
 			src: 1,
+			banner:1,
 			title: 1,
 			subTitle: 1,
 			miaosha: 1,
@@ -83,6 +84,7 @@ const models = {
 			skus: 1,
 			skuname: 1,
 			yuding: 1,
+			monthlySale:1,
 			tuangou:1,
 			stock: 1
 		};
@@ -109,7 +111,7 @@ const models = {
 			tuangou: cmd.exists(true),
 			"tuangou.beginTime": cmd.lt(time + 24 * 3600 * 1000),
 			"tuangou.endTime": cmd.gt(time),
-		}).field(goodsFields).orderBy("tuangou.beginTime", "asc").limit(3).get();
+		}).field(goodsFields).orderBy("tuangou.beginTime", "asc").limit(5).get();
 
 		dataOut["tuangou"] = tuangou.data;
 		//查询首页的分享语

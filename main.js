@@ -64,6 +64,9 @@ Vue.filter('toFixed', function(value, num) {
 		//默认2位小数
 		num=2;
 	}
+	if(!value){
+		return 0;
+	}
 	if(typeof(value)=="number"){
 		return value.toFixed(num);
 	}

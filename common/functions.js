@@ -240,8 +240,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 			type: "info",
 			text: "团购"
 		});
-		goods.originPrice = goods.price;
-		goods.price = goods.tuangou.price;
+		if(goods.price >goods.tuangou.price ){
+			goods.originPrice = goods.price;
+			goods.price = goods.tuangou.price;
+		}
 	}
 	if (goods.manjian) {}
 	goods["tags"] = tags;

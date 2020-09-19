@@ -23,9 +23,10 @@ const network = (options)=> {
 				if(uni_id_token_expires > 0){
 					store.commit("checkLogout")
 				}
+				console.log("未登录",uni_id_token_expires)
 				reject({
 					code: 401,
-					message: "未登录"+uni_id_token_expires
+					message: "未登录"
 				});
 				return;
 			}

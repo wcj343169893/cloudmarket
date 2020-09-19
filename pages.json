@@ -447,6 +447,10 @@
 				"navigationBarTitleText": "输码验证"
 			}
         }
+        ,{
+            "path" : "pages/index/tuangou",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

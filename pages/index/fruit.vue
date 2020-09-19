@@ -71,15 +71,17 @@
 						<view class="tags">
 							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
 						</view>
-						<view class="miaoshaTime" v-if="item.miaosha.isBegin">
-							<text>结束：</text><text>{{item.miaosha.endTime | dateFormat('MM-dd hh:mm')}}</text>
-						</view>
-						<view class="miaoshaTime basc" v-if="!item.miaosha.isBegin">
-							<text>开始：</text><text>{{item.miaosha.beginTime | dateFormat('MM-dd hh:mm')}}</text>
-						</view>
-						<view class="">
-							<text class="price">{{ item.price }}</text>
-							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+						<view class="price-area">
+							<view class="pa">
+								<view class="miaoshaTime" v-if="item.miaosha.isBegin">
+									<text>结束：</text><text>{{item.miaosha.endTime | dateFormat('MM-dd hh:mm')}}</text>
+								</view>
+								<view class="miaoshaTime basc" v-if="!item.miaosha.isBegin">
+									<text>开始：</text><text>{{item.miaosha.beginTime | dateFormat('MM-dd hh:mm')}}</text>
+								</view>
+								<text class="price">{{ item.price }}</text>
+								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+							</view>
 							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
 						</view>
 					</view>
@@ -87,42 +89,12 @@
 			</view>
 		</block>
 		<block v-if="tuangouList.length > 0">
-			<view class="f-header m-t">
+			<view class="f-header m-t" @click="navTo('/pages/index/tuangou')">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">社区团购</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="seckill-section2">
-				<view v-for="(item,index) in tuangouList" :key="index" @click="navToGoodsPage(item)" class="sec2 sec3">
-					<view class="image-content">
-						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
-					</view>
-					<view class="content">
-						<view class="title clamp">
-							<text>{{ item.title }}</text>
-						</view>
-						<view class="miaoshaTime">
-							<text>预售：</text><text>{{item.tuangou.endTime | dateFormat('MM-dd hh:mm')}}</text>
-							<text class="m-lr">~</text>
-							<text>{{item.tuangou.beginTime | dateFormat('MM-dd hh:mm')}}</text>
-						</view>
-						<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
-							<text>{{ item.subTitle }}</text>
-						</view>
-						<view class="tags">
-							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
-						</view>
-						<view class="">
-							<text class="price">{{ item.price }}</text>
-							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
-							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
-						</view>
-						<view class="miaoshaTime basc">
-							<text>提货：</text><text>{{item.tuangou.pickup | dateFormat('MM-dd hh:mm')}}</text>
-						</view>
-					</view>
-				</view>
-			</view>
+			<tuangouPage :tuangouList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		</block>
 		<block v-if="newestList.length > 0">
 			<view class="f-header m-t">
@@ -139,7 +111,7 @@
 							<view class="title clamp">
 								<text>{{ item.title }}</text>
 							</view>
-							<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
+							<view class="sub-title clamp" v-if="item.subTitle && item.subTitle != ''">
 								<text>{{ item.subTitle }}</text>
 							</view>
 							<view class="weui-flex">
@@ -205,6 +177,7 @@
 		mapMutations
 	} from 'vuex';
 	import pageHeader from './components/page-header.vue';
+	import tuangouPage from './components/tuan.vue';
 	import {
 		getHomeFruitData,
 		editCart,
@@ -222,7 +195,8 @@
 
 	export default {
 		components: {
-			pageHeader
+			pageHeader,
+			tuangouPage
 		},
 		data() {
 			return {
@@ -445,6 +419,7 @@
 				});
 			},
 			navToGoodsPage(item) {
+				console.log("navToGoodsPage main")
 				//navToGoodsPage(item.id);
 				navToGoodsItemPage(item);
 			},
@@ -504,7 +479,7 @@
 				}).then(
 					res => {
 						console.log(res);
-						this.$api.msg('加入成功', 2000, true, 'success');
+						this.$api.success('加入成功');
 						incrCartNumber(1);
 					},
 					err => {
@@ -696,7 +671,7 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	/* #ifdef MP */
 	page {
 		.carousel-section {
@@ -856,6 +831,10 @@
 	.seckill-section2 {
 		padding: 20rpx 20rpx 0;
 
+		.title {
+			font-size: $font-lg;
+		}
+
 		.sec2 {
 			margin-bottom: 20rpx;
 			display: flex;
@@ -866,24 +845,24 @@
 		}
 
 		.content {
-			padding: 20upx 20rpx 0;
+			padding: 20upx 20rpx 8rpx;
 			overflow: hidden;
 			flex: 1;
 		}
 
 		.m-lr {
-			margin: 0 12rpx;
+			margin: 0 8rpx;
+		}
+
+		.warning {
+			color: $font-color-warning;
 		}
 
 		.miaoshaTime {
 			font-size: $font-sm;
-			margin: 8rpx 0;
-			color: $font-color-warning;
+			margin: 4rpx 0;
+			color: $base-color;
 			font-weight: 500;
-
-			&.basc {
-				color: $base-color;
-			}
 		}
 
 		$width: 220rpx;
@@ -944,6 +923,11 @@
 
 			.content {
 				padding: 0 20upx;
+			}
+
+			.image-content {
+				width: $width;
+				height: $width;
 			}
 
 			image {
@@ -1010,13 +994,20 @@
 				padding: 0 16upx;
 			}
 
+			$width :344rpx;
+
+			.image-content {
+				width: $width;
+				height: $width;
+			}
+
 			image {
-				width: 344upx;
-				height: 344upx;
+				width: $width;
+				height: $width;
 			}
 
 			.title {
-				margin-bottom: 4rpx;
+				margin: 8rpx 0;
 			}
 		}
 	}
@@ -1045,7 +1036,7 @@
 
 	.sub-title {
 		font-size: $font-sm;
-		color: $font-color-disabled;
+		color: $font-color-base;
 	}
 
 	.skuDialogPanel {
@@ -1115,5 +1106,14 @@
 	.uni-image-close {
 		margin-top: 20upx;
 		text-align: center;
+	}
+
+	.price-area {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.pa{
+			flex: 1;
+		}
 	}
 </style>

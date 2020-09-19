@@ -88,6 +88,35 @@ const models = {
 		}).skip((page - 1) * limit).limit(limit).orderBy("miaosha.beginTime", "desc").get();
 		return result.data;
 	},
+	async tuangou(data){
+		const {
+			page,
+			limit,
+			shopid
+		} = data;
+		let time = new Date().getTime();
+		//正在秒杀商品5条,必须是有库存的秒杀
+		let result = await goodsCollection.where({
+			shopid: shopid,
+			isSold: 1,
+			tuangou: cmd.exists(true),
+			"tuangou.beginTime": cmd.lt(time + 24 * 3600 * 1000),
+			"tuangou.endTime": cmd.gt(time),
+		}).field({
+			_id: 0,
+			id: 1,
+			src: 1,
+			title: 1,
+			subTitle: 1,
+			isSold: 1,
+			tuangou: 1,
+			banner:1,
+			monthlySale:1,
+			price: 1,
+			stock: 1
+		}).skip((page - 1) * limit).limit(limit).orderBy("monthlySale:1,", "asc").get();
+		return result.data;
+	},
 	//按关键词搜索商品
 	async search(data) {
 		const {

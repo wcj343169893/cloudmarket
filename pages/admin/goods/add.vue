@@ -5,7 +5,7 @@
 			<input type="text" class="cell-content" maxlength="40" v-model="title" placeholder="请输入商品名称" />
 		</view>
 		<view class="mix-list-cell b-b">
-			<text class="cell-tit clamp">副  标  题</text>
+			<text class="cell-tit clamp">副 标 题</text>
 			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
@@ -135,7 +135,7 @@
 			<text class="cell-tit clamp">仅支持自提</text>
 			<view class="cell-content content-right">
 				<checkbox-group name="onlySelfTake" @change="changeOnlySelfTake">
-					<checkbox value="1" :checked="onlySelfTake==1"/>
+					<checkbox value="1" :checked="onlySelfTake==1" />
 				</checkbox-group>
 			</view>
 		</label>
@@ -164,7 +164,18 @@
 				</view>
 			</scroll-view>
 		</view>
-		
+		<view class="mix-list-cell" @click="uploadBanner">
+			<text class="cell-tit clamp">横图</text>
+			<view class="cell-tip">尺寸710*350</view>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="imgs b-b banner">
+			<view class="h-list" v-if="bannerPreview && bannerPreview != ''">
+				<view class="h-list-image">
+					<image :src="bannerPreview" mode="aspectFill"></image>
+				</view>
+			</view>
+		</view>
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
@@ -315,6 +326,8 @@
 				price: '',
 				src: '',
 				srcPreview: '',
+				banner:'',
+				bannerPreview: '',
 				stock: '',
 				title: '',
 				subTitle: '',
@@ -329,7 +342,7 @@
 				tuangou: {},
 				dateKey: "",
 				dateString: "",
-				onlySelfTake:"0"
+				onlySelfTake: "0"
 			};
 		},
 		computed: {
@@ -632,6 +645,19 @@
 					}
 				);
 			},
+			//banner横图
+			uploadBanner() {
+				uploadFiles(
+					'goods_banner',
+					1,
+					srcs => {
+						this.bannerPreview = srcs[0];
+					},
+					srcs => {
+						this.banner = srcs[0];
+					}
+				);
+			},
 			//多图
 			uploadDescImgs() {
 				uploadFiles(
@@ -663,6 +689,7 @@
 					description: this.description,
 					id: this.id,
 					imgs: this.imgs,
+					banner:this.banner,
 					upc: this.upc,
 					originPrice: this.originPrice,
 					price: this.price,
@@ -671,8 +698,8 @@
 					title: this.title,
 					subTitle: this.subTitle,
 					share: this.share,
-					saleType:this.saleType,
-					onlySelfTake:this.onlySelfTake,//是否仅支持自提
+					saleType: this.saleType,
+					onlySelfTake: this.onlySelfTake, //是否仅支持自提
 					deliveryTags: this.deliveryTags
 				};
 				//多规格
@@ -725,7 +752,7 @@
 					//强转价格类型
 					info.yuding.price = +info.yuding.price;
 					info.yuding.deduction = +info.yuding.deduction;
-				}else if(this.saleType == "tuangou"){
+				} else if (this.saleType == "tuangou") {
 					info.tuangou = this.tuangou;
 					fields = {
 						price: '折扣价',
@@ -1042,14 +1069,22 @@
 		white-space: nowrap;
 		padding: 10upx 30upx 0;
 
-		.h-list-image {
-			display: inline-block;
-			margin-right: 20upx;
+	}
+	.h-list-image {
+		display: inline-block;
+		margin-right: 20upx;
 
-			image {
-				width: 160upx;
-				height: 160upx;
-				border-radius: 4%;
+		image {
+			width: 160upx;
+			height: 160upx;
+			border-radius: 4%;
+		}
+	}
+	.banner{
+		.h-list-image {
+			image{
+				width: 690rpx;
+				height: 340rpx;
 			}
 		}
 	}

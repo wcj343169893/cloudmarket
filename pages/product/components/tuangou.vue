@@ -26,9 +26,13 @@
 				<text>{{ subTitle }}</text>
 			</view>
 			<view class="info-box">
-				<text class="name">已售 {{monthlySale}} {{tuangou.unit}}</text>
-				<text>/</text>
-				<text>还剩 {{stock}} {{tuangou.unit}}</text>
+				<text class="name">已售</text>
+				<text class="m-lr warning">{{monthlySale}}</text>
+				<text>{{tuangou.unit}}</text>
+				<text class="m-lr">/</text>
+				<text>还剩</text>
+				<text class="m-lr">{{stock}}</text>
+				<text>{{tuangou.unit}}</text>
 			</view>
 			<view class="steps">
 				<view class="step step1">
@@ -84,23 +88,13 @@
 				default: ""
 			}
 		},
-		computed: {
-			//定金
-			yudingPrice() {
-				return (this.price - this.yuding.deduction + this.yuding.price).toFixed(2);
-			},
-			//尾款
-			yudingFinalPay() {
-				return (this.price - this.yuding.deduction).toFixed(2);
-			}
-		},
 		methods: {
 
 		}
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.yuding-section {
 		$base-c: #e35650;
 		display: flex;
@@ -114,7 +108,8 @@
 			color: #fff;
 			font-size: 1.6em;
 		}
-		.del{
+
+		.del {
 			font-size: 1.2em;
 		}
 
@@ -139,9 +134,11 @@
 			background: #fcefea;
 			padding: 12upx 0;
 			color: $base-c;
-			.time{
+
+			.time {
 				margin-top: 8rpx;
 			}
+
 			.ti {
 				background: $base-c;
 				color: #fff;
@@ -180,10 +177,6 @@
 			align-items: baseline;
 			font-size: $font-sm;
 			margin: 8upx 0;
-
-			.name {
-				color: $font-color-warning;
-			}
 		}
 
 		.price-box {
@@ -280,5 +273,13 @@
 		.time {
 			font-size: $font-ssm;
 		}
+	}
+
+	.m-lr {
+		margin: 0 8rpx;
+	}
+
+	.warning {
+		color: $font-color-warning;
 	}
 </style>

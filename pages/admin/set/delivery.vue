@@ -18,10 +18,13 @@
 		<view class="mix-list-cell">
 			<text class="cell-tit clamp">每日预定时段</text>
 		</view>
+		<mix-list-select title="每日预定时段" :options="deliverySteps" :defaultOption="timeStep" @eventClick="changeDeliveryStep"></mix-list-select>
 		<view class="deliveryPeriods">
 			<view class="mix-list-cell b-b" v-for="(item,index) in deliveryPeriodHour" :key="index">
-				<input type="number" class="cell-content" v-model="item.begin" placeholder="开始" />
-				<input type="number" class="cell-content" v-model="item.end" placeholder="结束" />
+				<text class="cell-content" v-if="item.begin" @click="selectDatePicker('begin',item.begin,index)">{{item.begin}}</text>
+				<text class="cell-content" v-else @click="selectDatePicker('begin','',index)">开始时间</text>
+				<text class="cell-content" v-if="item.end" @click="selectDatePicker('end',item.end,index)">{{item.end}}</text>
+				<text class="cell-content" v-else @click="selectDatePicker('end','',index)">结束时间</text>
 				<text class="yticon icon-jia2" v-if="deliveryPeriodHour.length == index + 1" @click="add(index)"></text>
 				<text class="yticon icon-shanchu4" v-else @click="del(index)"></text>
 			</view>
@@ -29,6 +32,8 @@
 		<view class="specsTitlesBtn">
 			<button class="action-btn" @click="btnSave()">保存</button>
 		</view>
+		<bory-dateTimePicker ref='date-time' :datestring="dateString" :indicatorStyle='indicatorStyle' type='hour-minute'
+		 @change='dateTimeChange'></bory-dateTimePicker>
 	</view>
 </template>
 <script>
@@ -49,7 +54,19 @@
 				perMoney: 1,
 				time: 30,
 				isSubmit: false,
-				shopInfo: {}
+				shopInfo: {},
+				dateString: "",
+				dateKey: "",
+				dateIndex: "",
+				indicatorStyle: {
+					background: 'rgba(255,0,0,.2)',
+					height: '40px',
+				},
+				timeStep: 1800,
+				deliverySteps: {
+					"1800": "半小时",
+					"3600": "1小时",
+				}
 			}
 		},
 		onLoad() {
@@ -64,10 +81,10 @@
 				//处理时间
 				this.deliveryPeriod.map(e => {
 					this.deliveryPeriodHour.push({
-						begin: e.begin / 3600,
-						end: e.end / 3600
+						begin: this.getTimeStr(e.begin),
+						end: this.getTimeStr(e.end)
 					})
-				})
+				});
 			},
 			changeMinPrice(e) {
 				this.minPrice = +e;
@@ -90,10 +107,23 @@
 			changeTime(e) {
 				this.time = +e;
 			},
+			changeDeliveryStep(e) {
+				this.timeStep = +e;
+			},
 			add(index) {
+				let last;
+				//默认增加半小时
+				if (this.deliveryPeriodHour.length == 0) {
+					last = {
+						end: "08:00"
+					};
+				} else {
+					last = this.deliveryPeriodHour[this.deliveryPeriodHour.length - 1];
+				}
+				let end = this.formartTime(last.end) + this.timeStep;
 				this.deliveryPeriodHour.push({
-					begin: "",
-					end: ""
+					begin: last.end,
+					end: this.getTimeStr(end)
 				})
 			},
 			del(index) {
@@ -111,20 +141,20 @@
 					minDistance: this.minDistance,
 					minPrice: this.minPrice,
 					money: this.money,
+					timeStep:this.timeStep,
 					perMoney: this.perMoney,
 					time: this.time
 				};
-				//小时排序，按begin
-				this.deliveryPeriodHour.sort((a,b)=>{
-					return a.begin - b.begin;
-				});
 				//尽量保证时段不重叠
 				this.deliveryPeriodHour.map(e => {
 					deliveryPeriod.push({
-						begin: e.begin * 3600,
-						end: e.end * 3600
+						begin: this.formartTime(e.begin),
+						end: this.formartTime(e.end)
 					});
-				})
+				});
+				this.deliveryPeriod.sort((a, b) => {
+					return a.begin - b.begin;
+				});
 				data["deliveryPeriod"] = deliveryPeriod;
 				this.isSubmit = true;
 				shopAdmin("save", {
@@ -144,7 +174,34 @@
 					this.isSubmit = false;
 					this.$api.msg("修改失败");
 				})
-			}
+			},
+			getTimeStr(time) {
+				let hour = Math.floor(time / 3600);
+				let minute = (time - hour * 3600) / 60;
+
+				if (hour < 10) {
+					hour = "0" + hour;
+				}
+				if (minute < 10) {
+					minute = "0" + minute;
+				}
+				return hour + ":" + minute
+			},
+			formartTime(str) {
+				let arr = str.split(":");
+				return arr[0] * 3600 + arr[1] * 60;
+			},
+			selectDatePicker(key, val, index) {
+				console.log(val)
+				this.dateKey = key;
+				this.dateString = val;
+				this.dateIndex = index;
+				this.$refs['date-time'].show();
+			},
+			dateTimeChange(e) {
+				console.log("dateTimeChange", e);
+				this.deliveryPeriodHour[this.dateIndex][this.dateKey] = e;
+			},
 		}
 	}
 </script>

@@ -61,7 +61,7 @@ export default {
 			default: {}
 		},
 		defaultOption: {
-			type: String,
+			type: [String,Number],
 			default: ''
 		},
 		defaultOptions: {
