@@ -687,9 +687,8 @@
 			}
 		}
 	}
-
 	/* #endif */
-	page {
+	page ,.container{
 		background: #f5f5f5;
 	}
 
