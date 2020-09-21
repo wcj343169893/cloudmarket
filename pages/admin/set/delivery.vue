@@ -110,6 +110,9 @@
 			changeDeliveryStep(e) {
 				this.timeStep = +e;
 			},
+			changeDeliveryDay(e) {
+				this.deliveryDay = +e;
+			},
 			add(index) {
 				let last;
 				//默认增加半小时
