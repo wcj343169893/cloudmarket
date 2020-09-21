@@ -40,7 +40,7 @@
 
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">{{ userInfo.balance }}</text>
+					<text class="num">{{ userInfo.balance | toFixed }}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">

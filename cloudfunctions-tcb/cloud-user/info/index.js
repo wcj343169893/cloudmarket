@@ -10,7 +10,7 @@ const models = {
 		let res = await getUserInfo(data.uid, [
 			"nickname", "my_invite_code",
 			"gender", "status", "mobile", "email",
-			"mobile_confirmed",
+			"mobile_confirmed","balance",
 			"email_confirmed", "avatar", "comment", "birthday"
 		]);
 		if (res.code > 0) {

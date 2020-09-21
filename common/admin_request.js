@@ -51,6 +51,9 @@ const adsAdmin = function(action,data) {
 const docsAdmin = function(action,data) {
 	return adminNetwork("docs",action,data,false);
 }
+const usersAdmin = function(action,data) {
+	return adminNetwork("users",action,data,false);
+}
 
 const adminNetwork = (module,action,data,isShowLoading)=>{
 	isShowLoading = isShowLoading!= undefined ?isShowLoading:true;
@@ -79,5 +82,6 @@ export {
 	goodsAdmin,
 	categoryAdmin,
 	adsAdmin,
-	docsAdmin
+	docsAdmin,
+	usersAdmin
 }

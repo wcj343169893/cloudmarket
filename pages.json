@@ -443,6 +443,24 @@
             "path" : "pages/index/tuangou",
             "style" : {}
         }
+        ,{
+            "path" : "pages/admin/user/list",
+            "style": {
+            	"navigationBarTitleText": "用户管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
