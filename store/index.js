@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import {
-	getUserInfo
+	getUserInfo,getCartList
 } from '@/common/request.js';
 const baseUserInfo = {
 	nickname: "游客",
@@ -22,13 +22,14 @@ const store = new Vuex.Store({
 		shopId: 123457, //分站店铺id，根据收货地址动态设置
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
+		cartCount: 0, //购物车总数
 		location: {
 			id: false, //收货地址id
 			latitude: 0, //纬度
 			longitude: 0, //经度
 			name: "" //地址名称
 		},
-		inviteCode:"",
+		inviteCode: "",
 		userInfo: baseUserInfo,
 	},
 	mutations: {
@@ -53,6 +54,7 @@ const store = new Vuex.Store({
 			state.hasLogin = true;
 			//更新用户信息
 			this.dispatch('getUserInfo');
+			this.dispatch('getCartCount');
 			//缓存用户登陆状态
 			/* uni.setStorage({
 				key: 'userInfo',
@@ -60,26 +62,27 @@ const store = new Vuex.Store({
 			}) */
 			//console.log(state.userInfo);
 		},
-		checkStoreLogin(state,provider){
+		checkStoreLogin(state, provider) {
 			console.log("store checkLogin")
 			//设置登录状态
 			state.hasLogin = true;
 			//更新用户信息
 			this.dispatch('getUserInfo');
+			this.dispatch('getCartCount');
 		},
-		checkLogout(state){
+		checkLogout(state) {
 			console.log("checkLogout")
 			state.hasLogin = false;
 			state.userInfo = baseUserInfo;
-			
+
 			uni.removeStorage({
-				key:"uni_id_token"
+				key: "uni_id_token"
 			});
 			uni.removeStorage({
-				key:"uniIdToken"
+				key: "uniIdToken"
 			});
 			uni.removeStorage({
-				key:"uni_id_token_expires"
+				key: "uni_id_token_expires"
 			});
 		},
 		logout(state) {
@@ -97,14 +100,15 @@ const store = new Vuex.Store({
 				key: 'userLocationInfo'
 			});
 			uni.removeStorage({
-				key:"uni_id_token"
+				key: "uni_id_token"
 			});
 			uni.removeStorage({
-				key:"uniIdToken"
+				key: "uniIdToken"
 			});
 			uni.removeStorage({
-				key:"uni_id_token_expires"
+				key: "uni_id_token_expires"
 			});
+			this.dispatch('getCartCount');
 		},
 		loginPage() {
 			uni.navigateTo({
@@ -141,8 +145,14 @@ const store = new Vuex.Store({
 		 * @param {Object} state
 		 * @param {Object} code
 		 */
-		setInvite(state,code){
+		setInvite(state, code) {
 			state.inviteCode = code
+		},
+		updateCartNumber(state, number) {
+			state.cartCount = number;
+		},
+		incrCartNumber(state,step){
+			state.cartCount+=step;
 		}
 	},
 	actions: {
@@ -160,9 +170,31 @@ const store = new Vuex.Store({
 					...res
 				});
 				state.userInfo = info;
+
+				uni.$emit('refreshCart'); //全局更新购物车
 			}, err => {
-				console.log("获取信息失败",err)
+				console.log("获取信息失败", err)
 			});
+		},
+		//更新购物车数量
+		async getCartCount({state, commit}){
+			let count = 0;
+			if(state.hasLogin){
+				console.log("store getCartList")
+				try {
+					const res =await getCartList({
+						shopid: this.shopId,
+						opt: "total"
+					})
+					count = res;
+				}catch (err){
+					console.error('更新购物车数量 => ', err);
+				}
+			}
+			commit('setStateAttr', {
+				key: 'cartCount',
+				val: count
+			})
 		},
 	}
 })

@@ -49,8 +49,13 @@ exports.main = async (event, context) => {
 		module,
 		action,
 		data,
-		uniIdToken
+		uniIdToken,
+		Type
 	} = event;
+	if(Type=="Timer"){
+		console.log(event);
+		return event;
+	}
 	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(action))) {
 		//token检查，必须登录
 		let payload = await uniID.checkToken(uniIdToken);

@@ -50,48 +50,18 @@
 				<text>{{ item.name }}</text>
 			</view>
 		</view>
-		<block v-if="miaoshaList.length > 0">
+		<block v-if="miaoshaList && miaoshaList.length > 0">
 			<view class="f-header m-t" @click="navToSecKillGoods">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">限时抢购</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="seckill-section2">
-				<view v-for="(item,index) in miaoshaList" :key="index" @click="navToGoodsPage(item)" class="sec2">
-					<view class="image-content">
-						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
-					</view>
-					<view class="content">
-						<view class="title clamp">
-							<text>{{ item.title }}</text>
-						</view>
-						<view class="sub-title" v-if="item.subTitle && item.subTitle != ''">
-							<text>{{ item.subTitle }}</text>
-						</view>
-						<view class="tags">
-							<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
-						</view>
-						<view class="price-area">
-							<view class="pa">
-								<view class="miaoshaTime" v-if="item.miaosha.isBegin">
-									<text>结束：</text><text>{{item.miaosha.endTime | dateFormat('MM-dd hh:mm')}}</text>
-								</view>
-								<view class="miaoshaTime basc" v-if="!item.miaosha.isBegin">
-									<text>开始：</text><text>{{item.miaosha.beginTime | dateFormat('MM-dd hh:mm')}}</text>
-								</view>
-								<text class="price">{{ item.price }}</text>
-								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
-							</view>
-							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
-						</view>
-					</view>
-				</view>
-			</view>
+			<miaoshaPage :miaoshaList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
 		</block>
-		<block v-if="tuangouList.length > 0">
+		<block v-if="tuangouList && tuangouList.length > 0">
 			<view class="f-header m-t" @click="navTo('/pages/index/tuangou')">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">社区团购</text></view>
+				<view class="tit-box"><text class="tit">限时团购</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<tuangouPage :tuangouList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
@@ -178,6 +148,8 @@
 	} from 'vuex';
 	import pageHeader from './components/page-header.vue';
 	import tuangouPage from './components/tuan.vue';
+	import miaoshaPage from './components/miaosha.vue';
+	import tabbarMixin from './mixin/tabbar' 
 	import {
 		getHomeFruitData,
 		editCart,
@@ -186,17 +158,17 @@
 	import {
 		navToGoodsItemPage,
 		updateGoodsTags,
-		incrCartNumber,
-		updateCartNumber,
 		navToDocPageByType,
 		navToDocWebPage,
 		showLoginDialog
 	} from '@/common/functions.js';
 
 	export default {
+		mixins: [tabbarMixin], 
 		components: {
 			pageHeader,
-			tuangouPage
+			tuangouPage,
+			miaoshaPage
 		},
 		data() {
 			return {
@@ -223,18 +195,6 @@
 			...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location'])
 		},
 		watch: {
-			/* shopId() {
-				console.log('附近店铺id有变动');
-				setTimeout(() => {
-					this.loadData();
-				}, 100);
-			}, */
-			hasLogin() {
-				console.log('watch 登录状态改变,刷新当前页面');
-				setTimeout(() => {
-					this.getCartNumber();
-				}, 100);
-			},
 			location() {
 				console.log('watch location');
 				console.log(this.location);
@@ -366,23 +326,7 @@
 						this.getDefaultSearchWord();
 					}
 					this.share = res.share;
-					this.$nextTick(() => {
-						this.getCartNumber();
-					})
 				});
-			},
-			//异步查询购物车总数量，需要过滤库存不足的商品
-			getCartNumber() {
-				if (this.hasLogin) {
-					getCartList({
-						shopid: this.shopId,
-						opt: "total"
-					}).then(res => {
-						updateCartNumber(res);
-					}, err => {
-						updateCartNumber(0);
-					})
-				}
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
@@ -425,10 +369,10 @@
 			},
 			navToSecKillGoods() {
 				//秒杀商品列表,把当前页面数据传过去
-				uni.setStorage({
+				/* uni.setStorage({
 					key: 'secKillGoodsList',
 					data: this.miaoshaList
-				});
+				}); */
 				uni.navigateTo({
 					url: '/pages/index/seckillGoods'
 				});
@@ -480,7 +424,7 @@
 					res => {
 						console.log(res);
 						this.$api.success('加入成功');
-						incrCartNumber(1);
+						this.incrCartNumber(1);
 					},
 					err => {
 						this.$api.msg(err.message);
@@ -827,71 +771,7 @@
 		}
 	}
 
-	.seckill-section2 {
-		padding: 20rpx 20rpx 0;
-
-		.title {
-			font-size: $font-lg;
-		}
-
-		.sec2 {
-			margin-bottom: 20rpx;
-			display: flex;
-			font-size: $font-sm + 2upx;
-			background: #fff;
-			border-radius: 20rpx;
-			overflow: hidden;
-		}
-
-		.content {
-			padding: 20upx 20rpx 8rpx;
-			overflow: hidden;
-			flex: 1;
-		}
-
-		.m-lr {
-			margin: 0 8rpx;
-		}
-
-		.warning {
-			color: $font-color-warning;
-		}
-
-		.miaoshaTime {
-			font-size: $font-sm;
-			margin: 4rpx 0;
-			color: $base-color;
-			font-weight: 500;
-		}
-
-		$width: 220rpx;
-
-		.image-content {
-			width: $width;
-			height: $width;
-		}
-
-		image {
-			width: $width;
-			height: $width;
-		}
-
-		.sec3 {
-			flex-direction: column;
-			$width: 710rpx;
-			$height: 350rpx;
-
-			.image-content {
-				width: $width;
-				height: $height;
-			}
-
-			image {
-				width: $width;
-				height: $height;
-			}
-		}
-	}
+	
 
 	/* 秒杀专区 */
 	.seckill-section {

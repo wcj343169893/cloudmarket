@@ -97,7 +97,7 @@
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom" :class="{ show: canAddCart }">
 			<view class="options">
-				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
+				<navigator url="/pages/index/cart" open-type="switchTab" class="p-b-btn">
 					<text class="yticon icon-gouwuche">
 						<!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
 				</navigator>
@@ -144,7 +144,6 @@
 		navToCreateOrder,
 		updateGoodsTags,
 		miaoshaCountDown,
-		incrCartNumber,
 		getCartSumNumber,
 		clearCountDownTimer
 	} from '@/common/functions.js';
@@ -245,6 +244,10 @@
 			console.log('product onUnload');
 			//关闭秒杀定时器
 			clearCountDownTimer();
+			//清除商品缓存
+			uni.removeStorage({
+				key:"goodsInfo"
+			})
 		},
 		onShow() {
 			this.isSubmit = false;
@@ -296,6 +299,7 @@
 					item => {
 						this.miaosha = {};
 						this.yuding = false;
+						this.tuangou = false;
 						this.buildGoodsInfo(item);
 						this.canAddCart = true;
 						this.calcAnchor();
@@ -308,7 +312,7 @@
 				);
 
 				//获得购物车总数量
-				this.cartSumCount = getCartSumNumber();
+				//this.cartSumCount = getCartSumNumber();
 			},
 			buildGoodsInfo(item) {
 				console.log(item);
@@ -577,6 +581,9 @@
 						//这里算不准
 						//this.cartSumCount = incrCartNumber(1);
 						//this.cartSumCount = incrCartNumber(this.amount);
+						//请求网络，获得购物车数量
+						this.$store.dispatch('getCartCount');
+						// uni.$emit("refreshCart");
 					},
 					err => {
 						this.$api.msg(err.message || '加入失败');

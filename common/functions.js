@@ -129,6 +129,7 @@ const getCartSumNumber = function() {
  * @param {Object} number
  */
 const incrCartNumber = function(number) {
+	console.log("incrCartNumber",number)
 	let data = getCartSumNumber();
 	data += number;
 	updateCartNumber(data);
@@ -226,7 +227,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 		if (goods.yuding.endTime > time) {
 			if (!isPrecise) {
 				//更新商品价格
-				goods.price = (goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2);
+				goods.price = parseFloat((goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2));
 			}
 			tags.push({
 				type: "info",
@@ -331,7 +332,7 @@ const miaoshaCountDown = function(item, endTime, callback) {
 	if (countDownTimerMap[timerId]) {
 		clearInterval(countDownTimerMap[timerId]);
 	}
-	console.log(timerId)
+	console.log("timerId",timerId)
 	let tick = function() {
 		let n1 = lastTime - startTime;
 		//这里判断很关键，如果写1，在1秒之内，会重复调用

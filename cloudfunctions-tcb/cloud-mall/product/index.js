@@ -131,6 +131,7 @@ const models = {
 		}
 		let result = await goodsCollection.where({
 			shopid: shopid,
+			isSold: 1,
 			title: new RegExp(key)
 		}).field({
 			_id: 0,
@@ -152,7 +153,8 @@ const models = {
 		} = data;
 		//商品浏览记录，每人每件商品只存在一条
 		let result = await goodsVisiteCollection.where({
-			uid: uid
+			uid: uid,
+			isSold: 1,
 		}).field({
 			_id: 0,
 			title: 1,

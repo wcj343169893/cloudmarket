@@ -142,7 +142,7 @@ export default {
 				state: this.state,
 				page: this.page,
 				limit: this.limit
-			}).then(
+			},false).then(
 				res => {
 					let time = new Date().getTime();
 					//处理秒杀开始，结束时间

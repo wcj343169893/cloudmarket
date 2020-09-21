@@ -115,6 +115,7 @@
 		mapMutations
 	} from 'vuex';
 	import pageHeader from './components/page-header.vue'
+	import tabbarMixin from './mixin/tabbar' 
 	import {
 		getAllCategories,
 		editCart,
@@ -122,13 +123,13 @@
 		getCartList
 	} from '@/common/request.js';
 	import {
-		updateCartNumber,
 		navToGoodsItemPage,
 		navToLoginPage,
 		showLoginDialog,
 		updateGoodsTags
 	} from '@/common/functions.js';
 	export default {
+		mixins: [tabbarMixin], 
 		components: {
 			pageHeader
 		},
@@ -273,7 +274,7 @@
 								});
 							}
 							//更新购物车总数量
-							updateCartNumber(cartSumNunber);
+							this.updateCartNumber(cartSumNunber);
 							//需要按分类来分组联动，这里的商品,优先二级
 							if (res.goods.length > 0) {
 								res.goods.map((ele, index) => {
@@ -530,7 +531,7 @@
 						gnumber += this.skuCart[i][b];
 					}
 				}
-				updateCartNumber(gnumber);
+				this.updateCartNumber(gnumber);
 			},
 			/**打开sku选择弹窗**/
 			openSkus(item, pid) {

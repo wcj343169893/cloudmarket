@@ -12,16 +12,17 @@
 		editCart
 	} from '@/common/request.js';
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex';
 	import {
 		navToGoodsItemPage,
 		updateGoodsTags,
-		incrCartNumber,
-		updateCartNumber,
 		showLoginDialog
 	} from '@/common/functions.js';
+	import tabbarMixin from './mixin/tabbar' 
 	export default {
+		mixins: [tabbarMixin], 
 		components: {
 			tuangouPage
 		},
@@ -90,6 +91,7 @@
 					amount: number
 				}).then(res => {
 					console.log(res);
+					this.incrCartNumber(1);
 					this.$api.msg("加入成功", 2000, true, "success")
 				}, err => {
 					this.$api.msg(err.message);

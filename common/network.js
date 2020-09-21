@@ -3,7 +3,6 @@ import {
 	client,
 	auth
 } from './cloud.js';
-import store from '../store';
 /**
  * @param {Object} options
  * 网络请求 模块
@@ -21,7 +20,6 @@ const network = (options)=> {
 			if (uni_id_token_expires < new Date().getTime()) {
 				//没有合理的登录信息，对于必须验证登录的接口，直接返回404
 				if(uni_id_token_expires > 0){
-					store.commit("checkLogout")
 				}
 				console.log("未登录",uni_id_token_expires)
 				reject({
@@ -51,7 +49,6 @@ const network = (options)=> {
 					reject(res.result);
 					return;
 				} else if (res.result.code === 401) {
-					store.commit("logout");
 					//登录信息错误,需要重新登录
 					if (showLoginDialog) {
 						uni.showModal({

@@ -56,7 +56,7 @@
 				"navigationBarTitleText": "个人资料"
 			}
 		}, {
-			"path": "pages/cart/cart",
+			"path": "pages/index/cart",
 			"style": {
 				"navigationBarTitleText": "购物车",
 				"enablePullDownRefresh": true
@@ -174,15 +174,7 @@
 					}
 				}
 			}
-		}, {
-			"path": "pages/category/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
+		},{
 			"path": "pages/shop/index",
 			"style": {
 				"navigationBarTitleText": "",
@@ -476,7 +468,7 @@
 				"text": "分类"
 			},
 			{
-				"pagePath": "pages/cart/cart",
+				"pagePath": "pages/index/cart",
 				"iconPath": "static/tab-cart.png",
 				"selectedIconPath": "static/tab-cart-current.png",
 				"text": "购物车"

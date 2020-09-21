@@ -516,11 +516,12 @@ export default {
 					let money = this.totalMoney + this.freight;
 					//this.isSubmit = false;
 					//刷新购物车列表
-					try {
+					/* try {
 						this.$api.prePage().refreshList();
 					} catch (e) {
 						//TODO handle the exception
-					}
+					} */
+					uni.$emit("refreshCart");
 					uni.redirectTo({
 						url: `/pages/money/pay?id=${id}&money=${money}&comefrom=cart&module=mall`
 					});

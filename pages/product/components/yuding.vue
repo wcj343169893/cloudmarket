@@ -64,7 +64,7 @@
 				default: {}
 			},
 			price: {
-				type: Number,
+				type: [Number,String],
 				default: 0
 			},
 			title: {

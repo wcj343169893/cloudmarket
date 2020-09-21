@@ -399,6 +399,9 @@
 					if (this.imgs) {
 						this.imgsPreview = this.imgs;
 					}
+					if(this.banner){
+						this.bannerPreview = this.banner;
+					}
 					if (this.skus && this.skus.length > 0) {
 						this.setSpecsType('multiple');
 						this.specsTypeTmp = 'multiple';

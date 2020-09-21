@@ -11,7 +11,7 @@
 							<text>{{ item.title }}</text>
 						</view>
 						<view class="miaoshaTime">
-							<text>预售：</text>
+							<text>预售时间：</text>
 							<text>{{item.tuangou.beginTime | dateFormat('MM-dd hh:mm')}}</text>
 							<text class="m-lr">~</text>
 							<text>{{item.tuangou.endTime | dateFormat('MM-dd hh:mm')}}</text>
@@ -36,7 +36,7 @@
 							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
 						</view>
 						<view class="miaoshaTime basc">
-							<text>提货：</text><text>{{item.tuangou.pickup | dateFormat('MM-dd hh:mm')}}</text>
+							<text>提货时间：</text><text>{{item.tuangou.pickup | dateFormat('MM-dd hh:mm')}}</text>
 						</view>
 					</view>
 				</view>
@@ -71,7 +71,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.seckill-section2 {
 		padding: 20rpx 20rpx 0;
 
@@ -150,6 +150,7 @@
 
 	.sub-title {
 		font-size: $font-sm;
+		color: $font-color-light;
 	}
 
 	.sku_btn {
@@ -164,6 +165,12 @@
 			font-size: 56rpx;
 			color: $btn-color-light;
 			background: none;
+		}
+	}
+	.price{
+		font-size: $font-lg;
+		&.del{
+			font-size: $font-base;
 		}
 	}
 </style>

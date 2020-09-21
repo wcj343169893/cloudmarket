@@ -492,6 +492,7 @@ const settlement = async (event, context) => {
 	//查询实时商品信息
 	let goods = await goodsCollection.where({
 		shopid: shopid,
+		isSold: 1,
 		id: cmd.in(ids)
 	}).field({
 		"id": 1,
