@@ -217,6 +217,9 @@
 .icon-balance:before {
 	content: '\e623';
 }
+.icon-delivery:before {
+	content: '\e609';
+}
 
 .icon-Group-:before {
 	content: '\e688';

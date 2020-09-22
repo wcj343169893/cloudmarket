@@ -1,6 +1,9 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const {
+	addUserBalanceLog
+} = require('base-common');
 const usersCollection = db.collection("uni-id-users");
 const modules = {
 	async list(data) {
@@ -26,16 +29,18 @@ const modules = {
 			case 1:
 				break;
 			case 2:
-				field = "last_login_date";
+				field = "balance";
 				break;
 			case 3:
-				field = "balance";
+				field = "last_login_date";
 				break;
 			case 4:
-				field = "balance";
-				direct="asc";
+				field = "register_date";
+				direct = "asc";
 				break;
 			case 5:
+				field = "register_date";
+				direct = "desc";
 				break;
 			default:
 				break;
@@ -45,6 +50,39 @@ const modules = {
 			return false;
 		}
 		return result.data;
+	},
+	/**
+	 * 账户充值
+	 * @param {Object} data
+	 */
+	async recharge(data) {
+		const {
+			rechargeUid,
+			money
+		} = data;
+		let res = await usersCollection.where({
+			_id: rechargeUid
+		}).update({
+			balance: cmd.inc(money)
+		});
+		console.log("手动账户充值", res);
+		//查询余额
+		res = await usersCollection.where({
+			_id: rechargeUid
+		}).field({
+			balance: 1
+		}).get();
+		console.log(res);
+		//充值记录
+		let log = await addUserBalanceLog({
+			uid: rechargeUid,
+			type: 1, //0支出，1收入
+			balance: res.data[0].balance,
+			money: money,
+			description: "手动账户充值",
+		});
+		console.log("手动账户充值", log);
+		return res.data[0].balance;
 	}
 }
 

@@ -8,10 +8,13 @@ const {
 	shopGoodsInc
 } = require('base-common');
 const list = async (data, context) => {
-	let page = +data.page;
-	let limit = +data.limit;
+	const {
+		page,
+		limit,
+		key,
+		state
+	} = data;
 	//商品类型,"online"在售,"miaosha"秒杀,"yushou"预售,"baokuan"爆款,"shouqin"即将售罄
-	let state = data.state;
 	let conditions = {
 		shopid: data.shopid
 	};
@@ -43,11 +46,11 @@ const list = async (data, context) => {
 		"manjian": 1,
 		"modified": 1,
 		saleType: 1,
-		onlySelfTake:1,
+		onlySelfTake: 1,
 		"yuding": 1,
 		"tuangou": 1,
-		banner:1,
-		description:1
+		banner: 1,
+		description: 1
 	};
 	let time = new Date().getTime();
 	switch (state) {
@@ -105,6 +108,9 @@ const list = async (data, context) => {
 			break;
 		default:
 			break;
+	}
+	if (key && key.trim().length > 0) {
+		conditions["title"] = new RegExp(key.trim());
 	}
 	let res = await goodsCollection2.where(conditions).orderBy(...order).skip((page - 1) * limit).limit(limit).field(
 		fields).get();

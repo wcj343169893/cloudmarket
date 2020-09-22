@@ -218,12 +218,18 @@
 									let key = id + '_' + sku.id;
 									let item = { ...ele
 									};
-									goodsSkusMap[key] = Object.assign(item, sku, {
+									item = Object.assign(item, sku, {
 										key: key,
 										goods_id: ele.id,
 										sku_id: sku.id,
-										subName: sku.name.replace('&gt;', ' ')
+										subName: sku.name.replace('&gt;', ' '),
 									});
+									if(ele.miaosha && sku.id == ele.miaosha.sku_id){
+										item=Object.assign(item,{
+											...ele.miaosha
+										})
+									}
+									goodsSkusMap[key]=item;
 								});
 							} else {
 								let key = ele.id + '_0';

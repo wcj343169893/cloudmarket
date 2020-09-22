@@ -104,6 +104,12 @@
 							<text class="m-l2">支付时间</text>
 							<text>{{ info.yuding.payInfo.time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
+						<view class="weui-flex">
+							<text class="m-l2">实收金额</text>
+							<view class="">
+								<text class="price warning">{{ info.yuding.payInfo.totalFee/100 | toFixed }}</text>
+							</view>
+						</view>
 					</block>
 
 					<view class="weui-flex">
@@ -124,7 +130,7 @@
 						<text class="price">{{ info.totalDiscount }}</text>
 					</view>
 				</view>
-				<view class="weui-flex b-b">
+				<view class="weui-flex">
 					<view class=""><text>实付金额</text></view>
 					<view class="">
 						<text class="price warning">{{ info.totalMoney  | toFixed}}</text>
@@ -134,10 +140,10 @@
 					<view class=""><text>扣除服务费</text></view>
 					<view class=""><text class="price warning">0</text></view>
 				</view>
-				<view class="weui-flex">
+				<view class="weui-flex" v-if="info.payInfo">
 					<view class=""><text>实收金额</text></view>
 					<view class="">
-						<text class="price warning">{{ info.totalMoney }}</text>
+						<text class="price warning">{{ info.payInfo.totalFee/100 | toFixed }}</text>
 					</view>
 				</view>
 			</view>

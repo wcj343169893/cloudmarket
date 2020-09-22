@@ -190,8 +190,12 @@
 					</view>
 				</view>
 				<view class="weui-flex">
-					<view><text>实付金额</text></view>
+					<view><text>应付金额</text></view>
 					<text class="price warning">{{ (info.totalMoney + info.freight) | toFixed }}</text>
+				</view>
+				<view class="weui-flex" v-if="info.payInfo">
+					<view><text>实付金额</text></view>
+					<text class="price warning">{{ info.payInfo.totalFee/100 | toFixed }}</text>
 				</view>
 			</view>
 		</view>

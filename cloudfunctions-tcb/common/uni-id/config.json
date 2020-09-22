@@ -2,6 +2,7 @@
 	"passwordSecret": "58d0605d96a11d2b62430",
 	"tokenSecret": "4e50313a45f5fbe0",
 	"tokenExpiresIn": 2592000,
+	"tokenExpiresThreshold": 2505600,
 	"passwordErrorLimit": 6,
 	"bindTokenToDevice": false,
 	"passwordErrorRetryTime": 3600,
@@ -34,7 +35,7 @@
 	},
 	"service": {
 		"sms": {
-			"name": "云上商城",
+			"name": "柔然科技",
 			"codeExpiresIn": 180,
 			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
 			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"

@@ -51,8 +51,8 @@ const adsAdmin = function(action,data) {
 const docsAdmin = function(action,data) {
 	return adminNetwork("docs",action,data,false);
 }
-const usersAdmin = function(action,data) {
-	return adminNetwork("users",action,data,false);
+const usersAdmin = function(action,data,isShowLoading) {
+	return adminNetwork("users",action,data,isShowLoading);
 }
 
 const adminNetwork = (module,action,data,isShowLoading)=>{

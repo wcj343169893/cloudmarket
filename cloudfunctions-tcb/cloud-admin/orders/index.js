@@ -9,11 +9,14 @@ const {
 	print
 } = require('printers');
 const list = async (data, context) => {
-	let page = +data.page;
-	let limit = +data.limit;
+	const {
+		page,
+		limit,
+		key,
+		state
+	} = data;
 	//0全部，1待付款，2已付款，待收货，3待评价
 	//实际状态值：-2删除，-1取消，0未付款，1已付款，2已发货，3已收货待评价
-	let state = data.state;
 	let conditions = {
 		shopid: data.shopid
 	};
@@ -49,6 +52,9 @@ const list = async (data, context) => {
 			conditions["state"] = cmd.gt(-1);
 			conditions["isDelete"] = 0;
 			break;
+	}
+	if (key && key.trim().length > 0) {
+		conditions["goods.title"] = new RegExp(key.trim());
 	}
 	let res = await orderCollection.where(conditions).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).field({
 		id: 1,

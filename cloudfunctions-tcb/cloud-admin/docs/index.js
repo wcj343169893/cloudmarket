@@ -7,11 +7,24 @@ const docCollection = db.collection("cloud_documents");
  * 分页查询文档
  */
 const list = async (data) => {
-	let page = +data.page;
-	let limit = +data.limit;
-	const result = await docCollection.where({
+	const {
+		page,
+		limit,
+		key,
+	} = data;
+	let conditions = {
 		shopid: data.shopid
-	}).field({
+	};
+	if (key && key.trim().length > 0) {
+		conditions = cmd.or({
+			title: new RegExp(key.trim())
+		}, {
+			content: new RegExp(key.trim())
+		}).and({
+			shopid: data.shopid
+		});
+	}
+	const result = await docCollection.where(conditions).field({
 		title: 1
 	}).skip((page - 1) * limit).limit(limit).orderBy("modified", "desc").get();
 	if (result.data.length == 0) {

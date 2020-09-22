@@ -2,19 +2,33 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const uniID = require('uni-id');
+const {
+	genIdentityId
+} = require('base-common');
 const shopCollection = db.collection("cloud_shops");
-const userCollection = db.collection("uni-id-users");
 const models = {
 	//我的信息
 	async mine(data, context) {
 		let res = await getUserInfo(data.uid, [
-			"nickname", "my_invite_code",
+			"id", "nickname", "my_invite_code",
 			"gender", "status", "mobile", "email",
-			"mobile_confirmed","balance",
+			"mobile_confirmed", "balance",
 			"email_confirmed", "avatar", "comment", "birthday"
 		]);
+		//查询报错
 		if (res.code > 0) {
 			return res;
+		}
+		//自动生成用户id,方便传播和查询
+		if (!res.userInfo.id) {
+			let id = await genIdentityId("users");
+			//保存id
+			let result = await uniID.updateUser({
+				uid: data.uid,
+				id
+			});
+			console.log("save user id", result);
+			res.userInfo.id = id;
 		}
 		return res.userInfo;
 	},
@@ -82,24 +96,9 @@ const models = {
  * uniid插件还未发布的方法
  */
 const getUserInfo = async (uid, field) => {
-	const fieldObj = {}
-	if (field && field.length) {
-		for (let i = 0; i < field.length; i++) {
-			fieldObj[field[i]] = true
-		}
-	}
-	let res = await userCollection.doc(uid).field(fieldObj).get();
-	if (res.data.length === 0) {
-		return {
-			code: 80401,
-			msg: '未查询到用户信息'
-		}
-	}
-	return {
-		code: 0,
-		msg: '获取用户信息成功',
-		userInfo: res.data[0]
-	}
+	return await uniID.getUserInfo({
+		uid,field
+	});
 }
 
 module.exports = models;

@@ -189,6 +189,7 @@
 				hasSku: false,
 				shareList: [],
 				skuMap: [],
+				cartMap: {},
 				yuding: false,
 				tuangou: false,
 				hasMiaosha: false,
@@ -246,7 +247,7 @@
 			clearCountDownTimer();
 			//清除商品缓存
 			uni.removeStorage({
-				key:"goodsInfo"
+				key: "goodsInfo"
 			})
 		},
 		onShow() {
@@ -312,12 +313,12 @@
 				);
 
 				//获得购物车总数量
-				//this.cartSumCount = getCartSumNumber();
+				//this.cartMapSumCount = getCartSumNumber();
 			},
 			buildGoodsInfo(item) {
 				console.log(item);
 				this.imgs = [];
-				updateGoodsTags(item, true);
+				updateGoodsTags(item, false);
 				this.checkYuding(item);
 				this.checkTuangou(item);
 				this.checkMiaosha(item);
@@ -364,24 +365,40 @@
 						let nameKey = names.sort().join('&gt;');
 						nameHash.push(nameKey);
 						nameMap[nameKey] = sku;
-						//寻找秒杀商品的定位
-						if (miaoshaSkuName.length == 0) {
-							if (this.default_sku_id > 0 && this.default_sku_id == sku.id) {
-								//强制选中型号
-								miaoshaSkuName = names;
-							} else if (this.miaosha && this.miaosha.sku_id == sku.id) {
-								//秒杀默认选中
-								miaoshaSkuName = names;
-							} else if (this.default_checked_sku_id == sku.id) {
-								//本身默认选中
-								miaoshaSkuName = names;
-							}
-						}
+						this.cartMap[sku.id] = 1;
 					});
+
+					let selectSku = [];
+					//地址栏传递过来，强制选中执行型号
+					if (this.default_sku_id > 0) {
+						selectSku = item.skus.filter(sku => {
+							return this.default_sku_id == sku.id;
+						});
+					}
+					if (selectSku.length == 0) {
+						//优先选中秒杀型号
+						selectSku = item.skus.filter(sku => {
+							return this.miaosha && this.miaosha.sku_id == sku.id;
+						});
+					}
+					if (selectSku.length == 0) {
+						//其次选中默认型号
+						selectSku = item.skus.filter(sku => {
+							return this.default_checked_sku_id == sku.id;
+						});
+					}
+					if (selectSku.length == 0) {
+						//实在没有，则选中第一个型号
+						selectSku = item.skus[0];
+					}
+					console.log("selectSku", selectSku);
+					miaoshaSkuName = selectSku[0].name.split('&gt;');
+
 					this.skuMap = skuMap;
 					this.nameMap = nameMap;
 					this.nameHash = nameHash;
-					// console.log("miaoshaSkuName",miaoshaSkuName)
+					console.log(this.cartMap)
+					console.log("miaoshaSkuName", miaoshaSkuName)
 					if (miaoshaSkuName.length > 0) {
 						//默认选中秒杀商品，否则第一个
 						skuMap.map((s, i) => {
@@ -399,7 +416,7 @@
 					}
 				} else {
 					//计算折扣
-					this.amount = this.cart[0] > 0 ? this.cart[0] : 1;
+					this.amount = this.cartMap[0] > 0 ? this.cartMap[0] : 1;
 					this.getSaleRate();
 				}
 			},
@@ -544,10 +561,10 @@
 					title: '正在加载',
 					mask: true
 				});
-				if (!this.cart[this.sku_id]) {
-					this.cart[this.sku_id] = 0;
+				if (!this.cartMap[this.sku_id]) {
+					this.cartMap[this.sku_id] = 0;
 				}
-				if (this.cart[this.sku_id] > this.stock) {
+				if (this.cartMap[this.sku_id] > this.stock) {
 					uni.hideLoading();
 					let msg = '抱歉,该商品仅剩' + this.stock + '件';
 					if (this.stock == 0) {
@@ -557,13 +574,13 @@
 					return;
 				}
 				//处理limit和stock
-				if (this.cart[this.sku_id] > this.limit) {
+				if (this.cartMap[this.sku_id] > this.limit) {
 					uni.hideLoading();
 					this.$api.msg('抱歉,该商品限购' + this.limit + '件');
 					return;
 				}
 				//累加一件商品
-				this.cart[this.sku_id] = this.amount;
+				this.cartMap[this.sku_id] = this.amount;
 				editCart({
 					id: this.shopid,
 					//stationId: this.stationId,
@@ -573,14 +590,14 @@
 					src: this.src,
 					checked: 1,
 					appends: 1,
-					amount: this.cart[this.sku_id]
+					amount: this.cartMap[this.sku_id]
 				}).then(
 					res => {
 						this.$api.msg('加入成功', 1500, false, 'success');
 						console.log(res);
 						//这里算不准
-						//this.cartSumCount = incrCartNumber(1);
-						//this.cartSumCount = incrCartNumber(this.amount);
+						//this.cartMapSumCount = incrCartNumber(1);
+						//this.cartMapSumCount = incrCartNumber(this.amount);
 						//请求网络，获得购物车数量
 						this.$store.dispatch('getCartCount');
 						// uni.$emit("refreshCart");
@@ -633,7 +650,7 @@
 				this.limit = sku.limit;
 				this.price = sku.price;
 				this.originPrice = sku.originPrice > 0 ? sku.originPrice : 0;
-				this.amount = this.cart[this.sku_id] > 0 ? this.cart[this.sku_id] : 1;
+				this.amount = this.cartMap[this.sku_id] > 0 ? this.cartMap[this.sku_id] : 1;
 				//计算折扣
 				this.getSaleRate();
 			},

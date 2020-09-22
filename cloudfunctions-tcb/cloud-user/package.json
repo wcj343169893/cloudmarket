@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
     "node-rsa": "^1.1.1",
     "uni-id": "file:../common/uni-id"

@@ -60,7 +60,7 @@
 				this.id = options.id;
 				this.orderInfo.totalMoney = options.money;
 				this.comefrom = options.comefrom;
-				if(options.module){
+				if (options.module) {
 					this.module = options.module;
 				}
 			} else {
@@ -178,7 +178,7 @@
 					id: this.id
 				}, this.module).then(
 					res => {
-						if(this.payType == "balance"){
+						if (this.payType == "balance" || this.payType == "delivery") {
 							this.paySuccess();
 							return;
 						}
@@ -292,6 +292,10 @@
 
 		.icon-balance {
 			color: #fe8e2e;
+		}
+
+		.icon-delivery {
+			color: #36cb59;
 		}
 
 		.icon-wxpay {

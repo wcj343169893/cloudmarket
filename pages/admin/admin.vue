@@ -63,7 +63,7 @@
 		 tips="限时秒杀"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
-		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navTo('/pages/admin/user/list')" tips="充值"></mix-list-cell>
+		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navTo('/pages/admin/user/list')" tips="账户充值"></mix-list-cell>
 		<mix-list-cell icon="icon-tongji" iconColor="#54b4ef" title="经营数据" tips=""></mix-list-cell>
 	</view>
 </template>

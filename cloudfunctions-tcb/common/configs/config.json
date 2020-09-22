@@ -29,13 +29,13 @@
 			"balance": {
 				"uniPay": "initBalance",
 				"name": "余额"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
 			}
 		},
 		"oauth": {
-			"weixin": {
-				"appid": "weixin appid",
-				"appsecret": "weixin appsecret"
-			},
 			"jiguang": {
 				"url": "https://api.verification.jpush.cn/v1/web/loginTokenVerify",
 				"Authorization": "Basic ZDM1NTI4OThjYjQxMDk4ODExNTg5ZGM2OjNmZTRlNWMxOTcxZGQyY2ZjM2FiOWEzMQ==",
@@ -56,12 +56,10 @@
 			"balance": {
 				"uniPay": "initBalance",
 				"name": "余额"
-			}
-		},
-		"oauth": {
-			"weixin": {
-				"appId": "wx399393ad0d5e4d31",
-				"secret": "2732931e00e58d0605d96a11d2b62430"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
 			}
 		}
 	},
@@ -78,13 +76,6 @@
 				"uniPay": "initBalance",
 				"name": "余额"
 			}
-		},
-		"oauth": {
-			"alipay": {
-				"appid": "alipay appid",
-				"privateKey": "alipay privateKey",
-				"alipayPublicKey": "alipay publicKey"
-			}
 		}
 	},
 	"h5": {
@@ -92,6 +83,10 @@
 			"balance": {
 				"uniPay": "initBalance",
 				"name": "余额"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
 			}
 		}
 	},

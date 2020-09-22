@@ -174,7 +174,7 @@
 					}
 				}
 			}
-		},{
+		}, {
 			"path": "pages/shop/index",
 			"style": {
 				"navigationBarTitleText": "",
@@ -272,14 +272,14 @@
 				"navigationBarTitleText": "商品列表",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "",
+							"disabled": true,
+							"placeholderColor": "#787a7d"
+						}
 					}
 				}
 			}
@@ -291,7 +291,19 @@
 		}, {
 			"path": "pages/admin/order/list",
 			"style": {
-				"navigationBarTitleText": "订单列表"
+				"navigationBarTitleText": "订单列表",
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "",
+							"disabled": true,
+							"placeholderColor": "#787a7d"
+						}
+					}
+				}
 			}
 		}, {
 			"path": "pages/admin/order/detail",
@@ -394,14 +406,14 @@
 				"navigationBarTitleText": "文档管理",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue60f",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "",
+							"disabled": true,
+							"placeholderColor": "#787a7d"
+						}
 					}
 				}
 			}
@@ -420,48 +432,46 @@
 			"style": {
 				"navigationBarTitleText": "配送到家设置"
 			}
-		}
-	    ,{
-            "path" : "pages/admin/set/printer/add",
-            "style" : {
+		}, {
+			"path": "pages/admin/set/printer/add",
+			"style": {
 				"navigationBarTitleText": "新增打印终端"
 			}
-        }
-        ,{
-            "path" : "pages/admin/set/printer/list",
-            "style" : {
+		}, {
+			"path": "pages/admin/set/printer/list",
+			"style": {
 				"navigationBarTitleText": "打印终端管理"
 			}
-        }
-        ,{
-            "path" : "pages/admin/order/numbers",
-            "style" : {
+		}, {
+			"path": "pages/admin/order/numbers",
+			"style": {
 				"navigationBarTitleText": "输码验证"
 			}
-        }
-        ,{
-            "path" : "pages/index/tuangou",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin/user/list",
-            "style": {
-            	"navigationBarTitleText": "用户管理",
+		}, {
+			"path": "pages/index/tuangou",
+			"style": {}
+		}, {
+			"path": "pages/admin/user/list",
+			"style": {
+				"navigationBarTitleText": "用户管理",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "",
+							"disabled": true,
+							"placeholderColor": "#787a7d"
+						}
 					}
 				}
-            }
-        }
-    ],
+			}
+		}, {
+			"path": "pages/admin/search",
+			"style": {}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

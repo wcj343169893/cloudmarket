@@ -15,6 +15,7 @@ const payments = {
 	wxpay: require('./payment/unipay'),
 	alipay: require('./payment/unipay'),
 	balance: require('./payment/balance'),
+	delivery: require('./payment/delivery'),
 }
 const actions = {
 	/**

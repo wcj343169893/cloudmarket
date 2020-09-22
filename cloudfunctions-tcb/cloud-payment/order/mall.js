@@ -89,7 +89,7 @@ const updatePaymentInfo = async function(event) {
 	};
 	let type = "mall";
 	//支付定金
-	if (outTradeNo.indexOf("YD_") === 0) {
+	if (outTradeNo && outTradeNo.indexOf("YD_") === 0) {
 		conditions1 = {
 			"yuding.id": outTradeNo,
 		};

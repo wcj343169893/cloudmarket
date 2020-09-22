@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<view class="titleNview-placing"></view>
 		<!-- 顶部筛选 分类栏 -->
 		<view class="top">
 			<!-- 排序 -->
@@ -8,24 +9,26 @@
 				 :key="index" @click="changeSort(item)">
 					<text>{{ item.name }}</text>
 					<view v-if="item.isPrice" class="icon-wrap">
-						<text class="yticon icon-shang" :class="{active: item.type === 3}"></text>
-						<text class="yticon icon-xia" :class="{active: item.type === 4}"></text>
+						<text class="yticon icon-shang" :class="{active: item.type === 4}"></text>
+						<text class="yticon icon-xia" :class="{active: item.type === 5}"></text>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="users-section">
-			<view v-for="(item,index) in userList" :key="index" class="item">
+			<view v-for="(item,index) in userList" :key="index" class="item" @click="detail(item)">
 				<view class="image-content">
 					<image :src="item.avatar" mode="aspectFill" lazy-load="true"></image>
 				</view>
 				<view class="content">
 					<view class="title clamp">
 						<text v-if="item.nickname">{{ item.nickname }}</text>
-						<text v-else>游客<text class="sub">(未修改)</text></text>
-						<text v-if="item.wx_openid" class="sub">微信登录</text>
+						<text v-else>游客<text class="sub">（未修改）</text></text>
+						<text v-if="item.wx_openid" class="yticon icon-weixin"></text>
+						<text v-if="item.ali_openid" class="yticon icon-alipay"></text>
+						<text class="sub" v-if="item.id">（{{item.id}}）</text>
 					</view>
-					<view class="fields" @click="recharge(item)">
+					<view class="fields" @click.stop="recharge(item)">
 						<view class="field-content">
 							<text>余额：</text>
 							<text>{{item.balance | toFixed}}</text>
@@ -34,7 +37,7 @@
 					</view>
 					<view class="">
 						<text>手机号：</text>
-						<text v-if="item.mobile">{{item.mobile}}</text>
+						<text v-if="item.mobile" @click="tel(item.mobile)">{{item.mobile}}</text>
 						<text v-else>未绑定</text>
 					</view>
 					<view class="">
@@ -56,6 +59,10 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<uni-popup ref="rechargePop" type="dialog">
+			<uni-popup-dialog type="warn" title="账户充值" placeholder="请输入充值金额" mode="input" :before-close="true" @close="close"
+			 @confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -63,9 +70,17 @@
 	import {
 		usersAdmin
 	} from '@/common/admin_request.js';
+	import searchMixin from '../mixin/search.js'
+
+	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
+		mixins: [searchMixin],
+		components: {
+			uniPopupDialog
+		},
 		data() {
 			return {
+				limit: 20,
 				sortList: [{
 						name: '综合排序',
 						type: 1,
@@ -73,33 +88,28 @@
 					},
 					{
 						name: '余额',
-						type: 3,
-						isPrice: true,
-						current: false
-					},
-					{
-						name: '登录',
 						type: 2,
 						current: false
 					},
 					{
+						name: '登录',
+						type: 3,
+						current: false
+					},
+					{
 						name: '注册',
-						type: 5,
+						type: 4,
+						isPrice: true,
 						current: false
 					}
 				],
 				listType: 'column', //列表类型 column竖向列表 row 横向列表
-				userList: []
+				userList: [],
+				rechargeItem: {}
 			};
 		},
 		onLoad() {
 			this.loadData()
-		},
-		//滑到底部加载更多
-		onReachBottom() {
-			if (this.loadingType != 'noMore') {
-				this.loadData();
-			}
 		},
 		methods: {
 			async loadData() {
@@ -108,49 +118,106 @@
 				usersAdmin("list", {
 					page: this.page,
 					limit: this.limit,
+					key: this.searchWord,
 					sort: this.sortList.filter(item => item.current)[0].type,
-				}).then(res => {
-					this.userList = this.userList.concat(res)
+				}, false).then(res => {
+					res.forEach(usr => {
+						if (!usr.balance) {
+							usr.balance = 0;
+						}
+					})
+					this.userList = this.userList.concat(res);
+					if (res.length < this.limit) {
+						this.loadingType = "noMore";
+					}
 				})
 			},
-			// #ifndef MP
-			//点击导航栏 buttons 时触发
-			onNavigationBarButtonTap(e) {
-				const index = e.index;
-				if (index === 0) {
-				}
-			},
-			// #endif
 			//排序
 			changeSort(item) {
 				if (item.current) {
 					if (item.isPrice) {
-						item.type = item.type === 3 ? 4 : 3;
+						item.type = item.type === 4 ? 5 : 4;
 					} else {
 						return;
 					}
 				} else {
 					this.sortList.forEach(v => v.current = false);
 					item.current = true;
-					if (item.type === 3 || item.type === 4) {
-						item.type = 3;
+					if (item.type === 4 || item.type === 5) {
+						item.type = 4;
 					}
 				}
 				this.refreshList();
 			},
 			recharge(item) {
-
+				this.rechargeItem = item;
+				this.$refs.rechargePop.open()
 			},
 			refreshList() {
 				this.page = 0;
-				this.userList=[];
+				this.userList = [];
 				this.loadData();
+			},
+			/**
+			 * 点击取消按钮触发
+			 * @param {Object} done
+			 */
+			close(done) {
+				// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 done 才会关闭对话框
+				// ...
+				done()
+			},
+			/**
+			 * 点击确认按钮触发
+			 * @param {Object} done
+			 * @param {Object} value
+			 */
+			confirm(done, value) {
+				if (this.isSubmit) {
+					return false;
+				}
+				this.isSubmit = true;
+				// 输入框的值
+				console.log(value)
+				let money = +value;
+				if (money <= 0) {
+					this.$api.msg("金额输入错误");
+					return;
+				}
+				usersAdmin("recharge", {
+					rechargeUid: this.rechargeItem._id,
+					money
+				}, true).then(res => {
+					this.isSubmit = false;
+					this.$api.success("充值成功");
+					this.userList.forEach(usr => {
+						if (usr._id == this.rechargeItem._id) {
+							usr.balance = res
+						}
+					})
+				}, err => {
+					this.isSubmit = false;
+					this.$api.msg("充值失败！")
+				})
+				done()
+			},
+			tel(phone) {
+				uni.makePhoneCall({
+					phoneNumber: phone
+				})
+			},
+			detail(item) {
+				console.log(item)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	page {
+		background-color: $background-color;
+	}
+
 	.container {
 		font-size: $font-base;
 		background-color: $background-color;
@@ -160,7 +227,8 @@
 
 	.title {
 		font-size: $font-lg;
-		.sub{
+
+		.sub {
 			font-size: $font-sm;
 			margin-left: 8rpx;
 		}
@@ -300,17 +368,35 @@
 	.users-section {
 		padding-top: 86rpx;
 	}
-	
-	.icon-wrap{
+
+	.icon-wrap {
 		display: flex;
 		flex-direction: column;
 		padding-left: 8rpx;
-		.yticon{
+
+		.yticon {
 			font-size: 14rpx;
 			color: #bbb;
 		}
-		.active{
+
+		.active {
 			color: $base-color;
 		}
+	}
+
+	.icon-weixin {
+		color: $base-color;
+		margin-left: 8rpx;
+	}
+
+	.icon-alipay {
+		color: $font-color-spec;
+		margin-left: 8rpx;
+	}
+
+	.titleNview-placing {
+		height: var(--status-bar-height);
+		padding-top: 88rpx;
+		box-sizing: content-box;
 	}
 </style>

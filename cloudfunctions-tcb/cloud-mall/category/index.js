@@ -56,6 +56,14 @@ const main = async (event) => {
 	shopInfo["carts"] = [];
 	shopInfo["uid"] = uid;
 	if (categories.data.length > 0) {
+		//过滤不显示的子集
+		categories.data.forEach(cate => {
+			if (cate.children) {
+				cate.children = cate.children.filter(child => {
+					return child.isShow !== 0;
+				})
+			}
+		})
 		shopInfo["goods_categories"] = categories.data;
 	}
 	//查询所有商品
@@ -82,7 +90,7 @@ const main = async (event) => {
 			"miaosha": 1,
 			"yuding": 1,
 			"manjian": 1,
-			tuangou:1,
+			tuangou: 1,
 		}).orderBy("posid", "asc").get();
 		if (goods.data.length > 0) {
 			shopInfo["goods"] = goods.data;

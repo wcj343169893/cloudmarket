@@ -37,6 +37,10 @@ const print = async (data, shopid) => {
 	printers = printers.filter(e => {
 		return e.enable && e.online;
 	});
+	if (printers.length == 0) {
+		console.log("无可用的打印设备");
+		return false;
+	}
 	//随机获取一个
 	let index = 0;
 	if (printers.length > 1) {

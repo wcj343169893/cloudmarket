@@ -115,7 +115,7 @@
 		mapMutations
 	} from 'vuex';
 	import pageHeader from './components/page-header.vue'
-	import tabbarMixin from './mixin/tabbar' 
+	import tabbarMixin from './mixin/tabbar'
 	import {
 		getAllCategories,
 		editCart,
@@ -129,7 +129,7 @@
 		updateGoodsTags
 	} from '@/common/functions.js';
 	export default {
-		mixins: [tabbarMixin], 
+		mixins: [tabbarMixin],
 		components: {
 			pageHeader
 		},
@@ -449,7 +449,7 @@
 				if (index > 0) {
 					this.currentBeforeId = this.categoryList[index - 1].id;
 				}
-				if (index < this.categoryList.length) {
+				if (index < this.categoryList.length - 1) {
 					this.currentAfterId = this.categoryList[index + 1].id;
 				}
 				//没有作用，希望是滑动的分类小于4，能显示出来

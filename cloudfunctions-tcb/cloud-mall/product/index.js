@@ -153,8 +153,7 @@ const models = {
 		} = data;
 		//商品浏览记录，每人每件商品只存在一条
 		let result = await goodsVisiteCollection.where({
-			uid: uid,
-			isSold: 1,
+			uid: uid
 		}).field({
 			_id: 0,
 			title: 1,

@@ -7,9 +7,13 @@
 					<image class="portrait" :src="userInfo.avatar"></image>
 				</view>
 				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
-					<text class="username">{{ userInfo.nickname }}</text>
-					<view class="account">
-						<text>{{userInfo.id}}</text>
+					<view class="username">
+						<text>{{ userInfo.nickname }}</text>
+						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+					</view>
+					<view class="invite" v-if="userInfo.my_invite_code">
+						<text>邀请码：</text>
+						<text>{{userInfo.my_invite_code}}</text>
 					</view>
 				</view>
 			</view>
@@ -126,7 +130,7 @@
 				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
 				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
 				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></mix-list-cell>
-				<mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips" @eventClick="joinTeam()"></mix-list-cell>
+				<!-- <mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips" @eventClick="joinTeam()"></mix-list-cell> -->
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
 				<!-- #ifndef MP -->
 				<!-- 小程序不需要退出登录，更新，缓存等 -->
@@ -463,6 +467,10 @@
 		.account {
 			font-size: $font-base;
 			color: $border-color-light;
+		}
+		.invite{
+			font-size: $font-base;
+			color: #606060;
 		}
 	}
 

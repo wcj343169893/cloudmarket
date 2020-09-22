@@ -78,8 +78,7 @@ const list = async (data, context) => {
 		yuding: 1,
 		created: 1,
 		modified: 1,
-		"payInfo.time": 1,
-		"payInfo.name": 1,
+		payInfo: 1,
 		lastPayTime: 1,
 		cancelApply: 1,
 		refundApply: 1
@@ -620,14 +619,14 @@ const settlement = async (event, context) => {
 						delete ele.manjian;
 					}
 				} else if (ele.tuangou) {
-					if(time > ele.tuangou.endTime){
+					if (time > ele.tuangou.endTime) {
 						event.message = "团购已结束";
 						return false;
-					}else if (time > ele.tuangou.beginTime) {
+					} else if (time > ele.tuangou.beginTime) {
 						ele.originPrice = ele.price;
 						ele.price = ele.tuangou.price;
 					}
-					if(!data.pickup || data.pickup < ele.tuangou.pickup){
+					if (!data.pickup || data.pickup < ele.tuangou.pickup) {
 						data.pickup = ele.tuangou.pickup;
 					}
 				}
@@ -748,25 +747,16 @@ const settlement = async (event, context) => {
 		//邀请信息,只允许2级关系
 		let uinfo = context.userInfo;
 		//用户邀请列表
-		data["inviters"] = [];
-		if (uinfo && uinfo.inviters) {
-			data["inviters"] = uinfo.inviters.slice(0, 2)
+		data["inviter_uid"] = [];
+		if (uinfo && uinfo.inviter_uid) {
+			data["inviter_uid"] = uinfo.inviter_uid;
 		} else if (uid != data.shop.uid) {
 			//默认为店主,logo为店铺,店主不能加自己为上级
-			data["inviters"].push({
-				id: data.shop.uid,
-				shopid: data.shop.id,
-				nickname: data.shop.name,
-				portrait: data.shop.src
+			let inviteRes = await uniID.acceptInvite({
+				uid,
+				inviteCode: data.shop.uid
 			});
-			//设置到用户信息
-			//let res = await uniID.setInviteCode(uid,data.shop.uid);
-			const res = await uniID.updateUser({
-				uid: uid,
-				invite_code: data.shop.uid,
-				inviters: data["inviters"]
-			})
-			console.log("默认加入店铺团队", data["inviters"], res);
+			console.log("默认加入店铺团队", inviteRes);
 		}
 		let endTime = new Date().getTime();
 		//结算商品消耗时间

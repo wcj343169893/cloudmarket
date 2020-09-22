@@ -186,15 +186,17 @@ const updateGoodsTags = function(goods, isPrecise) {
 				if (index != -1) {
 					goods.miaosha.skuIndex = index;
 					let sku = goods.skus[index];
-					Object.assign(goods.skus[index], {
-						originPrice: sku.price,
-						price: goods.miaosha.price,
-					});
+					goods.miaosha.originPrice=sku.price;
 					if (isPrecise) {
 						sku.tags = [{
 							type: "warning",
 							text: "抢购中"
 						}];
+					}else{
+						Object.assign(goods.skus[index], {
+							originPrice: sku.price,
+							price: goods.miaosha.price,
+						});
 					}
 					if (goods.price > sku.price) {
 						goods.originPrice = sku.originPrice;
