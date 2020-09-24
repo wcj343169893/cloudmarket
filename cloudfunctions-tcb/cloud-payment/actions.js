@@ -85,6 +85,7 @@ const actions = {
 	 * 第三方支付统一回调
 	 */
 	async notify(data, context) {
+		console.log("notify path", data.path);
 		let paths = data.path.split("/");
 		if (paths.length < 3) {
 			return "地址不符合要求";
@@ -96,17 +97,18 @@ const actions = {
 		//新增第三个参数，支付模块
 		let module = paths[3];
 		let res = await payments[provider].verify(data, platform, provider);
-		console.log(provider + " res", res);
+		console.log(paths, res);
 		if (!res) {
 			return data.message;
 		}
 		//验证成功
 		if (res.resultCode == "SUCCESS") {
 			res["type"] = provider;
-			res["couponCount"]=res.couponList?res.couponList.length:0;
+			res["couponCount"] = res.couponList ? res.couponList.length : 0;
 			//获取支付工具的名字
 			res["name"] = payments[provider].getName(provider) + "支付";
-			this.paySuccess(res, module);
+			res = await this.paySuccess(res, module);
+			console.log("paysuccess result", res)
 		}
 		return "success";
 	},
@@ -116,6 +118,7 @@ const actions = {
 	 * @param {Object} module
 	 */
 	async paySuccess(data, module) {
+		console.log("开始处理分订单", module);
 		//调用订单处理
 		let result = await orders[module]["updatePaymentInfo"](data);
 		console.log(result);

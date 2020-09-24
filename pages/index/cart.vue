@@ -543,6 +543,7 @@
 						},
 						success: () => {
 							navToCreateOrder();
+							this.isSubmit = false;
 						}
 					})
 					/* settlementCart({
