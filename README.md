@@ -51,7 +51,7 @@
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/c114175dc318dc33bde616bfc61362da.png)
+![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/093b5e30-ff00-11ea-b244-a9f5e5565f30.png)
 
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
