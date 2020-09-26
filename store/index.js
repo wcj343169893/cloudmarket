@@ -52,8 +52,13 @@ const store = new Vuex.Store({
 			uni.setStorageSync('uni_id_token_expires', provider.tokenExpired);
 			//设置登录状态
 			state.hasLogin = true;
-			//更新用户信息
-			this.dispatch('getUserInfo');
+			if(provider.userInfo){
+				state.userInfo = provider.userInfo;
+				uni.$emit('refreshCart'); //全局更新购物车
+			}else{
+				//更新用户信息
+				this.dispatch('getUserInfo');
+			}
 			this.dispatch('getCartCount');
 			//缓存用户登陆状态
 			/* uni.setStorage({

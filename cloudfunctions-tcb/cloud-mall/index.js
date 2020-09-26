@@ -25,9 +25,9 @@ const mustLoginActions = {
 		"new", "delete", "deleteAll", "detail", "edit", "default", "list"
 	],
 	cart: [
-		"list", "settlement", "edit", "addmany", "clean", "selected", "full","total"
+		"list", "settlement", "edit", "addmany", "clean", "selected", "full", "total"
 	],
-	order: ["list", "cancel", "detail", "delete", "makesure", "settlement"],
+	order: ["list", "cancel", "detail", "delete", "makesure", "settlement", "addRefundApply","getRefundApplys"],
 	payment: ["wxpay", "alipay", "balance", "info"],
 	product: ["visite"],
 }
@@ -52,7 +52,7 @@ exports.main = async (event, context) => {
 		uniIdToken,
 		Type
 	} = event;
-	if(Type=="Timer"){
+	if (Type == "Timer") {
 		console.log(event);
 		return event;
 	}
@@ -60,7 +60,7 @@ exports.main = async (event, context) => {
 		//token检查，必须登录
 		let payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
-			console.log("登录失效",event,payload)
+			console.log("登录失效", event, payload)
 			return {
 				code: 401,
 				event,

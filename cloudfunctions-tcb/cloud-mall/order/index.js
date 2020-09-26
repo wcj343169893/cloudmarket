@@ -52,7 +52,7 @@ const list = async (data, context) => {
 				break;
 			case 4:
 				//售后
-				conditions["state"] = 4;
+				conditions["refundApply"] = cmd.exists(true);
 				break;
 			default:
 				//conditions["state"] = cmd.gt(-2);
@@ -81,7 +81,8 @@ const list = async (data, context) => {
 		payInfo: 1,
 		lastPayTime: 1,
 		cancelApply: 1,
-		refundApply: 1
+		isRefunding: 1,
+		//refundApply: 1
 	}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 	data["page"] = page;
 	data["limit"] = limit;
@@ -151,11 +152,12 @@ const cancel = async (data) => {
 		if (order.yuding.finalPaymentBeginTime < time && serviceMoney > 0) {
 			await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除" + (serviceMoney * 100) + "%服务费。");
 			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee * (1 - serviceMoney), "取消" +
-				order.body);
+				order.body, order.goods, order._id);
 		} else {
 			await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
 			//退款定时器,全额退款
-			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body);
+			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body, order.goods,
+				order._id);
 		}
 	} else {
 		await pushOrderCancelInfo(order._id, "您的订单已取消。");
@@ -194,6 +196,7 @@ const detail = async (data) => {
 		yuding: 1,
 		lastPayTime: 1,
 		cancelApply: 1,
+		isRefunding: 1,
 		refundApply: 1
 	};
 	let conditions = {
@@ -313,14 +316,19 @@ const addRefundApply = async (data) => {
 	const {
 		uid,
 		id,
-		gid
+		item
 	} = data;
+	const {
+		index
+	} = item;
 
 	let fields = {
 		state: 1,
 		totalMoney: 1,
 		goods: 1,
+		payInfo: 1,
 		refundApply: 1,
+		body: 1,
 	};
 	let conditions = {
 		uid: uid,
@@ -330,21 +338,67 @@ const addRefundApply = async (data) => {
 	};
 	let order = await getOrderByConditions(conditions, fields);
 	if (!order) {
+		data.message = "订单不存在";
 		return false;
 	}
+	let goods = Object.assign({}, item, order.goods[index]);
+	if (!goods.refundAmount) {
+		goods.refundAmount = 0;
+	}
+	//判断申请数量是否合法
+	if ((goods.amount - goods.refundAmount) < goods.refundApplyAmount) {
+		data.message = "申请退款数量不合法";
+		return false;
+	}
+	if (goods.isRefunding) {
+		data.message = "正在申请退款";
+		return false;
+	}
+	//将来要减去优惠券分摊部分
+	let total = parseInt(goods.refundApplyAmount * goods.price * 100);
+	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款:" + order.body, goods, order._id);
+	console.log("addRefundResult", addRefundResult);
+	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
+	return await orderCollection.doc(id).update({
+		isRefunding: 1,
+		[`goods.${index}`]: {
+			isRefunding: 1
+		}
+	});
 };
+/**
+ * 分页获取退款申请列表
+ */
+const getRefundApplys = async (data) => {
+	const {
+		page,
+		limit,
+		uid
+	} = data;
+	const res = await orderRefundsCollection.where({
+		uid
+	}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
+	if (res.data.length == 0) {
+		return false;
+	}
+	return res.data;
+}
 /**
  * 创建退款
  * @param {Object} payInfo 
  */
-const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc) {
-	//order_refunds
+const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc, goods, orderId) {
+	let id = await genIdentityId("order_refunds");
 	return await orderRefundsCollection.add({
-		...payInfo,
+		id,
+		orderId,
+		payInfo,
 		uid: uid,
+		state: 0, //0审核中，1审核通过
 		refundStatus: "refunding",
 		refundFee: refundFee,
 		refundDesc: refundDesc,
+		goods,
 		created: new Date().toISOString()
 	});
 }
@@ -535,7 +589,7 @@ const settlement = async (event, context) => {
 						Object.assign(goo, cartMap[key], sku, {
 							hasSku: true,
 							sku_index: index,
-							subName: sku.name.replace('&gt;', ' ')
+							name: sku.name.replace('&gt;', ',')
 						})
 						goodsOut.push(goo);
 					}
@@ -544,7 +598,7 @@ const settlement = async (event, context) => {
 				let key = ele.id + '_0';
 				Object.assign(ele, cartMap[key], {
 					hasSku: false,
-					subName: "",
+					name: "",
 					sku_index: 0,
 					sku_id: 0
 				});
@@ -828,5 +882,6 @@ module.exports = {
 	delete: deletes,
 	makesure,
 	addRefundApply,
-	settlement
+	settlement,
+	getRefundApplys
 }

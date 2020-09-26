@@ -53,6 +53,12 @@ const getOrderStateExp = function(item) {
 
 			//更多自定义
 	}
+	//退款中
+	if(item.isRefunding){
+		stateTip = '退款中';
+		stateTipColor = '#fa436a';
+		stateContent = "订单退款中，请耐心等待审核";
+	}
 	return {
 		stateTip,
 		stateTipColor,

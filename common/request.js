@@ -246,6 +246,25 @@ const orders = function(data) {
 		isShowMask: true
 	})
 }
+/**
+ * 退款
+ * @param {Object} action
+ * @param {Object} data
+ * @param {Object} isShowLoading
+ */
+const refunds = function(action,data,isShowLoading) {
+	return network({
+		url: "cloud-mall",
+		data: {
+			module: "order",
+			action: action,
+			data
+		},
+		auth: true,
+		isShowLoading: isShowLoading,
+		isShowMask: true
+	})
+}
 //最近浏览记录
 const getGoodsVisites = function(data) {
 	return network({
@@ -436,5 +455,6 @@ export {
 	mobileLogin,
 	mobileAutoLogin,
 	sendSms,
-	getUserStatistics
+	getUserStatistics,
+	refunds
 }

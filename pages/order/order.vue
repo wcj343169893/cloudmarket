@@ -140,13 +140,13 @@ export default {
 					page: 0,
 					orderList: []
 				},
-				{
+				/* {
 					state: 4,
 					text: '售后',
 					loadingType: 'more',
 					page: 0,
 					orderList: []
-				}
+				} */
 			]
 		};
 	},

@@ -469,9 +469,17 @@
 			}
 		}, {
 			"path": "pages/admin/search",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
 		}
-	],
+	    ,{
+            "path" : "pages/order/refund",
+            "style" : {
+				"navigationBarTitleText": "退款/售后"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

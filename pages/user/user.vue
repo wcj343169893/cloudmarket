@@ -57,11 +57,12 @@
 				</view>
 			</view>
 			<!-- 订单 -->
+			<view class="order-header" @click="navTo('/pages/order/order?state=0')">
+				<text class="cell-tit clamp">我的订单</text>
+				<text class="cell-tip">全部</text>
+				<text class="cell-more yticon icon-you"></text>
+			</view>
 			<view class="order-section">
-				<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouye"></text>
-					<text>全部订单</text>
-				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-daifukuan">
 						<text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text>
@@ -74,7 +75,11 @@
 					</text>
 					<text>待收货</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover" :hover-stay-time="50">
+					<text class="yticon icon-shouye"></text>
+					<text>待评价</text>
+				</view>
+				<view class="order-item" @click="navTo('/pages/order/refund')" hover-class="common-hover" :hover-stay-time="50">
 					<text class="yticon icon-shouhoutuikuan">
 						<text class="sub" v-if="order.refund > 0">{{ order.refund }}</text>
 					</text>
@@ -468,7 +473,8 @@
 			font-size: $font-base;
 			color: $border-color-light;
 		}
-		.invite{
+
+		.invite {
 			font-size: $font-base;
 			color: #606060;
 		}
@@ -570,10 +576,41 @@
 		}
 	}
 
+	.order-header {
+		display: flex;
+		align-items: center;
+		background: #FFFFFF;
+		margin-top: 20upx;
+		border-radius: 10upx 10upx 0 0;
+		padding: 20upx $page-row-spacing 0;
+
+		.cell-more {
+			align-self: center;
+			font-size: 30upx;
+			color: $font-color-base;
+			margin-left: $uni-spacing-row-sm;
+		}
+
+		.cell-tit {
+			flex: 1;
+			font-size: $font-lg;
+			color: $font-color-dark;
+			margin-right: 10upx;
+		}
+
+		.cell-tip {
+			font-size: $font-sm + 2upx;
+			color: $font-color-light;
+			max-width: 400upx;
+			text-align: right;
+			line-height: 1.2;
+		}
+	}
+
 	.order-section {
 		@extend %section;
+		border-radius: 0 0 10upx 10upx;
 		padding: 28upx 0;
-		margin-top: 20upx;
 
 		.order-item {
 			@extend %flex-center;

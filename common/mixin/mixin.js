@@ -3,7 +3,7 @@ export default{
 		return {
 			page: 0, //页码
 			limit: 10, //每页加载数据量
-			loadingType: 1, //0加载前 1加载中 2没有更多
+			loadingType: "loading", //0加载前 1加载中 2没有更多
 			isLoading: false, //刷新数据
 			loaded: false, //加载完毕
 			isSubmit:false,//是否正在提交数据
