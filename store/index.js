@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import {
-	getUserInfo,getCartList
+	getUserInfo,
+	getCartList
 } from '@/common/request.js';
 const baseUserInfo = {
 	nickname: "游客",
@@ -19,7 +20,7 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		token: '',
 		stationId: 0, //分站id
-		shopId: 123457, //分站店铺id，根据收货地址动态设置
+		shopId: 0, //分站店铺id，根据收货地址动态设置
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
@@ -52,10 +53,10 @@ const store = new Vuex.Store({
 			uni.setStorageSync('uni_id_token_expires', provider.tokenExpired);
 			//设置登录状态
 			state.hasLogin = true;
-			if(provider.userInfo){
+			if (provider.userInfo) {
 				state.userInfo = provider.userInfo;
 				uni.$emit('refreshCart'); //全局更新购物车
-			}else{
+			} else {
 				//更新用户信息
 				this.dispatch('getUserInfo');
 			}
@@ -123,6 +124,7 @@ const store = new Vuex.Store({
 		//修改最近店铺id
 		changeShopId(state, id) {
 			state.shopId = id;
+			this.dispatch('getCartCount');
 		},
 		//更新默认选中分类选项卡分类id
 		changeMainCateId(state, id) {
@@ -156,8 +158,8 @@ const store = new Vuex.Store({
 		updateCartNumber(state, number) {
 			state.cartCount = number;
 		},
-		incrCartNumber(state,step){
-			state.cartCount+=step;
+		incrCartNumber(state, step) {
+			state.cartCount += step;
 		}
 	},
 	actions: {
@@ -182,17 +184,20 @@ const store = new Vuex.Store({
 			});
 		},
 		//更新购物车数量
-		async getCartCount({state, commit}){
+		async getCartCount({
+			state,
+			commit
+		}) {
 			let count = 0;
-			if(state.hasLogin){
+			if (state.hasLogin && state.shopId > 0) {
 				console.log("store getCartList")
 				try {
-					const res =await getCartList({
-						shopid: this.shopId,
+					const res = await getCartList({
+						shopid: state.shopId,
 						opt: "total"
 					})
-					count = res;
-				}catch (err){
+					count = +res;
+				} catch (err) {
 					console.error('更新购物车数量 => ', err);
 				}
 			}

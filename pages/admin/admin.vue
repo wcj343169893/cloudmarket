@@ -12,9 +12,6 @@
 						<view class="">
 							<text>{{ address }}</text>
 						</view>
-						<view class="">
-							<text>{{ notice }}</text>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -35,7 +32,7 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-dingdan" border="" iconColor="#54b4ef" title="订单管理" @eventClick="navToOrder('all')" tips="全部"></mix-list-cell>
+		<mix-list-cell icon="icon-dingdan" iconColor="#54b4ef" title="订单管理" @eventClick="navToOrder('all')" tips="全部"></mix-list-cell>
 		<view class="cover-container">
 			<!-- 订单信息统计 -->
 			<view class="order-section">
@@ -275,8 +272,7 @@
 	}
 
 	.basic-section {
-		height: 300upx;
-		padding: 160upx 30upx 0;
+		padding: 160upx 30upx 20rpx;
 		position: relative;
 
 		// padding-top: calc(var(--status-bar-height) + 80upx);
@@ -318,7 +314,6 @@
 	.cover-container {
 		background: $page-color-base;
 		margin-top: 0upx;
-		padding: 20upx 30upx;
 		position: relative;
 		background: #f5f5f5;
 		padding-bottom: 20upx;
@@ -334,7 +329,7 @@
 
 	.order-section {
 		@extend %section;
-		padding: 28upx 0;
+		padding: 16upx 0;
 		flex-wrap: wrap;
 		justify-content: flex-start;
 
@@ -413,6 +408,7 @@
 		color: #ffffff;
 		border-radius: 10rpx;
 		justify-content: space-between;
+		margin: 0 20rpx;
 
 		.fast-actions {
 			padding: 10rpx 20rpx;

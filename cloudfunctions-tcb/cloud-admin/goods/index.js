@@ -4,8 +4,7 @@ const cmd = db.command;
 const goodsCollection = db.collection("cloud_goods");
 const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const {
-	genIdentityId,
-	shopGoodsInc
+	genIdentityId
 } = require('base-common');
 const list = async (data, context) => {
 	const {
@@ -68,6 +67,12 @@ const list = async (data, context) => {
 			fields["deleteOperator"] = 1;
 			goodsCollection2 = goodsDeleteCollection;
 			break;
+		case "tuangou":
+			//团购
+			conditions["tuangou"] = cmd.exists(true);
+			conditions["tuangou.pickup"] = cmd.gt(time);
+			order = ["tuangou.pickup", "asc"];
+			break;
 		case "miaosha":
 			//2秒杀,必须是有效的
 			conditions["miaosha"] = cmd.exists(true);
@@ -96,10 +101,12 @@ const list = async (data, context) => {
 		case "yuding":
 			//预售
 			conditions["yuding"] = cmd.exists(true);
+			order = ["yuding.endTime", "desc"];
 			break;
 		case "baokuan":
 			//爆款,按销量排序
 			order = ["monthlySale", "desc"];
+			conditions["monthlySale"] = cmd.gt(100)
 			break;
 		case "shouqin":
 			//即将售罄，库存小于10
@@ -164,10 +171,6 @@ const save = async (data, context) => {
 	//是否销售
 	data["isSold"] = 1;
 	let res = await goodsCollection.add(data);
-	//更新店铺商品统计
-	if (res.id) {
-		await shopGoodsInc(data.shopid, "online", 1);
-	}
 	return res.id;
 }
 /**
@@ -216,7 +219,6 @@ const deletes = async (data) => {
 			//已下架商品
 			type = "offline";
 		}
-		await shopGoodsInc(data.shopid, "delete", 1, type);
 	}
 	return res;
 }
@@ -254,7 +256,6 @@ const reverts = async (data) => {
 			//已下架商品
 			type = "offline";
 		}
-		await shopGoodsInc(data.shopid, type, 1, "delete");
 	}
 	return res;
 }
@@ -276,7 +277,6 @@ const cleans = async (data) => {
 		_id: data._id,
 		shopid: data.shopid
 	}).remove();
-	await shopGoodsInc(data.shopid, "delete", -1);
 	console.log("清理已删除商品", res)
 	return res;
 }
@@ -296,10 +296,6 @@ const soldOut = async (data) => {
 		operator: data.operator, //操作者
 		offlineTime: new Date().getTime()
 	});
-	if (res.updated == 1) {
-		//店铺商品统计
-		await shopGoodsInc(data.shopid, "offline", 1, "online");
-	}
 	return res;
 }
 /**
@@ -318,10 +314,6 @@ const soldIn = async (data) => {
 		onlineTime: new Date().getTime()
 	});
 	console.log("soldIn", res);
-	if (res.updated == 1) {
-		//店铺商品统计
-		await shopGoodsInc(data.shopid, "online", 1, "offline");
-	}
 	return res;
 }
 /**

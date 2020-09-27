@@ -4,6 +4,14 @@ export default {
 			searchWord: ""
 		}
 	},
+	computed: {
+		statusBarHeight() {
+			return this.systemInfo.statusBarHeight;
+		},
+		navigationBarHeight() {
+			return this.systemInfo.navigationBarHeight;
+		}
+	},
 	// #ifndef MP
 	onNavigationBarSearchInputClicked: async function(e) {
 		console.log('搜索');

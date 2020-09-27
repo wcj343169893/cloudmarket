@@ -86,6 +86,7 @@ const getGoodsTypes = function() {
 		online: '在售',
 		baokuan: '爆款',
 		miaosha: '正在秒杀',
+		tuangou: '团购',
 		yuding: '预售',
 		shouqin: '即将售罄',
 		offline: '已下架',

@@ -264,7 +264,7 @@
 				</view>
 				<mix-list-select title="退款类型" :options="refundTypes" border="b-b" :defaultOption="'1'" @eventClick="changeRefundType"></mix-list-select>
 				<mix-list-select title="退款原因" :options="refundReasons" border="b-b" :defaultOption="'1'" @eventClick="changeRefundReason"></mix-list-select>
-				<mix-list-input title="退款描述" defContent="" placeholder="请简要描述" @change="changeRefundContent"></mix-list-input>
+				<mix-list-input title="问题描述" defContent="" placeholder="请简要描述" @change="changeRefundContent"></mix-list-input>
 				<view class="mix-list-cell" @click="uploadRefundImgs">
 					<text class="cell-tit clamp">上传图片</text>
 					<view class="cell-tip">最多上传5张</view>

@@ -394,12 +394,16 @@ const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc, goods
 		orderId,
 		payInfo,
 		uid: uid,
-		state: 0, //0审核中，1审核通过
-		refundStatus: "refunding",
-		refundFee: refundFee,
-		refundDesc: refundDesc,
+		state: "verifying", //verifying审核中，successed成功,failed失败
+		fee: refundFee,
+		description: refundDesc,
 		goods,
-		created: new Date().toISOString()
+		created: new Date().toISOString(),
+		steps: [{
+			title: "提交申请",
+			desc: "您的退款已申请成功，待客服审核中",
+			time: new Date().toISOString()
+		}]
 	});
 }
 /**

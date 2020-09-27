@@ -6,6 +6,8 @@ const {
 	genIdentityId
 } = require('base-common');
 const shopCollection = db.collection("cloud_shops");
+const ordersCollection = db.collection("cloud_orders");
+const orderRefundsCollection = db.collection("cloud_order_refunds");
 const models = {
 	//我的信息
 	async mine(data, context) {
@@ -13,7 +15,8 @@ const models = {
 			"id", "nickname", "my_invite_code",
 			"gender", "status", "mobile", "email",
 			"mobile_confirmed", "balance",
-			"email_confirmed", "avatar", "comment", "birthday"
+			"email_confirmed", "avatar", "comment", "birthday",
+			"coupons", "score"
 		]);
 		//查询报错
 		if (res.code > 0) {
@@ -30,6 +33,15 @@ const models = {
 			console.log("save user id", result);
 			res.userInfo.id = id;
 		}
+		//设置默认值
+		res.userInfo = Object.assign({
+			balance: 0,
+			coupons: 0,
+			score: 0,
+			nickname: "游客",
+			gender: 3,
+			birthday: ""
+		}, res.userInfo)
 		return res.userInfo;
 	},
 	//信息统计
@@ -40,7 +52,7 @@ const models = {
 		}
 		let info = res.userInfo;
 		//处理余额为2位小数
-		info.balance = info.balance ? info.balance.toFixed(2) : 0;
+		info.balance = info.balance ? info.balance.toFixed(2) * 1 : 0;
 		if (info.admin) {
 			//查询店铺的订单统计情况,以及店铺信息
 			let shops = await shopCollection.where({
@@ -62,6 +74,7 @@ const models = {
 		info.time = new Date().getTime();
 		//88/年
 		info.vipPrice = 88;
+		await this.getOrderStatistics(info);
 		return info;
 	},
 	//开通会员，后续完成
@@ -90,14 +103,64 @@ const models = {
 			uid: data.uid,
 			...entity
 		});
-	}
+	},
+	/**
+	 * 获取用户订单真实统计,与order字段不冲突
+	 * @param {Object} info
+	 */
+	async getOrderStatistics(info) {
+		//类型,-2:deleted已删除，-1:canceled已取消，0:unpaid未付款，1:payup已付款，
+		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+		let statistics = {
+			unpaid: {
+				state: 0
+			},
+			payup: {
+				state: cmd.in([1, 2])
+			},
+			received: {
+				state: 3
+			}
+		};
+		for (let key in statistics) {
+			info["order"][key] = await this.getOrderStatisticsByCondition(info.id, statistics[key])
+		}
+		//退款条数
+		info["order"]["refund"] = await this.getOrderRefundStatisticsByCondition(info.id, {
+			state: "verifying"
+		})
+	},
+	/**
+	 * 根据订单条件，查询总条数
+	 * @param {Object} uid
+	 * @param {Object} condition
+	 */
+	async getOrderStatisticsByCondition(uid, condition) {
+		let res = await ordersCollection.where({
+			uid,
+			...condition
+		}).count();
+		return res.total;
+	},
+	/**
+	 * 查询退款申请条数
+	 * @param {Object} uid
+	 */
+	async getOrderRefundStatisticsByCondition(uid, condition) {
+		let res = await orderRefundsCollection.where({
+			uid,
+			...condition
+		}).count();
+		return res.total;
+	},
 }
 /**
  * uniid插件还未发布的方法
  */
 const getUserInfo = async (uid, field) => {
 	return await uniID.getUserInfo({
-		uid,field
+		uid,
+		field
 	});
 }
 

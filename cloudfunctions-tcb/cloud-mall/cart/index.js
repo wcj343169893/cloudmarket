@@ -231,7 +231,7 @@ const models = {
 		if (res2.data.length > 0) {
 			return  res2.data[0].totalAmount;
 		}
-		return 0
+		return "0"
 	}
 }
 

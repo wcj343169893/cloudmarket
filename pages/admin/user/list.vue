@@ -2,10 +2,10 @@
 	<view class="container">
 		<view class="titleNview-placing"></view>
 		<!-- 顶部筛选 分类栏 -->
-		<view class="top">
+		<view class="top" :style="{top:(navigationBarHeight+statusBarHeight)+'px'}">
 			<!-- 排序 -->
 			<view class="sort-bar row">
-				<view class="item row center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
+				<view class="sort-bar-item row center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
 				 :key="index" @click="changeSort(item)">
 					<text>{{ item.name }}</text>
 					<view v-if="item.isPrice" class="icon-wrap">
@@ -124,6 +124,9 @@
 					res.forEach(usr => {
 						if (!usr.balance) {
 							usr.balance = 0;
+						}
+						if (!usr.avatar) {
+							usr.avatar = "/static/missing-face.png";
 						}
 					})
 					this.userList = this.userList.concat(res);
@@ -265,12 +268,13 @@
 		width: $width;
 		height: $width;
 		margin-right: 12rpx;
-		border-radius: 20rpx;
+		border-radius: 50%;
 		overflow: hidden;
 
 		image {
 			width: $width;
 			height: $width;
+			border-radius: 50%;
 		}
 	}
 
@@ -296,8 +300,10 @@
 		background-color: #fff;
 		position: relative;
 		z-index: 1;
+		display: flex;
+		margin: 0;
 
-		.item {
+		.sort-bar-item {
 			flex: 1;
 			height: 100%;
 			font-size: 28rpx;
@@ -347,7 +353,7 @@
 			padding-left: 8rpx;
 		}
 
-		.mix-icon {
+		.yticon {
 			font-size: 14rpx;
 			color: #bbb;
 		}
@@ -396,7 +402,7 @@
 
 	.titleNview-placing {
 		height: var(--status-bar-height);
-		padding-top: 88rpx;
+		padding-top: 80rpx;
 		box-sizing: content-box;
 	}
 </style>

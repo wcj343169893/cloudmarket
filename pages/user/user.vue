@@ -76,7 +76,9 @@
 					<text>待收货</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover" :hover-stay-time="50">
-					<text class="yticon icon-shouye"></text>
+					<text class="yticon icon-shouye">
+						<text class="sub" v-if="order.received > 0">{{ order.received }}</text>
+					</text>
 					<text>待评价</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/refund')" hover-class="common-hover" :hover-stay-time="50">

@@ -190,6 +190,9 @@
 				this.tabtap({
 					id: v
 				});
+			},shopId(id){
+				console.log('watch 店铺id改变,刷新当前页面');
+				this.loadData();
 			}
 		},
 		onLoad() {
