@@ -472,17 +472,26 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
-		}
-	    ,{
-            "path" : "pages/order/refund",
-            "style" : {
+		}, {
+			"path": "pages/order/refund",
+			"style": {
 				"navigationBarTitleText": "退款/售后"
 			}
-        }
-        ,{
-            "path" : "pages/order/refundDetail",
-            "style" : {
+		}, {
+			"path": "pages/order/refundDetail",
+			"style": {
 				"navigationBarTitleText": "退款详情"
+			}
+		}, {
+			"path": "pages/admin/set/pages",
+			"style": {
+				"navigationBarTitleText": "页面配置"
+			}
+		}
+	    ,{
+            "path" : "pages/admin/order/refund",
+            "style" : {
+				"navigationBarTitleText": "退款申请"
 			}
         }
     ],

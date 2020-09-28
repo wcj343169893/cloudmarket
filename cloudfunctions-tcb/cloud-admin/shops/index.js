@@ -4,6 +4,8 @@ const cmd = db.command;
 const shopCollection = db.collection("cloud_shops");
 const goodsCollection = db.collection("cloud_goods");
 const goodsDeleteCollection = db.collection("cloud_goods_deletes");
+const ordersCollection = db.collection("cloud_orders");
+const orderRefundsCollection = db.collection("cloud_order_refunds");
 const modules = {
 	/**
 	 * 获取店铺信息
@@ -20,8 +22,10 @@ const modules = {
 			return false;
 		}
 		let shop = res.data[0];
+		//实时统计订单数量
+		await this.getOrderStatistics(shop);
 		//实时统计商品数量
-		await this.getGoodsCount(shop);
+		await this.getGoodsStatistics(shop);
 		return shop;
 	},
 	/**
@@ -35,15 +39,46 @@ const modules = {
 		if (data.latitude && data.longitude) {
 			data.lnglat = new db.Geo.Point(data.longitude, data.latitude);
 		}
+		console.log(data);
 		return await shopCollection.where({
 			id: shopid
 		}).update(data);
 	},
 	/**
+	 * 查询店铺订单统计
+	 * @param {Object} shop
+	 */
+	async getOrderStatistics(shop) {
+		let time = new Date().getTime();
+		//-2:deleted已删除，-1:canceled已取消，0:unpaid未付款，1:payup已付款，
+		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
+		let statistics = {
+			all: {
+				state: cmd.gt(-1)
+			},
+			unpaid: {
+				state: 0
+			},
+			payup: {
+				state: 1
+			},
+			estimated: {
+				state: 4
+			}
+		}
+		for (let key in statistics) {
+			shop["order"][key] = await this.getOrderStatisticsByCondition(shop.id, statistics[key]);
+		}
+		//退款中的数量
+		shop["order"]["refunded"] = await this.getOrderRefundStatisticsByCondition(shop.id, {
+			state: "verifying"
+		});
+	},
+	/**
 	 * 获取商品统计
 	 * @param {Object} shop
 	 */
-	async getGoodsCount(shop) {
+	async getGoodsStatistics(shop) {
 		let time = new Date().getTime();
 		//在售，秒杀，预售，团购，下架，已删除
 		let statistics = {
@@ -66,7 +101,7 @@ const modules = {
 			},
 			shouqin: {
 				isSold: 1,
-				stock: cmd.gt(10)
+				stock: cmd.lt(10)
 			},
 			baokuan: {
 				isSold: 1,
@@ -96,6 +131,20 @@ const modules = {
 	 */
 	async getGoodsStatisticsByCondition(shopid, condition) {
 		let res = await goodsCollection.where({
+			shopid,
+			...condition
+		}).count();
+		return res.total;
+	},
+	async getOrderStatisticsByCondition(shopid, condition) {
+		let res = await ordersCollection.where({
+			shopid,
+			...condition
+		}).count();
+		return res.total;
+	},
+	async getOrderRefundStatisticsByCondition(shopid, condition) {
+		let res = await orderRefundsCollection.where({
 			shopid,
 			...condition
 		}).count();

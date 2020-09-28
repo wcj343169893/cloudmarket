@@ -50,10 +50,14 @@
 				<text>{{ item.name }}</text>
 			</view>
 		</view>
+		<view class="shop-notice m-t" v-if="shop.notice && shop.notice.length>0">
+			<text class="yticon icon-gonggao"></text>
+			<text>{{shop.notice}}</text>
+		</view>
 		<block v-if="miaoshaList && miaoshaList.length > 0">
 			<view class="f-header m-t" @click="navToSecKillGoods">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">限时抢购</text></view>
+				<view class="tit-box"><text class="tit">{{titles.miaosha}}</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<miaoshaPage :miaoshaList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
@@ -61,15 +65,22 @@
 		<block v-if="tuangouList && tuangouList.length > 0">
 			<view class="f-header m-t" @click="navTo('/pages/index/tuangou')">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">限时团购</text></view>
+				<view class="tit-box"><text class="tit">{{titles.tuangou}}</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
 			<tuangouPage :tuangouList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		</block>
+		<block v-if="yudingList && yudingList.length > 0">
+			<view class="f-header m-t">
+				<view class="icon">&nbsp;</view>
+				<view class="tit-box"><text class="tit">{{titles.yuding}}</text></view>
+			</view>
+			<yudingPage :yudingList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
+		</block>
 		<block v-if="newestList.length > 0">
 			<view class="f-header m-t">
 				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">实时鲜货</text></view>
+				<view class="tit-box"><text class="tit">{{titles.newest}}</text></view>
 			</view>
 			<scroll-view scroll-y="true">
 				<view class="newest-section">
@@ -149,6 +160,7 @@
 	import pageHeader from './components/page-header.vue';
 	import tuangouPage from './components/tuan.vue';
 	import miaoshaPage from './components/miaosha.vue';
+	import yudingPage from './components/yuding.vue';
 	import tabbarMixin from './mixin/tabbar' 
 	import {
 		getHomeFruitData,
@@ -168,7 +180,8 @@
 		components: {
 			pageHeader,
 			tuangouPage,
-			miaoshaPage
+			miaoshaPage,
+			yudingPage
 		},
 		data() {
 			return {
@@ -185,9 +198,11 @@
 				miaoshaList: [],
 				newestList: [],
 				tuangouList: [],
+				yudingList: [],
 				shop: {},
 				skuGoods: {},
 				share: {},
+				titles: {},
 				skuGoodsSelected: ''
 			};
 		},
@@ -306,7 +321,12 @@
 					this.tuangouList = res.tuangou;
 					this.tuangouList.forEach(item => {
 						updateGoodsTags(item);
+					});	
+					this.yudingList = res.yuding;
+					this.yudingList.forEach(item => {
+						updateGoodsTags(item);
 					});
+					this.titles = res.titles;
 					//this.address = res.address;
 					//购物车总数量
 					/* if(res.cart > 0){
@@ -993,6 +1013,16 @@
 		align-items: center;
 		.pa{
 			flex: 1;
+		}
+	}
+	.shop-notice{
+		font-size: $font-sm;
+		color: $font-color-emphasis;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.icon-gonggao{
+			font-size: $font-sm;
 		}
 	}
 </style>

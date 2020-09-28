@@ -110,6 +110,7 @@ const list = async (data, context) => {
 			break;
 		case "shouqin":
 			//即将售罄，库存小于10
+			conditions["isSold"] = 1;
 			conditions["stock"] = cmd.lt(10);
 			order = ["stock", "asc"];
 			break;

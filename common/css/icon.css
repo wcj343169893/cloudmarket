@@ -372,3 +372,6 @@
 .icon-tongji::before {
 	content: '\e813';
 }
+.icon-gonggao::before {
+	content: '\e814';
+}

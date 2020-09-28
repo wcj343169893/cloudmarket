@@ -23,7 +23,7 @@
 					</view>
 					<view class="attr-box">
 						<text>数量:</text>
-						<text>{{item.goods.refundApplyAmount}}</text>
+						<text>{{item.refundApplyAmount}}</text>
 					</view>
 				</view>
 			</view>
@@ -52,7 +52,6 @@
 					page: this.page,
 					limit: this.limit
 				}, false).then(res => {
-					//退款将退回至您的  账户，请注意查收
 					this.buildData(res);
 					if (this.page == 1) {
 						this.refundList = res;

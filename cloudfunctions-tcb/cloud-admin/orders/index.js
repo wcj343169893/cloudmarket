@@ -5,6 +5,7 @@ const {
 	updateUserOrderCount
 } = require('base-common');
 const orderCollection = db.collection("cloud_orders");
+const orderRefundsCollection = db.collection("cloud_order_refunds");
 const {
 	print
 } = require('printers');
@@ -13,12 +14,13 @@ const list = async (data, context) => {
 		page,
 		limit,
 		key,
-		state
+		state,
+		shopid
 	} = data;
 	//0全部，1待付款，2已付款，待收货，3待评价
 	//实际状态值：-2删除，-1取消，0未付款，1已付款，2已发货，3已收货待评价
 	let conditions = {
-		shopid: data.shopid
+		shopid: shopid
 	};
 	let time = new Date().getTime();
 	//'payup':"未发货", 'delivered':'已发货', 'received':'已收货', 'estimated':'已评价', 'refunded':'退款/售后'
@@ -45,7 +47,7 @@ const list = async (data, context) => {
 			conditions["state"] = 4;
 			break;
 		case "refunded":
-			//售后----待定
+			//售后----待定getRefunded
 			conditions["state"] = 4;
 			break;
 		default:
@@ -81,6 +83,97 @@ const list = async (data, context) => {
 		return false;
 	}
 	return res.data;
+}
+/**
+ * 分页查询退款申请
+ */
+const getRefunded = async (data) => {
+	const {
+		page,
+		limit,
+		key,
+		state,
+		shopid
+	} = data;
+	const res = await orderRefundsCollection.where({
+		shopid,
+		state
+	}).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).get();
+	if (res.data.length == 0) {
+		return false;
+	}
+	return res.data;
+}
+/**
+ * 退款审核通过
+ */
+const passedRefund = async (data) => {
+	const {
+		id,
+		shopid,
+		operator
+	} = data;
+	let order = await getOrderRefundById({
+		shopid,
+		_id: id
+	});
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	const res = await orderRefundsCollection.doc(id).update({
+		state: "successed",
+		steps: cmd.unshift({
+			title: "退款中",
+			operator,
+			desc: "您的退款申请已通过，待财务退款中",
+			time: new Date().toISOString()
+		})
+	});
+	//更新主订单
+	await orderCollection.doc(order.orderId).update({
+		isRefunding: cmd.inc(-1),
+		[`goods.${order.index}`]: {
+			refundAmount:cmd.inc(order.refundApplyAmount),
+			isRefunding: cmd.remove()
+		}
+	});
+	return res;
+}
+/**
+ * 退款审核失败
+ */
+const refuseRefund = async (data) => {
+	const {
+		id,
+		shopid,
+		operator
+	} = data;
+	let order = await getOrderRefundById({
+		shopid,
+		_id: id
+	});
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	const res = await orderRefundsCollection.doc(id).update({
+		state: "failed",
+		steps: cmd.unshift({
+			title: "退款失败",
+			operator,
+			desc: "您的退款申请已拒绝",
+			time: new Date().toISOString()
+		})
+	});
+	//更新主订单
+	await orderCollection.doc(order.orderId).update({
+		isRefunding: cmd.inc(-1),
+		[`goods.${order.index}`]: {
+			isRefunding: cmd.remove()
+		}
+	});
+	return res;
 }
 /**
  * 订单发货
@@ -152,6 +245,9 @@ const selftake = async (data) => {
 	let resUser = await updateUserOrderCount(order.uid, "received", 1, "delivered", order.shopid);
 	return res;
 }
+/**
+ * 查询订单
+ */
 const getOrderById = async (conditions, field) => {
 	if (!field) {
 		field = {
@@ -167,6 +263,25 @@ const getOrderById = async (conditions, field) => {
 	return data.data[0];
 }
 /**
+ * 查询退款
+ */
+const getOrderRefundById = async (conditions, field) => {
+	if (!field) {
+		field = {
+			refundApplyAmount: 1,
+			orderId: 1,
+			state: 1,
+			shopid: 1,
+			uid: 1
+		};
+	}
+	let data = await orderRefundsCollection.where(conditions).field(field).limit(1).get();
+	if (data.data.length == 0) {
+		return false;
+	}
+	return data.data[0];
+}
+/**
  * 打印订单
  */
 const printOrder = async (data) => {
@@ -176,7 +291,7 @@ const printOrder = async (data) => {
 	};
 	//查询订单
 	const order = await getOrderById(conditions, {});
-	if(!order){
+	if (!order) {
 		return false;
 	}
 	//打印小票
@@ -189,5 +304,8 @@ module.exports = {
 	detail: detail,
 	addDelivery: addDelivery,
 	selftake,
-	print:printOrder
+	print: printOrder,
+	getRefunded,
+	passedRefund,
+	refuseRefund
 }

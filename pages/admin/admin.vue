@@ -166,11 +166,6 @@
 						number: number
 					});
 				}
-				this.orderTypes.unshift({
-					name: '全部',
-					state: 'all',
-					number: sum
-				});
 				this.order['sum'] = sum;
 				//商品类型,"online"在售,"miaosha"秒杀,"yuding"预售,"baokuan"爆款,"shouqin"即将售罄
 				let goodsTypes = getGoodsTypes();
@@ -188,8 +183,13 @@
 				}
 			},
 			navToOrder(state) {
+				console.log(state)
 				let shopid = this.shopid;
-				this.navTo(`/pages/admin/order/list?state=${state}&shopid=${shopid}`);
+				if(state=="refunded"){
+					this.navTo(`/pages/admin/order/refund?state=verifying&shopid=${shopid}`);
+				}else{
+					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${shopid}`);
+				}
 			},
 			navToGoods(item) {
 				let shopid = this.shopid;
@@ -202,9 +202,6 @@
 				});
 			},
 			navTo(url) {
-				/* if (!this.hasLogin) {
-					url = '/pages/public/login';
-				} */
 				uni.navigateTo({
 					url
 				});

@@ -3,8 +3,8 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "order",
-	"action": "settlement",
+	"module": "home",
+	"action": "index",
 	"data": {
 	}
 }

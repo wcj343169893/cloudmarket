@@ -97,7 +97,7 @@
 		data() {
 			return {
 				shopid: 0,
-				state: 0,
+				state: "",
 				limit: 20,
 				loaded: false,
 				loadingType: 'more',

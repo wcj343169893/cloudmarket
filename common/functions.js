@@ -54,7 +54,7 @@ const getOrderStateExp = function(item) {
 			//更多自定义
 	}
 	//退款中
-	if(item.isRefunding){
+	if (item.isRefunding > 0) {
 		stateTip = '退款中';
 		stateTipColor = '#fa436a';
 		stateContent = "订单退款中，请耐心等待审核";
@@ -70,6 +70,7 @@ const getOrderStateExp = function(item) {
  */
 const getOrderTypes = function() {
 	return {
+		'all': "全部",
 		'unpaid': "待付款", //改价格
 		'payup': "待发货",
 		//'delivered': '已发货',
@@ -136,7 +137,7 @@ const getCartSumNumber = function() {
  * @param {Object} number
  */
 const incrCartNumber = function(number) {
-	console.log("incrCartNumber",number)
+	console.log("incrCartNumber", number)
 	let data = getCartSumNumber();
 	data += number;
 	updateCartNumber(data);
@@ -193,13 +194,13 @@ const updateGoodsTags = function(goods, isPrecise) {
 				if (index != -1) {
 					goods.miaosha.skuIndex = index;
 					let sku = goods.skus[index];
-					goods.miaosha.originPrice=sku.price;
+					goods.miaosha.originPrice = sku.price;
 					if (isPrecise) {
 						sku.tags = [{
 							type: "warning",
 							text: "抢购中"
 						}];
-					}else{
+					} else {
 						Object.assign(goods.skus[index], {
 							originPrice: sku.price,
 							price: goods.miaosha.price,
@@ -228,7 +229,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 				goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
 			}
 			//console.log("goods.miaosha",goods)
-		}else{
+		} else {
 			goods.miaosha.isBegin = true;
 			goods.miaosha.isEnd = true;
 		}
@@ -238,19 +239,27 @@ const updateGoodsTags = function(goods, isPrecise) {
 				//更新商品价格
 				goods.price = parseFloat((goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2));
 			}
-			tags.push({
-				type: "info",
-				text: "预售"
-			});
+			goods.yuding.isBegin = goods.yuding.beginTime < time;
+			if (goods.yuding.isBegin) {
+				tags.push({
+					type: "warning",
+					text: "预售进行中"
+				});
+			} else {
+				tags.push({
+					type: "info",
+					text: "预售"
+				});
+			}
 		} else {
 			delete goods.yuding;
 		}
-	}else if(goods.tuangou){
+	} else if (goods.tuangou) {
 		tags.push({
 			type: "info",
 			text: "团购"
 		});
-		if(goods.price >goods.tuangou.price ){
+		if (goods.price > goods.tuangou.price) {
 			goods.originPrice = goods.price;
 			goods.price = goods.tuangou.price;
 		}
@@ -341,7 +350,7 @@ const miaoshaCountDown = function(item, endTime, callback) {
 	if (countDownTimerMap[timerId]) {
 		clearInterval(countDownTimerMap[timerId]);
 	}
-	console.log("timerId",timerId)
+	console.log("timerId", timerId)
 	let tick = function() {
 		let n1 = lastTime - startTime;
 		//这里判断很关键，如果写1，在1秒之内，会重复调用

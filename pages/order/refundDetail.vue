@@ -23,22 +23,22 @@
 			<text>退款类型</text>
 		</view>
 		<view class="content">
-			<text>{{goods.refundType}}</text>
+			<text>{{refundType}}</text>
 		</view>
 		<view class="header header2 b-b">
 			<text>退款原因</text>
 		</view>
 		<view class="content">
-			<text>{{goods.refundReason}}</text>
+			<text>{{refundReason}}</text>
 		</view>
 		<view class="header header2 b-b">
 			<text>问题描述</text>
 		</view>
 		<view class="content">
-			<text v-if="goods.refundContent">{{goods.refundContent}}</text>
+			<text v-if="refundContent">{{refundContent}}</text>
 			<text v-else>无</text>
-			<view class="imgs" v-if="goods.refundImgs && goods.refundImgs.length>0">
-				<view v-for="(item,index) in goods.refundImgs" :key="index">
+			<view class="imgs" v-if="refundImgs && refundImgs.length>0">
+				<view v-for="(item,index) in refundImgs" :key="index" @click="preview(refundImgs,index)">
 					<image :src="item" mode="aspectFill"></image>
 				</view>
 			</view>
@@ -77,6 +77,12 @@
 					}
 					this[key] = detail[key]
 				}
+			},
+			preview(urls, index) {
+				uni.previewImage({
+					urls: urls,
+					current: index
+				})
 			}
 		}
 	}

@@ -66,7 +66,11 @@ const models = {
 				order: 1,
 				banner: 1
 			}).orderBy("id", "desc").limit(30).get();
-			info.admin = shops.data;
+			info.admin = [];
+			for (let shop of shops.data) {
+				await this.getShopOrderStatistics(shop);
+				info.admin.push(shop);
+			}
 		}
 		//免费开通会员最后期限
 		info.lastFreeVip = 1601530971745;
@@ -123,21 +127,52 @@ const models = {
 			}
 		};
 		for (let key in statistics) {
-			info["order"][key] = await this.getOrderStatisticsByCondition(info.id, statistics[key])
+			info["order"][key] = await this.getOrderStatisticsByCondition({
+				uid: info.id,
+				...statistics[key]
+			})
 		}
 		//退款条数
-		info["order"]["refund"] = await this.getOrderRefundStatisticsByCondition(info.id, {
+		info["order"]["refund"] = await this.getOrderRefundStatisticsByCondition({
+			uid: info.id,
 			state: "verifying"
 		})
+	},
+	/**
+	 * 查询店铺订单统计
+	 * @param {Object} shop
+	 */
+	async getShopOrderStatistics(shop) {
+		let statistics = {
+			unpaid: {
+				state: 0
+			},
+			payup: {
+				state: 1
+			},
+			estimated: {
+				state: 4
+			}
+		}
+		for (let key in statistics) {
+			shop["order"][key] = await this.getOrderStatisticsByCondition({
+				shopid: shop.id,
+				...statistics[key]
+			});
+		}
+		//退款中的数量
+		shop["order"]["refunded"] = await this.getOrderRefundStatisticsByCondition({
+			shopid: shop.id,
+			state: "verifying"
+		});
 	},
 	/**
 	 * 根据订单条件，查询总条数
 	 * @param {Object} uid
 	 * @param {Object} condition
 	 */
-	async getOrderStatisticsByCondition(uid, condition) {
+	async getOrderStatisticsByCondition(condition) {
 		let res = await ordersCollection.where({
-			uid,
 			...condition
 		}).count();
 		return res.total;
@@ -146,9 +181,8 @@ const models = {
 	 * 查询退款申请条数
 	 * @param {Object} uid
 	 */
-	async getOrderRefundStatisticsByCondition(uid, condition) {
+	async getOrderRefundStatisticsByCondition(condition) {
 		let res = await orderRefundsCollection.where({
-			uid,
 			...condition
 		}).count();
 		return res.total;

@@ -265,14 +265,14 @@
 				<mix-list-select title="退款类型" :options="refundTypes" border="b-b" :defaultOption="'1'" @eventClick="changeRefundType"></mix-list-select>
 				<mix-list-select title="退款原因" :options="refundReasons" border="b-b" :defaultOption="'1'" @eventClick="changeRefundReason"></mix-list-select>
 				<mix-list-input title="问题描述" defContent="" placeholder="请简要描述" @change="changeRefundContent"></mix-list-input>
-				<view class="mix-list-cell" @click="uploadRefundImgs">
+				<view class="mix-list-cell" @click="uploadRefundImgs()">
 					<text class="cell-tit clamp">上传图片</text>
-					<view class="cell-tip">最多上传5张</view>
+					<view class="cell-tip">选择图片</view>
 					<text class="cell-more yticon icon-you"></text>
 				</view>
 				<view class="imgs b-b">
 					<scroll-view scroll-x class="h-list" v-if="refundImgs && refundImgs.length > 0">
-						<view v-for="(item, index) in refundImgs" :key="index" class="h-list-image">
+						<view v-for="(item, index) in refundImgs" :key="index" class="h-list-image" @click="replaceImg(index)">
 							<image :src="item" mode="aspectFill"></image>
 						</view>
 					</scroll-view>
@@ -475,10 +475,23 @@
 					'order_refund',
 					5,
 					srcs => {
-						this.refundImgs = srcs;
+						this.refundImgs = this.refundImgs.concat(srcs);
 					},
 					srcs => {
-						this.refundItem.refundImgs = srcs;
+						this.refundItem.refundImgs = this.refundItem.refundImgs.concat(srcs);
+					}
+				);
+			},
+			replaceImg(index) {
+				uploadFiles(
+					'order_refund',
+					1,
+					srcs => {
+						//this.refundImgs[index] = srcs[0];
+						this.$set(this.refundImgs,index,srcs[0])
+					},
+					srcs => {
+						this.refundItem.refundImgs[index] = srcs[0];
 					}
 				);
 			},
