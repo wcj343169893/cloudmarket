@@ -153,7 +153,7 @@ const models = {
 		}
 		//退款条数
 		info["order"]["refund"] = await this.getOrderRefundStatisticsByCondition({
-			uid: info.id,
+			uid: info._id,
 			state: "verifying"
 		})
 	},
