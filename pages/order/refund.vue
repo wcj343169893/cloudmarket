@@ -52,6 +52,7 @@
 					page: this.page,
 					limit: this.limit
 				}, false).then(res => {
+					this.loaded = true;
 					this.buildData(res);
 					if (this.page == 1) {
 						this.refundList = res;
@@ -63,6 +64,7 @@
 					}
 				},err=>{
 					this.loadingType = "noMore";
+					this.loaded = true;
 				})
 			},
 			buildData(data) {

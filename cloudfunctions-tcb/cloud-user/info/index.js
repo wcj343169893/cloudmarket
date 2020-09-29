@@ -147,7 +147,7 @@ const models = {
 		};
 		for (let key in statistics) {
 			info["order"][key] = await this.getOrderStatisticsByCondition({
-				uid: info.id,
+				uid: info._id,
 				...statistics[key]
 			})
 		}
