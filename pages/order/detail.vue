@@ -22,7 +22,9 @@
 				</view>
 				<!-- 退款进度 -->
 				<view class="apply-list" v-if="info.cancelApply">
-					<text class="title">取消进度：</text>
+					<view class="title">
+						<text>取消进度：</text>
+					</view>
 					<view class="apply-list-content">
 						<view v-for="(ca, iCa) in info.cancelApply" :key="iCa" class="weui-flex">
 							<text>{{ ca.message }}</text>
@@ -314,7 +316,7 @@
 				stateContent: '',
 				stateTipColor: '',
 				info: {
-					
+
 				},
 				isYuding: false,
 				isRefundAll: false,
@@ -363,6 +365,11 @@
 		},
 		computed: {
 			...mapState(['stationId'])
+		},
+		onUnload() {
+			uni.removeStorage({
+				key: 'orderDetail'
+			})
 		},
 		methods: {
 			async loadData() {
@@ -489,7 +496,7 @@
 					1,
 					srcs => {
 						//this.refundImgs[index] = srcs[0];
-						this.$set(this.refundImgs,index,srcs[0])
+						this.$set(this.refundImgs, index, srcs[0])
 					},
 					srcs => {
 						this.refundItem.refundImgs[index] = srcs[0];
@@ -534,7 +541,7 @@
 						return;
 					}
 				}
-				if(this.info.isRefundAll){
+				if (this.info.isRefundAll) {
 					this.$api.msg("已退款");
 					return false;
 				}
@@ -961,12 +968,13 @@
 	.apply-list {
 		.title {
 			font-weight: 500;
+			margin: 8rpx 0;
 		}
 
 		.apply-list-content {
-			flex: 1;
 			color: $font-color-disabled;
 			padding-left: 20upx;
+			font-size: $font-sm;
 
 			.weui-flex {
 				flex-direction: column;

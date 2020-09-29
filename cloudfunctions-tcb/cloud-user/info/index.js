@@ -8,6 +8,7 @@ const {
 const shopCollection = db.collection("cloud_shops");
 const ordersCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
+const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const models = {
 	//我的信息
 	async mine(data, context) {
@@ -87,6 +88,24 @@ const models = {
 		let channel = data.channel;
 		data.message = "开通失败";
 		return false;
+	},
+	/**
+	 * 分页查询零钱明细
+	 * @param {Object} data
+	 */
+	async balancelog(data) {
+		const {
+			page,
+			limit,
+			uid
+		} = data;
+		const res = await userBalanceLogCollection.where({
+			uid
+		}).orderBy("created", "desc").skip((page - 1) * limit).limit(limit).get();
+		if (res.data.length == 0) {
+			return false;
+		}
+		return res.data;
 	},
 	//修改用户信息
 	async save(data) {

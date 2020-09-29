@@ -62,7 +62,13 @@ const models = {
 		let payInfo = order.payInfo;
 		let config = getPaymentConfig(payInfo.platform, payInfo.type);
 		let uniPayIns = uniPay[config["uniPay"]](config);
-		let res = await uniPayIns.refund(order);
+		try {
+			let res = await uniPayIns.refund(order);
+			console.log("unipay refund", JSON.stringify(res));
+		} catch (e) {
+			//TODO handle the exception
+			console.log("unipay refund error", JSON.stringify(e));
+		}
 		let payname = payInfo.typeName || payInfo.name;
 		order.message = `退款将退回至您的${payname}账户，请注意查收`;
 		return true;

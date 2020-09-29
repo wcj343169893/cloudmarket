@@ -2911,6 +2911,24 @@
 				"type": "Point",
 				"coordinates": [107.082709, 29.154957]
 			},
+			"page": {
+				"home": {
+					"limits": {
+						"miaosha": 2,
+						"newest": 10,
+						"tuangou": 3,
+						"yuding": 4,
+						"ads": 5,
+						"category": 10
+					},
+					"titles": {
+						"miaosha": "秒杀抢购",
+						"newest": "鲜货排行",
+						"tuangou": "社区团购",
+						"yuding": "提前预定"
+					}
+				}
+			},
 			"phone": "18883380303",
 			"addressName": "9号果园",
 			"isPrint": true,

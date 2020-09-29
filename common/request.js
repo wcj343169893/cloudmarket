@@ -252,7 +252,7 @@ const orders = function(data) {
  * @param {Object} data
  * @param {Object} isShowLoading
  */
-const refunds = function(action,data,isShowLoading) {
+const refunds = function(action, data, isShowLoading) {
 	return network({
 		url: "cloud-mall",
 		data: {
@@ -306,12 +306,13 @@ const mobileAutoLogin = function(data) {
  * 获取自己的信息
  * @param {Object} data
  */
-const getUserInfo = function(data) {
+const getUserInfo = function(data, action) {
+	action = action || "mine";
 	return network({
 		url: "cloud-user",
 		data: {
 			module: "info",
-			action: "mine",
+			action: action,
 			data
 		},
 		auth: true,

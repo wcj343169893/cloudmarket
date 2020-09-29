@@ -12,34 +12,42 @@ const {
 } = require('base-common');
 const orderRefundsCollection = db.collection("cloud_order_refunds");
 const userCollection = db.collection("uni-id-users");
-const orderCollection =db.collection("cloud_orders");
+const orderCollection = db.collection("cloud_orders");
 exports.main = async (event, context) => {
 	//1.查询退款记录
 	let data = await orderRefundsCollection.where({
-		refundStatus: "refunding"
-	}).orderBy("created", "asc").limit(10).get();
+		state: "successed",
+		refundStatus: "paying"
+	}).orderBy("id", "asc").limit(10).get();
 	if (data.data.length > 0) {
 		for (let order of data.data) {
-			let uniPayIns = getPayIns(order);
+			let uniPayIns = getPayIns(order.payInfo);
 			if (uniPayIns) {
-				let res =await uniPayIns.refund({
+				let res = await uniPayIns.refund({
 					uid: order.uid,
-					outTradeNo: order.outTradeNo,
+					outTradeNo: order.payInfo.outTradeNo,
 					outRefundNo: "RF_" + genOrderNo(),
 					totalFee: order.totalFee,
-					refundFee: order.refundFee, //退款金额
-					refundDesc: order.refundDesc, //退款原因
+					refundFee: order.fee, //退款金额
+					refundDesc: order.description, //退款原因
 				});
 				console.log("uniPayIns.refund", res);
-				res = await orderRefundsCollection.where({
-					_id:order._id,
-					refundStatus: "refunding"
-				}).update({
-					refundStatus: "success",
-					modified: new Date().toISOString()
+				let description = "商家将不再准备此商品";
+				if (order.payInfo.type !== "delivery") {
+					let payname = order.payInfo.typeName || order.payInfo.name;
+					description = `退款将退回至您的${payname}账户，请注意查收`;
+				}
+				res = await orderRefundsCollection.doc(order._id).update({
+					refundStatus: "successed",
+					modified: new Date().toISOString(),
+					steps: cmd.unshift({
+						title: "退款成功",
+						desc: description,
+						time: new Date().toISOString()
+					})
 				});
 				console.log("uniPayIns.refund update", res);
-				if(res.updated==0){
+				if (res.updated == 0) {
 					//更新失败了,回滚事物
 				}
 				await pushOrderCancelInfo(order.id, "您的退款已受理完成，到账周期可查看退款明细。");
@@ -72,7 +80,7 @@ const balancePay = {
 	getBalance: async (uid) => {
 		//账户余额
 		let userInfo = await userCollection.where({
-			id: uid
+			_id: uid
 		}).field({
 			balance: 1
 		}).get();
@@ -87,18 +95,18 @@ const balancePay = {
 	refund: async (order) => {
 		let money = order.refundFee / 100;
 		let uid = order.uid;
-		let balance = await balancePay.getBalance(uid);
 		let res = await userCollection.where({
-			id: uid
+			_id: uid
 		}).update({
 			balance: cmd.inc(money)
 		});
+		let balance = await balancePay.getBalance(uid);
 		console.log("保存账户资金", res);
 		//记录余额变动历史user_balance_logs
 		let log = await addUserBalanceLog({
 			uid: uid,
 			type: 1, //0支出，1收入
-			balance: balance + money,
+			balance: balance,
 			orderId: order.outTradeNo,
 			money: money,
 			description: order.refundDesc,

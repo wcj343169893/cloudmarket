@@ -2,12 +2,10 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	addUserBalanceLog
-} = require('base-common');
-const {
 	getPaymentConfig
 } = require('configs');
 const userCollection = db.collection("uni-id-users");
+const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const models = {
 	type: "balance",
 	/**
@@ -48,7 +46,7 @@ const models = {
 		}
 		let yue = balance - order.totalMoney;
 		//记录余额变动历史user_balance_logs
-		let log = await addUserBalanceLog({
+		let log = await this.addUserBalanceLog({
 			uid: uid,
 			type: 0, //0支出，1收入
 			balance: yue,
@@ -101,6 +99,12 @@ const models = {
 	async refund(order) {
 		let money = order.refundFee / 100;
 		let uid = order.uid;
+		//查询是否已经退款
+		let isRefunded = await this.isRefunded(order.outRefundNo);
+		if (isRefunded) {
+			console.log("用户资金已退回", uid);
+			return true;
+		}
 		console.log("用户收到退款金额", uid, money);
 		let res = await userCollection.where({
 			_id: uid
@@ -110,11 +114,12 @@ const models = {
 		let balance = await this.getBalance(uid);
 		console.log("保存账户资金", balance, res);
 		//记录余额变动历史user_balance_logs
-		let log = await addUserBalanceLog({
+		let log = await this.addUserBalanceLog({
 			uid: uid,
 			type: 1, //0支出，1收入
 			balance: balance,
 			orderId: order.outTradeNo,
+			outRefundNo: order.outRefundNo,
 			money: money,
 			description: order.refundDesc,
 		});
@@ -122,6 +127,27 @@ const models = {
 		order.message = `退款将退回至您的${payname}账户，请注意查收`;
 		console.log("保存账户收入日志", log);
 		return true;
+	},
+	/**
+	 * 保存用户余额变动日志
+	 * @param {Object} data
+	 */
+	async addUserBalanceLog(data) {
+		//记录余额变动历史user_balance_logs
+		return await userBalanceLogCollection.add({
+			created: new Date().toISOString(),
+			...data
+		});
+	},
+	/**
+	 * 检查资金是否已经退回
+	 * @param {Object} outRefundNo
+	 */
+	async isRefunded(outRefundNo) {
+		let res = await userBalanceLogCollection.where({
+			outRefundNo
+		}).count();
+		return res.total > 0;
 	}
 }
 module.exports = models;

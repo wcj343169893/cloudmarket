@@ -494,6 +494,12 @@
 				"navigationBarTitleText": "退款申请"
 			}
         }
+        ,{
+            "path" : "pages/user/balancelog",
+            "style" : {
+				"navigationBarTitleText": "零钱明细"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -197,21 +197,32 @@ const getRefundOrders = async () => {
 		state: "successed",
 		refundStatus: "paying"
 	}).orderBy("id", "asc").limit(10).get();
+	console.log("查询到商城退款记录", data.data.length);
 	return data.data;
 }
 /**
  * 处理退款成功的订单
  */
-const refundSuccess = async (order) => {
-	let res = await orderRefundsCollection.doc(order._id).update({
+const refundSuccess = async (refund) => {
+	let res = await orderRefundsCollection.doc(refund._id).update({
 		refundStatus: "successed",
 		modified: new Date().toISOString(),
 		steps: cmd.unshift({
 			title: "退款成功",
-			desc: order.message,
+			desc: refund.message,
 			time: new Date().toISOString()
 		})
 	});
+	console.log("处理退款记录", res);
+	if (refund.canceled) {
+		res = await orderCollection.doc(refund.orderId).update({
+			cancelApply: cmd.push({
+				message: "您的退款已受理完成，到账周期可查看退款明细。",
+				time: new Date().getTime()
+			})
+		});
+		console.log("增加取消订单消息", res);
+	}
 	return true;
 }
 

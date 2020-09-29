@@ -107,6 +107,7 @@ const cancel = async (data) => {
 		yuding: 1,
 		payInfo: 1,
 		body: 1,
+		uid: 1,
 	};
 	let conditions = {
 		uid: uid,
@@ -146,19 +147,30 @@ const cancel = async (data) => {
 	//更新用户已取消和未支付数量
 	let resUser = await updateUserOrderCount(uid, "canceled", 1, "unpaid", order.shopid);
 	console.log("resUser", resUser);
+	let time = new Date().getTime();
 	if (order.yuding && order.yuding.payInfo) {
 		//是否扣除服务费
-		let serviceMoney = 0;
+		//let serviceMoney = 0;
 		order.yuding.payInfo.id = order._id;
-		if (order.yuding.finalPaymentBeginTime < time && serviceMoney > 0) {
-			await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除" + (serviceMoney * 100) + "%服务费。");
+		if (order.yuding.finalPaymentBeginTime < time) {
+			await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除定金");
+			/* await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除定金" + (serviceMoney * 100) + "%服务费。");
 			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee * (1 - serviceMoney), "取消" +
-				order.body, order.goods, order,{});
+				order.body, order.goods, order,{}); */
 		} else {
 			await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
-			//退款定时器,全额退款
-			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body, order.goods,
-				order,{});
+			let goods = order.goods[0];
+			//退款定时器,全额退款,只有一件商品
+			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body, goods,
+				order, {
+					refundApplyAmount: goods.amount,
+					index: 0,
+					canceled: 1,
+					refundImgs: [],
+					refundReason: "取消订单",
+					refundType: "仅退款",
+					refundContent: ""
+				});
 		}
 	} else {
 		await pushOrderCancelInfo(order._id, "您的订单已取消。");
@@ -360,14 +372,14 @@ const addRefundApply = async (data) => {
 	}
 	//将来要减去优惠券分摊部分
 	let total = parseInt(item.refundApplyAmount * goods.price * 100);
-	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款:" + order.body, goods, order,item);
+	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款:" + order.body, goods, order, item);
 	console.log("addRefundResult", addRefundResult);
 	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
 	return await orderCollection.doc(id).update({
 		isRefunding: cmd.inc(1),
 		[`goods.${index}`]: {
 			isRefunding: 1,
-			refundApply:cmd.push(addRefundResult.id)
+			refundApply: cmd.push(addRefundResult.id)
 		}
 	});
 };
@@ -392,7 +404,7 @@ const getRefundApplys = async (data) => {
  * 创建退款
  * @param {Object} payInfo 
  */
-const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc, goods, order,item) {
+const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc, goods, order, item) {
 	let id = await genIdentityId("order_refunds");
 	return await orderRefundsCollection.add({
 		id,

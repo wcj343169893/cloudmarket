@@ -43,7 +43,7 @@
 			<image class="arc" src="/static/arc.png"></image>
 
 			<view class="tj-sction">
-				<view class="tj-item">
+				<view class="tj-item" @click="navTo('/pages/user/balancelog')">
 					<text class="num">{{ userInfo.balance | toFixed }}</text>
 					<text>余额</text>
 				</view>
