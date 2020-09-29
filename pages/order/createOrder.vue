@@ -391,6 +391,10 @@ export default {
 				baseDay = (beginTime - todayTime) / 1000 / 3600 / 24;
 				day = new Date(this.pickup);
 			}
+			if(baseDay<0){
+				baseDay=0;
+				day=new Date();
+			}
 			for (let i = baseDay; i < delivery.deliveryDay + baseDay; i++) {
 				let name = '';
 				if (i < dayNames.length) {

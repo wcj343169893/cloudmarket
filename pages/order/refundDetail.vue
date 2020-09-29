@@ -57,7 +57,11 @@
 				created: "",
 				fee: 0,
 				stateTip: "",
+				refundType: "",
+				refundReason: "",
+				refundContent: "",
 				steps: [],
+				refundImgs: [],
 				goods: {}
 			};
 		},

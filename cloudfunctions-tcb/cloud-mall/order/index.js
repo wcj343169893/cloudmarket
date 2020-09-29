@@ -161,7 +161,7 @@ const cancel = async (data) => {
 			await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
 			let goods = order.goods[0];
 			//退款定时器,全额退款,只有一件商品
-			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消" + order.body, goods,
+			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消订单," + order.body, goods,
 				order, {
 					refundApplyAmount: goods.amount,
 					index: 0,
@@ -372,7 +372,7 @@ const addRefundApply = async (data) => {
 	}
 	//将来要减去优惠券分摊部分
 	let total = parseInt(item.refundApplyAmount * goods.price * 100);
-	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款:" + order.body, goods, order, item);
+	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款," + order.body, goods, order, item);
 	console.log("addRefundResult", addRefundResult);
 	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
 	return await orderCollection.doc(id).update({
