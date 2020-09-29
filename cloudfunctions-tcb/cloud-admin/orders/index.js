@@ -123,6 +123,7 @@ const passedRefund = async (data) => {
 	}
 	const res = await orderRefundsCollection.doc(id).update({
 		state: "successed",
+		refundStatus: "paying",
 		steps: cmd.unshift({
 			title: "退款中",
 			operator,
@@ -133,6 +134,7 @@ const passedRefund = async (data) => {
 	//更新主订单
 	await orderCollection.doc(order.orderId).update({
 		isRefunding: cmd.inc(-1),
+		refundAmount: cmd.inc(order.refundApplyAmount),
 		[`goods.${order.index}`]: {
 			refundAmount:cmd.inc(order.refundApplyAmount),
 			isRefunding: cmd.remove()
@@ -271,6 +273,7 @@ const getOrderRefundById = async (conditions, field) => {
 			refundApplyAmount: 1,
 			orderId: 1,
 			state: 1,
+			index:1,
 			shopid: 1,
 			uid: 1
 		};

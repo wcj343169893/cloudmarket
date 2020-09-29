@@ -42,14 +42,14 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		
 		position: fixed;
 		left: 0;
 		top: 0;
 		right: 0;
 		bottom: 0;
 		background: $page-color-base;
-		padding-bottom: 120upx;
+		padding-bottom: 120upx;    
+		z-index: 9;
 
 		&-image {
 			width: 200upx;

@@ -18,8 +18,14 @@ exports.main = async (event, context) => {
 		module,
 		action,
 		data,
+		Type,
 		uniIdToken
 	} = event;
+	//退款定时器
+	if (Type == "Timer") {
+		console.log("退款定时器",event);
+		return await actions.refund(event, context);
+	}
 	//token检查，必须登录
 	let payload = await uniID.checkToken(uniIdToken);
 	if (payload.code && payload.code > 0) {

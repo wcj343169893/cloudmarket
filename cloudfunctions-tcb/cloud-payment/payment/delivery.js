@@ -1,7 +1,11 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const {
+	getPaymentConfig
+} = require('configs');
 const models = {
+	type: "delivery",
 	/**
 	 * app支付配置
 	 * @param {Object} order
@@ -11,14 +15,19 @@ const models = {
 	async app(order, data, context) {
 		let uid = data.uid;
 		console.log("货到付款");
+		let platform = context.PLATFORM;
+		let config = getPaymentConfig(platform)[this.type];
 		return {
 			callback: "paySuccess",
 			outTradeNo: order.payid,
 			uid: uid,
+			platform: platform,
+			module: data.module,
 			tradeStatus: "TRADE_SUCCESS",
 			totalFee: 0,
-			type: "delivery",
-			name: this.getName()
+			typeName: "",
+			type: this.type,
+			name: config.name
 		};
 	},
 	/**
@@ -28,8 +37,13 @@ const models = {
 	 * @param {Object} provider
 	 */
 	async verify(data, platform, provider) {},
-	getName(provider) {
-		return "货到付款"
+	/**
+	 * 资金退款
+	 * @param {Object} order
+	 */
+	async refund(order) {
+		order.message = "";
+		return true;
 	}
 }
 module.exports = models;

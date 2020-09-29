@@ -65,28 +65,10 @@
 			},
 			buildData(data) {
 				let payname = "";
-				let tips = {
-					"failed": "退款失败",
-					"verifying": "退款中",
-					"successed": "退款成功",
-				};
-				let contents = {
-					"failed": "审核失败，退款申请已取消",
-					"verifying": "系统审核中，请耐心等待",
-				};
 				data.forEach(item => {
-					item.stateTip = tips[item.state];
-					if (item.state != "successed") {
-						item.stateContent = contents[item.state];
-					} else {
-						payname = item.payInfo.typeName || item.payInfo.name;
-						if (item.payInfo.type == "delivery") {
-							//货到付款
-							item.stateContent = "商家将不再准备此商品";
-						} else {
-							item.stateContent = `退款将退回至您的${payname}账户，请注意查收`;
-						}
-					}
+					let step= item.steps[0];
+					item.stateTip =step.title;
+					item.stateContent =step.desc;
 				})
 			},
 			navToDetail(item) {

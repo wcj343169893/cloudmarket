@@ -82,6 +82,7 @@ const list = async (data, context) => {
 		lastPayTime: 1,
 		cancelApply: 1,
 		isRefunding: 1,
+		refundAmount: 1,
 		//refundApply: 1
 	}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
 	data["page"] = page;
@@ -197,6 +198,7 @@ const detail = async (data) => {
 		lastPayTime: 1,
 		cancelApply: 1,
 		isRefunding: 1,
+		refundAmount: 1,
 		refundApply: 1
 	};
 	let conditions = {
@@ -321,6 +323,7 @@ const addRefundApply = async (data) => {
 	const {
 		index
 	} = item;
+	delete item._id;
 
 	let fields = {
 		state: 1,
@@ -363,7 +366,8 @@ const addRefundApply = async (data) => {
 	return await orderCollection.doc(id).update({
 		isRefunding: cmd.inc(1),
 		[`goods.${index}`]: {
-			isRefunding: 1
+			isRefunding: 1,
+			refundApply:cmd.push(addRefundResult.id)
 		}
 	});
 };
@@ -750,7 +754,7 @@ const settlement = async (event, context) => {
 					sku_id: ele.sku_id
 				});
 			}
-			body.push(ele.title + ele.subName);
+			body.push(ele.title + ele.name);
 		}
 		if (isGoodsError) {
 			//归还秒杀库存2

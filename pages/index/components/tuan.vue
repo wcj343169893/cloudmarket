@@ -30,8 +30,8 @@
 									<text class="m-lr">{{item.stock}}</text>
 									<text>{{item.tuangou.unit}}</text>
 								</view>
-								<text class="price">{{ item.price }}</text>
-								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+								<text class="price">{{ item.price | toFixed }}</text>
+								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice | toFixed }}</text>
 							</view>
 							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
 						</view>

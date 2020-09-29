@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const orderCollection = db.collection("cloud_orders");
+const orderRefundsCollection = db.collection("cloud_order_refunds");
 const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
 const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
 const {
@@ -188,13 +189,36 @@ const getOrderByConditions = async (conditions, fields) => {
 	}
 	return data.data[0];
 }
-const refund = async (data) => {
-
+/**
+ * 获取需要退款的订单
+ */
+const getRefundOrders = async () => {
+	let data = await orderRefundsCollection.where({
+		state: "successed",
+		refundStatus: "paying"
+	}).orderBy("id", "asc").limit(10).get();
+	return data.data;
+}
+/**
+ * 处理退款成功的订单
+ */
+const refundSuccess = async (order) => {
+	let res = await orderRefundsCollection.doc(order._id).update({
+		refundStatus: "successed",
+		modified: new Date().toISOString(),
+		steps: cmd.unshift({
+			title: "退款成功",
+			desc: order.message,
+			time: new Date().toISOString()
+		})
+	});
+	return true;
 }
 
 
 module.exports = {
 	checkOrder,
 	updatePaymentInfo,
-	refund
+	refundSuccess,
+	getRefundOrders
 }

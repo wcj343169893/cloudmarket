@@ -55,6 +55,19 @@ const models = {
 		return await uniPayIns.verifyPaymentNotify(data);
 	},
 	/**
+	 * 资金退款
+	 * @param {Object} order
+	 */
+	async refund(order) {
+		let payInfo = order.payInfo;
+		let config = getPaymentConfig(payInfo.platform, payInfo.type);
+		let uniPayIns = uniPay[config["uniPay"]](config);
+		let res = await uniPayIns.refund(order);
+		let payname = payInfo.typeName || payInfo.name;
+		order.message = `退款将退回至您的${payname}账户，请注意查收`;
+		return true;
+	},
+	/**
 	 * 获取支付工具的名字，如果unipay支持更多方式，这里需要再增加一些
 	 * @param {Object} provider
 	 */

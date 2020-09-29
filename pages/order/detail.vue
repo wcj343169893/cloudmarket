@@ -206,12 +206,12 @@
 					<text>{{ info.id }}</text>
 				</view>
 			</view>
-			<view class="weui-flex">
+			<!-- <view class="weui-flex">
 				<view><text>支付编号</text></view>
 				<view>
 					<text>{{ info._id }}</text>
 				</view>
-			</view>
+			</view> -->
 			<view class="weui-flex">
 				<view><text>下单时间</text></view>
 				<view>
@@ -317,6 +317,7 @@
 					
 				},
 				isYuding: false,
+				isRefundAll: false,
 				refundItem: {
 					_id: "",
 					refundMax: 99,
@@ -520,7 +521,6 @@
 			},
 			//申请退款
 			refundOrder(item, index) {
-				console.log(item)
 				//7天内可以退款
 				if (this.info.makesureTime) {
 					let makesureTime = (new Date(this.info.makesureTime)).getTime();
@@ -533,6 +533,10 @@
 						});
 						return;
 					}
+				}
+				if(this.info.isRefundAll){
+					this.$api.msg("已退款");
+					return false;
 				}
 				if (!item.canRefund) {
 					console.log("退款中")

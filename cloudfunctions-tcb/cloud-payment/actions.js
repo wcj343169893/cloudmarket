@@ -97,14 +97,19 @@ const actions = {
 		//新增第三个参数，支付模块
 		let module = paths[3];
 		let res = await payments[provider].verify(data, platform, provider);
+		//获取支付配置
+		let config = getPaymentConfig(platform)[provider];
 		console.log(paths, res);
 		if (!res) {
 			return data.message;
 		}
 		//验证成功
 		if (res.resultCode == "SUCCESS") {
-			let typeName = payments[provider].getName(provider);
+			//let typeName = payments[provider].getName(provider);
+			let typeName = config.name;
 			res["type"] = provider;
+			res["platform"] = platform;
+			res["module"] = module;
 			res["couponCount"] = res.couponList ? res.couponList.length : 0;
 			//获取支付工具的名字
 			res["typeName"] = typeName;
@@ -125,6 +130,36 @@ const actions = {
 		let result = await orders[module]["updatePaymentInfo"](data);
 		console.log(result);
 		return result;
+	},
+	/**
+	 * 退款定时器
+	 */
+	async refund(event, context) {
+		//所有模块都有可能退款
+		for (let model in orders) {
+			let orderList = await orders[model].getRefundOrders();
+			if (orderList && orderList.length > 0) {
+				for (let order of orderList) {
+					let res = await payments[order.payInfo.type].refund({
+						payInfo: order.payInfo,
+						uid: order.uid,
+						outTradeNo: order.payInfo.outTradeNo,
+						outRefundNo: order.id,
+						totalFee: order.payInfo.totalFee, //支付总金额
+						refundFee: order.fee, //退款金额
+						refundDesc: order.description, //退款原因
+					}, event, context);
+					console.log("支付端口退款成功", order._id);
+					//退款处理成功
+					if (res) {
+						res = await orders[model].refundSuccess(order);
+						console.log("订单端口处理结果", res);
+					}
+				}
+			}else{
+				console.log("refund无需处理",model)
+			}
+		}
 	}
 }
 
