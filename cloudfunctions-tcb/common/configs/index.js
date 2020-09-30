@@ -1,7 +1,8 @@
+const fs = require("fs");
 /**
  * 支付配置文件
  */
-const config = require("./config.json")
+const config = require("./config.json");
 /**
  * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 
  * @param {String} platform 运行平台，返回值为 mp-weixin、app-plus等
@@ -23,7 +24,15 @@ const getPaymentConfig = (platform, provider) => {
 	if (!provider) {
 		return config[platform]["payment"];
 	}
-	return config[platform]["payment"][provider];
+	let config = config[platform]["payment"][provider];
+	if(provider=="wxpay"){
+		if(config.pfx!=''){
+			config.pfx = fs.readFileSync(__dirname + '/cert/'+config.pfx);
+		}else{
+			delete config.pfx;
+		}
+	}
+	return config;
 }
 /**
  * 登录配置
