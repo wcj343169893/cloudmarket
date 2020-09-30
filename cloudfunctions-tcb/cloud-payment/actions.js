@@ -149,15 +149,16 @@ const actions = {
 						refundFee: order.fee, //退款金额
 						refundDesc: order.description, //退款原因
 					}, event, context);
-					console.log("支付端口退款成功", order._id);
+					console.log("支付端口退款成功", order._id, res);
 					//退款处理成功
-					if (res) {
+					if (res !== false) {
+						order.message = res;
 						res = await orders[model].refundSuccess(order);
 						console.log("订单端口处理结果", res);
 					}
 				}
-			}else{
-				console.log("refund无需处理",model)
+			} else {
+				console.log("refund无需处理", model)
 			}
 		}
 	}

@@ -42,8 +42,7 @@ const models = {
 	 * @param {Object} order
 	 */
 	async refund(order) {
-		order.message = "";
-		return true;
+		return "";
 	}
 }
 module.exports = models;

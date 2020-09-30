@@ -70,8 +70,7 @@ const models = {
 			console.log("unipay refund error", JSON.stringify(e));
 		}
 		let payname = payInfo.typeName || payInfo.name;
-		order.message = `退款将退回至您的${payname}账户，请注意查收`;
-		return true;
+		return `退款将退回至您的${payname}账户，请注意查收`;
 	},
 	/**
 	 * 获取支付工具的名字，如果unipay支持更多方式，这里需要再增加一些

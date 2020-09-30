@@ -124,9 +124,8 @@ const models = {
 			description: order.refundDesc,
 		});
 		let payname = order.payInfo.typeName || order.payInfo.name;
-		order.message = `退款将退回至您的${payname}账户，请注意查收`;
 		console.log("保存账户收入日志", log);
-		return true;
+		return `退款将退回至您的${payname}账户，请注意查收`;
 	},
 	/**
 	 * 保存用户余额变动日志
