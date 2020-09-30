@@ -60,15 +60,14 @@ const models = {
 	 */
 	async refund(order) {
 		let payInfo = order.payInfo;
+		console.log(order)
+		delete order.payInfo;
+		delete order.uid;
 		let config = getPaymentConfig(payInfo.platform, payInfo.type);
 		let uniPayIns = uniPay[config["uniPay"]](config);
-		try {
-			let res = await uniPayIns.refund(order);
-			console.log("unipay refund", JSON.stringify(res));
-		} catch (e) {
-			//TODO handle the exception
-			console.log("unipay refund error", JSON.stringify(e));
-		}
+		let res = await uniPayIns.refund(order);
+		console.log("unipay refund", JSON.stringify(res));
+		
 		let payname = payInfo.typeName || payInfo.name;
 		return `退款将退回至您的${payname}账户，请注意查收`;
 	},

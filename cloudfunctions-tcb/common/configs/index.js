@@ -24,15 +24,15 @@ const getPaymentConfig = (platform, provider) => {
 	if (!provider) {
 		return config[platform]["payment"];
 	}
-	let config = config[platform]["payment"][provider];
+	let res = config[platform]["payment"][provider];
 	if(provider=="wxpay"){
-		if(config.pfx!=''){
-			config.pfx = fs.readFileSync(__dirname + '/cert/'+config.pfx);
+		if(res.pfx!=''){
+			res.pfx = fs.readFileSync(__dirname + '/cert/'+res.pfx);
 		}else{
-			delete config.pfx;
+			delete res.pfx;
 		}
 	}
-	return config;
+	return res;
 }
 /**
  * 登录配置
