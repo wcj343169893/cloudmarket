@@ -58,7 +58,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	@charset "UTF-8";
 
 	.uni-load-more {

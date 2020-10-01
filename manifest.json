@@ -72,6 +72,13 @@
                         "appkey_ios" : "3d849a7a36b58b5a4f4a0c37d665df85",
                         "appkey_android" : "e077c938b8359e13eb32920f1693a77d"
                     }
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wxa8e2090ff8638329",
+                        "appsecret" : "",
+                        "UniversalLinks" : ""
+                    }
                 }
             },
             "icons" : {
@@ -125,7 +132,7 @@
             "JG-JVerification" : {
                 "JPUSH_CHANNEL_ANDROID" : "developer-default",
                 "JPUSH_APPKEY_IOS" : "0000000000",
-                "JPUSH_APPKEY_ANDROID" : "d3552898cb41098811589dc6",
+                "JPUSH_APPKEY_ANDROID" : "e6fe48eb055d99d761f18336",
                 "JPUSH_CHANNEL_IOS" : "developer-default",
                 "__plugin_info__" : {
                     "name" : "极光认证官方SDK",

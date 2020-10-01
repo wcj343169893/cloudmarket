@@ -33,14 +33,17 @@ const list = async (data, context) => {
 		case "payup":
 			//2已付款,待发货
 			conditions["state"] = 1;
+			conditions["isRefundAll"] = cmd.exists(false);
 			break;
 		case "delivered":
 			//已发货，待收货
 			conditions["state"] = 2;
+			conditions["isRefundAll"] = cmd.exists(false);
 			break;
 		case "received":
-			//已发货，待收货
+			//已收货，待评价
 			conditions["state"] = 3;
+			conditions["isRefundAll"] = cmd.exists(false);
 			break;
 		case "estimated":
 			//已评价
@@ -48,7 +51,6 @@ const list = async (data, context) => {
 			break;
 		case "refunded":
 			//售后----待定getRefunded
-			conditions["state"] = 4;
 			break;
 		default:
 			conditions["state"] = cmd.gt(-1);
@@ -118,7 +120,7 @@ const passedRefund = async (data) => {
 		_id: id
 	});
 	if (!order) {
-		data.message = "订单不存在";
+		data.message = "退款订单不存在";
 		return false;
 	}
 	const res = await orderRefundsCollection.doc(id).update({
@@ -131,14 +133,29 @@ const passedRefund = async (data) => {
 			time: new Date().toISOString()
 		})
 	});
+	let orderMain = await getOrderById(conditions, {
+		refundAmount: 1,
+		cartCount: 1
+	});
+	if (!orderMain) {
+		data.message = "订单不存在";
+		return false;
+	}
+	let dataField = {}
+	//判断是否全部退款
+	if (orderMain.refundAmount >= orderMain.cartCount) {
+		dataField["isRefundAll"] = 1;
+	}
+
 	//更新主订单
 	await orderCollection.doc(order.orderId).update({
 		isRefunding: cmd.inc(-1),
 		refundAmount: cmd.inc(order.refundApplyAmount),
 		[`goods.${order.index}`]: {
-			refundAmount:cmd.inc(order.refundApplyAmount),
+			refundAmount: cmd.inc(order.refundApplyAmount),
 			isRefunding: cmd.remove()
-		}
+		},
+		...dataField
 	});
 	return res;
 }
@@ -273,7 +290,7 @@ const getOrderRefundById = async (conditions, field) => {
 			refundApplyAmount: 1,
 			orderId: 1,
 			state: 1,
-			index:1,
+			index: 1,
 			shopid: 1,
 			uid: 1
 		};

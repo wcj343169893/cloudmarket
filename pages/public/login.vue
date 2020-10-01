@@ -9,7 +9,7 @@
 		</view>
 		<view class="mix-list-cell b-b">
 			<input type="number" maxlength="6" class="cell-content" v-model="code" placeholder="输入验证码" />
-			<button class="add-btn" :class="{ disabled: disabled || processing }" @click="getCode()">{{ btnGetCodeText }}</button>
+			<button class="add-btn code" :class="{ disabled: disabled || processing }" @click="getCode()">{{ btnGetCodeText }}</button>
 		</view>
 		<view class="mix-list-cell-buttons"><button class="add-btn" :class="{ disabled: disabledLogin }" @click="btnLogin()">登录</button></view>
 		<!-- #endif -->
@@ -22,7 +22,10 @@
 		<view class="bottom">
 			<!-- #ifdef APP-PLUS-->
 			<view class="line b-b"><text class="text">快捷登录</text></view>
-			<view class="mix-list-cell-buttons"><button class="add-btn" @click="jgLogin()">本机号码一键登录</button></view>
+			<view class="mix-list-cell-buttons">
+				<button class="add-btn jglogin" @click="jgLogin()">{{loginBtnText}}</button>
+				<button class="add-btn" @click="wxLogin()"><text class="yticon icon-weixin"></text>微信登录</button>
+			</view>
 			<!-- #endif-->
 			<view class="">
 				<text>登录即代表你同意</text>
@@ -63,6 +66,7 @@
 				platform: '',
 				loadingText: '安全检测中',
 				loginErrorText: '检测失败!\n请打开4G网络后再尝试!',
+				loginBtnText: '本机号码一键登录',
 				ios_uiConfigure: {},
 				logining: false,
 				regionOptions: {
@@ -107,7 +111,7 @@
 			//#endif
 		},
 		computed: {
-			...mapState(['inviteCode'])
+			...mapState(['inviteCode', 'jgLoginInit'])
 		},
 		methods: {
 			...mapMutations(['login']),
@@ -138,7 +142,34 @@
 					}
 				});
 			},
+			/**
+			 * 微信授权登录
+			 */
+			async wxLogin() {
+				let provider = "weixin";
+				uni.login({
+					provider: provider,
+					success: (loginRes) => {
+						console.log('loginRes', loginRes);
+						console.log('inviteCode', this.inviteCode);
+						//微信获取用户信息，并登录
+						micLogin({
+							inviteCode: this.inviteCode,
+							code: loginRes.code
+						}, provider).then(res => {
+							console.log("login success", res);
+							this.loginSuccess(res);
+						}, err => {
+							this.$api.msg(err.message || "企业必须认证才有登录能力")
+						});
+					}
+				});
+			},
 			async jgLogin() {
+				if (!this.jgLoginInit) {
+					this.$api.msg(this.loginBtnText + "初始化失败!")
+					return;
+				}
 				uni.showLoading({
 					mask: true,
 					title: this.loadingText
@@ -344,6 +375,7 @@
 	}
 
 	.add-btn {
+		flex: 1;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -351,6 +383,15 @@
 		color: #fff;
 		background-color: $btn-color-light;
 		border-radius: 10upx;
+		margin: 0 10rpx;
+
+		&.jglogin {
+			flex: none;
+		}
+
+		&.code {
+			flex: none;
+		}
 
 		&.disabled {
 			background-color: $font-color-disabled;
@@ -359,13 +400,14 @@
 
 	.mix-list-cell-buttons {
 		padding: 40upx 100upx;
+		display: flex;
 	}
 
 	.bottom {
 		font-size: $font-sm;
 		text-align: center;
 		position: absolute;
-		bottom: 40upx;
+		bottom: 80upx;
 		width: 100%;
 	}
 
@@ -386,7 +428,8 @@
 			padding: 0 20upx;
 		}
 	}
-	.center{
+
+	.center {
 		text-align: center;
 		padding: 50rpx 0;
 	}

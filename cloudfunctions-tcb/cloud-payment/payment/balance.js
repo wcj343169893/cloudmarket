@@ -98,6 +98,7 @@ const models = {
 	 */
 	async refund(order) {
 		let money = order.refundFee / 100;
+		let payInfo = order.payInfo;
 		let uid = order.uid;
 		//查询是否已经退款
 		let isRefunded = await this.isRefunded(order.outRefundNo);
@@ -123,8 +124,12 @@ const models = {
 			money: money,
 			description: order.refundDesc,
 		});
-		let payname = order.payInfo.typeName || order.payInfo.name;
+		let payname = payInfo.typeName || payInfo.name;
 		console.log("保存账户收入日志", log);
+		//更新原支付订单，提示有退款
+		await userBalanceLogCollection.doc(payInfo.transactionId).update({
+			refund: cmd.inc(money)
+		});
 		return `退款将退回至您的${payname}账户，请注意查收`;
 	},
 	/**

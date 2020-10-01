@@ -166,7 +166,7 @@
 						</view>
 					</block>
 
-					<view class="weui-flex">
+					<view class="weui-flex b-b">
 						<text>阶段2：尾款</text>
 						<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
 					</view>
@@ -196,7 +196,7 @@
 				</view>
 				<view class="weui-flex" v-if="info.payInfo">
 					<view><text>实付金额</text></view>
-					<text class="price warning">{{ info.payInfo.totalFee/100 | toFixed }}</text>
+					<text class="price warning">{{ realPayMoney | toFixed }}</text>
 				</view>
 			</view>
 		</view>
@@ -280,7 +280,7 @@
 					</scroll-view>
 				</view>
 				<view class="buttons">
-					<button type="primary" class="action-btn" @click="closedRefund">取消</button>
+					<button type="default" class="action-btn" @click="closedRefund">取消</button>
 					<button type="default" class="action-btn recom" @click="submitRefund">确定</button>
 				</view>
 			</view>
@@ -364,7 +364,17 @@
 			this.loadData();
 		},
 		computed: {
-			...mapState(['stationId'])
+			...mapState(['stationId']),
+			realPayMoney() {
+				let money = 0;
+				if (this.info.payInfo) {
+					money = this.info.payInfo.totalFee;
+				}
+				if (this.info.yuding && this.info.yuding.payInfo) {
+					money += this.info.yuding.payInfo.totalFee;
+				}
+				return money / 100;
+			}
 		},
 		onUnload() {
 			uni.removeStorage({
@@ -556,7 +566,7 @@
 					refundApplyAmount: 1,
 					refundMax: item.amount - item.refundAmount,
 					index,
-					reason:"",
+					reason: "",
 					refundImgs: [],
 					refundReason: this.refundReasons['1'],
 					refundType: this.refundTypes['1'],
@@ -723,6 +733,10 @@
 
 		&.start {
 			align-items: flex-start;
+		}
+
+		&.b-b {
+			padding-bottom: 12rpx;
 		}
 	}
 

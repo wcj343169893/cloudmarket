@@ -32,6 +32,7 @@ const store = new Vuex.Store({
 		},
 		inviteCode: "",
 		userInfo: baseUserInfo,
+		jgLoginInit:false
 	},
 	mutations: {
 		//更新state数据

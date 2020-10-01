@@ -12,8 +12,8 @@
 		"tokenExpiresIn": 2592000,
 		"oauth" : {
 			"weixin" : {
-				"appid" : "weixin appid",
-				"appsecret" : "weixin appsecret"
+				"appid" : "wx399393ad0d5e4d31",
+				"appsecret" : "2732931e00e58d0605d96a11d2b62430"
 			}
 		}
 	},
@@ -35,7 +35,7 @@
 	},
 	"service": {
 		"sms": {
-			"name": "ÈáÈ»¿Æ¼¼",
+			"name": "æŸ”ç„¶ç§‘æŠ€",
 			"codeExpiresIn": 180,
 			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
 			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"

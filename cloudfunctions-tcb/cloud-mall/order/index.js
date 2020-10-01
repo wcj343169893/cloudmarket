@@ -45,10 +45,12 @@ const list = async (data, context) => {
 			case 2:
 				//2已付款，待收货，包含已发货
 				conditions["state"] = cmd.in([1, 2]);
+				conditions["isRefundAll"] = cmd.exists(false);
 				break;
 			case 3:
 				//3待评价，已收货
 				conditions["state"] = 3;
+				conditions["isRefundAll"] = cmd.exists(false);
 				break;
 			case 4:
 				//售后
@@ -155,13 +157,12 @@ const cancel = async (data) => {
 		if (order.yuding.finalPaymentBeginTime < time) {
 			await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除定金");
 			/* await pushOrderCancelInfo(order._id, "您的预售订单已取消，已过预售期，扣除定金" + (serviceMoney * 100) + "%服务费。");
-			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee * (1 - serviceMoney), "取消" +
-				order.body, order.goods, order,{}); */
+			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee * (1 - serviceMoney), "取消订单", order.goods, order,{}); */
 		} else {
 			await pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
 			let goods = order.goods[0];
 			//退款定时器,全额退款,只有一件商品
-			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消订单," + order.body, goods,
+			await addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消订单", goods,
 				order, {
 					refundApplyAmount: goods.amount,
 					index: 0,
@@ -343,6 +344,7 @@ const addRefundApply = async (data) => {
 		goods: 1,
 		shopid: 1,
 		payInfo: 1,
+		yuding: 1,
 		refundApply: 1,
 		body: 1,
 	};
@@ -372,7 +374,15 @@ const addRefundApply = async (data) => {
 	}
 	//将来要减去优惠券分摊部分
 	let total = parseInt(item.refundApplyAmount * goods.price * 100);
-	let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款," + order.body, goods, order, item);
+	let addRefundResult;
+	//预定订单，创建2个退款记录
+	if (order.yuding) {
+		/* addRefundResult = await addOrderRefund(uid, order.yuding.payInfo, order.yuding.price * 100, "申请退款", goods, order,
+			item); */
+		total -= order.yuding.price * 100;
+		console.log("addRefundResult", addRefundResult);
+	}
+	addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款", goods, order, item);
 	console.log("addRefundResult", addRefundResult);
 	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
 	return await orderCollection.doc(id).update({

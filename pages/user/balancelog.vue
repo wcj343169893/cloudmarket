@@ -15,6 +15,10 @@
 					<text v-if="item.type == 1" class="important">+{{item.money | toFixed}}</text>
 					<text v-else>-{{item.money | toFixed}}</text>
 				</view>
+				<view class="refund" v-if="item.refund">
+					<text v-if="item.refund < item.money">退款 {{item.refund | toFixed}}</text>
+					<text v-else>已全额退款</text>
+				</view>
 				<view class="balance">
 					<text>余额 {{item.balance | toFixed}}</text>
 				</view>
@@ -32,7 +36,7 @@
 		data() {
 			return {
 				balanceList: [],
-				limit:20
+				limit: 20
 			};
 		},
 		onLoad() {
@@ -77,7 +81,8 @@
 		align-items: center;
 		justify-content: space-between;
 		position: relative;
-		&::after{
+
+		&::after {
 			left: 20rpx;
 		}
 	}
@@ -103,9 +108,14 @@
 			font-size: $font-lg;
 		}
 
+		.refund {
+			font-size: $font-sm;
+			color: $font-color-warning;
+		}
+
 		.balance {
 			font-size: $font-sm;
-			margin-top: 18rpx;
+			margin-top: 8rpx;
 			color: $font-color-base;
 		}
 

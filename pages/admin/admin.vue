@@ -100,6 +100,8 @@
 					url: `/pages/admin/${options.second}?shopid=${options.id}&state=${options.state}`
 				});
 			}
+		},
+		onShow() {
 			this.loadData(true);
 		},
 		//下拉刷新,不会更新底部附近的店铺

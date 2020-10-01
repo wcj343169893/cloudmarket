@@ -24,7 +24,7 @@ const jiguang = async (data, context) => {
 		dataType: 'json'
 	});
 	if (result.data.code != 8000) {
-		console.log("jiguang result.data",result.data)
+		console.log("jiguang result.data", result.data)
 		console.log(configs)
 		data.message = result.data.content;
 		return false;
@@ -40,7 +40,7 @@ const jiguang = async (data, context) => {
 	let mobileName = key.decrypt(result.data.phone, 'utf8');
 	if (!mobileName) {
 		data.message = "手机号解码错误";
-		console.log("jiguang decrypt",data.message)
+		console.log("jiguang decrypt", data.message)
 		return false;
 	}
 	console.log(mobileName);
@@ -48,7 +48,7 @@ const jiguang = async (data, context) => {
 	let params = {
 		mobile: mobileName,
 		code,
-		inviteCode:data.inviteCode?data.inviteCode:false,
+		inviteCode: data.inviteCode ? data.inviteCode : false,
 		type: "login",
 		expiresIn: configs.expiresIn,
 	}
@@ -92,16 +92,26 @@ const mobile = async (data, context) => {
 const weixin = async (data, context) => {
 	console.log("weixin", context.PLATFORM)
 	console.log("inviteCode", data.inviteCode);
-	const res =  await uniID.loginByWeixin(data.code);
-	if(res.code == 0 && res.type =="type" &&  data.inviteCode){
-		//设置邀请码
-		await uniID.acceptInvite({
-			uid:res.uid,
-			inviteCode:data.inviteCode
-		});
-		console.log("设置微信用户邀请码",res.uid,data.inviteCode)
+	try {
+		const res = await uniID.loginByWeixin(data.code);
+		if (res.code == 0 && res.type == "type" && data.inviteCode) {
+			//设置邀请码
+			await uniID.acceptInvite({
+				uid: res.uid,
+				inviteCode: data.inviteCode
+			});
+			console.log("设置微信用户邀请码", res.uid, data.inviteCode)
+		}
+		return res;
+	} catch (e) {
+		//TODO handle the exception
+		console.log(JSON.stringify(e));
+		return {
+			code: 500,
+			msg: e.errMsg
+		};
 	}
-	return res;
+	return false;
 }
 
 
