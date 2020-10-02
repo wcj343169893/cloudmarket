@@ -70,6 +70,7 @@ const main = async (event) => {
 	if (withGoods) {
 		let goods = await goodsCollection.where({
 			shopid: shopid,
+			isCategoryShow: 1,
 			isSold: 1
 		}).field({
 			"_id": 0,

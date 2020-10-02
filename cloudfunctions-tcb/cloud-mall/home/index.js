@@ -137,6 +137,7 @@ const models = {
 			miaosha: {
 				condition: {
 					shopid: shopid,
+					isCategoryShow: 1,
 					isSold: 1,
 					miaosha: cmd.exists(true),
 					"miaosha.stock": cmd.gt(0),
@@ -151,6 +152,7 @@ const models = {
 			tuangou: {
 				condition: {
 					shopid: shopid,
+					isCategoryShow: 1,
 					isSold: 1,
 					tuangou: cmd.exists(true),
 					"tuangou.beginTime": cmd.lt(time + 24 * 3600 * 1000),
@@ -164,6 +166,7 @@ const models = {
 			yuding: {
 				condition: {
 					shopid: shopid,
+					isCategoryShow: 1,
 					isSold: 1,
 					yuding: cmd.exists(true),
 					"yuding.beginTime": cmd.lt(time + 24 * 3600 * 1000),
@@ -177,6 +180,7 @@ const models = {
 			newest: {
 				condition: {
 					shopid: shopid,
+					isCategoryShow: 1,
 					isSold: 1,
 				},
 				sort: ["onlineTime", "desc"],

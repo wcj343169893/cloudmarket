@@ -70,7 +70,7 @@
 			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
-				<view class="action-box b-t"><button class="action-btn recom" @click.stop="addDelivery(item)">确定发货</button></view>
+				<view class="action-box b-t"><button class="action-btn recom" @click.stop="addDelivery(item,index)">确定发货</button></view>
 			</block>
 			<!-- 已发货 -->
 			<block v-if="item.state == 2"></block>
@@ -98,7 +98,7 @@
 			return {
 				shopid: 0,
 				state: "",
-				limit: 20,
+				limit: 10,
 				loaded: false,
 				loadingType: 'more',
 				orderList: []
@@ -110,12 +110,6 @@
 			this.loadData();
 			//设置标题
 			this.setNavTitle();
-		},
-		//滑到底部加载更多
-		onReachBottom() {
-			if (this.loadingType != 'noMore') {
-				this.loadData();
-			}
 		},
 		methods: {
 			async loadData() {
@@ -171,18 +165,13 @@
 			//发送支付提醒
 			sendPayMessage() {},
 			//发货
-			addDelivery(item) {
+			addDelivery(item, index) {
 				orderAdmin("addDelivery", {
 					_id: item._id,
 				}).then(res => {
 					this.$api.msg("发货成功");
 					item.state = 2;
-					let {
-						stateTip,
-						stateTipColor
-					} = this.orderStateExp(item);
-					item.stateTip = stateTip;
-					item.stateTipColor = stateTipColor;
+					Object.assign(this.orderList[index], this.orderStateExp(item))
 				}, err => {
 					this.$api.msg("发货失败");
 				})

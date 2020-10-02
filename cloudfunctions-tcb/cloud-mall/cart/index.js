@@ -53,6 +53,7 @@ const models = {
 			//查询实时商品信息
 			let goods = await goodsCollection.where({
 				shopid: shopid,
+				isCategoryShow: 1,
 				isSold: 1,
 				id: cmd.in(ids)
 			}).field({
@@ -316,6 +317,7 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 const getGoodsById = async function(id) {
 	const goodsInfo = await goodsCollection.where({
 		id: id,
+		isCategoryShow: 1,
 		isSold: 1
 	}).field({
 		id: 1,

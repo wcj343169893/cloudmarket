@@ -410,17 +410,9 @@
 					key: "adminShopInfo",
 					data: item
 				});
-				if(state=="refunded"){
-					uni.navigateTo({
-						url: `/pages/admin/admin?shopid=${id}&second=order/refund&state=verifying`
-					})
-				}else{
-					uni.navigateTo({
-						url: `/pages/admin/admin?shopid=${id}&second=order/list&state=${state}`
-					})
-				}
-				
-
+				uni.navigateTo({
+					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
+				})
 			}
 		}
 	};
@@ -771,6 +763,8 @@
 
 		.num {
 			color: $font-color-warning;
+			font-size: $font-lg;
+			font-weight: 500;
 		}
 	}
 </style>

@@ -487,20 +487,34 @@
 			"style": {
 				"navigationBarTitleText": "页面配置"
 			}
-		}
-	    ,{
-            "path" : "pages/admin/order/refund",
-            "style" : {
-				"navigationBarTitleText": "退款申请"
+		}, {
+			"path": "pages/admin/order/refund/list",
+			"style": {
+				"navigationBarTitleText": "退款申请",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "历史记录",
+							"fontSize": "12",
+							"color": "#303133",
+							"width": "52px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
 			}
-        }
-        ,{
-            "path" : "pages/user/balancelog",
-            "style" : {
+		}, {
+			"path": "pages/user/balancelog",
+			"style": {
 				"navigationBarTitleText": "零钱明细"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/admin/order/refund/history",
+			"style": {
+				"navigationBarTitleText": "退款历史记录"
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

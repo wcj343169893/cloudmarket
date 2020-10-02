@@ -76,6 +76,9 @@
 							<text>{{ item.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
 					</block>
+					<view class="attr-box warning" v-if="!item.isCategoryShow">
+						<text>所属分类已下架，市场中不能购买</text>
+					</view>
 				</view>
 			</view>
 			<block v-if="type == 'chooseone'">
@@ -387,7 +390,7 @@
 				}
 
 				.attr-box {
-					font-size: $font-sm + 2upx;
+					font-size: $font-sm;
 					color: $font-color-light;
 					padding: 8upx 0upx 0;
 
@@ -405,6 +408,11 @@
 
 					&.ended {
 						text-decoration: line-through;
+					}
+
+					&.warning {
+						color: $font-color-warning;
+						font-size: $font-ssm;
 					}
 				}
 			}
@@ -488,6 +496,7 @@
 	.sub-title {
 		font-size: $font-sm;
 		color: $font-color-disabled;
+		margin-top: 6rpx;
 	}
 
 	.titleNview-placing {

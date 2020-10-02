@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const categoryCollection = db.collection("cloud_goods_categories");
+const goodsCollection = db.collection("cloud_goods");
 const {
 	genIdentityId
 } = require('base-common');
@@ -30,14 +31,24 @@ const save = async (data) => {
 	let res = await categoryCollection.where({
 		shopid: data.shopid
 	}).field({
-		id: 1
+		id: 1,
+		children: 1,
+		isShow: 1
 	}).get();
 	let oldData = [];
+	let oldIdData = [];
 	let newCount = 0;
 	let existsData = [];
+	let existsIdData = [];
 	if (res.data.length > 0) {
 		res.data.map(ele => {
-			oldData.push(ele._id)
+			oldData.push(ele._id);
+			oldIdData.push(ele.id);
+			if (ele.children) {
+				ele.children.map(child => {
+					oldIdData.push(child.id);
+				})
+			}
 		})
 	}
 	//计算新增个数
@@ -83,6 +94,9 @@ const save = async (data) => {
 		} else {
 			let id = ele._id;
 			existsData.push(id);
+			if (ele.isShow !== 0) {
+				existsIdData.push(ele.id);
+			}
 			//修改,包含修改子类
 			ele.shopid = data.shopid;
 			if (ele.children) {
@@ -90,6 +104,9 @@ const save = async (data) => {
 					ele2.name = checkCategoryName(ele2.name);
 					if (!ele2.id) {
 						ele2.id = getNewNumber();
+					} else if (ele.isShow !== 0 && ele2.isShow !== 0) {
+						//只保存显示的分类id
+						existsIdData.push(ele2.id);
 					}
 				})
 			}
@@ -108,6 +125,24 @@ const save = async (data) => {
 			_id: cmd.in(delData)
 		}).remove();
 	}
+	let hideIdData = oldIdData.filter(function(v) {
+		return existsIdData.indexOf(v) === -1;
+	});
+	console.log("hide or delete id", hideIdData);
+	//显示
+	await goodsCollection.where({
+		shopid: data.shopid,
+		'categories.id': cmd.in(existsIdData)
+	}).update({
+		isCategoryShow: 1
+	});
+	//隐藏
+	await goodsCollection.where({
+		shopid: data.shopid,
+		'categories.id': cmd.in(hideIdData)
+	}).update({
+		isCategoryShow: 0
+	});
 	return true;
 };
 /**

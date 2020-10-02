@@ -63,13 +63,24 @@
 					res => {
 						//console.log(res);
 						//处理图片
-						res.map((ele, index) => {
+						res.forEach((ele, index) => {
 							if (ele.src && ele.src != '') {
 								this.$set(this.cateImgs, index, ele.src);
 							} else {
 								this.$set(this.cateImgs, index, '/static/errorImage.jpg');
 							}
+							if (ele.isShow !== 0) {
+								ele.isShow = 1;
+							}
+							if (ele.children) {
+								ele.children.forEach(child => {
+									if (child.isShow !== 0) {
+										child.isShow = 1;
+									}
+								})
+							}
 						});
+						console.log(res)
 						this.categoriesData = res;
 						this.isLoaded = true;
 					},

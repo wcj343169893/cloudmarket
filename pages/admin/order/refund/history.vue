@@ -40,7 +40,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="goods-box-single b-b">
+			<view class="goods-box-single">
 				<image class="goods-img" :src="item.goods.src" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
@@ -56,10 +56,6 @@
 					</view>
 				</view>
 			</view>
-			<view class="action-box">
-				<button type="default" class="action-btn" @click="refuse(item)">拒绝</button>
-				<button type="default" v-if="item.state=='verifying'" class="action-btn recom" @click="passed(item)">通过</button>
-			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
 	</view>
@@ -73,13 +69,11 @@
 		data() {
 			return {
 				shopid: 0,
-				state: "",
 				refundList: []
 			};
 		},
 		onLoad(options) {
 			this.shopid = options.shopid;
-			this.state = options.state;
 			this.loadData();
 		},
 		//滑到底部加载更多
@@ -93,7 +87,7 @@
 				this.loadingType = 'loading';
 				this.page++;
 				orderAdmin("getRefunded", {
-					state: this.state,
+					state: "all",
 					key: this.searchWord,
 					page: this.page,
 					limit: this.limit
@@ -102,7 +96,7 @@
 					if (this.page == 1) {
 						this.refundList = res;
 					} else {
-						this.refundList = Object.assign(this.refundList, res)
+						this.refundList = this.refundList.concat(res)
 					}
 					if (res.length < this.limit) {
 						this.loadingType = 'noMore';

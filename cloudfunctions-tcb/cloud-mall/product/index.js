@@ -71,6 +71,7 @@ const models = {
 		//正在秒杀商品5条,必须是有库存的秒杀
 		let result = await goodsCollection.where({
 			shopid: shopid,
+			isCategoryShow: 1,
 			isSold: 1,
 			"miaosha.stock": cmd.gt(0),
 			"miaosha.beginTime": cmd.lt(time + 24 * 3600 * 1000),
@@ -98,6 +99,7 @@ const models = {
 		//正在秒杀商品5条,必须是有库存的秒杀
 		let result = await goodsCollection.where({
 			shopid: shopid,
+			isCategoryShow: 1,
 			isSold: 1,
 			tuangou: cmd.exists(true),
 			"tuangou.beginTime": cmd.lt(time + 24 * 3600 * 1000),
@@ -131,6 +133,7 @@ const models = {
 		}
 		let result = await goodsCollection.where({
 			shopid: shopid,
+			isCategoryShow: 1,
 			isSold: 1,
 			title: new RegExp(key)
 		}).field({

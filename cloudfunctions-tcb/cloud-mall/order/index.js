@@ -578,6 +578,7 @@ const settlement = async (event, context) => {
 	//查询实时商品信息
 	let goods = await goodsCollection.where({
 		shopid: shopid,
+		isCategoryShow: 1,
 		isSold: 1,
 		id: cmd.in(ids)
 	}).field({
@@ -704,17 +705,24 @@ const settlement = async (event, context) => {
 						delete ele.miaosha.endTime; */
 						//秒杀与满减不同享
 						delete ele.manjian;
+					} else {
+						//无效秒杀，不需要带着走
+						delete ele.miaosha;
 					}
 				} else if (ele.tuangou) {
-					if (time > ele.tuangou.endTime) {
-						event.message = "团购已结束";
+					if (time < ele.tuangou.beginTime) {
+						event.message = "团购未开始";
 						return false;
-					} else if (time > ele.tuangou.beginTime) {
+					} else if (time < ele.tuangou.endTime) {
+						//团购正在进行
 						ele.originPrice = ele.price;
 						ele.price = ele.tuangou.price;
-					}
-					if (!data.pickup || data.pickup < ele.tuangou.pickup) {
-						data.pickup = ele.tuangou.pickup;
+						if (!data.pickup || data.pickup < ele.tuangou.pickup) {
+							data.pickup = ele.tuangou.pickup;
+						}
+					} else {
+						//团购已结束
+						delete ele.tuangou;
 					}
 				}
 				//检查库存是否不足

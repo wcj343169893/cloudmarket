@@ -47,7 +47,7 @@
 
 		<view class="cover-container">
 			<view class="order-section">
-				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item)" hover-class="common-hover"
+				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item.state)" hover-class="common-hover"
 				 :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
@@ -96,9 +96,8 @@
 			console.log(this.shopid, options);
 			if (options.second) {
 				//进一步跳转到下一页页面
-				uni.navigateTo({
-					url: `/pages/admin/${options.second}?shopid=${options.id}&state=${options.state}`
-				});
+				let func="navTo"+options.second;
+				this[func](options.state);
 			}
 		},
 		onShow() {
@@ -188,14 +187,14 @@
 				console.log(state)
 				let shopid = this.shopid;
 				if(state=="refunded"){
-					this.navTo(`/pages/admin/order/refund?state=verifying&shopid=${shopid}`);
+					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${shopid}`);
 				}else{
 					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${shopid}`);
 				}
 			},
-			navToGoods(item) {
+			navToGoods(state) {
 				let shopid = this.shopid;
-				this.navTo(`/pages/admin/goods/list?state=${item.state}&shopid=${shopid}`);
+				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${shopid}`);
 			},
 			//新增商品
 			navToAddGoods() {

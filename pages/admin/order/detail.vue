@@ -174,6 +174,14 @@
 											<text class="price">{{ item.price | toFixed }}</text>
 											<text>数量:</text>
 											<text class="important">{{ item.amount }}</text>
+											<block v-if="item.isRefunding > 0">
+												<text class="m-l">申请退款:</text>
+												<text class="important">{{item.isRefunding}}</text>
+											</block>
+											<block v-if="item.refundAmount > 0">
+												<text class="m-l">已退:</text>
+												<text class="important">{{item.refundAmount}}</text>
+											</block>
 										</view>
 									</view>
 									<view class="buttons">
@@ -627,6 +635,9 @@
 
 		.prices {
 			justify-content: space-between;
+			.important{
+				font-size: $font-lg;
+			}
 		}
 	}
 

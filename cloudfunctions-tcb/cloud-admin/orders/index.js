@@ -97,10 +97,14 @@ const getRefunded = async (data) => {
 		state,
 		shopid
 	} = data;
-	const res = await orderRefundsCollection.where({
+	let condition = {
 		shopid,
-		state
-	}).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).get();
+	};
+	if (state != "all") {
+		condition["state"] = state;
+	}
+	const res = await orderRefundsCollection.where(condition).orderBy("id", "desc").skip((page - 1) * limit).limit(limit)
+		.get();
 	if (res.data.length == 0) {
 		return false;
 	}
@@ -133,7 +137,9 @@ const passedRefund = async (data) => {
 			time: new Date().toISOString()
 		})
 	});
-	let orderMain = await getOrderById(conditions, {
+	let orderMain = await getOrderById({
+		_id: order.orderId
+	}, {
 		refundAmount: 1,
 		cartCount: 1
 	});

@@ -532,6 +532,7 @@
 					this.goodsList[this.refundItem.index].isRefunding = 1;
 					this.goodsList[this.refundItem.index].canRefund = false;
 					this.updateState();
+					this.$api.prePage().refreshList();
 				}, err => {
 					this.$api.msg(err.message || "申请失败");
 				});
@@ -656,6 +657,7 @@
 							}).then(res => {
 								//重新刷新页面
 								this.loadData();
+								this.$api.prePage().refreshList();
 							});
 						}
 					}

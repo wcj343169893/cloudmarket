@@ -11,11 +11,12 @@ const list = async (data, context) => {
 		page,
 		limit,
 		key,
+		shopid,
 		state
 	} = data;
 	//商品类型,"online"在售,"miaosha"秒杀,"yushou"预售,"baokuan"爆款,"shouqin"即将售罄
 	let conditions = {
-		shopid: data.shopid
+		shopid
 	};
 	let order = ["id", "desc"];
 	//需要动态改变表
@@ -36,6 +37,7 @@ const list = async (data, context) => {
 		"isSold": 1,
 		"default_checked_sku_id": 1, //多规格默认选中
 		"isSold": 1,
+		isCategoryShow: 1,
 		"skuname": 1,
 		"skus": 1,
 		"originPrice": 1,
@@ -54,12 +56,20 @@ const list = async (data, context) => {
 	let time = new Date().getTime();
 	switch (state) {
 		case "online":
-			//1所有
+			//1所有在售
 			conditions["isSold"] = 1;
+			conditions["isCategoryShow"] = 1;
 			break;
 		case "offline":
-			//1所有
-			conditions["isSold"] = 0;
+			//1所有下架
+			/* conditions["isSold"] = 0; */
+			conditions = cmd.or({
+				shopid,
+				isSold: 0
+			}, {
+				shopid,
+				isCategoryShow: 0
+			});
 			break;
 		case "delete":
 			//已删除，读取已删除表
@@ -82,10 +92,10 @@ const list = async (data, context) => {
 		case "miaoshaAdmin":
 			//2秒杀,必须是有效的
 			conditions = cmd.or({
-				shopid: data.shopid,
+				shopid,
 				miaosha: cmd.exists(true)
 			}, {
-				shopid: data.shopid,
+				shopid,
 				miaoshaBackUp: cmd.exists(true)
 			});
 			//conditions["miaosha"] = cmd.exists(true);
@@ -139,6 +149,14 @@ const save = async (data, context) => {
 	if (data._id && data._id != '') {
 		_id = data._id;
 		delete data._id;
+	}
+	data.isCategoryShow = 0;
+	if (data.categories) {
+		data.categories.map(cate => {
+			if (cate.isShow) {
+				data.isCategoryShow = 1;
+			}
+		})
 	}
 	if (_id) {
 		//修改,验证所有权

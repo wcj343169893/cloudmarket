@@ -46,12 +46,6 @@
 			}
 			this.loadData();
 		},
-		//滑到底部加载更多
-		onReachBottom() {
-			if (this.loadingType != 'noMore') {
-				this.loadData();
-			}
-		},
 		// #ifndef MP
 		//点击导航栏 buttons 时触发
 		onNavigationBarButtonTap(e) {

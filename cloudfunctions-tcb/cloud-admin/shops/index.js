@@ -80,36 +80,48 @@ const modules = {
 	 */
 	async getGoodsStatistics(shop) {
 		let time = new Date().getTime();
+		let shopid = shop.id;
 		//在售，秒杀，预售，团购，下架，已删除
 		let statistics = {
 			online: {
-				isSold: 1
+				shopid,
+				isSold: 1,
+				isCategoryShow: 1
 			},
-			offline: {
+			offline: cmd.or({
+				shopid,
 				isSold: 0
-			},
+			}, {
+				shopid,
+				isCategoryShow: 0
+			}),
 			miaosha: {
+				shopid,
 				miaosha: cmd.exists(true),
 				"miaosha.endTime": cmd.gt(time)
 			},
 			yuding: {
+				shopid,
 				yuding: cmd.exists(true)
 			},
 			tuangou: {
+				shopid,
 				tuangou: cmd.exists(true),
 				"tuangou.pickup": cmd.gt(time)
 			},
 			shouqin: {
+				shopid,
 				isSold: 1,
 				stock: cmd.lt(10)
 			},
 			baokuan: {
+				shopid,
 				isSold: 1,
 				monthlySale: cmd.gt(100)
 			},
 		}
 		for (let key in statistics) {
-			shop["goods"][key] = await this.getGoodsStatisticsByCondition(shop.id, statistics[key]);
+			shop["goods"][key] = await this.getGoodsStatisticsByCondition(statistics[key]);
 		}
 		//已删除商品
 		shop["goods"]["delete"] = await this.getGoodsDeleteStatisticsByCondition(shop.id);
@@ -129,11 +141,8 @@ const modules = {
 	 * @param {Object} shopid
 	 * @param {Object} condition
 	 */
-	async getGoodsStatisticsByCondition(shopid, condition) {
-		let res = await goodsCollection.where({
-			shopid,
-			...condition
-		}).count();
+	async getGoodsStatisticsByCondition(condition) {
+		let res = await goodsCollection.where(condition).count();
 		return res.total;
 	},
 	async getOrderStatisticsByCondition(shopid, condition) {
