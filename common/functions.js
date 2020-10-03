@@ -240,6 +240,12 @@ const updateGoodsTags = function(goods, isPrecise) {
 		}
 	} else if (goods.yuding) {
 		if (goods.yuding.endTime > time) {
+			console.log(goods.yuding)
+			if(!goods.yuding.originPrice){
+				goods.yuding.originPrice = goods.price;
+			}else{
+				goods.price = goods.yuding.originPrice;
+			}
 			if (!isPrecise) {
 				//更新商品价格
 				goods.price = parseFloat((goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2));

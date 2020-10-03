@@ -203,15 +203,7 @@
 			};
 		},
 		computed: {
-			...mapState(['hasLogin', 'userInfo']),
-			//定金
-			yudingPrice() {
-				return (this.price - this.yuding.deduction + this.yuding.price).toFixed(2);
-			},
-			//尾款
-			yudingFinalPay() {
-				return (this.price - this.yuding.deduction).toFixed(2);
-			}
+			...mapState(['hasLogin', 'userInfo'])
 		},
 		async onLoad(options) {
 			if (!options.id) {
@@ -318,7 +310,7 @@
 			buildGoodsInfo(item) {
 				console.log(item);
 				this.imgs = [];
-				updateGoodsTags(item, false);
+				updateGoodsTags(item, true);
 				this.checkYuding(item);
 				this.checkTuangou(item);
 				this.checkMiaosha(item);

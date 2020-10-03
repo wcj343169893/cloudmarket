@@ -101,7 +101,7 @@
 			}
 		},
 		onShow() {
-			this.loadData(true);
+			this.loadData(false);
 		},
 		//下拉刷新,不会更新底部附近的店铺
 		onPullDownRefresh() {

@@ -416,6 +416,10 @@ const getRefundApplys = async (data) => {
  */
 const addOrderRefund = async function(uid, payInfo, refundFee, refundDesc, goods, order, item) {
 	let id = await genIdentityId("order_refunds");
+	if(refundFee>payInfo.totalFee){
+		refundFee = payInfo.totalFee;
+		console.log("退款金额大于实际支付金额",refundFee,payInfo.totalFee)
+	}
 	return await orderRefundsCollection.add({
 		id,
 		orderId: order._id,

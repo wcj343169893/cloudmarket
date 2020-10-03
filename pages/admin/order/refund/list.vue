@@ -50,7 +50,7 @@
 						<text>申请数量:</text>
 						<text>{{item.refundApplyAmount}}</text>
 						<text class="m-l">已退数量:</text>
-						<text>{{item.goods.refundAmount}}</text>
+						<text>{{item.goods.refundAmount*1}}</text>
 						<text class="m-l">购买数量:</text>
 						<text>{{item.goods.amount}}</text>
 					</view>
