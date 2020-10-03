@@ -71,7 +71,7 @@ const models = {
 				"miaosha": 1,
 				"manjian": 1,
 				"yuding": 1,
-				"tuangou":1
+				"tuangou": 1
 			}).get();
 			return {
 				"cart": carts.data,
@@ -214,7 +214,7 @@ const models = {
 	 * 查询购物车总数量
 	 * @param {Object} data
 	 */
-	async total(data){
+	async total(data) {
 		const {
 			shopid,
 			uid
@@ -230,7 +230,7 @@ const models = {
 			})
 			.end();
 		if (res2.data.length > 0) {
-			return  res2.data[0].totalAmount;
+			return res2.data[0].totalAmount;
 		}
 		return "0"
 	}
@@ -244,13 +244,6 @@ const models = {
  * @param {Object} date
  */
 const saveCartInfo = async function(ele, shopid, uid, date) {
-	let goodsInfo = await getGoodsById(ele.goods_id);
-	if (!goodsInfo) {
-		return {
-			"code": 404,
-			"message": "商品不存在",
-		};
-	}
 	//查询是否存在，否则新增
 	let cartsOld = await cartCollection.where({
 		shopid: shopid,
@@ -265,6 +258,14 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		//删除购物车
 		return await cartCollection.doc(cartsOld.data[0]._id).remove();
 	}
+	let goodsInfo = await getGoodsById(ele.goods_id);
+	if (!goodsInfo) {
+		return {
+			"code": 404,
+			"message": "商品不存在",
+		};
+	}
+
 	let amount = ele.amount;
 	if (cartsOld.data.length > 0 && ele.appends) {
 		amount += cartsOld.data[0].amount;
@@ -275,13 +276,26 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		return false;
 	}
 	let time = new Date().getTime();
+	if (goodsInfo.skus) {
+		let sku = goodsInfo.skus.filter(sku => {
+			return sku.id == ele.sku_id;
+		});
+		sku = sku[0];
+		goodsInfo.subTitle = sku.name.replace('&gt;', ' ');
+		goodsInfo.price = sku.price;
+		if (sku.src) {
+			goodsInfo.src = sku.src;
+		}
+	}
 	//判断是否限购，只有秒杀商品指定型号,支持没有型号情况，必须在秒杀期间
-	if (goodsInfo.miaosha && (!ele.sku_id || ele.sku_id == goodsInfo.miaosha.sku_id) && goodsInfo.miaosha.limit > 0 &&
-		goodsInfo.miaosha.limit <
-		amount && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime ) {
-		ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
-		return false;
-	}else if(goodsInfo.tuangou && time < goodsInfo.tuangou.endTime && time > goodsInfo.tuangou.beginTime){
+	if (goodsInfo.miaosha && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime) {
+		if ((!ele.sku_id || ele.sku_id == goodsInfo.miaosha.sku_id) && goodsInfo.miaosha.limit > 0 &&
+			goodsInfo.miaosha.limit < amount) {
+			ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
+			return false;
+		}
+		goodsInfo.price = goodsInfo.miaosha.price;
+	} else if (goodsInfo.tuangou && time < goodsInfo.tuangou.endTime && time > goodsInfo.tuangou.beginTime) {
 		goodsInfo.price = goodsInfo.tuangou.price;
 	}
 	if (cartsOld.data.length == 0) {
@@ -292,11 +306,11 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 			goods_id: ele.goods_id,
 			sku_id: ele.sku_id,
 			amount: ele.amount,
-			title: ele.title,
-			subTitle: ele.subTitle,
+			title: goodsInfo.title,
+			subTitle: goodsInfo.subTitle ? goodsInfo.subTitle : "",
 			checked: true,
-			src: ele.src ? ele.src : "",
-			price: ele.price ? +ele.price : 0,
+			src: goodsInfo.src,
+			price: goodsInfo.price,
 			settlement: ele.settlement ? true : false,
 			modified: date.toISOString(),
 			created: date.toISOString()
@@ -306,8 +320,9 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		return await cartCollection.doc(cartsOld.data[0]._id).update({
 			amount: ele.appends ? cmd.inc(ele.amount) : ele.amount,
 			checked: ele.checked,
-			src: ele.src ? ele.src : "",
-			price: ele.price ? +ele.price : 0,
+			subTitle: goodsInfo.subTitle ? goodsInfo.subTitle : "",
+			src: goodsInfo.src,
+			price: goodsInfo.price,
 			settlement: ele.settlement ? true : false,
 			modified: date.toISOString()
 		});
@@ -324,9 +339,10 @@ const getGoodsById = async function(id) {
 		title: 1,
 		src: 1,
 		price: 1,
+		skus: 1,
 		stock: 1,
 		miaosha: 1,
-		tuangou:1
+		tuangou: 1
 	}).limit(1).get();
 	if (goodsInfo.data.length == 0) {
 		return false;

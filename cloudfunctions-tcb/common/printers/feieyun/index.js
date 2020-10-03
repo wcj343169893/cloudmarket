@@ -93,10 +93,10 @@ const models = {
 			content.push(`<C>用户自提</C>`);
 			sendName = "预约提货";
 		}
-		content.push(`订单编号:${order.id}<BR>日 \t 期:${createdDay}<BR>时 \t 间:${createdTime}`);
+		content.push(`订单编号:${order.id}<BR>日\t 期:${createdDay}<BR>时\t 间:${createdTime}`);
 		if (order.address) {
 			content.push(
-				`<BR>姓 \t 名:${order.address.name}<BR>手 \t 机:${order.address.mobile}<BR>配送地址:${order.address.address}（${order.address.addressName}）${order.juli}km`
+				`<BR>姓\t 名:${order.address.name}<BR>手\t 机:${order.address.mobile}<BR>配送地址:${order.address.address} ${order.address.addressName} ${order.juli}km`
 			);
 		}
 		if (order.deliveryHour) {
@@ -111,7 +111,7 @@ const models = {
 				content.push(`<BR>UPC ${goods.upc}`);
 			}
 			let total = (goods.price * goods.amount).toFixed(2);
-			content.push(`<RIGHT>${goods.amount} ${goods.price} ${total}</RIGHT><BR>`);
+			content.push(`<RIGHT>${goods.amount}   ${goods.price}   ${total}</RIGHT><BR>`);
 		}
 		content.push(`--------------------------------<BR>`);
 		let total = order.totalMoney + order.totalDiscount;
@@ -122,8 +122,7 @@ const models = {
 		total = order.totalMoney + order.freight;
 		content.push(`<RIGHT>实际支付:￥${total}</RIGHT>`);
 		content.push(`<C>***********完***********</C>`);
-		
-		content.push(`<BR><CUT>`);
+		content.push(`<BR><BR>`);
 		return content.join("");
 	}
 }

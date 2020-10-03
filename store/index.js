@@ -24,6 +24,7 @@ const store = new Vuex.Store({
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
+		cartMap: {}, //购物车商品键值对
 		location: {
 			id: false, //收货地址id
 			latitude: 0, //纬度
@@ -32,7 +33,7 @@ const store = new Vuex.Store({
 		},
 		inviteCode: "",
 		userInfo: baseUserInfo,
-		jgLoginInit:false
+		jgLoginInit: false
 	},
 	mutations: {
 		//更新state数据
@@ -161,6 +162,20 @@ const store = new Vuex.Store({
 		},
 		incrCartNumber(state, step) {
 			state.cartCount += step;
+		},
+		updateCartMap(state, cart) {
+			let key = cart.goods_id + "_" + (+cart.sku_id);
+			if (state.cartMap[key]) {
+				state.cartMap[key] += cart.amount;
+			} else {
+				state.cartMap[key] = cart.amount;
+			}
+			let count = 0;
+			for (let k in state.cartMap) {
+				count += state.cartMap[k];
+			}
+			state.cartCount = count;
+			console.log("cartCount",count)
 		}
 	},
 	actions: {
@@ -190,22 +205,37 @@ const store = new Vuex.Store({
 			commit
 		}) {
 			let count = 0;
+			let cartMap = {};
 			if (state.hasLogin && state.shopId > 0) {
 				console.log("store getCartList")
 				try {
-					const res = await getCartList({
+					/* const res = await getCartList({
 						shopid: state.shopId,
 						opt: "total"
-					})
-					count = +res;
-				} catch (err) {
-					console.error('更新购物车数量 => ', err);
-				}
+					}) */
+					const res = await getCartList({
+						shopid: state.shopId,
+						opt: "list"
+					});
+					if (res) {
+						res.map(e => {
+							count += e.amount;
+							cartMap[e.goods_id + "_" + (+e.sku_id)] = e.amount;
+						});
+						console.log(cartMap)
+					}
+					//count = +res;
+				} catch (err) {}
 			}
-			commit('setStateAttr', {
-				key: 'cartCount',
-				val: count
-			})
+			commit('setStateAttr', [{
+					key: 'cartCount',
+					val: count
+				},
+				{
+					key: 'cartMap',
+					val: cartMap
+				}
+			])
 		},
 	}
 })
