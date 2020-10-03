@@ -80,6 +80,17 @@ const getAllCategories = function(data) {
 		isShowLoading: true
 	})
 }
+const getCategories = function(action,data) {
+	return network({
+		url: "cloud-mall",
+		data: {
+			module: "category",
+			action: action,
+			data
+		},
+		isShowLoading: true
+	})
+}
 const getGoodsByCid = function(data) {
 	return network({
 		url: "getGoodsByCid",
@@ -424,6 +435,17 @@ const micLogin = function(data, provider) {
 		}
 	})
 }
+const cloudMall = (model,action,data,isShowLoading)=>{
+	return network({
+		url: "cloud-mall",
+		data: {
+			module: model,
+			action: action,
+			data
+		},
+		isShowLoading: !!isShowLoading
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -457,5 +479,7 @@ export {
 	mobileAutoLogin,
 	sendSms,
 	getUserStatistics,
-	refunds
+	refunds,
+	getCategories,
+	cloudMall
 }

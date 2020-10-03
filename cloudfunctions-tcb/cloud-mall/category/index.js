@@ -115,7 +115,44 @@ const main = async (event) => {
 	}
 	return shopInfo;
 }
-
+const cates = async (data) => {
+	const shopid = data.id;
+	//查询分类
+	let categories = await goodsCategoryCollection.where({
+		shopid: shopid,
+		isShow: 1,
+	}).field({
+		_id: 0,
+		id: 1,
+		src: 1,
+		name: 1,
+		children: 1,
+		recommendGoods: 1
+	}).orderBy("posid", "asc").get();
+	if (categories.data.length == 0) {
+		return false;
+	}
+	//过滤不显示的子集
+	categories.data.forEach(cate => {
+		if (cate.children) {
+			cate.children = cate.children.filter(child => {
+				return child.isShow !== 0;
+			});
+			//存在推荐商品
+			if(cate.recommendGoods > 0){
+				//增加推荐分类
+				cate.children.unshift({
+					name: "推荐",
+					id: cate.id,
+					pid: cate.id,
+					isRecommend: 1
+				});
+			}
+		}
+	})
+	return categories.data;
+}
 module.exports = {
-	main
+	main,
+	cates
 };

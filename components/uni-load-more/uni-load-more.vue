@@ -70,7 +70,7 @@
 	}
 
 	.uni-load-more__text {
-		font-size: 28upx;
+		font-size: 24upx;
 		color: #999
 	}
 

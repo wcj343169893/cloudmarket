@@ -89,7 +89,7 @@ const models = {
 		}).skip((page - 1) * limit).limit(limit).orderBy("miaosha.beginTime", "desc").get();
 		return result.data;
 	},
-	async tuangou(data){
+	async tuangou(data) {
 		const {
 			page,
 			limit,
@@ -112,8 +112,8 @@ const models = {
 			subTitle: 1,
 			isSold: 1,
 			tuangou: 1,
-			banner:1,
-			monthlySale:1,
+			banner: 1,
+			monthlySale: 1,
 			price: 1,
 			stock: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("monthlySale:1,", "asc").get();
@@ -144,9 +144,62 @@ const models = {
 			subTitle: 1,
 			miaosha: 1,
 			yuding: 1,
+			tuangou: 1,
 			price: 1,
 			stock: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
+		return result.data;
+	},
+	/**
+	 * 根据分类id,推荐，分页查询商品
+	 * @param {Object} data
+	 */
+	async getByCid(data) {
+		const {
+			page,
+			limit,
+			cateid,
+			isRecommend,
+			shopid,
+			sort,
+			order
+		} = data;
+		let condition = {
+			shopid: shopid,
+			isCategoryShow: 1,
+			'categories.id': cateid,
+			isSold: 1,
+		};
+		if (isRecommend) {
+			condition["isRecommend"] = 1;
+		}
+		let orderBy = ["monthlySale", "desc"];
+		if (sort) {
+			//前端自定义排序
+			orderBy = [sort, order];
+		}
+		console.log(condition);
+		let result = await goodsCollection.where(condition).field({
+			_id: 0,
+			id: 1,
+			title: 1,
+			subTitle: 1,
+			stock: 1,
+			src: 1,
+			isSold: 1,
+			score: 1,
+			price: 1,
+			default_checked_sku_id: 1, //多规格默认选中
+			skuname: 1,
+			skus: 1,
+			originPrice: 1,
+			monthlySale: 1,
+			categories: 1,
+			miaosha: 1,
+			yuding: 1,
+			manjian: 1,
+			tuangou: 1,
+		}).skip((page - 1) * limit).limit(limit).orderBy(...orderBy).get();
 		return result.data;
 	},
 	//用户的商品浏览记录

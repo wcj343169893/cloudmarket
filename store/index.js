@@ -20,7 +20,7 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		token: '',
 		stationId: 0, //分站id
-		shopId: 0, //分站店铺id，根据收货地址动态设置
+		shopId: 123457, //分站店铺id，根据收货地址动态设置
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
