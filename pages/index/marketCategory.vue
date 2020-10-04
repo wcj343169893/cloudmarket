@@ -297,8 +297,7 @@
 				return uni.upx2px(this.categoryWidth) + 'px';
 			},
 			contentHeight() {
-				let height = this.systemInfo.windowHeight - this.systemInfo.statusBarHeight - this.systemInfo.navigationBarHeight -
-					uni.upx2px(this.categoryHeight) + 'px';
+				let height = '';
 				//#ifdef MP
 				height = this.systemInfo.windowHeight - this.systemInfo.statusBarHeight - this.systemInfo.navigationBarHeight +
 					'px';
