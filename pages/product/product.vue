@@ -381,7 +381,7 @@
 					}
 					if (selectSku.length == 0) {
 						//实在没有，则选中第一个型号
-						selectSku = item.skus[0];
+						selectSku = item.skus;
 					}
 					console.log("selectSku", selectSku);
 					miaoshaSkuName = selectSku[0].name.split('&gt;');

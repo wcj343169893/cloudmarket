@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
-		<block v-if="tuangouList.length > 0">
+		<block v-if="dataList.length > 0">
 			<view class="seckill-section2">
-				<view v-for="(item,index) in tuangouList" :key="index" @click="navToGoodsPage(item)" class="sec2 sec3">
+				<view v-for="(item,index) in dataList" :key="index" @click="navToGoodsPage(item)" class="sec2 sec3">
 					<view class="image-content">
 						<image :src="item.banner" mode="aspectFill" lazy-load="true"></image>
 					</view>
@@ -54,7 +54,7 @@
 			return {};
 		},
 		props: {
-			tuangouList: {
+			dataList: {
 				type: Array,
 				default: []
 			}

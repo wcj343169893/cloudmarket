@@ -89,7 +89,11 @@
 				<button class="action-btn recom" @click.stop="revertItem(item)">恢复售卖</button>
 			</view>
 			<view class="action-box b-t" v-else>
-				<block v-if="item.isSold"><button class="action-btn warning" @click.stop="soldOut(item)">下架</button></block>
+				<block v-if="item.isSold">
+					<button class="action-btn warning" @click.stop="soldOut(item)">下架</button>
+					<button class="action-btn primary" @click.stop="recommend(item)" v-if="item.isRecommend">不推荐</button>
+					<button class="action-btn primary" @click.stop="recommend(item)" v-else>推荐</button>
+				</block>
 				<block v-if="!item.isSold">
 					<button class="action-btn warning" @click.stop="deleteItem(item)">删除</button>
 					<button class="action-btn recom" @click.stop="soldIn(item)">上架</button>
@@ -191,13 +195,32 @@
 			preview(item) {
 				navToGoodsItemPage(item, true);
 			},
+			//推荐
+			recommend(item) {
+				console.log(item)
+				goodsAdmin('recommend', {
+					_id: item._id,
+					isRecommend: !item.isRecommend
+				}).then(res => {
+					if (item.isRecommend) {
+						this.$api.success('取消推荐成功');
+					} else {
+						this.$api.success('推荐成功');
+					}
+					item.isRecommend = !item.isRecommend;
+				}, err => {
+					console.log("未修改成功")
+				});
+			},
 			//下架
 			soldOut(item) {
 				goodsAdmin('soldOut', {
 					_id: item._id
 				}).then(res => {
 					item.isSold = 0;
-					this.$api.msg('下架成功');
+					this.$api.success('下架成功');
+				}, err => {
+					console.log("未修改成功")
 				});
 			},
 			//上架
@@ -206,7 +229,9 @@
 					_id: item._id
 				}).then(res => {
 					item.isSold = 1;
-					this.$api.msg('上架成功');
+					this.$api.success('上架成功');
+				}, err => {
+					console.log("未修改成功")
 				});
 			},
 			//恢复数据到生产环境
@@ -219,7 +244,7 @@
 								_id: item._id
 							}).then(
 								res => {
-									this.$api.msg('恢复成功');
+									this.$api.success('恢复成功');
 									setTimeout(() => {
 										this.refreshList();
 									}, 1500);
@@ -242,7 +267,7 @@
 								_id: item._id
 							}).then(
 								res => {
-									this.$api.msg('清理成功');
+									this.$api.success('清理成功');
 									setTimeout(() => {
 										this.refreshList();
 									}, 1500);
@@ -265,7 +290,7 @@
 								_id: item._id
 							}).then(
 								res => {
-									this.$api.msg('删除成功');
+									this.$api.success('删除成功');
 									setTimeout(() => {
 										this.refreshList();
 									}, 1500);
@@ -301,7 +326,7 @@
 					this.isLoading = false;
 					this.$api.success('复制成功');
 					let newItem = { ...item,
-						_id: res
+						...res
 					};
 					this.goodsList.splice(index, 0, newItem);
 				});
@@ -468,6 +493,11 @@
 
 			&.warning {
 				background-color: $uni-color-warning;
+				color: #fff;
+			}
+
+			&.primary {
+				background-color: $uni-color-primary;
 				color: #fff;
 			}
 		}

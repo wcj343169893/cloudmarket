@@ -134,6 +134,7 @@ const save = async (data) => {
 		shopid: data.shopid,
 		'categories.id': cmd.in(existsIdData)
 	}).update({
+		'categories.$.isShow':1,
 		isCategoryShow: 1
 	});
 	//隐藏
@@ -141,6 +142,7 @@ const save = async (data) => {
 		shopid: data.shopid,
 		'categories.id': cmd.in(hideIdData)
 	}).update({
+		'categories.$.isShow':0,
 		isCategoryShow: 0
 	});
 	return true;

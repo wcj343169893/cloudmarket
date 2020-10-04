@@ -22,7 +22,8 @@ const models = {
 			yuding: 5,
 			newest: 30,
 			ads: 5,
-			category: 10
+			category: 10,
+			recommend:5
 		};
 		let dataOut = {
 			uid,
@@ -35,6 +36,7 @@ const models = {
 				miaosha: "限时抢购",
 				tuangou: "限时团购",
 				yuding: "限时预定",
+				recommend: "精品推荐",
 				newest: "实时鲜货",
 			}
 		};
@@ -175,6 +177,18 @@ const models = {
 				sort: ["yuding.beginTime", "asc"],
 			},
 			/**
+			 * 精品推荐
+			 */
+			recommend:{
+				condition: {
+					shopid: shopid,
+					isRecommend: true,
+					isCategoryShow: 1,
+					isSold: 1,
+				},
+				sort: ["monthlySale", "desc"],
+			},
+			/**
 			 * 最新上架/最近更新
 			 */
 			newest: {
@@ -184,12 +198,12 @@ const models = {
 					isSold: 1,
 				},
 				sort: ["onlineTime", "desc"],
-			},
+			}
 		}
 		for (let key in conditions) {
 			if (limits[key] > 0) {
 				let condi = conditions[key].condition;
-				if (key == "newest" && gids.length > 0) {
+				if (gids.length > 0) {
 					condi["id"] = cmd.nin(gids);
 				}
 				let res = await goodsCollection.where(condi).field(goodsFields).limit(limits[key]).orderBy(

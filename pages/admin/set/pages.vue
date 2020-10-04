@@ -51,13 +51,15 @@
 							"miaosha": 2,
 							"newest": 10,
 							"tuangou": 3,
-							"yuding": 4
+							"yuding": 4,
+							"recommend": 4
 						},
 						"titles": {
 							"miaosha": "限时抢购",
 							"newest": "鲜货排行",
 							"tuangou": "限时团购",
-							"yuding": "限时预定"
+							"yuding": "限时预定",
+							"recommend": "精品推荐",
 						}
 					}
 				},
@@ -70,7 +72,14 @@
 		methods: {
 			async loadData() {
 				this.shopinfo = uni.getStorageSync(this.cacheKey);
-				this.settings = Object.assign(this.settings, this.shopinfo.pages);
+				if (this.shopinfo.pages) {
+					for (let pg in this.shopinfo.pages) {
+						for (let key in this.shopinfo.pages[pg]) {
+							Object.assign(this.settings[pg][key], this.shopinfo.pages[pg][key]);
+						}
+					}
+				}
+				//this.settings = Object.assign(this.settings, this.shopinfo.pages);
 				console.log(JSON.stringify(this.settings))
 			},
 			save() {
@@ -149,7 +158,8 @@
 		padding: 20rpx $page-row-spacing;
 		position: relative;
 		color: $font-color-light;
-		&::after{
+
+		&::after {
 			left: 20rpx;
 		}
 

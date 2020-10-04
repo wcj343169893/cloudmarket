@@ -171,7 +171,7 @@ const models = {
 			isSold: 1,
 		};
 		if (isRecommend) {
-			condition["isRecommend"] = 1;
+			condition["isRecommend"] = true;
 		}
 		let orderBy = ["monthlySale", "desc"];
 		if (sort) {

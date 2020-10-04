@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const goodsCollection = db.collection("cloud_goods");
+const categoryCollection = db.collection("cloud_goods_categories");
 const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const {
 	genIdentityId
@@ -38,6 +39,7 @@ const list = async (data, context) => {
 		"default_checked_sku_id": 1, //多规格默认选中
 		"isSold": 1,
 		isCategoryShow: 1,
+		isRecommend: 1,
 		"skuname": 1,
 		"skus": 1,
 		"originPrice": 1,
@@ -124,6 +126,10 @@ const list = async (data, context) => {
 			conditions["stock"] = cmd.lt(10);
 			order = ["stock", "asc"];
 			break;
+		case "recommend":
+			//即将售罄，库存小于10
+			conditions["isRecommend"] = true;
+			break;
 		default:
 			break;
 	}
@@ -204,7 +210,10 @@ const copy = async (data, context) => {
 		return false;
 	}
 	delete goods._id;
-	return await save(goods, context);
+	delete goods.id;
+	let res = await save(goods, context);
+	goods._id = res;
+	return goods;
 }
 /**
  * 删除，delete是关键词
@@ -300,6 +309,50 @@ const cleans = async (data) => {
 	return res;
 }
 
+/**
+ * 推荐/取消推荐商品
+ */
+const recommend = async (data) => {
+	const {
+		isRecommend,
+		_id,
+		shopid
+	} = data;
+	//修改,验证所有权
+	let goods = await getOneGoods({
+		_id,
+		shopid
+	}, {
+		categories: 1,
+		isRecommend: 1
+	});
+	if (!goods) {
+		data.message = "原商品不存在";
+		return false;
+	}
+	//如果推荐状态一致，则不操作，正常不会出现这种情况
+	if (goods.isRecommend == isRecommend) {
+		data.message = "原商品未修改";
+		return false;
+	}
+	let res = await goodsCollection.doc(_id).update({
+		isRecommend: isRecommend
+	});
+	let amount = isRecommend ? 1 : -1
+	//更新商品的推荐商品数量
+	let cids = [];
+	goods.categories.map(cate => {
+		cids.push(cate.id);
+	})
+	//更新分类的推荐商品数量
+	await categoryCollection.where({
+		id: cmd.in(cids),
+		shopid
+	}).update({
+		recommendGoods: cmd.inc(amount)
+	});
+	return res;
+}
 /**
  * 下架商品
  */
@@ -463,5 +516,6 @@ module.exports = {
 	pauseMiaosha: pauseMiaosha,
 	restartMiaosha: restartMiaosha,
 	addMiaosha: addMiaosha,
-	cancelMiaosha: cancelMiaosha
+	cancelMiaosha: cancelMiaosha,
+	recommend
 }

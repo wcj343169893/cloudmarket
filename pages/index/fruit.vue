@@ -60,7 +60,7 @@
 				<view class="tit-box"><text class="tit">{{titles.miaosha}}</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<miaoshaPage :miaoshaList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
+			<miaoshaPage :dataList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
 		</block>
 		<block v-if="tuangouList && tuangouList.length > 0">
 			<view class="f-header m-t" @click="navTo('/pages/index/tuangou')">
@@ -68,53 +68,28 @@
 				<view class="tit-box"><text class="tit">{{titles.tuangou}}</text></view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<tuangouPage :tuangouList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
+			<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		</block>
 		<block v-if="yudingList && yudingList.length > 0">
 			<view class="f-header m-t">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.yuding}}</text></view>
 			</view>
-			<yudingPage :yudingList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
+			<yudingPage :dataList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
+		</block>
+		<block v-if="recommendList.length > 0">
+			<view class="f-header m-t">
+				<view class="icon">&nbsp;</view>
+				<view class="tit-box"><text class="tit">{{titles.recommend}}</text></view>
+			</view>
+			<normalPage :dataList="recommendList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
 		</block>
 		<block v-if="newestList.length > 0">
 			<view class="f-header m-t">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.newest}}</text></view>
 			</view>
-			<scroll-view scroll-y="true">
-				<view class="newest-section">
-					<view v-for="(item, index) in newestList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
-						<view class="image-content">
-							<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
-						</view>
-						<view class="content">
-							<view class="title clamp">
-								<text>{{ item.title }}</text>
-							</view>
-							<view class="sub-title clamp" v-if="item.subTitle && item.subTitle != ''">
-								<text>{{ item.subTitle }}</text>
-							</view>
-							<view class="weui-flex">
-								<view class="weui-flex__item">
-									<view class="tags">
-										<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
-									</view>
-									<view class="">
-										<text class="price">{{ item.price }}</text>
-										<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
-									</view>
-								</view>
-								<view class="buttons">
-									<text class="sku_btn" v-if="item.yuding">查看</text>
-									<text class="sku_btn" v-else-if="item.hasSku" @click.stop="openSku(item)">选规格</text>
-									<text class="sku_btn yticon icon-gouwuche_" v-else @click.stop="saveCartAmount(item, 0)"></text>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</scroll-view>
+			<normalPage :dataList="newestList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
 		</block>
 		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 		<!-- 选规格 -->
@@ -161,7 +136,8 @@
 	import tuangouPage from './components/tuan.vue';
 	import miaoshaPage from './components/miaosha.vue';
 	import yudingPage from './components/yuding.vue';
-	import tabbarMixin from './mixin/tabbar' 
+	import normalPage from './components/normal.vue';
+	import tabbarMixin from './mixin/tabbar'
 	import {
 		getHomeFruitData,
 		editCart,
@@ -176,12 +152,13 @@
 	} from '@/common/functions.js';
 
 	export default {
-		mixins: [tabbarMixin], 
+		mixins: [tabbarMixin],
 		components: {
 			pageHeader,
 			tuangouPage,
 			miaoshaPage,
-			yudingPage
+			yudingPage,
+			normalPage
 		},
 		data() {
 			return {
@@ -197,6 +174,7 @@
 				recommendCategoriesList: [],
 				miaoshaList: [],
 				newestList: [],
+				recommendList: [],
 				tuangouList: [],
 				yudingList: [],
 				shop: {},
@@ -318,10 +296,14 @@
 					this.newestList.forEach(item => {
 						updateGoodsTags(item);
 					});
+					this.recommendList = res.recommend;
+					this.recommendList.forEach(item => {
+						updateGoodsTags(item);
+					});
 					this.tuangouList = res.tuangou;
 					this.tuangouList.forEach(item => {
 						updateGoodsTags(item);
-					});	
+					});
 					this.yudingList = res.yuding;
 					this.yudingList.forEach(item => {
 						updateGoodsTags(item);
@@ -379,7 +361,7 @@
 			navToCategoryPage(id) {
 				this.changeMainCateId(+id);
 				uni.switchTab({
-					url: `/pages/index/category`
+					url: `/pages/index/marketCategory`
 				});
 			},
 			navToGoodsPage(item) {
@@ -419,37 +401,6 @@
 				setTimeout(() => {
 					this.getDefaultSearchWord();
 				}, 10000);
-			},
-			//更新购物车数据到服务器
-			saveCartAmount(item, sku_id) {
-				let number = 1;
-				if (!this.hasLogin) {
-					showLoginDialog();
-					return;
-				}
-				console.log(item);
-				editCart({
-					id: this.shopId,
-					stationId: this.stationId,
-					goods_id: item.id,
-					sku_id: +sku_id,
-					price: item.price,
-					title: item.title,
-					appends: 1,
-					subTitle: item.subName,
-					src: item.src,
-					checked: 1,
-					amount: number
-				}).then(
-					res => {
-						console.log(res);
-						this.$api.success('加入成功');
-						this.incrCartNumber(1);
-					},
-					err => {
-						this.$api.msg(err.message);
-					}
-				);
 			},
 			openSku(item) {
 				if (!this.hasLogin) {
@@ -651,8 +602,10 @@
 			}
 		}
 	}
+
 	/* #endif */
-	page ,.container{
+	page,
+	.container {
 		background: #f5f5f5;
 	}
 
@@ -791,7 +744,7 @@
 		}
 	}
 
-	
+
 
 	/* 秒杀专区 */
 	.seckill-section {
@@ -1011,17 +964,20 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		.pa{
+
+		.pa {
 			flex: 1;
 		}
 	}
-	.shop-notice{
+
+	.shop-notice {
 		font-size: $font-sm;
 		color: $font-color-emphasis;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		.icon-gonggao{
+
+		.icon-gonggao {
 			font-size: $font-sm;
 		}
 	}

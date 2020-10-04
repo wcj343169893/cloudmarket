@@ -25,8 +25,13 @@ exports.main = async (event, context) => {
 		action, 
 		data, 
 		shopid,
+		Type,
 		uniIdToken
 	} = event;
+	if (Type == "Timer") {
+		console.log(event);
+		return event;
+	}
 	//token检查,全部都需要
 	let payload = await uniID.checkToken(uniIdToken);
 	if (payload.code && payload.code > 0) {

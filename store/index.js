@@ -44,6 +44,7 @@ const store = new Vuex.Store({
 				}
 			} else {
 				state[param.key] = param.val;
+				console.log("setStateAttr",param);
 			}
 		},
 		login(state, provider) {
@@ -159,6 +160,9 @@ const store = new Vuex.Store({
 		},
 		updateCartNumber(state, number) {
 			state.cartCount = number;
+			if(state.cartCount < 1){
+				state.cartMap={};
+			}
 		},
 		incrCartNumber(state, step) {
 			state.cartCount += step;
@@ -222,7 +226,6 @@ const store = new Vuex.Store({
 							count += e.amount;
 							cartMap[e.goods_id + "_" + (+e.sku_id)] = e.amount;
 						});
-						console.log(cartMap)
 					}
 					//count = +res;
 				} catch (err) {}

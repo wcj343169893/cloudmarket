@@ -88,6 +88,10 @@ const modules = {
 				isSold: 1,
 				isCategoryShow: 1
 			},
+			recommend: {
+				shopid,
+				isRecommend: true
+			},
 			offline: cmd.or({
 				shopid,
 				isSold: 0

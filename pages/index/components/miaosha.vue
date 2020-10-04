@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="seckill-section2">
-			<view v-for="(item,index) in miaoshaList" :key="index" @click="navToGoodsPage(item)" class="sec2">
+			<view v-for="(item,index) in dataList" :key="index" @click="navToGoodsPage(item)" class="sec2">
 				<view class="image-content">
 					<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 				</view>
@@ -43,7 +43,7 @@
 			return {};
 		},
 		props: {
-			miaoshaList: {
+			dataList: {
 				type: Array,
 				default: []
 			}

@@ -224,12 +224,12 @@
 										sku_id: sku.id,
 										subName: sku.name.replace('&gt;', ' '),
 									});
-									if(ele.miaosha && sku.id == ele.miaosha.sku_id){
-										item=Object.assign(item,{
+									if (ele.miaosha && sku.id == ele.miaosha.sku_id) {
+										item = Object.assign(item, {
 											...ele.miaosha
 										})
 									}
-									goodsSkusMap[key]=item;
+									goodsSkusMap[key] = item;
 								});
 							} else {
 								let key = ele.id + '_0';
@@ -346,20 +346,11 @@
 				} else {
 					console.log('更新购物车data列表', index);
 					this.cartList[index].cart = numb;
-					//判断库存
-					/* if(this.cartList[index].cart > this.cartList[index].stock){
-						this.cartList[index].disabled = true;
-						
-					} */
 					editCart({
 						id: this.shopId,
 						stationId: this.stationId,
 						goods_id: id,
 						sku_id: sid,
-						price: goods.price,
-						src: goods.src,
-						title: goods.title,
-						subTitle: goods.subName,
 						checked: goods.checked,
 						amount: numb
 					}).then(res => {
@@ -469,6 +460,7 @@
 				let number = 0;
 				let discount = 0;
 				let checked = true;
+				let cartMap = {};
 				list.forEach(item => {
 					if (item.checked === true) {
 						total += item.price * item.cart;
@@ -481,12 +473,20 @@
 						checked = false;
 					}
 					number += item.cart;
+					cartMap[item.goods_id + "_" + (+item.sku_id)] = item.cart;
 				});
 				this.allChecked = checked;
 				this.total = Number(total.toFixed(2));
 				this.discount = Number(discount.toFixed(2));
 				//更新购物车总数量
-				this.updateCartNumber(number);
+				this.setStateAttr({
+					key: 'cartMap',
+					val: cartMap
+				});
+				console.log("cart", this.cartMap);
+				setTimeout(() => {
+					this.updateCartNumber(number);
+				}, 100)
 			},
 			cleanLoseGoods() {
 				uni.showModal({
