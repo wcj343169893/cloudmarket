@@ -3,7 +3,7 @@
 		<view class="seckill-section2">
 			<view v-for="(item,index) in dataList" :key="index" @click="navToGoodsPage(item)" class="sec2">
 				<view class="image-content">
-					<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+					<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" class="img"></image>
 				</view>
 				<view class="content">
 					<view class="title clamp">
@@ -105,7 +105,7 @@
 			height: $width;
 		}
 
-		image {
+		.img {
 			width: $width;
 			height: $width;
 		}
@@ -120,7 +120,7 @@
 				height: $height;
 			}
 
-			image {
+			.img {
 				width: $width;
 				height: $height;
 			}

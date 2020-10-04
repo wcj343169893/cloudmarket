@@ -18,7 +18,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="main-content">
+		<view class="main-content" :style="{
+					height: contentHeight
+				}">
 			<view class="main-category-panel b-b" :style="{
 					height: cateHeight
 				}">
@@ -55,7 +57,7 @@
 					</view>
 				</scroll-view>
 				<scroll-view scroll-with-animation scroll-y class="right-aside" @scrolltolower="goodsScorllEvent">
-					<view class="sort-bar">
+					<view class="sort-bar b-b">
 						<text class="sort-bar-name">{{currentItem.name}}</text>
 						<view class="sort-bar-item center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
 						 :key="index" @click="changeSort(item)">
@@ -677,6 +679,9 @@
 					this.isShowCategoryPanel = true;
 					setTimeout(() => {
 						this.categoryPanelHeight = this.cateHeight;
+						//#ifdef MP
+						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight + uni.upx2px(this.categoryHeight))+"px";
+						//#endif
 					}, 50)
 				}
 			},
