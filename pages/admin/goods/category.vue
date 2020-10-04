@@ -50,6 +50,7 @@
 			return {
 				categoriesData: [],
 				cateImgs: {},
+				changeIconIndex:0,
 				submit: false,
 				isLoaded: false
 			};
@@ -135,8 +136,12 @@
 					this.$set(this.categoriesData[index].children[childIndex], 'isShow', +isRecommend);
 				}
 			},
+			/**
+			 * 修改头像
+			 * @param {Object} index
+			 */
 			changeIcon(index) {
-				uploadFiles(
+				/* uploadFiles(
 					'category_icon',
 					1,
 					srcs => {
@@ -145,7 +150,32 @@
 					srcs => {
 						this.$set(this.categoriesData[index], 'src', srcs[0]);
 					}
-				);
+				); */
+				this.changeIconIndex = index;
+				uni.chooseImage({
+					count: 1, //默认9
+					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['camera', 'album'], //从相册选择
+					success: (res) =>{
+						if (res.tempFilePaths.length > 0) {
+							uni.setStorage({
+								key: 'avatar',
+								data: res.tempFilePaths[0]
+							});
+							uni.navigateTo({
+								url: '/pages/userinfo/avatar'
+							});
+						}
+					}
+				});
+			},
+			/**
+			 * 刷新头像
+			 * @param {Object} file
+			 */
+			refreshFile(file) {
+				this.$set(this.cateImgs, this.changeIconIndex, file);
+				this.$set(this.categoriesData[this.changeIconIndex], 'src', file);
 			},
 			save() {
 				if (this.submit) {
