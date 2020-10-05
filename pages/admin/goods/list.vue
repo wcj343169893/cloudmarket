@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
-		<view class="titleNview-placing"></view>
 		<view class="order-item" v-for="(item, index) in goodsList" :key="index">
 			<view class="goods-box-single" @click="preview(item)">
 				<image class="goods-img" :src="item.src" mode="aspectFill"></image>

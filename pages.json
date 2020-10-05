@@ -272,14 +272,14 @@
 				"navigationBarTitleText": "商品列表",
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "",
-							"disabled": true,
-							"placeholderColor": "#787a7d"
-						}
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -294,14 +294,14 @@
 				"navigationBarTitleText": "订单列表",
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "",
-							"disabled": true,
-							"placeholderColor": "#787a7d"
-						}
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -406,14 +406,14 @@
 				"navigationBarTitleText": "文档管理",
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "",
-							"disabled": true,
-							"placeholderColor": "#787a7d"
-						}
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -456,14 +456,14 @@
 				"navigationBarTitleText": "用户管理",
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "",
-							"disabled": true,
-							"placeholderColor": "#787a7d"
-						}
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -520,6 +520,7 @@
 				"navigationBarTitleText": "分类",
 				// #ifdef MP
 				"navigationStyle": "custom",
+				"disableScroll": true,
 				// #endif
 				"app-plus": {
 					"bounce": "none",

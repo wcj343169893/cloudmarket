@@ -17,6 +17,12 @@ export default {
 		console.log('搜索');
 		this.navToSearch();
 	},
+	//点击导航栏 buttons 时触发
+	onNavigationBarButtonTap(e) {
+		if (e.index === 0) {
+			this.navToSearch();
+		}
+	},
 	// #endif
 	//滑到底部加载更多
 	onReachBottom() {
@@ -39,7 +45,7 @@ export default {
 			// #ifdef APP-PLUS
 			var webView = this.$mp.page.$getAppWebview();
 			var tn = webView.getStyle().titleNView;
-			tn.searchInput.placeholder = key;
+			//tn.searchInput.placeholder = key;
 
 			webView.setStyle({
 				titleNView: tn

@@ -241,7 +241,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 		}
 	} else if (goods.yuding) {
 		if (goods.yuding.endTime > time) {
-			console.log(goods.yuding)
+			//console.log(goods.yuding)
 			if(!goods.yuding.originPrice){
 				goods.yuding.originPrice = goods.price;
 			}else{

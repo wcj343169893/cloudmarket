@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<empty v-if="loaded === true && docs.length === 0"></empty>
-		<view class="titleNview-placing"></view>
 		<view v-for="(item, index) in docs" :key="index" class="docs b-b" @click="detail(item)">
 			<text class="content">{{ item.numb }}.{{ item.title }}</text>
 			<view class="buttons">
@@ -46,15 +45,6 @@
 			}
 			this.loadData();
 		},
-		// #ifndef MP
-		//点击导航栏 buttons 时触发
-		onNavigationBarButtonTap(e) {
-			const index = e.index;
-			if (index === 0) {
-				this.isEdit = !this.isEdit;
-			}
-		},
-		// #endif
 		methods: {
 			async loadData() {
 				this.page++;

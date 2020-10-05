@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
-		<view class="titleNview-placing"></view>
 		<view v-for="(item, index) in orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
 			<view class="i-top b-b">
 				<text class="time">{{ item.created  | dateFormat('yyyy-MM-dd hh:mm:ss')  }}</text>

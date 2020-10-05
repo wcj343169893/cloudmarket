@@ -1,6 +1,5 @@
 <template>
 	<view class="container">
-		<view class="titleNview-placing"></view>
 		<!-- 顶部筛选 分类栏 -->
 		<view class="top" :style="{top:(navigationBarHeight+statusBarHeight)+'px'}">
 			<!-- 排序 -->

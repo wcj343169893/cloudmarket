@@ -5,7 +5,7 @@
 		<!-- 顶部栏 -->
 		<page-header :showFillView="true" :showLocationView="false"></page-header>
 		<!-- #endif -->
-		<view class="main-category-panel-all" @click="closeCategoryPanel()" v-if="isShowCategoryPanel">
+		<view class="main-category-panel-all" :class="{show:isShowCategoryPanelPre}" @click="closeCategoryPanel()" v-if="isShowCategoryPanel">
 			<view class="main-categories" :style="{top: categoryPanelHeight}">
 				<view v-for="(item, index) in categories" :key="index" @click.stop="changeMainCategory(item, index)" class="item"
 				 :class="{ current: item.id == mainCurrentId }" :style="{
@@ -17,6 +17,7 @@
 					</view>
 				</view>
 			</view>
+			<view class="shadow"></view>
 		</view>
 		<view class="main-content" :style="{
 					height: contentHeight
@@ -43,13 +44,13 @@
 					}" @click="openCategoryPanel()">
 					<text>全</text>
 					<text>部</text>
-					<text class="yticon" :class="{'icon-xia':!isShowCategoryPanel,'icon-shang':isShowCategoryPanel}" ></text>
+					<text class="yticon" :class="{'icon-xia':!isShowCategoryPanel,'icon-shang':isShowCategoryPanel}"></text>
 				</view>
 			</view>
 			<view class="content">
-				<scroll-view scroll-y class="left-aside">
+				<scroll-view scroll-with-animation scroll-y class="left-aside" :scroll-top="categoryScrollTop">
 					<view class="left-aside-content">
-						<view v-for="(item, index) in categoryList" :key="index" class="f-item b-b" :class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId }"
+						<view v-for="(item, index) in categoryList" :key="index" class="f-item " :class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId ,'b-b':index<categoryList.length-1}"
 						 @click="changeSubCategory(item, index)">
 							<text>{{ item.name }}</text>
 						</view>
@@ -191,16 +192,19 @@
 				categories: [],
 				mainCurrentId: 0,
 				categoryWidth: 140,
+				subcategoryHeight: 100,
 				categoryHeight: 138,
 				categoryScrollLeft: 0,
+				categoryScrollTop: 0,
 				mainCurrentItem: {},
 				currentItem: {},
 				isShowCategoryPanel: false,
+				isShowCategoryPanelPre: false,
 				categoryPanelHeight: "",
 				loadingContent: {
 					contentdown: "上拉显示更多",
 					contentrefresh: "正在加载...",
-					contentnomore: "商品已加载完毕"
+					contentnomore: "到底了，看看别的分类吧"
 				},
 				sortList: [{
 						name: '销量',
@@ -370,7 +374,6 @@
 					} else {
 						this.categoryScrollLeft = 0;
 					}
-					console.log("this.categoryScrollLeft", this.categoryScrollLeft);
 					this.closeCategoryPanel();
 				})
 			},
@@ -396,6 +399,14 @@
 				} else {
 					this.currentAfterId = 0;
 				}
+				let cu = 5;
+				this.$nextTick(() => {
+					if (index > cu) {
+						this.categoryScrollTop = (index - cu) * uni.upx2px(this.subcategoryHeight);
+					} else {
+						this.categoryScrollTop = 0;
+					}
+				})
 				this.refreshList();
 			},
 			/**
@@ -677,15 +688,18 @@
 				} else {
 					this.isShowCategoryPanel = true;
 					setTimeout(() => {
+						this.isShowCategoryPanelPre=true;
 						this.categoryPanelHeight = this.cateHeight;
 						//#ifdef MP
-						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight + uni.upx2px(this.categoryHeight))+"px";
+						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight + uni.upx2px(
+							this.categoryHeight)) + "px";
 						//#endif
-					}, 50)
+					}, 50);
 				}
 			},
 			closeCategoryPanel() {
 				this.categoryPanelHeight = "";
+				this.isShowCategoryPanelPre=false;
 				setTimeout(() => {
 					this.isShowCategoryPanel = false;
 				}, 300);
@@ -740,10 +754,12 @@
 
 		.left-aside-content {
 			display: flex;
-			flex-direction: column;
-			height: 100%;
+			flex-direction: column;    
+			flex-wrap: wrap;
+			min-height: 100%;
 
 			.space {
+				padding: 0;
 				flex: 1;
 
 				&.after {
@@ -1157,10 +1173,12 @@
 				align-items: center;
 				padding: 20rpx 10rpx;
 				color: $font-color-base;
-				.yticon{
+
+				.yticon {
 					margin-top: 6rpx;
 				}
-				.icon-shang{
+
+				.icon-shang {
 					color: $base-color;
 				}
 			}
@@ -1226,7 +1244,6 @@
 
 			&.active {
 				color: $base-color;
-				font-weight: 700;
 
 				.yticon.active {
 					color: $base-color;
@@ -1256,8 +1273,18 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: rgba(0, 0, 0, 0.45);
 		z-index: 12;
+		.shadow{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			background: #000;
+			opacity: 0;
+			transition: 0.5s;
+		}
 
 		.main-categories {
 			position: absolute;
@@ -1268,11 +1295,17 @@
 			width: 100%;
 			left: 0;
 			transition: 0.4s;
+			z-index: 2;
 		}
 
 		.item {
 			margin-top: 10rpx;
 			margin-bottom: 30rpx;
+		}
+		&.show{
+			.shadow{
+				opacity: 0.45;
+			}
 		}
 	}
 </style>

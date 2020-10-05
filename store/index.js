@@ -24,6 +24,7 @@ const store = new Vuex.Store({
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
+		getCartTime: 0, //获取购物车时间戳，5秒内只请求一次
 		cartMap: {}, //购物车商品键值对
 		location: {
 			id: false, //收货地址id
@@ -44,7 +45,7 @@ const store = new Vuex.Store({
 				}
 			} else {
 				state[param.key] = param.val;
-				console.log("setStateAttr",param);
+				console.log("setStateAttr", param);
 			}
 		},
 		login(state, provider) {
@@ -64,12 +65,6 @@ const store = new Vuex.Store({
 				this.dispatch('getUserInfo');
 			}
 			this.dispatch('getCartCount');
-			//缓存用户登陆状态
-			/* uni.setStorage({
-				key: 'userInfo',
-				data: provider
-			}) */
-			//console.log(state.userInfo);
 		},
 		checkStoreLogin(state, provider) {
 			console.log("store checkLogin")
@@ -96,8 +91,6 @@ const store = new Vuex.Store({
 		},
 		logout(state) {
 			console.log("logout")
-			state.hasLogin = false;
-			state.userInfo = baseUserInfo;
 			//重置收货地址
 			state.location = {
 				id: false, //收货地址id
@@ -108,15 +101,7 @@ const store = new Vuex.Store({
 			uni.removeStorage({
 				key: 'userLocationInfo'
 			});
-			uni.removeStorage({
-				key: "uni_id_token"
-			});
-			uni.removeStorage({
-				key: "uniIdToken"
-			});
-			uni.removeStorage({
-				key: "uni_id_token_expires"
-			});
+			this.commit('checkLogout');
 			this.dispatch('getCartCount');
 		},
 		loginPage() {
@@ -127,6 +112,7 @@ const store = new Vuex.Store({
 		//修改最近店铺id
 		changeShopId(state, id) {
 			state.shopId = id;
+			console.log("store changeShopId");
 			this.dispatch('getCartCount');
 		},
 		//更新默认选中分类选项卡分类id
@@ -160,8 +146,8 @@ const store = new Vuex.Store({
 		},
 		updateCartNumber(state, number) {
 			state.cartCount = number;
-			if(state.cartCount < 1){
-				state.cartMap={};
+			if (state.cartCount < 1) {
+				state.cartMap = {};
 			}
 		},
 		incrCartNumber(state, step) {
@@ -179,7 +165,7 @@ const store = new Vuex.Store({
 				count += state.cartMap[k];
 			}
 			state.cartCount = count;
-			console.log("cartCount",count)
+			console.log("cartCount", count)
 		}
 	},
 	actions: {
@@ -210,7 +196,12 @@ const store = new Vuex.Store({
 		}) {
 			let count = 0;
 			let cartMap = {};
+			let time = new Date().getTime();
 			if (state.hasLogin && state.shopId > 0) {
+				if ((time - state.getCartTime) < 5000) {
+					console.log("store getCartList 时间间隔小于5秒")
+					return;
+				}
 				console.log("store getCartList")
 				try {
 					/* const res = await getCartList({
@@ -237,6 +228,10 @@ const store = new Vuex.Store({
 				{
 					key: 'cartMap',
 					val: cartMap
+				},
+				{
+					key: 'getCartTime',
+					val: time
 				}
 			])
 		},

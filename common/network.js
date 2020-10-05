@@ -3,6 +3,7 @@ import {
 	client,
 	auth
 } from './cloud.js';
+let isShowLoginDialog=false;
 /**
  * @param {Object} options
  * 网络请求 模块
@@ -50,7 +51,8 @@ const network = (options)=> {
 					return;
 				} else if (res.result.code === 401) {
 					//登录信息错误,需要重新登录
-					if (showLoginDialog) {
+					if (showLoginDialog && !isShowLoginDialog) {
+						isShowLoginDialog=true;
 						uni.showModal({
 							title: "温馨提示",
 							content: '您的登录已失效，请登录后再操作',
@@ -62,6 +64,8 @@ const network = (options)=> {
 										url: `/pages/public/login`
 									});
 								}
+								isShowLoginDialog=false;
+								uni.$emit('logoutEvent'); //全局更新购物车
 							}
 						});
 						return;

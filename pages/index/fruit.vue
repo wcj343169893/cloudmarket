@@ -202,6 +202,10 @@
 				this.setInvite(options.u)
 			}
 			this.getUserLocation();
+			uni.$on('logoutEvent', () => {
+				console.log("触发全局退出事件")
+				this.checkLogout();
+			});
 		},
 		//下拉刷新,不会更新底部附近的店铺
 		onPullDownRefresh() {
@@ -215,7 +219,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'setInvite']),
+			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'setInvite','checkLogout']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问

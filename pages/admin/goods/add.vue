@@ -752,6 +752,16 @@
 						this.submiting = false;
 						return;
 					}
+					fields = {
+						beginTime: '开始预定时间',
+						endTime: '结束预定时间',
+						finalPaymentBeginTime: '开始付尾款时间',
+						finalPaymentEndTime: '结束付尾款时间'
+					};
+					if(!this.checkTimeFields(info.tuangou,fields)){
+						this.submiting = false;
+						return;
+					}
 					//强转价格类型
 					info.yuding.price = +info.yuding.price;
 					info.yuding.deduction = +info.yuding.deduction;
@@ -764,6 +774,15 @@
 						pickup: '提货时间',
 					};
 					if (!this.checkFields(info.tuangou, fields)) {
+						this.submiting = false;
+						return;
+					}
+					fields = {
+						beginTime: '开始团购时间',
+						endTime: '结束团购时间',
+						pickup: '提货时间',
+					};
+					if(!this.checkTimeFields(info.tuangou,fields)){
 						this.submiting = false;
 						return;
 					}
@@ -794,6 +813,24 @@
 						this.$api.msg(fields[fie] + '不能为空');
 						return false;
 					}
+				}
+				return true;
+			},
+			/**
+			 * 比较上一个字段与下一个自动的大小
+			 * @param {Object} data
+			 * @param {Object} fields
+			 */
+			checkTimeFields(data,fields){
+				let prev=0;
+				let prevField="";
+				for (let fie in fields) {
+					if(prev > data[fie]){
+						this.$api.msg(`${fields[prevField]}必须大于或等于${fields[fie]}`);
+						return false;
+					}
+					prev=data[fie];
+					prevField=fie;
 				}
 				return true;
 			},
