@@ -758,7 +758,7 @@
 						finalPaymentBeginTime: '开始付尾款时间',
 						finalPaymentEndTime: '结束付尾款时间'
 					};
-					if(!this.checkTimeFields(info.tuangou,fields)){
+					if(!this.checkTimeFields(info.yuding,fields)){
 						this.submiting = false;
 						return;
 					}

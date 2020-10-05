@@ -310,7 +310,7 @@
 			buildGoodsInfo(item) {
 				console.log(item);
 				this.imgs = [];
-				updateGoodsTags(item, true);
+				updateGoodsTags(item, false);
 				this.checkYuding(item);
 				this.checkTuangou(item);
 				this.checkMiaosha(item);
