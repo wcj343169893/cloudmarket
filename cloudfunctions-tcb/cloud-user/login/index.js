@@ -113,11 +113,19 @@ const weixin = async (data, context) => {
 	}
 	return false;
 }
+/**
+ * 今日头条、抖音
+ */
+const toutiao=async(data,context)=>{
+	
+	return false;
+}
 
 
 module.exports = {
 	jiguang,
 	weixin,
 	mobile,
-	sendSms
+	sendSms,
+	toutiao
 }

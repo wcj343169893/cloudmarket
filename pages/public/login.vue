@@ -136,6 +136,8 @@
 								}, provider).then(res => {
 									console.log("login success", res);
 									this.loginSuccess(res);
+								},err=>{
+									console.log("小程序自动登录失败！")
 								});
 							}
 						});

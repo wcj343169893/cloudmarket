@@ -61,7 +61,7 @@ export default {
 			// #ifndef MP
 			return 0;
 			// #endif
-			// #ifdef MP-WEIXIN
+			// #ifdef MP
 			return this.customWidth + 20;
 			// #endif
 		}

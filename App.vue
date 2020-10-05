@@ -50,6 +50,10 @@
 				custom = wx.getMenuButtonBoundingClientRect();
 				navigationBarHeight = custom.bottom + custom.top - e.statusBarHeight * 2;
 				// #endif	
+				// #ifdef MP-TOUTIAO
+				custom = tt.getMenuButtonBoundingClientRect();
+				navigationBarHeight = custom.bottom + custom.top - e.statusBarHeight * 2;
+				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
 				console.log(systemInfo);
@@ -140,6 +144,8 @@
 								}, provider).then(res => {
 									console.log("login success", res);
 									this.login(res);
+								},err=>{
+									console.log("小程序自动登录失败！")
 								});
 							}
 						});
