@@ -665,10 +665,11 @@
 			},
 			//评价
 			evaluateOrder() {
-				/* uni.showLoading({
-					title: '请稍后',
-					mask: true
-				}); */
+				uni.setStorage({
+					key:"commentOrder",
+					data:this.info
+				});
+				this.navTo("/pages/order/comment")
 			},
 			//监听image加载完成
 			onImageLoad(key, index) {

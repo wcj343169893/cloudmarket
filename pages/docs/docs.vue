@@ -33,6 +33,7 @@
 			async loadData() {
 				getDocContent({
 					id: this.id,
+					shopid: this.shopId,
 					type: this.type
 				}, this.action).then(res => {
 					uni.setNavigationBarTitle({

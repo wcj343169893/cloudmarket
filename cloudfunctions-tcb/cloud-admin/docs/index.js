@@ -12,9 +12,10 @@ const model = {
 			page,
 			limit,
 			key,
+			shopid,
 		} = data;
 		let conditions = {
-			shopid: data.shopid
+			shopid
 		};
 		if (key && key.trim().length > 0) {
 			conditions = cmd.or({
@@ -22,7 +23,7 @@ const model = {
 			}, {
 				content: new RegExp(key.trim())
 			}).and({
-				shopid: data.shopid
+				shopid
 			});
 		}
 		const result = await docCollection.where(conditions).field({

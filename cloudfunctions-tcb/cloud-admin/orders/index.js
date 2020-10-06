@@ -325,6 +325,9 @@ const printOrder = async (data) => {
 	console.log("print", res);
 	return res;
 }
+const comment = async(data)=>{
+	const{id,comment}=data;
+}
 module.exports = {
 	list: list,
 	detail: detail,
@@ -333,5 +336,6 @@ module.exports = {
 	print: printOrder,
 	getRefunded,
 	passedRefund,
-	refuseRefund
+	refuseRefund,
+	comment
 }

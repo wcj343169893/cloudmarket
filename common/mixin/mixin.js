@@ -9,6 +9,11 @@ export default{
 			isSubmit:false,//是否正在提交数据
 		}
 	},
+	computed: {
+		shopId(){
+			return this.$store.state.shopId;
+		}
+	},
 	methods: {
 		log(data){
 			console.log(JSON.parse(JSON.stringify(data)))

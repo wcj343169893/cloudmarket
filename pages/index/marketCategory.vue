@@ -206,6 +206,7 @@
 					contentrefresh: "正在加载...",
 					contentnomore: "到底了，看看别的分类吧"
 				},
+				isOpenCategoryOne: false,
 				sortList: [{
 						name: '销量',
 						children: [{
@@ -374,7 +375,14 @@
 					} else {
 						this.categoryScrollLeft = 0;
 					}
-					this.closeCategoryPanel();
+					if (!this.isOpenCategoryOne) {
+						setTimeout(()=>{
+							this.openCategoryPanel();
+						},200)
+						this.isOpenCategoryOne = true;
+					} else {
+						this.closeCategoryPanel();
+					}
 				})
 			},
 			/**
@@ -682,13 +690,12 @@
 				}, 10000);
 			},
 			openCategoryPanel() {
-				//this.isShowCategoryPanel = !this.isShowCategoryPanel;
 				if (this.isShowCategoryPanel) {
 					this.closeCategoryPanel();
 				} else {
 					this.isShowCategoryPanel = true;
 					setTimeout(() => {
-						this.isShowCategoryPanelPre=true;
+						this.isShowCategoryPanelPre = true;
 						this.categoryPanelHeight = this.cateHeight;
 						//#ifdef MP
 						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight + uni.upx2px(
@@ -699,7 +706,7 @@
 			},
 			closeCategoryPanel() {
 				this.categoryPanelHeight = "";
-				this.isShowCategoryPanelPre=false;
+				this.isShowCategoryPanelPre = false;
 				setTimeout(() => {
 					this.isShowCategoryPanel = false;
 				}, 300);
@@ -754,7 +761,7 @@
 
 		.left-aside-content {
 			display: flex;
-			flex-direction: column;    
+			flex-direction: column;
 			flex-wrap: wrap;
 			min-height: 100%;
 
@@ -1274,7 +1281,8 @@
 		width: 100%;
 		height: 100%;
 		z-index: 12;
-		.shadow{
+
+		.shadow {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -1302,8 +1310,9 @@
 			margin-top: 10rpx;
 			margin-bottom: 30rpx;
 		}
-		&.show{
-			.shadow{
+
+		&.show {
+			.shadow {
 				opacity: 0.45;
 			}
 		}

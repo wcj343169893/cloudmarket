@@ -540,7 +540,24 @@
 				"navigationBarTitleText": "联系客服"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/order/comment",
+            "style" : {
+				"navigationBarTitleText": "发布评论",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "发布",
+							"fontSize": "12",
+							"color": "#303133",
+							"width": "40px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

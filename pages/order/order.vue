@@ -92,7 +92,7 @@
 						<!-- 已收货，待评价 -->
 						<view class="action-box b-t" v-if="item.state == 3">
 							<button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button>
-							<button class="action-btn" @click.stop="evaluateOrder(item)">评价</button>
+							<button class="action-btn" @click.stop="evaluateOrder(item)">评价一下</button>
 						</view>
 					</view>
 
@@ -401,11 +401,12 @@ export default {
 			});
 		},
 		//评价
-		evaluateOrder() {
-			uni.showLoading({
-				title: '请稍后',
-				mask: true
+		evaluateOrder(item) {
+			uni.setStorage({
+				key:"commentOrder",
+				data:item
 			});
+			this.navTo("/pages/order/comment")
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail

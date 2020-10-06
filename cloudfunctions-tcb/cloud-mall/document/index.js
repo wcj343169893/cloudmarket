@@ -23,7 +23,8 @@ const model = {
 	 */
 	async type(data) {
 		let result = await documentCollection.where({
-			type: data.type
+			type: data.type,
+			shopid:data.shopid
 		}).field({
 			title: 1,
 			content: 1
@@ -44,7 +45,8 @@ const model = {
 	 */
 	async types(data) {
 		let result = await documentCollection.where({
-			type: data.type
+			type: data.type,
+			shopid:data.shopid
 		}).field({
 			title: 1
 		}).orderBy("posid","asc").get();
