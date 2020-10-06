@@ -313,14 +313,6 @@
 						updateGoodsTags(item);
 					});
 					this.titles = res.titles;
-					//this.address = res.address;
-					//购物车总数量
-					/* if(res.cart > 0){
-						uni.setTabBarBadge({
-							index:2,
-							text:res.cart+""
-						});
-					} */
 					if (res.shop) {
 						this.shop = res.shop;
 						this.searchKeyWords = res.shop.searchGoodsKeywords;
@@ -330,6 +322,10 @@
 							data: this.searchKeyWords
 						});
 						this.getDefaultSearchWord();
+						uni.setStorage({
+							key:'serviceShopInfo',
+							data:this.shop
+						})
 					}
 					this.share = res.share;
 				});

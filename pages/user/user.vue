@@ -135,10 +135,11 @@
 					</scroll-view>
 				</block>
 				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
-				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
-				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></mix-list-cell>
+				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="收货地址" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
+				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="邀请有礼" tips="邀请好友赢10万大礼"></mix-list-cell>
 				<!-- <mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips" @eventClick="joinTeam()"></mix-list-cell> -->
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
+				<mix-list-cell icon="icon-dianhua-copy" iconColor="#54b4ef" title="联系客服" @eventClick="navTo('/pages/docs/qa')"></mix-list-cell>
 				<!-- #ifndef MP -->
 				<!-- 小程序不需要退出登录，更新，缓存等 -->
 				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></mix-list-cell>

@@ -55,6 +55,8 @@ const models = {
 			name: 1,
 			delivery: 1,
 			notice: 1,
+			phone: 1,
+			serviceTime: 1,
 			searchGoodsKeywords: 1,
 			src: 1,
 			pages: 1

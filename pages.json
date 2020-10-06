@@ -513,10 +513,9 @@
 			"style": {
 				"navigationBarTitleText": "退款历史记录"
 			}
-		}
-	    ,{
-            "path" : "pages/index/marketCategory",
-            "style" : {
+		}, {
+			"path": "pages/index/marketCategory",
+			"style": {
 				"navigationBarTitleText": "分类",
 				// #ifdef MP
 				"navigationStyle": "custom",
@@ -535,8 +534,13 @@
 					}
 				}
 			}
-        }
-    ],
+		}, {
+			"path": "pages/docs/qa",
+			"style": {
+				"navigationBarTitleText": "联系客服"
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
