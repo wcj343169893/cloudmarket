@@ -539,25 +539,29 @@
 			"style": {
 				"navigationBarTitleText": "联系客服"
 			}
-		}
-	    ,{
-            "path" : "pages/order/comment",
-            "style" : {
+		}, {
+			"path": "pages/order/comment",
+			"style": {
 				"navigationBarTitleText": "发布评论",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
 							"text": "发布",
-							"fontSize": "12",
+							"fontSize": "14px",
 							"color": "#303133",
-							"width": "40px",
+							"width": "50px",
 							"background": "rgba(0,0,0,0)"
 						}]
 					}
 				}
 			}
-        }
-    ],
+		}, {
+			"path": "pages/admin/set/comment/tags",
+			"style": {
+				"navigationBarTitleText": "评论标签管理"
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

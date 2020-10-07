@@ -37,7 +37,7 @@
 	export default {
 		data() {
 			return {
-				isLoaded:false,
+				isLoaded: false,
 				isEdit: false,
 				source: 0,
 				checkedCount: 0,
@@ -57,7 +57,7 @@
 				address({}, 'list').then(res => {
 					this.isLoaded = true;
 					this.addressList = res;
-				},err=>{
+				}, err => {
 					this.isLoaded = true;
 				});
 			},

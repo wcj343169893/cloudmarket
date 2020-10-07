@@ -21,13 +21,9 @@ const modules = {
  * 必须登录才能访问,cart子模块，list方法
  */
 const mustLoginActions = {
-	address: [
-		"new", "delete", "deleteAll", "detail", "edit", "default", "list"
-	],
-	cart: [
-		"list", "settlement", "edit", "addmany", "clean", "selected", "full", "total"
-	],
-	order: ["list", "cancel", "detail", "delete", "makesure", "settlement", "addRefundApply","getRefundApplys"],
+	address: ["*"],
+	cart: ["*"],
+	order: ["*"],
 	payment: ["wxpay", "alipay", "balance", "info"],
 	product: ["visite"],
 }

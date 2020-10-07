@@ -18,7 +18,7 @@ exports.main = async (event, context) => {
 			data: []
 		};
 		//限制条数
-		let limit = limits[m.name] ? limits[m.name] : 1;
+		let limit = limits[m.name] ? limits[m.name] : 10;
 		//let collectionName = "cloud_"+m.name;
 		let result = await db.collection(m.name).limit(limit).get();
 		data[m.name].data = result.data;
@@ -37,6 +37,7 @@ const limits = {
 	"cloud_identity": 30,
 	"cloud_documents": 30,
 	"cloud_goods": 100,
+	"cloud_goods_categories": 100,
 	"cloud_goods_visites": 1,
 	"cloud_goods_deletes": 1,
 	"cloud_goods_day_sales": 1,
@@ -206,6 +207,7 @@ const indexs = {
 }
 
 const configs = {
+	"ret": 0,
 	"desc": "ok",
 	"data": {
 		"collections": [{
@@ -223,6 +225,8 @@ const configs = {
 		}, {
 			"name": "cloud_goods_categories"
 		}, {
+			"name": "cloud_goods_comments"
+		}, {
 			"name": "cloud_goods_day_sales"
 		}, {
 			"name": "cloud_goods_deletes"
@@ -235,7 +239,7 @@ const configs = {
 		}, {
 			"name": "cloud_order_refunds"
 		}, {
-			"name": "cloud_orders",
+			"name": "cloud_orders"
 		}, {
 			"name": "cloud_printer_types"
 		}, {
@@ -245,7 +249,13 @@ const configs = {
 		}, {
 			"name": "cloud_user_balance_logs"
 		}, {
+			"name": "mix-admin"
+		}, {
 			"name": "uni-app-version"
+		}, {
+			"name": "uni-id-permissions"
+		}, {
+			"name": "uni-id-roles"
 		}, {
 			"name": "uni-id-users"
 		}, {

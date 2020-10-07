@@ -33,6 +33,10 @@ const models = {
 			"share": 1,
 			saleType: 1,
 			tuangou: 1,
+			starStatics: 1,
+			commentTagStatics: 1,
+			commentCount: 1,
+			comment:1,
 			"description": 1,
 			"yuding": 1
 		};

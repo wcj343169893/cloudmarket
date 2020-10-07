@@ -81,12 +81,40 @@
 			</view>
 		</view>
 		<!-- 评价 -->
-		<view id="rating" class="rating-wrap column" :class="{ 'no-data': !ratingData.data }">
+		<view id="rating" class="rating-wrap column">
 			<view class="e-header">
 				<text class="tit">商品评价</text>
-				<text>({{ ratingData.count || 0 }})</text>
-				<text class="tip">好评率 {{ score * 100 }}%</text>
+				<text class="number">({{ commentCount || 0 }})</text>
+				<text class="tip">好评率 {{ score * 100 | toFixed}}%</text>
 				<text class="yticon icon-you"></text>
+			</view>
+			<view class="comment-tags">
+				<view v-for="(item,index) in commentTagStatics" :key="index" class="comment-tags-item" v-if="index<6">
+					<text>{{item.name}}</text>
+					<text class="number">{{item.count}}</text>
+				</view>
+			</view>
+			<view v-for="(item,index) in comment" :key="index">
+				<view class="comment-user" :class="{'b-b':index<comment.length-1}">
+					<image :src="item.user.avatar" mode="aspectFill" class="avatar"></image>
+					<view class="info">
+						<view class="nickname">
+							<text>{{item.user.nickname}}</text>
+							<view class="star" v-if="item.star >2">
+								<text class="yticon icon-dianzan-ash"></text>
+								<text>好评</text>
+							</view>
+						</view>
+						<text class="time">{{item.created | dateFormat('yyyy-MM-dd')}}</text>
+						<view class="tags">
+							<block v-for="(tg,tindex) in item.tags" :key="tindex">
+								<text class="tg">{{tg}}</text>
+								<text v-if="tindex<item.tags.length-1" class="tg">|</text>
+							</block>
+						</view>
+						<text class="content">{{item.content}}</text>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="detail-desc">
@@ -199,7 +227,9 @@
 				canAddCart: false,
 				share: "", //分享语
 				referer: "",
-				ratingData: {}
+				commentCount: 0,
+				commentTagStatics: [],
+				comment: [],
 			};
 		},
 		computed: {
@@ -314,6 +344,10 @@
 				this.checkYuding(item);
 				this.checkTuangou(item);
 				this.checkMiaosha(item);
+				//计算评论标签
+				this.checkCommentTags(item);
+				//计算好评率
+				this.checkCommentStar(item);
 				console.log('default_sku_id:', this.default_sku_id);
 				for (let field in item) {
 					this[field] = item[field];
@@ -482,6 +516,44 @@
 					miaoshaCountDown(item.tuangou, item.tuangou.endTime, () => {
 						this.checkTuangou(item);
 					});
+				}
+			},
+			/**
+			 * 计算商品评论标签，这里只显示最多的6个
+			 * @param {Object} item
+			 */
+			checkCommentTags(item) {
+				let tags = [];
+				if (item.commentTagStatics) {
+					//item.commentTagStatics.sort();
+					for (let tag in item.commentTagStatics) {
+						tags.push({
+							name: tag,
+							count: item.commentTagStatics[tag]
+						})
+					}
+					tags.sort((a, b) => {
+						return b.count - a.count;
+					})
+				}
+				item.commentTagStatics = tags;
+			},
+			/**
+			 * 计算好评率
+			 * @param {Object} item
+			 */
+			checkCommentStar(item) {
+				//计算好评率
+				if (item.starStatics) {
+					let sum = 0;
+					let good = 0;
+					for (let star in item.starStatics) {
+						if (star > 2) {
+							good += item.starStatics[star];
+						}
+						sum += item.starStatics[star];
+					}
+					item.score = good / sum;
 				}
 			},
 			checkMiaosha(item) {
@@ -1345,7 +1417,7 @@
 
 	/* 评价 */
 	.rating-wrap {
-		padding: 20rpx 30rpx 0rpx;
+		padding: 20rpx 30rpx 10rpx;
 		background: #fff;
 		margin-top: 12rpx;
 
@@ -1359,6 +1431,12 @@
 			height: 70rpx;
 			font-size: 28rpx;
 			color: #333;
+		}
+
+		.number {
+			font-size: $font-sm;
+			color: $font-color-light;
+			margin-left: 8rpx;
 		}
 
 		.tit {
@@ -1383,6 +1461,73 @@
 
 		.mix-rating-item::after {
 			border: 0;
+		}
+	}
+
+	.comment-tags {
+		font-size: $font-sm;
+		display: flex;
+		flex-wrap: wrap;
+
+		.comment-tags-item {
+			margin-right: 12rpx;
+			background: $border-color-light;
+			padding: 6rpx 20rpx;
+			border-radius: 18rpx;
+			margin-bottom: 12rpx;
+		}
+	}
+
+	.comment-user {
+		margin-top: 20rpx;
+		font-size: $font-sm;
+		color: $font-color-light;
+		display: flex;
+		position: relative;
+		padding-bottom: 20rpx;
+
+		.avatar {
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
+			margin-right: 20rpx;
+		}
+
+		.info {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+
+		.nickname {
+			color: $font-color-dark;
+			font-weight: 500;
+			display: flex;
+			justify-content: space-between;
+
+			.star {
+				color: $uni-color-warning;
+				font-size: $font-ssm;
+				display: flex;
+				align-items: center;
+			}
+		}
+
+		.content {
+			color: $font-color-dark;
+		}
+
+		.time {
+			font-size: $font-ssm;
+		}
+
+		.tags {
+			margin-top: 0;
+		}
+
+		.tg {
+			margin-right: 12rpx;
+			font-size: $font-ssm;
 		}
 	}
 </style>

@@ -92,7 +92,7 @@
 						<!-- 已收货，待评价 -->
 						<view class="action-box b-t" v-if="item.state == 3">
 							<button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button>
-							<button class="action-btn" @click.stop="evaluateOrder(item)">评价一下</button>
+							<button class="action-btn recom" v-if="!item.isComment" @click.stop="evaluateOrder(item)">评价一下</button>
 						</view>
 					</view>
 

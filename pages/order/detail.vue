@@ -454,7 +454,10 @@
 				this.moreGoodsCount = 0;
 			},
 			navToGoodsPage(item) {
-				navToGoodsItemPage(item);
+				navToGoodsItemPage({
+					id:item.id,
+					sid:item.sku_id
+				});
 			},
 			//删除订单
 			deleteOrder() {

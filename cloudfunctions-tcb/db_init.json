@@ -12,6 +12,115 @@
 			"mobile": "13500135222",
 			"area": "22",
 			"type": "edit"
+		}, {
+			"_id": "463448e05eca113e001e6c1c1043b9f7",
+			"uid": 10000,
+			"default": false,
+			"area": "100",
+			"address": "蛇口招商路177-3号(工商银行旁)",
+			"latitude": 22.489966,
+			"name": "自提专用",
+			"type": "new",
+			"longitude": 113.92236299999999,
+			"mobile": "13500135000",
+			"addressName": "CoCo都可茶饮(深圳南山招商大厦店)"
+		}, {
+			"_id": "0bdd6b5e5eca40090025269c61a3daee",
+			"default": false,
+			"area": "2",
+			"mobile": "13600145999",
+			"latitude": 22.531922,
+			"longitude": 113.930082,
+			"type": "new",
+			"name": "张三丰",
+			"address": "广东省深圳市南山区南头街道桃园东路南航商业大厦1层",
+			"uid": 10000,
+			"addressName": "小辣椒湘菜"
+		}, {
+			"_id": "989f4e215ece0841004fe842704ed233",
+			"name": "数码",
+			"mobile": "15986613313",
+			"addressName": "南水村152号",
+			"latitude": 22.489576,
+			"token": "fCGlAX+MGyZ+dgEfKu0/AToNJGUE4is3nlfnz+822+qOfNy7VGz5GT8vFzKiGoSzxCc2ZcsS3mougEDQBOnJNd7InRMSSNcFr9tXFq66+///p6mKnVm2dM00V12LN1nTst4B+YmnKmFNQZ+uS9JqarnMHp7xMBrKMvY1CRsDE2E=",
+			"uid": 10004,
+			"longitude": 113.921833,
+			"area": "105",
+			"default": false,
+			"address": "蛇口南水村北门",
+			"type": "new"
+		}, {
+			"_id": "38d78ca75ed63ef3002ecaa42a1f9882",
+			"mobile": "13996041441",
+			"type": "new",
+			"uid": 10000,
+			"latitude": 22.489928999999997,
+			"longitude": 113.92176400000001,
+			"addressName": "御蝶坊(蛇口店)",
+			"default": false,
+			"name": "戩或",
+			"address": "招商路187号",
+			"area": "101"
+		}, {
+			"_id": "4d5a19345edf52b6005b23796faf8cb4",
+			"address": "石祥路688号",
+			"addressName": "运河汽车互联网产业园",
+			"area": "12345",
+			"default": false,
+			"latitude": 30.325317,
+			"longitude": 120.113339,
+			"mobile": "18666661234",
+			"name": "测试",
+			"type": "new",
+			"uid": 10008
+		}, {
+			"_id": "8abc3c855edf576f0056aa2d06949258",
+			"address": "台怀镇五台山风景名胜区五台山游客中心",
+			"addressName": "五台山风景名胜区售票大厅",
+			"area": "哈比",
+			"default": true,
+			"latitude": 38.903487,
+			"longitude": 113.649282,
+			"mobile": "15234074342",
+			"name": "弟弟",
+			"type": "new",
+			"uid": 10009
+		}, {
+			"_id": "baada3ac5edf74fb0085824c4ac0c703",
+			"address": "工农路25号原水电设备厂内",
+			"addressName": "仙居花园",
+			"area": "111",
+			"default": false,
+			"latitude": 30.291613,
+			"longitude": 109.475864,
+			"mobile": "18888888888",
+			"name": "哈哈",
+			"type": "new",
+			"uid": 10010
+		}, {
+			"_id": "8abc3c855edf7dd20057e0c64cdefd9b",
+			"address": "恒盛东路以西",
+			"addressName": "望江天悦",
+			"area": "七栋一单元",
+			"default": false,
+			"latitude": 29.712499,
+			"longitude": 115.959015,
+			"mobile": "18897923095",
+			"name": "梁德强",
+			"type": "new",
+			"uid": 10011
+		}, {
+			"_id": "75777da85ee0d84b00721f7c23af6165",
+			"address": "经济技术开发区青馨家园二区9栋",
+			"addressName": "车库快递代理点",
+			"area": "呃呃呃呃",
+			"default": false,
+			"latitude": 39.927569,
+			"longitude": 119.531296,
+			"mobile": "18833803236",
+			"name": "111",
+			"type": "new",
+			"uid": 10016
 		}]
 	},
 	"cloud_ads": {
@@ -22,6 +131,105 @@
 			"posid": 1,
 			"shopid": 0,
 			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/6813ba00-639d-11ea-b227-9531cf5e701a.jpg"
+		}, {
+			"_id": "44b0eba2661040628c60d183aa545e98",
+			"background": "#58c15e",
+			"link": "/pages/product/product?id=10049",
+			"posid": 2,
+			"shopid": 123457,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+			"goods": {
+				"_id": "8a6c3bf65f51c16e00c8253b00e87d30",
+				"categories": [{
+					"id": 1004,
+					"name": "水果",
+					"pid": 0
+				}, {
+					"checked": true,
+					"goodsCount": 12,
+					"id": 2002,
+					"name": "柑橘橙柚",
+					"pid": 1004
+				}],
+				"id": 10049,
+				"imgs": ["http://market.cjblog.org/goods/7367310443436768.jpg",
+					"http://market.cjblog.org/goods/6710076119047128.jpg", "http://market.cjblog.org/goods/578660322075573.jpg",
+					"http://market.cjblog.org/goods/14967188009900378.jpg"
+				],
+				"isSold": 1,
+				"modified": 1597902231757,
+				"monthlySale": 0,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"originPrice": 0,
+				"price": 39.8,
+				"score": 1,
+				"shopid": 123457,
+				"src": "http://market.cjblog.org/goods/40080428010563707.jpg",
+				"stock": 3,
+				"subTitle": "小明都说好",
+				"title": "广西小台农芒果10斤新鲜水果无丝小核热带应季青整箱批发当季包邮",
+				"visite": 7,
+				"yuding": {
+					"beginTime": 1593878400000,
+					"deduction": 10,
+					"endTime": 1601481599000,
+					"finalPaymentBeginTime": 1601481600000,
+					"finalPaymentEndTime": 1602345599000,
+					"price": 1,
+					"state": "started"
+				},
+				"default_checked_sku_id": 10001,
+				"skuname": ["口味"],
+				"skus": [{
+					"id": 10000,
+					"name": "招牌腊肉",
+					"originPrice": 0,
+					"price": 39.9,
+					"sales": 0,
+					"stock": 50
+				}, {
+					"id": 10001,
+					"name": "风味腊肉",
+					"originPrice": 0,
+					"price": 39.5,
+					"sales": 1,
+					"stock": 49
+				}, {
+					"id": 10002,
+					"name": "腊肠400克",
+					"originPrice": 0,
+					"price": 39.8,
+					"sales": 1,
+					"stock": 49
+				}],
+				"upc": "6901028316989"
+			},
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"redirectType": "goods",
+			"url": ""
+		}, {
+			"_id": "355cc06a0c214f15845caa99ba149712",
+			"background": "#5ecd67",
+			"link": "/pages/docs/docs?id=0d06a2fd5f24dc6e002fc21d58fc8665",
+			"posid": 3,
+			"shopid": 123457,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/680429a0-639d-11ea-b227-9531cf5e701a.jpg",
+			"docs": {
+				"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+				"checked": false,
+				"numb": 7,
+				"title": "苹果大丰收，库克真应该感谢中国"
+			},
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"redirectType": "docs",
+			"url": ""
+		}, {
+			"_id": "82fdb458e2fb483e8e985a98d108950c",
+			"background": "#6be888",
+			"link": "",
+			"posid": 3,
+			"shopid": 123458,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/68051400-639d-11ea-b457-0d69f475df05.jpg"
 		}]
 	},
 	"cloud_carts": {
@@ -64,22 +272,27 @@
 			"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
 			"content": "对于企业来说，这场百年不遇的疫情，其实就是一场大考。\n\n只有在成绩公布的那一天，你才能看清楚这个企业的真正斤两。\n\n事实证明，苹果的确是一个重量级的优等生。\n\n\n美国时间 7 月 30 日，苹果公布了截至 2020 年 6 月 30 日第三财季业绩，这份成绩单可以用一个字来形容：",
 			"title": "苹果大丰收，库克真应该感谢中国",
-			"operator": 10000,
-			"shopid": 123457
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"modified": "2020-10-06T02:01:53.921Z",
+			"type": "normal"
 		}, {
 			"_id": "84e72bb95f24dd00003d654153e96bcd",
 			"content": "央广网北京8月1日消息 据中央广播电视总台中国之声《新闻和报纸摘要》报道，中央人民政府7月29日就香港特别行政区第七届立法会选举推迟有关事宜表明意见。2020-8-1 新闻和报纸摘要全文>>>\n\n《关于香港特别行政区2020年立法会换届选举押后事宜的报告》收悉。中央人民政府对近期",
 			"title": "中央人民政府就香港特别行政区第七届立法会选举推迟有关事宜表明意见",
-			"operator": 10000,
-			"shopid": 123457
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"modified": "2020-10-06T02:03:06.328Z",
+			"type": "normal"
 		}, {
 			"_id": "cb1a2f465f2552b700391b2f6d894c99",
 			"content": "## 关于我们的一切\n我没就是好好阿雷克斯  \n### 二级菜单\n水电开发水利水电  \n三段论法 上来的 水电费  ",
 			"title": "关于我们",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"created": "2020-08-01T11:32:07.325Z",
-			"modified": "2020-08-02T23:07:58.007Z"
+			"modified": "2020-10-06T02:01:45.625Z",
+			"type": "normal"
 		}, {
 			"_id": "abd27dd45f2e1ca6004121bd628e6849",
 			"content": "",
@@ -102,6 +315,117 @@
 			"shopid": 123457,
 			"created": "2020-08-08T11:11:54.887Z",
 			"modified": "2020-08-08T11:17:12.526Z"
+		}, {
+			"_id": "e656fa635f7bd3f1012ab9f61aa7b7d2",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:18:25.459Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "e373396c5f7bdc49011f99f864f04247",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:54:01.318Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "8e5be7055f7bdca90156248a6fb6ad36",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:55:37.569Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "d782d4875f7bdcad00ed6d1c65103d2c",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:55:41.255Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "d81cd5415f7bdcc600fc00ee5a14cd16",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:06.881Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "b8df3bd65f7bdcc80104b09f5b65159d",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报5",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:08.433Z",
+			"modified": "2020-10-06T03:06:28.825Z",
+			"posid": "5"
+		}, {
+			"_id": "c54bd3a25f7bdcca00f3c42752578f5e",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:10.657Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "b8df3bd65f7bdccb0104b0bd35af248c",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:11.697Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "e656fa635f7bdccb012b0e121f1b9605",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:11.841Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "e373396c5f7bdcce011fa45e7b95d5f9",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"created": "2020-10-06T02:56:14.601Z",
+			"modified": "2020-10-06T02:19:59.899Z"
 		}]
 	},
 	"cloud_goods": {
@@ -109,7 +433,8 @@
 			"_id": "99ee0d4152644f368f0001619e9c628e",
 			"categories": [{
 				"id": 1004,
-				"name": "大分类一"
+				"name": "大分类一",
+				"isShow": 1
 			}, {
 				"id": 2002,
 				"name": "小分类yi"
@@ -123,8 +448,8 @@
 			"isSold": 1,
 			"shopid": 123457,
 			"src": "http://market.cjblog.org/goods/1.jpg",
-			"stock": 335,
-			"monthlySale": 152,
+			"stock": 332,
+			"monthlySale": 155,
 			"originPrice": 0,
 			"score": 0.98,
 			"description": "",
@@ -137,13 +462,14 @@
 				"limit": 2,
 				"price": "97.79",
 				"rate": 77,
-				"sales": 51,
-				"stock": 49
+				"sales": 47,
+				"stock": 53
 			},
 			"deliveryTags": [],
 			"modified": 1597893312783,
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
-			"subTitle": ""
+			"subTitle": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "cb1edbd6b6b149548723380ae750ebc7",
 			"score": 0.98,
@@ -155,7 +481,8 @@
 			"visite": 293,
 			"categories": [{
 				"id": 1004,
-				"name": "大分类一"
+				"name": "大分类一",
+				"isShow": 1
 			}, {
 				"id": 2003,
 				"name": "小分类二"
@@ -168,23 +495,23 @@
 			],
 			"miaosha": {
 				"sku_id": 10004,
-				"stock": 191,
+				"stock": 184,
 				"beginTime": 1588313782526,
 				"endTime": 1687980992114,
 				"id": "5e75bd15b1e402104d1dbbce",
 				"limit": 2,
 				"price": 17.6,
-				"sales": 14
+				"sales": 21
 			},
-			"stock": 2276,
+			"stock": 2268,
 			"title": "新货新疆葡萄干500g特级超大无核绿葡萄干免洗即食新疆吐鲁番特产",
-			"monthlySale": 123,
+			"monthlySale": 131,
 			"skus": [{
 				"id": 10005,
 				"name": "绿葡萄干精品大罐装500g",
 				"price": 18.5,
-				"sales": 1,
-				"stock": 282
+				"sales": 2,
+				"stock": 281
 			}, {
 				"id": 10000,
 				"name": "三色葡萄干精品大罐装500g",
@@ -213,8 +540,8 @@
 				"id": 10004,
 				"name": "绿葡萄干（250gX2袋）",
 				"price": 22.6,
-				"sales": 10,
-				"stock": 191
+				"sales": 17,
+				"stock": 184
 			}],
 			"isSold": 1,
 			"banner": "",
@@ -228,12 +555,57 @@
 			"saleType": "normal",
 			"share": "",
 			"subTitle": "原产地直销",
-			"upc": ""
+			"upc": "",
+			"isCategoryShow": 1,
+			"comment": [{
+				"goods_id": "cb1edbd6b6b149548723380ae750ebc7",
+				"shopid": 123457,
+				"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T09:12:46.557Z",
+				"content": "官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费",
+				"index": 0,
+				"star": 5,
+				"starResult": "非常好",
+				"tags": ["手感舒适", "很好用", "包装贴心又环保"]
+			}, {
+				"goods_id": "cb1edbd6b6b149548723380ae750ebc7",
+				"shopid": 123457,
+				"order_id": "e656fa635f76ca0f00f4e9406ebf966c",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T09:59:08.762Z",
+				"content": "前所未有的购物体验，太棒了",
+				"index": 0,
+				"star": 5,
+				"starResult": "非常好",
+				"tags": ["价格便宜", "品质好", "很好用", "分量足"]
+			}],
+			"commentCount": 2,
+			"commentTagStatics": {
+				"包装贴心又环保": 1,
+				"很好用": 2,
+				"手感舒适": 1,
+				"价格便宜": 1,
+				"分量足": 1,
+				"品质好": 1
+			},
+			"starStatics": {
+				"5": 2
+			}
 		}, {
 			"_id": "1746c490997e47aaa08f3673cbdc5509",
 			"categories": [{
 				"id": 1004,
-				"name": "大分类一"
+				"name": "大分类一",
+				"isShow": 1
 			}, {
 				"id": 2003,
 				"name": "小分类二"
@@ -280,7 +652,8 @@
 			],
 			"originPrice": 0,
 			"src": "http://market.cjblog.org/goods/2-1.jpg",
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "c752ff5387f549daba0537fca12097c7",
 			"imgs": ["http://market.cjblog.org/goods/552946761524-2.jpg", "http://market.cjblog.org/goods/552946761524-3.jpg",
@@ -293,8 +666,8 @@
 				"stock": 148,
 				"id": 10000
 			}, {
-				"sales": 5,
-				"stock": 701,
+				"sales": 11,
+				"stock": 695,
 				"id": 10001,
 				"name": "一级品质免洗500g*2袋独立装共2斤",
 				"price": 14.9
@@ -302,21 +675,21 @@
 				"id": 10002,
 				"name": "5.98元/斤【一级品质免洗500g*5袋独立装】 共5斤",
 				"price": 29.9,
-				"stock": 368,
-				"sales": 3
+				"stock": 364,
+				"sales": 7
 			}, {
 				"id": 10003,
 				"name": "5.98元/斤【特级免洗*肉更厚味更甜*共5斤整袋装】",
 				"price": 29.9,
-				"sales": 0,
-				"stock": 979
+				"sales": 3,
+				"stock": 976
 			}],
 			"visite": 80,
 			"miaosha": {
-				"price": "13.86",
-				"sales": 4,
+				"price": 13.86,
+				"sales": 10,
 				"sku_id": 10001,
-				"stock": 701,
+				"stock": 695,
 				"beginTime": 1595692800000,
 				"endTime": 1601654400000,
 				"id": "5e75bd15b1e302004d1dbbce",
@@ -324,17 +697,18 @@
 				"rate": 93,
 				"state": "started"
 			},
-			"monthlySale": 63,
-			"onlineTime": 1588409978119,
+			"monthlySale": 76,
+			"onlineTime": 1601174776641,
 			"score": 0.98,
 			"shopid": 123457,
-			"stock": 2196,
+			"stock": 2183,
 			"originPrice": 0,
 			"posid": 1,
 			"title": "新疆红枣 特级免洗枣2500g一级优质大",
 			"categories": [{
 				"id": 1004,
-				"name": "大分类一"
+				"name": "大分类一",
+				"isShow": 1
 			}, {
 				"id": 2003,
 				"name": "小分类二"
@@ -343,13 +717,17 @@
 			"price": 14.9,
 			"skuname": ["食品规格"],
 			"src": "http://market.cjblog.org/goods/552946761524-1.jpg",
-			"isSold": 1
+			"isSold": 1,
+			"offlineTime": 1601174766274,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"isCategoryShow": 1
 		}, {
 			"_id": "f9c2a5db50f148a3b648c9d67951856a",
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -414,13 +792,15 @@
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": ""
+			"upc": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "f628064da0a14005b7be01cbc3c066fa",
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 5,
@@ -469,7 +849,8 @@
 			"description": "",
 			"imgs": [],
 			"modified": 1593844487203,
-			"operator": 10000
+			"operator": 10000,
+			"isCategoryShow": 1
 		}, {
 			"_id": "9c44bc3a70f04f9f9b9547818a7c2ce9",
 			"price": 43.5,
@@ -516,7 +897,8 @@
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": false,
 				"goodsCount": 5,
@@ -534,7 +916,8 @@
 			"description": "",
 			"imgs": [],
 			"modified": 1593692403186,
-			"operator": 10000
+			"operator": 10000,
+			"isCategoryShow": 1
 		}, {
 			"_id": "b2ed1c2c7df44d2da164aef2ff2c79f9",
 			"imgs": ["http://market.cjblog.org/goods/606186541398-2.jpg", "http://market.cjblog.org/goods/606186541398-3.jpg",
@@ -546,7 +929,8 @@
 			"categories": [{
 				"id": 1010,
 				"name": "方便速食",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"id": 10008,
 			"onlineTime": 1593588641730,
@@ -568,7 +952,8 @@
 			"isSold": 1,
 			"operator": 10000,
 			"description": "",
-			"modified": 1593597744418
+			"modified": 1593597744418,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f188d1a95efb0601000f1cc225e072ba",
 			"imgs": [],
@@ -580,7 +965,8 @@
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": false,
 				"goodsCount": 5,
@@ -597,7 +983,8 @@
 			"id": 10021,
 			"isSold": 0,
 			"visite": 1,
-			"offlineTime": 1593594076532
+			"offlineTime": 1593594076532,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f188d1a95efc1c93001b237c4d4fcd99",
 			"operator": 10000,
@@ -649,7 +1036,8 @@
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 5,
@@ -657,13 +1045,15 @@
 				"name": "桃李杏枣",
 				"pid": 1004
 			}],
-			"created": 1593580691122
+			"created": 1593580691122,
+			"isCategoryShow": 1
 		}, {
 			"_id": "a81822d65efdcab9002725f735b9c237",
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": false,
 				"goodsCount": 5,
@@ -689,13 +1079,15 @@
 			"score": 1,
 			"monthlySale": 1,
 			"visite": 19,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f11f525b5efdcb770025003449bdd6f7",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10027,
@@ -715,13 +1107,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 8,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f188d1a95efdcc43002f4ff5248601b0",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10028,
@@ -741,13 +1135,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 9,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "9fb344b15efdcc9c002ec5bc68cb7aa5",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10029,
@@ -767,13 +1163,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 19,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "868b77555efdcce300295b023c7418e7",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10030,
@@ -793,13 +1191,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 20,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "b7d9f2ea5efdcd3800365eda29540482",
 			"categories": [{
 				"id": 1012,
 				"name": "快手菜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10031,
@@ -819,13 +1219,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 40,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "a81822d65efdce7b002748156ecdf124",
 			"categories": [{
 				"id": 1012,
 				"name": "快手菜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10032,
@@ -845,13 +1247,15 @@
 			"score": 1,
 			"monthlySale": 1,
 			"visite": 25,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "9fb344b15efdcef3002edf820508a67f",
 			"categories": [{
 				"id": 1012,
 				"name": "快手菜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10033,
@@ -887,13 +1291,15 @@
 			"score": 1,
 			"monthlySale": 2,
 			"visite": 29,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f11f525b5efdcfb0002525e566a988eb",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10034,
@@ -912,13 +1318,15 @@
 			"score": 1,
 			"monthlySale": 2,
 			"visite": 14,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f11f525b5efdd02f002529e7416a84ac",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10035,
@@ -938,13 +1346,15 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 19,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "868b77555efdd09500297e2b69f368bb",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10036,
@@ -964,7 +1374,8 @@
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 35,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "a81822d65efe61c50030b2f22166150f",
 			"categories": [{
@@ -1003,7 +1414,8 @@
 			"categories": [{
 				"id": 1009,
 				"name": "米面豆制品",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"score": 1,
@@ -1045,13 +1457,15 @@
 			"offlineTime": 1593592846948,
 			"deleteOperator": 10000,
 			"revertOperator": 10000,
-			"revertTime": 1593847266064
+			"revertTime": 1593847266064,
+			"isCategoryShow": 1
 		}, {
 			"_id": "f188d1a95f002855005678a722de9f83",
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -1074,8 +1488,8 @@
 				"state": "started",
 				"beginTime": 1593878400000,
 				"deduction": 10,
-				"endTime": 1601481599000,
-				"finalPaymentBeginTime": 1601481600000,
+				"endTime": 1601895540000,
+				"finalPaymentBeginTime": 1601913600000,
 				"finalPaymentEndTime": 1602345599000,
 				"price": 1
 			},
@@ -1087,7 +1501,7 @@
 			"monthlySale": 10,
 			"visite": 104,
 			"isSold": 1,
-			"modified": 1600650427231,
+			"modified": 1601562958481,
 			"offlineTime": 1593846835325,
 			"deleteOperator": 10000,
 			"revertOperator": 10000,
@@ -1096,15 +1510,17 @@
 			"deliveryTags": [],
 			"upc": "6901028316989",
 			"banner": "",
-			"onlySelfTake": "0",
+			"onlySelfTake": 1,
 			"saleType": "yuding",
-			"share": ""
+			"share": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "868b77555f005179004c72bc67a83493",
 			"categories": [{
 				"id": 1007,
 				"name": "水产海鲜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1146,14 +1562,16 @@
 				"state": "ended"
 			},
 			"share": "错过今晚，再等一个月",
-			"upc": ""
+			"upc": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "b7d9f2ea5f00760e006618fb7c18de05",
 			"upc": "6922868290840",
 			"categories": [{
 				"id": 1006,
 				"name": "土货",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -1206,13 +1624,15 @@
 			"created": 1593865742891,
 			"default_checked_sku_id": 10001,
 			"price": 39.5,
-			"shopid": 123457
+			"shopid": 123457,
+			"isCategoryShow": 1
 		}, {
 			"_id": "1503f3385f129cf2002c6316705acea1",
 			"categories": [{
 				"id": 1011,
 				"name": "饮酒零食",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "http://market.cjblog.org/goods/09831715229727622.jpg;http://market.cjblog.org/goods/6291845992946198.jpg;http://market.cjblog.org/goods/13017929123453964.jpg;http://market.cjblog.org/goods/20312752925525246.jpg;http://market.cjblog.org/goods/5215873546496722.jpg;http://market.cjblog.org/goods/5335643562893808.jpg;http://market.cjblog.org/goods/8654583975223232.jpg;http://market.cjblog.org/goods/28905182004377994.jpg",
 			"id": 10042,
@@ -1222,14 +1642,14 @@
 			"originPrice": 0,
 			"price": 18.8,
 			"src": "http://market.cjblog.org/goods/1077456655328407.jpg",
-			"stock": 523,
+			"stock": 522,
 			"title": "滋食网红日本式小圆饼植物油饼干天日盐零食奶盐味办公室茶点",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1595055346202,
 			"created": 1595055346202,
 			"score": 1,
-			"monthlySale": 5,
+			"monthlySale": 6,
 			"visite": 69,
 			"isSold": 1,
 			"modified": 1598067970225,
@@ -1240,19 +1660,21 @@
 				"price": 14.85,
 				"rate": 79,
 				"sku_id": 0,
-				"stock": 68,
+				"stock": 69,
 				"state": "ended",
-				"sales": -18
+				"sales": -19
 			},
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": "6901028316989"
+			"upc": "6901028316989",
+			"isCategoryShow": 1
 		}, {
 			"_id": "b5416b755f51c10f011c1e374e1b78a3",
 			"categories": [{
 				"id": 1006,
 				"name": "土货",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -1306,13 +1728,15 @@
 			"modified": 1598068138787,
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": "6922868290840"
+			"upc": "6922868290840",
+			"isCategoryShow": 1
 		}, {
 			"_id": "7498b5fe5f51c11800f5adaa10172e4d",
 			"categories": [{
 				"id": 1006,
 				"name": "土货",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -1366,13 +1790,15 @@
 			"modified": 1598068138787,
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": "6922868290840"
+			"upc": "6922868290840",
+			"isCategoryShow": 1
 		}, {
 			"_id": "65825b355f51c14000cd83b077099c3a",
 			"categories": [{
 				"id": 1011,
 				"name": "饮酒零食",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "http://market.cjblog.org/goods/09831715229727622.jpg;http://market.cjblog.org/goods/6291845992946198.jpg;http://market.cjblog.org/goods/13017929123453964.jpg;http://market.cjblog.org/goods/20312752925525246.jpg;http://market.cjblog.org/goods/5215873546496722.jpg;http://market.cjblog.org/goods/5335643562893808.jpg;http://market.cjblog.org/goods/8654583975223232.jpg;http://market.cjblog.org/goods/28905182004377994.jpg",
 			"id": 10046,
@@ -1406,13 +1832,15 @@
 			},
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": "6901028316989"
+			"upc": "6901028316989",
+			"isCategoryShow": 1
 		}, {
 			"_id": "aa133ce55f51c14f00bfdc70306722f3",
 			"categories": [{
 				"id": 1011,
 				"name": "饮酒零食",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "http://market.cjblog.org/goods/09831715229727622.jpg;http://market.cjblog.org/goods/6291845992946198.jpg;http://market.cjblog.org/goods/13017929123453964.jpg;http://market.cjblog.org/goods/20312752925525246.jpg;http://market.cjblog.org/goods/5215873546496722.jpg;http://market.cjblog.org/goods/5335643562893808.jpg;http://market.cjblog.org/goods/8654583975223232.jpg;http://market.cjblog.org/goods/28905182004377994.jpg",
 			"id": 10047,
@@ -1446,13 +1874,15 @@
 			},
 			"deliveryTags": [],
 			"subTitle": "",
-			"upc": "6901028316989"
+			"upc": "6901028316989",
+			"isCategoryShow": 1
 		}, {
 			"_id": "ac5f38825f51c16900f6cb0a1e16bc19",
 			"categories": [{
 				"id": 1007,
 				"name": "水产海鲜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1494,13 +1924,15 @@
 				"state": "ended"
 			},
 			"share": "错过今晚，再等一个月",
-			"upc": ""
+			"upc": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "8a6c3bf65f51c16e00c8253b00e87d30",
 			"categories": [{
 				"id": 1004,
 				"name": "水果",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 12,
@@ -1543,13 +1975,15 @@
 			"revertTime": 1593847312528,
 			"subTitle": "小明都说好",
 			"deliveryTags": [],
-			"upc": "6901028316989"
+			"upc": "6901028316989",
+			"isCategoryShow": 1
 		}, {
 			"_id": "8a6c3bf65f51c17000c825486906dbd3",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10050,
@@ -1561,20 +1995,23 @@
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
 			"stock": 66,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599193456745,
 			"created": 1599193456745,
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 2,
-			"isSold": 1
+			"isSold": 0,
+			"offlineTime": 1601606636665,
+			"isCategoryShow": 1
 		}, {
 			"_id": "60173c665f51c1c200d91a59656bf289",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10051,
@@ -1586,20 +2023,23 @@
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
 			"stock": 66,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599193538655,
 			"created": 1599193538655,
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 2,
-			"isSold": 1
+			"isSold": 0,
+			"offlineTime": 1601606635813,
+			"isCategoryShow": 1
 		}, {
 			"_id": "b5416b755f51c1c5011c25ba773fbd3f",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10052,
@@ -1611,20 +2051,23 @@
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
 			"stock": 66,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599193540925,
 			"created": 1599193540925,
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 5,
-			"isSold": 1
+			"isSold": 0,
+			"offlineTime": 1601606634751,
+			"isCategoryShow": 1
 		}, {
 			"_id": "6518b7395f51c1c700f0245869cee352",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10053,
@@ -1636,20 +2079,23 @@
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
 			"stock": 66,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599193543359,
 			"created": 1599193543359,
 			"score": 1,
 			"monthlySale": 0,
-			"visite": 1,
-			"isSold": 1
+			"visite": 2,
+			"isSold": 0,
+			"offlineTime": 1601606633200,
+			"isCategoryShow": 1
 		}, {
 			"_id": "b5416b755f51c1ca011c25e92fed0abf",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10054,
@@ -1661,20 +2107,29 @@
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
 			"stock": 66,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599193546156,
 			"created": 1599193546156,
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 4,
-			"isSold": 1
+			"isSold": 0,
+			"offlineTime": 1601606632116,
+			"isCategoryShow": 1
 		}, {
 			"_id": "60173c665f51c42f00d93f1612f34ac2",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10057,
+				"name": "鸡",
+				"pid": 1013
 			}],
 			"description": "",
 			"id": 10055,
@@ -1684,22 +2139,32 @@
 			"originPrice": 0,
 			"price": 39.8,
 			"src": "http://market.cjblog.org/goods/600794846026596.jpg",
-			"stock": 65,
+			"stock": 63,
 			"title": "正宗土鸡蛋农家散养新鲜纯农村自养天然40枚草鸡蛋柴鸡蛋本笨鸡蛋",
-			"operator": 10000,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599194159555,
 			"created": 1599194159555,
 			"score": 1,
-			"monthlySale": 1,
+			"monthlySale": 3,
 			"visite": 6,
-			"isSold": 1
+			"isSold": 1,
+			"banner": "",
+			"deliveryTags": [],
+			"modified": 1601606625299,
+			"onlySelfTake": "0",
+			"saleType": "normal",
+			"share": "",
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "6518b7395f51c43500f03df034640788",
 			"categories": [{
 				"id": 1007,
 				"name": "水产海鲜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1716,14 +2181,14 @@
 			"originPrice": 0,
 			"price": 239,
 			"src": "http://market.cjblog.org/goods/6586700496492762.jpg",
-			"stock": 20,
+			"stock": 19,
 			"title": "龙虾波士顿大龙虾鲜活特大波龙奥龙波斯顿海鲜水产活虾500-600g*2",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
 			"onlineTime": 1599194165551,
 			"created": 1599194165551,
 			"score": 1,
-			"monthlySale": 0,
+			"monthlySale": 1,
 			"visite": 7,
 			"isSold": 1,
 			"deliveryTags": [],
@@ -1741,13 +2206,40 @@
 				"state": "ended"
 			},
 			"share": "",
-			"upc": ""
+			"upc": "",
+			"isCategoryShow": 1,
+			"comment": [{
+				"goods_id": "6518b7395f51c43500f03df034640788",
+				"shopid": 123457,
+				"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T09:12:46.605Z",
+				"content": "放到电饭锅电饭锅地方后台还官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费让他他规划发过火提货提货",
+				"index": 3,
+				"star": 5,
+				"starResult": "非常好",
+				"tags": ["口感很棒", "很好用", "品质好"]
+			}],
+			"commentCount": 1,
+			"commentTagStatics": {
+				"口感很棒": 1,
+				"品质好": 1,
+				"很好用": 1
+			},
+			"starStatics": {
+				"5": 1
+			}
 		}, {
 			"_id": "60173c665f51c43a00d93f654e1498dd",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10057,
@@ -1767,13 +2259,15 @@
 			"score": 1,
 			"monthlySale": 1,
 			"visite": 12,
-			"isSold": 1
+			"isSold": 1,
+			"isCategoryShow": 1
 		}, {
 			"_id": "b5416b755f523df50123fd631c9c2022",
 			"categories": [{
 				"id": 1013,
 				"name": "肉禽蛋",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}],
 			"description": "",
 			"id": 10058,
@@ -1798,13 +2292,15 @@
 			"modified": 1600342667905,
 			"share": "",
 			"subTitle": "",
-			"upc": "6922266465567"
+			"upc": "6922266465567",
+			"isCategoryShow": 1
 		}, {
 			"_id": "65825b355f523df700d32b1a5280a9e6",
 			"categories": [{
 				"id": 1007,
 				"name": "水产海鲜",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1841,16 +2337,18 @@
 				"price": 28.68,
 				"rate": 12,
 				"sku_id": 0,
-				"stock": 92,
-				"sales": -7,
+				"stock": 93,
+				"sales": -8,
 				"state": "ended"
 			},
 			"share": "",
-			"upc": "6914068017570"
+			"upc": "6914068017570",
+			"isCategoryShow": 1
 		}, {
 			"_id": "f1168d5b5f61a8560016628b11a07cef",
 			"categories": [{
 				"id": 1004,
+				"isShow": 1,
 				"name": "水果",
 				"pid": 0
 			}, {
@@ -1869,15 +2367,15 @@
 			"originPrice": 0,
 			"price": 39.8,
 			"src": "http://market.cjblog.org/goods/40080428010563707.jpg",
-			"stock": 3,
+			"stock": 1,
 			"title": "广西小小台农芒果10斤新鲜水果无丝小核热带应季青整箱批发当季包邮",
 			"yuding": {
 				"state": "started",
 				"beginTime": 1593878400000,
 				"deduction": 10,
-				"endTime": 1601481599000,
-				"finalPaymentBeginTime": 1601481600000,
-				"finalPaymentEndTime": 1602345599000,
+				"endTime": 1602334740000,
+				"finalPaymentBeginTime": 1602507780000,
+				"finalPaymentEndTime": 1602691140000,
 				"price": 1
 			},
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
@@ -1885,10 +2383,10 @@
 			"onlineTime": 1600235606176,
 			"created": 1600235606176,
 			"score": 1,
-			"monthlySale": 0,
+			"monthlySale": 2,
 			"visite": 5,
 			"isSold": 1,
-			"modified": 1600650451875,
+			"modified": 1601904681621,
 			"offlineTime": 1593846835325,
 			"deleteOperator": 10000,
 			"revertOperator": 10000,
@@ -1899,13 +2397,15 @@
 			"banner": "",
 			"onlySelfTake": "0",
 			"saleType": "yuding",
-			"share": ""
+			"share": "",
+			"isCategoryShow": 1
 		}, {
 			"_id": "c54bd3a25f64285a000900e53b7e136d",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1947,13 +2447,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/7034637101471882.jpg",
-			"offlineTime": 1600522203732
+			"offlineTime": 1600522203732,
+			"isCategoryShow": 1
 		}, {
 			"_id": "c54bd3a25f6562510013f1b475ab12a9",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -1995,13 +2497,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-21/4323720225332266.jpg",
-			"offlineTime": 1600673348041
+			"offlineTime": 1600673348041,
+			"isCategoryShow": 1
 		}, {
 			"_id": "e656fa635f6562570019f64c6c2b5f6d",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2043,13 +2547,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522191467
+			"offlineTime": 1600522191467,
+			"isCategoryShow": 1
 		}, {
 			"_id": "d782d4875f656e160014d19e27a8b052",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2091,13 +2597,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522187993
+			"offlineTime": 1600522187993,
+			"isCategoryShow": 1
 		}, {
 			"_id": "d81cd5415f656e1800153aba3df3dcce",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2139,13 +2647,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522184134
+			"offlineTime": 1600522184134,
+			"isCategoryShow": 1
 		}, {
 			"_id": "e373396c5f656e1a00199fd23a27fab4",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2187,13 +2697,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522183219
+			"offlineTime": 1600522183219,
+			"isCategoryShow": 1
 		}, {
 			"_id": "1b64dd7b5f656e1d0018fd8d2fabce17",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2235,13 +2747,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522180836
+			"offlineTime": 1600522180836,
+			"isCategoryShow": 1
 		}, {
 			"_id": "e373396c5f656e1e00199ff9286f5cb4",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2283,13 +2797,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522179411
+			"offlineTime": 1600522179411,
+			"isCategoryShow": 1
 		}, {
 			"_id": "e656fa635f656e1f001a733b1cba3434",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2331,13 +2847,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522177516
+			"offlineTime": 1600522177516,
+			"isCategoryShow": 1
 		}, {
 			"_id": "8e5be7055f656e21001d60d07c16af50",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2379,13 +2897,15 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522176550
+			"offlineTime": 1600522176550,
+			"isCategoryShow": 1
 		}, {
 			"_id": "8e5be7055f656e24001d60fd55d6f7bd",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
@@ -2417,44 +2937,24 @@
 			"upc": "",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
-			"onlineTime": 1600482852550,
+			"onlineTime": 1601036876072,
 			"created": 1600482852550,
 			"score": 1,
 			"monthlySale": 0,
-			"visite": 0,
+			"visite": 1,
 			"isSold": 0,
 			"modified": 1600478905032,
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522174653
+			"offlineTime": 1601036890330,
+			"isCategoryShow": 1
 		}, {
 			"_id": "d782d4875f656e260014d2066f77a4e5",
-			"categories": [{
-				"id": 10060,
-				"name": "新分类",
-				"pid": 0
-			}, {
-				"checked": true,
-				"goodsCount": 0,
-				"id": 10061,
-				"name": "推荐",
-				"pid": 10060
-			}],
-			"deliveryTags": [],
 			"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
-			"id": 10072,
-			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
-				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
-				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
-			],
+			"isSold": 0,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"originPrice": 0,
-			"price": 38.8,
-			"share": "",
-			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
-			"stock": 87,
-			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
-			"title": "社区团购商品测试",
 			"tuangou": {
 				"beginTime": 1600411800000,
 				"endTime": 1600572600000,
@@ -2463,30 +2963,56 @@
 				"unit": "组"
 			},
 			"upc": "",
-			"operator": "9ffb2a485f38964200999b1f07cb7b80",
-			"shopid": 123457,
-			"onlineTime": 1600482854503,
-			"created": 1600482854503,
-			"score": 1,
-			"monthlySale": 0,
-			"visite": 0,
-			"isSold": 0,
-			"modified": 1600478905032,
-			"saleType": "tuangou",
+			"categories": [{
+				"id": 10060,
+				"name": "新分类",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10062,
+				"isShow": 0,
+				"name": "不推荐",
+				"pid": 10060
+			}],
 			"onlySelfTake": 1,
+			"share": "",
+			"modified": 1601610551522,
+			"onlineTime": 1601036819369,
+			"visite": 0,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522173806
+			"offlineTime": 1601036872952,
+			"saleType": "tuangou",
+			"stock": 87,
+			"deliveryTags": [],
+			"score": 1,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+			"id": 10072,
+			"price": 38.8,
+			"title": "社区团购商品测试---分类下架",
+			"monthlySale": 0,
+			"created": 1600482854503,
+			"isCategoryShow": 1,
+			"shopid": 123457,
+			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+			]
 		}, {
 			"_id": "e373396c5f656e280019a05247296a83",
 			"categories": [{
 				"id": 10060,
 				"name": "新分类",
-				"pid": 0
+				"pid": 0,
+				"isShow": 1
 			}, {
 				"checked": true,
 				"goodsCount": 0,
-				"id": 10061,
-				"name": "推荐",
+				"id": 10062,
+				"isShow": 0,
+				"name": "不推荐",
 				"pid": 10060
 			}],
 			"deliveryTags": [],
@@ -2513,21 +3039,23 @@
 			"upc": "",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
-			"onlineTime": 1600482856497,
+			"onlineTime": 1601036817538,
 			"created": 1600482856497,
 			"score": 1,
 			"monthlySale": 0,
 			"visite": 1,
 			"isSold": 0,
-			"modified": 1600478905032,
+			"modified": 1601609909557,
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522171447
+			"offlineTime": 1601036870316,
+			"isCategoryShow": 1
 		}, {
 			"_id": "c54bd3a25f656e2b00146418797a595a",
 			"categories": [{
 				"id": 10060,
+				"isShow": 1,
 				"name": "新分类",
 				"pid": 0
 			}, {
@@ -2548,7 +3076,7 @@
 			"price": 38.8,
 			"share": "",
 			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
-			"stock": 87,
+			"stock": 72,
 			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
 			"title": "社区团购商品测试",
 			"tuangou": {
@@ -2561,18 +3089,2355 @@
 			"upc": "",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
-			"onlineTime": 1600765567714,
+			"onlineTime": 1601036928929,
 			"created": 1600482859526,
 			"score": 1,
-			"monthlySale": 0,
+			"monthlySale": 15,
 			"visite": 2,
+			"isSold": 1,
+			"modified": 1601870003963,
+			"saleType": "tuangou",
+			"onlySelfTake": 1,
+			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+			"offlineTime": 1601036869298,
+			"isCategoryShow": 1,
+			"commentTagStatics": {
+				"包装完整": 3,
+				"使用方便": 1,
+				"包装贴心又环保": 1,
+				"结实耐用": 1
+			},
+			"starStatics": {
+				"1": 1,
+				"4": 1,
+				"5": 2
+			},
+			"comment": [{
+				"goods_id": "c54bd3a25f656e2b00146418797a595a",
+				"shopid": 123457,
+				"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T08:07:39.775Z",
+				"content": "顶顶顶顶",
+				"index": 0,
+				"star": 5,
+				"starResult": "非常好",
+				"tags": ["包装完整"]
+			}, {
+				"goods_id": "c54bd3a25f656e2b00146418797a595a",
+				"shopid": 123457,
+				"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T09:12:46.646Z",
+				"content": "c 手动的非官方的地方个梵蒂官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费冈放到",
+				"index": 4,
+				"star": 5,
+				"starResult": "非常好",
+				"tags": ["使用方便", "结实耐用", "包装贴心又环保"]
+			}],
+			"commentCount": 3
+		}, {
+			"_id": "e656fa635f717ddb00a35c8a0747db0a",
+			"categories": [{
+				"id": 10060,
+				"name": "新分类",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10061,
+				"name": "推荐",
+				"pid": 10060
+			}],
+			"deliveryTags": [],
+			"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+			"id": 10076,
+			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+			],
+			"originPrice": 0,
+			"price": 38.8,
+			"share": "",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+			"stock": 75,
+			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+			"title": "社区团购商品测试",
+			"tuangou": {
+				"beginTime": 1600411800000,
+				"endTime": 1603164600000,
+				"pickup": 1603238400000,
+				"price": 12.8,
+				"unit": "组"
+			},
+			"upc": "",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"onlineTime": 1601273307221,
+			"created": 1601273307221,
+			"score": 1,
+			"monthlySale": 0,
+			"visite": 1,
 			"isSold": 1,
 			"modified": 1600765586214,
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
-			"offlineTime": 1600522169968
+			"offlineTime": 1601036869298,
+			"isCategoryShow": 1
 		}, {
+			"_id": "d81cd5415f717ddd00897ff82c136bc0",
+			"categories": [{
+				"id": 10060,
+				"name": "新分类",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10061,
+				"name": "推荐",
+				"pid": 10060
+			}],
+			"deliveryTags": [],
+			"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+			"id": 10077,
+			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+			],
+			"originPrice": 0,
+			"price": 38.8,
+			"share": "",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+			"stock": 75,
+			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+			"title": "社区团购商品测试",
+			"tuangou": {
+				"beginTime": 1600411800000,
+				"endTime": 1603164600000,
+				"pickup": 1603238400000,
+				"price": 12.8,
+				"unit": "组"
+			},
+			"upc": "",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"onlineTime": 1601273308920,
+			"created": 1601273308920,
+			"score": 1,
+			"monthlySale": 0,
+			"visite": 1,
+			"isSold": 1,
+			"modified": 1600765586214,
+			"saleType": "tuangou",
+			"onlySelfTake": 1,
+			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+			"offlineTime": 1601036869298,
+			"isCategoryShow": 1
+		}, {
+			"_id": "1b64dd7b5f717dde00a09c9b16fc2195",
+			"categories": [{
+				"id": 10060,
+				"name": "新分类",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10061,
+				"name": "推荐",
+				"pid": 10060
+			}],
+			"deliveryTags": [],
+			"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+			"id": 10078,
+			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+			],
+			"originPrice": 0,
+			"price": 38.8,
+			"share": "",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+			"stock": 75,
+			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+			"title": "社区团购商品测试",
+			"tuangou": {
+				"beginTime": 1600411800000,
+				"endTime": 1603164600000,
+				"pickup": 1603238400000,
+				"price": 12.8,
+				"unit": "组"
+			},
+			"upc": "",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"onlineTime": 1601273310382,
+			"created": 1601273310382,
+			"score": 1,
+			"monthlySale": 0,
+			"visite": 0,
+			"isSold": 1,
+			"modified": 1600765586214,
+			"saleType": "tuangou",
+			"onlySelfTake": 1,
+			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+			"offlineTime": 1601036869298,
+			"isCategoryShow": 1,
+			"isRecommend": true
+		}, {
+			"_id": "b8df3bd65f717ddf008f701339b6269a",
+			"categories": [{
+				"id": 10060,
+				"name": "新分类",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 0,
+				"id": 10062,
+				"isShow": 0,
+				"name": "不推荐",
+				"pid": 10060
+			}],
+			"deliveryTags": [],
+			"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+			"id": 10079,
+			"imgs": ["https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+				"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+			],
+			"originPrice": 0,
+			"price": 38.8,
+			"share": "",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+			"stock": 75,
+			"subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+			"title": "社区团购商品测试-分类",
+			"tuangou": {
+				"beginTime": 1600411800000,
+				"endTime": 1603164600000,
+				"pickup": 1603238400000,
+				"price": 12.8,
+				"unit": "组"
+			},
+			"upc": "",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"onlineTime": 1601273311745,
+			"created": 1601273311745,
+			"score": 1,
+			"monthlySale": 0,
+			"visite": 0,
+			"isSold": 1,
+			"modified": 1601610914977,
+			"saleType": "tuangou",
+			"onlySelfTake": 1,
+			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+			"offlineTime": 1601036869298,
+			"isCategoryShow": 1
+		}, {
+			"_id": "c54bd3a25f79272700d918521c8300ba",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10080,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775399216,
+			"created": 1601775399216
+		}, {
+			"_id": "1b64dd7b5f79272b01038cae477c5fb2",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10081,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775403515,
+			"created": 1601775403515
+		}, {
+			"_id": "c54bd3a25f79272d00d9188e71336ac7",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10082,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775405520,
+			"created": 1601775405520
+		}, {
+			"_id": "e656fa635f79272e010a1e99766727a1",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10083,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775406595,
+			"created": 1601775406595
+		}, {
+			"_id": "8e5be7055f79272f0130b81c0115bd30",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10084,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775407588,
+			"created": 1601775407588
+		}, {
+			"_id": "d81cd5415f79273000dfc304276cfd14",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10085,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775408537,
+			"created": 1601775408537
+		}, {
+			"_id": "c54bd3a25f79273100d918b21d48087a",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10086,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775409393,
+			"created": 1601775409393
+		}, {
+			"_id": "e373396c5f7927330100c22e5929a199",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10087,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775411144,
+			"created": 1601775411144
+		}, {
+			"_id": "e656fa635f792735010a1ed2721f911f",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10088,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775413045,
+			"created": 1601775413045
+		}, {
+			"_id": "8e5be7055f7927370130b85c54542a97",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10089,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775414971,
+			"created": 1601775414971
+		}, {
+			"_id": "c54bd3a25f79273800d918e237f2a641",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10090,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775416142,
+			"created": 1601775416142
+		}, {
+			"_id": "8e5be7055f7927390130b8730b10f29a",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10091,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775417178,
+			"created": 1601775417178
+		}, {
+			"_id": "d782d4875f79273a00d2f45074536e2b",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10092,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775418101,
+			"created": 1601775418101
+		}, {
+			"_id": "8e5be7055f79273b0130b8894736a16a",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10093,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775419835,
+			"created": 1601775419835
+		}, {
+			"_id": "c54bd3a25f79275500d919ce376b3ef0",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10094,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775445210,
+			"created": 1601775445210
+		}, {
+			"_id": "d81cd5415f79275600dfc44c52ca403d",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10095,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775446282,
+			"created": 1601775446282
+		}, {
+			"_id": "c54bd3a25f79275700d919dc3f260b43",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10096,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775447141,
+			"created": 1601775447141
+		}, {
+			"_id": "b8df3bd65f79275800e7878d71e47702",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10097,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775448040,
+			"created": 1601775448040
+		}, {
+			"_id": "1b64dd7b5f79275901038e51142388d3",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10098,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775448946,
+			"created": 1601775448946
+		}, {
+			"_id": "e656fa635f792759010a203f380f7400",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10099,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775449810,
+			"created": 1601775449810,
+			"isRecommend": true
+		}, {
+			"_id": "8e5be7055f79275a0130b9cb077d77ac",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 0,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10100,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775450654,
+			"created": 1601775450654
+		}, {
+			"_id": "8e5be7055f79275b0130b9d805effa52",
+			"categories": [{
+				"id": 1004,
+				"name": "水果",
+				"pid": 0,
+				"isShow": 1
+			}, {
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004
+			}],
+			"stock": 501,
+			"skus": [{
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27,
+				"stock": 266
+			}, {
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6,
+				"stock": 10
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"visite": 1,
+			"skuname": ["规格", "口味"],
+			"posid": 0,
+			"score": 1,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"originPrice": null,
+			"id": 10101,
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"shopid": 123457,
+			"price": 43.5,
+			"monthlySale": 0,
+			"yuding": {
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"state": "ended"
+			},
+			"isSold": 1,
+			"default_checked_sku_id": 10000,
+			"default_sku_id": 0,
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deliveryTags": [],
+			"subTitle": "",
+			"upc": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775451565,
+			"created": 1601775451565
+		}, {
+			"_id": "c54bd3a25f7927cb00d91d380109ef86",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"id": 10102,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"onlineTime": 1601775563167,
+			"created": 1601775563167,
+			"isRecommend": true
+		}, {
+			"_id": "1b64dd7b5f79288e010399ea2e265826",
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"price": 127,
+			"visite": 0,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"isSold": 1,
+			"shopid": 123457,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"stock": 332,
+			"monthlySale": 0,
+			"originPrice": 0,
+			"score": 1,
+			"description": "",
+			"posid": 1,
+			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+			"miaosha": {
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce",
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53
+			},
+			"deliveryTags": [],
+			"modified": 1597893312783,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"subTitle": "",
+			"isCategoryShow": 1,
+			"id": 10103,
+			"onlineTime": 1601775758518,
+			"created": 1601775758518,
+			"isRecommend": true
+		}, {
+			"_id": "1b64dd7b5f79289f01039a8b5385c3e8",
+			"subTitle": "",
+			"title": "北京北寨红杏5斤包邮正宗平谷金----复制",
+			"deliveryTags": [],
+			"id": 10104,
+			"imgs": ["http://market.cjblog.org/goods/1.1.jpg", "http://market.cjblog.org/goods/1.2.jpg",
+				"http://market.cjblog.org/goods/1.3.jpg"
+			],
+			"posid": 1,
+			"src": "http://market.cjblog.org/goods/1.jpg",
+			"description": "",
+			"monthlySale": 5,
+			"shopid": 123457,
+			"stock": 327,
+			"visite": 1,
+			"isSold": 1,
+			"miaosha": {
+				"limit": 2,
+				"price": "97.79",
+				"rate": 77,
+				"sales": 47,
+				"stock": 53,
+				"beginTime": 1589358599810,
+				"endTime": 1598889600000,
+				"id": "5e75bd15b1e402004d1dbbce"
+			},
+			"modified": 1597893312783,
+			"onlineTime": 1601775775089,
+			"price": 127,
+			"score": 1,
+			"categories": [{
+				"id": 1004,
+				"name": "大分类一",
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "小分类yi"
+			}],
+			"created": 1601775775089,
+			"isCategoryShow": 1,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"originPrice": 0,
+			"commentTagStatics": {
+				"价格便宜": 3,
+				"包装完整": 2
+			},
+			"starStatics": {
+				"3": 1,
+				"4": 1,
+				"5": 1
+			},
+			"comment": [{
+				"goods_id": "1b64dd7b5f79289f01039a8b5385c3e8",
+				"shopid": null,
+				"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T07:58:50.182Z",
+				"content": "三可惜",
+				"index": 1,
+				"star": 3,
+				"starResult": "一般",
+				"tags": ["包装完整", "价格便宜"]
+			}, {
+				"goods_id": "1b64dd7b5f79289f01039a8b5385c3e8",
+				"shopid": 123457,
+				"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T08:07:39.820Z",
+				"content": "灌灌灌灌",
+				"index": 1,
+				"star": 4,
+				"starResult": "很好",
+				"tags": ["包装完整", "价格便宜"]
+			}],
+			"commentCount": 2
+		}, {
+			"_id": "8e5be7055f7929670130d081473a08dd",
+			"default_checked_sku_id": 10000,
+			"score": 1,
+			"upc": "",
+			"subTitle": "",
+			"posid": 0,
+			"price": 43.5,
+			"stock": 501,
+			"default_sku_id": 0,
+			"skuname": ["规格", "口味"],
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"isCategoryShow": 1,
+			"categories": [{
+				"name": "水果",
+				"pid": 0,
+				"id": 1004,
+				"isShow": 1
+			}, {
+				"id": 2002,
+				"name": "柑橘橙柚",
+				"pid": 1004,
+				"checked": true,
+				"goodsCount": 12
+			}],
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"visite": 1,
+			"yuding": {
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"price": 1,
+				"sales": 100,
+				"sku_ids": [10001, 10003],
+				"endTime": 1594396799000,
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"state": "ended"
+			},
+			"id": 10105,
+			"isSold": 1,
+			"monthlySale": 0,
+			"deliveryTags": [],
+			"imgs": [],
+			"modified": 1597902249016,
+			"originPrice": null,
+			"skus": [{
+				"stock": 266,
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27
+			}, {
+				"stock": 10,
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5,
+				"sales": 6
+			}, {
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1,
+				"stock": 189
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"created": 1601775974924,
+			"description": "",
+			"onlineTime": 1601775974924,
+			"shopid": 123457
+		}, {
+			"_id": "8e5be7055f792b060130e1ee7f2b4f6e",
+			"title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+			"visite": 1,
+			"commentCount": 3,
+			"id": 10106,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"posid": 0,
+			"commentTagStatics": {
+				"价格便宜": 3,
+				"包装完整": 1
+			},
+			"isSold": 1,
+			"originPrice": null,
+			"isRecommend": true,
+			"upc": "",
+			"subTitle": "",
+			"price": 43.5,
+			"shopid": 123457,
+			"skuname": ["规格", "口味"],
+			"stock": 500,
+			"default_sku_id": 0,
+			"monthlySale": 1,
+			"onlineTime": 1601776390401,
+			"score": 1,
+			"skus": [{
+				"stock": 266,
+				"id": 10000,
+				"name": "配可乐&gt;原味",
+				"price": 43.5,
+				"sales": 27
+			}, {
+				"sales": 7,
+				"stock": 9,
+				"id": 10001,
+				"name": "配可乐&gt;草莓味",
+				"price": 45.5
+			}, {
+				"stock": 189,
+				"id": 10002,
+				"name": "配牛奶&gt;原味",
+				"price": 44.5,
+				"sales": 1
+			}, {
+				"id": 10003,
+				"name": "配牛奶&gt;草莓味",
+				"price": 46.5,
+				"sales": 1,
+				"stock": 36
+			}],
+			"categories": [{
+				"id": 1004,
+				"isShow": 1,
+				"name": "水果",
+				"pid": 0
+			}, {
+				"name": "柑橘橙柚",
+				"pid": 1004,
+				"checked": true,
+				"goodsCount": 12,
+				"id": 2002
+			}],
+			"created": 1601776390401,
+			"default_checked_sku_id": 10000,
+			"isCategoryShow": 1,
+			"deliveryTags": [],
+			"starStatics": {
+				"2": 1,
+				"3": 2
+			},
+			"yuding": {
+				"finalPaymentBeginTime": 1594396800000,
+				"finalPaymentEndTime": 1594655999000,
+				"price": 1,
+				"sales": 100,
+				"state": "ended",
+				"beginTime": 1593792000000,
+				"deduction": 20,
+				"endTime": 1594396799000,
+				"sku_ids": [10001, 10003]
+			},
+			"description": "",
+			"imgs": [],
+			"modified": 1597902249016,
+			"src": "http://market.cjblog.org/goods/cheliz.jpg",
+			"comment": [{
+				"goods_id": "8e5be7055f792b060130e1ee7f2b4f6e",
+				"shopid": null,
+				"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T07:58:50.224Z",
+				"content": "尔克西",
+				"index": 2,
+				"star": 2,
+				"starResult": "不好",
+				"tags": ["价格便宜"]
+			}, {
+				"goods_id": "8e5be7055f792b060130e1ee7f2b4f6e",
+				"shopid": 123457,
+				"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+				"user": {
+					"id": "9ffb2a485f38964200999b1f07cb7b80",
+					"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+					"nickname": "太阳公公"
+				},
+				"created": "2020-10-07T08:07:39.866Z",
+				"content": "反反复复付付",
+				"index": 2,
+				"star": 3,
+				"starResult": "一般",
+				"tags": ["价格便宜"]
+			}]
+		}]
+	},
+	"cloud_goods_activities": {
+		"data": []
+	},
+	"cloud_goods_categories": {
+		"data": [{
+			"_id": "6ef3d54a1fea4a448813ec392297f38a",
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg",
+			"children": [{
+				"goodsCount": 12,
+				"id": 2002,
+				"isShow": 1,
+				"name": "柑橘橙柚"
+			}, {
+				"goodsCount": 5,
+				"id": 2003,
+				"isShow": 1,
+				"name": "桃李杏枣"
+			}, {
+				"goodsCount": 5,
+				"id": 2004,
+				"isShow": 1,
+				"name": "苹果梨蕉"
+			}, {
+				"goodsCount": 5,
+				"id": 2005,
+				"isShow": 1,
+				"name": "蒲提浆果"
+			}],
+			"goodsCount": 12,
+			"id": 1004,
+			"pid": 0,
+			"posid": 0,
+			"shopid": 123457,
+			"isRecommend": 1,
+			"isShow": 1,
+			"name": "水果",
+			"recommendGoods": 4
+		}, {
+			"_id": "23fc60e35f4142589a0fdbb42f427e68",
+			"isRecommend": 1,
+			"name": "鲜花",
+			"pid": 0,
+			"shopid": 123457,
+			"goodsCount": 12,
+			"id": 1005,
+			"isShow": 1,
+			"posid": 0,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601793928827.jpg",
+			"children": [{
+				"goodsCount": 12,
+				"id": 3002,
+				"isShow": 1,
+				"name": "玫瑰"
+			}, {
+				"goodsCount": 12,
+				"id": 3003,
+				"isShow": 1,
+				"name": "牡丹"
+			}]
+		}, {
+			"_id": "14050c1954e74061bc4fbf02349343af",
+			"id": 1006,
+			"isShow": 1,
+			"name": "土货",
+			"pid": 0,
+			"shopid": 123457,
+			"children": [{
+				"goodsCount": 12,
+				"id": 4002,
+				"isShow": 1,
+				"name": "腊肉"
+			}, {
+				"goodsCount": 12,
+				"id": 4003,
+				"isShow": 1,
+				"name": "香肠"
+			}, {
+				"goodsCount": 0,
+				"id": 10045,
+				"isShow": 1,
+				"name": "腊鱼",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10067,
+				"isShow": 1,
+				"name": "一",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10068,
+				"isShow": 1,
+				"name": "二",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10069,
+				"isShow": 1,
+				"name": "三",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10070,
+				"isShow": 1,
+				"name": "四",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10071,
+				"isShow": 1,
+				"name": "五",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10072,
+				"isShow": 1,
+				"name": "六",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10073,
+				"isShow": 1,
+				"name": "七",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10074,
+				"isShow": 1,
+				"name": "八",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10075,
+				"isShow": 1,
+				"name": "九",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10076,
+				"isShow": 1,
+				"name": "十",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10077,
+				"isShow": 1,
+				"name": "十一",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10078,
+				"isShow": 1,
+				"name": "十二",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10079,
+				"name": "十三",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10080,
+				"name": "十四",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10081,
+				"name": "十五",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10082,
+				"name": "十六",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10083,
+				"name": "十七",
+				"pid": 1006
+			}, {
+				"goodsCount": 0,
+				"id": 10084,
+				"name": "十八",
+				"pid": 1006
+			}],
+			"isRecommend": 1,
+			"posid": 0,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601793841238.jpg",
+			"goodsCount": 12
+		}, {
+			"_id": "1e2739d6e0e0444bbed9c728b54ccf53",
+			"id": 1007,
+			"name": "水产海鲜",
+			"pid": 0,
+			"shopid": 123457,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803398867.jpg",
+			"children": [{
+				"goodsCount": 0,
+				"id": 10046,
+				"isShow": 1,
+				"name": "鱿鱼",
+				"pid": 1007
+			}, {
+				"goodsCount": 0,
+				"id": 10047,
+				"isShow": 1,
+				"name": "龙虾",
+				"pid": 1007
+			}],
+			"goodsCount": 12,
+			"isRecommend": 1,
+			"isShow": 1,
+			"posid": 0
+		}, {
+			"_id": "944d8ecfc16c45bf9a4ad4a2ac39a384",
+			"children": [{
+				"goodsCount": 0,
+				"id": 10063,
+				"isShow": 1,
+				"name": "菠菜",
+				"pid": 1008
+			}],
+			"goodsCount": 12,
+			"isShow": 1,
+			"name": "蔬菜豆制品",
+			"posid": 0,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/category_icon/2020-07-22/6586760706722126.jpg",
+			"id": 1008,
+			"isRecommend": 1,
+			"pid": 0,
+			"shopid": 123457
+		}, {
+			"_id": "379d811fa0354e3688b02328b59b4bc6",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601793984325.jpg",
+			"goodsCount": 12,
+			"id": 1009,
+			"isRecommend": 1,
+			"isShow": 1,
+			"name": "米面豆制品",
+			"pid": 0,
+			"children": [{
+				"goodsCount": 0,
+				"id": 10051,
+				"isShow": 1,
+				"name": "大米小麦",
+				"pid": 1009
+			}, {
+				"goodsCount": 0,
+				"id": 10053,
+				"isShow": 1,
+				"name": "豆干豆皮",
+				"pid": 1009
+			}],
+			"posid": 0,
+			"shopid": 123457
+		}, {
+			"_id": "e58ede96c8404507907645dd928f9b47",
+			"children": [{
+				"goodsCount": 0,
+				"id": 10064,
+				"isShow": 1,
+				"name": "方便面",
+				"pid": 1010
+			}],
+			"goodsCount": 12,
+			"posid": 0,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803202282.jpg",
+			"id": 1010,
+			"isRecommend": 1,
+			"isShow": 1,
+			"name": "方便速食",
+			"pid": 0,
+			"shopid": 123457
+		}, {
+			"_id": "f7f9a08458fc4405bf6ffd5f19738436",
+			"pid": 0,
+			"shopid": 123457,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803230699.jpg",
+			"goodsCount": 12,
+			"id": 1011,
+			"isShow": 1,
+			"posid": 0,
+			"children": [{
+				"goodsCount": 0,
+				"id": 10065,
+				"isShow": 1,
+				"name": "米花糖",
+				"pid": 1011
+			}],
+			"isRecommend": 1,
+			"name": "饮酒零食"
+		}, {
+			"_id": "d196b7db3d63436eb3e9a619db279082",
+			"goodsCount": 12,
+			"isRecommend": 1,
+			"isShow": 1,
+			"pid": 0,
+			"posid": 0,
+			"shopid": 123457,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803261215.jpg",
+			"children": [{
+				"goodsCount": 0,
+				"id": 10066,
+				"isShow": 1,
+				"name": "烧白",
+				"pid": 1012
+			}],
+			"id": 1012,
+			"name": "快手菜"
+		}, {
+			"_id": "5edf7b32f7eb4136b90e5c60659fcc02",
+			"isShow": 1,
+			"shopid": 123457,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803286877.jpg",
+			"goodsCount": 12,
+			"id": 1013,
+			"isRecommend": 1,
+			"name": "肉禽蛋",
+			"pid": 0,
+			"posid": 0,
+			"children": [{
+				"goodsCount": 0,
+				"id": 10057,
+				"isShow": 1,
+				"name": "鸡",
+				"pid": 1013
+			}, {
+				"goodsCount": 0,
+				"id": 10059,
+				"isShow": 1,
+				"name": "鸭",
+				"pid": 1013
+			}]
+		}, {
+			"_id": "bb83ad495efe618c00383381434f4f32",
+			"isShow": 1,
+			"name": "水果",
+			"posid": 0,
+			"shopid": 123458,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg",
+			"children": [{
+				"name": "柑橘橙柚",
+				"goodsCount": 12,
+				"id": 2002
+			}, {
+				"goodsCount": 5,
+				"id": 2003,
+				"name": "桃李杏枣"
+			}, {
+				"goodsCount": 5,
+				"id": 2004,
+				"name": "苹果梨蕉"
+			}, {
+				"name": "蒲提浆果",
+				"goodsCount": 5,
+				"id": 2005
+			}],
+			"goodsCount": 12,
+			"id": 1004,
+			"isRecommend": 1,
+			"pid": 0
+		}, {
+			"_id": "abd27dd45f2e2dd50041fa853dd521db",
+			"name": "新分类",
+			"pid": 0,
+			"posid": 0,
+			"shopid": 123457,
+			"children": [{
+				"goodsCount": 0,
+				"id": 10061,
+				"isShow": 1,
+				"name": "推荐",
+				"pid": false
+			}, {
+				"goodsCount": 0,
+				"id": 10062,
+				"isShow": 1,
+				"name": "不推荐",
+				"pid": false
+			}],
+			"goodsCount": 0,
+			"id": 10060,
+			"isShow": 1,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/category_icon/2020-10-03/32725040264896554.jpg",
+			"recommendGoods": 1
+		}]
+	},
+	"cloud_goods_comments": {
+		"data": [{
+			"_id": "e373396c5f7d774b012d977442c5a84d",
+			"goods_id": "c54bd3a25f656e2b00146418797a595a",
+			"shopid": 123457,
+			"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T08:07:39.775Z",
+			"content": "顶顶顶顶",
+			"index": 0,
+			"star": 5,
+			"starResult": "非常好",
+			"tags": ["包装完整"]
+		}, {
+			"_id": "b8df3bd65f7d774b01114b834c89fe11",
+			"goods_id": "1b64dd7b5f79289f01039a8b5385c3e8",
+			"shopid": 123457,
+			"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T08:07:39.820Z",
+			"content": "灌灌灌灌",
+			"index": 1,
+			"star": 4,
+			"starResult": "很好",
+			"tags": ["包装完整", "价格便宜"]
+		}, {
+			"_id": "e656fa635f7d774b0139b22100d10d96",
+			"goods_id": "8e5be7055f792b060130e1ee7f2b4f6e",
+			"shopid": 123457,
+			"order_id": "d782d4875f7b5d1a00eae78d3b2534fd",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T08:07:39.866Z",
+			"content": "反反复复付付",
+			"index": 2,
+			"star": 3,
+			"starResult": "一般",
+			"tags": ["价格便宜"]
+		}, {
+			"_id": "8e5be7055f7d868e0167b642559a9f74",
+			"goods_id": "cb1edbd6b6b149548723380ae750ebc7",
+			"shopid": 123457,
+			"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T09:12:46.557Z",
+			"content": "官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费",
+			"index": 0,
+			"star": 5,
+			"starResult": "非常好",
+			"tags": ["手感舒适", "很好用", "包装贴心又环保"]
+		}, {
+			"_id": "d782d4875f7d868e00f93a9258d82bc2",
+			"goods_id": "6518b7395f51c43500f03df034640788",
+			"shopid": 123457,
+			"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T09:12:46.605Z",
+			"content": "放到电饭锅电饭锅地方后台还官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费让他他规划发过火提货提货",
+			"index": 3,
+			"star": 5,
+			"starResult": "非常好",
+			"tags": ["口感很棒", "很好用", "品质好"]
+		}, {
+			"_id": "b8df3bd65f7d868e0111c8c74d77a41c",
+			"goods_id": "c54bd3a25f656e2b00146418797a595a",
+			"shopid": 123457,
+			"order_id": "d782d4875f76ca4200c1e04368fcf5be",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T09:12:46.646Z",
+			"content": "c 手动的非官方的地方个梵蒂官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费冈放到",
+			"index": 4,
+			"star": 5,
+			"starResult": "非常好",
+			"tags": ["使用方便", "结实耐用", "包装贴心又环保"]
+		}, {
+			"_id": "e656fa635f7d916c013aa3fe7e5ebce5",
+			"goods_id": "cb1edbd6b6b149548723380ae750ebc7",
+			"shopid": 123457,
+			"order_id": "e656fa635f76ca0f00f4e9406ebf966c",
+			"user": {
+				"id": "9ffb2a485f38964200999b1f07cb7b80",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"created": "2020-10-07T09:59:08.762Z",
+			"content": "前所未有的购物体验，太棒了",
+			"index": 0,
+			"star": 5,
+			"starResult": "非常好",
+			"tags": ["价格便宜", "品质好", "很好用", "分量足"]
+		}]
+	},
+	"cloud_goods_day_sales": {
+		"data": [{
+			"_id": "9098d0ed5ec5fef700132fcc35faa5ae",
+			"goods": {
+				"cb1edbd6b6b149548723380ae750ebc7": 13,
+				"42f0188ccf664932b940199863bdac88": 1,
+				"715cb406eac54b08a3bbc39bd994ae6e": 2,
+				"a3acf55ce3a841baa17e0f3e46ade561": 1,
+				"fc1abe0b8fe4484e920ffd51478ee9a4": 5,
+				"99ee0d4152644f368f0001619e9c628e": 20,
+				"9f0568ab21644e0793d9e0c6cc2adf96": 1,
+				"c752ff5387f549daba0537fca12097c7": 6,
+				"909c7153a9384c319cfd2ab409a88d27": 1,
+				"b2ed1c2c7df44d2da164aef2ff2c79f9": 3,
+				"1746c490997e47aaa08f3673cbdc5509": 1,
+				"9c44bc3a70f04f9f9b9547818a7c2ce9": 2
+			},
+			"day": "20200521"
+		}]
+	},
+	"cloud_goods_deletes": {
+		"data": [{
 			"_id": "e373396c5f656e2d0019a0896e032ed8",
 			"categories": [{
 				"id": 10060,
@@ -2609,7 +5474,7 @@
 			"upc": "",
 			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"shopid": 123457,
-			"onlineTime": 1600765564172,
+			"onlineTime": 1601036899629,
 			"created": 1600482861159,
 			"score": 1,
 			"monthlySale": 0,
@@ -2619,65 +5484,11 @@
 			"saleType": "tuangou",
 			"onlySelfTake": 1,
 			"banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/17340640186312828.jpg",
-			"offlineTime": 1600765573378
+			"offlineTime": 1601036915399,
+			"isCategoryShow": 1,
+			"deleteOperator": "9ffb2a485f38964200999b1f07cb7b80",
+			"deleteTime": 1601626409447
 		}]
-	},
-	"cloud_goods_activities": {
-		"data": []
-	},
-	"cloud_goods_categories": {
-		"data": [{
-			"_id": "6ef3d54a1fea4a448813ec392297f38a",
-			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg",
-			"children": [{
-				"goodsCount": 12,
-				"id": 2002,
-				"name": "柑橘橙柚"
-			}, {
-				"goodsCount": 5,
-				"id": 2003,
-				"name": "桃李杏枣"
-			}, {
-				"goodsCount": 5,
-				"id": 2004,
-				"name": "苹果梨蕉"
-			}, {
-				"goodsCount": 5,
-				"id": 2005,
-				"name": "蒲提浆果"
-			}],
-			"goodsCount": 12,
-			"id": 1004,
-			"pid": 0,
-			"posid": 0,
-			"shopid": 123457,
-			"isRecommend": 1,
-			"isShow": 1,
-			"name": "水果"
-		}]
-	},
-	"cloud_goods_day_sales": {
-		"data": [{
-			"_id": "9098d0ed5ec5fef700132fcc35faa5ae",
-			"goods": {
-				"cb1edbd6b6b149548723380ae750ebc7": 13,
-				"42f0188ccf664932b940199863bdac88": 1,
-				"715cb406eac54b08a3bbc39bd994ae6e": 2,
-				"a3acf55ce3a841baa17e0f3e46ade561": 1,
-				"fc1abe0b8fe4484e920ffd51478ee9a4": 5,
-				"99ee0d4152644f368f0001619e9c628e": 20,
-				"9f0568ab21644e0793d9e0c6cc2adf96": 1,
-				"c752ff5387f549daba0537fca12097c7": 6,
-				"909c7153a9384c319cfd2ab409a88d27": 1,
-				"b2ed1c2c7df44d2da164aef2ff2c79f9": 3,
-				"1746c490997e47aaa08f3673cbdc5509": 1,
-				"9c44bc3a70f04f9f9b9547818a7c2ce9": 2
-			},
-			"day": "20200521"
-		}]
-	},
-	"cloud_goods_deletes": {
-		"data": []
 	},
 	"cloud_goods_shop_day_sales": {
 		"data": [{
@@ -2703,7 +5514,7 @@
 	"cloud_identity": {
 		"data": [{
 			"_id": "f3839539a8ee428489fbc3bc5e250166",
-			"value": 10376,
+			"value": 10378,
 			"key": "users",
 			"name": "用户编号"
 		}, {
@@ -2720,42 +5531,96 @@
 			"_id": "f11f525b5ef98b8a000131654205f85b",
 			"key": "goods",
 			"name": "商品编号",
-			"value": 10075
+			"value": 10106
 		}, {
 			"_id": "1503f3385f1790ee0065f782131eb074",
 			"key": "goods_categories",
 			"name": "商品分类",
-			"value": 10063
+			"value": 10085
 		}, {
 			"_id": "0d06a2fd5f27b29c00449da06510005a",
 			"name": "订单自提",
-			"value": 1018277888,
+			"value": 1018277917,
 			"key": "order_ziti"
 		}, {
 			"_id": "aa133ce55f40c8290016d565265a595e",
 			"key": "cache_yilianyun_1053604898_access_token",
 			"data": "30163f8bde9949bc8ff7c69dd029ab79",
 			"expires": 1600708164513
+		}, {
+			"_id": "1b64dd7b5f6ef1de00884bfb6bebb3a0",
+			"name": "订单退款",
+			"value": 10063050,
+			"key": "order_refunds"
 		}]
 	},
 	"cloud_order_refunds": {
 		"data": [{
-			"_id": "38d78ca75edb6cee0057c965411c5173",
-			"refundStatus": "success",
-			"refundFee": 100,
-			"refundDesc": "取消订单",
-			"created": "2020-06-06T10:16:14.002Z",
-			"balance": 99993,
-			"name": "余额支付",
-			"outTradeNo": "YD_2020060610154052365114",
-			"time": "2020-06-06T10:15:46.590Z",
-			"totalFee": 100,
-			"tradeStatus": "TRADE_SUCCESS",
-			"transactionId": "38d78ca75edb6cd10057c8837b026eaa",
-			"type": "balance",
-			"uid": 10004,
-			"id": "5a93cec95edb6ccc004f0e692e5dc5c6",
-			"modified": "2020-06-06T10:33:17.289Z"
+			"_id": "e656fa635f704583009603bd021be0e8",
+			"fee": 1280,
+			"orderId": "d81cd5415f6de28d006b889626db8d21",
+			"refundApplyAmount": 1,
+			"refundType": "退款退货",
+			"shopid": 123457,
+			"created": "2020-09-27T07:55:47.077Z",
+			"id": 10063022,
+			"index": 0,
+			"refundContent": "",
+			"refundReason": "未收到货",
+			"goods": {
+				"sku_id": 0,
+				"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+				"refundAmount": 0,
+				"title": "社区团购商品测试",
+				"_id": "c54bd3a25f656e2b00146418797a595a",
+				"cartPrice": 0,
+				"hasSku": false,
+				"originPrice": 38.8,
+				"price": 12.8,
+				"cutPrice": 0,
+				"sku_index": 0,
+				"upc": "",
+				"subName": "",
+				"tuangou": {
+					"unit": "组",
+					"beginTime": 1600411800000,
+					"endTime": 1603164600000,
+					"pickup": 1603238400000,
+					"price": 12.8
+				},
+				"amount": 1,
+				"cartId": "none",
+				"id": 10074,
+				"onlySelfTake": 1,
+				"stock": 87
+			},
+			"payInfo": {
+				"callback": "paySuccess",
+				"name": "余额支付",
+				"totalFee": 1280,
+				"tradeStatus": "TRADE_SUCCESS",
+				"type": "balance",
+				"uid": "9ffb2a485f38964200999b1f07cb7b80",
+				"balance": 89289.7,
+				"outTradeNo": "2020092520290167027684",
+				"time": "2020-09-25T12:29:15.739Z",
+				"transactionId": "1b64dd7b5f6de29b007d31646ae553cd"
+			},
+			"steps": [{
+				"title": "退款失败",
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"desc": "您的退款申请已拒绝",
+				"time": "2020-09-28T08:18:25.834Z"
+			}, {
+				"desc": "您的退款已申请成功，待客服审核中",
+				"time": "2020-09-27T07:55:47.077Z",
+				"title": "提交申请"
+			}],
+			"description": "申请退款:社区团购商品测试",
+			"refundImgs": [],
+			"refundMax": 1,
+			"state": "failed",
+			"uid": "9ffb2a485f38964200999b1f07cb7b80"
 		}]
 	},
 	"cloud_orders": {
@@ -2889,6 +5754,12 @@
 			"module": "yilianyun",
 			"name": "易联云k4",
 			"clientId": "1053604898"
+		}, {
+			"_id": "f1168d5b5f6184dc00136ab47b828bed",
+			"clientId": "183740601@qq.com",
+			"clientSecret": "UeCQX3s5AXAbhark",
+			"module": "feieyun",
+			"name": "飞蛾云"
 		}]
 	},
 	"cloud_shop_comments": {
@@ -2897,170 +5768,36 @@
 	"cloud_shops": {
 		"data": [{
 			"_id": "faf20935850e4e81a3fc8ce87548948f",
-			"goods": {
-				"miaosha": 4,
-				"offline": 18,
-				"online": 51,
-				"shouqin": 0,
-				"yuding": 1,
-				"baokuan": 12,
-				"delete": 1
-			},
-			"id": 123457,
-			"lnglat": {
-				"type": "Point",
-				"coordinates": [107.082709, 29.154957]
-			},
-			"page": {
-				"home": {
-					"limits": {
-						"miaosha": 2,
-						"newest": 10,
-						"tuangou": 3,
-						"yuding": 4,
-						"ads": 5,
-						"category": 10
-					},
-					"titles": {
-						"miaosha": "秒杀抢购",
-						"newest": "鲜货排行",
-						"tuangou": "社区团购",
-						"yuding": "提前预定"
-					}
-				}
-			},
-			"phone": "18883380303",
-			"addressName": "9号果园",
-			"isPrint": true,
-			"searchGoodsKeywords": ["车厘子", "杏子", "葡萄"],
-			"uid": "9ffb2a485f38964200999b1f07cb7b80",
-			"address": "西城街道办事处渝南大道1号6幢负1-1(泽京时代香格里拉西苑)",
 			"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
-			"deliveryTypes": ["deliveryHome", "selfRaising"],
-			"name": "渝之道-南川店",
-			"perCapita": 30,
-			"printers": [{
-				"machine": "332332432",
-				"msign": "432434",
-				"name": "易联云k4",
-				"online": false,
-				"shopid": 123457,
-				"clientId": "1053604898",
-				"enable": false,
-				"module": "yilianyun",
-				"operator": "9ffb2a485f38964200999b1f07cb7b80",
-				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214"
-			}, {
-				"online": false,
-				"operator": "9ffb2a485f38964200999b1f07cb7b80",
-				"shopid": 123457,
-				"machine": "444444",
-				"module": "yilianyun",
-				"msign": "33333",
-				"name": "易联云k4",
-				"clientId": "1053604898",
-				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
-				"enable": false
-			}, {
-				"name": "易联云k4",
-				"operator": "9ffb2a485f38964200999b1f07cb7b80",
-				"clientId": "1053604898",
-				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
-				"enable": false,
-				"machine": "4004648355",
-				"module": "yilianyun",
-				"msign": "189541803678",
-				"online": true,
-				"shopid": 123457
-			}, {
-				"machine": "217513770",
-				"msign": "11111111",
-				"module": "feieyun",
-				"name": "飞蛾云",
-				"online": true,
-				"operator": "9ffb2a485f38964200999b1f07cb7b80",
-				"shopid": 123457,
-				"clientId": "183740601@qq.com",
-				"clientSecret": "UeCQX3s5AXAbhark",
-				"enable": false
-			}, {
-				"module": "feieyun",
-				"msign": "23q95m8c",
-				"name": "飞蛾云",
-				"shopid": 123457,
-				"clientId": "183740601@qq.com",
-				"clientSecret": "UeCQX3s5AXAbhark",
-				"enable": false,
-				"machine": "217513770",
-				"online": true,
-				"operator": "9ffb2a485f38964200999b1f07cb7b80"
-			}],
-			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
-			"hasManjian": 1,
-			"longitude": 107.082709,
-			"monthSale": 123,
-			"online": true,
-			"order": {
-				"canceled": 284,
-				"deleted": 9,
-				"delivered": 3,
-				"payup": 46,
-				"received": 2,
-				"refunded": 0,
-				"unpaid": 4
-			},
-			"score": 4.8,
-			"deliverySupportType": 3,
-			"notice": "春节不打烊哈，暖心一座城",
-			"serviceTime": "早上7点到晚上10点",
-			"stationId": 500119,
-			"latitude": 29.154957,
-			"operator": "9ffb2a485f38964200999b1f07cb7b80",
 			"delivery": {
-				"freeMoney": 20,
-				"maxDistance": 5000,
-				"minPrice": 20,
 				"time": 30,
-				"timeStep": 3600,
 				"deliveryDay": 4,
+				"minDistance": 5,
+				"minPrice": 20,
+				"money": 5,
+				"perMoney": 1,
 				"deliveryPeriod": [{
 					"begin": 28800,
 					"end": 32400
 				}, {
-					"end": 45000,
-					"begin": 32400
+					"begin": 32400,
+					"end": 45000
 				}, {
-					"begin": 45000,
-					"end": 48600
+					"end": 48600,
+					"begin": 45000
 				}, {
 					"begin": 48600,
 					"end": 52200
 				}],
-				"minDistance": 5,
-				"money": 5,
-				"perMoney": 1
+				"freeMoney": 20,
+				"maxDistance": 5000,
+				"timeStep": 3600
 			},
-			"manjians": [{
-				"condition": 49,
-				"id": 123456,
-				"name": "49减19",
-				"amount": 19
-			}, {
-				"id": 123456,
-				"name": "69减25",
-				"amount": 25,
-				"condition": 69
-			}],
-			"categories": [{
-				"id": 10000,
-				"name": "美食"
-			}, {
-				"id": 1007,
-				"name": "火锅"
-			}, {
-				"id": 10002,
-				"name": "快餐"
-			}],
+			"address": "西城街道办事处渝南大道1号6幢负1-1(泽京时代香格里拉西苑)",
+			"goodsCommentTags": ["包装完整", "价格便宜", "品质好", "值得回购", "包装贴心又环保", "很好用", "使用方便", "省心有保障", "结实耐用", "分量足", "手感舒适",
+				"厚实稳当", "性价比高", "量大料足", "物超所值", "口感很棒", "品相俱佳", "买对了", "包装精美", "老板人很好"
+			],
+			"phone": "18883380303",
 			"serviceArea": {
 				"type": "Polygon",
 				"coordinates": [
@@ -3088,7 +5825,145 @@
 						[113.90341758728, 22.469178514966]
 					]
 				]
-			}
+			},
+			"deliveryTypes": ["deliveryHome", "selfRaising"],
+			"latitude": 29.154957,
+			"pages": {
+				"home": {
+					"limits": {
+						"ads": 4,
+						"category": 10,
+						"miaosha": 2,
+						"newest": 22,
+						"tuangou": 3,
+						"yuding": 2
+					},
+					"name": "首页",
+					"titles": {
+						"miaosha": "秒杀抢购",
+						"newest": "鲜货排行",
+						"tuangou": "社区团购",
+						"yuding": "提前预定"
+					}
+				}
+			},
+			"uid": "9ffb2a485f38964200999b1f07cb7b80",
+			"score": 4.8,
+			"categories": [{
+				"id": 10000,
+				"name": "美食"
+			}, {
+				"id": 1007,
+				"name": "火锅"
+			}, {
+				"id": 10002,
+				"name": "快餐"
+			}],
+			"deliverySupportType": 3,
+			"goods": {
+				"online": 51,
+				"shouqin": 0,
+				"yuding": 1,
+				"baokuan": 12,
+				"delete": 1,
+				"miaosha": 4,
+				"offline": 18
+			},
+			"id": 123457,
+			"notice": "",
+			"order": {
+				"refunded": 0,
+				"unpaid": 1,
+				"canceled": 293,
+				"deleted": 10,
+				"delivered": 7,
+				"payup": 60,
+				"received": 8
+			},
+			"hasManjian": 1,
+			"longitude": 107.082709,
+			"manjians": [{
+				"condition": 49,
+				"id": 123456,
+				"name": "49减19",
+				"amount": 19
+			}, {
+				"amount": 25,
+				"condition": 69,
+				"id": 123456,
+				"name": "69减25"
+			}],
+			"name": "渝之道-南川店",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"lnglat": {
+				"type": "Point",
+				"coordinates": [107.082709, 29.154957]
+			},
+			"online": true,
+			"printers": [{
+				"enable": false,
+				"module": "yilianyun",
+				"msign": "432434",
+				"name": "易联云k4",
+				"shopid": 123457,
+				"clientId": "1053604898",
+				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+				"machine": "332332432",
+				"online": false,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80"
+			}, {
+				"clientId": "1053604898",
+				"enable": false,
+				"module": "yilianyun",
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"shopid": 123457,
+				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+				"machine": "444444",
+				"msign": "33333",
+				"name": "易联云k4",
+				"online": false
+			}, {
+				"module": "yilianyun",
+				"clientId": "1053604898",
+				"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+				"enable": false,
+				"machine": "4004648355",
+				"shopid": 123457,
+				"msign": "189541803678",
+				"name": "易联云k4",
+				"online": true,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80"
+			}, {
+				"msign": "11111111",
+				"online": true,
+				"shopid": 123457,
+				"machine": "217513770",
+				"module": "feieyun",
+				"enable": false,
+				"name": "飞蛾云",
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"clientId": "183740601@qq.com",
+				"clientSecret": "UeCQX3s5AXAbhark"
+			}, {
+				"enable": false,
+				"module": "feieyun",
+				"name": "飞蛾云",
+				"online": true,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"clientId": "183740601@qq.com",
+				"clientSecret": "UeCQX3s5AXAbhark",
+				"shopid": 123457,
+				"machine": "217513770",
+				"msign": "23q95m8c"
+			}],
+			"searchGoodsKeywords": ["车厘子", "杏子", "葡萄"],
+			"addressName": "9号果园",
+			"isPrint": true,
+			"perCapita": 30,
+			"monthSale": 123,
+			"serviceTime": "早上7点到晚上10点",
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
+			"stationId": 500119
 		}],
 		"index": [{
 			"IndexName": "index_lonlat",
@@ -3113,6 +5988,29 @@
 			"description": "购买:酸菜a鱼"
 		}]
 	},
+	"mix-admin": {
+		"data": [{
+			"_id": "aa133ce55f4cbf2b008b48c456db0523",
+			"username": "admin",
+			"group": "admin",
+			"last_login_ip": "125.62.6.51",
+			"login_ip_limit": [{
+				"ip": "125.62.6.51",
+				"error_times": 3,
+				"last_error_time": 1598865550777
+			}],
+			"register_date": 1597057168991,
+			"status": 0,
+			"token": [
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYTEzM2NlNTVmNGNiZjJiMDA4YjQ4YzQ1NmRiMDUyMyIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE1OTg4NjU0NzMsImV4cCI6MTU5ODg3MjY3M30.DDbuiptqTV9y-LRl-ji7z584v9H8-oJE_FFdUiqun24",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYTEzM2NlNTVmNGNiZjJiMDA4YjQ4YzQ1NmRiMDUyMyIsImNsaWVudElkIjoiMjEwMDUzYWZkNGYzMDI4ODk1ZTU5ODYyZTZkZWE4ZDciLCJpYXQiOjE1OTg4NjU0OTIsImV4cCI6MTU5ODg3MjY5Mn0.qVf_7SFGJU8Fo-0AGz364f4-p0MDojhS03mgxz7I1Eo",
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhYTEzM2NlNTVmNGNiZjJiMDA4YjQ4YzQ1NmRiMDUyMyIsImNsaWVudElkIjoiNTBmNmJlYTdlZWNkYzBjYmViY2UzZmU1MmIwMDE2NTEiLCJpYXQiOjE1OTg4NjU1NTYsImV4cCI6MTU5ODg3Mjc1Nn0.3oVyNZaSCjvhVTpLLXoZ1wxU4FT-28v3NVBZHfQD0g8"
+			],
+			"group_name": "超级管理员",
+			"last_login_date": 1598865556487,
+			"password": "8339f5a39261847aefb4918a111621cec5951062"
+		}]
+	},
 	"uni-app-version": {
 		"data": [{
 			"_id": "bb83ad495efdddf9002e88e750d7049d",
@@ -3131,125 +6029,243 @@
 				"version": "1.3.4",
 				"note": "增加权限判断\n实例首页重构为 nvue，提升渲染速度"
 			}
+		}, {
+			"_id": "f188d1a95f03102a006a702e5e0d2e5d",
+			"created": 1594036913887,
+			"ios": {
+				"version": "1.0"
+			},
+			"name": "Hello uniapp",
+			"android": {
+				"note": "合并功能有关联的云函数，例如goods，login，\n优化支付流程,payInfo，payment，paymentNotify\n增加价格小数点处理过滤器",
+				"title": "云上商城更新",
+				"url": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/2020-07-06.apk",
+				"version": "1.0.3.9"
+			},
+			"appid": "__UNI__9900639"
+		}, {
+			"_id": "3d23c0a05f1807cc005f66a7203e7cfa",
+			"created": 1595410601616,
+			"ios": {
+				"version": "1.0"
+			},
+			"name": "Hello uniapp",
+			"android": {
+				"url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/e10e4040-cc7c-11ea-b680-7980c8a877b8.apk",
+				"version": "1.0.3.10",
+				"note": "增加限时抢购购物车，增加云函数判断商品限购,增加商品图文介绍,图片地址之间用分号隔开，在商品详情页面，再分割显示,增加商品分类管理",
+				"title": "云上商城更新"
+			},
+			"appid": "__UNI__9900639"
+		}, {
+			"_id": "b9c2fcfb5f3ce6270024d84876666d86",
+			"android": {
+				"note": "集成uni-id",
+				"title": "云上商城更新",
+				"url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/ce6177c0-e1f6-11ea-8bd0-2998ac5bbf7e.apk",
+				"version": "2.0.0"
+			},
+			"appid": "__UNI__9900639",
+			"created": 1595422601616,
+			"ios": {
+				"version": "1.0"
+			},
+			"name": "Hello uniapp"
+		}, {
+			"_id": "ac5f38825f48a9c70087e74c01eb543c",
+			"android": {
+				"url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/5b7467c0-ea9a-11ea-8bd0-2998ac5bbf7e.apk",
+				"version": "2.0.1",
+				"note": "集成uni-id",
+				"title": "云上商城更新"
+			},
+			"appid": "HBuilder",
+			"created": 1595422701616,
+			"ios": {
+				"url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/ce6177c0-e1f6-11ea-8bd0-2998ac5bbf7e.apk",
+				"version": "9.8.7"
+			},
+			"name": "Hello uniapp"
+		}]
+	},
+	"uni-id-permissions": {
+		"data": [],
+		"index": [{
+			"IndexName": "permission_id",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "permission_id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}]
+	},
+	"uni-id-roles": {
+		"data": [],
+		"index": [{
+			"IndexName": "role_id",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "role_id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}, {
+			"IndexName": "permission",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "permission",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
 		}]
 	},
 	"uni-id-users": {
 		"data": [{
 			"_id": "9ffb2a485f38964200999b1f07cb7b80",
-			"balance": 89302.5,
+			"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+			"balance": 87444.08999999998,
+			"invite_code": 10000,
+			"nickname": "太阳公公",
+			"register_ip": "125.62.5.114",
+			"token": [],
+			"id": 10375,
+			"birthday": "2020-08-12",
+			"coupons": 2,
+			"gender": 1,
+			"last_login_date": 1602039444274,
+			"last_login_ip": "125.62.5.35",
 			"my_invite_code": "ABCDEF",
 			"order": {
-				"canceled": 31,
-				"payup": 25,
-				"unpaid": 1
+				"canceled": 39,
+				"payup": 39,
+				"unpaid": -2,
+				"delivered": 3,
+				"received": 5,
+				"deleted": 1
 			},
 			"admin": [123457],
-			"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
 			"inviters": [{
+				"shopid": 123457,
 				"id": 10000,
 				"nickname": "沃尔玛-南山店",
-				"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg",
-				"shopid": 123457
+				"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg"
 			}],
 			"mobile": "15986613315",
-			"token": [
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDY1NjQ0NywiZXhwIjoxNjAzMjQ4NDQ3fQ.1v7rb8G720grfisTDk12z5CQP70es9or1udlHbQn-V4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDc0NDU2MCwiZXhwIjoxNjAzMzM2NTYwfQ.ap0vcKBi_KRL4KCObzz8CPWb4xjSjKBkVbWsC9fyA3A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDc1NDk2NywiZXhwIjoxNjAzMzQ2OTY3fQ.UCTNu8ZqqSmoN3miJrS3J9GCo9SE14y6KxrZiFSJtvs",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDc1NzM5MiwiZXhwIjoxNjAzMzQ5MzkyfQ.B8I0pY6Bk63KHndchQPeBgA42GU8bXTrgkgJK2xpLK8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDc2MDUyMiwiZXhwIjoxNjAzMzUyNTIyfQ.VQrW6vFdSzjlVEDreEBprQb1ENj3axOyQSgY3c9pANI",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDg0NDA2NSwiZXhwIjoxNjAzNDM2MDY1fQ.z9JY-eWt993kOqUfV0dzmNtQnL4pXh6S58wVU2wAZxA",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDg0NDE3OCwiZXhwIjoxNjAzNDM2MTc4fQ.09hRmmGSFzXuuDzxWCld5iUbcTI9bhyN5lOZJny7444",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA4ODc4NTIsImV4cCI6MTYwMzQ3OTg1Mn0.m6ZqXswAp8KxCjw4iPD1lPz8xJSkzJVFyVvc0I-Bduk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA4ODc4NTMsImV4cCI6MTYwMzQ3OTg1M30.uEBJ_5Jx51ki4OZM4_wE7eqrN_rjmPKcI5ZiyvA94eA",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA4ODc4NTMsImV4cCI6MTYwMzQ3OTg1M30.uEBJ_5Jx51ki4OZM4_wE7eqrN_rjmPKcI5ZiyvA94eA",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwODYsImV4cCI6MTYwMzUyNDA4Nn0.uHKPdy0u-DB0_NEox9sQ2yT7ezG5K3v8sV9kg5kfeQE",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwODksImV4cCI6MTYwMzUyNDA4OX0.fdoOByqeTIpRXrn3rHcr9C94FcTcAYPxNMDyE1mSt2s",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTAsImV4cCI6MTYwMzUyNDA5MH0.iVQ0GlC4ZNOVU0DvHv6cQbqwVpqZQdAjfAOV1fq9WxI",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTEsImV4cCI6MTYwMzUyNDA5MX0.gGTI1ykwMTX2thLAL3AZ6RzcGuszZhNIyOrBpsiT43k",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTYsImV4cCI6MTYwMzUyNDA5Nn0.XUOLhSA1np5gL5hBJPJ-Ve3wBowvbQrr9IWxkq2xDsU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTcsImV4cCI6MTYwMzUyNDA5N30.ZhjXfUKscQmx3lz8h-_-nFDUFL4edqWXwYvIui6t0no",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTgsImV4cCI6MTYwMzUyNDA5OH0.MEHVKLkWOKkTGEHuQDmKjQOC4UMaf9nByt_rQ39QDmk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIwOTgsImV4cCI6MTYwMzUyNDA5OH0.MEHVKLkWOKkTGEHuQDmKjQOC4UMaf9nByt_rQ39QDmk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDAsImV4cCI6MTYwMzUyNDEwMH0.vGH_pjsYQNYtYXqWEwWAQmeOBLCSdnecnvxyNSOzRCk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDMsImV4cCI6MTYwMzUyNDEwM30.TkPMVQWLMP7gOnMToUj6xyN5kkcLaxRbcOjyv_sOowM",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDQsImV4cCI6MTYwMzUyNDEwNH0.qjefWBG3c7nsoinpbZUKQELi9h9WfKc6C6h8dGLBfSk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDUsImV4cCI6MTYwMzUyNDEwNX0.YPhGdek_rO0_wTAgYnaFdKP3ZHJKgrBBSbcvV1MtSTI",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDcsImV4cCI6MTYwMzUyNDEwN30.5hhczfeq2XSowXTKoOboMj7ahd551Ez9yvgJaYSAvaQ",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDcsImV4cCI6MTYwMzUyNDEwN30.5hhczfeq2XSowXTKoOboMj7ahd551Ez9yvgJaYSAvaQ",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMDksImV4cCI6MTYwMzUyNDEwOX0.3XbxDcQ61Oe4fkmD8vbIK3-G3p2BUx7oPWUTRoc5Dy8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzIxMTEsImV4cCI6MTYwMzUyNDExMX0.OpWkQgBoGrYXfZwZCW0Fk1LX6xTwPh_TafRCW-8SOp8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MzM4NzUsImV4cCI6MTYwMzUyNTg3NX0.smQUqJHROtur4fMSX49BCELUYwc3lJcQmGbnaNADSE8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMDkzNTE0NywiZXhwIjoxNjAzNTI3MTQ3fQ.hO28CHxg-dSKweccI-8jFgbHPiguydltCznoyrtiAgk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzMjksImV4cCI6MTYwMzU0MDMyOX0.QEHA0_ln7NdP5Iyen4RWmWzciG4u9x-r3S6I6TcXkFU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzMjksImV4cCI6MTYwMzU0MDMyOX0.QEHA0_ln7NdP5Iyen4RWmWzciG4u9x-r3S6I6TcXkFU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzMzAsImV4cCI6MTYwMzU0MDMzMH0.Eannhn0PrnSVsxkcEFcIzTaJFslILZyI4PwYGcoUPXY",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNDksImV4cCI6MTYwMzU0MDM0OX0.7dpnw_Ht7nHICvoeCuOfPoBlLcOlG5YMCtKFOvdeqiY",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNTEsImV4cCI6MTYwMzU0MDM1MX0.X375LNo3GJszWXfAJkldjMZUjhtlk7uR3PlVLsKK_wU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNTYsImV4cCI6MTYwMzU0MDM1Nn0.HBKdRMdukB38z4xLUe7lEsHEkXWitoI0NZOCoZPZr4c",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNTksImV4cCI6MTYwMzU0MDM1OX0.cEEwfojZVbFDtO1xp8WaDl4ku5zb3eb7Hl79DMmzVCo",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNjMsImV4cCI6MTYwMzU0MDM2M30.cJTng-8lAuZQD0AzsIQvqMHADdx_bQlCYaZlI3kMWkc",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNjcsImV4cCI6MTYwMzU0MDM2N30.qYanYVrA2nLN-JrVeaRVjSvi5KeD7Ix6EY0KpGvHCOs",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzNzUsImV4cCI6MTYwMzU0MDM3NX0.c-3JgxkyZMG1fdW9nypNpglRCaak7FCG50nVq-Z7Iyw",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzODAsImV4cCI6MTYwMzU0MDM4MH0.WemvYnWoEz8VqnTd7uOMRiUYDxMtQRASVJV2ppdPLH4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzODEsImV4cCI6MTYwMzU0MDM4MX0.kegto2Vg_qfCrbXa7gV-_fSWHzOQkUAFvD_lZP1maRg",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzODQsImV4cCI6MTYwMzU0MDM4NH0.---x3-i0-iImPKef2iPAA6mR5p-mQoGMOeVTka3YowM",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzODksImV4cCI6MTYwMzU0MDM4OX0.1LdMhDj1RNpdeyQoiHIbiA3vf0DmxvqIedXX-Pjw_5A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzODksImV4cCI6MTYwMzU0MDM4OX0.1LdMhDj1RNpdeyQoiHIbiA3vf0DmxvqIedXX-Pjw_5A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTEsImV4cCI6MTYwMzU0MDM5MX0.gstvsFcLU55KN5gnXOaqY0JiXN4PQWaiYDEKp-NdC20",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTMsImV4cCI6MTYwMzU0MDM5M30.en29nGNL64wDTrK389WD4ii_AD4TsOQQo91MbzidE_c",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTQsImV4cCI6MTYwMzU0MDM5NH0.JgFGEqL8AMZtQPTFb5ryG3wdO8mt872zKzbz-ZK7rMw",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTQsImV4cCI6MTYwMzU0MDM5NH0.JgFGEqL8AMZtQPTFb5ryG3wdO8mt872zKzbz-ZK7rMw",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTYsImV4cCI6MTYwMzU0MDM5Nn0.kLMzr5HH392YcHsNixtjNMn4XMhkPAbo0HQAUS-ykl4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDgzOTgsImV4cCI6MTYwMzU0MDM5OH0.Wkk-8wog_Arpyqk9SIk6bsKxAjYAF2nWtmpiSETc2BQ",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg4NDEsImV4cCI6MTYwMzU0MDg0MX0.d7g5r6aCMP3B2ek7wOpoUBFpqHDKDpB1Art48XdeURc",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg4NDEsImV4cCI6MTYwMzU0MDg0MX0.d7g5r6aCMP3B2ek7wOpoUBFpqHDKDpB1Art48XdeURc",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg4NzcsImV4cCI6MTYwMzU0MDg3N30.QE0mdFF-DhEWe6KxHqdK6prfM5R4m7KZELiF_5GWJn4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg5NzUsImV4cCI6MTYwMzU0MDk3NX0.zKQAdl914yUP4w8YzAonkEZ0JGIVaMli374Gc8_QlqU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg5NzUsImV4cCI6MTYwMzU0MDk3NX0.zKQAdl914yUP4w8YzAonkEZ0JGIVaMli374Gc8_QlqU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg5NzUsImV4cCI6MTYwMzU0MDk3NX0.zKQAdl914yUP4w8YzAonkEZ0JGIVaMli374Gc8_QlqU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDg5NzgsImV4cCI6MTYwMzU0MDk3OH0.nfLHOAOERI3ywyDWVaboDR5fBNQrZd-VS_YO5TAhaKA",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkwMjUsImV4cCI6MTYwMzU0MTAyNX0.TaTx8i6IbfliHHnAFjqSKOrdsv9Dzkb45329M4IgfDE",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkwMjUsImV4cCI6MTYwMzU0MTAyNX0.TaTx8i6IbfliHHnAFjqSKOrdsv9Dzkb45329M4IgfDE",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkwMjYsImV4cCI6MTYwMzU0MTAyNn0.6SiaZATzj-yeJjZYS4jqjWYNm8VNI-Mh1X347OxQAbk",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkwMjgsImV4cCI6MTYwMzU0MTAyOH0.d3Fud7b4Cb_WV6yr1KM5fvqU_4Ib5XfKAP6kUn4v8JQ",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkwMzUsImV4cCI6MTYwMzU0MTAzNX0.Ma2b_JnYFzo5UYuWplQhYeAuzAeLEF7NXpkrEmhEFVw",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkzOTcsImV4cCI6MTYwMzU0MTM5N30.vFVovo07HE-_DLFyR_S4xmZUB6gBGajS3dEdpT_Og-c",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDkzOTcsImV4cCI6MTYwMzU0MTM5N30.vFVovo07HE-_DLFyR_S4xmZUB6gBGajS3dEdpT_Og-c",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDk0MDIsImV4cCI6MTYwMzU0MTQwMn0.FXTPVWFeTerkvlpX8kIaGe7AMd9UhnDOZ6IB2ujcoRc",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NDk0MDYsImV4cCI6MTYwMzU0MTQwNn0.Y_1dNhC7lrOjo8tjzMfmiQ2NusfMyrCmo4r23LsXv1w",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTA1MjIsImV4cCI6MTYwMzU0MjUyMn0.gE6B2I7YYa-F_kCTnnbiThMqL8E1r65eY5l1nTFeCbo",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTA1MjMsImV4cCI6MTYwMzU0MjUyM30.bolJw0qJscf_xv7qG93suBcziqKdMxS1Uio0Mn1E_2g",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTA1MjcsImV4cCI6MTYwMzU0MjUyN30.G31sAy1B2rxK1OxxMpEqaAHVRYQkY3R_y4QReDWGRG0",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTA1MjgsImV4cCI6MTYwMzU0MjUyOH0.fOXvIiTHJhynmV8CSh_-VyEbuIPPS1aX0wlGbp3fT8A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTEyMDgsImV4cCI6MTYwMzU0MzIwOH0.856N6wX5e05slusGuytZtVZz3HX9sjKP5SCnt4nBJ7E",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTEyMTUsImV4cCI6MTYwMzU0MzIxNX0.TAhU57gADKRZtGq0NsZHdtzCPWTflNRQB19opir8AgU",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTEyMTksImV4cCI6MTYwMzU0MzIxOX0.4wADyt9CqpEPmMVK_kUmVyT9EUZXWc8owaTgTJIsPR8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTEyMjEsImV4cCI6MTYwMzU0MzIyMX0.i1eRJMwi9Bmb3Jhp_Gpthm_N7Vj6XmoZ2u5T9Qu1EcE",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTEyMjIsImV4cCI6MTYwMzU0MzIyMn0.5EahZcBkYkVwz9z8dy7EfbjiPw6y-1mAhtLAsL7GBTo",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTQ2MDQsImV4cCI6MTYwMzU0NjYwNH0.iojNpJTj54S7wuNwagHmOc9ZWx0Nnl6iZypZcZWHzjc",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTQ2MDUsImV4cCI6MTYwMzU0NjYwNX0.Tww0IzYGTOUuueswk63ImF6gYWc6Lo6mVLmnRJSsfw4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTQ2MDUsImV4cCI6MTYwMzU0NjYwNX0.Tww0IzYGTOUuueswk63ImF6gYWc6Lo6mVLmnRJSsfw4",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5NTQ2NzksImV4cCI6MTYwMzU0NjY3OX0.6aR2VT-O-LfXzDCThGklhWzjA8gQ2D5fWDOtwG1OjSg",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0MTAsImV4cCI6MTYwMzYwMzQxMH0.PHuTsYo96wAsHAn1yUKdRN6-sX6RqbvBpmPtOM9Or6A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0MTAsImV4cCI6MTYwMzYwMzQxMH0.PHuTsYo96wAsHAn1yUKdRN6-sX6RqbvBpmPtOM9Or6A",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0MjIsImV4cCI6MTYwMzYwMzQyMn0.RsfzgO4MgrjlQvYKzWA2B1IpCTwfvFgpdcY4ie_W40k",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0MjUsImV4cCI6MTYwMzYwMzQyNX0.9_BlmRBzuHrihK73kV0d6mWuEPP6MV_j8x8t9Ebt3ZI",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0MzcsImV4cCI6MTYwMzYwMzQzN30.U4WGRAwwnWFO7EXId35bDPZLnGgRW3P6GD1JlIjXSJw",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0NDEsImV4cCI6MTYwMzYwMzQ0MX0.GTj4pv2QdNcHfug48Vb3-SyQ_CQCJNziUYkm_X1UWK8",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDEwMTE0NDMsImV4cCI6MTYwMzYwMzQ0M30.GVbr2jvzQOXV-k_GKF2mohVuVsN1YB6SzH9Hm02_D-g",
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMTAxNjU4NSwiZXhwIjoxNjAzNjA4NTg1fQ.7WYD89JRlbhGmCDQmz4GLPX9cCClC_SZWD3873c76Ho"
-			],
-			"birthday": "2020-08-12",
-			"invite_code": 10000,
-			"register_ip": "125.62.5.114",
-			"gender": 1,
-			"id": 10375,
-			"last_login_date": 1601016585724,
-			"last_login_ip": "125.62.5.72",
 			"mobile_confirmed": 1,
-			"nickname": "王者玉环2",
-			"register_date": 1597544002549
+			"register_date": 1597544002549,
+			"score": 1369.2199999999998
+		}, {
+			"_id": "ac5f38825f48695f0081f83d7a84dd59",
+			"register_date": 1598581087417,
+			"register_ip": "175.24.98.210",
+			"wx_openid": {
+				"mp-weixin": "otGKY5EWWjsVtqM4m5ZynlWhR83s"
+			},
+			"my_invite_code": "MPNBKQ",
+			"token": [],
+			"last_login_date": 1598581087607,
+			"last_login_ip": "81.68.171.106",
+			"invite_code": 10000,
+			"inviters": [{
+				"id": 10000,
+				"shopid": 123457,
+				"nickname": "重客隆超市-渝中区",
+				"portrait": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/24/1598257519258.jpg"
+			}],
+			"order": {
+				"unpaid": 0,
+				"canceled": 1
+			},
+			"nickname": ""
+		}, {
+			"_id": "8a6c3bf65f486dc6006b0214466b753d",
+			"register_date": 1598582214395,
+			"register_ip": "222.212.80.38",
+			"wx_openid": {
+				"mp-weixin": "otGKY5M9oyQqga7kHj12weIZ0SkY"
+			},
+			"my_invite_code": "EP3A7T",
+			"token": []
+		}, {
+			"_id": "b5416b755f486dfd0098075239c94ec9",
+			"register_date": 1598582269215,
+			"register_ip": "112.64.226.198",
+			"wx_openid": {
+				"mp-weixin": "otGKY5EgeZrD55ZLfKbeJa131DfE"
+			},
+			"my_invite_code": "HP5HTM",
+			"token": []
+		}, {
+			"_id": "ac5f38825f48732c0082ad5e6ce9b10c",
+			"register_date": 1598583596594,
+			"register_ip": "106.224.202.182",
+			"wx_openid": {
+				"mp-weixin": "otGKY5HbgZwTHEnZ4C80QI9orTRs"
+			},
+			"my_invite_code": "DGFJMX",
+			"token": []
+		}, {
+			"_id": "b5416b755f4879b5009937b521f6f999",
+			"register_date": 1598585269144,
+			"register_ip": "175.152.28.219",
+			"wx_openid": {
+				"mp-weixin": "otGKY5CCgVgBQe2dsSDrJN3qaH9Q"
+			},
+			"my_invite_code": "K4UJX5",
+			"token": []
+		}, {
+			"_id": "6518b7395f487db10081da952d5dfa91",
+			"register_date": 1598586289368,
+			"register_ip": "112.111.1.71",
+			"wx_openid": {
+				"mp-weixin": "otGKY5AUjkvn0CLWqLaCs5q-8SLY"
+			},
+			"my_invite_code": "ED3JM7",
+			"token": []
+		}, {
+			"_id": "aa133ce55f487e98006695013330f247",
+			"register_date": 1598586520558,
+			"register_ip": "58.243.250.232",
+			"wx_openid": {
+				"mp-weixin": "otGKY5HBfRXnwnROG0inmOiynN78"
+			},
+			"my_invite_code": "XSSD7C",
+			"token": []
+		}, {
+			"_id": "aa133ce55f4887b1006739383b4227ba",
+			"register_date": 1598588849332,
+			"register_ip": "112.65.48.220",
+			"wx_openid": {
+				"mp-weixin": "otGKY5E62H9AVO2VfukQTUQ_Ww_M"
+			},
+			"my_invite_code": "TQZ2EZ",
+			"token": [],
+			"last_login_date": 1598611616905,
+			"last_login_ip": "112.65.48.176"
+		}, {
+			"_id": "b5416b755f48a823009d814f7b96bb02",
+			"register_date": 1598597155681,
+			"register_ip": "113.69.225.28",
+			"wx_openid": {
+				"mp-weixin": "otGKY5FJsHq2UTVLsY8k4t6gmZ78"
+			},
+			"my_invite_code": "THL5P4",
+			"token": [],
+			"invite_code": 10000,
+			"inviters": [{
+				"id": 10000,
+				"shopid": 123457,
+				"nickname": "重客隆超市-渝中区",
+				"portrait": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/24/1598257519258.jpg"
+			}],
+			"order": {
+				"unpaid": 0,
+				"canceled": 1
+			}
 		}],
 		"index": [{
 			"IndexName": "username",
@@ -3362,6 +6378,85 @@
 			"ip": "125.62.5.114",
 			"created_at": 1597543638506,
 			"expired_at": 1597543818506
+		}, {
+			"_id": "cfe347375f3895c2008950fe401f196c",
+			"mobile": "15986613315",
+			"code": "496667",
+			"state": 0,
+			"ip": "",
+			"created_at": 1597543874544,
+			"expired_at": 1597544054544
+		}, {
+			"_id": "9ffb2a485f3895df0099976a3c465f1f",
+			"mobile": "15986613315",
+			"code": "270741",
+			"state": 0,
+			"ip": "125.62.5.114",
+			"created_at": 1597543903022,
+			"expired_at": 1597544083022
+		}, {
+			"_id": "cfe347375f389632008954a57ddcc744",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "399647",
+			"state": 1,
+			"ip": "",
+			"created_at": 1597543986211,
+			"expired_at": 1597544166211
+		}, {
+			"_id": "cfe347375f3896950089580f0d4c5e39",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "964228",
+			"state": 0,
+			"ip": "",
+			"created_at": 1597544085843,
+			"expired_at": 1597544265843
+		}, {
+			"_id": "9ffb2a485f3897270099a386707488bb",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "220027",
+			"state": 0,
+			"ip": "",
+			"created_at": 1597544231934,
+			"expired_at": 1597544411934
+		}, {
+			"_id": "4a46c0515f38973500b16bd043a73c33",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "813807",
+			"state": 1,
+			"ip": "125.62.5.114",
+			"created_at": 1597544245693,
+			"expired_at": 1597544425693
+		}, {
+			"_id": "9ffb2a485f3897bd0099a89f642f59e7",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "984346",
+			"state": 1,
+			"ip": "125.62.5.114",
+			"created_at": 1597544380996,
+			"expired_at": 1597544560996
+		}, {
+			"_id": "5ddc1fbd5f38981000916ae736384732",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "265956",
+			"state": 1,
+			"ip": "125.62.5.114",
+			"created_at": 1597544464723,
+			"expired_at": 1597544644723
+		}, {
+			"_id": "cfe347375f38987f0089679f27d23f0e",
+			"mobile": "15986613315",
+			"type": "login",
+			"code": "025566",
+			"state": 1,
+			"ip": "125.62.5.114",
+			"created_at": 1597544575495,
+			"expired_at": 1597544755495
 		}]
 	}
 }

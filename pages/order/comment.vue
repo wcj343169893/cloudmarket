@@ -4,15 +4,19 @@
 			<view class="goodsInfo">
 				<image :src="item.src" mode="aspectFill" class="image"></image>
 				<view class="info">
-					<text>{{item.title}}</text>
-					<text>{{item.name}}</text>
+					<text class="">{{item.title}}</text>
+					<text class="sub">{{item.name}}</text>
 				</view>
 			</view>
-			<textarea v-model="item.comment" placeholder="分享一下吧" class="textarea" />
+			<view class="stars">
+				<text>描述相符：</text>
+				<text v-for="(star,starIndex) in stars" :key="starIndex" class="yticon icon-shoucang_xuanzhongzhuangtai" :class="{active:item.comment.star>starIndex}"
+				 @click="changeStar(index,starIndex)"></text>
+				<text class="result">{{item.comment.starResult}}</text>
+			</view>
+			<textarea v-model="item.comment.content" placeholder="分享一下吧" class="textarea" />
 			<view class="tags">
-				<block v-for="(tag,tagIndex) in tags" :key="tagIndex">
-					<text class="tag0" :class="{active:item.commentTags&&item.commentTags.indexOf(tag) != -1}" @click="addTag(tag,index)">{{tag}}</text>
-				</block>
+				<text v-for="(tag,tagIndex) in tags" :key="tagIndex" class="tag0" :class="{active:item.comment.tags&&item.comment.tags.indexOf(tag) != -1}" @click="addTag(tag,index)">{{tag}}</text>
 			</view>
 		</view>
 		<!-- #ifdef MP -->
@@ -33,8 +37,15 @@
 				key: "commentOrder",
 				id: "",
 				goodsList: [],
-				tags:["包装完整","价格便宜"]
+				stars:["非常差","不好","一般","很好","非常好"],
+				star:5,
+				tags:[]
 			};
+		},
+		computed:{
+			starResult(){
+				return ""
+			}
 		},
 		onLoad() {
 			this.loadData()
@@ -51,44 +62,64 @@
 			async loadData() {
 				let order = uni.getStorageSync(this.key);
 				this.id = order._id;
-				order.goods.forEach(goods=>{
-					if(!goods.commentTags){
-						goods.commentTags=[];
-					}
+				order.goods.map((goods,index)=>{
 					if(!goods.comment){
-						goods.comment="";
+						goods.comment={
+							tags:[],
+							index:index,
+							content:"",
+							star:this.star,
+							starResult:this.stars[this.star-1]
+						};
 					}
+					if(!goods.refundAmount){
+						goods.refundAmount=0;
+					}
+					if(!goods.isComment && goods.refundAmount<goods.amount){
+						this.goodsList.push(goods);
+					}
+				});
+				this.getTags();
+			},
+			getTags(){
+				cloudMall("order","commentTags",{
+					shopid:this.shopId
+				}).then(res=>{
+					this.tags = res;
 				})
-				this.goodsList = order.goods.filter(goods => !goods.isComment);
-			},addTag(tag,index){
-				if(this.goodsList[index].commentTags.indexOf(tag) == -1){
-					this.goodsList[index].commentTags.push(tag);
+			},
+			changeStar(index,star){
+				this.goodsList[index].comment.star = star+1;
+				this.goodsList[index].comment.starResult = this.stars[star];
+			},
+			addTag(tag,index){
+				if(this.goodsList[index].comment.tags.indexOf(tag) == -1){
+					this.goodsList[index].comment.tags.push(tag);
 				}else{
 					//移除
-					this.goodsList[index].commentTags = this.goodsList[index].commentTags.filter(t=>t!=tag)
+					this.goodsList[index].comment.tags = this.goodsList[index].comment.tags.filter(t=>t!=tag)
 				}
-			},save(){
+			},
+			save(){
 				let comment=[];
 				this.goodsList.map(goods=>{
-					if(goods.comment!=""){
-						comment.push({
-							comment:goods.comment,
-							commentTags:goods.commentTags
-						})
+					if(goods.comment.content!=""){
+						comment.push(goods.comment);
 					}
 				});
 				if(comment.length == 0){
 					this.$api.msg("评论内容不能为空")
 					return;
 				}
-				cloudMall("orders","comment",{
+				cloudMall("order","comment",{
 					id:this.id,
 					comment
 				}).then(res=>{
 					this.$api.success("发表评论成功");
-					this.navTimeBack();
-					//刷新上一个页面
-					this.$api.prePage().refreshList();
+					this.navTimeBack(() => {
+						//上一个页面刷新
+						this.$api.prePage().refreshList();
+					})
 				},err=>{
 					this.$api.msg("发表评论失败")
 				})
@@ -120,9 +151,26 @@
 			border-radius: 8rpx;
 		}
 		.info{
+			flex: 1;
 			margin-top: 8rpx;
 			display: flex;
 			flex-direction: column;
+		}
+		.sub{
+			color: $font-color-disabled;
+		}
+	}
+	.stars{
+		margin-top: 14rpx;
+		.yticon{
+			margin-right: 30rpx;
+			color: $font-color-disabled;
+			&.active{
+				color: $font-color-emphasis;
+			}
+		}
+		.result{
+			color: $font-color-light;
 		}
 	}
 	.textarea{
@@ -137,11 +185,14 @@
 	}
 	.tags{
 		margin-top: 20rpx;
+		display: flex;
+		flex-wrap: wrap;
 		.tag0{
 			margin-right: 10rpx;
 			border: 2rpx solid #fff;
 			padding: 2rpx 8rpx;
-			border-radius: 4rpx;
+			border-radius: 4rpx;    
+			margin-bottom: 8rpx;
 			&.active{
 				border-color: $base-color;
 				color: $base-color;
