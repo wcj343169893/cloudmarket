@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<tuangouPage :tuangouList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
+		<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 	</view>
 </template>

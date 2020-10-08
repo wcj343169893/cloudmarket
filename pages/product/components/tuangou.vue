@@ -3,8 +3,8 @@
 		<view class="yuding-section" :class="{ ready: !tuangou.isBegin }">
 			<view class="title">
 				<view class="">
-					<text class="price">{{ tuangou.price }}</text>
-					<text class="price del">{{ price }}</text>
+					<text class="price">{{ tuangou.price | toFixed }}</text>
+					<text class="price del">{{ price | toFixed }}</text>
 				</view>
 			</view>
 			<view class="time-area">

@@ -121,7 +121,7 @@ const models = {
 			monthlySale: 1,
 			price: 1,
 			stock: 1
-		}).skip((page - 1) * limit).limit(limit).orderBy("monthlySale:1,", "asc").get();
+		}).skip((page - 1) * limit).limit(limit).orderBy("tuangou.beginTime", "asc").get();
 		return result.data;
 	},
 	//按关键词搜索商品

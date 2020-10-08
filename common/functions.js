@@ -267,13 +267,18 @@ const updateGoodsTags = function(goods, isPrecise) {
 			delete goods.yuding;
 		}
 	} else if (goods.tuangou) {
-		tags.push({
-			type: "info",
-			text: "团购"
-		});
-		if (goods.price > goods.tuangou.price) {
-			goods.originPrice = goods.price;
-			goods.price = goods.tuangou.price;
+		if(goods.tuangou.endTime < time){
+			//团购已结束
+			delete goods.tuangou;
+		}else{
+			tags.push({
+				type: "info",
+				text: "团购"
+			});
+			if (goods.price > goods.tuangou.price) {
+				goods.originPrice = goods.price;
+				goods.price = goods.tuangou.price;
+			}
 		}
 	}
 	if (goods.manjian) {}
