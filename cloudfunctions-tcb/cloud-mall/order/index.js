@@ -1067,6 +1067,47 @@ const model = {
 			return false;
 		}
 		return shopData.data[0];
+	},
+	/**
+	 * 定时器，1.自动取消未付款的订单
+	 */
+	async timer() {
+		let time = new Date().getTime();
+		let orders = await orderCollection.where({
+			lastPayTime: cmd.lt(time),
+			state: 0
+		}).field({
+			goods: 1,
+			uid: 1,
+			shopid: 1
+		}).get();
+		if (orders.data.length > 0) {
+			console.log("开始清理未付款订单");
+			let ids = orders.data.map(m => {
+				return m._id;
+			});
+			//直接执行批量更新
+			let result = await orderCollection.where({
+				_id: cmd.in(ids)
+			}).update({
+				state: -1,
+				cancelStyle: "auto",
+				modified: new Date().toISOString()
+			});
+			for (let order of orders.data) {
+				for (let ele of order.goods) {
+					if (ele.miaosha) {
+						let res = await updateGoodsMiaoshaStock(ele, -1);
+						console.log("updateGoodsMiaoshaStock", res);
+					}
+					let resStock = await updateGoodsStock(ele, -1);
+					console.log("updateGoodsStock", resStock);
+				}
+				//更新用户已取消和未支付数量
+				let resUser = await updateUserOrderCount(order.uid, "canceled", 1, "unpaid", order.shopid);
+				console.log("resUser", resUser);
+			}
+		}
 	}
 }
 

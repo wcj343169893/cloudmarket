@@ -50,6 +50,13 @@ exports.main = async (event, context) => {
 	} = event;
 	if (Type == "Timer") {
 		console.log(event);
+		for (let model in modules) {
+			//执行每个模块的定时器
+			if(modules[model]["timer"]){
+				console.log(model);
+				await modules[model]["timer"]();
+			}
+		}
 		return event;
 	}
 	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(action))) {

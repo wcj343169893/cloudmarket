@@ -242,10 +242,24 @@ const models = {
 			shopid: shopid,
 			goods_id: goodsid,
 		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
-		if(result.data.length == 0){
+		if (result.data.length == 0) {
 			return false;
 		}
 		return result.data;
+	},
+	/**
+	 * 定时器，1.下架过期的团购
+	 */
+	async timer() {
+		let time = new Date().getTime();
+		let result = await goodsCollection.where({
+			isSold: 1,
+			tuangou: cmd.exists(true),
+			"tuangou.endTime": cmd.lt(time),
+		}).update({
+			isSold: 0,
+		});
+		console.log("过期团购自动下架", result)
 	}
 }
 /**
