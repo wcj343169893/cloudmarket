@@ -496,6 +496,14 @@ const model = {
 				goodsList[g_id].tags.push(...com.tags);
 			}
 			goodsList[g_id].star.push(com.star);
+			let nickname = "匿名";
+			if (userInfo.nickname) {
+				//截取收尾
+				nickname = userInfo.nickname.substr(0, 1) + "***";
+				if (userInfo.nickname.length > 2) {
+					nickname += userInfo.nickname.substr(-1);
+				}
+			}
 			let comm = {
 				goods_id: g_id,
 				shopid: order.shopid,
@@ -503,7 +511,7 @@ const model = {
 				user: {
 					id: uid,
 					avatar: userInfo.avatar,
-					nickname: userInfo.nickname ? userInfo.nickname : "匿名"
+					nickname: nickname
 				},
 				created: new Date().toISOString(),
 				...com
@@ -530,7 +538,7 @@ const model = {
 		let shopData = await this.getShopInfoById(shopid, {
 			goodsCommentTags: 1
 		});
-		if(!shopData){
+		if (!shopData) {
 			return [];
 		}
 		return shopData.goodsCommentTags;
