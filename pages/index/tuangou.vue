@@ -28,6 +28,7 @@
 		},
 		onLoad() {
 			this.loadData();
+			this.setNavTitle();
 		},
 		computed: {
 			...mapState(['hasLogin', 'stationId', 'shopId'])
@@ -68,6 +69,14 @@
 						this.isLoaded = true;
 					}
 				);
+			},
+			async setNavTitle(){
+				let shopInfo = uni.getStorageSync("serviceShopInfo");
+				if(shopInfo.pages && shopInfo.pages.home.titles.tuangou){
+					uni.setNavigationBarTitle({
+						title: shopInfo.pages.home.titles.tuangou
+					});
+				}
 			},
 			//更新购物车数据到服务器
 			saveCartAmount(item, sku_id) {

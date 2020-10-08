@@ -39,6 +39,7 @@
 		onLoad() {
 			// this.loadCache();
 			this.loadData();
+			this.setNavTitle();
 		},
 		//滑到底部加载更多
 		onReachBottom() {
@@ -77,6 +78,14 @@
 						this.isLoaded = true;
 					}
 				);
+			},
+			async setNavTitle(){
+				let shopInfo = uni.getStorageSync("serviceShopInfo");
+				if(shopInfo.pages && shopInfo.pages.home.titles.miaosha){
+					uni.setNavigationBarTitle({
+						title: shopInfo.pages.home.titles.miaosha
+					});
+				}
 			},
 			//更新购物车数据到服务器
 			saveCartAmount(item, sku_id) {
