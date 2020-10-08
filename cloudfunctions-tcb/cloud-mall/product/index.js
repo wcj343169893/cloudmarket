@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const goodsCollection = db.collection("cloud_goods");
+const commentCollection = db.collection('cloud_goods_comments');
 const goodsVisiteCollection = db.collection('cloud_goods_visites');
 const cartCollection = db.collection('cloud_carts');
 const models = {
@@ -36,7 +37,7 @@ const models = {
 			starStatics: 1,
 			commentTagStatics: 1,
 			commentCount: 1,
-			comment:1,
+			comment: 1,
 			"description": 1,
 			"yuding": 1
 		};
@@ -224,6 +225,26 @@ const models = {
 			src: 1,
 			shopid: 1
 		}).orderBy("time", "desc").limit(10).get();
+		return result.data;
+	},
+	/**
+	 * 分页查询商品评价
+	 * @param {Object} data
+	 */
+	async comment(data) {
+		const {
+			page,
+			limit,
+			shopid,
+			goodsid
+		} = data;
+		let result = await commentCollection.where({
+			shopid: shopid,
+			goods_id: goodsid,
+		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
+		if(result.data.length == 0){
+			return false;
+		}
 		return result.data;
 	}
 }

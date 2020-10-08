@@ -52,7 +52,7 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">{{ userInfo.score }}</text>
+					<text class="num">{{ userInfo.score | toFixed }}</text>
 					<text>积分</text>
 				</view>
 			</view>

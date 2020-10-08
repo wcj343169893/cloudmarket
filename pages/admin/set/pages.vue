@@ -75,7 +75,11 @@
 				if (this.shopinfo.pages) {
 					for (let pg in this.shopinfo.pages) {
 						for (let key in this.shopinfo.pages[pg]) {
-							Object.assign(this.settings[pg][key], this.shopinfo.pages[pg][key]);
+							if (typeof(this.shopinfo.pages[pg][key]) == "object") {
+								Object.assign(this.settings[pg][key], this.shopinfo.pages[pg][key]);
+							} else {
+								this.settings[pg][key] = this.shopinfo.pages[pg][key];
+							}
 						}
 					}
 				}
@@ -101,7 +105,7 @@
 				console.log(JSON.stringify(setting))
 				shopAdmin("save", {
 					pages: setting
-				}).then(res => {
+				}, true).then(res => {
 					this.$api.success("修改成功");
 					this.shopinfo.pages = setting;
 					this.navTimeBack();

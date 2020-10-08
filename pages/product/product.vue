@@ -82,40 +82,13 @@
 		</view>
 		<!-- 评价 -->
 		<view id="rating" class="rating-wrap column">
-			<view class="e-header">
+			<view class="e-header" @click="navTo('/pages/product/comment')">
 				<text class="tit">商品评价</text>
 				<text class="number">({{ commentCount || 0 }})</text>
-				<text class="tip">好评率 {{ score * 100 | toFixed}}%</text>
+				<text class="tip">好评率<text class="number">{{ score * 100 | toFixed}}%</text></text>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="comment-tags">
-				<view v-for="(item,index) in commentTagStatics" :key="index" class="comment-tags-item" v-if="index<6">
-					<text>{{item.name}}</text>
-					<text class="number">{{item.count}}</text>
-				</view>
-			</view>
-			<view v-for="(item,index) in comment" :key="index">
-				<view class="comment-user" :class="{'b-b':index<comment.length-1}">
-					<image :src="item.user.avatar" mode="aspectFill" class="avatar"></image>
-					<view class="info">
-						<view class="nickname">
-							<text>{{item.user.nickname}}</text>
-							<view class="star" v-if="item.star >2">
-								<text class="yticon icon-dianzan-ash"></text>
-								<text>好评</text>
-							</view>
-						</view>
-						<text class="time">{{item.created | dateFormat('yyyy-MM-dd')}}</text>
-						<view class="tags">
-							<block v-for="(tg,tindex) in item.tags" :key="tindex">
-								<text class="tg">{{tg}}</text>
-								<text v-if="tindex<item.tags.length-1" class="tg">|</text>
-							</block>
-						</view>
-						<text class="content">{{item.content}}</text>
-					</view>
-				</view>
-			</view>
+			<commentPage :commentTagStatics="commentTagStatics" :comment="comment"></commentPage>
 		</view>
 		<view class="detail-desc">
 			<view class="d-header"><text>图文详情</text></view>
@@ -166,6 +139,7 @@
 	import yudingPage from './components/yuding'; //预定页面
 	import tuangouPage from './components/tuangou'; //团购页面
 	import miaoshaPage from './components/miaosha'; //秒杀页面
+	import commentPage from './components/comment.vue'; //评论列表
 	import {
 		showLoginDialog,
 		navToLoginPage,
@@ -182,7 +156,8 @@
 			pageHeader,
 			yudingPage,
 			miaoshaPage,
-			tuangouPage
+			tuangouPage,
+			commentPage
 		},
 		data() {
 			return {
@@ -304,8 +279,9 @@
 		methods: {
 			...mapMutations(['setInvite']),
 			async loadData() {
+				let key="goodsInfo";
 				//优先读取缓存
-				let info = uni.getStorageSync('goodsInfo');
+				let info = uni.getStorageSync(key);
 				if (info) {
 					try {
 						this.buildGoodsInfo(info);
@@ -326,6 +302,10 @@
 						this.buildGoodsInfo(item);
 						this.canAddCart = true;
 						this.calcAnchor();
+						uni.setStorage({
+							key:key,
+							data:item
+						})
 					},
 					err => {
 						//this.$api.msg("商品已删除或下架",20000);
@@ -348,6 +328,8 @@
 				this.checkCommentTags(item);
 				//计算好评率
 				this.checkCommentStar(item);
+				//倒序评论列表
+				this.checkComment(item);
 				console.log('default_sku_id:', this.default_sku_id);
 				for (let field in item) {
 					this[field] = item[field];
@@ -537,6 +519,16 @@
 					})
 				}
 				item.commentTagStatics = tags;
+			},
+			/**
+			 * 倒序评论列表
+			 * @param {Object} item
+			 */
+			checkComment(item){
+				if(item.comment){
+					//倒序排列
+					item.comment.reverse();
+				}
 			},
 			/**
 			 * 计算好评率
@@ -1461,73 +1453,6 @@
 
 		.mix-rating-item::after {
 			border: 0;
-		}
-	}
-
-	.comment-tags {
-		font-size: $font-sm;
-		display: flex;
-		flex-wrap: wrap;
-
-		.comment-tags-item {
-			margin-right: 12rpx;
-			background: $border-color-light;
-			padding: 6rpx 20rpx;
-			border-radius: 18rpx;
-			margin-bottom: 12rpx;
-		}
-	}
-
-	.comment-user {
-		margin-top: 20rpx;
-		font-size: $font-sm;
-		color: $font-color-light;
-		display: flex;
-		position: relative;
-		padding-bottom: 20rpx;
-
-		.avatar {
-			width: 80rpx;
-			height: 80rpx;
-			border-radius: 50%;
-			margin-right: 20rpx;
-		}
-
-		.info {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-		}
-
-		.nickname {
-			color: $font-color-dark;
-			font-weight: 500;
-			display: flex;
-			justify-content: space-between;
-
-			.star {
-				color: $uni-color-warning;
-				font-size: $font-ssm;
-				display: flex;
-				align-items: center;
-			}
-		}
-
-		.content {
-			color: $font-color-dark;
-		}
-
-		.time {
-			font-size: $font-ssm;
-		}
-
-		.tags {
-			margin-top: 0;
-		}
-
-		.tg {
-			margin-right: 12rpx;
-			font-size: $font-ssm;
 		}
 	}
 </style>

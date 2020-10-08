@@ -200,6 +200,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.container{
+		padding-bottom: 40rpx;
+	}
 	.icon .mix-list-cell.b-b:after {
 		left: 90upx;
 	}

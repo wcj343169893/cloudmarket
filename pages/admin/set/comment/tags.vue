@@ -50,7 +50,7 @@
 				});
 				shopAdmin("save", {
 					goodsCommentTags: data
-				}).then(res => {
+				},true).then(res => {
 					this.$api.success("修改成功");
 					this.shopInfo["goodsCommentTags"] = data;
 					uni.setStorage({

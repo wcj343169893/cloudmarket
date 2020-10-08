@@ -39,6 +39,7 @@
 				goodsList: [],
 				stars:["非常差","不好","一般","很好","非常好"],
 				star:5,
+				maxSelectTag:5,
 				tags:[]
 			};
 		},
@@ -94,6 +95,9 @@
 			},
 			addTag(tag,index){
 				if(this.goodsList[index].comment.tags.indexOf(tag) == -1){
+					if(this.goodsList[index].comment.tags.length >= this.maxSelectTag){
+						return;
+					}
 					this.goodsList[index].comment.tags.push(tag);
 				}else{
 					//移除

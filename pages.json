@@ -561,7 +561,13 @@
 				"navigationBarTitleText": "评论标签管理"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/product/comment",
+            "style" : {
+				"navigationBarTitleText": "用户评价"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
