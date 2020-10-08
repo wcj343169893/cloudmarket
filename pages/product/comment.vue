@@ -27,6 +27,12 @@
 		onLoad() {
 			this.loadData()
 		},
+		//滑到底部加载更多
+		onReachBottom() {
+			if (this.loadingType != 'noMore') {
+				this.getComments();
+			}
+		},
 		methods: {
 			async loadData() {
 				let goods = uni.getStorageSync(this.key);
