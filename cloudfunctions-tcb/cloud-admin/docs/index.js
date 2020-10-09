@@ -73,7 +73,7 @@ const model = {
 			return false;
 		}
 		delete doc._id;
-		return this.add(doc);
+		return await this.add(doc);
 	},
 	/**
 	 * 查询详细

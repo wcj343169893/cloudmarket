@@ -1027,7 +1027,7 @@ const model = {
 	/**
 	 * 根据店铺与客户之间的距离，计算运费
 	 */
-	async getFreight(data) {
+	getFreight(data) {
 		const {
 			deliveryType,
 			juli,
