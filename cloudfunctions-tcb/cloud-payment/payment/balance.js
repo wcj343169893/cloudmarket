@@ -50,14 +50,14 @@ const models = {
 			uid: uid,
 			type: 0, //0支出，1收入
 			balance: yue,
-			orderId: order.payid,
+			orderId: order.outTradeNo,
 			money: order.totalMoney,
 			description: "购买:" + order.body,
 		});
 		console.log("addUserBalanceLog", log);
 		return {
 			callback: "paySuccess",
-			outTradeNo: order.payid,
+			outTradeNo: order.outTradeNo,
 			transactionId: log.id,
 			uid: uid,
 			platform: platform,
@@ -152,6 +152,18 @@ const models = {
 			outRefundNo
 		}).count();
 		return res.total > 0;
+	},
+	/**
+	 * 获取支付信息
+	 * @param {Object} config
+	 */
+	getPaymentInfo(config, order, balance) {
+		return {
+			name: config.name + "支付",
+			usable: balance >= order.totalMoney,
+			usableText: "余额不足,请选择其他支付方式",
+			desc: "可用余额￥" + balance
+		}
 	}
 }
 module.exports = models;

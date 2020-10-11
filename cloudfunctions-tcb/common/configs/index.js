@@ -49,11 +49,19 @@ const getLoginConfig = (platform, provider) => {
 const getPrinterConfig = (name) => {
 	return config["printer"][name];
 }
+/**
+ * 获取发送短信模板id，需要在dc官方报备，否则提示：errCode: 10002 ，errMsg: 短信发送失败：应用名称未报备
+ * @link https://dev.dcloud.net.cn/uniSms/sign
+ */
+const getSmsTemplateId=(name)=>{
+	return config.service.sms.templateId[name];
+}
 
 module.exports = {
 	config,
 	getPaymentConfig,
 	getPaymentNotifyUrl,
 	getLoginConfig,
-	getPrinterConfig
+	getPrinterConfig,
+	getSmsTemplateId
 }

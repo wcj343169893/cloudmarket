@@ -19,7 +19,7 @@ const models = {
 		let config = getPaymentConfig(platform)[this.type];
 		return {
 			callback: "paySuccess",
-			outTradeNo: order.payid,
+			outTradeNo: order.outTradeNo,
 			uid: uid,
 			platform: platform,
 			module: data.module,
@@ -43,6 +43,18 @@ const models = {
 	 */
 	async refund(order) {
 		return "";
+	},
+	/**
+	 * 获取支付信息
+	 * @param {Object} config
+	 */
+	getPaymentInfo(config) {
+		return {
+			name: config.name,
+			usable: true,
+			usableText: "",
+			desc: ""
+		}
 	}
 }
 module.exports = models;

@@ -25,7 +25,7 @@
 				"appId": "weixin appid",
 				"mchId": "15295677371",
 				"key": "f750595974cd90718a452242",
-				"pfx":""
+				"pfx": ""
 			},
 			"balance": {
 				"uniPay": "initBalance",
@@ -53,7 +53,7 @@
 				"appId": "wx399393ad0d5e4d31",
 				"mchId": "1576725141",
 				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
-				"pfx":""
+				"pfx": ""
 			},
 			"balance": {
 				"uniPay": "initBalance",
@@ -96,6 +96,13 @@
 		"yilianyun": {
 			"clientId": "1053604898",
 			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214"
+		}
+	},
+	"service": {
+		"sms": {
+			"templateId": {
+				"login": "uniID_code"
+			}
 		}
 	}
 }

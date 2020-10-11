@@ -136,7 +136,7 @@
 								}, provider).then(res => {
 									console.log("login success", res);
 									this.loginSuccess(res);
-								},err=>{
+								}, err => {
 									console.log("小程序自动登录失败！")
 								});
 							}
@@ -283,6 +283,11 @@
 			},
 			btnLogin() {
 				if (this.disabled || this.disabledLogin) {
+					//测试入口，避免每次发送短信
+					this.loginSuccess({
+						token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMjMzNDM2MCwiZXhwIjoxNjA0OTI2MzYwfQ.3pOnGaE9sH6iMeYRdoaJ5adOd3ornf6mWpMixggW3hU",
+						tokenExpired: (new Date()).getTime() + 24 * 3600 * 1000 * 2
+					});
 					return;
 				}
 				//再次验证手机号码

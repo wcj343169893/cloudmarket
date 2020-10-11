@@ -1,4 +1,5 @@
 'use strict';
+const crypto = require('crypto');
 const {
 	getPaymentConfig
 } = require('configs');
@@ -7,6 +8,7 @@ const {
  */
 const orders = {
 	mall: require('./order/mall'),
+	yuding: require('./order/yuding'),
 }
 /**
  * 支付方式
@@ -45,16 +47,17 @@ const actions = {
 		let config = getPaymentConfig(context.PLATFORM);
 		let index = 1;
 		for (let payname in config) {
-			data["payment"].push({
-				id: index,
-				value: payname,
-				icon: "icon-" + payname,
-				name: config[payname].name + "支付",
-				usable: payname == 'balance' ? balance >= data.order.totalMoney : true,
-				usableText: payname == 'balance' ? "余额不足,请选择其他支付方式" : "",
-				desc: payname == 'balance' ? "可用余额￥" + balance : ""
-			});
-			index++;
+			//排除订单不可用的支付方式
+			if (!order.excludePayment || order.excludePayment.indexOf(payname) == -1) {
+				let payInfo = payments[payname].getPaymentInfo(config[payname], order, balance);
+				data["payment"].push({
+					id: index,
+					value: payname,
+					icon: "icon-" + payname,
+					...payInfo
+				});
+				index++;
+			}
 		}
 		return data;
 	},
@@ -71,13 +74,20 @@ const actions = {
 		if (!order) {
 			return false;
 		}
-		data.module = module;
+		//如果订单强制切换通知module，则这里优先，正常情况下不需要切换
+		data.module = order.module || module;
+		//生成支付id，每个outTradeNo不同，固定长度30位，精确到毫秒
+		order.outTradeNo = [(new Date()).getTime(), crypto.createHash("md5").update(data.uid).digest("hex").substring(0, 17)]
+			.join("");
+		//更新支付id
+		let res = await orders[data.module].updateOutTradeNo(order);
+		console.log("更新订单outTradeNo", res)
 		//支付方式构造支付参数
-		let res = await payments[provider].app(order, data, context);
+		res = await payments[provider].app(order, data, context);
 		if (!res) {
 			return false;
 		} else if (res.callback) {
-			return this[res.callback](res, module);
+			return this[res.callback](res, data.module);
 		}
 		return res;
 	},
@@ -92,7 +102,7 @@ const actions = {
 		}
 		//平台app-plus
 		let platform = paths[1];
-		//支付类型，wxpay，alipay，balance
+		//支付类型，wxpay，alipay
 		let provider = paths[2];
 		//新增第三个参数，支付模块
 		let module = paths[3];
@@ -105,15 +115,14 @@ const actions = {
 		}
 		//验证成功
 		if (res.resultCode == "SUCCESS") {
-			//let typeName = payments[provider].getName(provider);
-			let typeName = config.name;
-			res["type"] = provider;
+			let payInfo = payments[provider].getPaymentInfo(config);
 			res["platform"] = platform;
 			res["module"] = module;
 			res["couponCount"] = res.couponList ? res.couponList.length : 0;
-			//获取支付工具的名字
-			res["typeName"] = typeName;
-			res["name"] = typeName + "支付";
+			//获取支付工具的名字，wxpay，alipay
+			res["type"] = provider;
+			res["typeName"] = config.name;
+			res["name"] = payInfo.name;
 			res = await this.paySuccess(res, module);
 			console.log("paysuccess result", res)
 		}

@@ -33,7 +33,7 @@ const models = {
 			openid: openid, //支付宝小程序、微信小程序必填
 			subject: order.body.substr(0, 20), // 微信支付时不可填写此项
 			body: order.body.substr(0, 30),
-			outTradeNo: order.payid, //订单号
+			outTradeNo: order.outTradeNo, //订单号
 			totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址
 		});
@@ -67,20 +67,21 @@ const models = {
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		let res = await uniPayIns.refund(order);
 		console.log("unipay refund", JSON.stringify(res));
-		
+
 		let payname = payInfo.typeName || payInfo.name;
 		return `退款将退回至您的${payname}账户，请注意查收`;
 	},
 	/**
-	 * 获取支付工具的名字，如果unipay支持更多方式，这里需要再增加一些
-	 * @param {Object} provider
+	 * 获取支付信息
+	 * @param {Object} config
 	 */
-	getName(provider) {
-		let names = {
-			wxpay: "微信",
-			alipay: "支付宝"
-		};
-		return names[provider]
+	getPaymentInfo(config) {
+		return {
+			name: config.name + "支付",
+			usable: true,
+			usableText: "",
+			desc: ""
+		}
 	}
 }
 module.exports = models;

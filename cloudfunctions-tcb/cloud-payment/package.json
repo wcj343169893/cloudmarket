@@ -12,6 +12,7 @@
   "dependencies": {
     "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
+    "crypto": "^1.0.1",
     "printers": "file:../common/printers",
     "uni-id": "file:../common/uni-id",
     "unipay": "file:../common/unipay"
