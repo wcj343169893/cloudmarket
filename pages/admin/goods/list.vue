@@ -32,9 +32,9 @@
 					</view>
 					<view class="attr-box miaosha" v-if="item.miaosha" :class="[item.miaosha.state]">
 						<text>秒杀:</text>
-						<text>{{ item.miaosha.beginTime | dateFormat('MM-dd hh:mm') }}</text>
-						<text class="m-lr">至</text>
-						<text>{{ item.miaosha.endTime | dateFormat('MM-dd hh:mm') }}</text>
+						<text>{{ item.miaosha.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
+						<text class="m-lr">~</text>
+						<text>{{ item.miaosha.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
 					</view>
 					<view class="attr-box yuding" v-if="item.yuding" :class="[item.yuding.state]">
 						<text>预售:</text>
@@ -48,13 +48,13 @@
 							<view class="step1">
 								<text>付定金:</text>
 								<text>{{ item.yuding.beginTime | dateFormat('MM-dd hh:mm') }}</text>
-								<text class="m-lr">至</text>
+								<text class="m-lr">~</text>
 								<text>{{ item.yuding.endTime | dateFormat('MM-dd hh:mm') }}</text>
 							</view>
 							<view class="step1">
 								<text>交尾款:</text>
 								<text>{{ item.yuding.finalPaymentBeginTime | dateFormat('MM-dd hh:mm') }}</text>
-								<text class="m-lr">至</text>
+								<text class="m-lr">~</text>
 								<text>{{ item.yuding.finalPaymentEndTime | dateFormat('MM-dd hh:mm') }}</text>
 							</view>
 						</view>
@@ -516,6 +516,7 @@
 
 	.yuding {
 		display: flex;
+		align-items: baseline;
 
 		.steps {
 			flex: 1;

@@ -792,7 +792,7 @@
 					}
 					//强转价格类型
 					info.tuangou.price = +info.tuangou.price;
-					if(info.tuan.price >= info.price){
+					if(info.tuangou.price >= info.price){
 						this.$api.msg("团购价必须小于零售价")
 						return ;
 					}
