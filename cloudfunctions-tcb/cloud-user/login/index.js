@@ -20,6 +20,7 @@ const model = {
 		//只有app端支持极光context.PLATFORM
 		let configs = getLoginConfig("app-plus", "jiguang");
 		//Authorization 在网上可以生成 http://web.chacuo.net/safebasicauth
+		//https://docs.jiguang.cn/jverification/server/rest_api/rest_api_summary/
 		const result = await uniCloud.httpclient.request(configs["url"], {
 			method: 'POST',
 			headers: {
@@ -45,7 +46,12 @@ const model = {
 		key.setOptions({
 			encryptionScheme: 'pkcs1'
 		});
-		let mobileName = key.decrypt(result.data.phone, 'utf8');
+		let mobileName = false;
+		try {
+			mobileName = key.decrypt(result.data.phone, 'utf8');
+		} catch (e) {
+			console.log("极光解密手机号错误", JSON.stringify(e));
+		}
 		if (!mobileName) {
 			data.message = "手机号解码错误";
 			console.log("jiguang decrypt", data.message)

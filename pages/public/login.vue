@@ -284,8 +284,12 @@
 			btnLogin() {
 				if (this.disabled || this.disabledLogin) {
 					//测试入口，避免每次发送短信
+					let token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDI1MDI3NDUsImV4cCI6MTYwNTA5NDc0NX0.vgFCvow1EPwsYN6RwvA1Dvf8AuD1p2X59k7w28ZXA_A";
+					//#ifdef APP-PLUS
+					token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMjMzNDM2MCwiZXhwIjoxNjA0OTI2MzYwfQ.3pOnGaE9sH6iMeYRdoaJ5adOd3ornf6mWpMixggW3hU";
+					//#endif
 					this.loginSuccess({
-						token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImlhdCI6MTYwMjMzNDM2MCwiZXhwIjoxNjA0OTI2MzYwfQ.3pOnGaE9sH6iMeYRdoaJ5adOd3ornf6mWpMixggW3hU",
+						token: token,
 						tokenExpired: (new Date()).getTime() + 24 * 3600 * 1000 * 2
 					});
 					return;
