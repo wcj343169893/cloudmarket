@@ -181,7 +181,7 @@
 				})
 			},
 			save(data) {
-				shopAdmin("save", data).then(res => {
+				shopAdmin("save", data, true).then(res => {
 					this.$api.success("修改成功");
 					setTimeout(() => {
 						//上一个页面刷新

@@ -60,7 +60,7 @@ export default {
 				appends: true,
 				amount: 1
 			};
-			cloudMall("cart", "edit", cart).then(
+			cloudMall("cart", "edit", cart,true).then(
 				res => {
 					console.log(res);
 					this.$api.success('加入购物车成功');

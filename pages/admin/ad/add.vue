@@ -100,7 +100,7 @@ export default {
 				redirectType: this.redirectType,
 				docs: this.docs,
 				background: this.background
-			}).then(
+			},true).then(
 				res => {
 					this.$api.msg('提交成功', 2000, true, 'success');
 					setTimeout(() => {

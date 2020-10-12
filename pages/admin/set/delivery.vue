@@ -162,7 +162,7 @@
 				this.isSubmit = true;
 				shopAdmin("save", {
 					delivery: data
-				}).then(res => {
+				},true).then(res => {
 					this.$api.success("修改成功");
 					this.shopInfo["delivery"] = data;
 					uni.setStorage({

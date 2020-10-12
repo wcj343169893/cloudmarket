@@ -263,7 +263,7 @@ export default {
 				_id: this.goods._id,
 				miaosha: this.miaosha,
 				field: this.field
-			}).then(
+			},true).then(
 				res => {
 					this.$api.msg('提交成功', 2000, true, 'success');
 					setTimeout(() => {

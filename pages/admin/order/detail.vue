@@ -312,7 +312,7 @@
 						//从网络获取
 						orderAdmin("detail", {
 							_id: this.id
-						}).then(res => {
+						},true).then(res => {
 							this.loaded = true;
 							this.orderInfo(res);
 						},err=>{
@@ -358,7 +358,7 @@
 				} else {
 					orderAdmin("addDelivery", {
 						_id: this.id,
-					}).then(
+					},true).then(
 						res => {
 							this.$api.msg('发货成功', 2000, false, "success");
 							this.info.state = 2;
@@ -382,7 +382,7 @@
 			selftakeOrder() {
 				orderAdmin("selftake", {
 					_id: this.id,
-				}).then(
+				},true).then(
 					res => {
 						this.$api.msg('提货完成', 2000, false, "success");
 						this.info.state = 3;

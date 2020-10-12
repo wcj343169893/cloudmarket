@@ -62,7 +62,7 @@
 					enable:true
 				})
 				delete data._id;
-				printerAdmin("add", data).then(res => {
+				printerAdmin("add", data,true).then(res => {
 					this.$api.success("添加成功");
 					setTimeout(() => {
 						//上一个页面刷新

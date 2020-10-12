@@ -765,6 +765,10 @@
 					//强转价格类型
 					info.yuding.price = +info.yuding.price;
 					info.yuding.deduction = +info.yuding.deduction;
+					if(info.yuding.price+info.yuding.deduction >= info.price){
+						this.$api.msg("预售价必须小于零售价")
+						return ;
+					}
 				} else if (this.saleType == "tuangou") {
 					info.tuangou = this.tuangou;
 					fields = {
@@ -788,8 +792,12 @@
 					}
 					//强转价格类型
 					info.tuangou.price = +info.tuangou.price;
+					if(info.tuan.price >= info.price){
+						this.$api.msg("团购价必须小于零售价")
+						return ;
+					}
 				}
-				goodsAdmin('save', info).then(
+				goodsAdmin('save', info, true).then(
 					res => {
 						console.log(res);
 						setTimeout(() => {
