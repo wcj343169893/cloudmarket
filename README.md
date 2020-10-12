@@ -51,7 +51,7 @@
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
 #### Android版本
-![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/093b5e30-ff00-11ea-b244-a9f5e5565f30.png)
+![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/7dfbf1b0-0c81-11eb-9dfb-6da8e309e0d8.png)
 
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
@@ -78,6 +78,8 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 增加登录短信模板id，必须提前报备，[报备地址](https://dev.dcloud.net.cn/uniSms/tmp)
 * 解决微信支付outTradeNo重复问题
 * 分离预定订单定金处理，支持排除哪些支付方式，预防薅羊毛
+* 修复极光一键登录，短信登录
+* 优化cloud-payment支付模块，更好的支持多种支付方式，多种订单类型，灵活选择支付方式
 
 #### 2.0.1
 * 增加表``cloud_goods_comments``
