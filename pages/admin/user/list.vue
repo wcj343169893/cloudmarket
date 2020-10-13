@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 顶部筛选 分类栏 -->
-		<view class="top" :style="{top:(navigationBarHeight+statusBarHeight)+'px'}">
+		<view class="top">
 			<!-- 排序 -->
 			<view class="sort-bar row">
 				<view class="sort-bar-item row center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"

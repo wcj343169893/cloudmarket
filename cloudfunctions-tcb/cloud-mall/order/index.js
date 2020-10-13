@@ -700,8 +700,6 @@ const model = {
 			return false;
 		}
 		data["shop"] = shopData;
-		//计算运费
-		data.freight = this.getFreight(data);
 		let ids = [];
 		let cartMap = {};
 		//减少秒杀库存成功
@@ -896,8 +894,14 @@ const model = {
 		}
 		//格式化数字
 		data.totalDiscount = Number(data.totalDiscount.toFixed(2));
-		//增加运费
 		data.totalMoney = Number(data.totalMoney.toFixed(2));
+		//计算运费
+		const {
+			freight,
+			freightTitle
+		} = await this.getFreight(data);
+		data.freight = freight;
+		data.freightTitle = freightTitle;
 		//提交订单
 		if (type && type == "submit") {
 			//检查是否存在库存不足的商品
@@ -1027,37 +1031,65 @@ const model = {
 	/**
 	 * 根据店铺与客户之间的距离，计算运费
 	 */
-	getFreight(data) {
+	async getFreight(data) {
 		const {
 			deliveryType,
 			juli,
 			totalMoney,
-			shop
+			shopid,
 		} = data;
+		let shop = data.shop;
 		let freight = 0;
+		let freightTitle = "免配送费";
 		if (deliveryType == "selfRaising") {
-			return freight;
+			return {
+				freight,
+				freightTitle
+			};
+		}
+		if(!shop){
+			//查询店铺信息
+			shop = await this.getShopInfoById(shopid, {
+				id: 1,
+				delivery: 1,
+				deliveryTypes: 1
+			});
 		}
 		let delivery = shop.delivery;
+		let distance = Math.ceil(juli - delivery.minDistance);
 		//是否达到免配送费,但是超过起送距离，也要加运费
 		if (totalMoney >= delivery.freeMoney) {
 			if (juli <= delivery.minDistance) {
 				console.log('免费配送区域');
-				return freight;
+				freightTitle = "免配送费";
+				return {
+					freight,
+					freightTitle
+				};
 			}
 			//超出最低配送范围
-			freight = Math.ceil(juli - delivery.minDistance) * delivery.perMoney;
-			console.log('超出免费配送区域', freight);
+			freight = distance * delivery.perMoney;
+			console.log('超出免费配送区域', freight, distance);
+			freightTitle = `超出免费配送区域${distance}公里`;
 		} else {
 			if (juli <= delivery.minDistance) {
 				freight = delivery.money;
 				console.log('免费配送区域2');
-				return freight;
+				freightTitle = "不满足最低配送金额";
+				return {
+					freight,
+					freightTitle
+				};
 			}
 			//超出最低配送范围
-			freight = delivery.money + Math.ceil(juli - delivery.minDistance) * delivery.perMoney;
+			console.log('超出最低配送范围');
+			freight = delivery.money + distance * delivery.perMoney;
+			freightTitle = `不满足最低配送金额且超出免费配送区域${distance}公里`;
 		}
-		return freight;
+		return {
+			freight,
+			freightTitle
+		};
 	},
 	async getShopInfoById(shopid, fields) {
 		let shopData = await shopCollection.where({

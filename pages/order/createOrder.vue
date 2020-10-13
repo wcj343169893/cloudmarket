@@ -147,7 +147,7 @@
 				<text class="cell-tip" v-if="freight > 0">
 					<text class="price">{{ freight }}</text>
 				</text>
-				<text class="cell-tip" v-else>免运费</text>
+				<text class="cell-tip" v-else>{{freightTitle}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
@@ -221,8 +221,7 @@
 		mapState
 	} from 'vuex';
 	import {
-		settlement,
-		selectCart
+		cloudMall
 	} from '@/common/request.js';
 	import {
 		navToLoginPage,
@@ -248,6 +247,7 @@
 				totalMoney: 0,
 				totalDiscount: 0,
 				freight: 0, //运费
+				freightTitle:"",
 				isSubmit: false,
 				yuding: false,
 				addressData: {},
@@ -281,12 +281,12 @@
 					console.log('结算信息不存在');
 					return;
 				}
-				settlement({
+				cloudMall("order","settlement",{
 					id: this.shopId, //对此变量依赖性太强
 					addressid: this.location.id,
 					stationId: this.stationId,
 					...this.ids
-				}).then(
+				},true).then(
 					res => {
 						console.log(res);
 						//默认收货地址
@@ -328,7 +328,7 @@
 								success: e => {
 									if (e.confirm) {
 										//更新库存不足的商品为未选中状态
-										selectCart({
+										cloudMall("cart","selected",{
 											id: this.shopId,
 											stationId: this.stationId,
 											checked: false,
@@ -337,7 +337,7 @@
 													return m.cartId;
 												})
 												.join(',')
-										}).then(res => {
+										},true).then(res => {
 											console.log(res);
 										});
 									} else {
@@ -471,34 +471,17 @@
 				this.deliveryType = type;
 				this.getFreight();
 			},
-			//计算运费
+			//计算运费，请求网络
 			getFreight() {
-				if (this.deliveryType == "selfRaising") {
-					this.freight = 0;
-					//this.juli = 0;
-					return;
-				}
-				let delivery = this.shop.delivery;
-				//是否达到免配送费,但是超过起送距离，也要加运费
-				if (this.totalMoney >= delivery.freeMoney) {
-					if (this.juli <= delivery.minDistance) {
-						this.freight = 0;
-						console.log('免费配送区域');
-						return;
-					}
-					//超出最低配送范围
-					this.freight = Math.ceil(this.juli - delivery.minDistance) * delivery.perMoney;
-					console.log('超出免费配送区域', this.freight);
-				} else {
-					if (this.juli <= delivery.minDistance) {
-						this.freight = delivery.money;
-						console.log('免费配送区域2');
-						return;
-					}
-					//超出最低配送范围
-					this.freight = delivery.money + Math.ceil(this.juli - delivery.minDistance) * delivery.perMoney;
-				}
-				//this.freight = res.freight;
+				cloudMall("order","getFreight",{
+					deliveryType:this.deliveryType,
+					juli:this.juli,
+					totalMoney:this.totalMoney,
+					shopid:this.shopId
+				}).then(res=>{
+					this.freight = res.freight;
+					this.freightTitle = res.freightTitle;
+				});
 			},
 			//显示优惠券面板
 			toggleMask(type) {
@@ -520,7 +503,7 @@
 					return;
 				}
 				this.isSubmit = true;
-				settlement({
+				cloudMall("order","settlement",{
 					id: this.shopId,
 					stationId: this.stationId,
 					type: 'submit',
@@ -531,7 +514,7 @@
 					deliveryHour: this.deliveryHour,
 					addressid: this.addressData._id,
 					...this.ids
-				}).then(
+				},true).then(
 					res => {
 						let id = res;
 						let money = this.totalMoney + this.freight;
