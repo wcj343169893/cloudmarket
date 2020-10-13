@@ -446,6 +446,17 @@ const cloudMall = (model,action,data,isShowLoading)=>{
 		isShowLoading: !!isShowLoading
 	})
 }
+const cloudUser = (model,action,data,isShowLoading)=>{
+	return network({
+		url: "cloud-user",
+		data: {
+			module: model,
+			action: action,
+			data
+		},
+		isShowLoading: !!isShowLoading
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -481,5 +492,6 @@ export {
 	getUserStatistics,
 	refunds,
 	getCategories,
-	cloudMall
+	cloudMall,
+	cloudUser
 }

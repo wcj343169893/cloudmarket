@@ -145,6 +145,9 @@ const models = {
 				state: 3
 			}
 		};
+		if (!info["order"]) {
+			info["order"] = {};
+		}
 		for (let key in statistics) {
 			info["order"][key] = await this.getOrderStatisticsByCondition({
 				uid: info._id,
@@ -206,6 +209,22 @@ const models = {
 		}).count();
 		return res.total;
 	},
+	async push(data) {
+		const {
+			uid,
+			appid
+		} = data;
+		delete data.uid;
+		//保存id
+		let result = await uniID.updateUser({
+			uid: uid,
+			push: {
+				[`${appid}`]: data
+			}
+		});
+		console.log("更新用户推送配置", uid, data, result);
+		return data;
+	}
 }
 /**
  * uniid插件还未发布的方法

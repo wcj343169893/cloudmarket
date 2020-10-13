@@ -16,7 +16,8 @@
 		auth
 	} from '@/common/cloud.js';
 	import {
-		checkAppUpdate
+		checkAppUpdate,
+		cloudUser
 	} from '@/common/functions.js';
 	import {
 		micLogin
@@ -30,7 +31,7 @@
 			...mapState(['inviteCode'])
 		},
 		methods: {
-			...mapMutations(['login','checkStoreLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr']),
+			...mapMutations(['login','checkStoreLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr','updatePush']),
 			/**
 			 * 存储设备信息 参考colorUI
 			 * @param {Object} 
@@ -97,6 +98,8 @@
 				console.log('初始化push message');
 				plus.push.addEventListener('receive', msg => {
 					console.log('receive push message', msg);
+					let data = JSON.parse(msg.payload);
+					console.log('receive push message', data);
 				});
 				plus.push.addEventListener('click', msg => {
 					console.log('click push message', msg);
@@ -109,6 +112,7 @@
 							key: pushClientInfoKey,
 							data: info
 						});
+						this.updatePush(info)
 					},
 					err => {
 						console.log('push.getClientInfoAsync', err);
@@ -201,13 +205,17 @@
 		},
 		onShow: function() {
 			console.log('App Show');
+			//#ifdef MP
 			if(isCheckLogin){
 				this.checkLogin();
 			}
+			//#endif
 		},
 		onHide: function() {
 			console.log('App Hide');
+			//#ifdef MP
 			isCheckLogin = true;
+			//#endif
 		}
 	};
 </script>

@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 import {
 	getUserInfo,
-	getCartList
+	getCartList,
+	cloudUser
 } from '@/common/request.js';
 const baseUserInfo = {
 	nickname: "游客",
@@ -25,6 +26,8 @@ const store = new Vuex.Store({
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
 		getCartTime: 0, //获取购物车时间戳，5秒内只请求一次
+		updatePushTime: 0, //更新push信息时间
+		push: false,
 		cartMap: {}, //购物车商品键值对
 		location: {
 			id: false, //收货地址id
@@ -64,6 +67,7 @@ const store = new Vuex.Store({
 				//更新用户信息
 				this.dispatch('getUserInfo');
 			}
+			this.dispatch('updatePushClient');
 			this.dispatch('getCartCount');
 		},
 		checkStoreLogin(state, provider) {
@@ -72,6 +76,7 @@ const store = new Vuex.Store({
 			state.hasLogin = true;
 			//更新用户信息
 			this.dispatch('getUserInfo');
+			this.dispatch('updatePushClient');
 			this.dispatch('getCartCount');
 		},
 		checkLogout(state) {
@@ -166,6 +171,15 @@ const store = new Vuex.Store({
 			}
 			state.cartCount = count;
 			console.log("cartCount", count)
+		},
+		/**
+		 * 更新推送信息
+		 * @param {Object} state
+		 * @param {Object} push
+		 */
+		updatePush(state, push){
+			state.push = push;
+			this.dispatch('updatePushClient');
 		}
 	},
 	actions: {
@@ -235,6 +249,20 @@ const store = new Vuex.Store({
 				}
 			])
 		},
+		async updatePushClient({
+			state,
+			commit
+		}) {
+			if (state.hasLogin && state.push) {
+				cloudUser("info", "push", {
+					...state.push
+				}).then(res=>{
+					console.log("store 更新用户推送信息成功",res)
+				},err=>{
+					console.log("store 更新用户推送信息失败")
+				})
+			}
+		}
 	}
 })
 

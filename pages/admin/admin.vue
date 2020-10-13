@@ -44,10 +44,20 @@
 			</view>
 		</view>
 		<mix-list-cell icon="icon-shangpin" iconColor="#54b4ef" title="商品管理" @eventClick="navToAddGoods()" tips="新增"></mix-list-cell>
-
 		<view class="cover-container">
 			<view class="order-section">
-				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item.state)" hover-class="common-hover"
+				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item.state)"
+				 hover-class="common-hover" :hover-stay-time="50">
+					<text class="number">{{ item.number }}</text>
+					<text>{{ item.name }}</text>
+				</view>
+			</view>
+		</view>
+		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all')"
+		 tips="账户充值"></mix-list-cell>
+		<view class="cover-container">
+			<view class="order-section">
+				<view class="order-item" v-for="(item, index) in userTypes" :key="index" hover-class="common-hover" @click="navToUsers(item.state)"
 				 :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
@@ -60,7 +70,6 @@
 		 tips="限时秒杀"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
-		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navTo('/pages/admin/user/list')" tips="账户充值"></mix-list-cell>
 		<mix-list-cell icon="icon-tongji" iconColor="#54b4ef" title="经营数据" tips=" "></mix-list-cell>
 	</view>
 </template>
@@ -72,10 +81,6 @@
 	import {
 		shopAdmin
 	} from '@/common/admin_request.js';
-	import {
-		getOrderTypes,
-		getGoodsTypes
-	} from '@/common/functions.js';
 	export default {
 		data() {
 			return {
@@ -87,7 +92,8 @@
 				address: '',
 				notice: '',
 				orderTypes: [],
-				goodsTypes: []
+				goodsTypes: [],
+				userTypes: []
 			};
 		},
 		onLoad(options) {
@@ -96,7 +102,7 @@
 			console.log(this.shopid, options);
 			if (options.second) {
 				//进一步跳转到下一页页面
-				let func="navTo"+options.second;
+				let func = "navTo" + options.second;
 				this[func](options.state);
 			}
 		},
@@ -152,49 +158,20 @@
 				for (let i in data) {
 					this[i] = data[i];
 				}
-				let sum = 0;
-				//1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
-				let types = getOrderTypes();
-				this.orderTypes = [];
-				for (let k in types) {
-					let number = 0;
-					if (this.order[k]) {
-						sum += number = this.order[k];
-					}
-					this.orderTypes.push({
-						name: types[k],
-						state: k,
-						number: number
-					});
-				}
-				this.order['sum'] = sum;
-				//商品类型,"online"在售,"miaosha"秒杀,"yuding"预售,"baokuan"爆款,"shouqin"即将售罄
-				let goodsTypes = getGoodsTypes();
-				this.goodsTypes = [];
-				for (let gk in goodsTypes) {
-					let number = 0;
-					if (this.goods && this.goods[gk]) {
-						number = this.goods[gk];
-					}
-					this.goodsTypes.push({
-						name: goodsTypes[gk],
-						state: gk,
-						number: number
-					});
-				}
 			},
 			navToOrder(state) {
 				console.log(state)
-				let shopid = this.shopid;
-				if(state=="refunded"){
-					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${shopid}`);
-				}else{
-					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${shopid}`);
+				if (state == "refunded") {
+					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${this.shopid}`);
+				} else {
+					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${this.shopid}`);
 				}
 			},
 			navToGoods(state) {
-				let shopid = this.shopid;
-				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${shopid}`);
+				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${this.shopid}`);
+			},
+			navToUsers(state) {
+				this.navTo(`/pages/admin/user/list?state=${state}&shopid=${this.shopid}`);
 			},
 			//新增商品
 			navToAddGoods() {

@@ -118,8 +118,7 @@
 		goodsAdmin
 	} from '@/common/admin_request.js';
 	import {
-		navToGoodsItemPage,
-		getGoodsTypes
+		navToGoodsItemPage
 	} from '@/common/functions.js';
 	import searchMixin from '../mixin/search.js'
 	export default {
@@ -350,9 +349,10 @@
 					});
 					return;
 				}
-				let types = getGoodsTypes();
+				let shopInfo = uni.getStorageSync("adminShopInfo");
+				let goodsTypes = shopInfo.goodsTypes.filter(e => e.state == this.state);
 				uni.setNavigationBarTitle({
-					title: types[this.state]
+					title: goodsTypes[0].name
 				});
 			},
 			//重新刷新页面数据

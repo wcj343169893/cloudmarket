@@ -104,5 +104,14 @@
 				"login": "10190"
 			}
 		}
+	},
+	"push": {
+		"default": {
+			"appId": "N5wQHWUKnv8POOTCnGtFU8",
+			"appkey": "t318VmJI2p84991gl61VY4",
+			"appSecret": "wF9SqqDvk3ANRMoMtrbPm1",
+			"mastersecret": "udzQP1wLwWAQEeozJgYZ15",
+			"packageName": "com.gengyun"
+		}
 	}
 }

@@ -87,7 +87,6 @@
 	} from '@/common/admin_request.js';
 	import {
 		getOrderStateExp,
-		getOrderTypes,
 		checkDeliveryHour
 	} from '@/common/functions.js';
 	import searchMixin from '../mixin/search.js'
@@ -152,10 +151,11 @@
 				);
 			},
 			setNavTitle() {
-				let types = getOrderTypes();
+				let shopInfo = uni.getStorageSync("adminShopInfo");
+				let orderTypes = shopInfo.orderTypes.filter(e => e.state == this.state);
 				uni.setNavigationBarTitle({
-					title: types[this.state]
-				})
+					title: orderTypes[0].name
+				});
 			},
 			//修改订单价格
 			editOrderMoney(item) {

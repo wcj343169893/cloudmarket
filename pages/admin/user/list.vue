@@ -104,17 +104,22 @@
 				],
 				listType: 'column', //列表类型 column竖向列表 row 横向列表
 				userList: [],
+				state: "",
 				rechargeItem: {}
 			};
 		},
-		onLoad() {
-			this.loadData()
+		onLoad(options) {
+			this.state = options.state;
+			this.loadData();
+			//设置标题
+			this.setNavTitle();
 		},
 		methods: {
 			async loadData() {
 				this.loadingType = 'loading';
 				this.page++;
 				usersAdmin("list", {
+					state: this.state,
 					page: this.page,
 					limit: this.limit,
 					key: this.searchWord,
@@ -210,7 +215,14 @@
 			},
 			detail(item) {
 				console.log(item)
-			}
+			},
+			setNavTitle() {
+				let shopInfo = uni.getStorageSync("adminShopInfo");
+				let userTypes = shopInfo.userTypes.filter(e => e.state == this.state);
+				uni.setNavigationBarTitle({
+					title: userTypes[0].name
+				});
+			},
 		}
 	}
 </script>

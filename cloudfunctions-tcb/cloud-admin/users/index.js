@@ -11,6 +11,7 @@ const modules = {
 			page,
 			limit,
 			key,
+			state,
 			sort
 		} = data;
 		let condition = {
@@ -22,6 +23,19 @@ const modules = {
 			}, {
 				mobile: new RegExp(key)
 			});
+		}
+		//获取今日和昨日的时间戳
+		const {todayTime,yestertodayTime} = this.getDayTime();
+		let statistics = {
+			yestertoday: {
+				register_date: cmd.gte(yestertodayTime).lt(todayTime)
+			},
+			today: {
+				register_date: cmd.gte(todayTime)
+			},
+		};
+		if (state && statistics[state]) {
+			condition = statistics[state];
 		}
 		let direct = "desc",
 			field = "register_date";
@@ -83,6 +97,20 @@ const modules = {
 		});
 		console.log("手动账户充值", log);
 		return res.data[0].balance;
+	},
+	getDayTime() {
+		let date = new Date();
+		date.setHours(0);
+		date.setMinutes(0);
+		date.setSeconds(0);
+		date.setMilliseconds(0);
+		let todayTime = date.getTime();
+		date.setDate(date.getDate() - 1);
+		let yestertodayTime = date.getTime();
+		return {
+			todayTime,
+			yestertodayTime
+		};
 	}
 }
 
