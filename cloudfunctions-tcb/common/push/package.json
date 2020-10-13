@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "base-common": "file:../base-common",
-    "configs": "file:../configs"
+    "configs": "file:../configs",
+    "uni-id": "file:../uni-id"
   },
   "devDependencies": {},
   "scripts": {

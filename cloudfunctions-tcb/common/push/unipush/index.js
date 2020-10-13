@@ -104,6 +104,7 @@ const model = {
 	 * @param {Object} requestData
 	 */
 	async post(module, requestData, times) {
+		console.log("requestData",JSON.stringify(requestData));
 		let res = await uniCloud.httpclient.request(this.getUrl(module), {
 			method: 'POST',
 			headers: {
@@ -159,16 +160,23 @@ const model = {
 		let intent =
 			`intent:#Intent;action=android.intent.action.oppopush;launchFlags=0x14000000;package=${packageName};component=${packageName}/io.dcloud.PandoraEntry;S.UP-OL-SU=true;S.title=${title};S.content=${content};S.payload=${payload};end`;
 		data.push_message = {
-			"transmission": payload
+			//"transmission": payload
+			"notification": {
+				title,
+				body: content,
+				channel_level: 3,
+				click_type: "intent",
+				intent: intent
+			}
 		}
 		data.push_channel = {
 			"android": {
 				"ups": {
 					"notification": {
 						title,
-						"body": content,
-						"channel_level": 3,
-						"click_type": "intent",
+						body: content,
+						channel_level: 3,
+						click_type: "intent",
 						intent: intent
 					}
 				}

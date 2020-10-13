@@ -12,6 +12,9 @@ const {
 const {
 	print
 } = require('printers');
+const {
+	sendNewOrder
+} = require('push');
 const model = {
 	/**
 	 * 检查订单状态
@@ -103,10 +106,12 @@ const model = {
 			//更新用户订单统计，用户待付款订单数
 			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid);
 			console.log("updateUserOrderCount", res);
+			//新订单提醒
+			res = await sendNewOrder(order);
+			console.log("sendNewOrder", res);
 			// 打印订单
 			res = await print(order, order.shopid);
 			console.log("print", res);
-
 			//商品销量日志
 			let up = {
 				goods: {}

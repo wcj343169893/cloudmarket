@@ -14,6 +14,7 @@
     "configs": "file:../common/configs",
     "crypto": "^1.0.1",
     "printers": "file:../common/printers",
+    "push": "file:../common/push",
     "uni-id": "file:../common/uni-id",
     "unipay": "file:../common/unipay"
   }
