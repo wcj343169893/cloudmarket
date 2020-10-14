@@ -2,7 +2,7 @@
 	"passwordSecret": "58d0605d96a11d2b62430",
 	"tokenSecret": "4e50313a45f5fbe0",
 	"tokenExpiresIn": 2592000,
-	"tokenExpiresThreshold": 2505600,
+	"tokenExpiresThreshold": 86400,
 	"passwordErrorLimit": 6,
 	"bindTokenToDevice": true,
 	"passwordErrorRetryTime": 3600,
