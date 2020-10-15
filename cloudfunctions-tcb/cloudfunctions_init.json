@@ -1,0 +1,53 @@
+// 在本文件中可配置云函数初始化，详情请见： https://uniapp.dcloud.net.cn/uniCloud/cf-functions?id=init
+// 编写完毕后对本文件点右键，可按配置规则进行初始化
+{
+	// 云函数名称
+	"cloud-admin": {
+		"memorySize": 256, // 函数的最大可用内存，单位MB，可选值： 128|256|512|1024|2048，默认值256
+		"timeout": 20, // 函数的超时时间，单位秒，默认值5。最长为60秒，阿里云在定时触发时最长可以是600秒
+		// 仅仅是给云函数续命，提升访问速度
+		"triggers": [{
+			"name": "myTrigger",
+			"type": "timer",
+			"config": "28 1/10 * * * * *"
+		}],
+		// 云函数Url化path部分，阿里云需要以/http/开头
+		"path": ""
+	},
+	"cloud-cron-init": {
+		"memorySize": 256, // 函数的最大可用内存，单位MB，可选值： 128|256|512|1024|2048，默认值256
+		"timeout": 10, // 函数的超时时间，单位秒，默认值5。最长为60秒，阿里云在定时触发时最长可以是600秒
+		// 每天自动创建统计日志
+		"triggers": [{
+			"name": "myTrigger",
+			"type": "timer",
+			"config": "0 0 0 * * * *"
+		}],
+		// 云函数Url化path部分，阿里云需要以/http/开头
+		"path": ""
+	},
+	"cloud-mall": {
+		"memorySize": 256, // 函数的最大可用内存，单位MB，可选值： 128|256|512|1024|2048，默认值256
+		"timeout": 10, // 函数的超时时间，单位秒，默认值5。最长为60秒，阿里云在定时触发时最长可以是600秒
+		// order自动取消超时未支付的订单，product下架过期的团购
+		"triggers": [{
+			"name": "myTrigger",
+			"type": "timer",
+			"config": "10 1/2 * * * * *"
+		}],
+		// 云函数Url化path部分，阿里云需要以/http/开头
+		"path": ""
+	},
+	"cloud-payment": {
+		"memorySize": 256, // 函数的最大可用内存，单位MB，可选值： 128|256|512|1024|2048，默认值256
+		"timeout": 20, // 函数的超时时间，单位秒，默认值5。最长为60秒，阿里云在定时触发时最长可以是600秒
+		// 用户申请退款后，资金到账定时器
+		"triggers": [{
+			"name": "refund",
+			"type": "timer",
+			"config": "18 1/10 * * * * *"
+		}],
+		// 微信支付宝回调地址
+		"path": "/market_notify"
+	}
+}

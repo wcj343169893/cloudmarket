@@ -52,6 +52,51 @@ const limits = {
  * 必备索引,索引是数组
  */
 const indexs = {
+	"cloud_goods": [{
+			"IndexName": "index_cate",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+						"Name": "shopid",
+						"Direction": "1"
+					},
+					{
+						"Name": "categories.id",
+						"Direction": "1"
+					}
+				],
+				"MgoIsUnique": false
+			}
+		},
+		{
+			"IndexName": "index_sold",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+						"Name": "shopid",
+						"Direction": "1"
+					},
+					{
+						"Name": "isSold",
+						"Direction": "1"
+					},
+					{
+						"Name": "isCategoryShow",
+						"Direction": "1"
+					}
+				],
+				"MgoIsUnique": false
+			}
+		}
+	],
+	"cloud_identity": [{
+		"IndexName": "index_key",
+		"MgoKeySchema": {
+			"MgoIndexKeys": [{
+				"Name": "key",
+				"Direction": "1"
+			}],
+			"MgoIsUnique": true
+		}
+	}],
 	"cloud_shops": [{
 		"IndexName": "index_lonlat",
 		"MgoKeySchema": {
@@ -243,13 +288,9 @@ const configs = {
 		}, {
 			"name": "cloud_printer_types"
 		}, {
-			"name": "cloud_shop_comments"
-		}, {
 			"name": "cloud_shops"
 		}, {
 			"name": "cloud_user_balance_logs"
-		}, {
-			"name": "mix-admin"
 		}, {
 			"name": "uni-app-version"
 		}, {
