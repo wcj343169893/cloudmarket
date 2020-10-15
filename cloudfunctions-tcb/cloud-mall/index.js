@@ -14,7 +14,6 @@ const modules = {
 	'document': require('./document'),
 	home: require('./home'),
 	order: require('./order'),
-	payment: require('./payment'),
 	product: require('./product'),
 }
 /**
