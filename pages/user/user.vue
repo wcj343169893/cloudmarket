@@ -306,12 +306,14 @@
 					this.navTo("");
 					return;
 				}
+				//#ifndef MP
 				uni.previewImage({
 					indicator: "none",
 					urls: [
 						this.userInfo.avatar
 					]
 				})
+				//#endif
 			},
 			navToGoods(item) {
 				item.id = item.goods_id;

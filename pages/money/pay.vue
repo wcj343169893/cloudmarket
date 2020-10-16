@@ -229,16 +229,13 @@
 			},
 			//支付失败，可以另外选择支付方式
 			payFailed() {
-				uni.showModal({
+				/* uni.showModal({
 					title: '温馨提示',
 					content: '支付失败！',
 					showCancel: false,
 					success: function(res) {
-						/* uni.navigateBack({
-							delta: 1
-						}); */
 					}
-				});
+				}); */
 			},
 			clouseTimer() {
 				//关闭秒杀定时器
