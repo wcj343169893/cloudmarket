@@ -40,6 +40,10 @@ export default {
 			type: String,
 			default: '标题'
 		},
+		field: {
+			type: String,
+			default: ''
+		},
 		type: {
 			type: String,
 			default: 'text'
@@ -84,11 +88,10 @@ export default {
 	},
 	methods: {
 		changeContent(e) {
-			//console.log('changeContent', e);
-			this.$emit('change', e.detail.value);
+			this.$emit('change', e.detail.value,this.field);
 		},
 		blurContent(e){
-			this.$emit('blur', e.detail.value);
+			this.$emit('blur', e.detail.value,this.field);
 		},
 		btnScan() {
 			// 调起条码扫描
@@ -98,7 +101,7 @@ export default {
 					console.log('条码类型：' + res.scanType);
 					console.log('条码内容：' + res.result);
 					this.content = res.result;
-					this.$emit('change', this.content);
+					this.$emit('change', this.content,this.field);
 				}
 			});
 		},
@@ -112,7 +115,7 @@ export default {
 						console.log("地址无效")
 						return;
 					}
-					this.$emit('change', data);
+					this.$emit('change', data,this.field);
 				}
 			});
 		}

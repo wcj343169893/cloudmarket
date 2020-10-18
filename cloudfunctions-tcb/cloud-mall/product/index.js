@@ -38,6 +38,10 @@ const models = {
 			commentTagStatics: 1,
 			commentCount: 1,
 			comment: 1,
+			guarantee_period: 1,
+			storage_condition: 1,
+			net_weight: 1,
+			service_purpose: 1,
 			"description": 1,
 			"yuding": 1
 		};
@@ -54,6 +58,10 @@ const models = {
 			"7天无理由退换货",
 			"假一赔十",
 		];
+		if(data.service_purpose){
+			data.service=data.service_purpose.split(";");
+			delete data.service_purpose;
+		}
 		//当前用户
 		data.visitor = uid;
 		if (uid) {

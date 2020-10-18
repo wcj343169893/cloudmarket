@@ -13,16 +13,15 @@
 		<view class="skus">
 			<block v-if="specsType == 'single'">
 				<admin-goods-sku :info="singleInfo" title="" @change="changeSku"></admin-goods-sku>
-				<view class="tmp"></view>
 			</block>
 			<block v-else>
 				<block v-for="(item, index) in skus" :key="index">
 					<admin-goods-sku :info="item" :index="index" title="" :ismultiple="!0" @del="deleteSku" @change="changeSku"></admin-goods-sku>
-					<view class="tmp"></view>
+					<view class="tmp" v-if="index< skus.length-1"></view>
 				</block>
 			</block>
 		</view>
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" placeholder="请输入商品条码" @change="changeUpc"></mix-list-input>
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="请输入商品条码" @change="changeField"></mix-list-input>
 		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''" :defaultOption="saleType"
 		 @eventClick="changeSaleType"></mix-list-select>
 		<!-- saleType预定设置 -->
@@ -116,21 +115,6 @@
 				</view>
 			</view>
 		</block>
-		<view class="mix-list-cell b-b">
-			<text class="cell-tit clamp">配送</text>
-			<view class="cell-content content-right">
-				<checkbox-group name="delivery_tags" @change="changeDeliveryTags">
-					<label class="m-r">
-						<checkbox value="iceNeed" />
-						<text>加冰</text>
-					</label>
-					<label>
-						<checkbox value="package" />
-						<text>独立包装</text>
-					</label>
-				</checkbox-group>
-			</view>
-		</view>
 		<label class="mix-list-cell b-b">
 			<text class="cell-tit clamp">仅支持自提</text>
 			<view class="cell-content content-right">
@@ -139,7 +123,8 @@
 				</checkbox-group>
 			</view>
 		</label>
-		<mix-list-input title="分享语" :defContent="share" placeholder="请输入分享语" @change="changeShare"> </mix-list-input>
+		<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField">
+		</mix-list-input>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
 			<view class="cell-tip">尺寸800*800</view>
@@ -181,13 +166,39 @@
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="imgs">
+		<view class="imgs b-b">
 			<view v-for="(item, index) in descriptionImgs" :key="index" class="d-list-image">
 				<text class="number">{{ index + 1 }}</text>
 				<image :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
-
+		<label class="mix-list-cell">
+			<text class="cell-tit clamp">非必要信息</text>
+		</label>
+		<view class="skus">
+			<view class="sub-container">
+				<view class="mix-list-cell b-b">
+					<text class="cell-tit clamp">配送</text>
+					<view class="cell-content content-right">
+						<checkbox-group name="delivery_tags" @change="changeDeliveryTags">
+							<label class="m-r">
+								<checkbox value="iceNeed" />
+								<text>加冰</text>
+							</label>
+							<label>
+								<checkbox value="package" />
+								<text>独立包装</text>
+							</label>
+						</checkbox-group>
+					</view>
+				</view>
+				<mix-list-input title="净含量" :defContent="net_weight" field="net_weight" placeholder="请输入净含量" @change="changeField"></mix-list-input>
+				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期" @change="changeField"></mix-list-input>
+				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition" placeholder="请输入保存条件"
+				 @change="changeField"></mix-list-input>
+				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入保质期" @change="changeField"></mix-list-input>
+			</view>
+		</view>
 		<view class="tmp submit"></view>
 		<view class="specsTitlesBtn submit"><button class="add-btn" @click="save">提交</button></view>
 		<uni-popup ref="showCateory" type="bottom">
@@ -326,11 +337,15 @@
 				price: '',
 				src: '',
 				srcPreview: '',
-				banner:'',
+				banner: '',
 				bannerPreview: '',
 				stock: '',
 				title: '',
 				subTitle: '',
+				guarantee_period: '',
+				storage_condition: '常温',
+				service_purpose: '假一赔十',
+				net_weight: '',
 				submiting: false,
 				saleType: 'normal',
 				saleTypes: {
@@ -399,7 +414,7 @@
 					if (this.imgs) {
 						this.imgsPreview = this.imgs;
 					}
-					if(this.banner){
+					if (this.banner) {
 						this.bannerPreview = this.banner;
 					}
 					if (this.skus && this.skus.length > 0) {
@@ -674,11 +689,9 @@
 					}
 				);
 			},
-			changeUpc(e) {
-				this.upc = e;
-			},
-			changeShare(e) {
-				this.share = e;
+			changeField(val, field) {
+				console.log(val, field)
+				this[field] = val;
 			},
 			//提交到服务器
 			save() {
@@ -692,7 +705,7 @@
 					description: this.description,
 					id: this.id,
 					imgs: this.imgs,
-					banner:this.banner,
+					banner: this.banner,
 					upc: this.upc,
 					originPrice: this.originPrice,
 					price: this.price,
@@ -701,6 +714,10 @@
 					title: this.title,
 					subTitle: this.subTitle,
 					share: this.share,
+					guarantee_period: this.guarantee_period,
+					storage_condition: this.storage_condition,
+					service_purpose: this.service_purpose,
+					net_weight: this.net_weight,
 					saleType: this.saleType,
 					onlySelfTake: this.onlySelfTake, //是否仅支持自提
 					deliveryTags: this.deliveryTags
@@ -758,16 +775,16 @@
 						finalPaymentBeginTime: '开始付尾款时间',
 						finalPaymentEndTime: '结束付尾款时间'
 					};
-					if(!this.checkTimeFields(info.yuding,fields)){
+					if (!this.checkTimeFields(info.yuding, fields)) {
 						this.submiting = false;
 						return;
 					}
 					//强转价格类型
 					info.yuding.price = +info.yuding.price;
 					info.yuding.deduction = +info.yuding.deduction;
-					if(info.yuding.price+info.yuding.deduction >= info.price){
+					if (info.yuding.price + info.yuding.deduction >= info.price) {
 						this.$api.msg("预售价必须小于零售价")
-						return ;
+						return;
 					}
 				} else if (this.saleType == "tuangou") {
 					info.tuangou = this.tuangou;
@@ -786,15 +803,15 @@
 						endTime: '结束团购时间',
 						pickup: '提货时间',
 					};
-					if(!this.checkTimeFields(info.tuangou,fields)){
+					if (!this.checkTimeFields(info.tuangou, fields)) {
 						this.submiting = false;
 						return;
 					}
 					//强转价格类型
 					info.tuangou.price = +info.tuangou.price;
-					if(info.tuangou.price >= info.price){
+					if (info.tuangou.price >= info.price) {
 						this.$api.msg("团购价必须小于零售价")
-						return ;
+						return;
 					}
 				}
 				goodsAdmin('save', info, true).then(
@@ -829,16 +846,16 @@
 			 * @param {Object} data
 			 * @param {Object} fields
 			 */
-			checkTimeFields(data,fields){
-				let prev=0;
-				let prevField="";
+			checkTimeFields(data, fields) {
+				let prev = 0;
+				let prevField = "";
 				for (let fie in fields) {
-					if(prev > data[fie]){
+					if (prev > data[fie]) {
 						this.$api.msg(`${fields[prevField]}必须大于或等于${fields[fie]}`);
 						return false;
 					}
-					prev=data[fie];
-					prevField=fie;
+					prev = data[fie];
+					prevField = fie;
 				}
 				return true;
 			},
@@ -1085,8 +1102,13 @@
 	}
 
 	.skus {
-		padding: 20upx 20upx 0;
+		padding: 20upx;
 		background-color: $background-color;
+
+		.sub-container {
+			background: #FFFFFF;
+			border-radius: 10upx;
+		}
 	}
 
 	.tmp {
@@ -1111,6 +1133,10 @@
 	.imgs {
 		position: relative;
 		padding-bottom: 20upx;
+
+		&.b-b:after {
+			left: $page-row-spacing;
+		}
 	}
 
 	.h-list {
@@ -1118,6 +1144,7 @@
 		padding: 10upx 30upx 0;
 
 	}
+
 	.h-list-image {
 		display: inline-block;
 		margin-right: 20upx;
@@ -1128,9 +1155,10 @@
 			border-radius: 4%;
 		}
 	}
-	.banner{
+
+	.banner {
 		.h-list-image {
-			image{
+			image {
 				width: 690rpx;
 				height: 340rpx;
 			}

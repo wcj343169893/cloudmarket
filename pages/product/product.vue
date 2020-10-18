@@ -71,12 +71,30 @@
 					<uni-number-box :min="0" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
 				</view>
 			</view>
-			<view class="c-row">
+			<view class="c-row b-b">
 				<text class="tit">服务</text>
 				<view class="bz-list con">
 					<block v-for="(ser, serIndex) in service" :key="serIndex">
 						<text class="item">·{{ ser }}</text>
 					</block>
+				</view>
+			</view>
+			<view class="c-row b-b" v-if="net_weight!=''">
+				<text class="tit">净含量</text>
+				<view class="bz-list con">
+					<text class="item">{{ net_weight }}</text>
+				</view>
+			</view>
+			<view class="c-row b-b" v-if="guarantee_period!=''">
+				<text class="tit">保质期</text>
+				<view class="bz-list con">
+					<text class="item">{{ guarantee_period }}</text>
+				</view>
+			</view>
+			<view class="c-row" v-if="storage_condition!=''">
+				<text class="tit">保存条件</text>
+				<view class="bz-list con">
+					<text class="item">{{ storage_condition }}</text>
 				</view>
 			</view>
 		</view>
@@ -190,6 +208,9 @@
 				amount: 1,
 				favorite: false,
 				hasSku: false,
+				guarantee_period: '',
+				storage_condition: '常温',
+				net_weight: '',
 				shareList: [],
 				skuMap: [],
 				cartMap: {},
@@ -279,7 +300,7 @@
 		methods: {
 			...mapMutations(['setInvite']),
 			async loadData() {
-				let key="goodsInfo";
+				let key = "goodsInfo";
 				//优先读取缓存
 				let info = uni.getStorageSync(key);
 				if (info) {
@@ -303,8 +324,8 @@
 						this.canAddCart = true;
 						this.calcAnchor();
 						uni.setStorage({
-							key:key,
-							data:item
+							key: key,
+							data: item
 						})
 					},
 					err => {
@@ -525,8 +546,8 @@
 			 * 倒序评论列表
 			 * @param {Object} item
 			 */
-			checkComment(item){
-				if(item.comment){
+			checkComment(item) {
+				if (item.comment) {
 					//倒序排列
 					item.comment.reverse();
 				}
@@ -952,6 +973,10 @@
 			align-items: center;
 			padding: 20upx 30upx;
 			position: relative;
+
+			&.b-b:after {
+				left: $page-row-spacing;
+			}
 		}
 
 		.tit {
@@ -973,6 +998,7 @@
 
 			.item {
 				margin-right: 8upx;
+				font-size: $font-sm;
 			}
 		}
 

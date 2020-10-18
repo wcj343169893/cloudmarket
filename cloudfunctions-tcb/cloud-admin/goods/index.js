@@ -53,6 +53,10 @@ const list = async (data, context) => {
 		"yuding": 1,
 		"tuangou": 1,
 		banner: 1,
+		guarantee_period: 1,
+		storage_condition: 1,
+		net_weight: 1,
+		service_purpose: 1,
 		description: 1
 	};
 	let time = new Date().getTime();
