@@ -47,6 +47,7 @@
 						"name": "首页",
 						"limits": {
 							"ads": 5,
+							adBanners: 5,
 							"category": 10,
 							"miaosha": 2,
 							"newest": 10,

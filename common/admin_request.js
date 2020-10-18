@@ -40,8 +40,8 @@ const categoryAdmin = function(action, data, isShowLoading) {
  * 店铺广告信息
  * @param {Object} data
  */
-const adsAdmin = function(action, data) {
-	return adminNetwork("ads", action, data, false);
+const adsAdmin = function(action, data,isShowLoading) {
+	return adminNetwork("ads", action, data, isShowLoading);
 }
 /**
  * 文档管理

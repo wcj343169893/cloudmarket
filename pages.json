@@ -376,19 +376,7 @@
 		}, {
 			"path": "pages/admin/ad/list",
 			"style": {
-				"navigationBarTitleText": "广告图管理",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue60f",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
+				"navigationBarTitleText": "广告图管理"
 			}
 		}, {
 			"path": "pages/admin/ad/add",

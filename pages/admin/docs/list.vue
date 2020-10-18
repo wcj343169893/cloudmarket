@@ -14,6 +14,7 @@
 						<button class="btn danger" @click.stop="del(item._id)">删除</button>
 						<button class="btn" @click.stop="preview(item._id)">预览</button>
 						<button class="btn" @click.stop="copy(item)">复制</button>
+						<button class="btn">修改</button>
 					</view>
 				</view>
 			</view>

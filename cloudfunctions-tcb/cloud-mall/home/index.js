@@ -22,8 +22,9 @@ const models = {
 			yuding: 5,
 			newest: 30,
 			ads: 5,
+			adBanners: 5,
 			category: 10,
-			recommend:5
+			recommend: 5
 		};
 		let dataOut = {
 			uid,
@@ -74,17 +75,8 @@ const models = {
 			}
 		}
 		dataOut["shopId"] = shopid;
-		//查询广告,优先店铺，再是全站
-		const ads = await adCollection.where({
-			shopid: cmd.in([0, shopid])
-		}).field({
-			"_id": 0,
-			"background": 1,
-			"link": 1,
-			"posid": 1,
-			"src": 1
-		}).limit(limits.ads).orderBy("shopid", "desc").get();
-		dataOut["ads"] = ads.data;
+		//查询广告,优先店铺，再是全站shopid: cmd.in([0, shopid])
+		await this.getAdByCondition(shopid, dataOut, limits);
 		if (limits.category > 0) {
 			//店铺推荐分类
 			let categories = await goodsCategoryCollection.where({
@@ -107,6 +99,44 @@ const models = {
 			url: "/pages/index/fruit"
 		});
 		return dataOut;
+	},
+	/**
+	 * 获取首页广告
+	 * @param {Object} shopid
+	 * @param {Object} dataOut
+	 * @param {Object} limits
+	 */
+	async getAdByCondition(shopid, dataOut, limits) {
+		let field = {
+			"_id": 0,
+			"background": 1,
+			"link": 1,
+			size: 1,
+			"posid": 1,
+			"src": 1
+		}
+		let conditions = {
+			ads: cmd.or({
+				type: cmd.exists(false)
+			}, {
+				type: "home_swiper"
+			}).and({
+				shopid: cmd.in([0, shopid])
+			}),
+			adBanners: {
+				type: "home_banner_after_category",
+				shopid: cmd.in([0, shopid])
+			}
+		}
+
+		for (let key in conditions) {
+			if (limits[key] > 0) {
+				const {
+					data
+				} = await adCollection.where(conditions[key]).field(field).limit(limits[key]).orderBy("shopid", "desc").get();
+				dataOut[key] = data;
+			}
+		};
 	},
 	/**
 	 * 按条件查询商品列表
@@ -181,7 +211,7 @@ const models = {
 			/**
 			 * 精品推荐
 			 */
-			recommend:{
+			recommend: {
 				condition: {
 					shopid: shopid,
 					isRecommend: true,

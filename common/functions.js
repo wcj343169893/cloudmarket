@@ -625,6 +625,21 @@ const navToDocWebPage = function(url) {
 		url: `/pages/docs/web?url=${url}`
 	})
 }
+/**
+ * 打开广告内容
+ */
+const navToAdDetail = (item)=>{
+	let link = item.link;
+	if (link.indexOf('/pages') === 0) {
+		//跳转指定页面
+		uni.navigateTo({
+			url: `${link}`
+		});
+	} else if (link.indexOf('http') === 0) {
+		//跳转网页
+		navToDocWebPage(link);
+	}
+}
 
 /**
  * 批量上传多个文件
@@ -852,5 +867,6 @@ export {
 	cloudUploadFile,
 	checkAppUpdate,
 	mapDistance,
-	checkDeliveryHour
+	checkDeliveryHour,
+	navToAdDetail
 }

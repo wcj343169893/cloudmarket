@@ -68,7 +68,7 @@
 		 tips="商品分类"></mix-list-cell>
 		<mix-list-cell icon="icon-shouhoutuikuan" iconColor="#54b4ef" title="营销活动" @eventClick="navTo('/pages/admin/goods/miaosha/list')"
 		 tips="限时秒杀"></mix-list-cell>
-		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="轮播广告" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
+		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
 		<mix-list-cell icon="icon-tongji" iconColor="#54b4ef" title="经营数据" tips=" "></mix-list-cell>
 	</view>

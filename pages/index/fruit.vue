@@ -50,12 +50,14 @@
 				<text>{{ item.name }}</text>
 			</view>
 		</view>
-		<view class="shop-notice m-t" v-if="shop.notice && shop.notice.length>0">
+		<view class="shop-notice m-t b-b" v-if="shop.notice && shop.notice.length>0">
 			<text class="yticon icon-gonggao"></text>
 			<text>{{shop.notice}}</text>
 		</view>
 		<block v-if="miaoshaList && miaoshaList.length > 0">
-			<view class="f-header m-t" @click="navToSecKillGoods">
+			<!-- banner图广告 -->
+			<bannerPage v-if="adBanners.length>0" :ad="adBanners[0]"></bannerPage>
+			<view class="f-header" @click="navToSecKillGoods">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.miaosha}}</text></view>
 				<text class="yticon icon-you"></text>
@@ -63,7 +65,9 @@
 			<miaoshaPage :dataList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
 		</block>
 		<block v-if="tuangouList && tuangouList.length > 0">
-			<view class="f-header m-t" @click="navTo('/pages/index/tuangou')">
+			<!-- banner图广告 -->
+			<bannerPage v-if="adBanners.length>1" :ad="adBanners[1]"></bannerPage>
+			<view class="f-header" @click="navTo('/pages/index/tuangou')">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.tuangou}}</text></view>
 				<text class="yticon icon-you"></text>
@@ -71,21 +75,27 @@
 			<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		</block>
 		<block v-if="yudingList && yudingList.length > 0">
-			<view class="f-header m-t">
+			<!-- banner图广告 -->
+			<bannerPage v-if="adBanners.length>2" :ad="adBanners[2]"></bannerPage>
+			<view class="f-header">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.yuding}}</text></view>
 			</view>
 			<yudingPage :dataList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
 		</block>
 		<block v-if="recommendList.length > 0">
-			<view class="f-header m-t">
+			<!-- banner图广告 -->
+			<bannerPage v-if="adBanners.length>3" :ad="adBanners[3]"></bannerPage>
+			<view class="f-header">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.recommend}}</text></view>
 			</view>
 			<normalPage :dataList="recommendList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
 		</block>
 		<block v-if="newestList.length > 0">
-			<view class="f-header m-t">
+			<!-- banner图广告 -->
+			<bannerPage v-if="adBanners.length>4" :ad="adBanners[4]"></bannerPage>
+			<view class="f-header">
 				<view class="icon">&nbsp;</view>
 				<view class="tit-box"><text class="tit">{{titles.newest}}</text></view>
 			</view>
@@ -137,6 +147,7 @@
 	import miaoshaPage from './components/miaosha.vue';
 	import yudingPage from './components/yuding.vue';
 	import normalPage from './components/normal.vue';
+	import bannerPage from './components/banner.vue';
 	import tabbarMixin from './mixin/tabbar'
 	import {
 		getHomeFruitData,
@@ -147,7 +158,7 @@
 		navToGoodsItemPage,
 		updateGoodsTags,
 		navToDocPageByType,
-		navToDocWebPage,
+		navToAdDetail,
 		showLoginDialog
 	} from '@/common/functions.js';
 
@@ -158,7 +169,8 @@
 			tuangouPage,
 			miaoshaPage,
 			yudingPage,
-			normalPage
+			normalPage,
+			bannerPage
 		},
 		data() {
 			return {
@@ -171,6 +183,7 @@
 				searchKeyWords: [],
 				address: '开启定位获得位置/收货地址',
 				carouselList: [],
+				adBanners: [],
 				recommendCategoriesList: [],
 				miaoshaList: [],
 				newestList: [],
@@ -289,6 +302,9 @@
 						this.swiperLength = ads.length;
 						this.carouselList = ads;
 					}
+					if(res.adBanners){
+						this.adBanners = res.adBanners;
+					}
 					if (res.categories) {
 						this.recommendCategoriesList = res.categories;
 					}
@@ -339,21 +355,7 @@
 			//广告轮播跳转
 			navToAdPage(item) {
 				console.log(item);
-				//https://ask.dcloud.net.cn/article/35621
-				let link = item.link;
-				//this.$api.msg(link)
-				if (link.indexOf('/pages') === 0) {
-					//跳转指定页面
-					uni.navigateTo({
-						url: `${link}`
-					});
-				} else if (link.indexOf('http') === 0) {
-					//跳转网页
-					/* plus.runtime.openURL(link, function(res) {
-						console.log(res);
-					}); */
-					navToDocWebPage(link);
-				}
+				navToAdDetail(item)
 			},
 			navToDocPageByType(id) {
 				navToDocPageByType(id);
@@ -724,6 +726,7 @@
 		flex-wrap: wrap;
 		padding: 30upx 22upx 0;
 		background: #fff;
+		position: relative;
 
 		.cate-item {
 			display: flex;
@@ -976,7 +979,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
+		background: #FFFFFF;
+		padding: 20rpx 0;
+		position: relative;
 		.icon-gonggao {
 			font-size: $font-sm;
 		}

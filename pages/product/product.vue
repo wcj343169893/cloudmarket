@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" v-if="loaded">
 		<pageHeader ref="pageHeader" :referer="referer"></pageHeader>
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">
@@ -427,6 +427,7 @@
 					this.amount = this.cartMap[0] > 0 ? this.cartMap[0] : 1;
 					this.getSaleRate();
 				}
+				this.loaded = true;
 			},
 			checkYuding(item) {
 				if (!item.yuding) {
