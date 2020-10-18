@@ -57,6 +57,7 @@ const list = async (data, context) => {
 		storage_condition: 1,
 		net_weight: 1,
 		service_purpose: 1,
+		deliveryTags: 1,
 		description: 1
 	};
 	let time = new Date().getTime();

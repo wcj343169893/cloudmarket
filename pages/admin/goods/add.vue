@@ -115,16 +115,6 @@
 				</view>
 			</view>
 		</block>
-		<label class="mix-list-cell b-b">
-			<text class="cell-tit clamp">仅支持自提</text>
-			<view class="cell-content content-right">
-				<checkbox-group name="onlySelfTake" @change="changeOnlySelfTake">
-					<checkbox value="1" :checked="onlySelfTake==1" />
-				</checkbox-group>
-			</view>
-		</label>
-		<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField">
-		</mix-list-input>
 		<view class="mix-list-cell" @click="uploadSrc">
 			<text class="cell-tit clamp">*主图</text>
 			<view class="cell-tip">尺寸800*800</view>
@@ -177,26 +167,29 @@
 		</label>
 		<view class="skus">
 			<view class="sub-container">
-				<view class="mix-list-cell b-b">
-					<text class="cell-tit clamp">配送</text>
-					<view class="cell-content content-right">
-						<checkbox-group name="delivery_tags" @change="changeDeliveryTags">
-							<label class="m-r">
-								<checkbox value="iceNeed" />
-								<text>加冰</text>
-							</label>
-							<label>
-								<checkbox value="package" />
-								<text>独立包装</text>
-							</label>
-						</checkbox-group>
-					</view>
-				</view>
 				<mix-list-input title="净含量" :defContent="net_weight" field="net_weight" placeholder="请输入净含量" @change="changeField"></mix-list-input>
 				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期" @change="changeField"></mix-list-input>
 				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition" placeholder="请输入保存条件"
 				 @change="changeField"></mix-list-input>
 				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入保质期" @change="changeField"></mix-list-input>
+				<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField"></mix-list-input>
+				<view class="mix-list-cell b-b">
+					<text class="cell-tit clamp">配送注意事项</text>
+					<view class="cell-content content-right">
+						<checkbox-group name="delivery_tags" @change="changeDeliveryTags">
+							<view v-for="(itg,tindex) in deliveryTagNames" :key="tindex">
+								<label>
+									<text class="m-r">{{itg.name}}</text>
+									<checkbox :value="itg.value" :checked="deliveryTags.indexOf(itg.value) != -1" />
+								</label>
+							</view>
+						</checkbox-group>
+						<checkbox-group name="onlySelfTake" @change="changeOnlySelfTake">
+							<text class="m-r">仅自提</text>
+							<checkbox value="1" :checked="onlySelfTake==1" />
+						</checkbox-group>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="tmp submit"></view>
@@ -328,6 +321,16 @@
 				description: '',
 				descriptionImgs: [], //图文
 				deliveryTags: [],
+				deliveryTagNames: [
+					{
+						name:"加冰保鲜",
+						value:"iceNeed"
+					},
+					{
+						name:"独立包装",
+						value:"package"
+					}
+				],
 				id: false,
 				upc: "", //商品条码
 				share: "", //分享语
@@ -992,6 +995,7 @@
 
 			&.content-right {
 				text-align: right;
+				color: $font-color-light;
 			}
 		}
 
