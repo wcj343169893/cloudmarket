@@ -43,6 +43,35 @@ const model = {
 		return await this.post('/push/single/cid', requestData)
 	},
 	/**
+	 * 批量推
+	 * @param {Object} data
+	 */
+	async toList(data) {
+		await this.prepareData(data);
+		const clientid = data.clientid
+		delete data.clientid
+		let requestData = {
+			...data
+		}
+		//此接口用来创建消息体，并返回taskid，为批量推的前置步骤
+		let {
+			taskid
+		} = await this.post('/push/list/message', requestData);
+		if (!taskid) {
+			console.log("创建消息体失败")
+			return false;
+		}
+		console.log("创建消息体成功")
+		requestData = {
+			audience: {
+				"cid": clientid
+			},
+			taskid
+		}
+		//对列表中所有cid进行消息推送。调用此接口前需调用创建消息接口设置消息内容。
+		return await this.post('/push/list/cid', requestData)
+	},
+	/**
 	 * 获取鉴权token
 	 * http://docs.getui.com/getui/server/rest_v2/token/
 	 */
@@ -104,7 +133,7 @@ const model = {
 	 * @param {Object} requestData
 	 */
 	async post(module, requestData, times) {
-		console.log("requestData",JSON.stringify(requestData));
+		console.log("requestData", JSON.stringify(requestData));
 		let res = await uniCloud.httpclient.request(this.getUrl(module), {
 			method: 'POST',
 			headers: {
