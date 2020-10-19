@@ -30,6 +30,9 @@
 5. 开启自动取消过期订单定时器，cloud-cron-cancel-orders，增加定时器触发``[{"name":"cancelOrderTrigger","type":"timer","config":"12 * * * * * *"}]``,每分钟执行一次
 6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
 
+### 配置文件说明
+详见云函数目录下，common/config/README.md
+
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
 2. 分类页，所有分类和商品联动
