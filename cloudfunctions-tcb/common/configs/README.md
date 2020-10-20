@@ -13,7 +13,8 @@
 |balance|余额支付|  
 |delivery|货到付款|  
 |uniPay| unipay内置方法，cloud-payment内动态调用  |  
-|name|前端显示的支付方式名称，例如：余额可以改成佣金|  
+|name|退款等功能需要只显示微信或者支付宝|  
+|payName|前端显示的支付方式名称，例如：余额可以改成佣金|  
 |pfx|微信支付商户 API 证书，主要用于退款,下载后，保存到cert目录下，这里只填写证书名称，例如:abcdef.p12|  
 
 
@@ -51,6 +52,17 @@ push.default 为默认app配置，假如涉及到多个客户端，例如：骑�
 |AppSecret	|第三方客户端个推集成鉴权码，用于验证第三方合法性。在客户端集成SDK时需要提供。	|
 |MasterSecret	|个推服务端API鉴权码，用于验证调用方合法性。在调用个推服务端API时需要提供。（请妥善保管，避免通道被盗用）。	|
 |packageName	|应用包名	|
+
+
+### 返回消息模板 templates
+主要在cloud-payment中，处理返回值，达到国际化效果，大括号中的变量可以去掉，但不能更改为其他字符串，否则无法识别参数  
+
+|字段	|说明	|
+|--	|--	|
+|payment	|支付相关	|
+|order	|订单相关	|
+|system	|系统	|
+
 
 ```
 {
@@ -163,6 +175,32 @@ push.default 为默认app配置，假如涉及到多个客户端，例如：骑�
 			"appSecret": "wF9SqqDvk3ANRMoMtrbPm1",
 			"mastersecret": "udzQP1wLwWAQEeozJgYZ15",
 			"packageName": "com.gengyun"
+		}
+	},
+	"templates": {
+		"payment": {
+			"error": "支付方式错误",
+			"notExist": "支付方式不存在",
+			"refundSuccessContent": "退款将退回至您的{payName}账户，请注意查收。",
+			"balance": "可用余额￥{balance}",
+			"balanceNotEnough": "余额不足",
+			"balanceNotEnoughNotice": "余额不足，请选择其他支付方式"
+		},
+		"order": {
+			"timeOut": "订单已超时",
+			"canceled": "订单已取消",
+			"paid": "订单已支付",
+			"notExist": "订单不存在",
+			"depositPaid": "已支付定金",
+			"depositBody": "定金：{body}",
+			"finalBody": "尾款：{body}",
+			"refundSuccess": "退款成功",
+			"refundSuccessCycle": "您的退款已受理完成，到账周期可查看退款明细。"
+		},
+		"system": {
+			"error": "系统错误，请联系店主",
+			"notfund": "暂无数据",
+			"success": "操作成功"
 		}
 	}
 }

@@ -2,7 +2,8 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	getPaymentConfig
+	getPaymentConfig,
+	getStringFormat
 } = require('configs');
 const userCollection = db.collection("uni-id-users");
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
@@ -26,7 +27,7 @@ const models = {
 		}
 		if (balance < order.totalMoney) {
 			//付失败
-			data.message = "余额不足,付款失败";
+			data.message = getStringFormat("payment.balanceNotEnough");
 			return false;
 		}
 		//需要扣费
@@ -40,7 +41,7 @@ const models = {
 			console.log("余额付款", res);
 			if (res.updated < 1) {
 				//付失败
-				data.message = "余额不足,付款失败";
+				data.message = getStringFormat("payment.balanceNotEnough");
 				return false;
 			}
 		}
@@ -52,7 +53,7 @@ const models = {
 			balance: yue,
 			orderId: order.outTradeNo,
 			money: order.totalMoney,
-			description: "购买:" + order.body,
+			description: order.body,
 		});
 		console.log("addUserBalanceLog", log);
 		return {
@@ -66,7 +67,7 @@ const models = {
 			totalFee: parseInt(order.totalMoney * 100),
 			type: this.type,
 			typeName: config.name,
-			name: config.name + "支付",
+			name: config.payName,
 			balance: yue,
 		};
 	},
@@ -124,13 +125,16 @@ const models = {
 			money: money,
 			description: order.refundDesc,
 		});
-		let payname = payInfo.typeName || payInfo.name;
+		let payName = payInfo.typeName || payInfo.name;
 		console.log("保存账户收入日志", log);
 		//更新原支付订单，提示有退款
 		await userBalanceLogCollection.doc(payInfo.transactionId).update({
 			refund: cmd.inc(money)
 		});
-		return `退款将退回至您的${payname}账户，请注意查收`;
+		// return `退款将退回至您的${payname}账户，请注意查收`;
+		return getStringFormat("payment.refundSuccessContent", {
+			payName
+		});
 	},
 	/**
 	 * 保存用户余额变动日志
@@ -159,10 +163,12 @@ const models = {
 	 */
 	getPaymentInfo(config, order, balance) {
 		return {
-			name: config.name + "支付",
+			name: config.payName,
 			usable: balance >= order.totalMoney,
-			usableText: "余额不足,请选择其他支付方式",
-			desc: "可用余额￥" + balance
+			usableText: getStringFormat("payment.balanceNotEnoughNotice"),
+			desc: getStringFormat("payment.balance", {
+				balance
+			})
 		}
 	}
 }

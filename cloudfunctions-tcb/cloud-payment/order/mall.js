@@ -15,6 +15,9 @@ const {
 const {
 	sendNewOrder
 } = require('push');
+const {
+	getStringFormat
+} = require('configs');
 const model = {
 	/**
 	 * 检查订单状态
@@ -34,20 +37,20 @@ const model = {
 			lastPayTime: 1
 		});
 		if (!order) {
-			data.message = "订单不存在";
+			data.message = getStringFormat("order.notExist");
 			return false;
 		}
 		if (order.state !== 0) {
-			data.message = "订单" + (order.state = 1 ? "已支付" : "已取消");
+			data.message = order.state = 1 ? getStringFormat("order.paid") : getStringFormat("order.canceled");
 			return false;
 		} else if (order.lastPayTime < time) {
-			data.message = "订单已超时"
+			data.message = getStringFormat("order.timeOut");
 			return false;
 		} else if (order.yuding) {
 			//1.未支付，2已支付定金
 			if (order.yuding.endTime > time) {
 				if (order.yuding.state == 1) {
-					data.message = "已支付定金"
+					data.message = getStringFormat("order.depositPaid");
 					return false;
 				}
 				//支付预定订单
@@ -56,12 +59,12 @@ const model = {
 				order.module = "yuding";
 				//不能使用的支付方式
 				order.excludePayment = ["delivery"];
-				order.body = "定金：" + order.body;
+				order.body = getStringFormat("order.depositBody",{body:order.body});
 				console.log("定金", order.yuding);
 			} else {
 				//支付尾款
 				order.totalMoney = order.yuding.finishPaymentPrice + order.freight;
-				order.body = "尾款：" + order.body;
+				order.body = getStringFormat("order.finalBody",{body:order.body});
 				console.log("尾款", order.yuding);
 			}
 		} else {
@@ -172,7 +175,7 @@ const model = {
 			refundStatus: "successed",
 			modified: new Date().toISOString(),
 			steps: cmd.unshift({
-				title: "退款成功",
+				title: getStringFormat("order.refundSuccess"),
 				desc: refund.message,
 				time: new Date().toISOString()
 			})
@@ -181,7 +184,7 @@ const model = {
 		if (refund.canceled) {
 			res = await orderCollection.doc(refund.orderId).update({
 				cancelApply: cmd.push({
-					message: "您的退款已受理完成，到账周期可查看退款明细。",
+					message: getStringFormat("order.refundSuccessCycle"),
 					time: new Date().getTime()
 				})
 			});

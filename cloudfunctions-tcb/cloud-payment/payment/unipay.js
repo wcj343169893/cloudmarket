@@ -6,7 +6,8 @@
 const uniPay = require('unipay');
 const {
 	getPaymentConfig,
-	getPaymentNotifyUrl
+	getPaymentNotifyUrl,
+	getStringFormat
 } = require('configs');
 const models = {
 	/**
@@ -19,7 +20,7 @@ const models = {
 		let config = getPaymentConfig(context.PLATFORM, data.provider);
 		if (!config) {
 			//其他支付
-			data.message = "支付方式错误";
+			data.message = getStringFormat("payment.error");
 			return false;
 		}
 		let openid = "";
@@ -48,7 +49,7 @@ const models = {
 		let config = getPaymentConfig(platform, provider);
 		if (!config) {
 			//其他支付
-			data.message = "支付方式不存在";
+			data.message = getStringFormat("payment.notExist");
 			return false;
 		}
 		let uniPayIns = uniPay[config["uniPay"]](config);
@@ -68,8 +69,9 @@ const models = {
 		let res = await uniPayIns.refund(order);
 		console.log("unipay refund", JSON.stringify(res));
 
-		let payname = payInfo.typeName || payInfo.name;
-		return `退款将退回至您的${payname}账户，请注意查收`;
+		let payName = payInfo.typeName || payInfo.name;
+		//return `退款将退回至您的${payname}账户，请注意查收`;
+		return getStringFormat("payment.refundSuccessContent",{payName});
 	},
 	/**
 	 * 获取支付信息
@@ -77,7 +79,7 @@ const models = {
 	 */
 	getPaymentInfo(config) {
 		return {
-			name: config.name + "支付",
+			name: config.payName,
 			usable: true,
 			usableText: "",
 			desc: ""

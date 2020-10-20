@@ -5,6 +5,9 @@
  */
 const uniID = require('uni-id');
 const actions = require('./actions');
+const {
+	getStringFormat
+} = require('configs');
 /**
  * 全部方法都需要验证用户信息
  * @param {Object} event ,event.uniIdToken每一个请求都会自动带上
@@ -23,7 +26,7 @@ exports.main = async (event, context) => {
 	} = event;
 	//退款定时器
 	if (Type == "Timer") {
-		console.log("退款定时器",event);
+		console.log("退款定时器", event);
 		return await actions.refund(event, context);
 	}
 	//token检查，必须登录
@@ -46,25 +49,25 @@ exports.main = async (event, context) => {
 		console.log("error", event, e);
 		return {
 			code: 500,
-			message: "系统错误",
+			message: getStringFormat("system.error"),
 			...e
 		}
 	}
 	if (!result) {
 		return {
 			code: 404,
-			message: "暂无数据",
+			message: getStringFormat("system.notfund"),
 			...data
 		};
 	} else if (result.code > 0) {
 		return {
 			code: 404,
-			message: result.msg || "暂无数据",
+			message: result.msg || getStringFormat("system.notfund"),
 		}
 	}
 	return {
 		code: 200,
 		data: result,
-		message: "操作成功"
+		message: getStringFormat("system.success")
 	};
 };

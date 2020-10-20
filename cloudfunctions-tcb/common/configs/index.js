@@ -62,9 +62,39 @@ const model = {
 	 * @param {Object} client
 	 * @link https://dev.dcloud.net.cn/uni/push?appid=__UNI__9900639&type=0
 	 */
-	getPushConfig(client){
+	getPushConfig(client) {
 		client = client || "default";
 		return config.push[client];
+	},
+	/**
+	 * 简单字符串模板，如果模板中找不到对于的字符，则默认源字符串
+	 * @param {Object} templateId 对于到config.json的key，例如：payment.error
+	 * @param {Object} data 参数{name:'支付宝'}
+	 */
+	getStringFormat(templateId, data) {
+
+		let ids = templateId.split(".");
+		//找不到对于的模板字符串
+		if (!config.templates || !config.templates[ids[0]] || !config.templates[ids[0]][ids[1]]) {
+			console.log("请配置模板 common/configs/config.json 添加templates节点")
+			return "";
+		}
+		//"退款将{name}退回至您的{payName}账户，请{bbq}注意查收"
+		let format = config.templates[ids[0]][ids[1]];
+		//模板字符串不需要替换变量
+		if (!data) {
+			return format;
+		}
+		//匹配大括号+英文字符
+		return format.replace(/\{([a-zA-Z0-9$_]+)\}/g, key => {
+			//去掉大括号，得到变量
+			let key1 = key.replace(/[\{\}]/g, "");
+			if (data[key1]) {
+				//存在变量对于的value
+				return data[key1];
+			}
+			return key;
+		});
 	}
 }
 module.exports = model;
