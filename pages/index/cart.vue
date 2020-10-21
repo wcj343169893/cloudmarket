@@ -479,10 +479,7 @@
 				this.total = Number(total.toFixed(2));
 				this.discount = Number(discount.toFixed(2));
 				//更新购物车总数量
-				this.setStateAttr({
-					key: 'cartMap',
-					val: cartMap
-				});
+				this.setStateAttr({cartMap});
 				console.log("cart", this.cartMap);
 				setTimeout(() => {
 					this.updateCartNumber(number);

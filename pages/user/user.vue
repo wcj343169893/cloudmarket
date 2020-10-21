@@ -6,11 +6,27 @@
 				<view class="portrait-box" @click="previewAvatar">
 					<image class="portrait" :src="userInfo.avatar"></image>
 				</view>
-				<view class="info-box" @click="navTo('/pages/userinfo/userinfo')">
-					<view class="username">
+				<view class="info-box">
+					<!-- #ifdef MP-WEIXIN -->
+					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
 						<text>{{ userInfo.nickname }}</text>
 						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
 					</view>
+					<button class="username" v-else open-type="getUserInfo" @getuserinfo="mpWxGetUserInfo">
+						<text>{{ userInfo.nickname }}</text>
+						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+					</button>
+					<!-- #endif -->
+					<!-- #ifndef MP-WEIXIN -->
+					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
+						<text>{{ userInfo.nickname }}</text>
+						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+					</view>
+					<view class="username" v-else>
+						<text>{{ userInfo.nickname }}</text>
+						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+					</view>
+					<!-- #endif -->
 					<view class="invite" v-if="userInfo.my_invite_code">
 						<text>邀请码：</text>
 						<text>{{userInfo.my_invite_code}}</text>
@@ -169,11 +185,11 @@
 		getGoodsVisites,
 		getUserStatistics,
 		saveUserInfo,
-		cronCancelOrders
 	} from '@/common/request.js';
 	import {
 		navToGoodsItemPage
 	} from '@/common/functions.js';
+	import loginMpWx from './mixin/login-mp-wx.js'
 	import {
 		mapState,
 		mapMutations
@@ -182,6 +198,7 @@
 		moveY = 0,
 		pageAtTop = true;
 	export default {
+		mixins: [loginMpWx],
 		data() {
 			return {
 				isLoaded: false,
@@ -416,6 +433,8 @@
 				uni.navigateTo({
 					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
 				})
+			},getUserInfo(){
+				this.$store.dispatch('getUserInfo');
 			}
 		}
 	};
@@ -471,6 +490,12 @@
 		.username {
 			font-size: $font-lg + 6upx;
 			color: $font-color-dark;
+			background: no-repeat;
+			border: none;
+			padding: 0;
+			&::after{
+				display: none;
+			}
 		}
 
 		.account {

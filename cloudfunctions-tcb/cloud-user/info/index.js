@@ -34,6 +34,8 @@ const models = {
 			console.log("save user id", result);
 			res.userInfo.id = id;
 		}
+		//是否设置昵称
+		res.userInfo.isSetNickname = !!res.userInfo.nickname;
 		//设置默认值
 		res.userInfo = Object.assign({
 			balance: 0,
@@ -126,6 +128,23 @@ const models = {
 			uid: data.uid,
 			...entity
 		});
+	},
+	/**
+	 * 微信小程序更新用户信息，需要解密
+	 * @param {Object} data
+	 */
+	async saveByMpWeixin(data){
+		const {uid,userInfo} = data;
+		console.log(userInfo);
+		//@TODO 验证真实性
+		let saveData = {
+			uid,
+			nickname:userInfo.nickName,
+			avatar:userInfo.avatarUrl,
+			gender:userInfo.gender
+		};
+		await this.save(saveData);
+		return saveData;
 	},
 	/**
 	 * 获取用户订单真实统计,与order字段不冲突

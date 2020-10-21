@@ -79,8 +79,7 @@
 				jv.isInitSuccess(result => {
 					console.log('jv.isInitSuccess', result);
 					this.setStateAttr({
-						key:"jgLoginInit",
-						val:result["enable"]
+						jgLoginInit:result["enable"]
 					})
 				});
 				jv.checkVerifyEnable(result => {

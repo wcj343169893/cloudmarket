@@ -42,13 +42,8 @@ const store = new Vuex.Store({
 	mutations: {
 		//更新state数据
 		setStateAttr(state, param) {
-			if (param instanceof Array) {
-				for (let item of param) {
-					state[item.key] = item.val;
-				}
-			} else {
-				state[param.key] = param.val;
-				console.log("setStateAttr", param);
+			for (let key in param) {
+				state[key] = param[key];
 			}
 		},
 		login(state, provider) {
