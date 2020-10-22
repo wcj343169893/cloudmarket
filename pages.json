@@ -555,6 +555,15 @@
 				"navigationBarTitleText": "用户评价"
 			}
         }
+        ,{
+            "path" : "pages/admin/statistics/datas",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "经营数据",
+                "enablePullDownRefresh": true
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

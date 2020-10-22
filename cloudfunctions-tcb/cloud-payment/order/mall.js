@@ -107,7 +107,7 @@ const model = {
 				outTradeNo
 			}, this.getFields());
 			//更新用户订单统计，用户待付款订单数
-			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid);
+			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid,order.totalMoney);
 			console.log("updateUserOrderCount", res);
 			//新订单提醒
 			res = await sendNewOrder(order);

@@ -9,6 +9,7 @@ const modules = {
 	docs: require("./docs"),
 	printer: require("./printer"),
 	users: require("./users"),
+	statistics: require("./statistics"),
 };
 const uniID = require('uni-id');
 /**
@@ -21,15 +22,22 @@ const uniID = require('uni-id');
 exports.main = async (event, context) => {
 	//统一用户权限验证，进入里面，所有必须登录，某些接口，需要特殊验证
 	const {
-		module, 
-		action, 
-		data, 
+		module,
+		action,
+		data,
 		shopid,
 		Type,
 		uniIdToken
 	} = event;
 	if (Type == "Timer") {
 		console.log(event);
+		for (let model in modules) {
+			//执行每个模块的定时器
+			if (modules[model]["timer"]) {
+				console.log(model);
+				await modules[model]["timer"]();
+			}
+		}
 		return event;
 	}
 	//token检查,全部都需要
@@ -37,8 +45,15 @@ exports.main = async (event, context) => {
 	if (payload.code && payload.code > 0) {
 		return {
 			code: 401,
-			message:payload.msg,
-			data:payload
+			message: payload.msg,
+			data: payload
+		}
+	}
+	//简单判断用户权限
+	if (!payload.userInfo.admin || payload.userInfo.admin.indexOf(shopid) == -1) {
+		return {
+			code: 403,
+			message: "无权操作",
 		}
 	}
 	//data.uid = payload.uid;
@@ -58,11 +73,11 @@ exports.main = async (event, context) => {
 	if (data.limit) {
 		data.limit = data.limit < 1 ? 20 : +data.limit;
 	}
-	let result=false;
+	let result = false;
 	try {
 		result = await modules[module][action](data, context);
 	} catch (e) {
-		console.log("error",event,e);
+		console.log("error", event, e);
 		return {
 			code: 500,
 			message: e.errMsg || "系统错误"

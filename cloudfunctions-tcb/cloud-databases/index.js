@@ -107,6 +107,19 @@ const indexs = {
 			"MgoIsUnique": false
 		}
 	}],
+	"cloud_shop_statistics": [{
+		"IndexName": "index_shop",
+		"MgoKeySchema": {
+			"MgoIndexKeys": [{
+				"Name": "shopid",
+				"Direction": "1"
+			}, {
+				"Name": "day",
+				"Direction": "1"
+			}],
+			"MgoIsUnique": true
+		}
+	}],
 	"uni-id-users": [{
 			"IndexName": "username",
 			"MgoKeySchema": {
@@ -289,6 +302,8 @@ const configs = {
 			"name": "cloud_printer_types"
 		}, {
 			"name": "cloud_shops"
+		}, {
+			"name": "cloud_shop_statistics"
 		}, {
 			"name": "cloud_user_balance_logs"
 		}, {

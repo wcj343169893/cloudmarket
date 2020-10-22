@@ -26,9 +26,13 @@
 					<text class="yticon icon-bianji"></text>
 					<text class="">输码验证</text>
 				</view>
-				<view class="fast-actions">
+				<!-- <view class="fast-actions">
 					<text class="yticon icon-daifukuan"></text>
 					<text class="">财务结算</text>
+				</view> -->
+				<view class="fast-actions" @click="navTo('/pages/admin/statistics/datas')">
+					<text class="yticon icon-tongji"></text>
+					<text class="">经营数据</text>
 				</view>
 			</view>
 		</view>
@@ -70,7 +74,6 @@
 		 tips="限时秒杀"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
-		<mix-list-cell icon="icon-tongji" iconColor="#54b4ef" title="经营数据" tips=" "></mix-list-cell>
 	</view>
 </template>
 

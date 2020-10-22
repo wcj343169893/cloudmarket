@@ -83,5 +83,6 @@ export {
 	categoryAdmin,
 	adsAdmin,
 	docsAdmin,
-	usersAdmin
+	usersAdmin,
+	adminNetwork
 }

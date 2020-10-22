@@ -6,6 +6,7 @@ const goodsCollection = db.collection('cloud_goods');
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const identityCollection = db.collection("cloud_identity");
 const cacheCollection = db.collection("cloud_identity");
+const shopStatisticsCollection = db.collection("cloud_shop_statistics");
 
 /**
  * 获取店铺信息
@@ -67,7 +68,7 @@ const updateGoodsStock = function(ele, xishu) {
  * @param {Object} number 如果是负数，则减少
  * @param {Object} type2 类型转移到下一个类型，与type相反的数值
  */
-const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
+const updateUserOrderCount = async function(uid, type, number, type2, shopid, totalMoney) {
 	let data = {
 		order: {}
 	};
@@ -81,6 +82,14 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
 	//更新店铺订单数总计
 	if (shopid > 0) {
 		await updateShopStatistics(shopid, data);
+		//更新营业额，下单用户，已支付数量
+		if (type == "payup") {
+			await updateShopDayStatistics(shopid, {
+				turnover: cmd.inc(totalMoney),
+				"order.paid": cmd.inc(1),
+				"order.users": cmd.addToSet(uid)
+			});
+		}
 	}
 	return res;
 }
@@ -123,6 +132,18 @@ const updateShopStatistics = async (shopid, data) => {
 		id: +shopid
 	}).update(data);
 	console.log("updateShopStatistics", res2);
+	return res2;
+}
+/**
+ * 更新店铺每日统计，包含营业额，有效订单，下单用户等
+ */
+const updateShopDayStatistics = async (shopid, data) => {
+	let dayTime = getDateString();
+	let res2 = await shopStatisticsCollection.where({
+		shopid,
+		day: dayTime
+	}).update(data);
+	console.log("updateShopDayStatistics", res2);
 	return res2;
 }
 /**
@@ -179,7 +200,24 @@ const getUserInfoById = async function(uid, field) {
 const genOrderNo = function() {
 	return getDateFormat('yyyyMMddhhmmss') + (Math.random() + "").substr(2, 8);
 }
-
+/**
+ * 默认时差
+ */
+const utc = 8;
+/**
+ * 获取时间戳,时差问题
+ */
+const getTime = (time) => {
+	let getDate;
+	if (time) {
+		getDate = new Date(time);
+	} else {
+		getDate = new Date();
+	}
+	//兼容时区问题，增加8小时
+	getDate.setHours(getDate.getHours() + utc);
+	return getDate.getTime();
+}
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
  * @param {Object} fmt
@@ -193,8 +231,8 @@ const getDateFormat = function(fmt, time) {
 		getDate = new Date();
 	}
 	//兼容时区问题，增加8小时
-	getDate.setHours(getDate.getHours()+8);
-	
+	getDate.setHours(getDate.getHours() + utc);
+
 	let o = {
 		'M+': getDate.getMonth() + 1,
 		'd+': getDate.getDate(),
@@ -296,9 +334,6 @@ const dbcache = async function(key, data, expires) {
 		expires
 	});
 }
-const testName = async(data)=>{
-	return data;
-}
 
 module.exports = {
 	updateGoodsMiaoshaStock,
@@ -306,6 +341,7 @@ module.exports = {
 	updateUserScore,
 	updateGoodsStock,
 	updateShopStatistics,
+	updateShopDayStatistics,
 	shopGoodsInc,
 	genIdentityId,
 	addUserBalanceLog,
@@ -313,6 +349,7 @@ module.exports = {
 	genOrderNo,
 	getDateFormat,
 	getDateString,
-	dbcache,testName,
-	checkDeliveryHour
+	dbcache,
+	checkDeliveryHour,
+	getTime
 }
