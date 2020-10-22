@@ -12,7 +12,7 @@
 
 ### 自动导入步骤
 1. 点击购买或者试用
-2. 选择绑定服务空间，支持阿里云和腾讯云
+2. 选择绑定服务空间，支持阿里云和**腾讯云**(强烈推荐)
 3. 勾选``立即部署本插件的云函数到服务空间,立即根据本插件包含的db_init.json初始化服务空间的数据库``,点击直接部署服务空间，如果提示有存在模块，覆盖并重新部署，然后泡一杯茶，静静等待  
 4. 导入到HBuilderX
 5. 查看云端函数是否与本地一直，如果不同，则把没有的上传  
@@ -25,13 +25,13 @@
 ### 非必要步骤
 1. 一键登录：本项目引入了[极光一键登录](https://ext.dcloud.net.cn/plugin?id=1356)，0元购买后才能使用，然后到官网申请对于的key，再修改manifest.json，app原生插件-->选择云端插件，再打自定义基座。  
 2. 支付功能：/cloudfunctions/common/configs/config.json，配置微信和支付宝参数，[文档](https://uniapp.dcloud.io/uniCloud/unipay)  
-3. 推送：/cloudfunctions/unipush/index.js，[文档](https://uniapp.dcloud.io/api/plugins/push)  
-4. 小程序配置：/cloudfunctions/common/configs/config.json
+3. 推送：/cloudfunctions/common/configs/config.json push节点，[文档](https://uniapp.dcloud.io/api/plugins/push)  
+4. 小程序配置：/manifest.json
 5. 开启自动取消过期订单定时器，cloud-cron-cancel-orders，增加定时器触发``[{"name":"cancelOrderTrigger","type":"timer","config":"12 * * * * * *"}]``,每分钟执行一次
 6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
 
 ### 配置文件说明
-详见云函数目录下，common/config/README.md
+详见云函数目录下，[/cloudfunctions/common/config/README.md](https://github.com/wcj343169893/cloudmarket/blob/master/cloudfunctions-tcb/common/configs/README.md)
 
 ### 基本功能
 1. 首页广告（优先当前店铺，再是全局），推荐分类，秒杀商品，最新商品，定位管理，商品搜索
@@ -78,6 +78,15 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 商家pc后台
 * 骑手端
 * 供应商报价
+
+#### 2.0.7
+
+
+#### 2.0.6
+* 增加配置文件说明
+* 增加支付模块国际化消息
+* 增加小程序用户中心授权获取当前用户信息
+* 修复店铺推送，只要是管理者，都可以接收
 
 #### 2.0.5
 * 增加首页banner广告位，规范广告打开方式

@@ -7,10 +7,12 @@
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
+		<!-- #ifndef MP -->
 		<view class="section message_notice m-t">
 			<text>{{message}}</text>
 			<button type="default" class="action-btn recom">去开启</button>
 		</view>
+		<!-- #endif -->
 		<view class="section m-t">
 			<view class="sub-title">
 				<text>{{ stateContent }}</text>
@@ -308,6 +310,7 @@
 		data() {
 			return {
 				id: 0,
+				isRefreshPrePage:false,
 				goodsList: [],
 				moreGoodsCount: 0,
 				priceTitle: '单价',
@@ -374,6 +377,12 @@
 					money += this.info.yuding.payInfo.totalFee;
 				}
 				return money / 100;
+			}
+		},
+		onShow() {
+			if(this.isRefreshPrePage){
+				this.$api.prePage().refreshList();
+				this.isRefreshPrePage = false;
 			}
 		},
 		onUnload() {
@@ -685,6 +694,7 @@
 			//刷新数据
 			refreshList() {
 				this.loadData();
+				this.isRefreshPrePage = true;
 			},
 			navBack() {
 				uni.navigateBack();
