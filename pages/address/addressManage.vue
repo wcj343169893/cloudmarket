@@ -8,9 +8,9 @@
 			<text class="tit">手机号</text>
 			<input class="input" type="number" v-model="addressData.mobile" placeholder="收货人手机号码" placeholder-class="placeholder" />
 		</view>
-		<view class="row b-b">
+		<view class="row b-b" @click="chooseLocation">
 			<text class="tit">地址</text>
-			<text @click="chooseLocation" class="input">{{ addressData.addressName }}</text>
+			<text class="input">{{ addressData.addressName }}</text>
 			<text class="yticon icon-shouhuodizhi"></text>
 		</view>
 		<view class="row b-b">
@@ -60,9 +60,8 @@ export default {
 	methods: {
 		getAddress() {
 			address({
-				type: 'one',
 				id:this.id
-			}).then(res => {
+			},"detail").then(res => {
 				this.addressData = res;
 			});
 		},
@@ -112,8 +111,7 @@ export default {
 				this.$api.msg('请填写门牌号信息');
 				return;
 			}
-			data["type"]=this.manageType;
-			address(data).then(res => {
+			address(data,this.manageType).then(res => {
 				console.log("保存地址：",res)
 				//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
 				//下面的方法，可以调用上一个页面的refreshList方法，navigateBack页面不刷新

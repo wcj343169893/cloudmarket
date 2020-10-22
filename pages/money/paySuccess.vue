@@ -29,6 +29,7 @@ export default {
 		return {
 			id: '',
 			delta: 1,
+			module:'mall',
 			detailUrl: '',
 			yudingNotice:'',
 			yudingNotice2:'',
@@ -38,6 +39,9 @@ export default {
 	onLoad(options) {
 		if (options.comefrom) {
 			this.comefrom = options.comefrom;
+		}
+		if(options.module){
+			this.module = options.module;
 		}
 		console.log(options);
 		this.id = options.id;

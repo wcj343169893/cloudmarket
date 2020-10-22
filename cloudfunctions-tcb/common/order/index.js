@@ -1,22 +1,27 @@
+'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const orderCollection = db.collection("cloud_orders");
+const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
+const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
 const {
 	updateUserOrderCount,
 	getDateString
 } = require('base-common');
+const {print} = require('printers');
 /**
  * 订单支付完成之后
  */
 const updateOrderPaymentInfo = async function(event) {
-	console.log(event);
+	//console.log(event);
 	let time = new Date().toISOString();
 	//reserve_
 	let outTradeNo = event.outTradeNo;
 	let conditions1 = {
-		_id: outTradeNo
+		id: outTradeNo
 	};
 	let conditions = {
-		_id: outTradeNo,
+		id: outTradeNo,
 		state: 0
 	};
 	let updateData = {
@@ -49,20 +54,32 @@ const updateOrderPaymentInfo = async function(event) {
 	}
 	//console.log(conditions);
 	//console.log(updateData);
-	let data = await db.collection("orders").where(conditions).update(updateData);
+	let data = await orderCollection.where(conditions).update(updateData);
 	//首次修改状态
 	if (data.updated == 1) {
-		let orderData = await db.collection("orders").where(conditions1).field({
+		let orderData = await orderCollection.where(conditions1).field({
 			uid: 1,
+			id:1,
 			goods: 1,
 			shopid: 1,
 			yuding: 1,
+			shop:1,
+			juli:1,
+			address:1,
+			deliveryType:1,
+			deliveryHour:1,
+			created:1,
+			remark:1,
+			totalMoney:1,
+			totalDiscount:1,
+			deduction:1,
+			freight:1,
 			cartCount: 1
 		}).limit(1).get();
 		let order = orderData.data[0];
 		if (type == "yuding") {
 			//更新支付倒计时lastPayTime=yuding.finalPaymentEndTime
-			let res = await db.collection("orders").doc(order._id).update({
+			let res = await orderCollection.doc(order._id).update({
 				lastPayTime: order.yuding.finalPaymentEndTime
 			});
 			console.log("更新预定订单尾款最后支付时间", res);
@@ -70,6 +87,9 @@ const updateOrderPaymentInfo = async function(event) {
 			//更新用户订单统计，用户待付款订单数
 			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid);
 			console.log("updateUserOrderCount", res);
+			// 打印订单
+			res = await print(order,order.shopid);
+			console.log("print", res);
 		}
 
 		//商品销量日志
@@ -88,12 +108,12 @@ const updateOrderPaymentInfo = async function(event) {
 		let dayTime = getDateString();
 
 		//商品销量
-		let saleRes = await db.collection("goods_day_sales").where({
+		let saleRes = await goodsDaySalesCollection.where({
 			day: dayTime
 		}).update(up);
 		console.log("saleRes", saleRes);
 		//店铺每日销量
-		saleRes = await db.collection("goods_shop_day_sales").where({
+		saleRes = await goodsShopDaySalesCollection.where({
 			day: dayTime
 		}).update(shopSales);
 		console.log("saleRes", saleRes);

@@ -58,7 +58,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	@charset "UTF-8";
 
 	.uni-load-more {
@@ -70,7 +70,7 @@
 	}
 
 	.uni-load-more__text {
-		font-size: 28upx;
+		font-size: 24upx;
 		color: #999
 	}
 

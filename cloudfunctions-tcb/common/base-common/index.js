@@ -1,29 +1,12 @@
 const db = uniCloud.database();
 const cmd = db.command;
-/**
- * 获取集合名称,更好管理多地区分站
- * @param {Object} event
- */
-const getCollectionNames = function(event) {
-	// 公用模块用法请参考 https://uniapp.dcloud.io/uniCloud/quickstart?id=common
-	//基础
-	var bases = ["users", "orders", "carts", "user_often_buy_shops", "user_recommend_shops"];
-	//多地区
-	var regions = ["ads", "shops", "shop_categories", "shop_comments", "goods", "goods_activities", "goods_categories"];
-	var collections = {};
-	//必须在正常范围内的地区
-	if (event.stationId) {
-		for (let coll of regions) {
-			collections[coll] = "region_" + event.stationId + "_" + coll;
-		}
-	} else {
-		bases = bases.concat(regions);
-	}
-	for (let coll of bases) {
-		collections[coll] = coll;
-	}
-	return collections;
-};
+const userCollection = db.collection("uni-id-users");
+const shopCollection = db.collection("cloud_shops");
+const goodsCollection = db.collection('cloud_goods');
+const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
+const identityCollection = db.collection("cloud_identity");
+const cacheCollection = db.collection("cloud_identity");
+
 /**
  * 获取店铺信息
  * @param {Object} id
@@ -38,7 +21,7 @@ const getShopInfoById = function(id) {
  * @param {Object} xishu 相乘系数，1或者-1
  */
 const updateGoodsMiaoshaStock = function(ele, xishu) {
-	return db.collection('goods').where({
+	return goodsCollection.where({
 		_id: ele._id,
 		"miaosha.stock": cmd.gte(ele.amount * xishu)
 	}).update({
@@ -66,9 +49,9 @@ const updateGoodsStock = function(ele, xishu) {
 		};
 		data['skus.' + ele.sku_index + '.stock'] = cmd.inc(-1 * ele.amount * xishu);
 		data['skus.' + ele.sku_index + '.sales'] = cmd.inc(1 * ele.amount * xishu);
-		return db.collection('goods').where(condition).update(data);
+		return goodsCollection.where(condition).update(data);
 	} else {
-		return db.collection('goods').where({
+		return goodsCollection.where({
 			_id: ele._id,
 			stock: cmd.gte(ele.amount * xishu)
 		}).update({
@@ -93,9 +76,7 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
 		data.order[type2] = cmd.inc(+number * -1);
 	}
 	console.log(uid, shopid, JSON.stringify(data));
-	let res = await db.collection("users").where({
-		id: +uid
-	}).update(data);
+	let res = await userCollection.doc(uid).update(data);
 	console.log(res);
 	//更新店铺订单数总计
 	if (shopid > 0) {
@@ -110,9 +91,7 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid) {
  */
 const updateUserScore = async function(uid, number) {
 	console.log("updateUserScore", uid, number);
-	return await db.collection("users").where({
-		id: +uid
-	}).update({
+	return await userCollection.doc(uid).update({
 		score: cmd.inc(number * 1)
 	});
 }
@@ -140,7 +119,7 @@ const shopGoodsInc = async (shopid, type, number, type2) => {
  * @param {Object} data
  */
 const updateShopStatistics = async (shopid, data) => {
-	let res2 = await db.collection("shops").where({
+	let res2 = await shopCollection.where({
 		id: +shopid
 	}).update(data);
 	console.log("updateShopStatistics", res2);
@@ -153,16 +132,14 @@ const updateShopStatistics = async (shopid, data) => {
  */
 const genIdentityId = async function(key, inc) {
 	//生成用户id----开始-----
-	const identity = db.collection("identity");
-	//获取用户id
 	inc = inc ? +inc : 1;
-	let res = await identity.where({
+	let res = await identityCollection.where({
 		"key": key
 	}).update({
 		value: cmd.inc(inc)
 	});
 	//立马查询出来，可能值是对的
-	let res2 = await identity.where({
+	let res2 = await identityCollection.where({
 		"key": key
 	}).field({
 		value: 1
@@ -176,7 +153,7 @@ const genIdentityId = async function(key, inc) {
  */
 const addUserBalanceLog = async function(data) {
 	//记录余额变动历史user_balance_logs
-	return await db.collection("user_balance_logs").add({
+	return await userBalanceLogCollection.add({
 		created: new Date().toISOString(),
 		...data
 	});
@@ -186,13 +163,11 @@ const addUserBalanceLog = async function(data) {
  * @param {int} id
  * @param {Object} field 
  */
-const getUserInfoById = async function(id, field) {
+const getUserInfoById = async function(uid, field) {
 	field = field || {
 		nickname: 1
 	}
-	let data = await db.collection("users").where({
-		id: +id
-	}).field(field).limit(1).get();
+	let data = await userCollection.doc(uid).field(field).limit(1).get();
 	if (data.data.length > 0) {
 		return data.data[0];
 	}
@@ -208,9 +183,18 @@ const genOrderNo = function() {
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
  * @param {Object} fmt
+ * @param {Object} time
  */
-const getDateFormat = function(fmt) {
-	let getDate = new Date();
+const getDateFormat = function(fmt, time) {
+	let getDate;
+	if (time) {
+		getDate = new Date(time);
+	} else {
+		getDate = new Date();
+	}
+	//兼容时区问题，增加8小时
+	getDate.setHours(getDate.getHours()+8);
+	
 	let o = {
 		'M+': getDate.getMonth() + 1,
 		'd+': getDate.getDate(),
@@ -229,6 +213,25 @@ const getDateFormat = function(fmt) {
 		}
 	}
 	return fmt;
+}
+const dateFormat = function(time, fmt) {
+	return getDateFormat(fmt, time);
+}
+/**
+ * 处理送达时间的名称，到底是显示今天还是日期
+ * @param {Object} info
+ */
+const checkDeliveryHour = function(info) {
+	if (!info || !info.deliveryHour) {
+		return;
+	}
+	let deliDay = dateFormat(info.deliveryHour.id, 'MM月dd日');
+	let today = dateFormat(false, 'MM月dd日');
+	if (deliDay == today) {
+		info.deliveryHour.name = '今天';
+	} else {
+		info.deliveryHour.name = deliDay;
+	}
 }
 
 /**
@@ -251,8 +254,53 @@ const filterFields = (event, strinFields, intFields) => {
 	}
 	return entity;
 }
+/**
+ * 缓存
+ * @param {String} key
+ * @param {Object} data
+ * @param {int} expires 有效期，以秒为单位，默认1小时
+ */
+const dbcache = async function(key, data, expires) {
+	//默认增加前缀
+	key = "cache_" + key;
+	let time = new Date().getTime();
+	//读取
+	const result = await cacheCollection.where({
+		key: key
+	}).field({
+		data: 1,
+		expires: 1
+	}).limit(1).get();
+	if (!data) {
+		if (result.data.length > 0 && result.data[0].expires > time) {
+			return result.data[0].data;
+		}
+		//没有可用的数据,或者数据过期
+		return false;
+	}
+	//写入
+	expires = !expires ? 3600000 + time : expires * 1000 + time;
+	if (result.data.length > 0) {
+		//修改
+		return await cacheCollection.where({
+			key: key
+		}).update({
+			data,
+			expires
+		});
+	}
+	//新增
+	return await cacheCollection.add({
+		key,
+		data,
+		expires
+	});
+}
+const testName = async(data)=>{
+	return data;
+}
+
 module.exports = {
-	getCollectionNames,
 	updateGoodsMiaoshaStock,
 	updateUserOrderCount,
 	updateUserScore,
@@ -264,5 +312,7 @@ module.exports = {
 	getUserInfoById,
 	genOrderNo,
 	getDateFormat,
-	getDateString
+	getDateString,
+	dbcache,testName,
+	checkDeliveryHour
 }

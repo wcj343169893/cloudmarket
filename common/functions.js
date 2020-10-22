@@ -21,12 +21,17 @@ const getOrderStateExp = function(item) {
 			}
 			break;
 		case 1:
-			stateTip = '待发货';
-			stateContent = "订单已支付，等待发货";
+			stateTip = '待拣货';
+			stateContent = "订单已支付，等待商家完成分拣";
 			break;
 		case 2:
-			stateTip = '已发货';
-			stateContent = "订单已发货，等待收货";
+			if (item.deliveryType == "selfRaising") {
+				stateTip = '待提货';
+				stateContent = "订单已完成分拣，请前往提货";
+			} else {
+				stateTip = '正在配送中';
+				stateContent = "订单已完成分拣，正在配送中";
+			}
 			break;
 		case 3:
 			stateTip = '已完成';
@@ -48,6 +53,17 @@ const getOrderStateExp = function(item) {
 
 			//更多自定义
 	}
+	//退款中
+	if (item.isRefunding > 0) {
+		stateTip = '退款中';
+		stateTipColor = '#fa436a';
+		stateContent = "订单退款中，请耐心等待审核";
+	}else if (item.refundAmount > 0 && item.refundAmount==item.cartCount) {
+		stateTip = '已退款';
+		stateTipColor = '#fa436a';
+		stateContent = "订单已退款";
+		item.isRefundAll=true;
+	}
 	return {
 		stateTip,
 		stateTipColor,
@@ -59,6 +75,7 @@ const getOrderStateExp = function(item) {
  */
 const getOrderTypes = function() {
 	return {
+		'all': "全部",
 		'unpaid': "待付款", //改价格
 		'payup': "待发货",
 		//'delivered': '已发货',
@@ -74,7 +91,9 @@ const getGoodsTypes = function() {
 	return {
 		online: '在售',
 		baokuan: '爆款',
+		recommend: '推荐',
 		miaosha: '正在秒杀',
+		tuangou: '团购',
 		yuding: '预售',
 		shouqin: '即将售罄',
 		offline: '已下架',
@@ -124,6 +143,7 @@ const getCartSumNumber = function() {
  * @param {Object} number
  */
 const incrCartNumber = function(number) {
+	console.log("incrCartNumber", number)
 	let data = getCartSumNumber();
 	data += number;
 	updateCartNumber(data);
@@ -157,6 +177,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 			//秒杀提前1天显示，这里不显示
 			delete goods.miaosha;
 		} else if (goods.miaosha.beginTime > time) {
+			goods.miaosha.isBegin = false;
 			//秒杀必须是有效的
 			if (!isPrecise) {
 				tags.push({
@@ -165,10 +186,12 @@ const updateGoodsTags = function(goods, isPrecise) {
 				});
 			}
 		} else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
+			goods.miaosha.isBegin = true;
+			goods.miaosha.isEnd = false;
 			if (!isPrecise) {
 				tags.push({
 					type: "warning",
-					text: "限时"
+					text: "抢购中"
 				});
 			}
 			//如果是多规格商品
@@ -177,15 +200,17 @@ const updateGoodsTags = function(goods, isPrecise) {
 				if (index != -1) {
 					goods.miaosha.skuIndex = index;
 					let sku = goods.skus[index];
-					Object.assign(goods.skus[index], {
-						originPrice: sku.price,
-						price: goods.miaosha.price,
-					});
+					goods.miaosha.originPrice = sku.price;
 					if (isPrecise) {
 						sku.tags = [{
 							type: "warning",
-							text: "限时"
+							text: "抢购中"
 						}];
+					} else {
+						Object.assign(goods.skus[index], {
+							originPrice: sku.price,
+							price: goods.miaosha.price,
+						});
 					}
 					if (goods.price > sku.price) {
 						goods.originPrice = sku.originPrice;
@@ -201,7 +226,7 @@ const updateGoodsTags = function(goods, isPrecise) {
 				if (isPrecise) {
 					tags.push({
 						type: "warning",
-						text: "限时"
+						text: "抢购中"
 					});
 				}
 				goods.originPrice = goods.price;
@@ -210,19 +235,50 @@ const updateGoodsTags = function(goods, isPrecise) {
 				goods.limit = goods.miaosha.limit > 0 ? goods.miaosha.limit : goods.miaosha.stock;
 			}
 			//console.log("goods.miaosha",goods)
+		} else {
+			goods.miaosha.isBegin = true;
+			goods.miaosha.isEnd = true;
 		}
 	} else if (goods.yuding) {
 		if (goods.yuding.endTime > time) {
+			//console.log(goods.yuding)
+			if(!goods.yuding.originPrice){
+				goods.yuding.originPrice = goods.price;
+			}else{
+				goods.price = goods.yuding.originPrice;
+			}
 			if (!isPrecise) {
 				//更新商品价格
-				goods.price = (goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2);
+				goods.price = parseFloat((goods.price + goods.yuding.price - goods.yuding.deduction).toFixed(2));
 			}
-			tags.push({
-				type: "info",
-				text: "预售"
-			});
+			goods.yuding.isBegin = goods.yuding.beginTime < time;
+			if (goods.yuding.isBegin) {
+				tags.push({
+					type: "warning",
+					text: "预售进行中"
+				});
+			} else {
+				tags.push({
+					type: "info",
+					text: "预售"
+				});
+			}
 		} else {
 			delete goods.yuding;
+		}
+	} else if (goods.tuangou) {
+		if(goods.tuangou.endTime < time){
+			//团购已结束
+			delete goods.tuangou;
+		}else{
+			tags.push({
+				type: "info",
+				text: "团购"
+			});
+			if (goods.price > goods.tuangou.price) {
+				goods.originPrice = goods.price;
+				goods.price = goods.tuangou.price;
+			}
 		}
 	}
 	if (goods.manjian) {}
@@ -244,7 +300,7 @@ const getUserLocation = function(state) {
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
  * @param {Object} value
- * @param {Object} fmt
+ * @param {String} fmt yyyy-MM-dd hh:mm:ss
  */
 const dateFormat = function(value, fmt) {
 	let getDate;
@@ -311,7 +367,7 @@ const miaoshaCountDown = function(item, endTime, callback) {
 	if (countDownTimerMap[timerId]) {
 		clearInterval(countDownTimerMap[timerId]);
 	}
-	console.log(timerId)
+	console.log("timerId", timerId)
 	let tick = function() {
 		let n1 = lastTime - startTime;
 		//这里判断很关键，如果写1，在1秒之内，会重复调用
@@ -500,13 +556,13 @@ const navToCreateOrder = function() {
 	});
 }
 //支付订单跳转
-const navToPayOrder = function(id, money, comefrom) {
+const navToPayOrder = function(id, money, comefrom, module) {
 	if (isRedirect) {
 		return false;
 	}
 	isRedirect = true;
 	uni.navigateTo({
-		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}`,
+		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}&module=${module}`,
 		success: function() {
 			isRedirect = false;
 		}
@@ -552,6 +608,15 @@ const navToDocPage = function(id) {
 	});
 }
 /**
+ * 根据类型打开一个文档，如果存在多条，则随机显示
+ * @param {Object} type
+ */
+const navToDocPageByType = function(type) {
+	uni.navigateTo({
+		url: `/pages/docs/docs?type=${type}`
+	});
+}
+/**
  * 打开http网站
  * @param {Object} url
  */
@@ -560,7 +625,22 @@ const navToDocWebPage = function(url) {
 		url: `/pages/docs/web?url=${url}`
 	})
 }
-const fileDomain = 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/';
+/**
+ * 打开广告内容
+ */
+const navToAdDetail = (item)=>{
+	let link = item.link;
+	if (link.indexOf('/pages') === 0) {
+		//跳转指定页面
+		uni.navigateTo({
+			url: `${link}`
+		});
+	} else if (link.indexOf('http') === 0) {
+		//跳转网页
+		navToDocWebPage(link);
+	}
+}
+
 /**
  * 批量上传多个文件
  * @param {Object} name
@@ -579,41 +659,67 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 			if (chooseCallback) {
 				chooseCallback(res.tempFilePaths);
 			}
+			let promises = [];
 			//循环上传
-			res.tempFilePaths.map(filePath => {
+			res.tempFilePaths.map((filePath) => {
 				let fname = (Math.random() + '').substr(2) + '.jpg';
 				let cpath = pathArr.join('/') + '/' + fname;
-				cloudUploadFile(filePath, cpath);
-				paths.push(fileDomain + cpath);
+				let uploadPromise = cloudUploadFile(filePath, cpath);
+				promises.push(uploadPromise)
 			})
-			if (paths.length > 0 && successCallback) {
-				//延时回调，免得无法显示
-				setTimeout(() => {
-					successCallback(paths)
-				}, 100)
-			}
+			Promise.all(promises).then(res => {
+				console.log(res);
+				if (successCallback) {
+					successCallback(res)
+				}
+			});
 		}
 	});
 }
-const cloudUploadFile = async (filePath, cpath) => {
-	let result = await uniCloud.uploadFile({
-		filePath: filePath,
-		cloudPath: cpath,
-		onUploadProgress: pro => {
-			//console.log("onUploadProgress", pro);
-		}
+/**
+ * 上传到云端储存
+ * @param {File}   filePath 本地文件
+ * @param {String}   cpath 云端文件名称，腾讯云为文件实际地址
+ * @link https://uniapp.dcloud.io/uniCloud/storage?id=uploadfile
+ */
+const cloudUploadFile = (filePath, cpath) => {
+	return new Promise((resolve, reject) => {
+		let result = uniCloud.uploadFile({
+			filePath: filePath,
+			cloudPath: cpath,
+			onUploadProgress: pro => {},
+			success: res => {
+				console.log("cloudUploadFile", res)
+				if (res.fileID.indexOf("cloud://") != -1) {
+					//用这个转换一下，有一个隐藏的好处，可以等待文件发布到cdn，避免立即访问不到
+					uniCloud.getTempFileURL({
+						fileList: [res.fileID]
+					}).then(res2 => {
+						resolve(res2.fileList[0].tempFileURL);
+					})
+				} else {
+					//延时返回，可以等待文件发布到cdn，避免立即访问不到
+					setTimeout(() => {
+						resolve(res.fileID);
+					}, 200);
+				}
+			},
+			fail: () => {
+				reject(false);
+			}
+		});
 	});
 };
 /**
  * 检测app是否需要升级
  */
-const checkAppUpdate = (isForce,callback) => {
+const checkAppUpdate = (isForce, systemInfo, callback) => {
 	let checkUpdateKey = 'checkAppUpdate';
 	let dt = new Date();
 	//年月日
 	let today = dt.getFullYear() + '' + (dt.getMonth() + 1) + '' + dt.getDate();
 	let isChecked = uni.getStorageSync(checkUpdateKey);
-	console.log("检查更新", isChecked);
+	console.log("检查更新", isChecked, systemInfo);
 	if (!isChecked || isChecked != today || isForce) {
 		uni.setStorage({
 			key: checkUpdateKey,
@@ -635,7 +741,48 @@ const checkAppUpdate = (isForce,callback) => {
 						content: e.result.note ? e.result.note : '是否选择更新',
 						success: ee => {
 							if (ee.confirm) {
-								plus.runtime.openURL(e.result.url);
+								if (systemInfo.platform == "ios") {
+									plus.runtime.openURL(e.result.url);
+								} else {
+									uni.showLoading({
+										title: "正在下载"
+									});
+									const task = uni.downloadFile({
+										url: e.result.url,
+										success: (downloadResult) => {
+											uni.hideLoading();
+											if (downloadResult.statusCode === 200) {
+												plus.runtime.install(downloadResult.tempFilePath, {
+													force: false
+												}, (e) => {
+													uni.showModal({
+														showCancel: false,
+														confirmText: "重启",
+														content: "安装完成",
+														success: (r) => {
+															if (r.confirm) {
+																plus.runtime.restart();
+															}
+														}
+													})
+												}, (err) => {
+													uni.showModal({
+														showCancel: false,
+														confirmText: "确定",
+														content: "安装失败"
+													});
+												});
+											}
+										},
+										fail: err => {
+											//this.downloadError(err);
+										}
+									});
+
+									task.onProgressUpdate((e) => {
+
+									});
+								}
 							}
 						}
 					});
@@ -646,6 +793,49 @@ const checkAppUpdate = (isForce,callback) => {
 				}
 			}
 		});
+	}
+}
+/**
+ * 计算2点的距离
+ * @param {Object} fromLatlng
+ * @param {Object} toLatlng
+ */
+const mapDistance = function(fromLatlng, toLatlng) {
+	return new Promise((resolve, reject) => {
+		console.log(fromLatlng)
+		uni.request({
+			url: `https://apis.map.qq.com/ws/distance/v1/matrix`,
+			data: {
+				mode: "bicycling",
+				from: fromLatlng,
+				to: toLatlng,
+				key: "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5"
+			},
+			success: (res) => {
+				console.log(res)
+				resolve(res.data.result.rows);
+			},
+			fail: (err) => {
+				console.log(err)
+				reject();
+			}
+		})
+	})
+}
+/**
+ * 处理送达时间的名称，到底是显示今天还是日期
+ * @param {Object} info
+ */
+const checkDeliveryHour = function(info) {
+	if (!info.deliveryHour) {
+		return;
+	}
+	let deliDay = dateFormat(info.deliveryHour.id, 'MM月dd日');
+	let today = dateFormat(false, 'MM月dd日');
+	if (deliDay == today) {
+		info.deliveryHour.name = '今天';
+	} else {
+		info.deliveryHour.name = deliDay;
 	}
 }
 
@@ -670,8 +860,13 @@ export {
 	getOrderTypes,
 	getGoodsTypes,
 	navToDocPage,
+	navToDocPageByType,
 	navToDocWebPage,
 	navMicLogin,
 	uploadFiles,
-	checkAppUpdate
+	cloudUploadFile,
+	checkAppUpdate,
+	mapDistance,
+	checkDeliveryHour,
+	navToAdDetail
 }

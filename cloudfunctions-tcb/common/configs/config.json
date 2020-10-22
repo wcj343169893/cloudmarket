@@ -6,20 +6,37 @@
 			"alipay": {
 				"uniPay": "initAlipay",
 				"name": "支付宝",
+				"payName": "支付宝支付",
 				"appId": "201916540934089",
+				"mchId": "15295677371",
 				"privateKey": "MIIEvgIBADANBgkqhki",
 				"alipayPublicKey": "MIIBIjANBgkqhkiG"
 			},
 			"wxpay": {
 				"uniPay": "initWeixin",
 				"name": "微信",
+				"payName": "微信支付",
 				"appId": "weixin appid",
 				"mchId": "15295677371",
-				"key": "f750595974cd90718a452242"
+				"key": "f750595974cd90718a452242",
+				"pfx": ""
 			},
 			"balance": {
 				"uniPay": "initBalance",
-				"name": "余额"
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
+			}
+		},
+		"oauth": {
+			"jiguang": {
+				"url": "https://api.verification.jpush.cn/v1/web/loginTokenVerify",
+				"Authorization": "Basic ZDM1NTI4OThjYjQxMDk4ODExNTg5ZGM2OjNmZTRlNWMxOTcxZGQyY2ZjM2FiOWEzMQ==",
+				"publicKey": "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570FeoU1V6Z1pauHXKIwl3pS+cJbCw1CjBIi3fU5+Qu+3fl6x5aA84IUZYCXYbSRHET0SM3fbrkU47JFm1Mhd3xMMLQSwfa3mciYrPO6l6oNaichd0m+sSY74RV3ISeWKKAFFk0E4aUjax+a7OJEvISZ4xYKbQIDAQAB-----END PUBLIC KEY-----",
+				"privateKey": "-----BEGIN PRIVATE KEY-----MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIg04snVO/a6b+rnvQV6hTVXpnWlq4dcojCXelL5wlsLDUKMEiLd9Tn5C77d+XrHloDzghRlgJdhtJEcRPRIzd9uuRTjskWbUyF3fEwwtBLB9reZyJis87qXqg1qJyF3Sb6xJjvhFXchJ5YooAUWTQThpSNrH5rs4kS8hJnjFgptAgMBAAECgYEAgkXi65wxIAitZoWC+qx2n9BXe4qbBnqI/eTDsH0FcUKeyhlid0rHc01J+KIiLVacEnXU4mE6no9qvqfFI8hGbpoBOSiPjlR6hc8WRlfSI6OQwhMQGBIu52LBwBe8KpR7wAYi086WOqgE0UnYFSvvlMj9O6mBTJ850e7z7kPvnoECQQDAcqCgaajW4ourgdmbb5dsuReLftNE4F370zOkoUsa6c4Si96DrBpHWhPB03PGl1l0V8BG3aaDxKrl3Ll+br3xAkEAtS+tKdpjCMWGdV7SKLGSCrRDB1xfqYHYxnClgVmOYT/1k/9GaiMzaZTyhAkjkkLcyP+juYUIFe/YlWRtNrdIPQJAQQE3IpguEM+bMAZ/c5KBCpeGzXa8dEJ5XIudoRleXivlkLwwIDfs9HcHv2vmaolLDRJq/0T1bwLqWxRwj7VmcQJAGRx5eHJ/BUkzAHNa1y79GaSwIYYI8BpB7AbSuWGrHQlbRN69aJpmVrzA+9G0b2H67ZSYoW6xlzC9qL7ZcBro1QJAKV0lrNUrbGJEwyy8ML1FXDHWa0OWF088N+A+jtO4dgJ/R7oN5YTDLb1jaa6EpifVMAuTyqmvc6m5sUWXHHsROg==-----END PRIVATE KEY-----"
 			}
 		}
 	},
@@ -28,13 +45,20 @@
 			"wxpay": {
 				"uniPay": "initWeixin",
 				"name": "微信",
-				"appId": "weixin appid",
-				"mchId": "15295677371",
-				"key": "f750595974cd90718a452242"
+				"payName": "微信支付",
+				"appId": "wx399393ad0d5e4d31",
+				"mchId": "1576725141",
+				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
+				"pfx": ""
 			},
 			"balance": {
 				"uniPay": "initBalance",
-				"name": "余额"
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
 			}
 		}
 	},
@@ -43,14 +67,78 @@
 			"alipay": {
 				"uniPay": "initAlipay",
 				"name": "支付宝",
+				"payName": "支付宝支付",
 				"appId": "alipay appid",
+				"mchId": "15295677371",
 				"privateKey": "alipay privateKey",
 				"alipayPublicKey": "alipay publicKey"
 			},
 			"balance": {
 				"uniPay": "initBalance",
-				"name": "余额"
+				"name": "余额",
+				"payName": "余额支付"
 			}
+		}
+	},
+	"h5": {
+		"payment": {
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
+			}
+		}
+	},
+	"printer": {
+		"yilianyun": {
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214"
+		}
+	},
+	"service": {
+		"sms": {
+			"templateId": {
+				"login": "10190"
+			}
+		}
+	},
+	"push": {
+		"default": {
+			"appId": "N5wQHWUKnv8POOTCnGtFU8",
+			"appkey": "t318VmJI2p84991gl61VY4",
+			"appSecret": "wF9SqqDvk3ANRMoMtrbPm1",
+			"mastersecret": "udzQP1wLwWAQEeozJgYZ15",
+			"packageName": "com.gengyun"
+		}
+	},
+	"templates": {
+		"payment": {
+			"error": "支付方式错误",
+			"notExist": "支付方式不存在",
+			"refundSuccessContent": "退款将退回至您的{payName}账户，请注意查收。",
+			"balance": "可用余额￥{balance}",
+			"balanceNotEnough": "余额不足",
+			"balanceNotEnoughNotice": "余额不足，请选择其他支付方式"
+		},
+		"order": {
+			"timeOut": "订单已超时",
+			"canceled": "订单已取消",
+			"paid": "订单已支付",
+			"notExist": "订单不存在",
+			"depositPaid": "已支付定金",
+			"depositBody": "定金：{body}",
+			"finalBody": "尾款：{body}",
+			"refundSuccess": "退款成功",
+			"refundSuccessCycle": "您的退款已受理完成，到账周期可查看退款明细。"
+		},
+		"system": {
+			"error": "系统错误，请联系店主",
+			"notfund": "暂无数据",
+			"success": "操作成功"
 		}
 	}
 }

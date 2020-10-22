@@ -14,14 +14,19 @@
 							<text class="mobile">{{ item.mobile }}</text>
 						</view>
 					</view>
-					<view class="checked" v-if="item.checked">
-						<text class="yticon icon-right"></text>
-					</view>
+					<view class="checked" v-if="item.checked"><text class="yticon icon-right"></text></view>
 				</view>
 			</view>
 		</block>
+		<block v-else>
+			<view class="sec-header"><text>我的收货地址</text></view>
+			<view class="center empty">
+				<navigator url="/pages/address/addressManage?type=new">暂无收货地址，点击添加</navigator>
+			</view>
+		</block>
+		<!-- #ifndef MP -->
 		<view class="sec-header"><text>当前地址</text></view>
-		<view class="list b-b" v-if="currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
+		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
 			<view class="wrapper">
 				<view class="address-box">
 					<text class="address">{{ currentAddress.addressName }}</text>
@@ -67,6 +72,8 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -105,7 +112,9 @@ export default {
 		if (this.hasLogin) {
 			this.loadData();
 		}
+		// #ifndef MP
 		this.getLocation(false);
+		// #endif
 		if (this.location.latitude > 0) {
 			this.latitude = this.location.latitude;
 			this.longitude = this.location.longitude;
@@ -119,12 +128,12 @@ export default {
 			this.mapContext = uni.createMapContext('map1', this);
 			//地图搜索
 			this.searchObj = new plus.maps.Search(this.mapContext.$getAppMap());
-			this.searchObj.onRouteSearchComplete = (state, result)=>{
-				console.log("onRouteSearchComplete",state, result);
+			this.searchObj.onRouteSearchComplete = (state, result) => {
+				console.log('onRouteSearchComplete', state, result);
 				this.searchResult(result);
-			}
+			};
 			this.searchObj.onPoiSearchComplete = (state, result) => {
-				console.log("onPoiSearchComplete",state, result);
+				console.log('onPoiSearchComplete', state, result);
 				//this.nearAddressList = result.poiList;
 				this.searchResult(result);
 			};
@@ -139,8 +148,7 @@ export default {
 		...mapMutations(['setUserLocation']),
 		async loadData() {
 			address({
-				type: 'list'
-			}).then(res => {
+			},'list').then(res => {
 				res.forEach(ele => {
 					ele.checked = ele._id == this.location.id;
 				});
@@ -160,19 +168,19 @@ export default {
 					//小程序不返回地址信息,需要调用另外的接口来查询位置
 					//#ifdef MP
 					this.currentAddress = {
-						addressName: "",
+						addressName: '',
 						latitude: res.latitude,
 						longitude: res.longitude,
-						address: ""
+						address: ''
 					};
 					//#endif
 					//#ifndef MP
-					let address="";
-					if(res.address.street){
-						address+=res.address.street;
+					let address = '';
+					if (res.address.street) {
+						address += res.address.street;
 					}
-					if(res.address.streetNum){
-						address+=res.address.streetNum;
+					if (res.address.streetNum) {
+						address += res.address.streetNum;
 					}
 					this.currentAddress = {
 						addressName: res.address.poiName,
@@ -195,7 +203,7 @@ export default {
 		},
 		async poiSearchNearBy(pt) {
 			let res = this.searchObj.poiSearchNearBy('住宅', pt, 1000);
-			console.log("poiSearchNearBy",res);
+			console.log('poiSearchNearBy', res);
 		},
 		//地图视野发生变化
 		regionchange() {
@@ -204,7 +212,7 @@ export default {
 			this.centerMaker = [];
 			this.mapContext.getCenterLocation({
 				success: lnglat => {
-					console.log('获取getCenterLocation success',lnglat);
+					console.log('获取getCenterLocation success', lnglat);
 					var pt = new plus.maps.Point(lnglat.longitude, lnglat.latitude);
 					this.centerMaker.push({
 						latitude: lnglat.latitude,
@@ -221,7 +229,7 @@ export default {
 			});
 			//#endif
 		},
-		searchResult(result){
+		searchResult(result) {
 			this.nearAddressList = [];
 			result.poiList.map(e => {
 				this.nearAddressList.push({
@@ -334,5 +342,8 @@ export default {
 	width: 48upx;
 	height: 48upx;
 	margin-right: 8upx;
+}
+.empty{
+	padding: 40rpx 0;
 }
 </style>

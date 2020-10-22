@@ -61,7 +61,7 @@ export default {
 			default: {}
 		},
 		defaultOption: {
-			type: String,
+			type: [String,Number],
 			default: ''
 		},
 		defaultOptions: {
@@ -76,7 +76,8 @@ export default {
 	},
 	watch:{
 		defaultOption(val){
-			console.log("watch",val)
+			console.log("watch",val);
+			this.tips2 = this.options[this.defaultOption];
 		}
 	},
 	created() {

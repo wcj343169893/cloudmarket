@@ -38,18 +38,26 @@
 							</view>
 						</view>
 						<view class="price-box">
-							<text>共</text>
-							<text class="num">{{ item.cartCount }}</text>
-							<text>件商品</text>
 							<block v-if="item.yuding">
 								<text class="m-l">定金</text>
-								<text class="price warning">{{ item.yuding.price | toFixed }}</text>
+								<text class="price warning">{{ (item.yuding?item.yuding.price:0) | toFixed }}</text>
+								<block v-if="item.freight>0">
+									<text class="m-l">运费</text>
+									<text class="price warning">{{ item.freight | toFixed}}</text>
+								</block>
 								<text class="m-l">尾款</text>
-								<text class="price warning">{{ item.yuding.finishPaymentPrice | toFixed }}</text>
+								<text class="price warning">{{ (item.yuding?item.yuding.finishPaymentPrice:'') | toFixed }}</text>
 							</block>
 							<block v-else>
+								<text>共</text>
+								<text class="num">{{ item.cartCount }}</text>
+								<text>件商品</text>
+								<block v-if="item.freight>0">
+									<text class="m-l">运费</text>
+									<text class="price warning">{{ item.freight | toFixed}}</text>
+								</block>
 								<text class="m-l">实付款</text>
-								<text class="price warning">{{ item.totalMoney  | toFixed}}</text>
+								<text class="price warning">{{ item.totalMoney +item.freight | toFixed}}</text>
 							</block>
 						</view>
 						<!-- 已取消 -->
@@ -75,7 +83,7 @@
 						</view>
 						<!-- 已付款 -->
 						<block v-if="item.state == 1">
-							<view class="action-box b-t"><button class="action-btn" @click.stop="pusheDelivery(item)">催发货</button></view>
+							<view class="action-box b-t"><button class="action-btn" @click.stop="pusheDelivery(item)">催一催</button></view>
 						</block>
 						<!-- 已发货 -->
 						<block v-if="item.state == 2">
@@ -84,7 +92,7 @@
 						<!-- 已收货，待评价 -->
 						<view class="action-box b-t" v-if="item.state == 3">
 							<button class="action-btn" @click.stop="deleteOrder(item)">删除订单</button>
-							<button class="action-btn" @click.stop="evaluateOrder(item)">评价</button>
+							<button class="action-btn recom" v-if="!item.isComment" @click.stop="evaluateOrder(item)">评价一下</button>
 						</view>
 					</view>
 
@@ -132,13 +140,13 @@ export default {
 					page: 0,
 					orderList: []
 				},
-				{
+				/* {
 					state: 4,
 					text: '售后',
 					loadingType: 'more',
 					page: 0,
 					orderList: []
-				}
+				} */
 			]
 		};
 	},
@@ -193,11 +201,11 @@ export default {
 				if (res.data.length > 0) {
 					//格式化时间
 					res.data.forEach(ele => {
-						console.log(ele);
+						//console.log(ele);
 						let isPay = true;
 						ele.priceTitle = '单价';
 						//预定yuding  item.yuding.finalpay
-						ele.showPayMoney = ele.totalMoney;
+						ele.showPayMoney = ele.totalMoney +ele.freight;
 						if (ele.yuding) {
 							ele.priceTitle = '预售价';
 							ele.yuding.finalpay = 0;
@@ -206,7 +214,7 @@ export default {
 							if (ele.yuding.finalPaymentBeginTime < time) {
 								ele.yuding.finalpay = 1;
 								//尾款
-								ele.showPayMoney = ele.yuding.finishPaymentPrice;
+								ele.showPayMoney = ele.yuding.finishPaymentPrice+ele.freight;
 							} else if (ele.yuding.state == 1) {
 								//已支付定金，但是未开始支付尾款间隙
 								isPay = false;
@@ -279,7 +287,7 @@ export default {
 		//去支付
 		payOrder(item) {
 			console.log(item);
-			navToPayOrder(item._id, item.showPayMoney, 'order');
+			navToPayOrder(item._id, item.showPayMoney, 'order','mall');
 		},
 		//删除订单
 		deleteOrder(item) {
@@ -393,11 +401,12 @@ export default {
 			});
 		},
 		//评价
-		evaluateOrder() {
-			uni.showLoading({
-				title: '请稍后',
-				mask: true
+		evaluateOrder(item) {
+			uni.setStorage({
+				key:"commentOrder",
+				data:item
 			});
+			this.navTo("/pages/order/comment")
 		},
 		navToOrderDetail(item) {
 			//pages/order/detail

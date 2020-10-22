@@ -13,11 +13,11 @@
 			<text class="cell-tit">消息推送</text>
 			<switch checked color="#fa436a" @change="switchChange" />
 		</view>
-		<view class="list-cell m-t b-b" @click="navTo('清除缓存')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell m-t b-b" @click="cleanCache()" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">清除缓存</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('关于')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="about()" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">关于</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
@@ -34,7 +34,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import { checkAppUpdate } from '@/common/functions.js';
+import { checkAppUpdate,navToDocPageByType } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -51,6 +51,12 @@ export default {
 
 		navTo(url) {
 			this.$api.msg(`跳转到${url}`);
+		},
+		cleanCache(){
+			this.$api.msg(`清理完毕`);
+		},
+		about(){
+			navToDocPageByType("app_about")
 		},
 		//退出登录
 		toLogout() {
@@ -75,7 +81,7 @@ export default {
 			uni.showLoading({
 				title:"检查中"
 			});
-			checkAppUpdate(true,msg => {
+			checkAppUpdate(true,this.systemInfo,msg => {
 				uni.hideLoading();
 				this.$api.msg(msg, 5000);
 			});

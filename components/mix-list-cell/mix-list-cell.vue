@@ -30,7 +30,8 @@ export default {
 				left: 'icon-zuo',
 				right: 'icon-you',
 				up: 'icon-shang',
-				down: 'icon-xia'
+				down: 'icon-xia',
+				address:'icon-shouhuodizhi'
 			}
 		};
 	},
@@ -44,7 +45,7 @@ export default {
 			default: '标题'
 		},
 		tips: {
-			type: String,
+			type: [String,Number],
 			default: ''
 		},
 		navigateType: {

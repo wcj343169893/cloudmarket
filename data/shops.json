@@ -1,42 +1,234 @@
 {
-	"_id": "5e6c96519f43ab004d11b602",
-	"address": "兰家康城7号",
+	"address": "重庆市渝中区上清寺中山四路上曾家岩24号",
+	"addressName": "雾都宾馆",
 	"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
 	"categories": [{
-		"id": 10000,
-		"name": "美食"
-	}, {
-		"id": 10001,
-		"name": "火锅"
-	}, {
-		"id": 10002,
-		"name": "快餐"
-	}],
+			"id": 10000,
+			"name": "美食"
+		},
+		{
+			"id": 1007,
+			"name": "火锅"
+		},
+		{
+			"id": 10002,
+			"name": "快餐"
+		}
+	],
 	"delivery": {
-		"time":30,
-		"minPrice":20,
-		"money":5,
-		"freeMoney":20
+		"deliveryDay": 4,
+		"deliveryPeriod": [{
+				"begin": 28800,
+				"end": 43200
+			},
+			{
+				"begin": 43200,
+				"end": 64800
+			},
+			{
+				"begin": 64800,
+				"end": 79200
+			}
+		],
+		"freeMoney": 20,
+		"maxDistance": 5000,
+		"minDistance": 5,
+		"minPrice": 20,
+		"money": 5,
+		"perMoney": 1,
+		"time": 30
+	},
+	"deliverySupportType": 3,
+	"deliveryTypes": [
+		"deliveryHome",
+		"selfRaising"
+	],
+	"goods": {
+		"baokuan": 12,
+		"delete": 1,
+		"miaosha": 4,
+		"offline": 4,
+		"online": 33,
+		"shouqin": 0,
+		"yuding": 1
 	},
 	"hasManjian": 1,
 	"id": 123457,
-	"latitude": 22.123456,
-	"longitude": 113.123455,
+	"isPrint": true,
+	"latitude": 29.565183,
+	"lnglat": {
+		"coordinates": [
+			106.551766,
+			29.565183
+		],
+		"type": "Point"
+	},
+	"longitude": 106.551766,
 	"manjians": [{
-		"amount": 19,
-		"condition": 49,
-		"id": 123456,
-		"name": "49减19"
-	}, {
-		"amount": 25,
-		"condition": 69,
-		"id": 123456,
-		"name": "69减25"
-	}],
+			"amount": 19,
+			"condition": 49,
+			"id": 123456,
+			"name": "49减19"
+		},
+		{
+			"amount": 25,
+			"condition": 69,
+			"id": 123456,
+			"name": "69减25"
+		}
+	],
 	"monthSale": 123,
-	"name": "沃尔玛-蛇口店",
+	"name": "重客隆超市-渝中区",
+	"notice": "春节不打烊哈，暖心一座城",
+	"online": true,
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"order": {
+		"canceled": 251,
+		"deleted": 8,
+		"delivered": 2,
+		"payup": 35,
+		"received": 2,
+		"refunded": 0,
+		"unpaid": 3
+	},
 	"perCapita": 30,
+	"phone": "15986613313",
+	"printers": [{
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+			"enable": false,
+			"machine": "332332432",
+			"module": "yilianyun",
+			"msign": "432434",
+			"name": "易联云k4",
+			"online": false,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457
+		},
+		{
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+			"enable": false,
+			"machine": "444444",
+			"module": "yilianyun",
+			"msign": "33333",
+			"name": "易联云k4",
+			"online": false,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457
+		},
+		{
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+			"enable": true,
+			"machine": "4004648355",
+			"module": "yilianyun",
+			"msign": "189541803678",
+			"name": "易联云k4",
+			"online": true,
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457
+		}
+	],
 	"score": 4.8,
-	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/d0497320-642a-11ea-a32c-3303601e2d34.png",
-	"stationId": 500119
+	"searchGoodsKeywords": [
+		"车厘子",
+		"杏子",
+		"葡萄"
+	],
+	"serviceArea": {
+		"coordinates": [
+			[
+				[
+					113.90341758728,
+					22.469178514966
+				],
+				[
+					113.90745162964,
+					22.47020960449
+				],
+				[
+					113.90839576721,
+					22.471875194432
+				],
+				[
+					113.91406059265,
+					22.466481783007
+				],
+				[
+					113.92024040222,
+					22.469495774099
+				],
+				[
+					113.91500473022,
+					22.474571821399
+				],
+				[
+					113.92650604248,
+					22.482026928585
+				],
+				[
+					113.92607688904,
+					22.478061496006
+				],
+				[
+					113.93955230713,
+					22.475047691296
+				],
+				[
+					113.95182609558,
+					22.484723357865
+				],
+				[
+					113.95285606384,
+					22.505341374315
+				],
+				[
+					113.91603469849,
+					22.505103491649
+				],
+				[
+					113.91431808472,
+					22.504151956891
+				],
+				[
+					113.91363143921,
+					22.502486755311
+				],
+				[
+					113.91551971436,
+					22.499790672151
+				],
+				[
+					113.91775131226,
+					22.499314887315
+				],
+				[
+					113.91715049744,
+					22.497332432882
+				],
+				[
+					113.90899658203,
+					22.488212776614
+				],
+				[
+					113.9040184021,
+					22.473540764346
+				],
+				[
+					113.9025592804,
+					22.469733717971
+				],
+				[
+					113.90341758728,
+					22.469178514966
+				]
+			]
+		],
+		"type": "Polygon"
+	},
+	"serviceTime": "早上7点到晚上10点",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/24/1598257519258.jpg",
+	"stationId": 500119,
+	"uid": 10000
 }
