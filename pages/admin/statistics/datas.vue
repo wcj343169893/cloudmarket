@@ -39,7 +39,12 @@
 					}
 				]
 			};
-		}
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			console.log('刷新整页');
+			uni.stopPullDownRefresh();
+		},
 	}
 </script>
 
