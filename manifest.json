@@ -1,5 +1,5 @@
 {
-    "name" : "万德福超市",
+    "name" : "咕叽农场",
     "appid" : "__UNI__9900639",
     "description" : "",
     "versionName" : "2.0.2",
@@ -179,7 +179,7 @@
     "mp-weixin" : {
         /* 小程序特有相关 */
         "usingComponents" : true,
-        "appid" : "wx399393ad0d5e4d31",
+        "appid" : "wx59ded2343a9d2e42",
         "setting" : {
             "urlCheck" : true
         },

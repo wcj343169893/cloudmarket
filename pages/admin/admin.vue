@@ -1,5 +1,8 @@
 <template>
 	<view class="container">
+		<!-- #ifdef MP -->
+			<page-header ref="pageHeader" :title="name"></page-header>
+		<!-- #endif -->
 		<view class="basic-section">
 			<image class="bg" :src="banner"></image>
 			<view class="user-info-box" @click="navToSet">
@@ -118,6 +121,11 @@
 			uni.stopPullDownRefresh();
 			this.loadData(true);
 		},
+		//#ifdef MP
+		onPageScroll(e) {
+			this.$refs.pageHeader && this.$refs.pageHeader.pageScroll(e);
+		},
+		// #endif
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
 			const index = e.index;

@@ -59,8 +59,10 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序体验
-![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)
+#### 微信小程序管理后台
+![管理后台体验](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/oXpHq0ASLsN6cYLKaTIYG1dlnGAM.jpg)  
+#### 微信小程序-万德福超市
+![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 
@@ -76,8 +78,11 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 ### 更新日志
 #### 日后更新
 * 商家pc后台
-* 骑手端
+* 骑手端，接入第三方配送，达达，美团、蜂鸟、顺丰、京东、闪送、UU跑腿
 * 供应商报价
+
+#### 2.0.8
+* 优化小程序端商家后台
 
 #### 2.0.7
 * 增加店铺统计表``cloud_shop_statistics``

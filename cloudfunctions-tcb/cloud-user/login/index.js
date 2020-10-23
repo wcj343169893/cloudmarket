@@ -98,16 +98,26 @@ const model = {
 	 */
 	async weixin(data, context) {
 		console.log("weixin", context.PLATFORM)
+		console.log("APPID", context.APPID)
 		console.log("inviteCode", data.inviteCode);
 		try {
 			const res = await uniID.loginByWeixin(data.code);
-			if (res.code == 0 && res.type == "type" && data.inviteCode) {
-				//设置邀请码
-				await uniID.acceptInvite({
-					uid: res.uid,
-					inviteCode: data.inviteCode
-				});
-				console.log("设置微信用户邀请码", res.uid, data.inviteCode)
+			if (res.code == 0 && res.type == "register") {
+				if (data.inviteCode) {
+					//设置邀请码
+					await uniID.acceptInvite({
+						uid: res.uid,
+						inviteCode: data.inviteCode
+					});
+					console.log("设置微信用户邀请码", res.uid, data.inviteCode)
+				}
+				//管理测试需要，不影响其他用户，自动增加店铺123457的管理员权限
+				if (context.APPID == "__UNI__9900639") {
+					await uniID.updateUser({
+						uid: res.uid,
+						admin: [123457]
+					});
+				}
 			}
 			return res;
 		} catch (e) {

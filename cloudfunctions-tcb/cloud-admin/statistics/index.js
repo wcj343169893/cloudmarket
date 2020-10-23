@@ -42,7 +42,7 @@ const modules = {
 		}
 		let zhuanhua = "0%";
 		if (statistics.totalVisitor > 0) {
-			zhuanhua = (statistics.totalOrdered / statistics.totalVisitor).toFixed(4) * 100 + "%";
+			zhuanhua = (statistics.totalOrdered / statistics.totalVisitor * 100).toFixed(2) + "%";
 		}
 		return [{
 			name: "营业额",

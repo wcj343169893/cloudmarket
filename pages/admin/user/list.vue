@@ -137,6 +137,8 @@
 					if (res.length < this.limit) {
 						this.loadingType = "noMore";
 					}
+				},err=>{
+					this.loadingType = "noMore";
 				})
 			},
 			//排序

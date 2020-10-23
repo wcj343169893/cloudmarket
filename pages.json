@@ -251,6 +251,7 @@
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
