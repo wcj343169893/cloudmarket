@@ -89,7 +89,7 @@ const model = {
 		return format.replace(/\{([a-zA-Z0-9$_]+)\}/g, key => {
 			//去掉大括号，得到变量
 			let key1 = key.replace(/[\{\}]/g, "");
-			if (data[key1]) {
+			if (data[key1] !== undefined) {
 				//存在变量对于的value
 				return data[key1];
 			}
