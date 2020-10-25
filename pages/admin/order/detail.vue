@@ -6,6 +6,10 @@
 				<view class="header_title">
 					<text>{{ info.stateTip }}</text>
 					<text class="yticon icon-you"></text>
+					<block v-if="info.payInfo">
+						<text>{{ info.payInfo.name }}</text>
+						<text class="yticon icon-you"></text>
+					</block>
 				</view>
 			</view>
 			<view class="section m-t">

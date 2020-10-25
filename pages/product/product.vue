@@ -660,7 +660,7 @@
 				//累加一件商品
 				this.cartMap[this.sku_id] = this.amount;
 				editCart({
-					id: this.shopid,
+					shopid: this.shopid,
 					//stationId: this.stationId,
 					goods_id: this.id,
 					sku_id: this.sku_id,

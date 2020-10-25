@@ -196,7 +196,7 @@
 			async loadData(isHideLoading) {
 				isHideLoading = isHideLoading || false;
 				getCartList({
-					id: this.shopId,
+					shopid: this.shopId,
 					stationId: this.stationId,
 					showLoading: !isHideLoading,
 					opt: 'full'
@@ -292,7 +292,7 @@
 							if (cartIds.length > 0) {
 								console.log(cartIds);
 								selectCart({
-									id: this.shopId,
+									shopid: this.shopId,
 									stationId: this.stationId,
 									checked: false,
 									cartIds: cartIds.join(',')
@@ -334,7 +334,7 @@
 					//this.cartList.splice(index, 1);
 					console.log('剩余', this.cartList);
 					editCart({
-						id: this.shopId,
+						shopid: this.shopId,
 						stationId: this.stationId,
 						goods_id: id,
 						sku_id: sid,
@@ -347,7 +347,7 @@
 					console.log('更新购物车data列表', index);
 					this.cartList[index].cart = numb;
 					editCart({
-						id: this.shopId,
+						shopid: this.shopId,
 						stationId: this.stationId,
 						goods_id: id,
 						sku_id: sid,
@@ -378,7 +378,7 @@
 					console.log(index);
 					let goods = this.cartList[index];
 					editCart({
-						id: this.shopId,
+						shopid: this.shopId,
 						stationId: this.stationId,
 						goods_id: goods.goods_id,
 						sku_id: goods.sku_id,
@@ -402,7 +402,7 @@
 					this.allChecked = checked;
 					//保存数据可以购买的商品
 					selectCart({
-						id: this.shopId,
+						shopid: this.shopId,
 						stationId: this.stationId,
 						checked: checked,
 						cartIds: cartIds.join(',')
@@ -436,7 +436,7 @@
 			/**清空购物车数据**/
 			cleanAllCart() {
 				cleanCart({
-					id: this.shopId,
+					shopid: this.shopId,
 					stationId: this.stationId
 				}).then(res => {
 					console.log(res);
@@ -498,7 +498,7 @@
 							if (cartIds.length > 0) {
 								console.log("移除失效商品", cartIds);
 								cleanCart({
-									id: this.shopId,
+									shopid: this.shopId,
 									stationId: this.stationId,
 									cartIds: cartIds.join(',')
 								}).then(res => {

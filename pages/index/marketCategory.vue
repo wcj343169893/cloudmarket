@@ -288,6 +288,8 @@
 			this.loadData();
 		},
 		onShow() {
+		},
+		onHide(){
 			this.closeCategoryPanel();
 		},
 		computed: {

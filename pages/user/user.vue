@@ -113,8 +113,8 @@
 					<image :src="item.src" mode="aspectFill"></image>
 					<view class="right">
 						<view class="content">
-							<view class="title">
-								<text>{{item.name}}</text>
+							<view class="title clamp">
+								<text>{{item.name}}({{item.id}})</text>
 							</view>
 							<view class="orders" v-if="item.order">
 								<view class="" @click.stop="navToShopOrder(item,'unpaid')">
@@ -417,11 +417,13 @@
 				let id = item.id;
 				uni.setStorage({
 					key: "adminShopInfo",
-					data: item
+					data: item,
+					success: () => {
+						uni.navigateTo({
+							url: `/pages/admin/admin?shopid=${id}`
+						})
+					}
 				});
-				uni.navigateTo({
-					url: `/pages/admin/admin?shopid=${id}`
-				})
 			},
 			//店铺订单类型页面,进入店铺之后，再跳转订单页面
 			navToShopOrder(item, state) {

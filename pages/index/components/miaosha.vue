@@ -139,6 +139,7 @@
 
 	.sub-title {
 		font-size: $font-sm;
+		color: $font-color-light;
 	}
 
 	.sku_btn {

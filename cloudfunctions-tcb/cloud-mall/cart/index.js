@@ -10,6 +10,10 @@ const models = {
 			shopid,
 			uid
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		//查询列表
 		let carts = await cartCollection.where({
 			shopid: shopid,
@@ -30,11 +34,16 @@ const models = {
 			shopid,
 			uid
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		let carts = await cartCollection.where({
 			shopid: shopid,
 			uid: uid
 		}).field({
 			"goods_id": 1,
+			"shopid": 1,
 			"sku_id": 1,
 			"amount": 1,
 			"created": 1,
@@ -87,6 +96,10 @@ const models = {
 			uid,
 			cartIds
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		//批量选中
 		let checked = data.checked ? true : false;
 		let condition = {
@@ -109,6 +122,10 @@ const models = {
 			uid,
 			cartIds
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		let condition = {
 			shopid: shopid,
 			uid: uid
@@ -125,6 +142,10 @@ const models = {
 			shopid,
 			uid
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		let goodsList = data.data;
 		if (goodsList.length < 1) {
 			return {
@@ -149,10 +170,13 @@ const models = {
 	},
 	async edit(event) {
 		const {
-			id,
+			shopid,
 			uid
 		} = event;
-
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		//增加或者删除
 		//商品id
 		event.goods_id = +event.goods_id;
@@ -172,7 +196,7 @@ const models = {
 				"message": "商品不存在",
 			};
 		}
-		let result = await saveCartInfo(event, id, uid, new Date());
+		let result = await saveCartInfo(event, shopid, uid, new Date());
 		if (!result) {
 			return false;
 		}
@@ -184,6 +208,10 @@ const models = {
 			shopid,
 			uid
 		} = event;
+		//必须要店铺id
+		if(!shopid){
+			return false;
+		}
 		//设置结算属性
 		let ids = [];
 		if (event.cartIds) {
@@ -219,6 +247,10 @@ const models = {
 			shopid,
 			uid
 		} = data;
+		//必须要店铺id
+		if(!shopid){
+			return "0";
+		}
 		const $ = db.command.aggregate
 		let res2 = await cartCollection.aggregate()
 			.match({

@@ -3,6 +3,9 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "exports",
-	"action": "normal"
+	"module": "imports",
+	"action": "copy",
+	"data": {
+		"uid":"9ffb2a485f38964200999b1f07cb7b80"
+	}
 }

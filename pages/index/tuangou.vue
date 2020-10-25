@@ -87,7 +87,7 @@
 				}
 				console.log(item)
 				editCart({
-					id: this.shopId,
+					shopid: this.shopId,
 					stationId: this.stationId,
 					goods_id: item.id,
 					sku_id: +sku_id,

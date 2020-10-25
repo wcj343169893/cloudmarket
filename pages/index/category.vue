@@ -379,7 +379,7 @@
 			},
 			reBuildCartData() {
 				getCartList({
-					id: this.shopId,
+					shopid: this.shopId,
 					showLoading: false,
 					stationId: this.stationId
 				}).then(
@@ -627,7 +627,7 @@
 				let goods = this.goodsSkusMap[gid + '_' + sku];
 				console.log('saveCartAmount', gid, sku, number);
 				editCart({
-					id: this.shopId,
+					shopid: this.shopId,
 					stationId: this.stationId,
 					goods_id: gid,
 					sku_id: sku,

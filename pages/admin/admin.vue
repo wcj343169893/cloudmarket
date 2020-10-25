@@ -91,6 +91,8 @@
 		data() {
 			return {
 				shopid: 0,
+				secondPage:false,
+				secondPageState:false,
 				isSetTitle: false,
 				name: '',
 				src: '/static/store-face.png',
@@ -108,8 +110,8 @@
 			console.log(this.shopid, options);
 			if (options.second) {
 				//进一步跳转到下一页页面
-				let func = "navTo" + options.second;
-				this[func](options.state);
+				this.secondPage = options.second;
+				this.secondPageState = options.state;
 			}
 		},
 		onShow() {
@@ -149,6 +151,11 @@
 							data: res
 						})
 						this.buildShopInfo(res);
+						if (this.secondPage) {
+							//进一步跳转到下一页页面
+							this["navTo" + this.secondPage](this.secondPageState);
+							this.secondPage = false;
+						}
 					},
 					err => {
 						//获取店铺信息失败

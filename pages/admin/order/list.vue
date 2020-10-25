@@ -152,10 +152,12 @@
 			},
 			setNavTitle() {
 				let shopInfo = uni.getStorageSync("adminShopInfo");
-				let orderTypes = shopInfo.orderTypes.filter(e => e.state == this.state);
-				uni.setNavigationBarTitle({
-					title: orderTypes[0].name
-				});
+				if(shopInfo.orderTypes){
+					let orderTypes = shopInfo.orderTypes.filter(e => e.state == this.state);
+					uni.setNavigationBarTitle({
+						title: orderTypes[0].name
+					});
+				}
 			},
 			//修改订单价格
 			editOrderMoney(item) {

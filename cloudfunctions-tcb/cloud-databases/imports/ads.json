@@ -1,0 +1,91 @@
+[{
+	"_id": "355cc06a0c214f15845caa99ba149712",
+	"background": "#5ecd67",
+	"link": "/pages/docs/docs?id=0d06a2fd5f24dc6e002fc21d58fc8665",
+	"posid": 3,
+	"shopid": 123457,
+	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/680429a0-639d-11ea-b227-9531cf5e701a.jpg",
+	"docs": {
+		"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+		"checked": false,
+		"numb": 7,
+		"title": "苹果大丰收，库克真应该感谢中国"
+	},
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"redirectType": "docs",
+	"url": ""
+}, {
+	"_id": "1b64dd7b5f8ba76601a7afd66025f0ff",
+	"background": "",
+	"docs": {},
+	"goods": {},
+	"link": "",
+	"redirectType": "none",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/7948883688930457.jpg",
+	"type": "home_banner_after_category",
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"shopid": 123457
+}, {
+	"_id": "8e5be7055f8bb0ab01ed008310a80614",
+	"background": "",
+	"docs": {},
+	"goods": {},
+	"link": "",
+	"redirectType": "none",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/9966935301937543.jpg",
+	"type": "home_banner_after_category",
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"shopid": 123457
+}, {
+	"_id": "e373396c5f8bb0e0019e70f13d5e9a54",
+	"background": "",
+	"docs": {},
+	"goods": {},
+	"link": "",
+	"redirectType": "none",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/3940513752641637.jpg",
+	"type": "home_banner_after_category",
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"shopid": 123457
+}, {
+	"_id": "e656fa635f8bb51c01af0b76702f561f",
+	"background": "",
+	"docs": {},
+	"goods": {},
+	"link": "",
+	"redirectType": "none",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/3186863347689082.jpg",
+	"type": "home_banner_after_category",
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"shopid": 123457
+}, {
+	"_id": "c54bd3a25f8bb5a0015eb4bb60079b6c",
+	"background": "",
+	"docs": {},
+	"redirectType": "none",
+	"link": "",
+	"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/14560258809122728.jpg",
+	"type": "home_banner_after_category",
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"shopid": 123457,
+	"size": {
+		"height": 200,
+		"width": 750
+	}
+}, {
+	"_id": "1b64dd7b5f8bb68501a850c254cfda6b",
+	"background": "#5ecd67",
+	"link": "/pages/docs/docs?id=0d06a2fd5f24dc6e002fc21d58fc8665",
+	"posid": 3,
+	"shopid": 123457,
+	"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/680429a0-639d-11ea-b227-9531cf5e701a.jpg",
+	"docs": {
+		"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+		"checked": false,
+		"numb": 7,
+		"title": "苹果大丰收，库克真应该感谢中国"
+	},
+	"operator": "9ffb2a485f38964200999b1f07cb7b80",
+	"redirectType": "docs",
+	"url": ""
+}]

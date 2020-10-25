@@ -58,8 +58,8 @@ const models = {
 			"7天无理由退换货",
 			"假一赔十",
 		];
-		if(data.service_purpose){
-			data.service=data.service_purpose.split(";");
+		if (data.service_purpose) {
+			data.service = data.service_purpose.split(";");
 			delete data.service_purpose;
 		}
 		//当前用户
@@ -256,18 +256,28 @@ const models = {
 		return result.data;
 	},
 	/**
-	 * 定时器，1.下架过期的团购
+	 * 定时器，1.下架过期的团购,2.下架过期的预定
 	 */
 	async timer() {
 		let time = new Date().getTime();
 		let result = await goodsCollection.where({
 			isSold: 1,
+			saleType: "tuangou",
 			tuangou: cmd.exists(true),
 			"tuangou.endTime": cmd.lt(time),
 		}).update({
 			isSold: 0,
 		});
-		console.log("过期团购自动下架", result)
+		console.log("过期团购自动下架", result);
+		result = await goodsCollection.where({
+			isSold: 1,
+			saleType: "yuding",
+			yuding: cmd.exists(true),
+			"yuding.endTime": cmd.lt(time),
+		}).update({
+			isSold: 0,
+		});
+		console.log("过期预定自动下架", result);
 	}
 }
 /**

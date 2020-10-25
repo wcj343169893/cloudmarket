@@ -28,6 +28,9 @@ export default {
 		this.resetTabCartCount();
 		console.log("onShow mixin")
 	},
+	onHide(){
+		this.closeSku();
+	},
 	methods: {
 		...mapMutations(['incrCartNumber', 'updateCartNumber', 'updateCartMap', 'setStateAttr']),
 		resetTabCartCount() {
@@ -47,13 +50,18 @@ export default {
 		resetGoodsCart() {
 
 		},
+		closeSku(){
+			if(this.closeSkuDialog){
+				this.closeSkuDialog();
+			}
+		},
 		saveCartAmount(item, sku) {
 			if (!this.hasLogin) {
 				showLoginDialog();
 				return;
 			}
 			let cart = {
-				id: this.shopId,
+				shopid: this.shopId,
 				goods_id: item.id,
 				sku_id: sku,
 				checked: 1,

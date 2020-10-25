@@ -172,7 +172,7 @@ const store = new Vuex.Store({
 		 * @param {Object} state
 		 * @param {Object} push
 		 */
-		updatePush(state, push){
+		updatePush(state, push) {
 			state.push = push;
 			this.dispatch('updatePushClient');
 		}
@@ -230,19 +230,11 @@ const store = new Vuex.Store({
 					//count = +res;
 				} catch (err) {}
 			}
-			commit('setStateAttr', [{
-					key: 'cartCount',
-					val: count
-				},
-				{
-					key: 'cartMap',
-					val: cartMap
-				},
-				{
-					key: 'getCartTime',
-					val: time
-				}
-			])
+			commit('setStateAttr', {
+				cartCount: count,
+				cartMap: cartMap,
+				getCartTime: time
+			})
 		},
 		async updatePushClient({
 			state,
@@ -251,9 +243,9 @@ const store = new Vuex.Store({
 			if (state.hasLogin && state.push) {
 				cloudUser("info", "push", {
 					...state.push
-				}).then(res=>{
-					console.log("store 更新用户推送信息成功",res)
-				},err=>{
+				}).then(res => {
+					console.log("store 更新用户推送信息成功", res)
+				}, err => {
 					console.log("store 更新用户推送信息失败")
 				})
 			}

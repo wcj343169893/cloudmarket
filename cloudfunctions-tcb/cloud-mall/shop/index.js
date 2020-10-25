@@ -65,6 +65,7 @@ const models = {
 				day: dayTime,
 				order: {
 					paid: 0,
+					users:[]
 				},
 				turnover: 0,
 				visitor: [

@@ -7,6 +7,9 @@ const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const ordersCollection = db.collection("cloud_orders");
 const usersCollection = db.collection("uni-id-users");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
+const {
+	getDate
+} = require('base-common');
 const modules = {
 	/**
 	 * 获取店铺信息
@@ -52,7 +55,6 @@ const modules = {
 	 * @param {Object} shop
 	 */
 	async getOrderStatistics(shop) {
-		let time = new Date().getTime();
 		//-2:deleted已删除，-1:canceled已取消，0:unpaid未付款，1:payup已付款，
 		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 		let statistics = {
@@ -269,7 +271,7 @@ const modules = {
 		return res.total;
 	},
 	getDayTime() {
-		let date = new Date();
+		let date = getDate();
 		date.setHours(0);
 		date.setMinutes(0);
 		date.setSeconds(0);

@@ -208,15 +208,21 @@ const utc = 8;
  * 获取时间戳,时差问题
  */
 const getTime = (time) => {
-	let getDate;
+	return getDate(time).getTime();
+}
+/**
+ * 当前时间
+ */
+const getDate = (time) => {
+	let date;
 	if (time) {
-		getDate = new Date(time);
+		date = new Date(time);
 	} else {
-		getDate = new Date();
+		date = new Date();
 	}
 	//兼容时区问题，增加8小时
-	getDate.setHours(getDate.getHours() + utc);
-	return getDate.getTime();
+	date.setHours(date.getHours() + utc);
+	return date;
 }
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
@@ -349,6 +355,7 @@ module.exports = {
 	genOrderNo,
 	getDateFormat,
 	getDateString,
+	getDate,
 	dbcache,
 	checkDeliveryHour,
 	getTime
