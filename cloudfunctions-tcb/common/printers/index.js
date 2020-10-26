@@ -1,11 +1,13 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
-const modules = {
-	yilianyun: require("./yilianyun"),
-	feieyun: require("./feieyun"),
-};
 const shopCollection = db.collection("cloud_shops");
+/**
+ * 动态加载模块，不需要事先定义
+ */
+const getModule = (module) => {
+	return require(`./${module}`);
+}
 /**
  * 打印文字
  * @param {Object} data 订单数据 
@@ -51,7 +53,7 @@ const print = async (data, shopid) => {
 		module
 	} = printers[index];
 	//调用子模块方法
-	return await modules[module]["print"](data, printers[index]);
+	return await getModule(module)["print"](data, printers[index]);
 }
 /**
  * 添加打印设备
@@ -60,7 +62,7 @@ const addPrinter = async (data) => {
 	const {
 		module
 	} = data;
-	return await modules[module]["addPrinter"](data);
+	return await getModule(module)["addPrinter"](data);
 }
 /**
  * 获取打印机状态
@@ -70,7 +72,7 @@ const getPrintStatus = async (data) => {
 		module
 	} = data;
 	//调用子模块方法
-	return await modules[module]["getPrintStatus"](data);
+	return await getModule(module)["getPrintStatus"](data);
 }
 /**
  * 直接打印内容
@@ -79,7 +81,7 @@ const println = async (data, config) => {
 	const {
 		module
 	} = config;
-	return await modules[module]["print"](data, config);
+	return await getModule(module)["print"](data, config);
 }
 module.exports = {
 	addPrinter,

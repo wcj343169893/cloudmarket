@@ -136,15 +136,45 @@ const updateShopStatistics = async (shopid, data) => {
 }
 /**
  * 更新店铺每日统计，包含营业额，有效订单，下单用户等
+ * @param {Number} shopid 店铺id 
+ * @param {Object} data 需要更新的内容
+ * @param {Boolean} isGetData 是否返回数据 
  */
-const updateShopDayStatistics = async (shopid, data) => {
+const updateShopDayStatistics = async (shopid, data, isGetData) => {
 	let dayTime = getDateString();
-	let res2 = await shopStatisticsCollection.where({
+	let res = await shopStatisticsCollection.where({
 		shopid,
 		day: dayTime
 	}).update(data);
-	console.log("updateShopDayStatistics", res2);
-	return res2;
+	console.log("updateShopDayStatistics", res);
+	if (res.updated == 0) {
+		//没有数据，需要初始化
+		res = await shopStatisticsCollection.add(Object.assign({
+			shopid,
+			day: dayTime,
+			dayIndex: 0,
+			order: {
+				paid: 0,
+				users: []
+			},
+			turnover: 0,
+			visitor: []
+		}, data));
+		await shopCollection.where({
+			id: shopid
+		}).update({
+			dayStatisticsLog: dayTime
+		})
+	}
+	//返回统计数据
+	if (isGetData) {
+		res = await shopStatisticsCollection.where({
+			shopid,
+			day: dayTime
+		}).limit(1).get();
+		return res.data[0];
+	}
+	return res;
 }
 /**
  * 生成唯一id
@@ -214,15 +244,15 @@ const getTime = (time) => {
  * 当前时间
  */
 const getDate = (time) => {
-	let date;
+	let dt;
 	if (time) {
-		date = new Date(time);
+		dt = new Date(time);
 	} else {
-		date = new Date();
+		dt = new Date();
 	}
 	//兼容时区问题，增加8小时
-	date.setHours(date.getHours() + utc);
-	return date;
+	dt.setHours(dt.getHours() + utc);
+	return dt;
 }
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
