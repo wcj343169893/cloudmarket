@@ -142,6 +142,7 @@ const updateShopStatistics = async (shopid, data) => {
  */
 const updateShopDayStatistics = async (shopid, data, isGetData, uid) => {
 	let dayTime = getDateString();
+	data.updated= new Date().toISOString();
 	let res = await shopStatisticsCollection.where({
 		shopid,
 		day: dayTime
