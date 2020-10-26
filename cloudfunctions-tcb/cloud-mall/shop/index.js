@@ -53,7 +53,7 @@ const models = {
 		//增加用户今日访问记录
 		return await updateShopDayStatistics(shopInfo.id, {
 			visitor: cmd.addToSet(uid)
-		});
+		}, false, uid);
 	}
 }
 module.exports = models;

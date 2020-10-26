@@ -140,7 +140,7 @@ const updateShopStatistics = async (shopid, data) => {
  * @param {Object} data 需要更新的内容
  * @param {Boolean} isGetData 是否返回数据 
  */
-const updateShopDayStatistics = async (shopid, data, isGetData) => {
+const updateShopDayStatistics = async (shopid, data, isGetData, uid) => {
 	let dayTime = getDateString();
 	let res = await shopStatisticsCollection.where({
 		shopid,
@@ -149,7 +149,7 @@ const updateShopDayStatistics = async (shopid, data, isGetData) => {
 	console.log("updateShopDayStatistics", res);
 	if (res.updated == 0) {
 		//没有数据，需要初始化
-		res = await shopStatisticsCollection.add(Object.assign({
+		res = await shopStatisticsCollection.add({
 			shopid,
 			day: dayTime,
 			dayIndex: 0,
@@ -158,8 +158,8 @@ const updateShopDayStatistics = async (shopid, data, isGetData) => {
 				users: []
 			},
 			turnover: 0,
-			visitor: []
-		}, data));
+			visitor: [uid]
+		});
 		await shopCollection.where({
 			id: shopid
 		}).update({

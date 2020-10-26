@@ -117,7 +117,7 @@ const model = {
 				dayIndex
 			} = await updateShopDayStatistics(order.shopid, {
 				dayIndex: cmd.inc(1)
-			}, true);
+			}, true, order.uid);
 			order.dayIndex = dayIndex;
 			console.log("updateShopDayStatistics", dayIndex);
 			//更新用户订单统计，用户待付款订单数
