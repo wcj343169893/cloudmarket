@@ -1,8 +1,8 @@
 // 本文件中的json内容将在云函数【运行】时作为参数传给云函数。
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 {	"module":"login",
-	"action":"sendSms",
+	"action":"pushAdmin",
 	"data":{
-		"mobile":"15986613315"
+		"uid":"8e5be7055f9675f802552d225a1bbb2a"
 	}
 }

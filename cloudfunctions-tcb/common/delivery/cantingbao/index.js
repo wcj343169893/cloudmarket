@@ -14,6 +14,7 @@ const models = {
 	},
 	name: "cantingbao",
 	async addOrder(order) {
+		let deduction = order.deduction ? order.deduction : "0.00";
 		let data = {
 			OrderId: order.id,
 			ShopId: order.shopid,
@@ -32,7 +33,7 @@ const models = {
 			InvoiceTitle: "",
 			TaxpayerId: "",
 			FoodList: [],
-			Flag: "", //订单标记，如：美团、饿了么、饿了么星选等，也可以是商家自定义标记
+			Flag: "小程序", //订单标记，如：美团、饿了么、饿了么星选等，也可以是商家自定义标记
 			//UserBaiduCoordinate
 			//UserGPSCoordinate
 			UserGaodeCoordinate: `${order.address.longitude}|${order.address.latitude}`,
@@ -57,9 +58,12 @@ const models = {
 	 * @param {Object} url
 	 */
 	async send(data, url, action, isTry) {
+		let requestString = this.createRequestString(data, action);
+		console.log(requestString)
 		const res = await uniCloud.httpclient.request(this.baseUrl + url, {
 			method: 'POST',
-			content: this.createRequestString(data, action),
+			contentType:"application/x-www-form-urlencoded",
+			content: requestString,
 			dataType: "json"
 		});
 		console.log(res.data);
@@ -72,7 +76,7 @@ const models = {
 		}
 		console.log(res.data.StateMsg);
 		return false;
-	}
+	},
 	/**
 	 * 签名+请求字符
 	 * @param {Object} data
@@ -85,7 +89,7 @@ const models = {
 			content = new Buffer(JSON.stringify(data)).toString('base64');
 		}
 		//时间戳,服务器有8小时时差
-		let timestamp = getTime();
+		let timestamp = parseInt(getTime()/1000);
 		/*
 		     签名算法：
 		     1、将PartnerKey、Content、Secret、Timesta的字符串顺序链接；

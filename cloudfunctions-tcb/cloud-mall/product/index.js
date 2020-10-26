@@ -218,11 +218,13 @@ const models = {
 	//用户的商品浏览记录
 	async visite(data) {
 		const {
-			uid
+			uid,
+			shopid
 		} = data;
 		//商品浏览记录，每人每件商品只存在一条
 		let result = await goodsVisiteCollection.where({
-			uid: uid
+			uid,
+			shopid
 		}).field({
 			_id: 0,
 			title: 1,

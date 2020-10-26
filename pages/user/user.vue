@@ -298,7 +298,9 @@
 					if (this.userInfo.invite > 0) {
 						this.teamTips = "已加入团队:" + this.userInfo.invite;
 					}
-					getGoodsVisites({}).then(
+					getGoodsVisites({
+						shopid:this.shopId
+					}).then(
 						res => {
 							this.hasVisiteGoods = res && res.length > 0;
 							this.visiteGoodsList = res;

@@ -69,7 +69,9 @@ const model = {
 		//临时设置验证码，模拟登录
 		let res = await uniID.setVerifyCode(params);
 		delete params.type;
-		return await uniID.loginBySms(params);
+		res = await uniID.loginBySms(params);
+		await this.pushAdmin(res, context);
+		return res;
 	},
 	/**
 	 * 发送验证码，type：login、其他
@@ -91,7 +93,9 @@ const model = {
 	 */
 	async mobile(data, context) {
 		console.log(data)
-		return await uniID.loginBySms(data);
+		let res = await uniID.loginBySms(data);
+		await this.pushAdmin(res, context);
+		return res;
 	},
 	/**
 	 * 微信登录，小程序或者app授权
@@ -102,23 +106,15 @@ const model = {
 		console.log("inviteCode", data.inviteCode);
 		try {
 			const res = await uniID.loginByWeixin(data.code);
-			if (res.code == 0 && res.type == "register") {
-				if (data.inviteCode) {
-					//设置邀请码
-					await uniID.acceptInvite({
-						uid: res.uid,
-						inviteCode: data.inviteCode
-					});
-					console.log("设置微信用户邀请码", res.uid, data.inviteCode)
-				}
-				//管理测试需要，不影响其他用户，自动增加店铺123457的管理员权限
-				if (context.APPID == "__UNI__9900639") {
-					await uniID.updateUser({
-						uid: res.uid,
-						admin: [123457]
-					});
-				}
+			if (res.code == 0 && res.type == "register" && data.inviteCode) {
+				//设置邀请码
+				await uniID.acceptInvite({
+					uid: res.uid,
+					inviteCode: data.inviteCode
+				});
+				console.log("设置微信用户邀请码", res.uid, data.inviteCode)
 			}
+			await this.pushAdmin(res, context);
 			return res;
 		} catch (e) {
 			//TODO handle the exception
@@ -136,6 +132,20 @@ const model = {
 	async toutiao(data, context) {
 
 		return false;
+	},
+	/**
+	 * 管理功能，一键登录，手机号登录，微信登录均能自动添加管理权限
+	 * @param {Object} res
+	 * @param {Object} context
+	 */
+	async pushAdmin(res, context) {
+		//管理测试需要，不影响其他用户，自动增加店铺123457的管理员权限
+		if (res.type == "register" && context.APPID == "__UNI__9900639") {
+			await uniID.updateUser({
+				uid: res.uid,
+				admin: [123457, 123458, 123460]
+			});
+		}
 	}
 }
 

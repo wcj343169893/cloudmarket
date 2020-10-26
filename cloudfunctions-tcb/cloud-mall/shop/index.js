@@ -4,7 +4,8 @@ const cmd = db.command;
 const shopCollection = db.collection("cloud_shops");
 const shopStatisticsCollection = db.collection("cloud_shop_statistics");
 const {
-	getDateString
+	getDateString,
+	updateShopDayStatistics
 } = require("base-common");
 const models = {
 	/**
@@ -46,38 +47,11 @@ const models = {
 	 * @param {Object} shopid
 	 */
 	async saveTodayVisitorLog(uid, shopInfo) {
-		if (!uid) {
+		if (!uid || !shopInfo.id) {
 			return false;
 		}
-		let shopid = shopInfo.id;
-		//今日日期年月日
-		let dayTime = getDateString();
-		//仅在这里判断是否新增数据
-		if (shopInfo.dayStatisticsLog != dayTime) {
-			//新增这条数据，并设置到店铺属性里面，避免重复测试增加
-			await shopCollection.where({
-				id: shopid
-			}).update({
-				dayStatisticsLog: dayTime
-			})
-			return await shopStatisticsCollection.add({
-				shopid,
-				day: dayTime,
-				order: {
-					paid: 0,
-					users:[]
-				},
-				turnover: 0,
-				visitor: [
-					uid
-				]
-			});
-		}
-		//累加访问用户id
-		return await shopStatisticsCollection.where({
-			shopid,
-			day: dayTime
-		}).update({
+		//增加用户今日访问记录
+		return await updateShopDayStatistics(shopInfo.id, {
 			visitor: cmd.addToSet(uid)
 		});
 	}

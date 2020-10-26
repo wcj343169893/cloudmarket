@@ -2,7 +2,8 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
-	addUserBalanceLog
+	addUserBalanceLog,
+	getDate
 } = require('base-common');
 const usersCollection = db.collection("uni-id-users");
 const modules = {
@@ -99,7 +100,7 @@ const modules = {
 		return res.data[0].balance;
 	},
 	getDayTime() {
-		let date = new Date();
+		let date = getDate();
 		date.setHours(0);
 		date.setMinutes(0);
 		date.setSeconds(0);

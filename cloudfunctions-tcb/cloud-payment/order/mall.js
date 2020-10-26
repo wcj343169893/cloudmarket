@@ -7,7 +7,8 @@ const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
 const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
 const {
 	updateUserOrderCount,
-	getDateString
+	getDateString,
+	updateShopDayStatistics
 } = require('base-common');
 const {
 	print
@@ -59,12 +60,16 @@ const model = {
 				order.module = "yuding";
 				//不能使用的支付方式
 				order.excludePayment = ["delivery"];
-				order.body = getStringFormat("order.depositBody",{body:order.body});
+				order.body = getStringFormat("order.depositBody", {
+					body: order.body
+				});
 				console.log("定金", order.yuding);
 			} else {
 				//支付尾款
 				order.totalMoney = order.yuding.finishPaymentPrice + order.freight;
-				order.body = getStringFormat("order.finalBody",{body:order.body});
+				order.body = getStringFormat("order.finalBody", {
+					body: order.body
+				});
 				console.log("尾款", order.yuding);
 			}
 		} else {
@@ -106,15 +111,24 @@ const model = {
 			let order = await this.getOrderByConditions({
 				outTradeNo
 			}, this.getFields());
+			let res;
+			//更新订单每日流水号
+			const {
+				dayIndex
+			} = await updateShopDayStatistics(order.shopid, {
+				dayIndex: cmd.inc(1)
+			}, true);
+			order.dayIndex = dayIndex;
+			console.log("updateShopDayStatistics", dayIndex);
 			//更新用户订单统计，用户待付款订单数
-			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid,order.totalMoney);
+			res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid, order.totalMoney);
 			console.log("updateUserOrderCount", res);
 			//新订单提醒
-			res = await sendNewOrder(order);
-			console.log("sendNewOrder", res);
+			let isSendNewOrder = await sendNewOrder(order);
+			console.log("sendNewOrder", isSendNewOrder);
 			// 打印订单
-			res = await print(order, order.shopid);
-			console.log("print", res);
+			let isPrint = await print(order, order.shopid);
+			console.log("print", isPrint);
 			//商品销量日志
 			let up = {
 				goods: {}
@@ -140,6 +154,15 @@ const model = {
 				day: dayTime
 			}).update(shopSales);
 			console.log("saleRes", res);
+
+			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息
+			await orderCollection.doc(order._id).update({
+				dayIndex,
+				isPrint,
+				isSendNewOrder
+			});
+		} else {
+			console.log("订单重复通知");
 		}
 		return data;
 	},

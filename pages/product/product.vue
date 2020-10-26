@@ -1427,6 +1427,7 @@
 
 	.icon-gouwuche {
 		font-size: 48upx;
+		color: $base-color;
 	}
 
 	.sub-title {

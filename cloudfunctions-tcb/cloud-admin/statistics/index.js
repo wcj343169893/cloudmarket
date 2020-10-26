@@ -41,7 +41,7 @@ const modules = {
 			statistics = res.data[0];
 		}
 		let zhuanhua = "0%";
-		if (statistics.totalVisitor > 0) {
+		if (statistics.totalVisitor > 0 && statistics.totalOrdered > 0) {
 			zhuanhua = (statistics.totalOrdered / statistics.totalVisitor * 100).toFixed(2) + "%";
 		}
 		return [{
