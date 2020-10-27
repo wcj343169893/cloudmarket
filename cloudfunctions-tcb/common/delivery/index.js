@@ -14,7 +14,7 @@ const test = async (event) => {
 		module,
 		data
 	} = event;
-	return await getModule(module)["addOrder"](data);
+	return await getModule(module)["cancelOrder"](data);
 }
 
 /**

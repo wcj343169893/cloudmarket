@@ -13,6 +13,10 @@ const models = {
 		secret: "XYEUJBWYBEBSVGV81832"
 	},
 	name: "cantingbao",
+	/**
+	 * 增加新订单
+	 * @param {Object} order
+	 */
 	async addOrder(order) {
 		let deduction = order.deduction ? order.deduction : "0.00";
 		let data = {
@@ -50,7 +54,18 @@ const models = {
 				FoodCount: goods.amount
 			});
 		}
-		return await this.send(data, "ClientOrder.ashx", "SendOrderData")
+		return await this.send(data, "ClientOrder.ashx", "SendOrderData");
+	},
+	/**
+	 * 取消订单，注意：骑手取餐后禁止关闭
+	 * @param {Object} order
+	 */
+	async cancelOrder(order) {
+		let data = {
+			OrderId: order.id,
+			Reason: order.cancelReason ? order.cancelReason : "商家关闭"
+		};
+		return await this.send(data, "ClientOrder.ashx", "CloseOrder");
 	},
 	/**
 	 * 统一发送接口
@@ -62,7 +77,7 @@ const models = {
 		console.log(requestString)
 		const res = await uniCloud.httpclient.request(this.baseUrl + url, {
 			method: 'POST',
-			contentType:"application/x-www-form-urlencoded",
+			contentType: "application/x-www-form-urlencoded",
 			content: requestString,
 			dataType: "json"
 		});
@@ -89,7 +104,7 @@ const models = {
 			content = new Buffer(JSON.stringify(data)).toString('base64');
 		}
 		//时间戳,服务器有8小时时差
-		let timestamp = parseInt(getTime()/1000);
+		let timestamp = parseInt(getTime() / 1000);
 		/*
 		     签名算法：
 		     1、将PartnerKey、Content、Secret、Timesta的字符串顺序链接；

@@ -190,7 +190,8 @@
 				this.tabtap({
 					id: v
 				});
-			},shopId(id){
+			},
+			shopId(id) {
 				console.log('watch 店铺id改变,刷新当前页面');
 				this.loadData();
 			}
@@ -219,6 +220,9 @@
 		},
 		methods: {
 			async loadData() {
+				if (this.shopId < 1) {
+					return false;
+				}
 				//加载店铺信息
 				this.getShopInfo();
 				this.searchKeyWords = uni.getStorageSync("shopSearchGoodsKeywords");
