@@ -64,6 +64,12 @@ const getOrderStateExp = function(item) {
 		stateContent = "订单已退款";
 		item.isRefundAll=true;
 	}
+	//有骑手配送信息
+	if(item.delivery && item.delivery.id && item.delivery.state > 1){
+		stateTip = "配送中";
+		stateContent = item.delivery.stateTitle;
+	}
+	
 	return {
 		stateTip,
 		stateTipColor,

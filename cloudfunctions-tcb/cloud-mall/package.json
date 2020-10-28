@@ -12,6 +12,7 @@
   "dependencies": {
     "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
+    "delivery": "file:../common/delivery",
     "order": "file:../common/order",
     "printers": "file:../common/printers",
     "uni-id": "file:../common/uni-id",

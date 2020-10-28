@@ -4,6 +4,7 @@
  * @url https://ext.dcloud.net.cn/plugin?id=2116
  */
 const uniID = require('uni-id');
+const querystring = require("querystring");
 /**
  * 引入子模块（必须），默认会找到对于目录下的index.js
  */
@@ -32,6 +33,7 @@ const mustLoginActions = {
 const getUserInfoActions = {
 	home: ["index"],
 	category: ["main"],
+	order: ["dealstate"],
 	product: ["detail"]
 }
 
@@ -40,7 +42,7 @@ const getUserInfoActions = {
  * @param {Object} event ,event.uniIdToken每一个请求都会自动带上
  */
 exports.main = async (event, context) => {
-	const {
+	let {
 		module,
 		action,
 		data,
@@ -51,14 +53,48 @@ exports.main = async (event, context) => {
 		console.log(event);
 		for (let model in modules) {
 			//执行每个模块的定时器
-			if(modules[model]["timer"]){
+			if (modules[model]["timer"]) {
 				console.log(model);
 				await modules[model]["timer"]();
 			}
 		}
 		return event;
+	} else if (event.path) {
+		//开启url后，有些通知,不需要登录
+		let paths = event.path.split("/");
+		//模块
+		module = paths[1];
+		//action
+		action = paths[2];
+		if (!data) {
+			data = {};
+		}
+		if (paths.length > 2) {
+			//子模块
+			data.module = paths[3];
+		}
+		//合并get和post参数到data里面，数据类型全部是string
+		if (event.queryStringParameters) {
+			data = Object.assign(data, event.queryStringParameters);
+		}
+		if (event.body) {
+			data = Object.assign(data, querystring.parse(event.body));
+		}
+		console.log(module, action, data);
 	}
-	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(action))) {
+	if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
+			action))) {
+		//仅仅是获得的用户信息，有可能没有
+		let payload = await uniID.checkToken(uniIdToken);
+		if (!payload.code) {
+			data.uid = payload.uid;
+			context.userInfo = payload.userInfo;
+		} else {
+			data.uid = false;
+			context.userInfo = {};
+		}
+	} else if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
+			action))) {
 		//token检查，必须登录
 		let payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
@@ -72,12 +108,6 @@ exports.main = async (event, context) => {
 		//uid在后续保存操作中，会存入数据库，uid为ObjectId，例如：29ce6e168a89414daf110a96b4300c02
 		data.uid = payload.uid;
 		//userInfo为连带查询数据，后续接口可能会用到
-		context.userInfo = payload.userInfo;
-	} else if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
-			action))) {
-		//仅仅是获得的用户信息，有可能没有
-		let payload = await uniID.checkToken(uniIdToken);
-		data.uid = payload.uid;
 		context.userInfo = payload.userInfo;
 	}
 	let result = false;

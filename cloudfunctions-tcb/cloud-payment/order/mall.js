@@ -19,6 +19,8 @@ const {
 const {
 	getStringFormat
 } = require('configs');
+//骑手接口
+const delivery = require('delivery');
 const model = {
 	/**
 	 * 检查订单状态
@@ -154,11 +156,21 @@ const model = {
 				day: dayTime
 			}).update(shopSales);
 			console.log("saleRes", res);
-
+			let riderDelivery = {};
+			//商家开启第三方配送功能，并且订单是配送
+			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery) {
+				//设置第三方配送id
+				riderDelivery.id = await delivery.addOrder({
+					module: order.shop.delivery.thirdPartyModule || "cantingbao",
+					data: order
+				});
+				//如果自己是平台，则需要扣除商家的配送费
+			}
 			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息
 			await orderCollection.doc(order._id).update({
 				dayIndex,
 				isPrint,
+				delivery: riderDelivery,
 				isSendNewOrder
 			});
 		} else {

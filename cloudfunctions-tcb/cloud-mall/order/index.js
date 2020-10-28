@@ -9,6 +9,8 @@ const {
 	genIdentityId,
 	genOrderNo
 } = require('base-common');
+//骑手接口
+const delivery = require('delivery');
 const orderCollection = db.collection("cloud_orders");
 const cartCollection = db.collection('cloud_carts');
 const goodsCollection = db.collection('cloud_goods');
@@ -76,6 +78,8 @@ const model = {
 			cancelStyle: 1,
 			remark: 1,
 			shopid: 1,
+			dayIndex:1,
+			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
 			shop: 1,
@@ -89,7 +93,7 @@ const model = {
 			refundAmount: 1,
 			isComment: 1,
 			//refundApply: 1
-		}).skip((page - 1) * limit).limit(limit).orderBy("id", "desc").get();
+		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
 		return data;
@@ -205,6 +209,8 @@ const model = {
 			shopid: 1,
 			shop: 1,
 			freight: 1,
+			dayIndex:1,
+			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
 			modified: 1,
@@ -1047,7 +1053,7 @@ const model = {
 				freightTitle
 			};
 		}
-		if(!shop){
+		if (!shop) {
 			//查询店铺信息
 			shop = await this.getShopInfoById(shopid, {
 				id: 1,
@@ -1140,6 +1146,27 @@ const model = {
 				console.log("resUser", resUser);
 			}
 		}
+	},
+	/**
+	 * 第三方骑手通知地址
+	 * @param {Object} data
+	 * @param {Object} data.module 子模块：餐厅宝
+	 */
+	async dealstate(event) {
+		//验证签名，并返回content内容
+		let {
+			orderid,
+			result
+		} = await delivery.validateSign(event);
+		if (result) {
+			console.log(orderid, result)
+			return await orderCollection.where({
+				id: orderid
+			}).update({
+				delivery: result
+			});
+		}
+		return true;
 	}
 }
 
