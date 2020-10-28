@@ -6,7 +6,12 @@ const shopCollection = db.collection("cloud_shops");
  * 动态加载模块，不需要事先定义
  */
 const getModule = (module) => {
-	return require(`./${module}`);
+	try{
+		return require(`./${module}`);
+	}catch(e){
+		console.error(`模块${module}不存在`)
+	}
+	return false;
 }
 
 const test = async (event) => {
@@ -14,7 +19,7 @@ const test = async (event) => {
 		module,
 		data
 	} = event;
-	return await getModule(module)["cancelOrder"](data);
+	return await getModule(module)["addOrder"](data);
 }
 
 /**

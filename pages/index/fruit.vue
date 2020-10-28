@@ -211,9 +211,6 @@
 		},
 		onLoad(options) {
 			console.log("fruit onload", options)
-			if (options.u) {
-				this.setInvite(options.u)
-			}
 			this.getUserLocation();
 			uni.$on('logoutEvent', () => {
 				console.log("触发全局退出事件")
@@ -232,7 +229,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'setInvite','checkLogout']),
+			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'checkLogout']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问
@@ -288,6 +285,7 @@
 			async loadData() {
 				console.log("开始获取首页数据")
 				getHomeFruitData({
+					shopid: this.shopId,
 					stationId: this.stationId,
 					latitude: this.location.latitude,
 					longitude: this.location.longitude
@@ -302,7 +300,7 @@
 						this.swiperLength = ads.length;
 						this.carouselList = ads;
 					}
-					if(res.adBanners){
+					if (res.adBanners) {
 						this.adBanners = res.adBanners;
 					}
 					if (res.categories) {
@@ -339,8 +337,8 @@
 						});
 						this.getDefaultSearchWord();
 						uni.setStorage({
-							key:'serviceShopInfo',
-							data:this.shop
+							key: 'serviceShopInfo',
+							data: this.shop
 						})
 					}
 					this.share = res.share;
@@ -537,6 +535,9 @@
 			let title = "";
 			if (this.userInfo && this.userInfo.my_invite_code) {
 				query.push('u=' + this.userInfo.my_invite_code);
+			}
+			if (this.shopId) {
+				query.push(`shopid=${this.shopId}`)
 			}
 			if (this.share) {
 				if (this.share.pageLinkQuery) {
@@ -982,6 +983,7 @@
 		background: #FFFFFF;
 		padding: 20rpx 0;
 		position: relative;
+
 		.icon-gonggao {
 			font-size: $font-sm;
 		}

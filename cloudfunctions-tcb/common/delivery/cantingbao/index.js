@@ -42,7 +42,8 @@ const models = {
 			//UserGPSCoordinate
 			UserGaodeCoordinate: `${order.address.longitude}|${order.address.latitude}`,
 			DayIndex: order.dayIndex, //订单所在门店的当日流水号，请尽量填写便于骑手快速取餐
-			PickType: 0
+			PickType: 0,
+			Weight: order.weight ? order.weight : 1
 		};
 
 		//预约时间ReachTime，预约时间，如果是立即配送请填空字符串或者不填（格式：yyyy-MM-dd HH:mm:ss）
@@ -73,12 +74,13 @@ const models = {
 	 * @param {Object} url
 	 */
 	async send(data, url, action, isTry) {
+		console.log(JSON.stringify(data));
 		let requestString = this.createRequestString(data, action);
 		console.log(requestString)
-		const res = await uniCloud.httpclient.request(this.baseUrl + url, {
+		const res = await uniCloud.httpclient.request(this.baseUrl + url + "?" + requestString, {
 			method: 'POST',
 			contentType: "application/x-www-form-urlencoded",
-			content: requestString,
+			//content: requestString,
 			dataType: "json"
 		});
 		console.log(res.data);

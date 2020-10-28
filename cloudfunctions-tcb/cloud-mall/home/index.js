@@ -13,7 +13,10 @@ const shop = require("../shop");
 const models = {
 	//首页
 	async index(data) {
-		let uid = data.uid;
+		let {
+			uid,
+			shopid
+		} = data;
 		let longitude = data.longitude ? +data.longitude : 113.92246555717469;
 		let latitude = data.latitude ? +data.latitude : 22.489059185437284;
 		let limits = {
@@ -41,10 +44,16 @@ const models = {
 				newest: "实时鲜货",
 			}
 		};
-		//根据用户收货地址查询最近的一家店铺
-		let shopid = 123457;
-		//10公里以内
-		let shopInfo = await shop.getNearest({longitude, latitude});
+		let shopInfo;
+		if (shopid) {
+			shopInfo = await shop.getById(+shopid);
+		} else {
+			//根据用户收货地址查询最近的一家店铺
+			shopInfo = await shop.getNearest({
+				longitude,
+				latitude
+			});
+		}
 		if (shopInfo) {
 			shopid = shopInfo.id;
 			if (shop.pages && shopInfo.pages.home) {
@@ -55,7 +64,7 @@ const models = {
 					...shop.pages.home.limits
 				})
 			}
-			dataOut["shop"] =shopInfo;
+			dataOut["shop"] = shopInfo;
 		}
 		dataOut["shopId"] = shopid;
 		//查询广告,优先店铺，再是全站shopid: cmd.in([0, shopid])
@@ -82,7 +91,7 @@ const models = {
 			url: "/pages/index/fruit"
 		});
 		//用户访问店铺日志
-		await shop.saveTodayVisitorLog(uid,shopInfo);
+		await shop.saveTodayVisitorLog(uid, shopInfo);
 		return dataOut;
 	},
 	/**

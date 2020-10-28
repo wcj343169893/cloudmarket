@@ -8,6 +8,15 @@ const {
 	updateShopDayStatistics
 } = require("base-common");
 const models = {
+	async getById(id) {
+		let res = await shopCollection.where({
+			id
+		}).field(this.getFields()).limit(1).get();
+		if (res.data.length == 0) {
+			return false;
+		}
+		return res.data[0];
+	},
 	/**
 	 * 根据经纬度，查询最近的一个店铺
 	 * @param {Object} data
@@ -23,19 +32,7 @@ const models = {
 				// minDistance: 0,
 				// maxDistance: 10000,
 			})
-		}).field({
-			id: 1,
-			address: 1,
-			name: 1,
-			delivery: 1,
-			notice: 1,
-			phone: 1,
-			dayStatisticsLog: 1,
-			serviceTime: 1,
-			searchGoodsKeywords: 1,
-			src: 1,
-			pages: 1
-		}).limit(1).get();
+		}).field(this.getFields()).limit(1).get();
 		if (res.data.length == 0) {
 			return false;
 		}
@@ -54,6 +51,21 @@ const models = {
 		return await updateShopDayStatistics(shopInfo.id, {
 			visitor: cmd.addToSet(uid)
 		}, false, uid);
+	},
+	getFields() {
+		return {
+			id: 1,
+			address: 1,
+			name: 1,
+			delivery: 1,
+			notice: 1,
+			phone: 1,
+			dayStatisticsLog: 1,
+			serviceTime: 1,
+			searchGoodsKeywords: 1,
+			src: 1,
+			pages: 1
+		};
 	}
 }
 module.exports = models;

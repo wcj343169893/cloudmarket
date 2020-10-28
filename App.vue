@@ -180,8 +180,21 @@
 				},100)
 			}
 		},
-		onLaunch: function() {
+		onLaunch: function(options) {
 			console.log('App.vue 启动');
+			console.log(options);
+			//邀请者
+			if (options.query.u) {
+				this.setStateAttr({
+					inviteCode:options.query.u
+				})
+			}
+			//分享过来的店铺id，正常访问是没有的，这里可以防止分类页面没有店铺id的尴尬
+			if (options.query.shopid) {
+				this.setStateAttr({
+					shopId:+options.query.shopid
+				})
+			}
 
 			let info = uni.getSystemInfoSync();
 			this.initSize(info);
