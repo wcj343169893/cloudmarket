@@ -73,6 +73,13 @@ const network = (options)=> {
 				}
 				return Promise.reject(new Error(res.result.message));
 			}
+			//token即将过期了，服务器刷新了一下，本地保存下来
+			if(res.result.token){
+				uni.setStorageSync('uniIdToken', res.result.token);
+				uni.setStorageSync('uni_id_token', res.result.token);
+				//本地保持有效期
+				uni.setStorageSync('uni_id_token_expires', res.result.tokenExpired);
+			}
 			resolve(res.result.data);
 		}).catch(err => {
 			uni.hideLoading()

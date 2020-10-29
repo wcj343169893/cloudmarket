@@ -31,6 +31,7 @@ exports.main = async (event, context) => {
 	}
 	//token检查，必须登录
 	let payload = await uniID.checkToken(uniIdToken);
+	let tokenData = {};
 	if (payload.code && payload.code > 0) {
 		return {
 			code: 401,
@@ -42,6 +43,12 @@ exports.main = async (event, context) => {
 	data.uid = payload.uid;
 	//userInfo为连带查询数据，后续接口可能会用到
 	context.userInfo = payload.userInfo;
+	if (payload && payload.token) {
+		tokenData = {
+			token: payload.token,
+			tokenExpired: payload.tokenExpired
+		}
+	}
 	let result = false;
 	try {
 		result = await actions[action](data, module, context);
@@ -68,6 +75,7 @@ exports.main = async (event, context) => {
 	return {
 		code: 200,
 		data: result,
-		message: getStringFormat("system.success")
+		message: getStringFormat("system.success"),
+		...tokenData
 	};
 };

@@ -42,6 +42,7 @@ exports.main = async (event, context) => {
 	}
 	//token检查,全部都需要
 	let payload = await uniID.checkToken(uniIdToken);
+	let tokenData = {};
 	if (payload.code && payload.code > 0) {
 		return {
 			code: 401,
@@ -60,6 +61,12 @@ exports.main = async (event, context) => {
 	context.userInfo = payload.userInfo;
 	//强制传递操作者，如果是更新数据，会写入数据库，这里的uid是ObjectId
 	data.operator = payload.uid;
+	if (payload && payload.token) {
+		tokenData = {
+			token: payload.token,
+			tokenExpired: payload.tokenExpired
+		}
+	}
 	//操作的店铺id,必填，否则无法判断权限
 	//@todo shopid和customUserId将来读取此用户的权限信息，来判断是否有操作如下action的权限
 	//在权限验证完成之后，强制设置操作店铺id,相当于转换为int类型
@@ -98,6 +105,7 @@ exports.main = async (event, context) => {
 	return {
 		code: 200,
 		data: result,
-		message: "操作成功"
+		message: "操作成功",
+		...tokenData
 	};
 };

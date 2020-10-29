@@ -47,7 +47,8 @@
 		getToken,
 		mobileLogin,
 		sendSms,
-		micLogin
+		micLogin,
+		cloudUser
 	} from '@/common/request.js';
 	import {
 		mapState,
@@ -288,10 +289,12 @@
 					//#ifdef APP-PLUS
 					token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";
 					//#endif
-					this.loginSuccess({
-						token: token,
-						tokenExpired: (new Date()).getTime() + 24 * 3600 * 1000 * 2
-					});
+					//这里是开发者快速登录入口
+					cloudUser("login","checkToken",{
+						token
+					}).then(res=>{
+						this.loginSuccess(res);
+					})
 					return;
 				}
 				//再次验证手机号码

@@ -82,10 +82,12 @@ exports.main = async (event, context) => {
 		}
 		console.log(module, action, data);
 	}
+	let payload;
+	let tokenData = {};
 	if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
 			action))) {
 		//仅仅是获得的用户信息，有可能没有
-		let payload = await uniID.checkToken(uniIdToken);
+		payload = await uniID.checkToken(uniIdToken);
 		if (!payload.code) {
 			data.uid = payload.uid;
 			context.userInfo = payload.userInfo;
@@ -96,7 +98,7 @@ exports.main = async (event, context) => {
 	} else if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
 			action))) {
 		//token检查，必须登录
-		let payload = await uniID.checkToken(uniIdToken);
+		payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
 			console.log("登录失效", event, payload)
 			return {
@@ -109,6 +111,12 @@ exports.main = async (event, context) => {
 		data.uid = payload.uid;
 		//userInfo为连带查询数据，后续接口可能会用到
 		context.userInfo = payload.userInfo;
+	}
+	if (payload && payload.token) {
+		tokenData = {
+			token: payload.token,
+			tokenExpired: payload.tokenExpired
+		}
 	}
 	let result = false;
 	//预防有分页查询的接口，提前过滤page的有效性
@@ -144,6 +152,7 @@ exports.main = async (event, context) => {
 	return {
 		code: 200,
 		data: result,
-		message: "操作成功"
+		message: "操作成功",
+		...tokenData
 	};
 };

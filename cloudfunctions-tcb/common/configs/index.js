@@ -4,6 +4,9 @@ const fs = require("fs");
  */
 const config = require("./config.json");
 const model = {
+	getConfig(){
+		return config;
+	},
 	/**
 	 * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 
 	 * @param {String} platform 运行平台，返回值为 mp-weixin、app-plus等
@@ -72,7 +75,6 @@ const model = {
 	 * @param {Object} data 参数{name:'支付宝'}
 	 */
 	getStringFormat(templateId, data) {
-
 		let ids = templateId.split(".");
 		//找不到对于的模板字符串
 		if (!config.templates || !config.templates[ids[0]] || !config.templates[ids[0]][ids[1]]) {

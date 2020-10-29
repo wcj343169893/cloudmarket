@@ -13,8 +13,7 @@ const mustLoginActions = {
 /**
  * 获取用户信息，但是不校验
  */
-const getUserInfoActions = {
-}
+const getUserInfoActions = {}
 
 
 /**
@@ -28,11 +27,13 @@ exports.main = async (event, context) => {
 		data,
 		uniIdToken
 	} = event;
+	let payload;
+	let tokenData = {};
 	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(action))) {
 		//token检查，必须登录
-		let payload = await uniID.checkToken(uniIdToken);
+		payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
-			console.log("登录失效",event,payload,context)
+			console.log("登录失效", event, payload, context)
 			return {
 				code: 401,
 				event,
@@ -46,9 +47,15 @@ exports.main = async (event, context) => {
 	} else if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
 			action))) {
 		//仅仅是获得的用户信息，有可能没有
-		let payload = await uniID.checkToken(uniIdToken);
+		payload = await uniID.checkToken(uniIdToken);
 		data.uid = payload.uid;
 		context.userInfo = payload.userInfo;
+	}
+	if (payload && payload.token) {
+		tokenData = {
+			token: payload.token,
+			tokenExpired: payload.tokenExpired
+		}
 	}
 	let result = false;
 	//预防有分页查询的接口，提前过滤page的有效性
@@ -84,6 +91,7 @@ exports.main = async (event, context) => {
 	return {
 		code: 200,
 		data: result,
-		message: "操作成功"
+		message: "操作成功",
+		...tokenData
 	};
 };

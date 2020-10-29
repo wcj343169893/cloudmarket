@@ -2,11 +2,13 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const NodeRSA = require('node-rsa');
+const jwt = require('jsonwebtoken');
 const uniID = require('uni-id');
 //极光配置，公钥需要设置到极光后台，app包名需要对应上，否则无法验证
 const {
 	getLoginConfig,
-	getSmsTemplateId
+	getSmsTemplateId,
+	getConfig
 } = require("configs");
 const model = {
 	/**
@@ -132,6 +134,28 @@ const model = {
 	async toutiao(data, context) {
 
 		return false;
+	},
+	async checkToken(data) {
+		const {
+			token
+		} = data;
+		const config = getConfig();
+		const payload = jwt.verify(token, config.tokenSecret);
+		console.log(payload);
+		/* {
+			"clientId": "cd15931c95ffbadcd308c84c283382a2",
+			"exp": 1605407297,
+			"iat": 1602815297,
+			"uid": "9ffb2a485f38964200999b1f07cb7b80"
+		} */
+		if (payload.exp < Date.now() / 1000) {
+			data.message = "token失效";
+			return false;
+		}
+		return {
+			token: token,
+			tokenExpired: payload.exp * 1000
+		}
 	},
 	/**
 	 * 管理功能，一键登录，手机号登录，微信登录均能自动添加管理权限

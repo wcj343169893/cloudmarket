@@ -1,6 +1,7 @@
 {
 	"domain": "http://www.mydomain.com",
 	"notify-floder": "market_notify",
+	"tokenSecret": "4e50313a45f5fbe0",
 	"app-plus": {
 		"payment": {
 			"alipay": {
