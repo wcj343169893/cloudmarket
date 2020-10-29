@@ -2,39 +2,36 @@
 const crypto = require('crypto');
 const {
 	getDateFormat,
-	getTime
+	getTime,
 } = require("base-common");
+const {
+	getDeliveryConfig
+} = require("configs");
 const models = {
-	baseUrl: "http://sdk.test.canqu.com.cn/Shop/V1/",
-	//baseUrl: "http://sdk.canqu.com.cn/Shop/V1/",
+	testUrl: "http://sdk.test.canqu.com.cn/Shop/V1/",
+	productUrl: "http://sdk.canqu.com.cn/Shop/V1/",
 	config: {
-		key: "84Qrm9NwSCTVanyldcak9LJpX",
-		secret: "XYEUJBWYBEBSVGV81832"
+		key: "",
+		secret: "",
+		product: false //是否正式环境
 	},
 	name: "cantingbao",
 	/**
 	 * 增加新订单
 	 * @param {Object} order
 	 */
-	async addOrder(order) {
+	async add(order) {
 		let deduction = order.deduction ? order.deduction : "0.00";
+		let base = this.getOrderBaseInfo(order);
 		let data = {
-			OrderId: order.id,
 			ShopId: order.shopid,
 			ShopName: order.shop.name,
-			OrderUserName: order.address.name ? order.address.name : "",
-			OrderUserPhone: order.address.mobile,
-			OrderUserAddress: order.address.address + " " + order.address.addressName,
-			OrderRemark: order.remark,
 			PayType: 1, //支付方式（0为货到付款，1为预付款）
 			BoxFee: order.boxFee ? order.boxFee : 0,
 			Freight: order.freight,
 			ActivityMoney: order.totalDiscount,
 			ShopActivityMoney: 0,
 			DepositMoney: 0,
-			Invoice: 0,
-			InvoiceTitle: "",
-			TaxpayerId: "",
 			FoodList: [],
 			Flag: "小程序", //订单标记，如：美团、饿了么、饿了么星选等，也可以是商家自定义标记
 			//UserBaiduCoordinate
@@ -44,10 +41,6 @@ const models = {
 			PickType: 0,
 			Weight: order.weight ? order.weight : 1
 		};
-		//预计送达时间
-		if (order.deliveryHour) {
-			data.ReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.endTime);
-		}
 
 		//预约时间ReachTime，预约时间，如果是立即配送请填空字符串或者不填（格式：yyyy-MM-dd HH:mm:ss）
 		//商品列表FoodList，存放APIFoodItem对象
@@ -58,7 +51,9 @@ const models = {
 				FoodCount: goods.amount
 			});
 		}
-		let res = await this.send(data, "ClientOrder.ashx", "SendOrderData");
+		let res = await this.send({ ...base,
+			...data
+		}, "ClientOrder.ashx", "SendOrderData");
 		if (res) {
 			//这里只返回配送订单号，方便查询
 			return res.OrderId;
@@ -66,19 +61,63 @@ const models = {
 		return false;
 	},
 	/**
+	 * 修改订单
+	 * 订单编号（OrderId）为必填
+	 * 字符串类型参数：空字符串为忽略不修改
+	 * 整型参数：-1为忽略不修改
+	 * 当订单状态为“已取餐”，以及以后的状态时，禁止修改订单
+	 * @param {Object} order
+	 */
+	async update(order) {
+		return await this.send(this.getOrderBaseInfo(order), "ClientOrder.ashx", "CloseOrder");
+	},
+	getOrderBaseInfo(order) {
+		let data = {
+			OrderId: order.id,
+			OrderUserName: order.address.name ? order.address.name : "",
+			OrderUserPhone: order.address.mobile,
+			OrderUserAddress: order.address.address + " " + order.address.addressName,
+			OrderRemark: order.remark,
+			Invoice: 0,
+			InvoiceTitle: "",
+			TaxpayerId: "",
+		};
+		//预计送达时间
+		if (order.deliveryHour) {
+			data.ReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.endTime);
+		}
+		return data;
+	},
+	/**
 	 * 取消订单，注意：骑手取餐后禁止关闭
 	 * @param {Object} order
 	 * @param {Object} order.id 商家订单号
 	 * @param {Object} order.cancelReason 取消原因
 	 */
-	async cancelOrder(order) {
+	async cancel(order) {
 		let data = {
 			OrderId: order.id,
-			Reason: order.cancelReason ? order.cancelReason : "商家关闭"
+			Reason: order.cancelReason ? order.cancelReason : "无"
 		};
 		return await this.send(data, "ClientOrder.ashx", "CloseOrder");
 	},
 	/**
+	 * 订单退款
+	 * 此接口主要用于商家自有预付费支付系统，在退款时和本系统的交互
+	 * 如果商家觉得无需交互，可以在自己系统退款后，发送取消订单请求
+	 * @param {Object} order
+	 */
+	async refund(order) {
+		let data = {
+			OrderId: order.id,
+			ApplyType: 0, //申请类型：0为发起退款1为确认退款2为驳回退款3为用户取消退款4为用户取消退款申述
+			IsRefuse: 0, //是否可以拒绝：0为不可以1为可以
+			Reason: order.refundReason ? order.refundReason : "无"
+		};
+		return await this.send(data, "ClientOrder.ashx", "OrderRefund");
+	},
+	/**
+	 * 4、锁定和解锁订单
 	 * 修改商家是否出餐,会收到一个出餐通知
 	 * @param {Object} order
 	 */
@@ -86,9 +125,21 @@ const models = {
 		//是否出餐：,0为未出餐,1为已出餐
 		let data = {
 			OrderId: order.id,
-			ShopFlag: order.state >= 2 ? 1 : 0
+			ShopFlag: order.state >= 2 ? 1 : 0,
 		};
 		return await this.send(data, "ClientOrder.ashx", "UpdateShopFlag");
+	},
+	/**
+	 * 锁定和解锁订单
+	 * @param {Object} order
+	 */
+	async lock(order) {
+		let data = {
+			OrderId: order.id,
+			IsLock: order.delivery.lock ? 1 : 0, //是否锁定：1为锁定0为解锁
+			Reason: order.lockReason ? order.lockReason : "无"
+		};
+		return await this.send(data, "ClientOrder.ashx", "OrderLock");
 	},
 	/**
 	 * 统一发送接口
@@ -96,6 +147,7 @@ const models = {
 	 * @param {Object} url
 	 */
 	async send(data, url, action, isTry) {
+		this.config = getDeliveryConfig(this.name);
 		console.log(JSON.stringify(data));
 		let content = "";
 		if (data) {
@@ -111,7 +163,8 @@ const models = {
 		};
 		requestData.sign = this.sign(requestData);
 		console.log(JSON.stringify(requestData));
-		const res = await uniCloud.httpclient.request(this.baseUrl + url, {
+		let baseUrl = this.config.product ? this.productUrl : this.testUrl;
+		const res = await uniCloud.httpclient.request(baseUrl + url, {
 			method: 'POST',
 			contentType: "application/x-www-form-urlencoded",
 			data: requestData,
@@ -133,6 +186,7 @@ const models = {
 	 * @param {Object} data
 	 */
 	async validateSign(data) {
+		this.config = getDeliveryConfig(this.name);
 		if (data.key != this.config.key) {
 			console.log("key 不一致")
 			data.message = "key 不一致";

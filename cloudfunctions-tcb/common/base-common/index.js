@@ -144,7 +144,7 @@ const updateShopStatistics = async (shopid, data) => {
  */
 const updateShopDayStatistics = async (shopid, data, isGetData, uid) => {
 	let dayTime = getDateString();
-	data.updated= new Date().toISOString();
+	data.updated = new Date().toISOString();
 	let res = await shopStatisticsCollection.where({
 		shopid,
 		day: dayTime
@@ -234,7 +234,7 @@ const genOrderNo = function() {
 	return getDateFormat('yyyyMMddhhmmss') + (Math.random() + "").substr(2, 8);
 }
 /**
- * 默认时差
+ * 默认时差,东八区
  */
 const utc = 8;
 /**
@@ -253,8 +253,15 @@ const getDate = (time) => {
 	} else {
 		dt = new Date();
 	}
-	//兼容时区问题，增加8小时
-	dt.setHours(dt.getHours() + utc);
+	/**
+	 *The getTimezoneOffset() method returns the time zone difference, in minutes, from current locale (host system settings) to UTC.
+	 *@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+	 */
+	let offset = dt.getTimezoneOffset();
+	if (Math.abs(offset / 60) != utc) {
+		//兼容时区问题，增加8小时
+		dt.setHours(dt.getHours() - offset / 60);
+	}
 	return dt;
 }
 /**
@@ -263,26 +270,18 @@ const getDate = (time) => {
  * @param {Object} time
  */
 const getDateFormat = function(fmt, time) {
-	let getDate;
-	if (time) {
-		getDate = new Date(time);
-	} else {
-		getDate = new Date();
-	}
-	//兼容时区问题，增加8小时
-	getDate.setHours(getDate.getHours() + utc);
-
+	let dt = getDate(time);
 	let o = {
-		'M+': getDate.getMonth() + 1,
-		'd+': getDate.getDate(),
-		'h+': getDate.getHours(),
-		'm+': getDate.getMinutes(),
-		's+': getDate.getSeconds(),
-		'q+': Math.floor((getDate.getMonth() + 3) / 3),
-		'S': getDate.getMilliseconds()
+		'M+': dt.getMonth() + 1,
+		'd+': dt.getDate(),
+		'h+': dt.getHours(),
+		'm+': dt.getMinutes(),
+		's+': dt.getSeconds(),
+		'q+': Math.floor((dt.getMonth() + 3) / 3),
+		'S': dt.getMilliseconds()
 	};
 	if (/(y+)/.test(fmt)) {
-		fmt = fmt.replace(RegExp.$1, (getDate.getFullYear() + '').substr(4 - RegExp.$1.length))
+		fmt = fmt.replace(RegExp.$1, (dt.getFullYear() + '').substr(4 - RegExp.$1.length))
 	}
 	for (let k in o) {
 		if (new RegExp('(' + k + ')').test(fmt)) {

@@ -141,5 +141,12 @@
 			"notfund": "暂无数据",
 			"success": "操作成功"
 		}
+	},
+	"delivery":{
+		"cantingbao":{
+			"key": "84Qrm9NwSCTVanyldcak9LJpX",
+			"secret": "XYEUJBWYBEBSVGV81832",
+			"product":false
+		}
 	}
 }

@@ -284,17 +284,19 @@
 			},
 			btnLogin() {
 				if (this.disabled || this.disabledLogin) {
-					//测试入口，避免每次发送短信
-					let token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDI1MDI3NDUsImV4cCI6MTYwNTA5NDc0NX0.vgFCvow1EPwsYN6RwvA1Dvf8AuD1p2X59k7w28ZXA_A";
-					//#ifdef APP-PLUS
-					token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";
-					//#endif
-					//这里是开发者快速登录入口
-					cloudUser("login","checkToken",{
-						token
-					}).then(res=>{
-						this.loginSuccess(res);
-					})
+					if(this.systemInfo.development){
+						//测试入口，避免每次发送短信
+						let token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDI1MDI3NDUsImV4cCI6MTYwNTA5NDc0NX0.vgFCvow1EPwsYN6RwvA1Dvf8AuD1p2X59k7w28ZXA_A";
+						//#ifdef APP-PLUS
+						token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";
+						//#endif
+						//这里是开发者快速登录入口
+						cloudUser("login","checkToken",{
+							token
+						}).then(res=>{
+							this.loginSuccess(res);
+						})
+					}
 					return;
 				}
 				//再次验证手机号码

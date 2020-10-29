@@ -25,13 +25,13 @@
 
 	const pushClientInfoKey = 'pushClientInfo';
 	const userInfoKey = 'userInfo';
-	let isCheckLogin=false;
+	let isCheckLogin = false;
 	export default {
 		computed: {
 			...mapState(['inviteCode'])
 		},
 		methods: {
-			...mapMutations(['login','checkStoreLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr','updatePush']),
+			...mapMutations(['login', 'checkStoreLogin', 'setUserLocation', 'setAdminShop', 'setStateAttr', 'updatePush']),
 			/**
 			 * 存储设备信息 参考colorUI
 			 * @param {Object} 
@@ -57,6 +57,7 @@
 				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
+				systemInfo.development = process.env.NODE_ENV=="development";
 				console.log(systemInfo);
 				Vue.prototype.systemInfo = systemInfo;
 			},
@@ -79,7 +80,7 @@
 				jv.isInitSuccess(result => {
 					console.log('jv.isInitSuccess', result);
 					this.setStateAttr({
-						jgLoginInit:result["enable"]
+						jgLoginInit: result["enable"]
 					})
 				});
 				jv.checkVerifyEnable(result => {
@@ -150,7 +151,7 @@
 								}, provider).then(res => {
 									console.log("login success", res);
 									this.login(res);
-								},err=>{
+								}, err => {
 									console.log("小程序自动登录失败！")
 								});
 							}
@@ -163,7 +164,7 @@
 				//设置登录状态
 				let token = uni.getStorageSync("uni_id_token");
 				let tokenExpired = uni.getStorageSync("uni_id_token_expires");
-				console.log(token,tokenExpired)
+				console.log(token, tokenExpired)
 				if (token && tokenExpired > new Date().getTime()) {
 					//本地已经登录过，不再调用登录接口，有效期至少保证有1天时间
 					this.checkStoreLogin({
@@ -175,24 +176,24 @@
 					this.micLogin();
 					//#endif
 				}
-				setTimeout(()=>{
+				setTimeout(() => {
 					isCheckLogin = true;
-				},100)
+				}, 100)
 			}
 		},
 		onLaunch: function(options) {
 			console.log('App.vue 启动');
-			console.log(options);
+			//console.log(options);
 			//邀请者
 			if (options.query.u) {
 				this.setStateAttr({
-					inviteCode:options.query.u
+					inviteCode: options.query.u
 				})
 			}
 			//分享过来的店铺id，正常访问是没有的，这里可以防止分类页面没有店铺id的尴尬
 			if (options.query.shopid) {
 				this.setStateAttr({
-					shopId:+options.query.shopid
+					shopId: +options.query.shopid
 				})
 			}
 
@@ -218,7 +219,7 @@
 		onShow: function() {
 			console.log('App Show');
 			//#ifdef MP
-			if(isCheckLogin){
+			if (isCheckLogin) {
 				this.checkLogin();
 			}
 			//#endif

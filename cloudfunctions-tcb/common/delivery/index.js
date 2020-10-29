@@ -41,22 +41,52 @@ const subscribe = async (event) => {
 /**
  * 增加配送订单
  */
-const addOrder = async (event) => {
+const add = async (event) => {
 	const {
 		module,
 		data
 	} = event;
-	return await getModule(module)["addOrder"](data);
+	return await getModule(module)["add"](data);
+}
+/**
+ * 更新订单
+ */
+const update = async (event) => {
+	const {
+		module,
+		data
+	} = event;
+	return await getModule(module)["update"](data);
 }
 /**
  * 取消配送订单
  */
-const cancelOrder = async (event) => {
+const cancel = async (event) => {
 	const {
 		module,
 		data
 	} = event;
-	return await getModule(module)["cancelOrder"](data);
+	return await getModule(module)["cancel"](data);
+}
+/**
+ * 订单退款
+ */
+const refund = async (event) => {
+	const {
+		module,
+		data
+	} = event;
+	return await getModule(module)["refund"](data);
+}
+/**
+ * 锁定和解锁订单
+ */
+const lock = async (event) => {
+	const {
+		module,
+		data
+	} = event;
+	return await getModule(module)["lock"](data);
 }
 /**
  * 添加店铺
@@ -68,11 +98,25 @@ const addShop = async (event) => {
 	} = event;
 	return await getModule(module)["addShop"](data);
 }
+/**
+ * 修改商家是否出餐,会收到一个出餐通知
+ */
+const updateShopFlag = async (event) => {
+	const {
+		module,
+		data
+	} = event;
+	return await getModule(module)["updateShopFlag"](data);
+}
 
 module.exports = {
-	addOrder,
-	cancelOrder,
+	add,
+	cancel,
 	addShop,
 	subscribe,
+	refund,
+	update,
+	lock,
+	updateShopFlag,
 	validateSign
 }

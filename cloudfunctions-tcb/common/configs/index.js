@@ -4,7 +4,7 @@ const fs = require("fs");
  */
 const config = require("./config.json");
 const model = {
-	getConfig(){
+	getConfig() {
 		return config;
 	},
 	/**
@@ -68,6 +68,14 @@ const model = {
 	getPushConfig(client) {
 		client = client || "default";
 		return config.push[client];
+	},
+	/**
+	 * 获取第三方配送配置
+	 * @param {Object} name
+	 */
+	getDeliveryConfig(name) {
+		name = name || "cantingbao";
+		return config.delivery[name];
 	},
 	/**
 	 * 简单字符串模板，如果模板中找不到对于的字符，则默认源字符串
