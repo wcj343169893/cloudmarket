@@ -260,9 +260,26 @@ const getDate = (time) => {
 	let offset = dt.getTimezoneOffset();
 	if (Math.abs(offset / 60) != utc) {
 		//兼容时区问题，增加8小时
-		dt.setHours(dt.getHours() - offset / 60);
+		dt.setHours(dt.getHours() + utc);
 	}
 	return dt;
+}
+/**
+ * 生成今日和昨日的时间戳，目前有8小时时差
+ */
+const getDayTime = ()=>{
+	let date = getDate();
+	date.setHours(0);
+	date.setMinutes(0);
+	date.setSeconds(0);
+	date.setMilliseconds(0);
+	let todayTime = date.getTime();
+	date.setDate(date.getDate() - 1);
+	let yestertodayTime = date.getTime();
+	return {
+		todayTime,
+		yestertodayTime
+	};
 }
 /**
  * 时间格式化,dateFormat('yyyy-MM-dd hh:mm:ss')}
@@ -390,5 +407,6 @@ module.exports = {
 	getDate,
 	dbcache,
 	checkDeliveryHour,
-	getTime
+	getTime,
+	getDayTime
 }

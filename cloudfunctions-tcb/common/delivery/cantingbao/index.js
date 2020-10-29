@@ -1,8 +1,7 @@
 'use strict';
 const crypto = require('crypto');
 const {
-	getDateFormat,
-	getTime,
+	getDateFormat
 } = require("base-common");
 const {
 	getDeliveryConfig
@@ -154,7 +153,7 @@ const models = {
 			content = new Buffer(JSON.stringify(data)).toString('base64');
 		}
 		//时间戳,服务器有8小时时差
-		let ts = parseInt(getTime() / 1000);
+		let ts = parseInt(Date.now() / 1000);
 		let requestData = {
 			action,
 			ts,
