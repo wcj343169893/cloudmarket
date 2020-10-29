@@ -8,7 +8,8 @@ const getOrderStateExp = function(item) {
 	let stateTip = '',
 		state = item.state,
 		stateTipColor = '#303133',
-		stateContent = "";
+		stateContent = "",
+		hasRider = false;
 	switch (+state) {
 		case 0:
 			stateTip = '待付款';
@@ -23,6 +24,7 @@ const getOrderStateExp = function(item) {
 		case 1:
 			stateTip = '待拣货';
 			stateContent = "订单已支付，等待商家完成分拣";
+			hasRider = true;
 			break;
 		case 2:
 			if (item.deliveryType == "selfRaising") {
@@ -31,6 +33,7 @@ const getOrderStateExp = function(item) {
 			} else {
 				stateTip = '正在配送中';
 				stateContent = "订单已完成分拣，正在配送中";
+				hasRider = true;
 			}
 			break;
 		case 3:
@@ -58,18 +61,18 @@ const getOrderStateExp = function(item) {
 		stateTip = '退款中';
 		stateTipColor = '#fa436a';
 		stateContent = "订单退款中，请耐心等待审核";
-	}else if (item.refundAmount > 0 && item.refundAmount==item.cartCount) {
+	} else if (item.refundAmount > 0 && item.refundAmount == item.cartCount) {
 		stateTip = '已退款';
 		stateTipColor = '#fa436a';
 		stateContent = "订单已退款";
-		item.isRefundAll=true;
+		item.isRefundAll = true;
 	}
 	//有骑手配送信息
-	if(item.delivery && item.delivery.id && item.delivery.state > 1){
-		stateTip = "配送中";
-		stateContent = item.delivery.stateTitle;
+	if (hasRider && item.delivery && item.delivery.id && item.delivery.state > 1) {
+		stateTip = item.delivery.stateTitle;
+		stateContent = item.delivery.stateContent;
 	}
-	
+
 	return {
 		stateTip,
 		stateTipColor,
@@ -248,9 +251,9 @@ const updateGoodsTags = function(goods, isPrecise) {
 	} else if (goods.yuding) {
 		if (goods.yuding.endTime > time) {
 			//console.log(goods.yuding)
-			if(!goods.yuding.originPrice){
+			if (!goods.yuding.originPrice) {
 				goods.yuding.originPrice = goods.price;
-			}else{
+			} else {
 				goods.price = goods.yuding.originPrice;
 			}
 			if (!isPrecise) {
@@ -273,10 +276,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 			delete goods.yuding;
 		}
 	} else if (goods.tuangou) {
-		if(goods.tuangou.endTime < time){
+		if (goods.tuangou.endTime < time) {
 			//团购已结束
 			delete goods.tuangou;
-		}else{
+		} else {
 			tags.push({
 				type: "info",
 				text: "团购"
@@ -634,7 +637,7 @@ const navToDocWebPage = function(url) {
 /**
  * 打开广告内容
  */
-const navToAdDetail = (item)=>{
+const navToAdDetail = (item) => {
 	let link = item.link;
 	if (link.indexOf('/pages') === 0) {
 		//跳转指定页面

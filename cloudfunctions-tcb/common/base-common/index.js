@@ -69,6 +69,8 @@ const updateGoodsStock = function(ele, xishu) {
  * @param {Object} type2 类型转移到下一个类型，与type相反的数值
  */
 const updateUserOrderCount = async function(uid, type, number, type2, shopid, totalMoney) {
+	//此接口已废弃，用户订单统计，商家订单统计采用实时查询
+	return false;
 	let data = {
 		order: {}
 	};

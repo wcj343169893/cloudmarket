@@ -280,7 +280,7 @@
 				// 来自页面内分享按钮
 				console.log(res.target);
 			}
-			let query = [`id=${this.id}`, 'referer=share'];
+			let query = [`id=${this.id}`, 'referer=share',`shopid=${this.shopId}`];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}

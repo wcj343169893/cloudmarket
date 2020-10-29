@@ -78,7 +78,7 @@ const model = {
 			cancelStyle: 1,
 			remark: 1,
 			shopid: 1,
-			dayIndex:1,
+			dayIndex: 1,
 			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
@@ -209,7 +209,7 @@ const model = {
 			shopid: 1,
 			shop: 1,
 			freight: 1,
-			dayIndex:1,
+			dayIndex: 1,
 			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
@@ -286,6 +286,7 @@ const model = {
 		let fields = {
 			state: 1,
 			totalMoney: 1,
+			uid: 1,
 			shopid: 1
 		};
 
@@ -297,16 +298,41 @@ const model = {
 		//确定收货,资金解冻
 		data = await orderCollection.doc(order._id).update({
 			state: 3,
+			makesureUid: uid,
 			makesureTime: new Date().toISOString()
 		});
-		//更新用户已发货和已收货
-		let resUser = await updateUserOrderCount(uid, "received", 1, "delivered", order.shopid);
-		//增加用户积分
-		await updateUserScore(uid, order.totalMoney);
-		//@todo 资金解冻,付款给商家，定时器处理，避免重复执行付款
+		await this.afterMakesure(order);
 		return data;
 	},
-
+	/**
+	 * 用户确定收货后，处理用户积分，商家款项
+	 * @param {Object} order
+	 */
+	async afterMakesure(order) {
+		//更新用户已发货和已收货
+		let res = await updateUserOrderCount(order.uid, "received", 1, "delivered", order.shopid);
+		console.log("updateUserOrderCount", res);
+		//增加用户积分
+		res = await updateUserScore(order.uid, order.totalMoney);
+		console.log("updateUserScore", res);
+		//@todo 资金解冻,付款给商家，定时器处理，避免重复执行付款
+		return true;
+	},
+	/**
+	 * 根据订单号，处理收货后流程
+	 * @param {Object} orderid 订单id 2020082509300175397839
+	 */
+	async afterMakesureByOrderId(orderid) {
+		let order = await this.getOrderByConditions({
+			id: orderid
+		}, {
+			state: 1,
+			totalMoney: 1,
+			uid: 1,
+			shopid: 1
+		});
+		return await this.afterMakesure(order);
+	},
 	/**
 	 * 根据条件查询订单信息
 	 * @param {Object} conditions
@@ -1159,12 +1185,15 @@ const model = {
 			result
 		} = await delivery.validateSign(event);
 		if (result) {
-			console.log(orderid, result)
-			return await orderCollection.where({
+			console.log("dealstate", orderid, result)
+			let res = await orderCollection.where({
 				id: orderid
-			}).update({
-				delivery: result
-			});
+			}).update(result);
+			//骑手帮用户点击收货
+			if (result.state == 3) {
+				await this.afterMakesureByOrderId(orderid);
+			}
+			return res;
 		}
 		return true;
 	}
