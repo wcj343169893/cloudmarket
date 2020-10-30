@@ -94,7 +94,7 @@ const models = {
 			sendName = "预约提货";
 		}
 		content.push(`订单编号:${order.id}<BR>日\t 期:${createdDay}<BR>时\t 间:${createdTime}`);
-		if (order.address) {
+		if (order.address && order.address._id) {
 			content.push(
 				`<BR>姓\t 名:${order.address.name}<BR>手\t 机:${order.address.mobile}<BR>配送地址:${order.address.address} ${order.address.addressName} ${order.juli}km`
 			);
@@ -106,7 +106,7 @@ const models = {
 		content.push(`--------------------------------<BR>`);
 		content.push(`商品　　　　　 数量  单价 金额<BR>`);
 		for (let goods of order.goods) {
-			content.push(`${goods.title} ${goods.subName}`);
+			content.push(`${goods.title} ${goods.name}`);
 			if (goods.upc) {
 				content.push(`<BR>UPC ${goods.upc}`);
 			}

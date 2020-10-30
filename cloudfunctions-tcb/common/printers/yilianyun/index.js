@@ -130,7 +130,7 @@ const models = {
 			sendName = "预约提货";
 		}
 		content.push(`订单编号:${order.id}\n日 \t 期:${createdDay}\n时 \t 间:${createdTime}`);
-		if (order.address) {
+		if (order.address && order.address._id) {
 			content.push(
 				`\n姓 \t 名:${order.address.name}\n手 \t 机:${order.address.mobile}\n配送地址:${order.address.address}（${order.address.addressName}）${order.juli}km`
 			);
@@ -142,7 +142,7 @@ const models = {
 		content.push(`<center>*************商品*************</center>`);
 		content.push(`<table><tr><td>商品</td><td>数量</td><td>单价</td><td>金额</td></tr></table>`);
 		for (let goods of order.goods) {
-			content.push(`${goods.title} ${goods.subName}`);
+			content.push(`${goods.title} ${goods.name}`);
 			if (goods.upc) {
 				content.push(`\nUPC ${goods.upc}`);
 			}
