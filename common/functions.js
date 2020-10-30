@@ -1,5 +1,6 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
 var isRedirect = false;
+import config from '@/config'
 /**
  * 订单状态
  * @param {Object} ele
@@ -818,7 +819,7 @@ const mapDistance = function(fromLatlng, toLatlng) {
 				mode: "bicycling",
 				from: fromLatlng,
 				to: toLatlng,
-				key: "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5"
+				key: config.qqmapWxKey
 			},
 			success: (res) => {
 				console.log(res)
