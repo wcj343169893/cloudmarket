@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- #ifdef MP -->
-			<page-header ref="pageHeader" :title="name"></page-header>
+		<page-header ref="pageHeader" :title="name"></page-header>
 		<!-- #endif -->
 		<view class="basic-section">
 			<image class="bg" :src="banner"></image>
@@ -60,8 +60,7 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all')"
-		 tips="账户充值"></mix-list-cell>
+		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all')" tips="账户充值"></mix-list-cell>
 		<view class="cover-container">
 			<view class="order-section">
 				<view class="order-item" v-for="(item, index) in userTypes" :key="index" hover-class="common-hover" @click="navToUsers(item.state)"
@@ -91,8 +90,8 @@
 		data() {
 			return {
 				shopid: 0,
-				secondPage:false,
-				secondPageState:false,
+				secondPage: false,
+				secondPageState: false,
 				isSetTitle: false,
 				name: '',
 				src: '/static/store-face.png',
@@ -117,6 +116,15 @@
 		onShow() {
 			this.loadData(false);
 		},
+		onUnload() {
+			this.shopid = 0;
+			uni.removeStorage({
+				key: "adminShopInfo"
+			});
+			uni.removeStorage({
+				key: "adminShopId"
+			})
+		},
 		//下拉刷新,不会更新底部附近的店铺
 		onPullDownRefresh() {
 			console.log('刷新整页');
@@ -140,14 +148,19 @@
 			...mapMutations(['setAdminShop']),
 			async loadData(showLoading) {
 				//优先读取缓存
-				let info = uni.getStorageSync('adminShopInfo');
+				let info = uni.getStorageSync(`adminShopInfo_${this.shopid}`);
+				if(!info){
+					info = uni.getStorageSync('adminShopInfo');
+				}
 				if (info) {
 					this.buildShopInfo(info);
 				}
-				shopAdmin('info', {}, showLoading).then(
+				shopAdmin('info', {
+					shopid: this.shopid
+				}, showLoading).then(
 					res => {
 						uni.setStorage({
-							key: "adminShopInfo",
+							key: `adminShopInfo_${this.shopid}`,
 							data: res
 						})
 						this.buildShopInfo(res);

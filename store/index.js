@@ -131,10 +131,7 @@ const store = new Vuex.Store({
 		//设置管理店铺id
 		setAdminShop(state, id) {
 			state.adminShopId = id;
-			uni.setStorage({
-				key: 'adminShopId',
-				data: id
-			})
+			uni.setStorageSync('adminShopId', id);
 		},
 		/**
 		 * 设置邀请码

@@ -159,7 +159,8 @@
 		updateGoodsTags,
 		navToDocPageByType,
 		navToAdDetail,
-		showLoginDialog
+		showLoginDialog,
+		getLocationAddress
 	} from '@/common/functions.js';
 
 	export default {
@@ -250,13 +251,19 @@
 						success: res => {
 							uni.hideLoading();
 							console.log('获取定位完成', res);
-							this.address = '当前位置';
+							this.address = '定位中...';
 							//#ifndef MP
 							if (res.address) {
 								this.address = res.address.poiName;
 							}
 							//百度地图
 							//this.address = res.address.street + res.address.streetNum;
+							//#endif
+							//#ifdef MP
+							getLocationAddress([res.latitude, res.longitude].join(",")).then(res => {
+								console.log("getLocationAddress", res)
+								this.address = res.address;
+							})
 							//#endif
 							this.setUserLocation({
 								id: false,

@@ -62,6 +62,9 @@ const adminNetwork = (module, action, data, isShowLoading) => {
 	if (!adminShopId) {
 		return false;
 	}
+	if(data.shopid){
+		adminShopId = data.shopid;
+	}
 	//console.log(adminShopId)
 	return network({
 		url: "cloud-admin",

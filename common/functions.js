@@ -833,6 +833,34 @@ const mapDistance = function(fromLatlng, toLatlng) {
 	})
 }
 /**
+ * 逆地址解析（坐标位置描述）
+ * @param {Object} fromLatlng
+ * @param {Object} poi_options
+ * @link https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder
+ */
+export const getLocationAddress = function(fromLatlng, poi_options) {
+	poi_options = poi_options || "address_format=short;policy=5";
+	return new Promise((resolve, reject) => {
+		console.log(fromLatlng)
+		uni.request({
+			url: `https://apis.map.qq.com/ws/geocoder/v1/`,
+			data: {
+				location: fromLatlng,
+				get_poi: 1,
+				poi_options:poi_options,
+				key: config.qqmapWxKey
+			},
+			success: (res) => {
+				resolve(res.data.result);
+			},
+			fail: (err) => {
+				console.log(err)
+				reject();
+			}
+		})
+	})
+}
+/**
  * 处理送达时间的名称，到底是显示今天还是日期
  * @param {Object} info
  */
