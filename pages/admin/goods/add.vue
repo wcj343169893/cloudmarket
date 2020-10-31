@@ -368,7 +368,7 @@
 				let da = {};
 				if (this.skus) {
 					this.skus.map(sku => {
-						da[sku.id] = sku.name.replace('&gt;', '-');
+						da[sku.id] = sku.name?sku.name.replace('&gt;', '-'):"";
 					});
 				}
 				return da;
@@ -458,6 +458,7 @@
 							if (!ele.children || ele.children.length == 0) {
 								ele.children = [{
 									id: ele.id,
+									isShow:ele.isShow,
 									name: ele.name
 								}];
 							}
@@ -521,6 +522,7 @@
 				this.categoryIdTmp.push({
 					id: cates.id,
 					pid: 0,
+					isShow:cates.isShow,
 					name: cates.name
 				});
 				cates.children.map(child => {

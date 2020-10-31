@@ -161,11 +161,12 @@ const save = async (data, context) => {
 		_id = data._id;
 		delete data._id;
 	}
-	data.isCategoryShow = 0;
+	//只要有一个分类不显示，则都不显示
+	data.isCategoryShow = 1;
 	if (data.categories) {
 		data.categories.map(cate => {
-			if (cate.isShow) {
-				data.isCategoryShow = 1;
+			if (!cate.isShow) {
+				data.isCategoryShow = 0;
 			}
 		})
 	}
