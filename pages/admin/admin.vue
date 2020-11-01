@@ -160,6 +160,10 @@
 				}, showLoading).then(
 					res => {
 						uni.setStorage({
+							key: `adminShopInfo`,
+							data: res
+						})
+						uni.setStorage({
 							key: `adminShopInfo_${this.shopid}`,
 							data: res
 						})

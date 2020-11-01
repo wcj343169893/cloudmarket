@@ -35,7 +35,7 @@
 		</view>
 		<mix-list-cell v-if="isPrint" title="打印终端" :tips="printersName" @eventClick="navTo('/pages/admin/set/printer/list')"></mix-list-cell>
 		<mix-list-cell title="页面配置" @eventClick="navTo('/pages/admin/set/pages')" tips="首页"></mix-list-cell>
-		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" tips=""></mix-list-cell>
+		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
 	</view>
 </template>
 <script>
@@ -55,12 +55,21 @@
 				serviceTime: "",
 				deliveryTypes: [],
 				isPrint: false,
+				goodsCommentTags: [],
 				printers: [],
 				printersName: "",
 			}
 		},
 		onLoad() {
 			this.loadData();
+		},
+		computed:{
+			tagResult(){
+				if(this.goodsCommentTags && this.goodsCommentTags.length > 0){
+					return this.goodsCommentTags.slice(0,3).join(",")+"...";
+				}
+				return "未设置"
+			}
 		},
 		methods: {
 			async loadData() {
