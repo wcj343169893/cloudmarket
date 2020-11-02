@@ -1020,11 +1020,20 @@ const model = {
 			}
 			data["body"] = body.join(",");
 			//邀请信息,只允许2级关系
-			let uinfo = context.userInfo;
+			let {
+				inviter_uid,
+				avatar,
+				nickname
+			} = context.userInfo;
 			//用户邀请列表
 			data["inviter_uid"] = [];
-			if (uinfo && uinfo.inviter_uid) {
-				data["inviter_uid"] = uinfo.inviter_uid;
+			data["userInfo"] = {
+				uid,
+				avatar,
+				nickname
+			};
+			if (inviter_uid) {
+				data["inviter_uid"] = inviter_uid;
 			} else if (uid != data.shop.uid) {
 				//默认为店主,logo为店铺,店主不能加自己为上级
 				let inviteRes = await uniID.acceptInvite({
@@ -1033,6 +1042,7 @@ const model = {
 				});
 				console.log("默认加入店铺团队", inviteRes);
 			}
+
 			let endTime = new Date().getTime();
 			//结算商品消耗时间
 			data["timeConsumingInfo"] = {

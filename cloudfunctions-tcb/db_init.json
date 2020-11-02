@@ -1626,6 +1626,66 @@
 			}
 		]
 	},
+	"cloud_goods_special_activities": {
+		"data": [{
+			"banner": "http://market.cjblog.org/goods/1.jpg",
+			"beginTime": 1588313782526,
+			"description": "很便宜便宜很便宜便宜很便宜便宜，很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜",
+			"endTime": 1687980992114,
+			"goods": [{
+				"_id": "99ee0d4152644f368f0001619e9c628e",
+				"price": 127,
+				"src": "http://market.cjblog.org/goods/1.jpg",
+				"stock": 328,
+				"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+			}],
+			"shopid": 123457,
+			"title": "苹果特卖会"
+		}, {
+			"banner": "http://market.cjblog.org/goods/1.jpg",
+			"beginTime": 1588313782526,
+			"description": "很便宜便宜很便宜便宜很便宜便宜，很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜",
+			"endTime": 1687980992114,
+			"goods": [{
+					"_id": "99ee0d4152644f368f0001619e9c628e",
+					"price": 127,
+					"src": "http://market.cjblog.org/goods/1.jpg",
+					"stock": 328,
+					"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+				},
+				{
+					"_id": "99ee0d4152644f368f0001619e9c628e",
+					"price": 127,
+					"src": "http://market.cjblog.org/goods/1.jpg",
+					"stock": 328,
+					"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+				}
+			],
+			"shopid": 123457,
+			"title": "苹果特卖会2222"
+		}],
+		"index": [{
+				"IndexName": "index_shop",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "shopid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "cloud_goods_special_activities_openid_index_",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "_openid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			}
+		]
+	},
 	"cloud_goods_deletes": {
 		"data": [],
 		"index": [{

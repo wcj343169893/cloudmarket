@@ -1,0 +1,20 @@
+<template>
+	<view>
+		<mix-list-cell icon="taobaofont icon-circle" iconColor="#54b4ef" title="专题团购" @eventClick="navTo('/pages/admin/activities/special/list')"></mix-list-cell>
+		<mix-list-cell icon="taobaofont icon-activity" iconColor="#54b4ef" title="限时秒杀" @eventClick="navTo('/pages/admin/goods/miaosha/list')"></mix-list-cell>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			};
+		}
+	}
+</script>
+
+<style lang="scss">
+
+</style>

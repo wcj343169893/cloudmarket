@@ -565,6 +565,36 @@
             }
             
         }
+        ,{
+            "path" : "pages/admin/activities/list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "营销活动",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/admin/activities/special/list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "专题",
+                "enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -75,6 +75,7 @@ const list = async (data, context) => {
 		remark: 1,
 		shopid: 1,
 		payInfo: 1,
+		userInfo: 1,
 		yuding: 1,
 		lastPayTime: 1
 	}).get();

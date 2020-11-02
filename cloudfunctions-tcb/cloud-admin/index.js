@@ -10,6 +10,7 @@ const modules = {
 	printer: require("./printer"),
 	users: require("./users"),
 	statistics: require("./statistics"),
+	special: require("./special"),
 };
 const uniID = require('uni-id');
 /**

@@ -208,6 +208,10 @@
 				this.address = this.location.name;
 				//重新加载数据
 				this.loadData();
+			},
+			shopId(id) {
+				console.log('watch 店铺id改变,刷新当前页面');
+				this.loadData();
 			}
 		},
 		onLoad(options) {
@@ -246,31 +250,20 @@
 					})
 					uni.getLocation({
 						type: 'gcj02',
-						altitude: true,
-						geocode: true,
 						success: res => {
 							uni.hideLoading();
 							console.log('获取定位完成', res);
 							this.address = '定位中...';
-							//#ifndef MP
-							if (res.address) {
-								this.address = res.address.poiName;
-							}
-							//百度地图
-							//this.address = res.address.street + res.address.streetNum;
-							//#endif
-							//#ifdef MP
 							getLocationAddress([res.latitude, res.longitude].join(",")).then(res => {
 								console.log("getLocationAddress", res)
 								this.address = res.address;
+								this.setUserLocation({
+									id: false,
+									latitude: res.latitude,
+									longitude: res.longitude,
+									name: this.address
+								});
 							})
-							//#endif
-							this.setUserLocation({
-								id: false,
-								latitude: res.latitude,
-								longitude: res.longitude,
-								name: this.address
-							});
 							//this.loadData();
 						},
 						fail: res => {

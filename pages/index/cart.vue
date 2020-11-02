@@ -186,6 +186,12 @@
 				setTimeout(() => {
 					this.loadData(true);
 				}, 100);
+			},
+			shopId(id) {
+				console.log('watch 店铺id改变,刷新当前页面');
+				setTimeout(() => {
+					this.loadData(true);
+				}, 100);
 			}
 		},
 		computed: {
@@ -479,7 +485,9 @@
 				this.total = Number(total.toFixed(2));
 				this.discount = Number(discount.toFixed(2));
 				//更新购物车总数量
-				this.setStateAttr({cartMap});
+				this.setStateAttr({
+					cartMap
+				});
 				console.log("cart", this.cartMap);
 				setTimeout(() => {
 					this.updateCartNumber(number);

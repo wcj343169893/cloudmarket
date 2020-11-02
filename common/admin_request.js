@@ -40,7 +40,7 @@ const categoryAdmin = function(action, data, isShowLoading) {
  * 店铺广告信息
  * @param {Object} data
  */
-const adsAdmin = function(action, data,isShowLoading) {
+const adsAdmin = function(action, data, isShowLoading) {
 	return adminNetwork("ads", action, data, isShowLoading);
 }
 /**
@@ -54,6 +54,15 @@ const docsAdmin = function(action, data, isShowLoading) {
 const usersAdmin = function(action, data, isShowLoading) {
 	return adminNetwork("users", action, data, isShowLoading);
 }
+/**
+ * 专题管理
+ * @param {Object} action
+ * @param {Object} data
+ * @param {Object} isShowLoading
+ */
+const specialAdmin = function(action, data, isShowLoading) {
+	return adminNetwork("special", action, data, isShowLoading);
+}
 
 const adminNetwork = (module, action, data, isShowLoading) => {
 	isShowLoading = isShowLoading === true;
@@ -62,7 +71,7 @@ const adminNetwork = (module, action, data, isShowLoading) => {
 	if (!adminShopId) {
 		return false;
 	}
-	if(data.shopid){
+	if (data.shopid) {
 		adminShopId = data.shopid;
 	}
 	//console.log(adminShopId)
@@ -87,5 +96,6 @@ export {
 	adsAdmin,
 	docsAdmin,
 	usersAdmin,
-	adminNetwork
+	adminNetwork,
+	specialAdmin
 }

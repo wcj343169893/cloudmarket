@@ -112,6 +112,7 @@ const store = new Vuex.Store({
 		//修改最近店铺id
 		changeShopId(state, id) {
 			state.shopId = id;
+			state.categoryId = 0;
 			console.log("store changeShopId");
 			this.dispatch('getCartCount');
 		},

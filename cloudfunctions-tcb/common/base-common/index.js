@@ -188,13 +188,21 @@ const genIdentityId = async function(key, inc) {
 	//生成用户id----开始-----
 	inc = inc ? +inc : 1;
 	let res = await identityCollection.where({
-		"key": key
+		key
 	}).update({
 		value: cmd.inc(inc)
 	});
+	if (res.updated == 0) {
+		let value = 10000;
+		await identityCollection.add({
+			key,
+			value
+		});
+		return value;
+	}
 	//立马查询出来，可能值是对的
 	let res2 = await identityCollection.where({
-		"key": key
+		key
 	}).field({
 		value: 1
 	}).limit(1).get();

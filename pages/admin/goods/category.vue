@@ -87,6 +87,7 @@
 					},
 					err => {
 						//没有分类
+						this.isLoaded = true;
 					}
 				);
 			},

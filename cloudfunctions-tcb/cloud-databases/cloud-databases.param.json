@@ -4,8 +4,9 @@
 
 {
 	"module": "imports",
-	"action": "copy",
+	"action": "goods",
 	"data": {
-		"uid":"9ffb2a485f38964200999b1f07cb7b80"
+		"uid":"9ffb2a485f38964200999b1f07cb7b80",
+		"shopid":123457
 	}
 }

@@ -110,7 +110,7 @@
 					<text>我的门店</text>
 				</view>
 				<view v-for="(item,index) in admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
-					<image :src="item.src" mode="aspectFill"></image>
+					<image :src="item.src" mode="aspectFill" @click.stop="navToShopHome(item)"></image>
 					<view class="right">
 						<view class="content">
 							<view class="title clamp">
@@ -152,7 +152,7 @@
 				</block>
 				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
 				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="收货地址" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
-				<mix-list-cell icon="icon-share" iconColor="#9789f7" title="邀请有礼" tips="邀请好友赢10万大礼"></mix-list-cell>
+				<mix-list-cell icon="taobaofont icon-share" iconColor="#9789f7" title="邀请有礼" tips="邀请好友赢10万大礼"></mix-list-cell>
 				<!-- <mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips" @eventClick="joinTeam()"></mix-list-cell> -->
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
 				<mix-list-cell icon="icon-dianhua-copy" iconColor="#54b4ef" title="联系客服" @eventClick="navTo('/pages/docs/qa')"></mix-list-cell>
@@ -268,7 +268,7 @@
 			...mapState(['hasLogin', 'shopId', 'userInfo'])
 		},
 		methods: {
-			...mapMutations(['login', 'logout']),
+			...mapMutations(['login', 'logout','changeShopId']),
 			async loadData() {
 				this.isLoaded = true;
 				this.isLoading = true;
@@ -437,7 +437,14 @@
 				uni.navigateTo({
 					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
 				})
-			},getUserInfo(){
+			},
+			navToShopHome(item){
+				this.changeShopId(item.id);
+				uni.switchTab({
+					url:`/pages/index/fruit`
+				})
+			},
+			getUserInfo(){
 				this.$store.dispatch('getUserInfo');
 			}
 		}

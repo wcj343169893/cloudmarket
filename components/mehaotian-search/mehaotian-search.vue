@@ -2,7 +2,7 @@
 	<view class="search" :style="{ backgroundColor: backgroundColor }">
 		<view class="content" :style="{ 'border-radius': radius + 'px', border: border }">
 			<view class="content-box" :class="{ center: mode === 2 }">
-				<text class="icon icon-search">&#xe61c;</text>
+				<text class="taobaofont icon-search"></text>
 				<input
 					class="input"
 					type="text"
@@ -16,7 +16,7 @@
 					confirm-type="search"
 				/>
 				<!-- <view v-if="!active && mode === 2" class="input sub" @click="getFocus">请输入搜索内容</view> -->
-				<text v-if="isDelShow" class="icon icon-del" @click="clear">&#xe644;</text>
+				<text v-if="isDelShow" class="taobaofont icon-delete" @click="clear"></text>
 			</view>
 			<view v-show="(active && show && button === 'inside') || (isDelShow && button === 'inside')" class="searchBtn" @click="search">搜索</view>
 		</view>
@@ -164,11 +164,9 @@ export default {
 			&.center {
 				justify-content: center;
 			}
-			.icon {
-				padding: 0 15upx;
-				&.icon-del {
-					font-size: 38upx;
-				}
+			.taobaofont {
+				margin: 0 15upx;
+				color: $font-color-base;
 			}
 			.input {
 				width: 100%;
@@ -213,15 +211,5 @@ export default {
 			width: 100upx;
 		}
 	}
-}
-@font-face {
-	font-family: 'iconfont';
-	src: url('https://at.alicdn.com/t/font_989023_efq0mtli526.ttf') format('truetype');
-}
-.icon {
-	font-family: iconfont;
-	font-size: 32upx;
-	font-style: normal;
-	color: #999;
 }
 </style>

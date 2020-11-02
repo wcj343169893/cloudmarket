@@ -86,6 +86,12 @@ Vue.filter('thumbImg', (value, fmt) =>{
 	}
 	return value;
 });
+Vue.filter('avatar', (value) =>{
+	if(!value){
+		return "/static/missing-face.png";
+	}
+	return value;
+});
 
 App.mpType = 'app'
 

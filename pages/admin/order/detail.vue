@@ -85,6 +85,14 @@
 					</view>
 					<text class="yticon icon-you"></text>
 				</view>
+				<view class="weui-flex address b-b" v-if="info.userInfo">
+					<view class=""><text>用户信息</text></view>
+					<view class="weui-flex" style="flex-direction: column;">
+						<image :src="info.userInfo.avatar | avatar" class="avatar" mode="aspectFill"></image>
+						<text v-if="info.userInfo.nickname">{{info.userInfo.nickname}}</text>
+						<text v-else>{{info.userInfo.uid}}</text>
+					</view>
+				</view>
 				<view class="weui-flex">
 					<view class=""><text>备注</text></view>
 					<view class="">
@@ -661,6 +669,11 @@
 			text-align: right;
 			flex: 1;
 			margin-right: 12upx;
+		}
+		.avatar{
+			width: 80rpx;
+			height: 80rpx;
+			border-radius: 50%;
 		}
 	}
 

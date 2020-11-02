@@ -235,6 +235,7 @@
 
 <style lang="scss">
 	@import url("./common/css/icon.css");
+	@import url("./common/css/font_taobao.css");
 
 	view,
 	scroll-view,

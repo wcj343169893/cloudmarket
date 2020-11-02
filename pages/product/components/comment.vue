@@ -16,7 +16,7 @@
 		</view>
 		<view v-for="(item,index) in comment" :key="index">
 			<view class="comment-user">
-				<image :src="item.user.avatar" mode="aspectFill" class="avatar"></image>
+				<image :src="item.user.avatar | avatar" mode="aspectFill" class="avatar"></image>
 				<view class="info">
 					<view class="nickname">
 						<text>{{item.user.nickname}}</text>

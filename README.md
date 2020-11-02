@@ -29,6 +29,7 @@
 4. 小程序配置：/manifest.json
 5. 开启自动取消过期订单定时器，cloud-cron-cancel-orders，增加定时器触发``[{"name":"cancelOrderTrigger","type":"timer","config":"12 * * * * * *"}]``,每分钟执行一次
 6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
+7. 手动导入1000多条商品，在云函数 ``cloud-database`` 右键，上传并执行，将导入数据到 123457店铺
 
 ### 配置文件说明
 详见云函数目录下，[/cloudfunctions/common/config/README.md](https://github.com/wcj343169893/cloudmarket/blob/master/cloudfunctions-tcb/common/configs/README.md)
@@ -56,12 +57,13 @@
 9. 店铺设置，基本信息，配送方式，打印机，页面参数，评论标签
 
 ### 系统图标
-用了2个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
+用了3个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
 ```<text class="yticon icon-dingwei"></text>```  
 **yticon.ttf**主要用在pages.json，定义顶部操作图标  
-![yticon.ttf](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/1c6deb20-cc7f-11ea-b997-9918a5dda011.jpg) 
 **yticon2.ttf**主要用在App.vue 文字图标  
-[预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)
+[预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)  
+[手机淘宝图标库](http://market.cjblog.org/font_2174075_cl718eoy90k/demo_index.html)
+```<text class="taobaofont icon-activity"></text>```  
 ### 抢先预览
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 
@@ -73,6 +75,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 
 #### 微信小程序管理后台
 ![管理后台体验](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/oXpHq0ASLsN6cYLKaTIYG1dlnGAM.jpg)  
+
 #### 微信小程序-万德福超市
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)  
 
@@ -91,6 +94,20 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### 日后更新
 * 商家pc后台
 * 供应商报价
+
+#### 2.0.13
+* 订单增加下单用户昵称，头像
+* 引入[手机淘宝图标库](http://market.cjblog.org/font_2174075_cl718eoy90k/demo_index.html) [原地址](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=33)
+* 新增专题团购表``cloud_goods_special_activities``，商品自动增加相应字段，方便查询
+~~~
+ "special": {
+    "beginTime": 1588313782526,
+    "endTime": 1687980992114,
+	"title":"标题",
+    "id": "5e75bd15b1e432104d1dbbce"
+  },
+~~~
+* 增加店铺预览（全站切换站点），点我的门店-->店铺图标 进行切换
 
 #### 2.0.12
 * 增加小程序首页位置显示
