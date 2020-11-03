@@ -17,6 +17,10 @@
 			 class="moreText">天</text></mix-list-input>
 		<view class="mix-list-cell">
 			<text class="cell-tit clamp">每日预定时段</text>
+			<view class="cell-content">
+				
+			</view>
+			<text class="yticon icon-jia2 cell-more" @click="add()"></text>
 		</view>
 		<mix-list-select title="每日预定时段" :options="deliverySteps" :defaultOption="timeStep" @eventClick="changeDeliveryStep"></mix-list-select>
 		<view class="deliveryPeriods">
@@ -25,7 +29,7 @@
 				<text class="cell-content" v-else @click="selectDatePicker('begin','',index)">开始时间</text>
 				<text class="cell-content" v-if="item.end" @click="selectDatePicker('end',item.end,index)">{{item.end}}</text>
 				<text class="cell-content" v-else @click="selectDatePicker('end','',index)">结束时间</text>
-				<text class="yticon icon-jia2" v-if="deliveryPeriodHour.length == index + 1" @click="add(index)"></text>
+				<text class="yticon icon-jia2" v-if="deliveryPeriodHour.length == index + 1" @click="add()"></text>
 				<text class="yticon icon-shanchu4" v-else @click="del(index)"></text>
 			</view>
 		</view>

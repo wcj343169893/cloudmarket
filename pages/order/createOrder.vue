@@ -302,6 +302,8 @@
 						this.totalMoney = res.totalMoney;
 						this.totalDiscount = res.totalDiscount;
 						this.stockNotEnough = res.stockNotEnough;
+						this.freight = res.freight;
+						this.freightTitle = res.freightTitle;
 						//支持的配送方式
 						this.deliveryTypes = res.shop.deliveryTypes;
 						this.deliveryType = this.deliveryTypes[0];
@@ -479,6 +481,7 @@
 					totalMoney:this.totalMoney,
 					shopid:this.shopId
 				}).then(res=>{
+					console.log("getFreight",res)
 					this.freight = res.freight;
 					this.freightTitle = res.freightTitle;
 				});

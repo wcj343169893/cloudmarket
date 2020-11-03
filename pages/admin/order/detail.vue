@@ -87,10 +87,14 @@
 				</view>
 				<view class="weui-flex address b-b" v-if="info.userInfo">
 					<view class=""><text>用户信息</text></view>
-					<view class="weui-flex" style="flex-direction: column;">
+					<view class="weui-flex" >
 						<image :src="info.userInfo.avatar | avatar" class="avatar" mode="aspectFill"></image>
-						<text v-if="info.userInfo.nickname">{{info.userInfo.nickname}}</text>
-						<text v-else>{{info.userInfo.uid}}</text>
+						<view class="">
+							<text v-if="info.userInfo.nickname">{{info.userInfo.nickname}}</text>
+							<view class="">
+								<text >{{info.userInfo.id}}</text>
+							</view>
+						</view>
 					</view>
 				</view>
 				<view class="weui-flex">
@@ -674,6 +678,7 @@
 			width: 80rpx;
 			height: 80rpx;
 			border-radius: 50%;
+			margin-right: 6rpx;
 		}
 	}
 

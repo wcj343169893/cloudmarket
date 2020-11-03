@@ -811,6 +811,7 @@ const checkAppUpdate = (isForce, systemInfo, callback) => {
  * @param {Object} toLatlng
  */
 const mapDistance = function(fromLatlng, toLatlng) {
+	console.log(fromLatlng, toLatlng)
 	return new Promise((resolve, reject) => {
 		console.log(fromLatlng)
 		uni.request({

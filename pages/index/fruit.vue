@@ -254,9 +254,9 @@
 							uni.hideLoading();
 							console.log('获取定位完成', res);
 							this.address = '定位中...';
-							getLocationAddress([res.latitude, res.longitude].join(",")).then(res => {
-								console.log("getLocationAddress", res)
-								this.address = res.address;
+							getLocationAddress([res.latitude, res.longitude].join(",")).then(res2 => {
+								console.log("getLocationAddress", res2)
+								this.address = res2.address;
 								this.setUserLocation({
 									id: false,
 									latitude: res.latitude,

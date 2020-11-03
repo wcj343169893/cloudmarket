@@ -31,6 +31,20 @@
 6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
 7. 手动导入1000多条商品，在云函数 ``cloud-database`` 右键，上传并执行，将导入数据到 123457店铺
 
+
+### 小程序配置
+1. request合法域名
+```
+https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.com;https://tcb-api.tencentcloudapi.com;https://at.alicdn.com;https://cdn.cjblog.org;
+```
+2. uploadFile合法域名
+```
+https://api.bspapp.com
+https://cos.ap-shanghai.myqcloud.com
+```
+3. 腾讯地图key，在[key管理](https://lbs.qq.com/dev/console/key/manage)，添加新秘钥，启用产品：微信小程序，填写自己的小程序key，启用webServiceApi，其他不用填写，直接保存，然后填写到``/config.json``中
+
+
 ### 配置文件说明
 详见云函数目录下，[/cloudfunctions/common/config/README.md](https://github.com/wcj343169893/cloudmarket/blob/master/cloudfunctions-tcb/common/configs/README.md)
 
@@ -64,6 +78,9 @@
 [预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)  
 [手机淘宝图标库](http://market.cjblog.org/font_2174075_cl718eoy90k/demo_index.html)
 ```<text class="taobaofont icon-activity"></text>```  
+
+
+
 ### 抢先预览
 uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重试即可  
 

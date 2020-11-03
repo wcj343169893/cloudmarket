@@ -1,8 +1,11 @@
 @font-face {
-	font-family: 'taobaofont';
-	font-weight: normal;
-	font-style: normal;
-	src: url('/static/taobaofont.ttf') format('truetype');
+  font-family: 'taobaofont';  /* project id 2174075 */
+  src: url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.eot');
+  src: url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.ttf') format('truetype'),
+  url('https://at.alicdn.com/t/font_2174075_7xrfxqo7kee.svg#taobaofont') format('svg');
 }
 
 .taobaofont {
