@@ -17,8 +17,6 @@
 					<view class="checked" v-if="item.checked"><text class="yticon icon-right"></text></view>
 				</view>
 			</view>
-
-			<button class="add-btn" @click="confirm">新增地址</button>
 		</block>
 		<block v-else>
 			<view class="sec-header"><text>我的收货地址</text></view>
@@ -67,6 +65,9 @@
 			</view>
 		</view>
 
+		<!-- #endif -->
+		<!-- #ifdef MP -->
+		<button class="add-btn" @click="navToAddAddress">新增地址</button>
 		<!-- #endif -->
 	</view>
 </template>
@@ -266,6 +267,11 @@
 			//添加或修改成功之后回调
 			refreshList(data, type) {
 				this.loadData();
+			},
+			navToAddAddress(){
+				uni.navigateTo({
+					url: '/pages/address/addressManage?type=new'
+				});
 			}
 		},
 		//点击导航栏 buttons 时触发
@@ -360,10 +366,13 @@
 	}
 
 	.add-btn {
+		position: fixed;
+		bottom: 20rpx;
+		left: 5%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 690upx;
+		width: 90%;
 		height: 80upx;
 		margin: 20upx auto;
 		font-size: $font-lg;

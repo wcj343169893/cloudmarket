@@ -115,11 +115,11 @@
 
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom" :class="{ show: canAddCart }">
+			<navigator url="/pages/index/cart" open-type="switchTab" class="p-b-btn weui-flex flex-column">
+				<text class="yticon icon-gouwuche"></text>
+				<text>购物车</text>
+			</navigator>
 			<view class="options">
-				<navigator url="/pages/index/cart" open-type="switchTab" class="p-b-btn">
-					<text class="yticon icon-gouwuche">
-						<!-- <text class="sub" v-if="cartSumCount > 0">{{ cartSumCount }}</text> --></text>
-				</navigator>
 			</view>
 			<block v-if="isSold == 0"><text class="warning">已下架或已删除</text></block>
 			<block v-else-if="yuding">
@@ -1424,9 +1424,18 @@
 			}
 		}
 	}
-
+	.weui-flex{
+		display: flex;
+	}
+	.flex-column{
+		flex-direction: column;
+	}
+	.p-b-btn{
+		font-size: $font-ssm;
+		align-items: center;
+	}
 	.icon-gouwuche {
-		font-size: 48upx;
+		font-size: 30upx;
 		color: $base-color;
 	}
 
