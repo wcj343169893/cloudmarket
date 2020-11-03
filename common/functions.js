@@ -823,6 +823,9 @@ const mapDistance = function(fromLatlng, toLatlng) {
 			},
 			success: (res) => {
 				console.log(res)
+				if (!res.data || !res.data.result) {
+					reject();
+				}
 				resolve(res.data.result.rows);
 			},
 			fail: (err) => {
@@ -847,10 +850,13 @@ export const getLocationAddress = function(fromLatlng, poi_options) {
 			data: {
 				location: fromLatlng,
 				get_poi: 1,
-				poi_options:poi_options,
+				poi_options: poi_options,
 				key: config.qqmapWxKey
 			},
 			success: (res) => {
+				if (!res.data) {
+					reject();
+				}
 				resolve(res.data.result);
 			},
 			fail: (err) => {

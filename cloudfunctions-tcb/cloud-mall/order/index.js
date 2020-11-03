@@ -721,6 +721,7 @@ const model = {
 			address: 1,
 			uid: 1,
 			phone: 1,
+			inviteCode:1,
 			latitude: 1,
 			longitude: 1,
 			delivery: 1,
@@ -1026,7 +1027,7 @@ const model = {
 				nickname
 			} = context.userInfo;
 			//用户邀请列表
-			data["inviter_uid"] = [];
+			data["inviter_uid"] = "";
 			data["userInfo"] = {
 				uid,
 				avatar,
@@ -1034,11 +1035,11 @@ const model = {
 			};
 			if (inviter_uid) {
 				data["inviter_uid"] = inviter_uid;
-			} else if (uid != data.shop.uid) {
+			} else if (uid != data.shop.uid && data.shop.inviteCode) {
 				//默认为店主,logo为店铺,店主不能加自己为上级
 				let inviteRes = await uniID.acceptInvite({
 					uid,
-					inviteCode: data.shop.uid
+					inviteCode: data.shop.inviteCode
 				});
 				console.log("默认加入店铺团队", inviteRes);
 			}

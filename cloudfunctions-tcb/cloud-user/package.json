@@ -6,6 +6,7 @@
   "dependencies": {
     "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
+    "jsonwebtoken": "^8.5.1",
     "node-rsa": "^1.1.1",
     "uni-id": "file:../common/uni-id"
   },
