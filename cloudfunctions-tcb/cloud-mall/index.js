@@ -16,6 +16,7 @@ const modules = {
 	home: require('./home'),
 	order: require('./order'),
 	product: require('./product'),
+	shop: require('./shop'),
 }
 /**
  * 必须登录才能访问,cart子模块，list方法

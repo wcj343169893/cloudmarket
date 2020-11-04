@@ -144,10 +144,14 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
-				<text class="cell-tip" v-if="freight > 0">
-					<text class="price">{{ freight }}</text>
-				</text>
-				<text class="cell-tip" v-else>{{freightTitle}}</text>
+				<view class="cell-tip feight">
+					<text v-if="freight > 0">
+						<text class="price">{{ freight }}</text>
+					</text>
+					<view class="">
+						<text>{{freightTitle}}</text>
+					</view>
+				</view>
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
@@ -247,7 +251,7 @@
 				totalMoney: 0,
 				totalDiscount: 0,
 				freight: 0, //运费
-				freightTitle:"",
+				freightTitle: "",
 				isSubmit: false,
 				yuding: false,
 				addressData: {},
@@ -281,12 +285,13 @@
 					console.log('结算信息不存在');
 					return;
 				}
-				cloudMall("order","settlement",{
+				cloudMall("order", "settlement", {
 					id: this.shopId, //对此变量依赖性太强
 					addressid: this.location.id,
+					location: this.location,
 					stationId: this.stationId,
 					...this.ids
-				},true).then(
+				}, true).then(
 					res => {
 						console.log(res);
 						//默认收货地址
@@ -330,7 +335,7 @@
 								success: e => {
 									if (e.confirm) {
 										//更新库存不足的商品为未选中状态
-										cloudMall("cart","selected",{
+										cloudMall("cart", "selected", {
 											id: this.shopId,
 											stationId: this.stationId,
 											checked: false,
@@ -339,7 +344,7 @@
 													return m.cartId;
 												})
 												.join(',')
-										},true).then(res => {
+										}, true).then(res => {
 											console.log(res);
 										});
 									} else {
@@ -475,13 +480,13 @@
 			},
 			//计算运费，请求网络
 			getFreight() {
-				cloudMall("order","getFreight",{
-					deliveryType:this.deliveryType,
-					juli:this.juli,
-					totalMoney:this.totalMoney,
-					shopid:this.shopId
-				}).then(res=>{
-					console.log("getFreight",res)
+				cloudMall("order", "getFreight", {
+					deliveryType: this.deliveryType,
+					juli: this.juli,
+					totalMoney: this.totalMoney,
+					shopid: this.shopId
+				}).then(res => {
+					console.log("getFreight", res)
 					this.freight = res.freight;
 					this.freightTitle = res.freightTitle;
 				});
@@ -506,9 +511,10 @@
 					return;
 				}
 				this.isSubmit = true;
-				cloudMall("order","settlement",{
+				cloudMall("order", "settlement", {
 					id: this.shopId,
 					stationId: this.stationId,
+					location: this.location,
 					type: 'submit',
 					remark: this.remark,
 					juli: this.juli,
@@ -517,7 +523,7 @@
 					deliveryHour: this.deliveryHour,
 					addressid: this.addressData._id,
 					...this.ids
-				},true).then(
+				}, true).then(
 					res => {
 						let id = res;
 						let money = this.totalMoney + this.freight;
@@ -808,6 +814,13 @@
 
 			&.red {
 				color: $base-color;
+			}
+
+			&.feight {
+				line-height: 1.2;
+				text-align: right;
+				color: $font-color-disabled;
+				font-size: $font-sm;
 			}
 		}
 

@@ -246,10 +246,10 @@ const genOrderNo = function() {
  */
 const utc = 8;
 /**
- * 获取时间戳,时差问题
+ * 获取时间戳，这个不存在时间差问题
  */
 const getTime = (time) => {
-	return getDate(time).getTime();
+	return Date.now();
 }
 /**
  * 当前时间
