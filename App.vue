@@ -26,6 +26,7 @@
 	const pushClientInfoKey = 'pushClientInfo';
 	const userInfoKey = 'userInfo';
 	let isCheckLogin = false;
+	let hideTime = 0;
 	export default {
 		computed: {
 			...mapState(['inviteCode'])
@@ -220,7 +221,9 @@
 			console.log('App Show');
 			//#ifdef MP
 			if (isCheckLogin) {
-				this.checkLogin();
+				if (hideTime + 3600 * 1000 < Date.now()) {
+					this.checkLogin();
+				}
 			}
 			//#endif
 		},
@@ -228,6 +231,7 @@
 			console.log('App Hide');
 			//#ifdef MP
 			isCheckLogin = true;
+			hideTime = Date.now();
 			//#endif
 		}
 	};
@@ -520,6 +524,7 @@
 		border-radius: 10upx;
 		z-index: 20;
 	}
+
 	.fixed-area {
 		position: fixed;
 		background: #FFFFFF;

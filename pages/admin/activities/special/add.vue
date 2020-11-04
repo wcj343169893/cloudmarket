@@ -9,8 +9,8 @@
 			</view>
 		</view>
 		<view class="content">
-			<mix-list-input title="" textAlign="content-left" :defContent="title" field="title" placeholder="请输入标题" @change="changeField"></mix-list-input>
-			<mix-list-input type="textarea" title="" textAlign="content-left" :defContent="description" field="description"
+			<mix-list-input title=" " textAlign="content-left" :defContent="title" field="title" placeholder="请输入标题" @change="changeField"></mix-list-input>
+			<mix-list-input type="textarea" title=" " textAlign="content-left" :defContent="description" field="description"
 			 placeholder="请输入描述" @change="changeField"></mix-list-input>
 			<mix-list-select title="商品样式" :options="goodsTypes" :defaultOption="goodsType" @eventClick="changeGoodsType"></mix-list-select>
 			<view class="mix-list-cell b-b">
