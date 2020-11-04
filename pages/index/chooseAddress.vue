@@ -17,14 +17,18 @@
 					<view class="checked" v-if="item.checked"><text class="yticon icon-right"></text></view>
 				</view>
 			</view>
+			<!-- #ifdef MP -->
+			<button class="add-btn" @click="navToAddAddress">新增地址</button>
+			<!-- #endif -->
 		</block>
 		<block v-else>
 			<view class="sec-header"><text>我的收货地址</text></view>
 			<view class="center empty">
-				<navigator url="/pages/address/addressManage?type=new">暂无收货地址，点击添加</navigator>
+				<view class="" @click="navToAddAddress">
+					<text>暂无收货地址，点击添加</text>
+				</view>
 			</view>
 		</block>
-		<!-- #ifndef MP -->
 		<view class="sec-header"><text>当前地址</text></view>
 		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
 			<view class="wrapper">
@@ -48,8 +52,12 @@
 			</view>
 		</view>
 		<view class="">
-			<map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange"
-			 :show-location="show_location" style="width: 100%;height: 300px;"></map>
+			<!-- <map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange"
+			 :show-location="show_location" style="width: 100%;height: 300px;"></map> -->
+			<map id="map" class="map"  min-scale="10" :scale="17" :show-location="true" :latitude="latitude"
+			 :longitude="longitude" @regionchange="onRegionchange">
+				<cover-image class="map-center-icon" src="/static/location-center.png"></cover-image>
+			</map>
 		</view>
 		<view class="sec-header"><text>附近地址</text></view>
 		<view class="">
@@ -65,10 +73,6 @@
 			</view>
 		</view>
 
-		<!-- #endif -->
-		<!-- #ifdef MP -->
-		<button class="add-btn" @click="navToAddAddress">新增地址</button>
-		<!-- #endif -->
 	</view>
 </template>
 
@@ -83,11 +87,18 @@
 	import {
 		navToLoginPage
 	} from '@/common/functions.js';
+	import config from '@/config'
+	import QQMapWX from '@/common/qqmap-wx-jssdk.min';
+	const qqmapsdk = new QQMapWX({
+		key: config.qqmapWxKey
+	});
+	let _mapCtx = null;
 	export default {
 		data() {
 			return {
-				latitude: 0,
-				longitude: 0,
+				latitude: 39.909,
+				longitude: 116.39742,
+				timer: false,
 				show_location: true,
 				mapContext: null,
 				searchObj: null,
@@ -114,37 +125,15 @@
 			if (this.hasLogin) {
 				this.loadData();
 			}
-			// #ifndef MP
 			this.getLocation(false);
-			// #endif
-			if (this.location.latitude > 0) {
+			if (this.location && this.location.latitude > 0) {
 				this.latitude = this.location.latitude;
 				this.longitude = this.location.longitude;
 			}
 			//console.log(this.location);
 		},
-		onReady() {
-			console.log('onReady');
-			if (this.location.latitude > 0) {
-				// #ifdef APP-PLUS
-				this.mapContext = uni.createMapContext('map1', this);
-				//地图搜索
-				this.searchObj = new plus.maps.Search(this.mapContext.$getAppMap());
-				this.searchObj.onRouteSearchComplete = (state, result) => {
-					console.log('onRouteSearchComplete', state, result);
-					this.searchResult(result);
-				};
-				this.searchObj.onPoiSearchComplete = (state, result) => {
-					console.log('onPoiSearchComplete', state, result);
-					//this.nearAddressList = result.poiList;
-					this.searchResult(result);
-				};
-				this.centerMaker.push({
-					latitude: this.latitude,
-					longitude: this.longitude
-				});
-				//#endif
-			}
+		created() {
+			_mapCtx = uni.createMapContext('map');
 		},
 		methods: {
 			...mapMutations(['setUserLocation']),
@@ -160,36 +149,10 @@
 				//获取当前定位位置
 				uni.getLocation({
 					type: 'gcj02',
-					altitude: true,
-					geocode: true,
 					success: res => {
 						console.log('获取定位完成', res);
 						this.latitude = res.latitude;
 						this.longitude = res.longitude;
-						//小程序不返回地址信息,需要调用另外的接口来查询位置
-						//#ifdef MP
-						this.currentAddress = {
-							addressName: '',
-							latitude: res.latitude,
-							longitude: res.longitude,
-							address: ''
-						};
-						//#endif
-						//#ifndef MP
-						let address = '';
-						if (res.address.street) {
-							address += res.address.street;
-						}
-						if (res.address.streetNum) {
-							address += res.address.streetNum;
-						}
-						this.currentAddress = {
-							addressName: res.address.poiName,
-							latitude: res.latitude,
-							longitude: res.longitude,
-							address: address
-						};
-						//#endif
 						if (isMsg) {
 							this.$api.msg('重新定位成功');
 						}
@@ -199,46 +162,60 @@
 						if (isMsg) {
 							this.$api.msg('重新定位失败');
 						}
+					},complete: () => {
+						this.reverseGeocoder();
 					}
 				});
 			},
-			async poiSearchNearBy(pt) {
-				let res = this.searchObj.poiSearchNearBy('住宅', pt, 1000);
-				console.log('poiSearchNearBy', res);
-			},
-			//地图视野发生变化
-			regionchange() {
-				console.log('regionchange');
-				//#ifdef APP-PLUS
-				this.centerMaker = [];
-				this.mapContext.getCenterLocation({
-					success: lnglat => {
-						console.log('获取getCenterLocation success', lnglat);
-						var pt = new plus.maps.Point(lnglat.longitude, lnglat.latitude);
-						this.centerMaker.push({
-							latitude: lnglat.latitude,
-							longitude: lnglat.longitude
-						});
-						this.poiSearchNearBy(pt);
-					},
-					fail: () => {
-						console.log('获取getCenterLocation失败');
-					},
-					complete: () => {
-						console.log('获取getCenterLocation complete');
+			//地图区域改变
+			onRegionchange(e) {
+				clearTimeout(this.timer)
+				this.timer = setTimeout(() => {
+					//h5 end  安卓 regionchange
+					if (e.type === 'end' || e.type === 'regionchange') {
+						//中间位置
+						_mapCtx.getCenterLocation({
+							success: res => {
+								this.latitude = res.latitude
+								this.longitude = res.longitude
+								this.reverseGeocoder();
+							},
+							fail: err => {
+								console.log(err);
+							}
+						})
 					}
-				});
-				//#endif
+				}, 500)
 			},
-			searchResult(result) {
-				this.nearAddressList = [];
-				result.poiList.map(e => {
-					this.nearAddressList.push({
-						addressName: e.name,
-						address: e.address,
-						latitude: e.point.latitude,
-						longitude: e.point.longitude
-					});
+			reverseGeocoder() {
+				qqmapsdk.reverseGeocoder({
+					location: {
+						latitude: this.latitude,
+						longitude: this.longitude
+					},
+					get_poi: 1,
+					poi_options: "page_size=30;page_index=1",
+					success: res => {
+						console.log(res);
+						this.currentAddress = {
+							addressName: res.result.address,
+							latitude: res.result.location.latitude,
+							longitude: res.result.location.longitude,
+							address:""
+						};
+						this.nearAddressList = [];
+						res.result.pois.map((e) => {
+							this.nearAddressList.push({
+								addressName: e.title,
+								address: e.address,
+								latitude: e.location.latitude,
+								longitude: e.location.longitude
+							});
+						})
+					},
+					fail: err => {
+						console.log(err)
+					}
 				});
 			},
 			checkAddress(item) {
@@ -268,7 +245,13 @@
 			refreshList(data, type) {
 				this.loadData();
 			},
-			navToAddAddress(){
+			navToAddAddress() {
+				console.log(this.hasLogin)
+				return;
+				if (!this.hasLogin) {
+					navToLoginPage();
+					return;
+				}
 				uni.navigateTo({
 					url: '/pages/address/addressManage?type=new'
 				});
@@ -277,14 +260,8 @@
 		//点击导航栏 buttons 时触发
 		onNavigationBarButtonTap(e) {
 			const index = e.index;
-			if (!this.hasLogin) {
-				navToLoginPage();
-				return;
-			}
 			if (index === 0) {
-				uni.navigateTo({
-					url: '/pages/address/addressManage?type=new'
-				});
+				this.navToAddAddress()
 			}
 		}
 	};
@@ -366,9 +343,6 @@
 	}
 
 	.add-btn {
-		position: fixed;
-		bottom: 20rpx;
-		left: 5%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -379,5 +353,31 @@
 		color: #fff;
 		background-color: $base-color;
 		border-radius: 10upx;
+	}
+
+	.map {
+		width: 750rpx;
+		height: 700rpx;
+		flex: 1;
+	}
+
+	.map-center-icon {
+		position: absolute;
+		left: 339rpx;
+		top: 264rpx;
+		width: 72rpx;
+		height: 72rpx;
+	}
+
+	.map-coverview {
+		position: absolute;
+		top: 0;
+		left: 0;
+		text-align: center;
+		font-size: $font-sm;
+		background: #FFFFFF;
+		padding: 10rpx 20rpx;
+		width: 100%;
+		/* opacity: .7; */
 	}
 </style>

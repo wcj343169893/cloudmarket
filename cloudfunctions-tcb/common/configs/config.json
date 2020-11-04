@@ -121,6 +121,7 @@
 			"error": "支付方式错误",
 			"notExist": "支付方式不存在",
 			"refundSuccessContent": "退款将退回至您的{payName}账户，请注意查收。",
+			"refundFailed": "{payName}退款失败",
 			"balance": "可用余额￥{balance}",
 			"balanceNotEnough": "余额不足",
 			"balanceNotEnoughNotice": "余额不足，请选择其他支付方式"
@@ -152,5 +153,8 @@
 	"qqmap": {
 		"key": "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5",
 		"mode": "bicycling"
+	},
+	"user":{
+		"autoSetId":true
 	}
 }

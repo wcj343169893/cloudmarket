@@ -1019,7 +1019,7 @@ const model = {
 				//未支付
 				data.yuding.state = 0;
 			}
-			data["body"] = body.join(",");
+			data["body"] = body.join(",").substr(0,30);
 			//邀请信息,只允许2级关系
 			let {
 				inviter_uid,

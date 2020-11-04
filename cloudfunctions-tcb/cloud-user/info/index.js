@@ -5,6 +5,9 @@ const uniID = require('uni-id');
 const {
 	genIdentityId
 } = require('base-common');
+const {
+	getUserConfig
+} = require('configs');
 const shopCollection = db.collection("cloud_shops");
 const ordersCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
@@ -17,22 +20,15 @@ const models = {
 			"gender", "status", "mobile", "email",
 			"mobile_confirmed", "balance",
 			"email_confirmed", "avatar", "comment", "birthday",
-			"coupons", "score"
+			"coupons", "score", "member"
 		]);
 		//查询报错
 		if (res.code > 0) {
 			return res;
 		}
 		//自动生成用户id,方便传播和查询
-		if (!res.userInfo.id) {
-			let id = await genIdentityId("users");
-			//保存id
-			let result = await uniID.updateUser({
-				uid: data.uid,
-				id
-			});
-			console.log("save user id", result);
-			res.userInfo.id = id;
+		if (!res.userInfo.id && getUserConfig().autoSetId) {
+			res.userInfo.id = await this.setUserMember(data.uid);
 		}
 		//是否设置昵称
 		res.userInfo.isSetNickname = !!res.userInfo.nickname;
@@ -46,6 +42,25 @@ const models = {
 			birthday: ""
 		}, res.userInfo)
 		return res.userInfo;
+	},
+	/**
+	 * 设置用户的会员卡信息,member
+	 * @param {Object} uid
+	 */
+	async setUserMember(uid, info = false) {
+		let id = await genIdentityId("users");
+		let data = {
+			uid,
+			id
+		};
+		//会员扩展信息
+		if (info) {
+			data["member"] = info;
+		}
+		//保存id
+		let result = await uniID.updateUser(data);
+		console.log("save user id", result, info);
+		return id;
 	},
 	//信息统计
 	async statistics(data) {
@@ -133,15 +148,18 @@ const models = {
 	 * 微信小程序更新用户信息，需要解密
 	 * @param {Object} data
 	 */
-	async saveByMpWeixin(data){
-		const {uid,userInfo} = data;
+	async saveByMpWeixin(data) {
+		const {
+			uid,
+			userInfo
+		} = data;
 		console.log(userInfo);
 		//@TODO 验证真实性
 		let saveData = {
 			uid,
-			nickname:userInfo.nickName,
-			avatar:userInfo.avatarUrl,
-			gender:userInfo.gender
+			nickname: userInfo.nickName,
+			avatar: userInfo.avatarUrl,
+			gender: userInfo.gender
 		};
 		await this.save(saveData);
 		return saveData;

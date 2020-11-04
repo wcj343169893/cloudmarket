@@ -78,6 +78,12 @@ const model = {
 		return config.delivery[name];
 	},
 	/**
+	 * 用户中心设置
+	 */
+	getUserConfig() {
+		return config.user;
+	},
+	/**
 	 * 简单字符串模板，如果模板中找不到对于的字符，则默认源字符串
 	 * @param {Object} templateId 对于到config.json的key，例如：payment.error
 	 * @param {Object} data 参数{name:'支付宝'}

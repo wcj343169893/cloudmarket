@@ -66,12 +66,21 @@ const models = {
 		delete order.uid;
 		let config = getPaymentConfig(payInfo.platform, payInfo.type);
 		let uniPayIns = uniPay[config["uniPay"]](config);
-		let res = await uniPayIns.refund(order);
-		console.log("unipay refund", JSON.stringify(res));
-
 		let payName = payInfo.typeName || payInfo.name;
-		//return `退款将退回至您的${payname}账户，请注意查收`;
-		return getStringFormat("payment.refundSuccessContent",{payName});
+		try {
+			let res = await uniPayIns.refund(order);
+			console.log("unipay refund", JSON.stringify(res));
+			//return `退款将退回至您的${payname}账户，请注意查收`;
+			return getStringFormat("payment.refundSuccessContent", {
+				payName
+			});
+		} catch (e) {
+			console.log("unipay refund 退款失败");
+			console.log(JSON.stringify(e))
+		}
+		return getStringFormat("payment.refundFailed", {
+			payName
+		});
 	},
 	/**
 	 * 获取支付信息
