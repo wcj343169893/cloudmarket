@@ -83,6 +83,12 @@
 			<block v-if="type == 'chooseone'">
 				<view class="action-box b-t"><button class="action-btn recom" @click.stop="choose(item)">选择</button></view>
 			</block>
+			<block v-else-if="type == 'choosemany'">
+				<view class="action-box b-t">
+					<button class="action-btn" v-if="item.selected" @click.stop="select(item)">已选择</button>
+					<button class="action-btn recom" v-else @click.stop="select(item)">选择</button>
+				</view>
+			</block>
 			<view class="action-box b-t" v-else-if="state == 'delete'">
 				<button class="action-btn warning" @click.stop="cleanItem(item)">彻底删除</button>
 				<button class="action-btn recom" @click.stop="revertItem(item)">恢复售卖</button>
@@ -107,6 +113,10 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<view class="fixed-area" v-if="type == 'choosemany'">
+			<text>已选择{{selectLength}}件</text>
+			<button class="action-btn recom" @click="choosemany()">确定</button>
+		</view>
 	</view>
 </template>
 
@@ -130,6 +140,8 @@
 				page: 0,
 				limit: 20,
 				loaded: false,
+				selectLength: 0,
+				selectedIds: [],
 				loadingType: 'more',
 				goodsList: []
 			};
@@ -138,12 +150,19 @@
 			this.state = options.state;
 			if (options.type) {
 				this.type = options.type;
+				this.loadSelectedIds();
 			}
 			this.loadData();
 			//设置标题
 			this.setNavTitle();
 		},
 		methods: {
+			loadSelectedIds() {
+				this.selectedIds = uni.getStorageSync("selectedIds");
+				if(this.selectedIds){
+					this.selectLength = this.selectedIds.length;
+				}
+			},
 			async loadData() {
 				this.loadingType = 'loading';
 				this.page++;
@@ -172,6 +191,9 @@
 								} else if (item.yuding.beginTime < time) {
 									item.yuding.state = 'started';
 								}
+							}
+							if (this.type == "choosemany") {
+								item.selected = this.selectedIds.indexOf(item._id) != -1;
 							}
 						});
 						this.goodsList = this.goodsList.concat(res);
@@ -349,6 +371,12 @@
 					});
 					return;
 				}
+				if (this.type == "choosemany") {
+					uni.setNavigationBarTitle({
+						title: "选择多件商品"
+					});
+					return;
+				}
 				let shopInfo = uni.getStorageSync("adminShopInfo");
 				let goodsTypes = shopInfo.goodsTypes.filter(e => e.state == this.state);
 				uni.setNavigationBarTitle({
@@ -368,7 +396,27 @@
 					uni.navigateBack({
 						delta: 1
 					});
-				}, 500);
+				}, 100);
+			},
+			select(item) {
+				item.selected = !item.selected;
+				if (item.selected) {
+					this.selectLength++;
+				} else {
+					this.selectLength--;
+				}
+			},
+			choosemany() {
+				let goodsList = this.goodsList.filter(g => {
+					return g.selected;
+				})
+				//选中数据，并传递个上一个界面
+				this.$api.prePage().refreshList(goodsList, "goods");
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					});
+				}, 100);
 			}
 		}
 	};
@@ -465,41 +513,7 @@
 			padding: 20upx 30upx 10upx 0;
 		}
 
-		.action-btn {
-			height: 60upx;
-			margin: 0 0 10upx 24upx;
-			padding: 0 30upx;
-			text-align: center;
-			line-height: 60upx;
-			font-size: $font-sm + 2upx;
-			color: $font-color-dark;
-			background: #fff;
-			border-radius: 100px;
 
-			.time {
-				width: 72upx;
-				display: inline-block;
-			}
-
-			&:after {
-				border-radius: 100px;
-			}
-
-			&.recom {
-				background: $base-color;
-				color: #fff;
-			}
-
-			&.warning {
-				background-color: $uni-color-warning;
-				color: #fff;
-			}
-
-			&.primary {
-				background-color: $uni-color-primary;
-				color: #fff;
-			}
-		}
 
 		.skunames {
 			margin-right: 14upx;
@@ -511,6 +525,42 @@
 
 		.m-lr {
 			margin: 0 8upx 0;
+		}
+	}
+
+	.action-btn {
+		height: 60upx;
+		margin: 0 0 10upx 24upx;
+		padding: 0 30upx;
+		text-align: center;
+		line-height: 60upx;
+		font-size: $font-sm + 2upx;
+		color: $font-color-dark;
+		background: #fff;
+		border-radius: 100px;
+
+		.time {
+			width: 72upx;
+			display: inline-block;
+		}
+
+		&:after {
+			border-radius: 100px;
+		}
+
+		&.recom {
+			background: $base-color;
+			color: #fff;
+		}
+
+		&.warning {
+			background-color: $uni-color-warning;
+			color: #fff;
+		}
+
+		&.primary {
+			background-color: $uni-color-primary;
+			color: #fff;
 		}
 	}
 
@@ -533,5 +583,18 @@
 		height: var(--status-bar-height);
 		padding-top: 88rpx;
 		box-sizing: content-box;
+	}
+
+	.fixed-area {
+		justify-content: space-between;
+		padding: 10px 30rpx;
+
+		.action-btn {
+			width: 200rpx;
+			border-radius: 10rpx;
+			&:after {
+				border-radius: 10px;
+			}
+		}
 	}
 </style>

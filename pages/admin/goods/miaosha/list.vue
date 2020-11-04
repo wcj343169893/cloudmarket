@@ -73,300 +73,333 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<button class="fixed-add-btn" @click="navTo('/pages/admin/goods/miaosha/add')">新增秒杀</button>
 	</view>
 </template>
 
 <script>
-import { goodsAdmin } from '@/common/admin_request.js';
-import { navToGoodsItemPage } from '@/common/functions.js';
-export default {
-	data() {
-		return {
-			state: 'miaoshaAdmin',
-			redirect: false,
-			page: 0,
-			limit: 20,
-			loaded: false,
-			loadingType: 'more',
-			goodsList: []
-		};
-	},
-	onShow() {
-		this.redirect = false;
-	},
-	onLoad() {
-		this.loadData();
-	},
-	// #ifndef MP
-	//点击导航栏 buttons 时触发
-	onNavigationBarButtonTap(e) {
-		const index = e.index;
-		console.log('onNavigationBarButtonTap');
-		//this.$api.msg(index+" ");
-		if (index === 0) {
-			uni.navigateTo({
-				url: `/pages/admin/goods/miaosha/add`
-			});
-		}
-	},
-	// #endif
-	//滑到底部加载更多
-	onReachBottom() {
-		if (this.loadingType != 'noMore') {
+	import {
+		goodsAdmin
+	} from '@/common/admin_request.js';
+	import {
+		navToGoodsItemPage
+	} from '@/common/functions.js';
+	export default {
+		data() {
+			return {
+				state: 'miaoshaAdmin',
+				redirect: false,
+				page: 0,
+				limit: 20,
+				loaded: false,
+				loadingType: 'more',
+				goodsList: []
+			};
+		},
+		onShow() {
+			this.redirect = false;
+		},
+		onLoad() {
 			this.loadData();
-		}
-	},
+		},
+		// #ifndef MP
+		//点击导航栏 buttons 时触发
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			console.log('onNavigationBarButtonTap');
+			//this.$api.msg(index+" ");
+			if (index === 0) {
+				uni.navigateTo({
+					url: `/pages/admin/goods/miaosha/add`
+				});
+			}
+		},
+		// #endif
+		//滑到底部加载更多
+		onReachBottom() {
+			if (this.loadingType != 'noMore') {
+				this.loadData();
+			}
+		},
 
-	methods: {
-		async loadData() {
-			this.loadingType = 'loading';
-			this.page++;
-			goodsAdmin('list', {
-				state: this.state,
-				page: this.page,
-				limit: this.limit
-			},false).then(
-				res => {
-					let time = new Date().getTime();
-					//处理秒杀开始，结束时间
-					res.forEach(item => {
-						if (item.miaosha) {
-							item.miaosha.state = 'notstart';
-							if (item.miaosha.endTime < time) {
-								item.miaosha.state = 'ended';
-							} else if (item.miaosha.beginTime < time) {
-								item.miaosha.state = 'started';
+		methods: {
+			async loadData() {
+				this.loadingType = 'loading';
+				this.page++;
+				goodsAdmin('list', {
+					state: this.state,
+					page: this.page,
+					limit: this.limit
+				}, false).then(
+					res => {
+						let time = new Date().getTime();
+						//处理秒杀开始，结束时间
+						res.forEach(item => {
+							if (item.miaosha) {
+								item.miaosha.state = 'notstart';
+								if (item.miaosha.endTime < time) {
+									item.miaosha.state = 'ended';
+								} else if (item.miaosha.beginTime < time) {
+									item.miaosha.state = 'started';
+								}
 							}
+						});
+						this.goodsList = this.goodsList.concat(res);
+						if (res.length < this.limit) {
+							//没有数据了
+							//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+							this.loaded = true;
+							//判断是否还有数据， 有改为 more， 没有改为noMore
+							this.loadingType = 'noMore';
 						}
-					});
-					this.goodsList = this.goodsList.concat(res);
-					if (res.length < this.limit) {
-						//没有数据了
-						//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+					},
+					err => {
 						this.loaded = true;
-						//判断是否还有数据， 有改为 more， 没有改为noMore
 						this.loadingType = 'noMore';
 					}
-				},
-				err => {
-					this.loaded = true;
-					this.loadingType = 'noMore';
-				}
-			);
-		},
-		//预览商品效果,打开前端显示页面
-		preview(item) {
-			navToGoodsItemPage(item, true);
-		},
-		restart(item) {
-			//重新开始秒杀
-			goodsAdmin('restartMiaosha', {
-				_id: item._id
-			}).then(
-				res => {
-					this.$api.msg('重启成功', 2000, true, 'success');
-					setTimeout(() => {
-						uni.navigateBack({
-							delta: 1
-						});
-					}, 2500);
-				},
-				err => {
-					this.$api.msg(err.message);
-				}
-			);
-		},
-		pause(item) {
-			//暂停秒杀,移动秒杀到备份
-			goodsAdmin('pauseMiaosha', {
-				_id: item._id
-			}).then(
-				res => {
-					this.$api.msg('暂停成功', 2000, true, 'success');
-					setTimeout(() => {
-						uni.navigateBack({
-							delta: 1
-						});
-					}, 2500);
-				},
-				err => {
-					this.$api.msg(err.message);
-				}
-			);
-		},
-		canceled(item) {
-			uni.showModal({
-				content: '是否确定删除秒杀信息,删除后无法恢复,商品原信息不影响。',
-				success: res => {
-					if (res.confirm) {
-						//清理秒杀
-						goodsAdmin('cancelMiaosha', {
-							_id: item._id
-						}).then(
-							res => {
-								this.$api.msg('删除成功', 2000, true, 'success');
-								setTimeout(() => {
-									uni.navigateBack({
-										delta: 1
-									});
-								}, 2500);
-							},
-							err => {
-								this.$api.msg(err.message);
-							}
-						);
+				);
+			},
+			//预览商品效果,打开前端显示页面
+			preview(item) {
+				navToGoodsItemPage(item, true);
+			},
+			restart(item) {
+				//重新开始秒杀
+				goodsAdmin('restartMiaosha', {
+					_id: item._id
+				}).then(
+					res => {
+						this.$api.msg('重启成功', 2000, true, 'success');
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							});
+						}, 2500);
+					},
+					err => {
+						this.$api.msg(err.message);
 					}
+				);
+			},
+			pause(item) {
+				//暂停秒杀,移动秒杀到备份
+				goodsAdmin('pauseMiaosha', {
+					_id: item._id
+				}).then(
+					res => {
+						this.$api.msg('暂停成功', 2000, true, 'success');
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							});
+						}, 2500);
+					},
+					err => {
+						this.$api.msg(err.message);
+					}
+				);
+			},
+			canceled(item) {
+				uni.showModal({
+					content: '是否确定删除秒杀信息,删除后无法恢复,商品原信息不影响。',
+					success: res => {
+						if (res.confirm) {
+							//清理秒杀
+							goodsAdmin('cancelMiaosha', {
+								_id: item._id
+							}).then(
+								res => {
+									this.$api.msg('删除成功', 2000, true, 'success');
+									setTimeout(() => {
+										uni.navigateBack({
+											delta: 1
+										});
+									}, 2500);
+								},
+								err => {
+									this.$api.msg(err.message);
+								}
+							);
+						}
+					}
+				});
+			},
+			edit(item, type) {
+				if (this.redirect) {
+					return false;
 				}
-			});
-		},
-		edit(item, type) {
-			if (this.redirect) {
-				return false;
+				this.redirect = true;
+				uni.setStorage({
+					key: 'goodsMiaoshaEdit',
+					data: item,
+					success: () => {
+						//编辑秒杀信息
+						uni.navigateTo({
+							url: `/pages/admin/goods/miaosha/add?id=${item._id}&type=${type}`
+						});
+					}
+				});
+			},
+			refreshList(data, type) {
+				this.page = 0;
+				this.loaded = false;
+				this.loadingType = 'more';
+				this.goodsList = [];
+				this.loadData();
 			}
-			this.redirect = true;
-			uni.setStorage({
-				key: 'goodsMiaoshaEdit',
-				data: item,
-				success: () => {
-					//编辑秒杀信息
-					uni.navigateTo({
-						url: `/pages/admin/goods/miaosha/add?id=${item._id}&type=${type}`
-					});
-				}
-			});
-		},
-		refreshList(data,type) {
-			this.page = 0;
-			this.loaded = false;
-			this.loadingType = 'more';
-			this.goodsList = [];
-			this.loadData();
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-page,
-.content {
-	background: $page-color-base;
-	height: 100%;
-}
-.order-item {
-	display: flex;
-	flex-direction: column;
-	padding-left: 30upx;
-	background: #fff;
-	margin-top: 16upx;
-	/* 单条商品 */
-	.goods-box-single {
+	page,
+	.content {
+		background: $page-color-base;
+		height: 100%;
+	}
+
+	.container {
+		padding-bottom: 80rpx;
+	}
+
+	.order-item {
 		display: flex;
-		padding: 20upx 0;
-		.goods-img {
-			display: block;
-			width: 120upx;
-			height: 120upx;
-			border-radius: 4%;
-		}
-		.right {
-			flex: 1;
+		flex-direction: column;
+		padding-left: 30upx;
+		background: #fff;
+		margin-top: 16upx;
+
+		/* 单条商品 */
+		.goods-box-single {
 			display: flex;
-			flex-direction: column;
-			padding: 0 30upx 0 24upx;
-			overflow: hidden;
-			.title {
-				font-size: $font-base + 2upx;
-				color: $font-color-dark;
-				line-height: 1;
+			padding: 20upx 0;
+
+			.goods-img {
+				display: block;
+				width: 120upx;
+				height: 120upx;
+				border-radius: 4%;
 			}
-			.attr-box {
-				font-size: $font-sm + 2upx;
-				color: $font-color-light;
-				padding: 8upx 0upx 0;
-				&.notstart {
-					color: $base-color;
+
+			.right {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				padding: 0 30upx 0 24upx;
+				overflow: hidden;
+
+				.title {
+					font-size: $font-base + 2upx;
+					color: $font-color-dark;
+					line-height: 1;
 				}
-				&.started {
-					color: $font-color-warning;
-					.price {
+
+				.attr-box {
+					font-size: $font-sm + 2upx;
+					color: $font-color-light;
+					padding: 8upx 0upx 0;
+
+					&.notstart {
+						color: $base-color;
+					}
+
+					&.started {
 						color: $font-color-warning;
+
+						.price {
+							color: $font-color-warning;
+						}
+					}
+
+					&.ended {
+						text-decoration: line-through;
 					}
 				}
-				&.ended {
-					text-decoration: line-through;
-				}
 			}
+		}
+
+		.price-box {
+			display: flex;
+			justify-content: flex-end;
+			align-items: baseline;
+			padding: 20upx 30upx;
+			font-size: $font-sm + 2upx;
+			color: $font-color-light;
+
+			.num {
+				margin: 0 8upx;
+				color: $font-color-dark;
+			}
+		}
+
+		.action-box {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			position: relative;
+			flex-wrap: wrap;
+			padding: 20upx 30upx 10upx 0;
+		}
+
+		.action-btn {
+			height: 60upx;
+			margin: 0 0 10upx 24upx;
+			padding: 0 30upx;
+			text-align: center;
+			line-height: 60upx;
+			font-size: $font-sm + 2upx;
+			color: $font-color-dark;
+			background: #fff;
+			border-radius: 100px;
+
+			.time {
+				width: 72upx;
+				display: inline-block;
+			}
+
+			&:after {
+				border-radius: 100px;
+			}
+
+			&.recom {
+				background: $base-color;
+				color: #fff;
+			}
+
+			&.warning {
+				background-color: $uni-color-warning;
+				color: #fff;
+			}
+
+			&.error {
+				background-color: $uni-color-error;
+				color: #fff;
+			}
+		}
+
+		.skunames {
+			margin-right: 14upx;
+		}
+
+		.m-r {
+			margin-right: 8upx;
+		}
+
+		.m-lr {
+			margin: 0 8upx 0;
 		}
 	}
 
-	.price-box {
+	.yuding {
 		display: flex;
-		justify-content: flex-end;
-		align-items: baseline;
-		padding: 20upx 30upx;
-		font-size: $font-sm + 2upx;
-		color: $font-color-light;
-		.num {
-			margin: 0 8upx;
-			color: $font-color-dark;
+
+		.steps {
+			flex: 1;
 		}
 	}
-	.action-box {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		position: relative;
-		flex-wrap: wrap;
-		padding: 20upx 30upx 10upx 0;
+
+	.sub-title {
+		font-size: $font-sm;
+		color: $font-color-disabled;
 	}
-	.action-btn {
-		height: 60upx;
-		margin: 0 0 10upx 24upx;
-		padding: 0 30upx;
-		text-align: center;
-		line-height: 60upx;
-		font-size: $font-sm + 2upx;
-		color: $font-color-dark;
-		background: #fff;
-		border-radius: 100px;
-		.time {
-			width: 72upx;
-			display: inline-block;
-		}
-		&:after {
-			border-radius: 100px;
-		}
-		&.recom {
-			background: $base-color;
-			color: #fff;
-		}
-		&.warning {
-			background-color: $uni-color-warning;
-			color: #fff;
-		}
-		&.error {
-			background-color: $uni-color-error;
-			color: #fff;
-		}
-	}
-	.skunames {
-		margin-right: 14upx;
-	}
-	.m-r {
-		margin-right: 8upx;
-	}
-	.m-lr {
-		margin: 0 8upx 0;
-	}
-}
-.yuding {
-	display: flex;
-	.steps {
-		flex: 1;
-	}
-}
-.sub-title {
-	font-size: $font-sm;
-	color: $font-color-disabled;
-}
 </style>

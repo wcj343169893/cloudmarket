@@ -360,19 +360,7 @@
 		}, {
 			"path": "pages/admin/goods/miaosha/list",
 			"style": {
-				"navigationBarTitleText": "秒杀管理",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue60a",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
+				"navigationBarTitleText": "秒杀管理"
 			}
 		}, {
 			"path": "pages/admin/ad/list",
@@ -592,6 +580,16 @@
 						}]
 					}
 				}
+            }
+            
+        }
+        ,{
+            "path" : "pages/admin/activities/special/add",
+            "style" :                                                                                    
+            {
+				"navigationStyle": "custom",
+                "navigationBarTitleText": "新增专题",
+                "enablePullDownRefresh": false
             }
             
         }

@@ -1,0 +1,14 @@
+.weui-flex {
+	display: flex;
+	align-items: center;
+}
+
+.weui-flex__item {
+	flex: 1;
+}
+
+button.small {
+	line-height: 48rpx;
+	height: 48rpx;
+	font-size: 24rpx;
+}

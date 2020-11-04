@@ -57,7 +57,7 @@
 				// #endif	
 				systemInfo.custom = custom;
 				systemInfo.navigationBarHeight = navigationBarHeight;
-				systemInfo.development = process.env.NODE_ENV=="development";
+				systemInfo.development = process.env.NODE_ENV == "development";
 				console.log(systemInfo);
 				Vue.prototype.systemInfo = systemInfo;
 			},
@@ -236,6 +236,7 @@
 <style lang="scss">
 	@import url("./common/css/icon.css");
 	@import url("./common/css/font_taobao.css");
+	@import url("./common/css/base.css");
 
 	view,
 	scroll-view,
@@ -501,5 +502,34 @@
 		&.warning {
 			color: $font-color-warning;
 		}
+	}
+
+	.fixed-add-btn {
+		position: fixed;
+		left: 5%;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 90%;
+		height: 80upx;
+		margin: 20upx auto;
+		font-size: $font-lg;
+		color: #fff;
+		background-color: $base-color;
+		border-radius: 10upx;
+		z-index: 20;
+	}
+	.fixed-area {
+		position: fixed;
+		background: #FFFFFF;
+		left: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		font-size: $font-base;
+		z-index: 20;
 	}
 </style>

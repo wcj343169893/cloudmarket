@@ -49,6 +49,7 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<button class="fixed-add-btn" @click="navTo('/pages/admin/activities/special/add?isnew=1')">新增专题</button>
 	</view>
 </template>
 
@@ -88,22 +89,6 @@
 					limit: this.limit
 				}).then(
 					res => {
-						console.log(res)
-						//格式化时间
-						/* res.forEach(ele => {
-							//状态名称 Object.assign
-							let {
-								stateTip,
-								stateTipColor
-							} = this.orderStateExp(ele);
-							ele.stateTip = stateTip;
-							ele.stateTipColor = stateTipColor;
-							ele.priceTitle = "单价";
-							if (ele.yuding) {
-								ele.priceTitle = "预售价";
-							}
-							checkDeliveryHour(ele)
-						}); */
 						this.orderList = this.orderList.concat(res);
 						if (res.length < this.limit) {
 							//没有数据了
@@ -133,10 +118,28 @@
 				return getOrderStateExp(item);
 			},
 			closure(item) {
-
+				uni.showModal({
+					title: '确认结束专题？',
+					content: '结束后，前端将自动下架',
+					success: res => {
+						if (res.confirm) {
+							this.$submitData(() => {
+								specialAdmin("closure", {
+									id: item._id,
+								}).then(
+									res => {
+										item.endTime = Date.now();
+										this.$api.success("操作成功")
+									},
+									err => {}
+								);
+							});
+						}
+					}
+				});
 			},
 			edit(item) {
-
+				this.navToItem("/pages/admin/activities/special/add", item)
 			},
 			preview(item) {
 
@@ -154,9 +157,12 @@
 
 <style lang="scss">
 	page,
-	.content {
+	.container {
 		background: $page-color-base;
-		height: 100%;
+	}
+
+	.container {
+		padding-bottom: 100rpx;
 	}
 
 	.order-item {
