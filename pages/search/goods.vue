@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<empty v-if="goodsList.length === 0">
 			无结果
 		</empty>

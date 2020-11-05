@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 	</view>

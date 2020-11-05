@@ -429,9 +429,9 @@
 	/* button样式改写 */
 	uni-button,
 	button {
-		height: 70upx;
-		line-height: 70upx;
-		font-size: $font-lg + 2upx;
+		height: 60upx;
+		line-height: 60upx;
+		font-size: $font-lg;
 		font-weight: normal;
 
 		&.no-border:before,
@@ -505,6 +505,54 @@
 
 		&.warning {
 			color: $font-color-warning;
+		}
+	}
+
+	.aud {
+		.price:before {
+			content: 'A$';
+		}
+	}
+
+	.usd {
+		.price:before {
+			content: '$';
+		}
+	}
+
+	.cad {
+		.price:before {
+			content: 'C$';
+		}
+	}
+
+	.eur {
+		.price:before {
+			content: '€';
+		}
+	}
+
+	.nzd {
+		.price:before {
+			content: 'NZ$';
+		}
+	}
+
+	.jpy {
+		.price:before {
+			content: 'JP¥';
+		}
+	}
+
+	.krw {
+		.price:before {
+			content: '₩';
+		}
+	}
+
+	.gbp {
+		.price:before {
+			content: '£';
 		}
 	}
 

@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
 		<view class="order-item" v-for="(item, goodsIndex) in goodsList" :key="goodsIndex">
 			<view class="goods-box-single" @click="preview(item)">

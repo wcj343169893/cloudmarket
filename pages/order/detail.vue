@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[info.shop.currency||globalClass]">
 		<view class="header">
 			<view class="back-btn yticon icon-zuojiantou-up" @click="navBack"></view>
 			<view class="header_title">
@@ -310,7 +310,7 @@
 		data() {
 			return {
 				id: 0,
-				isRefreshPrePage:false,
+				isRefreshPrePage: false,
 				goodsList: [],
 				moreGoodsCount: 0,
 				priceTitle: '单价',
@@ -319,7 +319,7 @@
 				stateContent: '',
 				stateTipColor: '',
 				info: {
-
+					shop: {}
 				},
 				isYuding: false,
 				isRefundAll: false,
@@ -380,7 +380,7 @@
 			}
 		},
 		onShow() {
-			if(this.isRefreshPrePage){
+			if (this.isRefreshPrePage) {
 				this.$api.prePage().refreshList();
 				this.isRefreshPrePage = false;
 			}
@@ -464,8 +464,8 @@
 			},
 			navToGoodsPage(item) {
 				navToGoodsItemPage({
-					id:item.id,
-					sid:item.sku_id
+					id: item.id,
+					sid: item.sku_id
 				});
 			},
 			//删除订单
@@ -678,8 +678,8 @@
 			//评价
 			evaluateOrder() {
 				uni.setStorage({
-					key:"commentOrder",
-					data:this.info
+					key: "commentOrder",
+					data: this.info
 				});
 				this.navTo("/pages/order/comment")
 			},

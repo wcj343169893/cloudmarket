@@ -721,6 +721,7 @@ const model = {
 			address: 1,
 			uid: 1,
 			phone: 1,
+			currency: 1,
 			inviteCode:1,
 			latitude: 1,
 			longitude: 1,

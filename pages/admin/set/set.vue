@@ -35,6 +35,7 @@
 		</view>
 		<mix-list-cell v-if="isPrint" title="打印终端" :tips="printersName" @eventClick="navTo('/pages/admin/set/printer/list')"></mix-list-cell>
 		<mix-list-cell title="页面配置" @eventClick="navTo('/pages/admin/set/pages')" tips="首页"></mix-list-cell>
+		<mix-list-select border="b-b" @eventClick="changeCurrency" title="货币" :options="currencys" :defaultOption="currency"></mix-list-select>
 		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
 	</view>
 </template>
@@ -51,22 +52,34 @@
 				addressFull: "",
 				phone: "",
 				notice: "",
-				delivery:{},
+				delivery: {},
 				serviceTime: "",
 				deliveryTypes: [],
 				isPrint: false,
 				goodsCommentTags: [],
 				printers: [],
 				printersName: "",
+				currency: "zh",
+				currencys: {
+					zh: "￥人民币",
+					aud: "A$澳币",
+					usd: "$美金",
+					cad: "C$加拿大元",
+					eur: "€欧元",
+					nzd: "NZ$新西兰元",
+					jpy: "JP¥日元",
+					krw: "₩韩元",
+					gbp: "£英镑",
+				},
 			}
 		},
 		onLoad() {
 			this.loadData();
 		},
-		computed:{
-			tagResult(){
-				if(this.goodsCommentTags && this.goodsCommentTags.length > 0){
-					return this.goodsCommentTags.slice(0,3).join(",")+"...";
+		computed: {
+			tagResult() {
+				if (this.goodsCommentTags && this.goodsCommentTags.length > 0) {
+					return this.goodsCommentTags.slice(0, 3).join(",") + "...";
 				}
 				return "未设置"
 			}
@@ -124,6 +137,18 @@
 					this.save({
 						serviceTime: e
 					})
+				}
+			},
+			/**
+			 * 切换店铺货币
+			 * @param {Object} e
+			 */
+			changeCurrency(e) {
+				if (e != this.currency) {
+					this.currency = e;
+					this.save({
+						currency: this.currency
+					});
 				}
 			},
 			changeAddress(e) {
@@ -209,9 +234,10 @@
 </script>
 
 <style lang="scss" scoped>
-	.container{
+	.container {
 		padding-bottom: 40rpx;
 	}
+
 	.icon .mix-list-cell.b-b:after {
 		left: 90upx;
 	}

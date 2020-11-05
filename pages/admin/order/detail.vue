@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[info.shop.currency || globalAdminClass]">
 		<block v-if="loaded">
 			<view class="header">
 				<view class="back-btn yticon icon-zuojiantou-up" @click="navBack"></view>
@@ -287,7 +287,9 @@
 				goodsCount: 0,
 				maxShowCount: 3,
 				shopid: 0,
-				info: {},
+				info: {
+					shop:{}
+				},
 				isError:false
 			};
 		},

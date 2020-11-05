@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<!-- 顶部栏 -->

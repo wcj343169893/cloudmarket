@@ -74,6 +74,7 @@ const list = async (data, context) => {
 		deliveryHour: 1,
 		remark: 1,
 		shopid: 1,
+		shop: 1,
 		payInfo: 1,
 		userInfo: 1,
 		yuding: 1,

@@ -60,6 +60,7 @@ const models = {
 			delivery: 1,
 			notice: 1,
 			phone: 1,
+			currency: 1,
 			dayStatisticsLog: 1,
 			serviceTime: 1,
 			searchGoodsKeywords: 1,

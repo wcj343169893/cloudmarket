@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<!-- 标题栏和状态栏占位符 -->
 		<view class="deliver-section">
 			<view class="delivery-types" v-if="deliveryTypes.length > 1">

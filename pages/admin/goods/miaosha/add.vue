@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<!-- 商品 -->
 		<block v-if="goods.id > 0">
 			<view class="goods-box-single b-b" @click="selectGoods()">

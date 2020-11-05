@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<!-- 顶部栏 -->
@@ -292,7 +292,7 @@
 				}).then(res => {
 					this.isLoaded = true;
 					//修改默认附近店铺id
-					this.changeShopId(res.shopId);
+					this.changeShopId(res.shop);
 					//广告
 					if (res.ads) {
 						let ads = res.ads;

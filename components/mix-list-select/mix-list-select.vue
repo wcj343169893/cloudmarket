@@ -78,6 +78,7 @@ export default {
 		defaultOption(val){
 			console.log("watch",val);
 			this.tips2 = this.options[this.defaultOption];
+			this.def = this.defaultOption;
 		}
 	},
 	created() {

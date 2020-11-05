@@ -439,7 +439,7 @@
 				})
 			},
 			navToShopHome(item){
-				this.changeShopId(item.id);
+				this.changeShopId(item);
 				uni.switchTab({
 					url:`/pages/index/fruit`
 				})

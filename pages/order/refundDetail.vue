@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<view class="header b-b">
 			<text>退款单号:{{id}}</text>
 			<text>申请时间:{{created | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>

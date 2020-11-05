@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
 		<view v-for="(item, index) in orderList" :key="index" class="order-item" @click="edit(item)">
 			<view class="i-top b-b">

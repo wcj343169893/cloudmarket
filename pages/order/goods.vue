@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<view class="cart-list">
 			<block v-for="(item, index) in cartList" :key="index">
 				<view class="goodsList" v-if="item.amount > 0">

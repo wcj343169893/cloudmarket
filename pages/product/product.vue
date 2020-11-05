@@ -1,5 +1,5 @@
 <template>
-	<view class="container" v-if="loaded">
+	<view class="container" v-if="loaded" :class="[globalClass]">
 		<pageHeader ref="pageHeader" :referer="referer"></pageHeader>
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">

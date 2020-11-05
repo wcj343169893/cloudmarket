@@ -13,6 +13,12 @@ export default{
 	computed: {
 		shopId(){
 			return this.$store.state.shopId;
+		},
+		globalClass(){
+			return this.$store.state.globalClass;
+		},
+		globalAdminClass(){
+			return this.$store.state.globalAdminClass;
 		}
 	},
 	methods: {

@@ -1,7 +1,7 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
-		<view v-for="(item, index) in orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
+		<view v-for="(item, index) in orderList" :key="index" class="order-item" :class="[item.shop.currency]"  @click="navToOrderDetail(item)">
 			<view class="i-top b-b">
 				<text class="time">{{ item.created  | dateFormat('yyyy-MM-dd hh:mm:ss')  }}</text>
 				<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>

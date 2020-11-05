@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && refundList.length === 0"></empty>
 		<view v-for="(item, index) in refundList" :key="index" class="items" :class="[item.state]">
 			<view class="header b-b">

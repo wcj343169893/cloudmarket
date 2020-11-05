@@ -35,6 +35,8 @@ const store = new Vuex.Store({
 			longitude: 0, //经度
 			name: "" //地址名称
 		},
+		globalClass:"",
+		globalAdminClass:"",
 		inviteCode: "",
 		userInfo: baseUserInfo,
 		jgLoginInit: false
@@ -110,9 +112,12 @@ const store = new Vuex.Store({
 			});
 		},
 		//修改最近店铺id
-		changeShopId(state, id) {
-			state.shopId = id;
+		changeShopId(state, shop) {
+			state.shopId = shop.id;
 			state.categoryId = 0;
+			if(shop.currency){
+				state.globalClass = shop.currency;
+			}
 			console.log("store changeShopId");
 			this.dispatch('getCartCount');
 		},
@@ -130,9 +135,12 @@ const store = new Vuex.Store({
 			})
 		},
 		//设置管理店铺id
-		setAdminShop(state, id) {
-			state.adminShopId = id;
-			uni.setStorageSync('adminShopId', id);
+		setAdminShop(state, shop) {
+			state.adminShopId = shop.id;
+			if(shop.currency){
+				state.globalAdminClass = shop.currency;
+			}
+			uni.setStorageSync('adminShopId', shop.id);
 		},
 		/**
 		 * 设置邀请码

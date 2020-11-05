@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalClass]">
 		<!-- 空白页 -->
 		<view v-if="!hasLogin || empty === true" class="empty">
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>

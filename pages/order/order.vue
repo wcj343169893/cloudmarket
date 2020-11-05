@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" :class="[globalClass]">
 		<view class="navbar">
 			<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{ current: tabCurrentIndex === index }" @click="tabClick(index)">{{ item.text }}</view>
 		</view>
@@ -10,7 +10,7 @@
 					<!-- 空白页 -->
 					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
 					<!-- 订单列表 -->
-					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item" @click="navToOrderDetail(item)">
+					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item" :class="[item.shop.currency]" @click="navToOrderDetail(item)">
 						<view class="i-top b-b">
 							<text class="time">{{ item.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 							<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>

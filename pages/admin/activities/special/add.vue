@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :class="[globalAdminClass]">
 		<page-header title="新增专题"></page-header>
 		<view class="imgs banner" @click="uploadBanner">
 			<view class="h-list" v-if="bannerPreview && bannerPreview != ''">
@@ -134,7 +134,7 @@
 				}).then(
 					res => {
 						for (let key in res) {
-							if(key!="banner"){
+							if (key != "banner") {
 								this[key] = res[key];
 							}
 						}
@@ -224,12 +224,12 @@
 				if (!this.checkFields(data, fields)) {
 					return false;
 				}
-				if(data.goods.length==0){
+				if (data.goods.length == 0) {
 					this.$api.msg('商品不能为空');
 					return false;
 				}
 				this.$submitData(() => {
-					specialAdmin("save", data).then(
+					specialAdmin("save", data, true).then(
 						res => {
 							this.$api.success("保存成功")
 							this.navTimeBack(() => {

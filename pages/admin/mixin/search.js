@@ -10,6 +10,9 @@ export default {
 		},
 		navigationBarHeight() {
 			return this.systemInfo.navigationBarHeight;
+		},
+		globalAdminClass(){
+			return this.$store.state.globalAdminClass;
 		}
 	},
 	// #ifndef MP

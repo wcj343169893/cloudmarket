@@ -1,5 +1,5 @@
 <template>
-	<view class="app">
+	<view class="app" :class="[globalClass]">
 		<view class="price-box">
 			<text>支付金额</text>
 			<text class="price">{{ orderInfo.totalMoney }}</text>

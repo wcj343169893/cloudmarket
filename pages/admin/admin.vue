@@ -105,7 +105,6 @@
 		},
 		onLoad(options) {
 			this.shopid = +options.shopid;
-			this.setAdminShop(this.shopid);
 			console.log(this.shopid, options);
 			if (options.second) {
 				//进一步跳转到下一页页面
@@ -184,6 +183,7 @@
 				this.navTo('/pages/admin/set/set');
 			},
 			buildShopInfo(data) {
+				this.setAdminShop(data);
 				if (!this.isSetTitle && data.name) {
 					uni.setNavigationBarTitle({
 						title: data.name
