@@ -114,6 +114,34 @@ export default{
 		hidePopups(key){
 			this.$refs[key].close();
 		},
+		//检查字段是否为空
+		checkFields(data, fields) {
+			for (let fie in fields) {
+				if (typeof data[fie] == 'undefined' || data[fie] == '') {
+					this.$api.msg(fields[fie] + '不能为空');
+					return false;
+				}
+			}
+			return true;
+		},
+		/**
+		 * 比较上一个字段与下一个自动的大小
+		 * @param {Object} data
+		 * @param {Object} fields
+		 */
+		checkTimeFields(data, fields) {
+			let prev = 0;
+			let prevField = "";
+			for (let fie in fields) {
+				if (prev > data[fie]) {
+					this.$api.msg(`${fields[prevField]}必须大于或等于${fields[fie]}`);
+					return false;
+				}
+				prev = data[fie];
+				prevField = fie;
+			}
+			return true;
+		},
 		stopPrevent(){},
 	},
 }

@@ -30,6 +30,7 @@
 5. 开启自动取消过期订单定时器，cloud-cron-cancel-orders，增加定时器触发``[{"name":"cancelOrderTrigger","type":"timer","config":"12 * * * * * *"}]``,每分钟执行一次
 6. 支付通知,开启cloud-payment **云函数URL化**，设置跳转路径为``market_notify``,与configs配置里面``notify-floder``一致，再复制**设置URL的PATH部分**到configs配置domain
 7. 手动导入1000多条商品，在云函数 ``cloud-database`` 右键，上传并执行，将导入数据到 123457店铺
+8. 短信配置，/cloudfunctions/common/uni-id/config.json 修改service.sms，填上name、key和secret，在/cloudfunctions/common/configs/config.json中填写登录模板id
 
 
 ### 小程序配置
@@ -114,6 +115,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 
 #### 2.0.15
 * 增加商城全局class
+* 增加上下架店铺所有商品
 
 #### 2.0.14
 * 增加云函数计算配送距离，不需要可以不调用，

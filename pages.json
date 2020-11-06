@@ -593,6 +593,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user/vip/add",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "会员卡申请",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

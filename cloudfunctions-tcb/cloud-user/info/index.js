@@ -62,6 +62,26 @@ const models = {
 		console.log("save user id", result, info);
 		return id;
 	},
+	/**
+	 * 申请会员卡
+	 * @param {Object} data
+	 */
+	async member(data, context) {
+		const {
+			uid
+		} = data;
+		const {
+			userInfo
+		} = context;
+		delete data.uid;
+		//如果用户已经有id，则只更新info
+		if (userInfo.id) {
+			return await uniID.updateUser({
+				member: data
+			});
+		}
+		return await this.setUserMember(uid, data);
+	},
 	//信息统计
 	async statistics(data) {
 		let res = await getUserInfo(data.uid, ["order", "balance", "admin", "coupons", "score", "count"]);
@@ -91,7 +111,7 @@ const models = {
 			}
 		}
 		//免费开通会员最后期限
-		info.lastFreeVip = 1601530971745;
+		info.lastFreeVip = new Date().getTime() + 3600 * 1000 * 24 * 365;
 		//当前时间
 		info.time = new Date().getTime();
 		//88/年
