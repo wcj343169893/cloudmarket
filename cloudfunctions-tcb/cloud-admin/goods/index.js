@@ -377,6 +377,21 @@ const soldOut = async (data) => {
 	return res;
 }
 /**
+ * 下架所有商品
+ */
+const soldOutAll = async (data) => {
+	//修改
+	let res = await goodsCollection.where({
+		shopid: data.shopid,
+		isSold: 1
+	}).update({
+		isSold: 0,
+		operator: data.operator, //操作者
+		offlineTime: new Date().getTime()
+	});
+	return res;
+}
+/**
  * 上架商品
  */
 const soldIn = async (data) => {
@@ -387,6 +402,22 @@ const soldIn = async (data) => {
 		return false;
 	}
 	let res = await goodsCollection.doc(data._id).update({
+		isSold: 1,
+		operator: data.operator, //操作者
+		onlineTime: new Date().getTime()
+	});
+	console.log("soldIn", res);
+	return res;
+}
+/**
+ * 上架所有商品
+ */
+const soldInAll = async (data) => {
+	//修改
+	let res = await goodsCollection.where({
+		shopid: data.shopid,
+		isSold: 0,
+	}).update({
 		isSold: 1,
 		operator: data.operator, //操作者
 		onlineTime: new Date().getTime()
@@ -517,7 +548,9 @@ module.exports = {
 	revert: reverts,
 	clean: cleans,
 	soldOut: soldOut,
+	soldOutAll,
 	soldIn: soldIn,
+	soldInAll,
 	info: info,
 	pauseMiaosha: pauseMiaosha,
 	restartMiaosha: restartMiaosha,

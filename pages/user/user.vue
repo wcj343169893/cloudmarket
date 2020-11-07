@@ -33,26 +33,22 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class="vip-card-box">
-				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn" v-if="!userInfo.vip" @click="openVip">
+			<view class="vip-card-box" @click="openVip" v-if="enableVipCard">
+				<image class="card-bg" :src="vipCardBg"></image>
+				<view class="b-btn relative" v-if="!userInfo.id" @click="openVip">
 					<block v-if="freeVip">
-						<text class="price del">{{vipPrice}}/年</text>
 						<text>限时免费</text>
 					</block>
 					<block v-else>
-						<text class="price">{{vipPrice}}/年</text>
 						<text>去开通</text>
 					</block>
 				</view>
-				<view class="tit">
+				<view class="tit relative">
 					<text class="yticon icon-iLinkapp-"></text>
-					<text>会员</text>
+					<text>会员卡</text>
 				</view>
-				<text class="e-m"></text>
-				<text class="m-l" v-if="userInfo.vip">卡号:{{userInfo.id}}</text>
-				<text class="e-b" v-else>开通会员享受会员专属价格</text>
-			</view> -->
+				<text class="tip-no relative" v-if="userInfo.id">NO:{{userInfo.id}}</text>
+			</view>
 		</view>
 
 		<view class="cover-container" v-if="isLoaded">
@@ -206,7 +202,7 @@
 				coverTransition: '0s',
 				vipnumber: "",
 				inviteNumber: "",
-				freeVip: false,
+				freeVip: true,
 				vipPrice: 88,
 				hasVisiteGoods: false,
 				visiteGoodsList: [],
@@ -265,7 +261,19 @@
 		},
 		// #endif
 		computed: {
-			...mapState(['hasLogin', 'shopId', 'userInfo'])
+			...mapState(['hasLogin', 'shopId', 'userInfo']),
+			enableVipCard(){
+				if(!this.$config.vipCard){
+					return false;
+				}
+				return this.$config.vipCard.enable;
+			},
+			vipCardBg(){
+				if(!this.$config.vipCard){
+					return "";
+				}
+				return this.$config.vipCard.bgImage;
+			}
 		},
 		methods: {
 			...mapMutations(['login', 'logout','changeShopId']),
@@ -356,14 +364,15 @@
 					this.navTo("");
 					return;
 				}
-				saveUserInfo({
+				this.navTo("/pages/user/vip/add");
+				/* saveUserInfo({
 					channel: "free"
 				}, "vip").then(res => {
 					this.loadData();
 					this.$api.msg("开通成功", 1500, true, "success");
 				}, err => {
 					this.$api.msg(err.message)
-				});
+				}); */
 				//this.$refs.vipPopup.open();
 			},
 			//检查会员卡号是否正确,绑定邀请关系
@@ -467,9 +476,7 @@
 	}
 
 	.user-section {
-		height: 520upx;
-		height: 360upx;
-		padding: 100upx 30upx 0;
+		padding: 100upx 30upx 20upx;
 		position: relative;
 
 		.bg {
@@ -533,10 +540,14 @@
 
 		.card-bg {
 			position: absolute;
-			top: 20upx;
+			top: 0upx;
 			right: 0;
-			width: 380upx;
-			height: 260upx;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+		}
+		.relative{
+			position: relative;
 		}
 
 		.b-btn {
@@ -561,7 +572,7 @@
 		.tit {
 			font-size: $font-base + 2upx;
 			color: #f7d680;
-			margin-bottom: 28upx;
+			margin-bottom: 16upx;
 
 			.yticon {
 				color: #f6e5a3;
@@ -582,7 +593,6 @@
 
 	.cover-container {
 		background: $page-color-base;
-		margin-top: -60upx;
 		padding: 0 30upx;
 		position: relative;
 		background: #f5f5f5;
