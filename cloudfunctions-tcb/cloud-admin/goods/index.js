@@ -64,85 +64,9 @@ const list = async (data, context) => {
 		description: 1
 	};
 	let time = new Date().getTime();
-	switch (state) {
-		case "online":
-			//1所有在售
-			conditions["isSold"] = 1;
-			conditions["isCategoryShow"] = 1;
-			break;
-		case "offline":
-			//1所有下架
-			/* conditions["isSold"] = 0; */
-			conditions = cmd.or({
-				shopid,
-				isSold: 0
-			}, {
-				shopid,
-				isCategoryShow: 0
-			});
-			order = ["offlineTime", "desc"];
-			break;
-		case "delete":
-			//已删除，读取已删除表
-			fields["deleteTime"] = 1;
-			fields["deleteOperator"] = 1;
-			goodsCollection2 = goodsDeleteCollection;
-			break;
-		case "tuangou":
-			//团购
-			conditions["tuangou"] = cmd.exists(true);
-			conditions["tuangou.pickup"] = cmd.gt(time);
-			order = ["tuangou.pickup", "asc"];
-			break;
-		case "miaosha":
-			//2秒杀,必须是有效的
-			conditions["miaosha"] = cmd.exists(true);
-			conditions["miaosha.endTime"] = cmd.gt(time);
-			order = ["miaosha.beginTime", "asc"];
-			break;
-		case "miaoshaAdmin":
-			//2秒杀,必须是有效的
-			conditions = cmd.or({
-				shopid,
-				miaosha: cmd.exists(true)
-			}, {
-				shopid,
-				miaoshaBackUp: cmd.exists(true)
-			});
-			//conditions["miaosha"] = cmd.exists(true);
-			order = ["miaosha.beginTime", "desc"];
-			//秒杀备份，用于暂停
-			fields["miaoshaBackUp"] = 1;
-			break;
-		case "exmiaosha":
-			//排除秒杀商品
-			conditions["miaosha"] = cmd.exists(false);
-			conditions["miaoshaBackUp"] = cmd.exists(false);
-			break;
-		case "yuding":
-			//预售
-			conditions["yuding"] = cmd.exists(true);
-			order = ["yuding.endTime", "desc"];
-			break;
-		case "baokuan":
-			//爆款,按销量排序
-			order = ["monthlySale", "desc"];
-			conditions["monthlySale"] = cmd.gt(100)
-			break;
-		case "shouqin":
-			//即将售罄，库存小于10
-			conditions["isSold"] = 1;
-			conditions["stock"] = cmd.lt(10);
-			order = ["stock", "asc"];
-			break;
-		case "recommend":
-			//即将售罄，库存小于10
-			conditions["isSold"] = 1;
-			conditions["isCategoryShow"] = 1;
-			conditions["isRecommend"] = true;
-			break;
-		default:
-			break;
+	getStateCondition(state, shopid, conditions, order, fields);
+	if (state == "delete") {
+		goodsCollection2 = goodsDeleteCollection;
 	}
 	if (key && key.trim().length > 0) {
 		conditions["title"] = new RegExp(key.trim());
@@ -393,11 +317,19 @@ const soldOut = async (data) => {
  * 下架所有商品
  */
 const soldOutAll = async (data) => {
+	const {
+		state,
+		shopid
+	} = data;
+	let conditions = {
+			shopid,
+			isSold: 1
+		},
+		order = [],
+		fields = {};
+	getStateCondition(state, shopid, conditions, order, fields);
 	//修改
-	let res = await goodsCollection.where({
-		shopid: data.shopid,
-		isSold: 1
-	}).update({
+	let res = await goodsCollection.where(conditions).update({
 		isSold: 0,
 		operator: data.operator, //操作者
 		offlineNotice: "管理员手动下架",
@@ -427,11 +359,19 @@ const soldIn = async (data) => {
  * 上架所有商品
  */
 const soldInAll = async (data) => {
+	const {
+		state,
+		shopid
+	} = data;
+	let conditions = {
+			shopid,
+			isSold: 0
+		},
+		order = [],
+		fields = {};
+	getStateCondition(state, shopid, conditions, order, fields);
 	//修改
-	let res = await goodsCollection.where({
-		shopid: data.shopid,
-		isSold: 0,
-	}).update({
+	let res = await goodsCollection.where(conditions).update({
 		isSold: 1,
 		operator: data.operator, //操作者
 		onlineTime: new Date().getTime()
@@ -552,6 +492,90 @@ const getOneGoods = async (conditions, fields) => {
 		return false;
 	}
 	return goods.data[0];
+}
+
+const getStateCondition = (state, shopid, conditions, order, fields) => {
+	let time = new Date().getTime();
+	switch (state) {
+		case "online":
+			//1所有在售
+			conditions["isSold"] = 1;
+			conditions["isCategoryShow"] = 1;
+			break;
+		case "offline":
+			//1所有下架
+			/* conditions["isSold"] = 0; */
+			conditions = cmd.or({
+				shopid,
+				isSold: 0
+			}, {
+				shopid,
+				isCategoryShow: 0
+			});
+			order = ["offlineTime", "desc"];
+			break;
+		case "delete":
+			//已删除，读取已删除表
+			fields["deleteTime"] = 1;
+			fields["deleteOperator"] = 1;
+			//goodsCollection2 = goodsDeleteCollection;
+			break;
+		case "tuangou":
+			//团购
+			conditions["tuangou"] = cmd.exists(true);
+			conditions["tuangou.pickup"] = cmd.gt(time);
+			order = ["tuangou.pickup", "asc"];
+			break;
+		case "miaosha":
+			//2秒杀,必须是有效的
+			conditions["miaosha"] = cmd.exists(true);
+			conditions["miaosha.endTime"] = cmd.gt(time);
+			order = ["miaosha.beginTime", "asc"];
+			break;
+		case "miaoshaAdmin":
+			//2秒杀,必须是有效的
+			conditions = cmd.or({
+				shopid,
+				miaosha: cmd.exists(true)
+			}, {
+				shopid,
+				miaoshaBackUp: cmd.exists(true)
+			});
+			//conditions["miaosha"] = cmd.exists(true);
+			order = ["miaosha.beginTime", "desc"];
+			//秒杀备份，用于暂停
+			fields["miaoshaBackUp"] = 1;
+			break;
+		case "exmiaosha":
+			//排除秒杀商品
+			conditions["miaosha"] = cmd.exists(false);
+			conditions["miaoshaBackUp"] = cmd.exists(false);
+			break;
+		case "yuding":
+			//预售
+			conditions["yuding"] = cmd.exists(true);
+			order = ["yuding.endTime", "desc"];
+			break;
+		case "baokuan":
+			//爆款,按销量排序
+			order = ["monthlySale", "desc"];
+			conditions["monthlySale"] = cmd.gt(100)
+			break;
+		case "shouqin":
+			//即将售罄，库存小于10
+			conditions["isSold"] = 1;
+			conditions["stock"] = cmd.lt(10);
+			order = ["stock", "asc"];
+			break;
+		case "recommend":
+			//即将售罄，库存小于10
+			conditions["isSold"] = 1;
+			conditions["isCategoryShow"] = 1;
+			conditions["isRecommend"] = true;
+			break;
+		default:
+			break;
+	}
 }
 
 module.exports = {
