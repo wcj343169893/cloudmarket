@@ -167,6 +167,8 @@ const modules = {
 				name: "推荐",
 				condition: {
 					shopid,
+					isSold: 1,
+					isCategoryShow: 1,
 					isRecommend: true
 				}
 			},

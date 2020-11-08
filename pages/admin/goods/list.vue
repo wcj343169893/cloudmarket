@@ -78,6 +78,10 @@
 					<view class="attr-box warning" v-if="!item.isCategoryShow">
 						<text>所属分类已下架，市场中不能购买</text>
 					</view>
+					<view class="attr-box warning" v-if="!item.isSold">
+						<text>{{item.offlineNotice}}</text>
+						<text class="m-lr">{{item.offlineTime | dateFormat('MM-dd hh:mm')}}</text>
+					</view>
 				</view>
 			</view>
 			<block v-if="type == 'chooseone'">

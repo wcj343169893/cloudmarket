@@ -15,6 +15,7 @@
     "delivery": "file:../common/delivery",
     "order": "file:../common/order",
     "printers": "file:../common/printers",
+    "push": "file:../common/push",
     "uni-id": "file:../common/uni-id",
     "unipay": "file:../common/unipay"
   }

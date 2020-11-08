@@ -40,8 +40,7 @@ https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.
 ```
 2. uploadFile合法域名
 ```
-https://api.bspapp.com
-https://cos.ap-shanghai.myqcloud.com
+https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com
 ```
 3. 腾讯地图key，在[key管理](https://lbs.qq.com/dev/console/key/manage)，添加新秘钥，启用产品：微信小程序，填写自己的小程序key，启用webServiceApi，其他不用填写，直接保存，然后填写到``/config.json``中
 
@@ -116,6 +115,9 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### 2.0.15
 * 增加商城全局class
 * 增加上下架店铺所有商品
+* 增加超市会员卡，设置/cloudfunctions/common/configs/config.json，配置user.autoSetId:false，/config.js vipCard.enable:true
+* 自提订单增加姓名和手机号
+* 优化店铺文档，商品，订单
 
 #### 2.0.14
 * 增加云函数计算配送距离，不需要可以不调用，

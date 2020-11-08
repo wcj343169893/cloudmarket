@@ -979,9 +979,8 @@
 		color: $font-color-emphasis;
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		background: #FFFFFF;
-		padding: 20rpx 0;
+		padding: 20rpx 30rpx;
 		position: relative;
 
 		.icon-gonggao {

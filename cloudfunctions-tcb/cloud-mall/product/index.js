@@ -5,6 +5,9 @@ const goodsCollection = db.collection("cloud_goods");
 const commentCollection = db.collection('cloud_goods_comments');
 const goodsVisiteCollection = db.collection('cloud_goods_visites');
 const cartCollection = db.collection('cloud_carts');
+const {
+	sendSystemMessage
+} = require('push');
 const models = {
 	//查询商品详情
 	async detail(data) {
@@ -262,6 +265,7 @@ const models = {
 	 */
 	async timer() {
 		let time = new Date().getTime();
+		let updateResult = [];
 		let result = await goodsCollection.where({
 			isSold: 1,
 			saleType: "tuangou",
@@ -269,7 +273,12 @@ const models = {
 			"tuangou.endTime": cmd.lt(time),
 		}).update({
 			isSold: 0,
+			offlineNotice: "过期团购自动下架",
+			offlineTime: time
 		});
+		if (result.updated > 0) {
+			updateResult.push(`团购下架${result.updated}种商品`)
+		}
 		console.log("过期团购自动下架", result);
 		result = await goodsCollection.where({
 			isSold: 1,
@@ -278,8 +287,17 @@ const models = {
 			"yuding.endTime": cmd.lt(time),
 		}).update({
 			isSold: 0,
+			offlineNotice: "过期预定自动下架",
+			offlineTime: time,
 		});
+		if (result.updated > 0) {
+			updateResult.push(`预定下架${result.updated}种商品`)
+		}
 		console.log("过期预定自动下架", result);
+		if (updateResult.length > 0) {
+			//发送管理员推送
+			await sendSystemMessage(updateResult);
+		}
 	}
 }
 /**

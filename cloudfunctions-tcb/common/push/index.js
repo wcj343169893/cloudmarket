@@ -8,6 +8,7 @@ const {
 } = require('configs');
 const uniID = require('uni-id');
 const userCollection = db.collection("uni-id-users");
+const cacheCollection = db.collection("cloud_identity");
 const model = {
 	/**
 	 * 推送新订单给商家的所有接受者,order.shopid
@@ -21,6 +22,14 @@ const model = {
 				data: "新订单提醒"
 			}, )
 		}, order.shopid);
+	},
+	/**
+	 * 发送消息给系统管理员，堆积起来，10分钟以上再推送
+	 * @param {Object} data
+	 */
+	async sendSystemMessage(data) {
+		console.log(data)
+		return true;
 	}
 }
 /**

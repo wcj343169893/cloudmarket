@@ -8,7 +8,7 @@
 				<view v-for="(item, index) in docs.data" :key="index" class="docs b-b" @click="detail(item)">
 					<text class="title">{{ index+1 }}.{{ item.title }}</text>
 					<view class="pagelink" v-if="item.pageLink">
-						<text>{{item.pageLink}}</text>
+						<text>{{item.pageName}}</text><text>({{item.pageLink}})</text>
 					</view>
 					<view class="buttons">
 						<button class="btn danger" @click.stop="del(item._id)">删除</button>
@@ -77,6 +77,9 @@
 				}).then(
 					res => {
 						res.forEach((ele, ind) => {
+							if(ele.type=="mp_share"){
+								ele.pageName = this.pageList[ele.pageLink]
+							}
 							this.dataList[ele.type].data.push(ele);
 						});
 						//this.docs = res;

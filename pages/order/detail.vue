@@ -71,7 +71,7 @@
 					</view>
 				</view>
 			</view>
-			<block v-if="info.deliveryType == 'selfRaising'">
+			<block v-if="info.deliveryType == 'selfRaising' && info.payInfo">
 				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)" v-if="info.deliveryHour">
 					<view class="warning">
 						<text>提货码:</text>
@@ -86,7 +86,7 @@
 					<text class="yticon icon-you"></text>
 				</view>
 			</block>
-			<view class="weui-flex address b-b" v-else-if="info.address">
+			<view class="weui-flex address b-b" v-else-if="info.address && info.address._id">
 				<view><text>收货地址</text></view>
 				<view class="content">
 					<view>
@@ -94,6 +94,15 @@
 						<text class="m-l">{{ info.address.mobile }}</text>
 					</view>
 					<text>{{ info.address.addressName }}</text>
+				</view>
+			</view>
+			<view class="weui-flex address b-b" v-else-if="info.selfRaising && info.selfRaising.name">
+				<view><text>自提信息</text></view>
+				<view class="content">
+					<view>
+						<text>{{ info.selfRaising.name }}</text>
+						<text class="m-l">{{ info.selfRaising.mobile }}</text>
+					</view>
 				</view>
 			</view>
 			<view class="weui-flex">

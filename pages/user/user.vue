@@ -43,11 +43,12 @@
 						<text>去开通</text>
 					</block>
 				</view>
-				<view class="tit relative">
-					<text class="yticon icon-iLinkapp-"></text>
-					<text>会员卡</text>
+				<view class="b-btn tip-no relative" v-else>
+					<text>NO:{{vipFixed(userInfo.id)}}</text>
 				</view>
-				<text class="tip-no relative" v-if="userInfo.id">NO:{{userInfo.id}}</text>
+			</view>
+			<view class="vip-card-box-empty" v-else>
+				
 			</view>
 		</view>
 
@@ -262,21 +263,21 @@
 		// #endif
 		computed: {
 			...mapState(['hasLogin', 'shopId', 'userInfo']),
-			enableVipCard(){
-				if(!this.$config.vipCard){
+			enableVipCard() {
+				if (!this.$config.vipCard) {
 					return false;
 				}
 				return this.$config.vipCard.enable;
 			},
-			vipCardBg(){
-				if(!this.$config.vipCard){
+			vipCardBg() {
+				if (!this.$config.vipCard) {
 					return "";
 				}
 				return this.$config.vipCard.bgImage;
 			}
 		},
 		methods: {
-			...mapMutations(['login', 'logout','changeShopId']),
+			...mapMutations(['login', 'logout', 'changeShopId']),
 			async loadData() {
 				this.isLoaded = true;
 				this.isLoading = true;
@@ -307,7 +308,7 @@
 						this.teamTips = "已加入团队:" + this.userInfo.invite;
 					}
 					getGoodsVisites({
-						shopid:this.shopId
+						shopid: this.shopId
 					}).then(
 						res => {
 							this.hasVisiteGoods = res && res.length > 0;
@@ -364,7 +365,7 @@
 					this.navTo("");
 					return;
 				}
-				this.navTo("/pages/user/vip/add");
+				this.navToItem("/pages/user/vip/add",this.userInfo.member);
 				/* saveUserInfo({
 					channel: "free"
 				}, "vip").then(res => {
@@ -447,14 +448,20 @@
 					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
 				})
 			},
-			navToShopHome(item){
+			navToShopHome(item) {
 				this.changeShopId(item);
 				uni.switchTab({
-					url:`/pages/index/fruit`
+					url: `/pages/index/fruit`
 				})
 			},
-			getUserInfo(){
+			getUserInfo() {
 				this.$store.dispatch('getUserInfo');
+			},
+			/**
+			 * 会员卡号自动补零
+			 */
+			vipFixed(num, n = 9) {
+				return (Array(n).join(0) + num).slice(-n);
 			}
 		}
 	};
@@ -476,7 +483,7 @@
 	}
 
 	.user-section {
-		padding: 100upx 30upx 20upx;
+		padding: 100upx 30upx 0upx;
 		position: relative;
 
 		.bg {
@@ -511,7 +518,8 @@
 			background: no-repeat;
 			border: none;
 			padding: 0;
-			&::after{
+
+			&::after {
 				display: none;
 			}
 		}
@@ -531,7 +539,7 @@
 		display: flex;
 		flex-direction: column;
 		color: #f7d680;
-		height: 240upx;
+		height: 304upx;
 		background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8));
 		border-radius: 16upx 16upx 0 0;
 		overflow: hidden;
@@ -542,11 +550,12 @@
 			position: absolute;
 			top: 0upx;
 			right: 0;
-			width: 100%;
-			height: 100%;
+			width: 690rpx;
+			height: 300rpx;
 			z-index: 0;
 		}
-		.relative{
+
+		.relative {
 			position: relative;
 		}
 
@@ -569,6 +578,12 @@
 			}
 		}
 
+		.tip-no {
+			background: none;
+			color: #f7d680;
+			font-size: $font-base;
+		}
+
 		.tit {
 			font-size: $font-base + 2upx;
 			color: #f7d680;
@@ -589,6 +604,9 @@
 		.m-l {
 			margin-left: 20upx;
 		}
+	}
+	.vip-card-box-empty{
+		height: 30rpx;
 	}
 
 	.cover-container {

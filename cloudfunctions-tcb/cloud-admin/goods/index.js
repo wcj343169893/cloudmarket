@@ -23,36 +23,39 @@ const list = async (data, context) => {
 	//需要动态改变表
 	let goodsCollection2 = goodsCollection;
 	let fields = {
-		"id": 1,
-		"title": 1,
-		"subTitle": 1,
-		"stock": 1,
-		"visite": 1,
+		id: 1,
+		title: 1,
+		subTitle: 1,
+		stock: 1,
+		visite: 1,
 		upc: 1,
-		"src": 1,
-		"shopid": 1,
-		"operator": 1,
-		"imgs": 1, //轮播图
-		"score": 1,
-		"price": 1,
-		"isSold": 1,
-		"default_checked_sku_id": 1, //多规格默认选中
-		"isSold": 1,
+		src: 1,
+		shopid: 1,
+		operator: 1,
+		imgs: 1, //轮播图
+		score: 1,
+		price: 1,
+		isSold: 1,
+		default_checked_sku_id: 1, //多规格默认选中
+		isSold: 1,
 		isCategoryShow: 1,
 		isRecommend: 1,
-		"skuname": 1,
-		"skus": 1,
-		"originPrice": 1,
-		"monthlySale": 1,
-		"categories": 1,
-		"miaosha": 1,
-		"manjian": 1,
-		"modified": 1,
+		offlineNotice: 1,
+		offlineTime: 1,
+		skuname: 1,
+		skus: 1,
+		originPrice: 1,
+		monthlySale: 1,
+		categories: 1,
+		miaosha: 1,
+		manjian: 1,
+		modified: 1,
 		saleType: 1,
 		onlySelfTake: 1,
-		"yuding": 1,
-		"tuangou": 1,
+		yuding: 1,
+		tuangou: 1,
 		banner: 1,
+		manufacture: 1,
 		guarantee_period: 1,
 		storage_condition: 1,
 		net_weight: 1,
@@ -77,6 +80,7 @@ const list = async (data, context) => {
 				shopid,
 				isCategoryShow: 0
 			});
+			order = ["offlineTime", "desc"];
 			break;
 		case "delete":
 			//已删除，读取已删除表
@@ -133,6 +137,8 @@ const list = async (data, context) => {
 			break;
 		case "recommend":
 			//即将售罄，库存小于10
+			conditions["isSold"] = 1;
+			conditions["isCategoryShow"] = 1;
 			conditions["isRecommend"] = true;
 			break;
 		default:
@@ -178,6 +184,12 @@ const save = async (data, context) => {
 			return false;
 		}
 		data["modified"] = time;
+		let sts = ["miaosha", "yuding", "tuangou"];
+		if (data.saleType == "normal") {
+			for (let st of sts) {
+				data[st] = cmd.remove();
+			}
+		}
 		let res = await goodsCollection.doc(_id).update(data);
 		if (res.goodsList == 0) {
 			//更新失败
@@ -372,6 +384,7 @@ const soldOut = async (data) => {
 	let res = await goodsCollection.doc(data._id).update({
 		isSold: 0,
 		operator: data.operator, //操作者
+		offlineNotice: "管理员手动下架",
 		offlineTime: new Date().getTime()
 	});
 	return res;
@@ -387,6 +400,7 @@ const soldOutAll = async (data) => {
 	}).update({
 		isSold: 0,
 		operator: data.operator, //操作者
+		offlineNotice: "管理员手动下架",
 		offlineTime: new Date().getTime()
 	});
 	return res;

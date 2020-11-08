@@ -70,6 +70,16 @@
 							<text>{{ info.deliveryHour.password }}</text>
 						</view>
 					</view>
+					<view class="weui-flex address b-b" v-if="info.selfRaising">
+						<view class=""><text>自提信息</text></view>
+						<view class="content" @click="tel(info.selfRaising.mobile)">
+							<view class="">
+								<text>{{ info.selfRaising.name }}</text>
+								<text class="m-l yticon icon-dianhua-copy"></text>
+								<text>{{ info.selfRaising.mobile }}</text>
+							</view>
+						</view>
+					</view>
 				</block>
 				<view class="weui-flex address b-b" v-else-if="info.address" @click="openMap(info.address)">
 					<view class=""><text>收货地址</text></view>
@@ -456,6 +466,11 @@
 					success() {
 						console.log("打开地图成功")
 					}
+				})
+			},
+			tel(phone) {
+				uni.makePhoneCall({
+					phoneNumber: phone
 				})
 			},
 			navBack() {
