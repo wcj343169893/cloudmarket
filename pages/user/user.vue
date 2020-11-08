@@ -518,6 +518,7 @@
 			background: no-repeat;
 			border: none;
 			padding: 0;
+			text-align: left;
 
 			&::after {
 				display: none;

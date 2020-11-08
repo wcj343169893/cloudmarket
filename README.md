@@ -90,7 +90,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序管理后台
+#### 微信小程序管理后台，审核通过后微信没有通知，请间隔10分钟左右再次扫码
 ![管理后台体验](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/oXpHq0ASLsN6cYLKaTIYG1dlnGAM.jpg)  
 
 #### 微信小程序-万德福超市
