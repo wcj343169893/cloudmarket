@@ -35,6 +35,7 @@ const model = {
 			totalDiscount: 1,
 			freight: 1,
 			state: 1,
+			shop: 1,
 			body: 1, //商品描述，100字以内
 			yuding: 1,
 			lastPayTime: 1
