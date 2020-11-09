@@ -16,25 +16,25 @@ const models = {
 			uid
 		} = data;
 		let fields = {
-			"id": 1,
-			"title": 1,
-			"subTitle": 1,
-			"stock": 1,
-			"visite": 1,
-			"src": 1,
-			"shopid": 1,
-			"imgs": 1, //轮播图
-			"score": 1,
-			"price": 1,
-			"skuname": 1,
-			"skus": 1,
-			"default_checked_sku_id": 1,
-			"originPrice": 1,
-			"monthlySale": 1,
-			"categories": 1,
-			"miaosha": 1,
-			"manjian": 1,
-			"share": 1,
+			id: 1,
+			title: 1,
+			subTitle: 1,
+			stock: 1,
+			visite: 1,
+			src: 1,
+			shopid: 1,
+			imgs: 1, //轮播图
+			score: 1,
+			price: 1,
+			skuname: 1,
+			skus: 1,
+			default_checked_sku_id: 1,
+			originPrice: 1,
+			monthlySale: 1,
+			categories: 1,
+			miaosha: 1,
+			manjian: 1,
+			share: 1,
 			saleType: 1,
 			tuangou: 1,
 			starStatics: 1,
@@ -45,8 +45,8 @@ const models = {
 			storage_condition: 1,
 			net_weight: 1,
 			service_purpose: 1,
-			"description": 1,
-			"yuding": 1
+			description: 1,
+			yuding: 1
 		};
 		let goods = await goodsCollection.where({
 			id: +id

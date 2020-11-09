@@ -10,6 +10,7 @@
 			<text v-if="tips" class="cell-tip">{{ tips }}</text>
 			<text class="cell-more yticon" :class="typeList[navigateType]"></text>
 		</view>
+		<button type="default" v-if="openType!=''" :open-type="openType" class="wxOpen"></button>
 	</view>
 </template>
 
@@ -55,6 +56,10 @@
 				type: String,
 				default: 'cell-hover'
 			},
+			openType: {
+				type: String,
+				default: ''
+			},
 			iconColor: {
 				type: String,
 				default: '#333'
@@ -70,6 +75,8 @@
 
 <style lang="scss" scoped>
 	.cell-content {
+		position: relative;
+
 		.icon .mix-list-cell.b-b:after {
 			left: 90upx;
 		}
@@ -117,6 +124,16 @@
 				text-align: right;
 				line-height: 1.2;
 			}
+		}
+
+		.wxOpen {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+			opacity: 0;
 		}
 	}
 </style>

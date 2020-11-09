@@ -8,6 +8,7 @@
 			<text class="cell-tit clamp">副 标 题</text>
 			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @change="changeField"></mix-list-input>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
 		<view class="skus">
@@ -21,7 +22,6 @@
 				</block>
 			</block>
 		</view>
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="请输入商品条码" @change="changeField"></mix-list-input>
 		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''" :defaultOption="saleType"
 		 @eventClick="changeSaleType"></mix-list-select>
 		<!-- saleType预定设置 -->
@@ -393,7 +393,7 @@
 				uni.setNavigationBarTitle({
 					title: '编辑商品'
 				});
-				this.loadData();
+				this.loadData(true);
 			} else {
 				uni.setNavigationBarTitle({
 					title: '新增商品'
@@ -405,51 +405,51 @@
 			this.loadCategory();
 		},
 		methods: {
-			async loadData() {
+			async loadData(isLoad) {
 				let data = uni.getStorageSync('adminEditGoods');
 				console.log(data)
 				if (data) {
-					for (let index in data) {
-						this[index] = data[index];
-					}
-					if (this.src) {
-						this.srcPreview = this.src;
-					}
-					if (this.imgs) {
-						this.imgsPreview = this.imgs;
-					}
-					if (this.banner) {
-						this.bannerPreview = this.banner;
-					}
-					if (this.skus && this.skus.length > 0) {
-						this.setSpecsType('multiple');
-						this.specsTypeTmp = 'multiple';
-					}
-					if (this.categories.length > 0) {
-						this.categoryName = this.categories[this.categories.length - 1].name;
-					}
-					if (this.yuding && this.yuding.beginTime > 0) {
-						this.saleType = 'yuding';
-					}
-					this.categoryIdTmp = this.categories;
-					//异步查询商品详细
-					/* goodsAdmin('info', {
-						_id: this._id,
-						shopid: this.shopid
-					}).then(res => {
-						this.description = res.description;
-						if (res.description.trim() != '') {
-							//多图
-							this.descriptionImgs = res.description.split(';');
-						}
-					}); */
-					if (this.description.trim() != '') {
-						//多图
-						this.descriptionImgs = this.description.split(';');
-					}
+					this.buildGoodsInfo(data);
 				}
-				//默认单规格信息为主信息
-				this.loadSkuInfo();
+				goodsAdmin('info', {
+					_id: this._id,
+					shopid: this.shopid
+				}).then(res => {
+					this.buildGoodsInfo(res);
+					//默认单规格信息为主信息
+					this.loadSkuInfo();
+				});
+			},
+			async buildGoodsInfo(data) {
+				for (let index in data) {
+					this[index] = data[index];
+				}
+				if (this.src) {
+					this.srcPreview = this.src;
+				}
+				if (this.imgs) {
+					this.imgsPreview = this.imgs;
+				}
+				if (this.banner) {
+					this.bannerPreview = this.banner;
+				}
+				if (this.skus && this.skus.length > 0) {
+					this.setSpecsType('multiple');
+					this.specsTypeTmp = 'multiple';
+				}
+				if (this.categories.length > 0) {
+					this.categoryName = this.categories[this.categories.length - 1].name;
+				}
+				if (this.yuding && this.yuding.beginTime > 0) {
+					this.saleType = 'yuding';
+				}
+				this.categoryIdTmp = this.categories;
+				//异步查询商品详细
+				/*  */
+				if (this.description.trim() != '') {
+					//多图
+					this.descriptionImgs = this.description.split(';');
+				}
 			},
 			async loadCategory() {
 				categoryAdmin('list', {}).then(

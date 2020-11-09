@@ -342,6 +342,10 @@
 						})
 					}
 					this.share = res.share;
+					uni.setStorage({
+						key: "app_share",
+						data: this.share
+					})
 				});
 			},
 			//轮播图切换修改背景色
@@ -527,30 +531,10 @@
 		},
 		// #ifdef MP-WEIXIN
 		onShareAppMessage(res) {
-			if (res.from === 'button') {
-				// 来自页面内分享按钮
-				console.log(res.target);
-			}
-			let query = [];
-			let title = "";
-			if (this.userInfo && this.userInfo.my_invite_code) {
-				query.push('u=' + this.userInfo.my_invite_code);
-			}
-			if (this.shopId) {
-				query.push(`shopid=${this.shopId}`)
-			}
-			if (this.share) {
-				if (this.share.pageLinkQuery) {
-					query.push(this.share.pageLinkQuery);
-				}
-				if (this.share.title) {
-					title = this.share.title;
-				}
-			}
-			return {
-				title: title,
-				path: '/pages/index/fruit?' + query.join('&')
-			};
+			return this.getShareContent('/pages/index/fruit');
+		},
+		onShareTimeline(res) {
+			return this.getShareContent('/pages/index/fruit');
 		},
 		//#endif
 

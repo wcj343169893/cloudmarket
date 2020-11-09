@@ -221,7 +221,6 @@
 				cart: {},
 				cartSumCount: 0,
 				canAddCart: false,
-				share: "", //分享语
 				referer: "",
 				commentCount: 0,
 				commentTagStatics: [],
@@ -280,21 +279,18 @@
 				// 来自页面内分享按钮
 				console.log(res.target);
 			}
-			let query = [`id=${this.id}`, 'referer=share',`shopid=${this.shopId}`];
+			let query = [`id=${this.id}`, 'referer=share'];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}
-			let title = this.title;
-			if (this.userInfo && this.userInfo.my_invite_code) {
-				query.push('u=' + this.userInfo.my_invite_code);
+			return this.getShareContent('/pages/product/product', query);
+		},
+		onShareTimeline(res) {
+			let query = [`id=${this.id}`, 'referer=share'];
+			if (this.default_sku_id) {
+				query.push(`sid=${this.default_sku_id}`)
 			}
-			if (this.share && this.share.title) {
-				title = this.share.title;
-			}
-			return {
-				title: title,
-				path: '/pages/product/product?' + query.join('&')
-			};
+			return this.getShareContent('/pages/product/product', query);
 		},
 		//#endif
 		methods: {
@@ -447,6 +443,13 @@
 					//计算折扣
 					this.amount = this.cartMap[0] > 0 ? this.cartMap[0] : 1;
 					this.getSaleRate();
+				}
+				//分享语
+				this.share={}
+				if (item.share) {
+					this.share.title = item.share
+				} else {
+					this.share.title = item.title
 				}
 				this.loaded = true;
 			},
@@ -1424,16 +1427,20 @@
 			}
 		}
 	}
-	.weui-flex{
+
+	.weui-flex {
 		display: flex;
 	}
-	.flex-column{
+
+	.flex-column {
 		flex-direction: column;
 	}
-	.p-b-btn{
+
+	.p-b-btn {
 		font-size: $font-ssm;
 		align-items: center;
 	}
+
 	.icon-gouwuche {
 		font-size: 30upx;
 		color: $base-color;

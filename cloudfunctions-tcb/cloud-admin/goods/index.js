@@ -54,14 +54,6 @@ const list = async (data, context) => {
 		onlySelfTake: 1,
 		yuding: 1,
 		tuangou: 1,
-		banner: 1,
-		manufacture: 1,
-		guarantee_period: 1,
-		storage_condition: 1,
-		net_weight: 1,
-		service_purpose: 1,
-		deliveryTags: 1,
-		description: 1
 	};
 	let time = new Date().getTime();
 	getStateCondition(state, shopid, conditions, order, fields);

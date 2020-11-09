@@ -737,6 +737,7 @@ const model = {
 			uid: 1,
 			phone: 1,
 			currency: 1,
+			exchangeRate: 1,//兑换人民币的汇率
 			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,

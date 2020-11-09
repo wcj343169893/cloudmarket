@@ -8,10 +8,10 @@
 		<mix-list-input title="手机号" type="number" textAlign="content-right light" field="mobile" :defContent="mobile"
 		 placeholder="请输入手机号" @blur="changeField"></mix-list-input>
 		<mix-list-input title="家庭地址" type="text" textAlign="content-right light" field="address" :defContent="address"
-		 placeholder="请输入家庭地址" :withLocation="!0" @change="changeAddress"></mix-list-input>
+		 placeholder="请输入家庭地址" :withLocation="!0" @blurContent="changeAddress" @change="changeAddress"></mix-list-input>
 
 		<button v-if="!uid" class="fixed-add-btn" @click="save">提交申请</button>
-		<button v-else class="fixed-add-btn" @click="save">修改</button>
+		<button v-else-if="editVipCard" class="fixed-add-btn" @click="save">修改</button>
 	</view>
 </template>
 
@@ -28,6 +28,14 @@
 				mobile: '',
 				address: ''
 			};
+		},
+		computed:{
+			editVipCard() {
+				if (!this.$config.vipCard) {
+					return false;
+				}
+				return this.$config.vipCard.edit;
+			},
 		},
 		onLoad() {
 			this.loadData();
@@ -50,23 +58,39 @@
 					mobile: this.mobile,
 					address: this.address
 				};
-				if (
-					!this.checkFields(data, {
-						name: '真实姓名',
-						idcard: '身份证',
-						mobile: '手机号',
-						address: '地址'
-					})
-				) {
+				let fields = {
+					name: '真实姓名',
+					idcard: '身份证',
+					mobile: '手机号',
+					address: '地址'
+				};
+				if (!this.checkFields(data, fields)) {
 					return false;
 				}
-				this.$submitData(() => {
-					cloudUser('info', 'member', data, true).then(res => {
-						this.$api.success("申请成功")
-						this.navTimeBack();
-					});
-					return true;
-				});
+				let content = [];
+				for (let fi in fields) {
+					content.push([fields[fi], ":", this[fi]].join(""));
+				}
+				//核对信息
+				uni.showModal({
+					title: "请仔细核对信息",
+					content: content.join("\n"),
+					success: (e) => {
+						if (e.confirm) {
+							this.$submitData(() => {
+								cloudUser('info', 'member', data, true).then(res => {
+									this.$api.success("申请成功")
+									this.navTimeBack(()=>{
+										this.$store.dispatch('getUserInfo');
+									});
+								},err=>{
+									this.$finishSubmit();
+								});
+								return true;
+							});
+						}
+					}
+				})
 			}
 		}
 	};

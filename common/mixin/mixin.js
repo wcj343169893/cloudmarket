@@ -7,6 +7,7 @@ export default {
 			isLoading: false, //刷新数据
 			loaded: false, //加载完毕
 			isSubmit: false, //是否正在提交数据
+			share: {}, //分享内容
 			itemDataKey: "navigateToItemData"
 		}
 	},
@@ -60,7 +61,7 @@ export default {
 				if (fn) {
 					fn();
 				}
-			}, 2000);
+			}, 1500);
 		},
 		/**
 		 * 获取上一个页面传过来的数据,对象是最好的，不要来数组
@@ -160,5 +161,40 @@ export default {
 			}
 		},
 		stopPrevent() {},
+		/**
+		 * 获取分享参数
+		 * @param {Object} path
+		 */
+		getShareContent(path, query = []) {
+			let imageUrl, title = "";
+			if (this.userInfo && this.userInfo.my_invite_code) {
+				query.push('u=' + this.userInfo.my_invite_code);
+			}
+			if (this.shopId) {
+				query.push(`shopid=${this.shopId}`)
+			}
+			if (!this.share.title || this.share.title.trim() == "") {
+				//读取首页分享
+				this.share = uni.getStorageSync("app_share");
+			}
+			if (this.share) {
+				if (this.share.pageLinkQuery) {
+					query.push(this.share.pageLinkQuery);
+				}
+				if (this.share.title) {
+					title = this.share.title;
+				}
+				//自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径。支持PNG及JPG。显示图片长宽比是 5:4。
+				if (this.share.imageUrl) {
+					imageUrl = this.share.imageUrl;
+				}
+			}
+			console.log(title)
+			return {
+				title,
+				imageUrl,
+				path: path + "?" + query.join('&')
+			};
+		}
 	},
 }
