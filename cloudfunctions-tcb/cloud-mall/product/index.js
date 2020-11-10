@@ -35,6 +35,8 @@ const models = {
 			miaosha: 1,
 			manjian: 1,
 			share: 1,
+			isSold: 1,
+			isCategoryShow: 1,
 			saleType: 1,
 			tuangou: 1,
 			starStatics: 1,
