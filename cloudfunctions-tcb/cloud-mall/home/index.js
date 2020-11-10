@@ -56,12 +56,12 @@ const models = {
 		}
 		if (shopInfo) {
 			shopid = shopInfo.id;
-			if (shop.pages && shopInfo.pages.home) {
+			if (shopInfo.pages && shopInfo.pages.home) {
 				Object.assign(dataOut.titles, {
-					...shop.pages.home.titles
+					...shopInfo.pages.home.titles
 				})
 				Object.assign(limits, {
-					...shop.pages.home.limits
+					...shopInfo.pages.home.limits
 				})
 			}
 			dataOut["shop"] = shopInfo;
