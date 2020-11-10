@@ -77,6 +77,7 @@ const models = {
 		//如果用户已经有id，则只更新info
 		if (userInfo.id) {
 			return await uniID.updateUser({
+				uid,
 				member: data
 			});
 		}

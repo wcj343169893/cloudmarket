@@ -1,21 +1,22 @@
 <template>
 	<view class="input-container">
-		<view class="mix-list-cell b-b" :class="{ textarea: type == 'textarea' }">
+		<view class="mix-list-cell" :class="[border,type]">
 			<text class="cell-tit clamp" v-if="title && title.length>0">
 				<text v-if="isMust">*</text>
 				{{ title }}
 			</text>
 			<input v-if="type == 'text'" type="text" class="cell-content" :class="[textAlign]" @blur="blurContent" @input="changeContent"
 			 v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'digit'" type="digit" class="cell-content" :class="[textAlign]" @input="changeContent" @blur="blurContent"
-			 v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'number'" type="number" class="cell-content" :class="[textAlign]" @input="changeContent" @blur="blurContent"
-			 v-model="content" :placeholder="placeholder" />
-			<input v-else-if="type == 'idcard'" type="idcard" class="cell-content" :class="[textAlign]" @input="changeContent" @blur="blurContent"
-			 v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'digit'" type="digit" class="cell-content" :class="[textAlign]" @input="changeContent"
+			 @blur="blurContent" v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'number'" type="number" class="cell-content" :class="[textAlign]" @input="changeContent"
+			 @blur="blurContent" v-model="content" :placeholder="placeholder" />
+			<input v-else-if="type == 'idcard'" type="idcard" class="cell-content" :class="[textAlign]" @input="changeContent"
+			 @blur="blurContent" v-model="content" :placeholder="placeholder" />
 			<block v-else-if="type == 'textarea'">
 				<view class="">
-					<textarea maxlength="9999" v-model="content" class="cell-content" :class="[textAlign]" @input="changeContent" :placeholder="placeholder" />
+					<textarea maxlength="9999" v-model="content" class="cell-content" :class="[textAlign]" @input="changeContent"
+					 :placeholder="placeholder" />
 					<view class="desc" v-if="markdown">
 						<text>支持markdown语法，最多输入9999字符</text>
 					</view>
@@ -43,6 +44,10 @@ export default {
 		field: {
 			type: String,
 			default: ''
+		},
+		border: {
+			type: String,
+			default: 'b-b'
 		},
 		type: {
 			type: String,

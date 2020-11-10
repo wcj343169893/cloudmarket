@@ -128,7 +128,9 @@ const models = {
 				const {
 					data
 				} = await adCollection.where(conditions[key]).field(field).limit(limits[key]).orderBy("shopid", "desc").get();
-				dataOut[key] = data;
+				if(data.length > 0){
+					dataOut[key] = data;
+				}
 			}
 		};
 	},

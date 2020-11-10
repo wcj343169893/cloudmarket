@@ -9,6 +9,10 @@ export default {
 				app_user_private: 'APP-隐私政策',
 				mp_share: '小程序分享页面',
 				normal: '普通文档'
+			},
+			pageList: {
+				"/pages/index/fruit": "首页",
+				"/pages/product/product": "产品页",
 			}
 		}
 	}

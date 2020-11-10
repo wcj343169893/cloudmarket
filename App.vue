@@ -508,6 +508,12 @@
 		}
 	}
 
+	.cny {
+		.price:before {
+			content: '￥';
+		}
+	}
+
 	.aud {
 		.price:before {
 			content: 'A$';

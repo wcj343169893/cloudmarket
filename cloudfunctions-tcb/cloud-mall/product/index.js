@@ -5,6 +5,9 @@ const goodsCollection = db.collection("cloud_goods");
 const commentCollection = db.collection('cloud_goods_comments');
 const goodsVisiteCollection = db.collection('cloud_goods_visites');
 const cartCollection = db.collection('cloud_carts');
+const {
+	sendSystemMessage
+} = require('push');
 const models = {
 	//查询商品详情
 	async detail(data) {
@@ -13,25 +16,25 @@ const models = {
 			uid
 		} = data;
 		let fields = {
-			"id": 1,
-			"title": 1,
-			"subTitle": 1,
-			"stock": 1,
-			"visite": 1,
-			"src": 1,
-			"shopid": 1,
-			"imgs": 1, //轮播图
-			"score": 1,
-			"price": 1,
-			"skuname": 1,
-			"skus": 1,
-			"default_checked_sku_id": 1,
-			"originPrice": 1,
-			"monthlySale": 1,
-			"categories": 1,
-			"miaosha": 1,
-			"manjian": 1,
-			"share": 1,
+			id: 1,
+			title: 1,
+			subTitle: 1,
+			stock: 1,
+			visite: 1,
+			src: 1,
+			shopid: 1,
+			imgs: 1, //轮播图
+			score: 1,
+			price: 1,
+			skuname: 1,
+			skus: 1,
+			default_checked_sku_id: 1,
+			originPrice: 1,
+			monthlySale: 1,
+			categories: 1,
+			miaosha: 1,
+			manjian: 1,
+			share: 1,
 			saleType: 1,
 			tuangou: 1,
 			starStatics: 1,
@@ -42,8 +45,8 @@ const models = {
 			storage_condition: 1,
 			net_weight: 1,
 			service_purpose: 1,
-			"description": 1,
-			"yuding": 1
+			description: 1,
+			yuding: 1
 		};
 		let goods = await goodsCollection.where({
 			id: +id
@@ -262,6 +265,7 @@ const models = {
 	 */
 	async timer() {
 		let time = new Date().getTime();
+		let updateResult = [];
 		let result = await goodsCollection.where({
 			isSold: 1,
 			saleType: "tuangou",
@@ -269,7 +273,12 @@ const models = {
 			"tuangou.endTime": cmd.lt(time),
 		}).update({
 			isSold: 0,
+			offlineNotice: "过期团购自动下架",
+			offlineTime: time
 		});
+		if (result.updated > 0) {
+			updateResult.push(`团购下架${result.updated}种商品`)
+		}
 		console.log("过期团购自动下架", result);
 		result = await goodsCollection.where({
 			isSold: 1,
@@ -278,8 +287,17 @@ const models = {
 			"yuding.endTime": cmd.lt(time),
 		}).update({
 			isSold: 0,
+			offlineNotice: "过期预定自动下架",
+			offlineTime: time,
 		});
+		if (result.updated > 0) {
+			updateResult.push(`预定下架${result.updated}种商品`)
+		}
 		console.log("过期预定自动下架", result);
+		if (updateResult.length > 0) {
+			//发送管理员推送
+			await sendSystemMessage(updateResult);
+		}
 	}
 }
 /**

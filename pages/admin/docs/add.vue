@@ -2,7 +2,7 @@
 	<view class="container">
 		<mix-list-select border="b-b" @eventClick="changeTypes" title="类型" :options="types" :defaultOption="type"></mix-list-select>
 		<block v-if="type == 'mp_share'">
-			<mix-list-input :isMust="!0" title="分享页面" :defContent="pageLink" placeholder="请输入分享页面地址" @change="changePageLink"></mix-list-input>
+			<mix-list-select border="b-b" @eventClick="changePageLink" title="分享页面" :options="pageList" :defaultOption="pageLink"></mix-list-select>
 			<mix-list-input title="分享参数" :defContent="pageLinkQuery" placeholder="请输入分享页面默认参数" @change="changePageLinkQuery"></mix-list-input>
 		</block>
 		<mix-list-input title="排序" type="number" :defContent="posid" placeholder="请输入排序" @change="changePosid"></mix-list-input>
@@ -25,7 +25,7 @@
 				type: 'normal',
 				pageLink: '',
 				pageLinkQuery: '',
-				posid: 0,
+				posid: "0",
 				title: '',
 				content: '',
 				submiting: false
@@ -92,7 +92,7 @@
 					pageLinkQuery: this.pageLinkQuery,
 					title: this.title,
 					content: this.content
-				},true).then(
+				}, true).then(
 					res => {
 						this.$api.msg('提交成功', 2000, true, 'success');
 						setTimeout(() => {

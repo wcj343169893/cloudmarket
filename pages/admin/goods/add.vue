@@ -8,6 +8,7 @@
 			<text class="cell-tit clamp">副 标 题</text>
 			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @change="changeField"></mix-list-input>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
 		<view class="skus">
@@ -21,7 +22,6 @@
 				</block>
 			</block>
 		</view>
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="请输入商品条码" @change="changeField"></mix-list-input>
 		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''" :defaultOption="saleType"
 		 @eventClick="changeSaleType"></mix-list-select>
 		<!-- saleType预定设置 -->
@@ -84,8 +84,8 @@
 						<input type="digit" class="cell-tip" v-model="tuangou.price" placeholder="请输入折扣价" />
 					</view>
 					<view class="mix-list-cell b-b">
-						<text class="cell-tit clamp">单位</text>
-						<input type="text" class="cell-tip" v-model="tuangou.unit" placeholder="请输入单位" />
+						<text class="cell-tit clamp">计量单位</text>
+						<input type="text" class="cell-tip" v-model="tuangou.unit" placeholder="例如:斤/盒/块" />
 					</view>
 					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.beginTime')">
 						<text class="cell-tit clamp">*开始团购</text>
@@ -112,6 +112,18 @@
 						<text class="cell-more yticon icon-you"></text>
 					</view>
 
+					<view class="mix-list-cell" @click="uploadBanner">
+						<text class="cell-tit clamp">*横图</text>
+						<view class="cell-tip">尺寸710*350</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
+					<view class="imgs banner">
+						<view class="h-list" v-if="bannerPreview && bannerPreview != ''">
+							<view class="h-list-image">
+								<image :src="bannerPreview" mode="aspectFill"></image>
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
 		</block>
@@ -139,18 +151,6 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="mix-list-cell" @click="uploadBanner">
-			<text class="cell-tit clamp">横图</text>
-			<view class="cell-tip">尺寸710*350</view>
-			<text class="cell-more yticon icon-you"></text>
-		</view>
-		<view class="imgs b-b banner">
-			<view class="h-list" v-if="bannerPreview && bannerPreview != ''">
-				<view class="h-list-image">
-					<image :src="bannerPreview" mode="aspectFill"></image>
-				</view>
-			</view>
-		</view>
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
@@ -168,10 +168,11 @@
 		<view class="skus">
 			<view class="sub-container">
 				<mix-list-input title="净含量" :defContent="net_weight" field="net_weight" placeholder="请输入净含量" @change="changeField"></mix-list-input>
+				<mix-list-input title="生产日期" :defContent="manufacture" field="manufacture" placeholder="请输入生产日期" @change="changeField"></mix-list-input>
 				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期" @change="changeField"></mix-list-input>
 				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition" placeholder="请输入保存条件"
 				 @change="changeField"></mix-list-input>
-				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入保质期" @change="changeField"></mix-list-input>
+				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入服务宗旨" @change="changeField"></mix-list-input>
 				<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField"></mix-list-input>
 				<view class="mix-list-cell b-b">
 					<text class="cell-tit clamp">配送注意事项</text>
@@ -321,14 +322,13 @@
 				description: '',
 				descriptionImgs: [], //图文
 				deliveryTags: [],
-				deliveryTagNames: [
-					{
-						name:"加冰保鲜",
-						value:"iceNeed"
+				deliveryTagNames: [{
+						name: "加冰保鲜",
+						value: "iceNeed"
 					},
 					{
-						name:"独立包装",
-						value:"package"
+						name: "独立包装",
+						value: "package"
 					}
 				],
 				id: false,
@@ -349,6 +349,7 @@
 				storage_condition: '常温',
 				service_purpose: '假一赔十',
 				net_weight: '',
+				manufacture: '',
 				submiting: false,
 				saleType: 'normal',
 				saleTypes: {
@@ -368,7 +369,7 @@
 				let da = {};
 				if (this.skus) {
 					this.skus.map(sku => {
-						da[sku.id] = sku.name?sku.name.replace('&gt;', '-'):"";
+						da[sku.id] = sku.name ? sku.name.replace('&gt;', '-') : "";
 					});
 				}
 				return da;
@@ -392,7 +393,7 @@
 				uni.setNavigationBarTitle({
 					title: '编辑商品'
 				});
-				this.loadData();
+				this.loadData(true);
 			} else {
 				uni.setNavigationBarTitle({
 					title: '新增商品'
@@ -404,51 +405,51 @@
 			this.loadCategory();
 		},
 		methods: {
-			async loadData() {
+			async loadData(isLoad) {
 				let data = uni.getStorageSync('adminEditGoods');
 				console.log(data)
 				if (data) {
-					for (let index in data) {
-						this[index] = data[index];
-					}
-					if (this.src) {
-						this.srcPreview = this.src;
-					}
-					if (this.imgs) {
-						this.imgsPreview = this.imgs;
-					}
-					if (this.banner) {
-						this.bannerPreview = this.banner;
-					}
-					if (this.skus && this.skus.length > 0) {
-						this.setSpecsType('multiple');
-						this.specsTypeTmp = 'multiple';
-					}
-					if (this.categories.length > 0) {
-						this.categoryName = this.categories[this.categories.length - 1].name;
-					}
-					if (this.yuding && this.yuding.beginTime > 0) {
-						this.saleType = 'yuding';
-					}
-					this.categoryIdTmp = this.categories;
-					//异步查询商品详细
-					/* goodsAdmin('info', {
-						_id: this._id,
-						shopid: this.shopid
-					}).then(res => {
-						this.description = res.description;
-						if (res.description.trim() != '') {
-							//多图
-							this.descriptionImgs = res.description.split(';');
-						}
-					}); */
-					if (this.description.trim() != '') {
-						//多图
-						this.descriptionImgs = this.description.split(';');
-					}
+					this.buildGoodsInfo(data);
 				}
-				//默认单规格信息为主信息
-				this.loadSkuInfo();
+				goodsAdmin('info', {
+					_id: this._id,
+					shopid: this.shopid
+				}).then(res => {
+					this.buildGoodsInfo(res);
+					//默认单规格信息为主信息
+					this.loadSkuInfo();
+				});
+			},
+			async buildGoodsInfo(data) {
+				for (let index in data) {
+					this[index] = data[index];
+				}
+				if (this.src) {
+					this.srcPreview = this.src;
+				}
+				if (this.imgs) {
+					this.imgsPreview = this.imgs;
+				}
+				if (this.banner) {
+					this.bannerPreview = this.banner;
+				}
+				if (this.skus && this.skus.length > 0) {
+					this.setSpecsType('multiple');
+					this.specsTypeTmp = 'multiple';
+				}
+				if (this.categories.length > 0) {
+					this.categoryName = this.categories[this.categories.length - 1].name;
+				}
+				if (this.yuding && this.yuding.beginTime > 0) {
+					this.saleType = 'yuding';
+				}
+				this.categoryIdTmp = this.categories;
+				//异步查询商品详细
+				/*  */
+				if (this.description.trim() != '') {
+					//多图
+					this.descriptionImgs = this.description.split(';');
+				}
 			},
 			async loadCategory() {
 				categoryAdmin('list', {}).then(
@@ -458,7 +459,7 @@
 							if (!ele.children || ele.children.length == 0) {
 								ele.children = [{
 									id: ele.id,
-									isShow:ele.isShow,
+									isShow: ele.isShow,
 									name: ele.name
 								}];
 							}
@@ -522,7 +523,7 @@
 				this.categoryIdTmp.push({
 					id: cates.id,
 					pid: 0,
-					isShow:cates.isShow,
+					isShow: cates.isShow,
 					name: cates.name
 				});
 				cates.children.map(child => {
@@ -723,6 +724,7 @@
 					storage_condition: this.storage_condition,
 					service_purpose: this.service_purpose,
 					net_weight: this.net_weight,
+					manufacture: this.manufacture,
 					saleType: this.saleType,
 					onlySelfTake: this.onlySelfTake, //是否仅支持自提
 					deliveryTags: this.deliveryTags

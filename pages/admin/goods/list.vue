@@ -78,6 +78,10 @@
 					<view class="attr-box warning" v-if="!item.isCategoryShow">
 						<text>所属分类已下架，市场中不能购买</text>
 					</view>
+					<view class="attr-box warning" v-if="!item.isSold">
+						<text>{{item.offlineNotice}}</text>
+						<text class="m-lr">{{item.offlineTime | dateFormat('MM-dd hh:mm')}}</text>
+					</view>
 				</view>
 			</view>
 			<block v-if="type == 'chooseone'">
@@ -112,6 +116,7 @@
 				<button class="action-btn" @click.stop="copy(item,index)">复制</button>
 			</view>
 		</view>
+		<uni-fab :content="fab.content" @trigger="fabTrigger" horizontal="right"></uni-fab>
 		<uni-load-more :status="loadingType"></uni-load-more>
 		<view class="fixed-area" v-if="type == 'choosemany'">
 			<text>已选择{{selectLength}}件</text>
@@ -143,7 +148,19 @@
 				selectLength: 0,
 				selectedIds: [],
 				loadingType: 'more',
-				goodsList: []
+				goodsList: [],
+				fab: {
+					pattern: {},
+					content: [{
+							"iconPath": "/static/upload01.png",
+							text: "上架所有"
+						},
+						{
+							"iconPath": "/static/download01.png",
+							text: "下架所有"
+						}
+					]
+				}
 			};
 		},
 		onLoad(options) {
@@ -159,7 +176,7 @@
 		methods: {
 			loadSelectedIds() {
 				this.selectedIds = uni.getStorageSync("selectedIds");
-				if(this.selectedIds){
+				if (this.selectedIds) {
 					this.selectLength = this.selectedIds.length;
 				}
 			},
@@ -417,6 +434,30 @@
 						delta: 1
 					});
 				}, 100);
+			},
+			fabTrigger({index,item}) {
+				console.log(index,item)
+				let actions=["soldInAll","soldOutAll"];
+				uni.showModal({
+					content: `是否确定${item.text}？`,
+					success: res => {
+						if (res.confirm) {
+							goodsAdmin(actions[index], {
+								state:this.state
+							}).then(
+								res => {
+									this.$api.success('操作除成功');
+									setTimeout(() => {
+										this.refreshList();
+									}, 1500);
+								},
+								err => {
+									this.$api.msg('操作失败');
+								}
+							);
+						}
+					}
+				});
 			}
 		}
 	};
@@ -427,6 +468,10 @@
 	.content {
 		background: $page-color-base;
 		height: 100%;
+	}
+
+	.container {
+		padding-bottom: 120rpx;
 	}
 
 	.order-item {
@@ -592,6 +637,7 @@
 		.action-btn {
 			width: 200rpx;
 			border-radius: 10rpx;
+
 			&:after {
 				border-radius: 10px;
 			}

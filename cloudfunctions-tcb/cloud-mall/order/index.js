@@ -82,6 +82,7 @@ const model = {
 			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
+			selfRaising: 1,
 			shop: 1,
 			yuding: 1,
 			created: 1,
@@ -213,6 +214,7 @@ const model = {
 			delivery: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
+			selfRaising: 1,
 			modified: 1,
 			makesureTime: 1,
 			payInfo: 1,
@@ -617,6 +619,9 @@ const model = {
 	 * 预结算
 	 */
 	async settlement(event, context) {
+		let {
+			deliveryType
+		} = event;
 		let beginTime = new Date().getTime();
 		//查询购物车选中数据
 		let shopid = parseInt(event.id);
@@ -685,6 +690,9 @@ const model = {
 			event.message = "结算商品不存在";
 			return false;
 		}
+		if (!deliveryType) {
+			deliveryType = "deliveryHome";
+		}
 		let data = {
 			"shopid": shopid,
 			"uid": uid,
@@ -692,11 +700,15 @@ const model = {
 			"totalMoney": 0,
 			"stockNotEnough": [],
 			"totalDiscount": 0,
-			"deliveryType": event.deliveryType ? event.deliveryType : "deliveryHome", //1配送，2自提
+			"deliveryType": deliveryType, //1配送，2自提
 			//"freight": event.freight ? +event.freight : 0, //运费
 			"juli": event.juli ? +event.juli : 0, //用户与商家之间的距离，由地图接口计算得来
 			"address": {},
 			"goods": []
+		}
+		//自提姓名和电话
+		if (deliveryType == "selfRaising" && event.selfRaising) {
+			data["selfRaising"] = event.selfRaising;
 		}
 		//查询默认收货地址,结算的时候，前端传addressid
 		let addressCondition = {
@@ -705,13 +717,16 @@ const model = {
 		if (addressid) {
 			addressCondition["_id"] = addressid;
 		}
-		let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
-		if (address.data.length > 0) {
-			data["address"] = address.data[0];
-		} else if (type == "submit" && event.deliveryType == "deliveryHome") {
-			//配送订单，收货地址不存在
-			event.message = "收货地址不存在";
-			return false;
+		//只有配送才需要收货地址
+		if (deliveryType == "deliveryHome") {
+			let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
+			if (address.data.length > 0) {
+				data["address"] = address.data[0];
+			} else if (type == "submit") {
+				//配送订单，收货地址不存在
+				event.message = "收货地址不存在";
+				return false;
+			}
 		}
 		//查询店铺信息
 		let shopData = await this.getShopInfoById(shopid, {
@@ -722,7 +737,8 @@ const model = {
 			uid: 1,
 			phone: 1,
 			currency: 1,
-			inviteCode:1,
+			exchangeRate: 1,//兑换人民币的汇率
+			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,
 			delivery: 1,
@@ -779,7 +795,7 @@ const model = {
 			//处理选中数量
 			goods.data.map(ele => {
 				//商品只能自提
-				if (ele.onlySelfTake) {
+				if (ele.onlySelfTake == 1) {
 					onlySelfTake = true;
 				}
 				if (ele.skus && ele.skus.length > 0) {
@@ -924,6 +940,12 @@ const model = {
 		} else {
 			//结算商品不存在
 			event.message = "商品不存在";
+			console.log({
+				shopid: shopid,
+				isCategoryShow: 1,
+				isSold: 1,
+				id: cmd.in(ids)
+			})
 			return false;
 		}
 		//格式化数字
@@ -1020,7 +1042,7 @@ const model = {
 				//未支付
 				data.yuding.state = 0;
 			}
-			data["body"] = body.join(",").substr(0,30);
+			data["body"] = body.join(",").substr(0, 30);
 			//邀请信息,只允许2级关系
 			let {
 				inviter_uid,
@@ -1030,7 +1052,7 @@ const model = {
 			//用户邀请列表
 			data["inviter_uid"] = "";
 			data["userInfo"] = {
-				id:context.userInfo.id,
+				id: context.userInfo.id,
 				uid,
 				avatar,
 				nickname

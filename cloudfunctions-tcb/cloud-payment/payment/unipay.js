@@ -30,12 +30,16 @@ const models = {
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		// 支付结果通知地址,经过测试，http地址也能作为通知地址
 		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module);
+		let totalFee = parseInt(order.totalMoney * 100);
+		if (order.shop && order.shop.currency != "cny" && order.shop.exchangeRate && order.shop.exchangeRate != 1) {
+			totalFee = parseInt(order.totalMoney * order.shop.exchangeRate * 100);
+		}
 		return await uniPayIns.getOrderInfo({
 			openid: openid, //支付宝小程序、微信小程序必填
 			subject: order.body.substr(0, 20), // 微信支付时不可填写此项
 			body: order.body.substr(0, 30),
 			outTradeNo: order.outTradeNo, //订单号
-			totalFee: parseInt(order.totalMoney * 100), // 金额，单位分
+			totalFee, // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址
 		});
 	},

@@ -36,6 +36,8 @@
 		<mix-list-cell v-if="isPrint" title="打印终端" :tips="printersName" @eventClick="navTo('/pages/admin/set/printer/list')"></mix-list-cell>
 		<mix-list-cell title="页面配置" @eventClick="navTo('/pages/admin/set/pages')" tips="首页"></mix-list-cell>
 		<mix-list-select border="b-b" @eventClick="changeCurrency" title="货币" :options="currencys" :defaultOption="currency"></mix-list-select>
+		<mix-list-input v-if="currency!='cny'" title="兑人民币汇率" :defContent="exchangeRate" field="exchangeRate" placeholder="请输入兑人民币汇率"
+		 @blur="changeExchangeRate"></mix-list-input>
 		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
 	</view>
 </template>
@@ -59,9 +61,10 @@
 				goodsCommentTags: [],
 				printers: [],
 				printersName: "",
-				currency: "zh",
+				exchangeRate: 1,
+				currency: "cny",
 				currencys: {
-					zh: "￥人民币",
+					cny: "￥人民币",
 					aud: "A$澳币",
 					usd: "$美金",
 					cad: "C$加拿大元",
@@ -139,6 +142,17 @@
 					})
 				}
 			},
+			changeExchangeRate(e) {
+				if (e != this.exchangeRate) {
+					if (this.currency == "cny") {
+						e = 1;
+					}
+					this.exchangeRate = +e;
+					this.save({
+						exchangeRate: this.exchangeRate,
+					})
+				}
+			},
 			/**
 			 * 切换店铺货币
 			 * @param {Object} e
@@ -146,7 +160,11 @@
 			changeCurrency(e) {
 				if (e != this.currency) {
 					this.currency = e;
+					if (this.currency == "cny") {
+						this.exchangeRate = 1;
+					}
 					this.save({
+						exchangeRate: this.exchangeRate,
 						currency: this.currency
 					});
 				}

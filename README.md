@@ -40,8 +40,7 @@ https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.
 ```
 2. uploadFile合法域名
 ```
-https://api.bspapp.com
-https://cos.ap-shanghai.myqcloud.com
+https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com
 ```
 3. 腾讯地图key，在[key管理](https://lbs.qq.com/dev/console/key/manage)，添加新秘钥，启用产品：微信小程序，填写自己的小程序key，启用webServiceApi，其他不用填写，直接保存，然后填写到``/config.json``中
 
@@ -91,7 +90,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序管理后台
+#### 微信小程序管理后台，审核通过后微信没有通知，请间隔10分钟左右再次扫码或者联系群主
 ![管理后台体验](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/oXpHq0ASLsN6cYLKaTIYG1dlnGAM.jpg)  
 
 #### 微信小程序-万德福超市
@@ -113,9 +112,15 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 * 商家pc后台
 * 供应商报价
 
+#### 2.0.16
+* 优化会员卡，小程序分享
+
 #### 2.0.15
 * 增加商城全局class
 * 增加上下架店铺所有商品
+* 增加超市会员卡，设置/cloudfunctions/common/configs/config.json，配置user.autoSetId:false，/config.js vipCard.enable:true
+* 自提订单增加姓名和手机号
+* 优化店铺文档，商品，订单
 
 #### 2.0.14
 * 增加云函数计算配送距离，不需要可以不调用，

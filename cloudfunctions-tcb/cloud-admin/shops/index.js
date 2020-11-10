@@ -167,6 +167,8 @@ const modules = {
 				name: "推荐",
 				condition: {
 					shopid,
+					isSold: 1,
+					isCategoryShow: 1,
 					isRecommend: true
 				}
 			},
@@ -181,7 +183,7 @@ const modules = {
 				})
 			},
 			miaosha: {
-				name: "正在秒杀",
+				name: "秒杀",
 				condition: {
 					shopid,
 					miaosha: cmd.exists(true),

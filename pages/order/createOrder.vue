@@ -55,7 +55,11 @@
 						<text class="yticon icon-you"></text>
 					</view>
 				</view>
-				<mix-list-cell title="预约自提时间" border="" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
+				<mix-list-cell title="预约自提时间" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
+				<mix-list-input title="姓名" textAlign="content-right light" field="selfRaising.name" :defContent="selfRaising.name"
+				 placeholder="请输入姓名" @blur="changeField"></mix-list-input>
+				<mix-list-input title="手机号" type="number" border="" textAlign="content-right light" field="selfRaising.mobile"
+				 :defContent="selfRaising.mobile" placeholder="请输入手机号" @blur="changeField"></mix-list-input>
 			</block>
 		</view>
 		<view class="goods-section">
@@ -259,6 +263,10 @@
 				shop: {},
 				juli: 0,
 				zitiJuli: 0,
+				selfRaising: {
+					name: "",
+					mobile: "",
+				},
 				deliveryType: "deliveryHome", //配送类型，1配送deliveryHome，2自提selfRaising
 				deliveryTypes: ["deliveryHome"], //店铺支持的配送类型，1配送，2自提，默认支持配送
 				deliveryDays: [], //天列表
@@ -372,6 +380,13 @@
 				if (!this.addressData || !this.addressData.latitude) {
 					console.log("没有收货地址")
 					return false;
+				}
+				//默认填写收货地址的姓名和电话
+				if (this.addressData.name && !this.selfRaising.name) {
+					this.selfRaising.name = this.addressData.name;
+				}
+				if (this.addressData.mobile && !this.selfRaising.mobile) {
+					this.selfRaising.mobile = this.addressData.mobile;
 				}
 				//计算2点的距离
 				let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' + this.location
@@ -507,6 +522,10 @@
 					this.$api.msg('请填写收货地址');
 					return;
 				}
+				if (this.deliveryType == "selfRaising" && (!this.selfRaising.name || !this.selfRaising.mobile)) {
+					this.$api.msg('请填写自提姓名和手机号');
+					return;
+				}
 				if (this.isSubmit) {
 					return;
 				}
@@ -522,6 +541,7 @@
 					freight: this.deliveryType == "deliveryHome" ? this.freight : 0, //本机计算运费，如果交给服务器，还需要再去计算2点的距离,但是本地计算不靠谱
 					deliveryHour: this.deliveryHour,
 					addressid: this.addressData._id,
+					selfRaising: this.selfRaising,
 					...this.ids
 				}, true).then(
 					res => {
@@ -602,7 +622,7 @@
 <style lang="scss">
 	page {
 		background: $page-color-base;
-		padding-bottom: 100upx;
+		padding-bottom: 140upx;
 	}
 
 	.address-section {
