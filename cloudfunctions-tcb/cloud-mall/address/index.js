@@ -25,7 +25,7 @@ const createNew = async (data) => {
  * @param {Object} data
  */
 const deleteAll = async (data) => {
-	const {
+	let {
 		ids,
 		uid
 	} = data;

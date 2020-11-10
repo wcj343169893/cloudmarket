@@ -2345,67 +2345,7 @@
 			},
 			"perCapita": 30,
 			"phone": "18883380303",
-			"printers": [{
-					"clientId": "1053604898",
-					"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
-					"enable": false,
-					"machine": "332332432",
-					"module": "yilianyun",
-					"msign": "432434",
-					"name": "易联云k4",
-					"online": false,
-					"operator": "9ffb2a485f38964200999b1f07cb7b80",
-					"shopid": 123457
-				},
-				{
-					"clientId": "1053604898",
-					"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
-					"enable": false,
-					"machine": "444444",
-					"module": "yilianyun",
-					"msign": "33333",
-					"name": "易联云k4",
-					"online": false,
-					"operator": "9ffb2a485f38964200999b1f07cb7b80",
-					"shopid": 123457
-				},
-				{
-					"clientId": "1053604898",
-					"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
-					"enable": false,
-					"machine": "4004648355",
-					"module": "yilianyun",
-					"msign": "189541803678",
-					"name": "易联云k4",
-					"online": true,
-					"operator": "9ffb2a485f38964200999b1f07cb7b80",
-					"shopid": 123457
-				},
-				{
-					"clientId": "183740601@qq.com",
-					"clientSecret": "UeCQX3s5AXAbhark",
-					"enable": false,
-					"machine": "217513770",
-					"module": "feieyun",
-					"msign": "11111111",
-					"name": "飞蛾云",
-					"online": true,
-					"operator": "9ffb2a485f38964200999b1f07cb7b80",
-					"shopid": 123457
-				},
-				{
-					"clientId": "183740601@qq.com",
-					"clientSecret": "UeCQX3s5AXAbhark",
-					"enable": false,
-					"machine": "217513770",
-					"module": "feieyun",
-					"msign": "23q95m8c",
-					"name": "飞蛾云",
-					"online": true,
-					"operator": "9ffb2a485f38964200999b1f07cb7b80",
-					"shopid": 123457
-				}
-			],
+			"printers": [],
 			"score": 4.8,
 			"searchGoodsKeywords": [
 				"车厘子",
