@@ -8,7 +8,7 @@
 		</view>
 		<mix-list-input title="名称" :defContent="name" placeholder="请输入名称" @blur="changeName"></mix-list-input>
 		<mix-list-cell title="地址" navigateType="address" :tips="address" @eventClick="changeAddress()"></mix-list-cell>
-		<mix-list-input title="电话" :defContent="phone" placeholder="请输入电话" @blur="changePhone"></mix-list-input>
+		<mix-list-input title="电话" type="number" :defContent="phone" placeholder="请输入电话" @blur="changePhone"></mix-list-input>
 		<mix-list-input title="公告" :defContent="notice" placeholder="请输入公告" @blur="changeNotice"></mix-list-input>
 		<mix-list-input title="营业时间" :defContent="serviceTime" placeholder="请输入营业时间" @blur="changeServiceTime"></mix-list-input>
 		<view class="mix-list-cell b-b">
@@ -26,6 +26,13 @@
 				</checkbox-group>
 			</view>
 		</view>
+		<mix-list-input title="支付倒计时" type="digit" :defContent="lastPayTimeMinute" field="lastPayTimeMinute" placeholder="请输入倒计时"
+		 @blur="changeFieldNumber">
+			<text class="moreText">分钟</text></mix-list-input>
+		<mix-list-input title="预定支付倒计时" type="digit" :defContent="yudingLastPayTimeMinute" field="yudingLastPayTimeMinute"
+		 placeholder="请输入倒计时" @blur="changeFieldNumber">
+			<text class="moreText">分钟</text>
+		</mix-list-input>
 		<mix-list-cell title="配送到家" :tips="delivery.minPrice+'元起送'" @eventClick="navTo('/pages/admin/set/delivery')" v-if="deliveryTypes.indexOf('deliveryHome') != -1"></mix-list-cell>
 		<view class="mix-list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">是否开启打印机</text>
@@ -39,6 +46,7 @@
 		<mix-list-input v-if="currency!='cny'" title="兑人民币汇率" :defContent="exchangeRate" field="exchangeRate" placeholder="请输入兑人民币汇率"
 		 @blur="changeExchangeRate"></mix-list-input>
 		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
+
 	</view>
 </template>
 <script>
@@ -62,6 +70,8 @@
 				printers: [],
 				printersName: "",
 				exchangeRate: 1,
+				lastPayTimeMinute: 5,
+				yudingLastPayTimeMinute: 30,
 				currency: "cny",
 				currencys: {
 					cny: "￥人民币",
@@ -139,6 +149,14 @@
 					this.serviceTime = e;
 					this.save({
 						serviceTime: e
+					})
+				}
+			},
+			changeFieldNumber(e, field) {
+				if (e != this[field]) {
+					this[field] = +e;
+					this.save({
+						[field]: this[field],
 					})
 				}
 			},
@@ -326,6 +344,12 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 10rpx;
+	}
+
+	.moreText {
+		font-size: $font-sm + 2upx;
+		color: $font-color-light;
+		margin-left: 4rpx;
 	}
 
 	.sub-menu {}

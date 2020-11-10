@@ -18,11 +18,7 @@
 					</button>
 					<!-- #endif -->
 					<!-- #ifndef MP-WEIXIN -->
-					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
-						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
-					</view>
-					<view class="username" v-else>
+					<view class="username" @click="navTo('/pages/userinfo/userinfo')">
 						<text>{{ userInfo.nickname }}</text>
 						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
 					</view>

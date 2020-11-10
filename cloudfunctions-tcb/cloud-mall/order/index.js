@@ -737,19 +737,24 @@ const model = {
 			uid: 1,
 			phone: 1,
 			currency: 1,
-			exchangeRate: 1,//兑换人民币的汇率
+			exchangeRate: 1, //兑换人民币的汇率
 			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,
 			delivery: 1,
 			deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
-			deliveryTypes: 1
+			deliveryTypes: 1,
+			lastPayTimeMinute: 1,
+			yudingLastPayTimeMinute: 1,
 		});
 		if (!shopData) {
 			event.message = "店铺不存在";
 			return false;
 		}
 		data["shop"] = shopData;
+		if (shopData.lastPayTimeMinute && shopData.lastPayTimeMinute > 3) {
+			lastPayTimeMinute = shopData.lastPayTimeMinute;
+		}
 		let ids = [];
 		let cartMap = {};
 		//减少秒杀库存成功
@@ -866,6 +871,9 @@ const model = {
 					data.goods.push(ele);
 					data.cartCount += ele.amount;
 					lastPayTimeMinute = 30;
+					if (shopData.yudingLastPayTimeMinute && shopData.yudingLastPayTimeMinute > 10) {
+						lastPayTimeMinute = shopData.yudingLastPayTimeMinute;
+					}
 				} else {
 					//普通购买
 					if (ele.miaosha) {

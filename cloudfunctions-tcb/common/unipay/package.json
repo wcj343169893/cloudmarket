@@ -1,6 +1,6 @@
 {
   "name": "unipay",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "unipay for uniCloud",
   "main": "index.js",
   "homepage": "https://uniapp.dcloud.io/uniCloud/unipay",
