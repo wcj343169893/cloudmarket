@@ -57,7 +57,7 @@
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">{{ userInfo.coupons }}</text>
+					<text class="num">{{ +userInfo.coupons }}</text>
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
