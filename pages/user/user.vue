@@ -57,7 +57,8 @@
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">{{ +userInfo.coupons }}</text>
+					<text class="num" v-if="userInfo.coupons">{{ userInfo.coupons }}</text>
+					<text class="num" v-else>0</text>
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
