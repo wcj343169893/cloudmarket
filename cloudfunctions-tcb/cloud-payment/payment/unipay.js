@@ -68,7 +68,7 @@ const models = {
 		console.log(order)
 		delete order.payInfo;
 		delete order.uid;
-		let config = getPaymentConfig(payInfo.platform, payInfo.type);
+		let config = getPaymentConfig(payInfo.platform, payInfo.type, true);
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		let payName = payInfo.typeName || payInfo.name;
 		try {

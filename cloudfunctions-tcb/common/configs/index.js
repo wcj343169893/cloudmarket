@@ -24,13 +24,13 @@ const model = {
 	/**
 	 * 返回支付配置
 	 */
-	getPaymentConfig(platform, provider) {
+	getPaymentConfig(platform, provider, isRefund) {
 		if (!provider) {
 			return config[platform]["payment"];
 		}
 		let res = config[platform]["payment"][provider];
 		if (provider == "wxpay") {
-			if (res.pfx != '') {
+			if (res.pfx != '' && isRefund) {
 				res.pfx = fs.readFileSync(__dirname + '/cert/' + res.pfx);
 			} else {
 				delete res.pfx;
