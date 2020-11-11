@@ -80,9 +80,12 @@
 							this.$submitData(() => {
 								cloudUser('info', 'member', data, true).then(res => {
 									this.$api.success("申请成功")
-									this.navTimeBack(()=>{
+									setTimeout(()=>{
 										this.$store.dispatch('getUserInfo');
-									});
+										uni.switchTab({
+											url:"/pages/user/user"
+										})
+									},1500)
 								},err=>{
 									this.$finishSubmit();
 								});
