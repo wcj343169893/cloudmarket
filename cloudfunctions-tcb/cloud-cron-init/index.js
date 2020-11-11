@@ -1,16 +1,33 @@
 'use strict';
 const db = uniCloud.database();
-const goodsDaySalesCollection =  db.collection("cloud_goods_day_sales");
-const goodsShopDaySalesCollection =  db.collection("cloud_goods_shop_day_sales");
+const cmd = db.command;
+const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
+const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
 /**
  * 每日定时自动创建默认数据
  */
 exports.main = async (event, context) => {
+	await genGoodsDaySalesCollection();
+	await genGoodsShopDaySalesCollection();
+	return "success"
+};
+
+const genGoodsDaySalesCollection = async (isReplace) => {
+	if (isReplace) {
+		await goodsDaySalesCollection.where({
+			_id: cmd.exists(true)
+		}).remove()
+	}
 	//查询最后一条的时间，然后每次增加5条
 	let sales = await goodsDaySalesCollection.field({
 		day: 1
 	}).orderBy("day", "desc").limit(1).get();
-	let lastDay = sales.data[0].day;
+	let lastDay;
+	if (sales.data.length == 0) {
+		lastDay = "20201101";
+	} else {
+		lastDay = sales.data[0].day;
+	}
 	console.log(lastDay);
 	let dayTime;
 	for (let i = 1; i < 11; i++) {
@@ -22,15 +39,37 @@ exports.main = async (event, context) => {
 			goods: {}
 		});
 		console.log("saleRes", saleRes);
+	}
+}
+const genGoodsShopDaySalesCollection = async (isReplace) => {
+	if (isReplace) {
+		await goodsShopDaySalesCollection.where({
+			_id: cmd.exists(true)
+		}).remove()
+	}
+	//查询最后一条的时间，然后每次增加5条
+	let sales = await goodsShopDaySalesCollection.field({
+		day: 1
+	}).orderBy("day", "desc").limit(1).get();
+	let lastDay;
+	if (sales.data.length == 0) {
+		lastDay = "20201101";
+	} else {
+		lastDay = sales.data[0].day;
+	}
+	console.log(lastDay);
+	let dayTime;
+	for (let i = 1; i < 11; i++) {
+		dayTime = getDateString(lastDay, i);
+		console.log(dayTime);
 		//店铺每日销量
-		saleRes = await goodsShopDaySalesCollection.add({
+		let saleRes = await goodsShopDaySalesCollection.add({
 			day: dayTime,
 			shops: {}
 		});
 		console.log("saleRes", saleRes);
 	}
-	return "success"
-};
+}
 
 
 /**
