@@ -379,14 +379,10 @@
 			checkAddress() {
 				if (!this.addressData || !this.addressData.latitude) {
 					console.log("没有收货地址")
+					if(this.deliveryType=="selfRaising"){
+						this.getFreight();
+					}
 					return false;
-				}
-				//默认填写收货地址的姓名和电话
-				if (this.addressData.name && !this.selfRaising.name) {
-					this.selfRaising.name = this.addressData.name;
-				}
-				if (this.addressData.mobile && !this.selfRaising.mobile) {
-					this.selfRaising.mobile = this.addressData.mobile;
 				}
 				//计算2点的距离
 				let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' + this.location
@@ -499,11 +495,25 @@
 					deliveryType: this.deliveryType,
 					juli: this.juli,
 					totalMoney: this.totalMoney,
+					selfRaising: this.selfRaising,
 					shopid: this.shopId
 				}).then(res => {
 					console.log("getFreight", res)
 					this.freight = res.freight;
 					this.freightTitle = res.freightTitle;
+
+					if (res.selfRaising) {
+						this.selfRaising = res.selfRaising;
+					}
+					if(this.deliveryType=="selfRaising"){
+						//默认填写收货地址的姓名和电话
+						if (this.addressData.name && !this.selfRaising.name) {
+							this.selfRaising.name = this.addressData.name;
+						}
+						if (this.addressData.mobile && !this.selfRaising.mobile) {
+							this.selfRaising.mobile = this.addressData.mobile;
+						}
+					}
 				});
 			},
 			//显示优惠券面板

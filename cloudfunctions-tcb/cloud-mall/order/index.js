@@ -707,8 +707,13 @@ const model = {
 			"goods": []
 		}
 		//自提姓名和电话
-		if (deliveryType == "selfRaising" && event.selfRaising) {
-			data["selfRaising"] = event.selfRaising;
+		if (deliveryType == "selfRaising") {
+			if (event.selfRaising) {
+				data["selfRaising"] = event.selfRaising;
+			} else if (type == "submit" && (!event.selfRaising || event.selfRaising.name == "")) {
+				event.message = "自提信息不存在";
+				return false;
+			}
 		}
 		//查询默认收货地址,结算的时候，前端传addressid
 		let addressCondition = {
@@ -737,19 +742,24 @@ const model = {
 			uid: 1,
 			phone: 1,
 			currency: 1,
-			exchangeRate: 1,//兑换人民币的汇率
+			exchangeRate: 1, //兑换人民币的汇率
 			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,
 			delivery: 1,
 			deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
-			deliveryTypes: 1
+			deliveryTypes: 1,
+			lastPayTimeMinute: 1,
+			yudingLastPayTimeMinute: 1,
 		});
 		if (!shopData) {
 			event.message = "店铺不存在";
 			return false;
 		}
 		data["shop"] = shopData;
+		if (shopData.lastPayTimeMinute && shopData.lastPayTimeMinute > 3) {
+			lastPayTimeMinute = shopData.lastPayTimeMinute;
+		}
 		let ids = [];
 		let cartMap = {};
 		//减少秒杀库存成功
@@ -866,6 +876,9 @@ const model = {
 					data.goods.push(ele);
 					data.cartCount += ele.amount;
 					lastPayTimeMinute = 30;
+					if (shopData.yudingLastPayTimeMinute && shopData.yudingLastPayTimeMinute > 10) {
+						lastPayTimeMinute = shopData.yudingLastPayTimeMinute;
+					}
 				} else {
 					//普通购买
 					if (ele.miaosha) {
@@ -1104,14 +1117,22 @@ const model = {
 			juli,
 			totalMoney,
 			shopid,
+			selfRaising,
+			uid,
 		} = data;
 		let shop = data.shop;
 		let freight = 0;
 		let freightTitle = "免配送费";
 		if (deliveryType == "selfRaising") {
+			let selfRaisingData = false;
+			//没有收货人信息
+			if (!selfRaising || selfRaising.name == "") {
+				selfRaisingData = await this.getPreSelfRaisingOrder(uid, shopid);
+			}
 			return {
 				freight,
-				freightTitle
+				freightTitle,
+				selfRaising: selfRaisingData
 			};
 		}
 		if (!shop) {
@@ -1166,6 +1187,25 @@ const model = {
 			return false;
 		}
 		return shopData.data[0];
+	},
+	/**
+	 * 获取上一单的自提信息
+	 * @param {Object} uid
+	 * @param {Object} shopid
+	 */
+	async getPreSelfRaisingOrder(uid, shopid) {
+		let orders = await orderCollection.where({
+			uid,
+			shopid,
+			deliveryType: "selfRaising",
+			state: cmd.gt(0)
+		}).field({
+			selfRaising: 1
+		}).limit(1).orderBy("id", "desc").get();
+		if (orders.data.length == 0) {
+			return false;
+		}
+		return orders.data[0].selfRaising;
 	},
 	/**
 	 * 定时器，1.自动取消未付款的订单

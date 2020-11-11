@@ -190,6 +190,7 @@
 				stock: 0,
 				visite: 0,
 				isSold: 1,
+				isCategoryShow: 1,
 				src: '',
 				imgs: [], //轮播图
 				score: 0,
@@ -450,6 +451,9 @@
 					this.share.title = item.share
 				} else {
 					this.share.title = item.title
+				}
+				if(!this.isCategoryShow){
+					this.isSold = false;
 				}
 				this.loaded = true;
 			},

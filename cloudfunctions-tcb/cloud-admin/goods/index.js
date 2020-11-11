@@ -16,10 +16,7 @@ const list = async (data, context) => {
 		state
 	} = data;
 	//商品类型,"online"在售,"miaosha"秒杀,"yushou"预售,"baokuan"爆款,"shouqin"即将售罄
-	let conditions = {
-		shopid
-	};
-	let order = ["id", "desc"];
+
 	//需要动态改变表
 	let goodsCollection2 = goodsCollection;
 	let fields = {
@@ -56,12 +53,12 @@ const list = async (data, context) => {
 		tuangou: 1,
 	};
 	let time = new Date().getTime();
-	getStateCondition(state, shopid, conditions, order, fields);
+	let {
+		conditions,
+		order
+	} = getStateCondition(state, shopid, fields, key);
 	if (state == "delete") {
 		goodsCollection2 = goodsDeleteCollection;
-	}
-	if (key && key.trim().length > 0) {
-		conditions["title"] = new RegExp(key.trim());
 	}
 	let res = await goodsCollection2.where(conditions).orderBy(...order).skip((page - 1) * limit).limit(limit).field(
 		fields).get();
@@ -313,13 +310,10 @@ const soldOutAll = async (data) => {
 		state,
 		shopid
 	} = data;
-	let conditions = {
-			shopid,
-			isSold: 1
-		},
-		order = [],
-		fields = {};
-	getStateCondition(state, shopid, conditions, order, fields);
+	let fields = {};
+	let {
+		conditions
+	} = getStateCondition(state, shopid, fields);
 	//修改
 	let res = await goodsCollection.where(conditions).update({
 		isSold: 0,
@@ -355,13 +349,10 @@ const soldInAll = async (data) => {
 		state,
 		shopid
 	} = data;
-	let conditions = {
-			shopid,
-			isSold: 0
-		},
-		order = [],
-		fields = {};
-	getStateCondition(state, shopid, conditions, order, fields);
+	let fields = {};
+	let {
+		conditions
+	} = getStateCondition(state, shopid, fields);
 	//修改
 	let res = await goodsCollection.where(conditions).update({
 		isSold: 1,
@@ -486,8 +477,16 @@ const getOneGoods = async (conditions, fields) => {
 	return goods.data[0];
 }
 
-const getStateCondition = (state, shopid, conditions, order, fields) => {
+const getStateCondition = (state, shopid, fields, key) => {
+	let conditions = {
+		shopid
+	};
+	let order = ["id", "desc"];
 	let time = new Date().getTime();
+	//搜索词
+	if (key && key.trim().length > 0) {
+		conditions["title"] = new RegExp(key.trim());
+	}
 	switch (state) {
 		case "online":
 			//1所有在售
@@ -503,6 +502,8 @@ const getStateCondition = (state, shopid, conditions, order, fields) => {
 			}, {
 				shopid,
 				isCategoryShow: 0
+			}).and({
+				title: new RegExp(key.trim())
 			});
 			order = ["offlineTime", "desc"];
 			break;
@@ -567,6 +568,10 @@ const getStateCondition = (state, shopid, conditions, order, fields) => {
 			break;
 		default:
 			break;
+	}
+	return {
+		conditions,
+		order
 	}
 }
 
