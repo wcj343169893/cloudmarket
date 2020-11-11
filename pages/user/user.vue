@@ -10,21 +10,17 @@
 					<!-- #ifdef MP-WEIXIN -->
 					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
 						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+						<text class="account" v-if="userInfo.id && !enableVipCard">（{{userInfo.id}}）</text>
 					</view>
 					<button class="username" v-else open-type="getUserInfo" @getuserinfo="mpWxGetUserInfo">
 						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+						<text class="account" v-if="userInfo.id && !enableVipCard">（{{userInfo.id}}）</text>
 					</button>
 					<!-- #endif -->
 					<!-- #ifndef MP-WEIXIN -->
-					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
+					<view class="username" @click="navTo('/pages/userinfo/userinfo')">
 						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
-					</view>
-					<view class="username" v-else>
-						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id">（{{userInfo.id}}）</text>
+						<text class="account" v-if="userInfo.id && !enableVipCard">（{{userInfo.id}}）</text>
 					</view>
 					<!-- #endif -->
 					<view class="invite" v-if="userInfo.my_invite_code">
