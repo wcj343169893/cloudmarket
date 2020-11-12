@@ -151,7 +151,7 @@ const passedRefund = async (data) => {
 	}
 	let dataField = {}
 	//已退款数量
-	let refundAmount = +orderMain.refundAmount;
+	let refundAmount = orderMain.refundAmount ? +orderMain.refundAmount : 0;
 	//判断是否全部退款
 	console.log("退款比例", refundAmount + order.refundApplyAmount, orderMain.cartCount)
 	if (refundAmount + order.refundApplyAmount >= orderMain.cartCount) {
