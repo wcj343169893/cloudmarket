@@ -2,7 +2,7 @@
 	<view class="app" :class="[globalClass]">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">{{ orderInfo.totalMoney }}</text>
+			<text class="price">{{ orderInfo.totalMoney | toFixed}}</text>
 			<text class="lastTime">支付剩余时间:{{ times.minute }}:{{ times.second }}</text>
 		</view>
 

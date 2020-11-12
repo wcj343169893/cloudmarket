@@ -368,7 +368,8 @@
 					onval: false, // val值变化时自动重新生成二维码
 					loadMake: true, // 组件加载完成后自动生成二维码
 					src: '' // 二维码生成后的图片地址或base64
-				}
+				},
+				afterReceived:false
 			};
 		},
 		onLoad(options) {
@@ -432,6 +433,9 @@
 					res.isRefunding = 0;
 				}
 				this.info = res;
+				//收货后是否允许在线退货
+				this.afterReceived = this.info.shop.refund && this.info.shop.refund.afterReceived;
+				
 				res.goods.forEach(item => {
 					if (!item.refundAmount) {
 						item.refundAmount = 0;
@@ -439,7 +443,7 @@
 					if (!item.isRefunding) {
 						item.isRefunding = 0;
 					}
-					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding;
+					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding && (!this.info.makesureTime || !this.afterReceived);
 				})
 				if (this.moreGoodsCount > 0) {
 					this.goodsList = res.goods.slice(0, this.maxShowCount);
@@ -550,7 +554,8 @@
 				}).then(res => {
 					this.$api.success("申请成功");
 					this.info.isRefunding = 1;
-					this.goodsList[this.refundItem.index].isRefunding = 1;
+					this.$set(this.goodsList[this.refundItem.index],"isRefunding",1);
+					//this.goodsList[this.refundItem.index].isRefunding = 1;
 					this.goodsList[this.refundItem.index].canRefund = false;
 					this.updateState();
 					this.$api.prePage().refreshList();
@@ -564,11 +569,21 @@
 				if (this.info.makesureTime) {
 					let makesureTime = (new Date(this.info.makesureTime)).getTime();
 					let t = new Date().getTime();
-					if ((t - makesureTime) / 1000 / 3600 / 24 > 7) {
+					let refundDay = 7;
+					if (this.info.shop.refund) {
+						if (this.info.shop.refund.days) {
+							refundDay = 7;
+						}
+						if (!this.afterReceived) {
+							this.$api.msg("收货后不允许在线退货，如有售后需求，请联系客服");
+							return false;
+						}
+					}
+					if ((t - makesureTime) / 1000 / 3600 / 24 > refundDay) {
 						uni.showModal({
 							showCancel: false,
 							title: "无法申请退款",
-							content: "订单完成后7天内可申请退款，现已超过7天，如有售后需求，请联系客服"
+							content: `订单完成后${refundDay}天内可申请退款，现已超过${refundDay}天，如有售后需求，请联系客服`
 						});
 						return;
 					}

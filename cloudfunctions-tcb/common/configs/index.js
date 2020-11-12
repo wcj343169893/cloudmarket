@@ -3,6 +3,10 @@ const fs = require("fs");
  * 支付配置文件
  */
 const config = require("./config.json");
+/**
+ * 支付配置临时变量
+ */
+let paymentConfigTmp = {};
 const model = {
 	getConfig() {
 		return config;
@@ -22,10 +26,6 @@ const model = {
 		return [config["domain"], config["notify-floder"], platform, provider, model].join("/");
 	},
 	/**
-	 * 支付配置临时变量
-	 */
-	paymentConfigTmp: {},
-	/**
 	 * 返回支付配置
 	 */
 	getPaymentConfig(platform, provider, isRefund) {
@@ -33,13 +33,14 @@ const model = {
 			return config[platform]["payment"];
 		}
 		let key = [platform, isRefund, provider].join("_");
-		if (this.paymentConfigTmp[key]) {
-			return this.paymentConfigTmp[key];
+		if (paymentConfigTmp[key]) {
+			return paymentConfigTmp[key];
 		}
 		let res = config[platform]["payment"][provider];
 		if (provider == "wxpay") {
-			if (res.pfx != '' && isRefund) {
+			if (res.pfx && res.pfx != '' && isRefund) {
 				try {
+					console.log("p12文件读取", __dirname + '/cert/' + res.pfx);
 					res.pfx = fs.readFileSync(__dirname + '/cert/' + res.pfx);
 				} catch (e) {
 					console.log("p12文件读取失败", __dirname + '/cert/' + res.pfx);
@@ -48,7 +49,7 @@ const model = {
 				delete res.pfx;
 			}
 		}
-		this.paymentConfigTmp[key] = res;
+		paymentConfigTmp[key] = res;
 		return res;
 	},
 	/**

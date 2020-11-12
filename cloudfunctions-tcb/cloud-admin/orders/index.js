@@ -150,9 +150,13 @@ const passedRefund = async (data) => {
 		return false;
 	}
 	let dataField = {}
+	//已退款数量
+	let refundAmount = +orderMain.refundAmount;
 	//判断是否全部退款
-	if (orderMain.refundAmount >= orderMain.cartCount) {
+	console.log("退款比例", refundAmount + order.refundApplyAmount, orderMain.cartCount)
+	if (refundAmount + order.refundApplyAmount >= orderMain.cartCount) {
 		dataField["isRefundAll"] = 1;
+		console.log("全部退款退货")
 	}
 
 	//更新主订单
@@ -327,8 +331,11 @@ const printOrder = async (data) => {
 	console.log("print", res);
 	return res;
 }
-const comment = async(data)=>{
-	const{id,comment}=data;
+const comment = async (data) => {
+	const {
+		id,
+		comment
+	} = data;
 }
 module.exports = {
 	list: list,

@@ -746,6 +746,7 @@ const model = {
 			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,
+			refund: 1,//退货规则
 			delivery: 1,
 			deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
 			deliveryTypes: 1,

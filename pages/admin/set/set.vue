@@ -11,21 +11,8 @@
 		<mix-list-input title="电话" type="number" :defContent="phone" placeholder="请输入电话" @blur="changePhone"></mix-list-input>
 		<mix-list-input title="公告" :defContent="notice" placeholder="请输入公告" @blur="changeNotice"></mix-list-input>
 		<mix-list-input title="营业时间" :defContent="serviceTime" placeholder="请输入营业时间" @blur="changeServiceTime"></mix-list-input>
-		<view class="mix-list-cell b-b">
-			<text class="cell-tit clamp">配送方式</text>
-			<view class="cell-content content-right">
-				<checkbox-group name="deliveryTypes" @change="changeDeliveryTypes">
-					<label class="m-r">
-						<checkbox value="deliveryHome" :checked="deliveryTypes.indexOf('deliveryHome') != -1" />
-						<text>配送到家</text>
-					</label>
-					<label>
-						<checkbox value="selfRaising" :checked="deliveryTypes.indexOf('selfRaising') != -1" />
-						<text>到店自提</text>
-					</label>
-				</checkbox-group>
-			</view>
-		</view>
+		<mix-list-checkbox title="配送方式" field="deliveryTypes" type="checkbox" :defaultOptions="deliveryTypes" :options="deliveryTypeMap"
+		 @change="changeField"></mix-list-checkbox>
 		<mix-list-input title="支付倒计时" type="digit" :defContent="lastPayTimeMinute" field="lastPayTimeMinute" placeholder="请输入倒计时"
 		 @blur="changeFieldNumber">
 			<text class="moreText">分钟</text></mix-list-input>
@@ -34,19 +21,16 @@
 			<text class="moreText">分钟</text>
 		</mix-list-input>
 		<mix-list-cell title="配送到家" :tips="delivery.minPrice+'元起送'" @eventClick="navTo('/pages/admin/set/delivery')" v-if="deliveryTypes.indexOf('deliveryHome') != -1"></mix-list-cell>
-		<view class="mix-list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">是否开启打印机</text>
-			<view class="cell-content content-right">
-				<switch :checked="isPrint" @change="changePrinter" />
-			</view>
-		</view>
+		<mix-list-checkbox title="开启打印机" field="isPrint" :defContent="isPrint" @change="changeField"></mix-list-checkbox>
 		<mix-list-cell v-if="isPrint" title="打印终端" :tips="printersName" @eventClick="navTo('/pages/admin/set/printer/list')"></mix-list-cell>
 		<mix-list-cell title="页面配置" @eventClick="navTo('/pages/admin/set/pages')" tips="首页"></mix-list-cell>
 		<mix-list-select border="b-b" @eventClick="changeCurrency" title="货币" :options="currencys" :defaultOption="currency"></mix-list-select>
 		<mix-list-input v-if="currency!='cny'" title="兑人民币汇率" :defContent="exchangeRate" field="exchangeRate" placeholder="请输入兑人民币汇率"
 		 @blur="changeExchangeRate"></mix-list-input>
 		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
-
+		<mix-list-input title="退换货周期" type="digit" :defContent="refund.days" field="refund.days" placeholder="请输入退换货周期" @blur="changeFieldNumber">
+			<text class="moreText">天</text></mix-list-input>
+		<mix-list-checkbox title="收货后退货" field="refund.afterReceived" :defContent="refund.afterReceived" @change="changeField"></mix-list-checkbox>
 	</view>
 </template>
 <script>
@@ -64,6 +48,10 @@
 				notice: "",
 				delivery: {},
 				serviceTime: "",
+				deliveryTypeMap: {
+					deliveryHome: "配送到家",
+					selfRaising: "到店自提/自提点",
+				},
 				deliveryTypes: [],
 				isPrint: false,
 				goodsCommentTags: [],
@@ -71,6 +59,10 @@
 				printersName: "",
 				exchangeRate: 1,
 				lastPayTimeMinute: 5,
+				refund: {
+					days: 7,
+					afterReceived: false
+				},
 				yudingLastPayTimeMinute: 30,
 				currency: "cny",
 				currencys: {
@@ -158,6 +150,33 @@
 					this.save({
 						[field]: this[field],
 					})
+				}
+			},
+			/**
+			 * 输入字段自动填充data，并自动保存
+			 * @param {Object} val
+			 * @param {Object} field
+			 */
+			changeField(val, field) {
+				console.log(val, field)
+				let fs = field.split(".");
+				if (fs.length == 1) {
+					if (val !== this[field]) {
+						this[field] = val;
+						this.save({
+							[field]: this[field],
+						})
+					}
+				} else if (fs.length == 2) {
+					if (!this[fs[0]]) {
+						this[fs[0]] = {};
+					}
+					if (this[fs[0]][fs[1]] !== val) {
+						this[fs[0]][fs[1]] = val;
+						this.save({
+							[field]: this[fs[0]][fs[1]],
+						})
+					}
 				}
 			},
 			changeExchangeRate(e) {

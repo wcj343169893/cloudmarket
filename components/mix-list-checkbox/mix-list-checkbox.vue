@@ -1,0 +1,168 @@
+<template>
+	<view class="checkbox-container">
+		<view v-if="type=='switch'" class="mix-list-cell" :class="[border,type]" hover-class="cell-hover">
+			<text class="cell-tit clamp">{{ title }}</text>
+			<view class="cell-content content-right">
+				<switch :checked="!!content" @change="changeSwitch" />
+			</view>
+		</view>
+		<view v-else-if="type=='checkbox'" class="mix-list-cell" :class="[border,type]">
+			<text class="cell-tit clamp">{{ title }}</text>
+			<view class="cell-content content-right">
+				<checkbox-group :name="field" @change="changeContent">
+					<block v-for="(item,index) in options" :key="index">
+						<label>
+							<text class="m-r">{{item}}</text>
+							<checkbox :value="index" :checked="checkedList.indexOf(index) != -1" />
+						</label>
+					</block>
+				</checkbox-group>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				content: '',
+				//多选已选择
+				checkedList: [],
+			};
+		},
+		props: {
+			title: {
+				type: String,
+				default: '标题'
+			},
+			field: {
+				type: String,
+				default: ''
+			},
+			border: {
+				type: String,
+				default: 'b-b'
+			},
+			type: {
+				type: String,
+				default: 'switch'
+			},
+			isMust: {
+				type: Boolean,
+				default: false
+			},
+			defContent: {
+				type: [String, Number, Boolean],
+				default: ''
+			},
+			options: {
+				type: Object,
+				default: () => {}
+			},
+			defaultOption: {
+				type: [String, Number],
+				default: ''
+			},
+			defaultOptions: {
+				type: Array,
+				default: () => []
+			},
+		},
+		watch: {
+			defContent(val, oldVal) {
+				if (val != oldVal) {
+					this.content = val;
+				}
+				console.log(val)
+			}
+		},
+		created() {
+			if (this.defContent) {
+				this.content = this.defContent;
+			}
+			if(this.defaultOptions){
+				this.checkedList = this.defaultOptions
+			}
+		},
+		methods: {
+			changeContent(e) {
+				this.$emit('change', e.detail.value, this.field);
+			},
+			blurContent(e) {
+				this.$emit('blur', e.detail.value, this.field);
+			},
+			changeSwitch(e) {
+				this.$emit('change', !!e.detail.value, this.field);
+			},
+		}
+	}
+</script>
+
+
+<style lang="scss" scoped>
+	.checkbox-container {
+		.mix-list-cell {
+			display: flex;
+			align-items: center;
+			padding: 20upx $page-row-spacing;
+			line-height: 60upx;
+			position: relative;
+
+			&.b-b:after {
+				left: 30upx;
+			}
+
+			&.cell-hover {
+				background: #fafafa;
+			}
+
+			.cell-tit {
+				font-size: $font-base;
+				color: $font-color-dark;
+				margin-right: 20upx;
+			}
+
+			.cell-content {
+				flex: 1;
+				font-size: $font-sm + 2upx;
+				color: $font-color-light;
+				text-align: right;
+				height: 60rpx;
+
+				&.content-left {
+					text-align: left;
+				}
+
+				&.normal {
+					color: $font-color-dark;
+				}
+			}
+
+			&.checkbox {
+				.cell-content {
+					height: auto;
+				}
+
+				checkbox-group {
+					display: flex;
+					flex-direction: column;
+				}
+			}
+		}
+
+		.m-r {
+			margin-right: 12rpx;
+		}
+	}
+
+	.desc {
+		font-size: $font-sm;
+		color: $font-color-disabled;
+	}
+
+	.cell-more.yticon {
+		font-size: $font-llg;
+		margin-left: 16rpx;
+	}
+</style>

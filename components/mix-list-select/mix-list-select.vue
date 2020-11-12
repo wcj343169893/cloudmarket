@@ -58,7 +58,7 @@ export default {
 		},
 		options: {
 			type: Object,
-			default: {}
+			default: () => {}
 		},
 		defaultOption: {
 			type: [String,Number],

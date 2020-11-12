@@ -570,6 +570,7 @@ const navToPayOrder = function(id, money, comefrom, module) {
 	if (isRedirect) {
 		return false;
 	}
+	money = money.toFixed(2);
 	isRedirect = true;
 	uni.navigateTo({
 		url: `/pages/money/pay?id=${id}&money=${money}&comefrom=${comefrom}&module=${module}`,
