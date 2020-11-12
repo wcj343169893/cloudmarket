@@ -25,16 +25,7 @@ const modules = {
 				mobile: new RegExp(key)
 			});
 		}
-		//获取今日和昨日的时间戳
-		const {todayTime,yestertodayTime} = this.getDayTime();
-		let statistics = {
-			yestertoday: {
-				register_date: cmd.gte(yestertodayTime).lt(todayTime)
-			},
-			today: {
-				register_date: cmd.gte(todayTime)
-			},
-		};
+		let statistics = this.getStateCondition();
 		if (state && statistics[state]) {
 			condition = statistics[state];
 		}
@@ -98,6 +89,47 @@ const modules = {
 		});
 		console.log("手动账户充值", log);
 		return res.data[0].balance;
+	},
+	async exports(data) {
+		const {
+			state
+		} = data;
+		let condition = {
+			_id: cmd.exists(true)
+		};
+		let statistics = this.getStateCondition();
+		if (state && statistics[state]) {
+			condition = statistics[state];
+		}
+		const result = await usersCollection.where(condition).limit(500).get();
+		if (result.data.length == 0) {
+			return false;
+		}
+		//导出为Excel
+		
+	},
+	getStateCondition() {
+		const {
+			todayTime,
+			yestertodayTime
+		} = this.getDayTime();
+		let statistics = {
+			yestertoday: {
+				register_date: cmd.gte(yestertodayTime).lt(todayTime)
+			},
+			today: {
+				register_date: cmd.gte(todayTime)
+			},
+			yestertodayMember: {
+				member: cmd.exists(true),
+				register_date: cmd.gte(yestertodayTime).lt(todayTime)
+			},
+			todayMember: {
+				member: cmd.exists(true),
+				register_date: cmd.gte(todayTime)
+			},
+		};
+		return statistics;
 	},
 	getDayTime() {
 		let date = getDate();

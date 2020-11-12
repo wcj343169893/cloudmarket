@@ -73,13 +73,15 @@ const modules = {
 			payup: {
 				name: "待发货",
 				condition: {
-					state: 1
+					state: 1,
+					isRefundAll: cmd.exists(false)
 				}
 			},
 			estimated: {
 				name: "已评价",
 				condition: {
-					state: 4
+					state: 4,
+					isRefundAll: cmd.exists(false)
 				}
 			}
 		}
@@ -128,6 +130,20 @@ const modules = {
 			today: {
 				name: "今日新增",
 				condition: {
+					register_date: cmd.gte(todayTime)
+				}
+			},
+			yestertodayMember: {
+				name: "昨日会员",
+				condition: {
+					member:cmd.exists(true),
+					register_date: cmd.gte(yestertodayTime).lt(todayTime)
+				}
+			},
+			todayMember: {
+				name: "今日会员",
+				condition: {
+					member:cmd.exists(true),
 					register_date: cmd.gte(todayTime)
 				}
 			},

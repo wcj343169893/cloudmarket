@@ -197,10 +197,12 @@ const models = {
 				state: 0
 			},
 			payup: {
-				state: cmd.in([1, 2])
+				state: cmd.in([1, 2]),
+				isRefundAll: cmd.exists(false)
 			},
 			received: {
-				state: 3
+				state: 3,
+				isRefundAll: cmd.exists(false)
 			}
 		};
 		if (!info["order"]) {
@@ -228,10 +230,12 @@ const models = {
 				state: 0
 			},
 			payup: {
-				state: 1
+				state: 1,
+				isRefundAll:cmd.exists(false)
 			},
 			estimated: {
-				state: 4
+				state: 4,
+				isRefundAll:cmd.exists(false)
 			}
 		}
 		for (let key in statistics) {
