@@ -24,7 +24,7 @@
 			<view class="line b-b"><text class="text">快捷登录</text></view>
 			<view class="mix-list-cell-buttons">
 				<button class="add-btn jglogin" @click="jgLogin()">{{loginBtnText}}</button>
-				<button class="add-btn" @click="wxLogin()"><text class="yticon icon-weixin"></text>微信登录</button>
+				<button class="add-btn" @click="wxLogin('weixin')"><text class="yticon icon-weixin"></text>微信登录</button>
 			</view>
 			<!-- #endif-->
 			<view class="">
@@ -47,7 +47,6 @@
 		getToken,
 		mobileLogin,
 		sendSms,
-		micLogin,
 		cloudUser
 	} from '@/common/request.js';
 	import {
@@ -125,41 +124,24 @@
 					service: 'oauth',
 					success: (res) => {
 						let provider = res.provider[0];
-						uni.login({
-							provider: provider,
-							success: (loginRes) => {
-								console.log('loginRes', loginRes);
-								console.log('inviteCode', this.inviteCode);
-								//小程序自动登录
-								micLogin({
-									inviteCode: this.inviteCode,
-									code: loginRes.code
-								}, provider).then(res => {
-									console.log("login success", res);
-									this.loginSuccess(res);
-								}, err => {
-									console.log("小程序自动登录失败！")
-								});
-							}
-						});
+						this.wxLogin(provider);
 					}
 				});
 			},
 			/**
 			 * 微信授权登录
 			 */
-			async wxLogin() {
-				let provider = "weixin";
+			async wxLogin(provider = "weixin") {
 				uni.login({
 					provider: provider,
 					success: (loginRes) => {
 						console.log('loginRes', loginRes);
 						console.log('inviteCode', this.inviteCode);
 						//微信获取用户信息，并登录
-						micLogin({
+						cloudUser("login", provider, {
 							inviteCode: this.inviteCode,
 							code: loginRes.code
-						}, provider).then(res => {
+						}).then(res => {
 							console.log("login success", res);
 							this.loginSuccess(res);
 						}, err => {
@@ -177,14 +159,15 @@
 					mask: true,
 					title: this.loadingText
 				});
+				console.log("开始极光登录")
 				if (jv) {
 					jv.checkVerifyEnable(result => {
+						console.log(result)
 						if (result.enable) {
 							this.loginAuth();
 						} else {
-							//this.$api.msg(this.loginErrorText,2000);
-							//this.navTimeBack();
 							//页面输入手机号+验证码登录
+							this.$api.msg("当前网络环境不可用!")
 							uni.hideLoading();
 						}
 					});
@@ -284,16 +267,18 @@
 			},
 			btnLogin() {
 				if (this.disabled || this.disabledLogin) {
-					if(this.systemInfo.development){
+					if (this.systemInfo.development) {
 						//测试入口，避免每次发送短信
-						let token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDI1MDI3NDUsImV4cCI6MTYwNTA5NDc0NX0.vgFCvow1EPwsYN6RwvA1Dvf8AuD1p2X59k7w28ZXA_A";
+						let token =
+							"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDUxNDU0NzAsImV4cCI6MTYwNzczNzQ3MH0.gSApf9wMvNktDQJ2gdUyguvNAClUYt94_BnP97qQODM";
 						//#ifdef APP-PLUS
-						token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";
+						token =
+							"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";
 						//#endif
 						//这里是开发者快速登录入口
-						cloudUser("login","checkToken",{
+						cloudUser("login", "checkToken", {
 							token
-						}).then(res=>{
+						}).then(res => {
 							this.loginSuccess(res);
 						})
 					}
