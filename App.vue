@@ -429,8 +429,8 @@
 	/* button样式改写 */
 	uni-button,
 	button {
-		height: 60upx;
-		line-height: 60upx;
+		height: 70upx;
+		line-height: 70upx;
 		font-size: $font-lg;
 		font-weight: normal;
 
@@ -570,7 +570,7 @@
 		align-items: center;
 		justify-content: center;
 		width: 90%;
-		height: 80upx;
+		height: 70upx;
 		margin: 20upx auto;
 		font-size: $font-lg;
 		color: #fff;
