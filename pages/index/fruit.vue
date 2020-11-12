@@ -184,7 +184,7 @@
 		},
 		data() {
 			return {
-				titleNViewBackground: '',
+				titleNViewBackground: '#54b85d',
 				swiperCurrent: 0,
 				swiperLength: 0,
 				goNext: 1,
@@ -595,6 +595,9 @@
 
 			.titleNview-background {
 				height: 380rpx;
+			}
+			.titleNview-background-tmp {
+				height: 70upx;
 			}
 		}
 	}
