@@ -630,7 +630,7 @@
 			top: 0;
 			left: 0;
 			width: 100%;
-			height: 140upx;
+			height: calc(var(--status-bar-height) + 130upx);
 			transition: 0.4s;
 			background: $base-color;
 		}
