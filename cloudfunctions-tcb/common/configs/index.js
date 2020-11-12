@@ -7,6 +7,7 @@ const config = require("./config.json");
  * 支付配置临时变量
  */
 let paymentConfigTmp = {};
+const path = require("path");
 const model = {
 	getConfig() {
 		return config;
@@ -39,11 +40,12 @@ const model = {
 		let res = config[platform]["payment"][provider];
 		if (provider == "wxpay") {
 			if (res.pfx && res.pfx != '' && isRefund) {
+				let fullPath = path.resolve(__dirname, "cert", res.pfx);
 				try {
-					console.log("p12文件读取", __dirname + '/cert/' + res.pfx);
-					res.pfx = fs.readFileSync(__dirname + '/cert/' + res.pfx);
+					console.log("p12文件读取", fullPath);
+					res.pfx = fs.readFileSync(fullPath);
 				} catch (e) {
-					console.log("p12文件读取失败", __dirname + '/cert/' + res.pfx);
+					console.log("p12文件读取失败", fullPath);
 				}
 			} else {
 				delete res.pfx;
