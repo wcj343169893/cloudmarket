@@ -37,7 +37,10 @@ const model = {
 		if (paymentConfigTmp[key]) {
 			return paymentConfigTmp[key];
 		}
-		let res = config[platform]["payment"][provider];
+		let res = {
+			...config[platform]["payment"][provider]
+		};
+		//console.log("getPaymentConfig", res);
 		if (provider == "wxpay") {
 			if (res.pfx && res.pfx != '' && isRefund) {
 				let fullPath = path.resolve(__dirname, "cert", res.pfx);
