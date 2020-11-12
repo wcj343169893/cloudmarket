@@ -9,23 +9,32 @@
 		<view class="carousel-section" v-if="isLoaded">
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
-			<!-- 背景色区域 -->
-			<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
-			<!--收货地址-->
-			<view class="titleNview-address" v-if="address != ''">
-				<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
-			</view>
-			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
-					<image :src="item.src" />
-				</swiper-item>
-			</swiper>
-			<!-- 自定义swiper指示器 -->
-			<view class="swiper-dots" v-if="carouselList && carouselList.length > 0">
-				<text class="num">{{ swiperCurrent + 1 }}</text>
-				<text class="sign">/</text>
-				<text class="num">{{ swiperLength }}</text>
-			</view>
+			<block v-if="carouselList && carouselList.length > 0">
+				<!-- 背景色区域 -->
+				<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
+				<!--收货地址-->
+				<view class="titleNview-address" v-if="address != ''">
+					<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
+				</view>
+				<swiper class="carousel" circular @change="swiperChange">
+					<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
+						<image :src="item.src" />
+					</swiper-item>
+				</swiper>
+				<!-- 自定义swiper指示器 -->
+				<view class="swiper-dots">
+					<text class="num">{{ swiperCurrent + 1 }}</text>
+					<text class="sign">/</text>
+					<text class="num">{{ swiperLength }}</text>
+				</view>
+			</block>
+			<block v-else>
+				<view class="titleNview-background-tmp"></view>
+				<!--收货地址-->
+				<view class="titleNview-address" v-if="address != ''">
+					<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
+				</view>
+			</block>
 		</view>
 		<!-- 口号 -->
 		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0" @click="navToDocPageByType('app_goods_charge')">
@@ -614,6 +623,16 @@
 			width: 100%;
 			height: 426upx;
 			transition: 0.4s;
+		}
+
+		.titleNview-background-tmp {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 140upx;
+			transition: 0.4s;
+			background: $base-color;
 		}
 
 		.titleNview-address {
