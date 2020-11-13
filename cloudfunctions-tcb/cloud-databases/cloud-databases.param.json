@@ -3,10 +3,10 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "imports",
-	"action": "goods",
+	"module": "exports",
+	"action": "member",
 	"data": {
-		"uid":"9ffb2a485f38964200999b1f07cb7b80",
+		"state":"allMember",
 		"shopid":123457
 	}
 }

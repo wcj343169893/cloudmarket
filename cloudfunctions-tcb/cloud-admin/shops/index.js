@@ -10,6 +10,9 @@ const orderRefundsCollection = db.collection("cloud_order_refunds");
 const {
 	getDate
 } = require('base-common');
+const {
+	getConfig
+} = require("configs");
 const modules = {
 	/**
 	 * 获取店铺信息
@@ -26,6 +29,7 @@ const modules = {
 			return false;
 		}
 		let shop = res.data[0];
+		shop.domain = getConfig().domain;
 		//实时统计订单数量
 		await this.getOrderStatistics(shop);
 		//实时统计商品数量
@@ -136,14 +140,14 @@ const modules = {
 			yestertodayMember: {
 				name: "昨日会员",
 				condition: {
-					member:cmd.exists(true),
+					member: cmd.exists(true),
 					register_date: cmd.gte(yestertodayTime).lt(todayTime)
 				}
 			},
 			todayMember: {
 				name: "今日会员",
 				condition: {
-					member:cmd.exists(true),
+					member: cmd.exists(true),
 					register_date: cmd.gte(todayTime)
 				}
 			},

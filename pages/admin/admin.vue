@@ -172,6 +172,12 @@
 							this["navTo" + this.secondPage](this.secondPageState);
 							this.secondPage = false;
 						}
+						if (res.domain) {
+							uni.setStorage({
+								key: "web_domain",
+								data: res.domain
+							})
+						}
 					},
 					err => {
 						//获取店铺信息失败

@@ -47,20 +47,23 @@ const models = {
 	 * 设置用户的会员卡信息,member
 	 * @param {Object} uid
 	 */
-	async setUserMember(uid, info = false) {
-		let id = await genIdentityId("users");
+	async setUserMember(uid, info = false, genId = false) {
 		let data = {
-			uid,
-			id
+			uid
 		};
+		if (!genId) {
+			genId = await genIdentityId("users");
+			data.id = genId;
+		}
 		//会员扩展信息
 		if (info) {
-			data["member"] = info;
+			info.created = new Date().toISOString();
+			data.member = info;
 		}
 		//保存id
 		let result = await uniID.updateUser(data);
 		console.log("save user id", result, info);
-		return id;
+		return genId;
 	},
 	/**
 	 * 申请会员卡
@@ -75,13 +78,7 @@ const models = {
 		} = context;
 		delete data.uid;
 		//如果用户已经有id，则只更新info
-		if (userInfo.id) {
-			return await uniID.updateUser({
-				uid,
-				member: data
-			});
-		}
-		return await this.setUserMember(uid, data);
+		return await this.setUserMember(uid, data, userInfo.id);
 	},
 	//信息统计
 	async statistics(data) {
@@ -231,11 +228,11 @@ const models = {
 			},
 			payup: {
 				state: 1,
-				isRefundAll:cmd.exists(false)
+				isRefundAll: cmd.exists(false)
 			},
 			estimated: {
 				state: 4,
-				isRefundAll:cmd.exists(false)
+				isRefundAll: cmd.exists(false)
 			}
 		}
 		for (let key in statistics) {

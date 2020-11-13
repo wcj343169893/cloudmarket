@@ -58,6 +58,7 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<uni-fab v-if="state.indexOf('Member') != -1" :content="fab.content" @trigger="fabTrigger" horizontal="right"></uni-fab>
 		<uni-popup ref="rechargePop" type="dialog">
 			<uni-popup-dialog type="warn" title="账户充值" placeholder="请输入充值金额" mode="input" :before-close="true" @close="close"
 			 @confirm="confirm"></uni-popup-dialog>
@@ -67,7 +68,8 @@
 
 <script>
 	import {
-		usersAdmin
+		usersAdmin,
+		cloudDatabases
 	} from '@/common/admin_request.js';
 	import searchMixin from '../mixin/search.js'
 
@@ -105,7 +107,14 @@
 				listType: 'column', //列表类型 column竖向列表 row 横向列表
 				userList: [],
 				state: "",
-				rechargeItem: {}
+				rechargeItem: {},
+				fab: {
+					pattern: {},
+					content: [{
+						"iconPath": "/static/download01.png",
+						text: "下载"
+					}]
+				}
 			};
 		},
 		onLoad(options) {
@@ -137,7 +146,7 @@
 					if (res.length < this.limit) {
 						this.loadingType = "noMore";
 					}
-				},err=>{
+				}, err => {
 					this.loadingType = "noMore";
 				})
 			},
@@ -225,6 +234,37 @@
 					title: userTypes[0].name
 				});
 			},
+			fabTrigger({
+				index,
+				item
+			}) {
+				let domain = uni.getStorageSync("web_domain");
+				let url = `${domain}/databases/exports/member?state=${this.state}`;
+				console.log(url)
+				//#ifdef APP-PLUS
+				uni.setClipboardData({
+					data: url,
+					success: ()=> {
+						this.$api.success('下载地址已复制')
+					}
+				});
+				//#endif
+				/* uni.downloadFile({
+					url: `${domain}/databases/exports/member?state=${this.state}`, 
+					success: (res) => {
+						if (res.statusCode === 200) {
+							console.log('下载成功');
+							uni.saveFile({
+								tempFilePath: res.tempFilePath,
+								success: (res) => {
+									this.$api.msg('保存成功' + res.savedFilePath)
+									console.log('写入成功', res.savedFilePath);
+								}
+							});
+						}
+					}
+				}); */
+			}
 		}
 	}
 </script>

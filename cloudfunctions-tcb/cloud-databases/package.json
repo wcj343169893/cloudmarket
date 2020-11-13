@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "base-common": "file:../common/base-common"
+    "base-common": "file:../common/base-common",
+    "node-xlsx": "^0.15.0"
   }
 }

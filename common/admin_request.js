@@ -87,6 +87,18 @@ const adminNetwork = (module, action, data, isShowLoading) => {
 		isShowLoading: isShowLoading
 	});
 }
+
+const cloudDatabases = (model,action,data,isShowLoading)=>{
+	return network({
+		url: "cloud-databases",
+		data: {
+			module: model,
+			action: action,
+			data
+		},
+		isShowLoading: !!isShowLoading
+	})
+}
 export {
 	shopAdmin,
 	printerAdmin,
@@ -97,5 +109,6 @@ export {
 	docsAdmin,
 	usersAdmin,
 	adminNetwork,
-	specialAdmin
+	specialAdmin,
+	cloudDatabases
 }
