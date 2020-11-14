@@ -1086,6 +1086,8 @@
 		width: 700upx;
 		background: #ffffff;
 		border-radius: 12upx;
+		max-height: 400rpx;
+		overflow-y: auto;
 
 		.cell-tit {
 			flex: 1;
