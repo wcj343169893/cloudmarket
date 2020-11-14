@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @blur="changeUpc"></mix-list-input>
 		<view class="mix-list-cell b-b">
 			<text class="cell-tit clamp">*商品名称</text>
 			<input type="text" class="cell-content" maxlength="40" v-model="title" placeholder="请输入商品名称" />
@@ -8,7 +9,6 @@
 			<text class="cell-tit clamp">副 标 题</text>
 			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @change="changeField"></mix-list-input>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
 		<view class="skus">
@@ -146,7 +146,7 @@
 		</view>
 		<view class="imgs b-b">
 			<scroll-view scroll-x class="h-list" v-if="imgsPreview.length > 0">
-				<view v-for="(item, index) in imgsPreview" :key="index" class="h-list-image">
+				<view v-for="(item, index) in imgsPreview" :key="index" class="h-list-image" @click="delImg(index)">
 					<image :src="item" mode="aspectFill"></image>
 				</view>
 			</scroll-view>
@@ -245,6 +245,21 @@
 						<button class="add-btn" @click="navToSkuBuilder">下一步</button>
 					</view>
 				</block>
+			</view>
+		</uni-popup>
+		<uni-popup ref="showOtherGoods" type="center">
+			<view class="popup">
+				<view class="title">
+					<text>请选择一件商品</text>
+				</view>
+				<radio-group name="goods" @change="chooseOtherGoods">
+					<block v-for="(item, index) in otherGoods" :key="index">
+						<label class="mix-list-cell b-b">
+							<text class="cell-tit clamp">{{ item.title }}</text>
+							<radio :value="index+''" />
+						</label>
+					</block>
+				</radio-group>
 			</view>
 		</uni-popup>
 		<bory-dateTimePicker ref='date-time' :startYear="startYear" :endYear="endYear" :datestring="dateString"
@@ -361,7 +376,8 @@
 				tuangou: {},
 				dateKey: "",
 				dateString: "",
-				onlySelfTake: "0"
+				onlySelfTake: "0",
+				otherGoods: []
 			};
 		},
 		computed: {
@@ -428,7 +444,8 @@
 					this.srcPreview = this.src;
 				}
 				if (this.imgs) {
-					this.imgsPreview = this.imgs;
+					//组成新数组
+					this.imgsPreview = [...this.imgs];
 				}
 				if (this.banner) {
 					this.bannerPreview = this.banner;
@@ -662,12 +679,28 @@
 					'goods_imgs',
 					5,
 					srcs => {
-						this.imgsPreview = srcs;
+						this.imgsPreview = this.imgsPreview.concat(srcs);
 					},
 					srcs => {
-						this.imgs = srcs;
+						this.imgs = this.imgs.concat(srcs);
 					}
 				);
+			},
+			/**
+			 * 删除轮播图
+			 * @param {Object} index
+			 */
+			delImg(index) {
+				uni.showModal({
+					title: "删除图片",
+					content: "是否确定删除？",
+					success: (res) => {
+						if (res.confirm) {
+							this.imgsPreview.splice(index, 1)
+							this.imgs.splice(index, 1)
+						}
+					}
+				})
 			},
 			//banner横图
 			uploadBanner() {
@@ -688,12 +721,50 @@
 					'goods_imgs',
 					20,
 					srcs => {
-						this.descriptionImgs = srcs;
+						this.descriptionImgs = this.descriptionImgs.concat(srcs);
 					},
 					srcs => {
-						this.description = srcs.join(';');
+						if (this.description != "") {
+							this.description = [this.description, srcs.join(';')].join(";");
+						} else {
+							this.description = srcs.join(';');
+						}
 					}
 				);
+			},
+			/**
+			 * 优先查询数据库，如果存在一条，则直接填充，如果多条，提示选择
+			 * @param {Object} val
+			 */
+			changeUpc(val) {
+				if (val && val.trim() != "") {
+					goodsAdmin("list", {
+						page: 1,
+						limit: 50,
+						upc: val
+					},true).then(res => {
+						console.log(res)
+						if (res.length == 1) {
+							this.buildGoodsInfo(res[0]);
+							//默认单规格信息为主信息
+							this.loadSkuInfo();
+						} else {
+							this.otherGoods = res;
+							//排序，把自己店铺的先拿出来
+							this.$refs.showOtherGoods.open();
+						}
+					}, err => {
+						console.log("没有商品")
+					});
+				}
+			},
+			/**
+			 * 选中商品
+			 * @param {Object} e
+			 */
+			chooseOtherGoods(e) {
+				this.buildGoodsInfo(this.otherGoods[+e.detail.value]);
+				this.$refs.showOtherGoods.close();
 			},
 			changeField(val, field) {
 				console.log(val, field)
@@ -1018,6 +1089,10 @@
 
 		.cell-tit {
 			flex: 1;
+		}
+		.title{
+			text-align: center;
+			padding: 20rpx;
 		}
 	}
 

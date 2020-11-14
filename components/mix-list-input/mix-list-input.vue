@@ -111,6 +111,7 @@ export default {
 					console.log('条码内容：' + res.result);
 					this.content = res.result;
 					this.$emit('change', this.content,this.field);
+					this.$emit('blur', this.content,this.field);
 				}
 			});
 		},

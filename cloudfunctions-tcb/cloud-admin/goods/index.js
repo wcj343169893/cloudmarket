@@ -12,6 +12,7 @@ const list = async (data, context) => {
 		page,
 		limit,
 		key,
+		upc,
 		shopid,
 		state
 	} = data;
@@ -56,7 +57,7 @@ const list = async (data, context) => {
 	let {
 		conditions,
 		order
-	} = getStateCondition(state, shopid, fields, key);
+	} = getStateCondition(state, shopid, fields, key, upc);
 	if (state == "delete") {
 		goodsCollection2 = goodsDeleteCollection;
 	}
@@ -93,8 +94,11 @@ const save = async (data, context) => {
 		//修改,验证所有权
 		let isExists = await checkExists(_id, data.shopid);
 		if (!isExists) {
-			data.message = "原商品不存在";
-			return false;
+			/* data.message = "原商品不存在";
+			return false; */
+			//按新增处理
+			console.log("原商品不存在，按新增处理", _id);
+			return save(data, context);
 		}
 		data["modified"] = time;
 		let sts = ["miaosha", "yuding", "tuangou"];
@@ -118,6 +122,8 @@ const save = async (data, context) => {
 	data["onlineTime"] = time;
 	//创建时间
 	data["created"] = time;
+	//修改时间
+	data["modified"] = time;
 	//好评默认100%
 	data["score"] = 1;
 	//月售，真实月售需要结合定时器，每日凌晨更新goods_day_sales到goods里面
@@ -476,16 +482,22 @@ const getOneGoods = async (conditions, fields) => {
 	}
 	return goods.data[0];
 }
-
-const getStateCondition = (state, shopid, fields, key) => {
+/**
+ * 构造查询条件和排序
+ */
+const getStateCondition = (state, shopid, fields, key, upc) => {
 	let conditions = {
 		shopid
 	};
-	let order = ["id", "desc"];
+	let order = ["modified", "desc"];
 	let time = new Date().getTime();
 	//搜索词
 	if (key && key.trim().length > 0) {
 		conditions["title"] = new RegExp(key.trim());
+	}
+	if (upc) {
+		//限制店铺
+		conditions.upc = upc;
 	}
 	switch (state) {
 		case "online":
