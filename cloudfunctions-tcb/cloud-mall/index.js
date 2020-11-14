@@ -17,6 +17,7 @@ const modules = {
 	order: require('./order'),
 	product: require('./product'),
 	shop: require('./shop'),
+	selfraising: require('./selfraising'),
 }
 /**
  * 必须登录才能访问,cart子模块，list方法
@@ -35,7 +36,8 @@ const getUserInfoActions = {
 	home: ["index"],
 	category: ["main"],
 	order: ["dealstate"],
-	product: ["detail"]
+	product: ["detail"],
+	selfraising: ["*"],
 }
 
 /**

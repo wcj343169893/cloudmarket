@@ -73,6 +73,9 @@ const list = async (data, context) => {
 		deliveryType: 1,
 		selfRaising: 1,
 		deliveryHour: 1,
+		isRefunding: 1,
+		refundAmount: 1,
+		isRefundAll: 1,
 		remark: 1,
 		shopid: 1,
 		shop: 1,
@@ -214,7 +217,12 @@ const addDelivery = async (data) => {
 		_id: data._id,
 		shopid: data.shopid
 	};
-	let order = await getOrderById(conditions);
+	let order = await getOrderById(conditions, {
+		selfRaising: 1,
+		state: 1,
+		shopid: 1,
+		uid: 1
+	});
 	if (!order) {
 		data.message = "订单不存在";
 		return false;
@@ -231,6 +239,21 @@ const addDelivery = async (data) => {
 	});
 	//更新用户已发货和已收货
 	let resUser = await updateUserOrderCount(order.uid, "delivered", 1, "payup", order.shopid);
+	//TODO 自提订单，发送短信
+	if (order.selfRaising) {
+		/* const res = await uniCloud.sendSms({
+			smsKey: '****************',
+			smsSecret: '****************',
+			phone: order.selfRaising.mobile,
+			templateId: 'uniID_code',
+			data: {
+				name: 'DCloud',
+				code: '123456',
+				action: '注册',
+				expMinute: '3',
+			}
+		}) */
+	}
 	return res;
 }
 /**

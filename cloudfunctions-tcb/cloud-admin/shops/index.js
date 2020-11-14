@@ -81,6 +81,13 @@ const modules = {
 					isRefundAll: cmd.exists(false)
 				}
 			},
+			delivered: {
+				name: "待提货",
+				condition: {
+					state: 2,
+					isRefundAll: cmd.exists(false)
+				}
+			},
 			estimated: {
 				name: "已评价",
 				condition: {

@@ -814,7 +814,6 @@ const checkAppUpdate = (isForce, systemInfo, callback) => {
 const mapDistance = function(fromLatlng, toLatlng) {
 	console.log(fromLatlng, toLatlng)
 	return new Promise((resolve, reject) => {
-		console.log(fromLatlng)
 		uni.request({
 			url: `https://apis.map.qq.com/ws/distance/v1/matrix`,
 			data: {

@@ -1,7 +1,7 @@
 <template>
 	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
-		<view v-for="(item, index) in orderList" :key="index" class="order-item" :class="[item.shop.currency]"  @click="navToOrderDetail(item)">
+		<view v-for="(item, index) in orderList" :key="index" class="order-item" :class="[item.shop.currency]" @click="navToOrderDetail(item)">
 			<view class="i-top b-b">
 				<text class="time">{{ item.created  | dateFormat('yyyy-MM-dd hh:mm:ss')  }}</text>
 				<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
@@ -69,10 +69,14 @@
 			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
-				<view class="action-box b-t"><button class="action-btn recom" @click.stop="addDelivery(item,index)">确定发货</button></view>
+				<view class="action-box b-t"><button class="action-btn recom" v-if="item.isCanDelivery" @click.stop="addDelivery(item,index)">确定发货</button></view>
 			</block>
 			<!-- 已发货 -->
-			<block v-if="item.state == 2"></block>
+			<block v-if="item.state == 2">
+				<view class="action-box b-t">
+					<button class="action-btn recom" v-if="item.deliveryType == 'selfRaising'" @click.stop="selftakeOrder(item,index)">确定提货</button>
+				</view>
+			</block>
 			<!-- 已收货，待评价 -->
 			<view class="action-box b-t" v-if="item.state == 3"><button class="action-btn" @click.stop="evaluateOrder(item)">查看评价</button></view>
 		</view>
@@ -133,7 +137,9 @@
 							if (ele.yuding) {
 								ele.priceTitle = "预售价";
 							}
-							checkDeliveryHour(ele)
+							checkDeliveryHour(ele);
+							ele.isCanDelivery = ele.cartCount - (ele.isRefunding ? ele.isRefunding : 0) - (ele.refundAmount ? ele.refundAmount :
+								0) > 0;
 						});
 						this.orderList = this.orderList.concat(res);
 						if (res.length < this.limit) {
@@ -152,7 +158,7 @@
 			},
 			setNavTitle() {
 				let shopInfo = uni.getStorageSync("adminShopInfo");
-				if(shopInfo.orderTypes){
+				if (shopInfo.orderTypes) {
 					let orderTypes = shopInfo.orderTypes.filter(e => e.state == this.state);
 					uni.setNavigationBarTitle({
 						title: orderTypes[0].name
@@ -176,6 +182,21 @@
 				}, err => {
 					this.$api.msg("发货失败");
 				})
+			},
+			//确定自提，相当于商家确定收货
+			selftakeOrder(item, index) {
+				orderAdmin("selftake", {
+					_id: item._id,
+				}, true).then(
+					res => {
+						this.$api.msg('提货完成', 2000, false, "success");
+						item.state = 3;
+						Object.assign(this.orderList[index], this.orderStateExp(item))
+					},
+					err => {
+						this.$api.msg('提货失败');
+					}
+				);
 			},
 			navToOrderDetail(item) {
 				uni.setStorage({

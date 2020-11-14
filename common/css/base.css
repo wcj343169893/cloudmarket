@@ -6,6 +6,9 @@
 .weui-flex__item {
 	flex: 1;
 }
+.m-r{
+	margin-right: 12rpx;
+}
 
 button.small {
 	line-height: 48rpx;

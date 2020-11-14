@@ -602,6 +602,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/index/selfraisingpoint",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "选择自提点",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

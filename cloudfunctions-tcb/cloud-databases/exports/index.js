@@ -3,6 +3,7 @@ const db = uniCloud.database();
 const cmd = db.command;
 const goodsCollection = db.collection("cloud_goods");
 const usersCollection = db.collection("uni-id-users");
+const xlsx = require("node-xlsx");
 const {
 	getDayTime,
 	getDateFormat
@@ -54,13 +55,17 @@ const models = {
 		}
 		return outGoodsData;
 	},
+	async order(data) {
+		const {
+			state
+		} = data;
+	},
 	/**
 	 * 导出会员信息
 	 * @param {Object} data
 	 * @link http://api.cjblog.org/databases/exports/member?state=allMember
 	 */
 	async member(data) {
-		const xlsx = require("node-xlsx");
 		const {
 			state,
 			getContent

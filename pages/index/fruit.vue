@@ -13,9 +13,7 @@
 				<!-- 背景色区域 -->
 				<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 				<!--收货地址-->
-				<view class="titleNview-address" v-if="address != ''">
-					<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
-				</view>
+				<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address" @navToAddress="navToAddress"></addressPage>
 				<swiper class="carousel" circular @change="swiperChange">
 					<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
 						<image :src="item.src" />
@@ -31,9 +29,7 @@
 			<block v-else>
 				<view class="titleNview-background-tmp"></view>
 				<!--收货地址-->
-				<view class="titleNview-address" v-if="address != ''">
-					<navigator url="/pages/index/chooseAddress">送至:{{ address }}</navigator>
-				</view>
+				<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address" @navToAddress="navToAddress"></addressPage>
 			</block>
 		</view>
 		<!-- 口号 -->
@@ -53,7 +49,7 @@
 			</view>
 		</view>
 		<!-- 分类 -->
-		<view class="cate-section m-t" v-if="recommendCategoriesList.length > 0">
+		<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
 			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item.id)">
 				<image :src="item.src"></image>
 				<text>{{ item.name }}</text>
@@ -157,6 +153,7 @@
 	import yudingPage from './components/yuding.vue';
 	import normalPage from './components/normal.vue';
 	import bannerPage from './components/banner.vue';
+	import addressPage from './components/address.vue';
 	import tabbarMixin from './mixin/tabbar'
 	import {
 		getHomeFruitData,
@@ -180,7 +177,8 @@
 			miaoshaPage,
 			yudingPage,
 			normalPage,
-			bannerPage
+			bannerPage,
+			addressPage
 		},
 		data() {
 			return {
@@ -208,13 +206,18 @@
 			};
 		},
 		computed: {
-			...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location'])
+			...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location', 'isSelfRaisingPoint', 'raisingPoint'])
 		},
 		watch: {
 			location() {
 				console.log('watch location');
 				console.log(this.location);
 				this.address = this.location.name;
+				//重新加载数据
+				this.loadData();
+			},
+			raisingPoint() {
+				console.log('watch raisingPoint');
 				//重新加载数据
 				this.loadData();
 			},
@@ -533,6 +536,18 @@
 				uni.removeStorage({
 					key: "goodsInfo"
 				})
+			},
+			navToAddress() {
+				if (this.isSelfRaisingPoint) {
+					uni.navigateTo({
+						url: `/pages/index/selfraisingpoint`
+					});
+
+				} else {
+					uni.navigateTo({
+						url: `/pages/index/chooseAddress`
+					});
+				}
 			}
 		},
 		onShow() {
@@ -560,9 +575,7 @@
 			console.log('onNavigationBarButtonTap');
 			//this.$api.msg(index+" ");
 			if (index === 0) {
-				uni.navigateTo({
-					url: `/pages/index/chooseAddress`
-				});
+				this.navToAddress();
 			} else if (index === 1) {
 				// #ifdef APP-PLUS
 				//隐藏红点
@@ -596,6 +609,7 @@
 			.titleNview-background {
 				height: 380rpx;
 			}
+
 			.titleNview-background-tmp {
 				height: 70upx;
 			}
@@ -644,6 +658,8 @@
 			position: relative;
 			padding-left: 36upx;
 			padding-bottom: 12upx;
+			display: flex;
+			align-items: center;
 		}
 	}
 
@@ -751,6 +767,20 @@
 			margin-bottom: 14upx;
 			border-radius: 50%;
 			box-shadow: 4upx 4upx 20upx rgba(62, 147, 23, 0.3);
+		}
+
+		&.cs_6 {
+			.cate-item {
+				width: 110upx;
+				font-size: $font-ssm;
+			}
+		}
+
+		&.cs_7,
+		&.cs_8 {
+			.cate-item {
+				width: 160upx;
+			}
 		}
 	}
 

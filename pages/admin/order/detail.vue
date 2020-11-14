@@ -39,10 +39,10 @@
 				</view>
 				<view class="buttons">
 					<button type="default" class="action-btn" @click="printTicket">打印小票</button>
-					<block v-if="info.state == 1"><button type="default" class="action-btn" @click="addDelivery(false)">确定发货</button></block>
+					<block v-if="info.state == 1"><button type="default" class="action-btn" v-if="isCanDelivery" @click="addDelivery(false)">确定发货</button></block>
 					<block v-else-if="info.state == 2">
 						<block v-if="info.deliveryType == 'selfRaising'">
-							<button type="default" class="action-btn" @click="selftakeOrder()">确定提货</button>
+							<button type="default" class="action-btn" @click="selftakeOrder()" v-if="isCanDelivery">确定提货</button>
 						</block>
 					</block>
 					<block v-else-if="info.state == 4"><button type="default" class="action-btn recom" @click="evaluateOrder">查看评价</button></block>
@@ -97,12 +97,12 @@
 				</view>
 				<view class="weui-flex address b-b" v-if="info.userInfo">
 					<view class=""><text>用户信息</text></view>
-					<view class="weui-flex" >
+					<view class="weui-flex">
 						<image :src="info.userInfo.avatar | avatar" class="avatar" mode="aspectFill"></image>
 						<view class="">
 							<text v-if="info.userInfo.nickname">{{info.userInfo.nickname}}</text>
 							<view class="">
-								<text >{{info.userInfo.id}}</text>
+								<text>{{info.userInfo.id}}</text>
 							</view>
 						</view>
 					</view>
@@ -213,7 +213,7 @@
 									<view class="buttons">
 										<button type="default" v-if="item.state && item.state == 4" class="action-btn" @click.stop="refundOrder(item)">查看退款申请</button>
 
-										<button type="default" v-if="info.state == 1" class="action-btn" @click.stop="addDelivery(item)">单独发货</button>
+										<button type="default" v-if="info.state == 1 && item.isCanDelivery" class="action-btn" @click.stop="addDelivery(item)">单独发货</button>
 									</view>
 								</view>
 							</view>
@@ -296,11 +296,12 @@
 				goodsList: [],
 				goodsCount: 0,
 				maxShowCount: 3,
+				isCanDelivery: true,
 				shopid: 0,
 				info: {
-					shop:{}
+					shop: {}
 				},
-				isError:false
+				isError: false
 			};
 		},
 		onLoad(options) {
@@ -323,10 +324,10 @@
 					orderAdmin("detail", {
 						number: this.number,
 						password: this.password
-					},true).then(res => {
+					}, true).then(res => {
 						this.loaded = true;
 						this.orderInfo(res);
-					},err=>{
+					}, err => {
 						this.isError = true;
 					});
 				} else {
@@ -340,16 +341,17 @@
 						//从网络获取
 						orderAdmin("detail", {
 							_id: this.id
-						},true).then(res => {
+						}, true).then(res => {
 							this.loaded = true;
 							this.orderInfo(res);
-						},err=>{
+						}, err => {
 							this.isError = true;
 						});
 					}
 				}
 			},
 			orderInfo(res) {
+				console.log(res)
 				//订单状态
 				let {
 					stateTip,
@@ -363,9 +365,16 @@
 				//this.moreGoodsCount = res.goods.length - this.maxShowCount;
 				this.goodsCount = res.goods.length;
 				this.info = res;
+				res.goods.forEach(goods => {
+					goods.isCanDelivery = goods.amount - (goods.isRefunding ? goods.isRefunding : 0) - (goods.refundAmount ? goods.refundAmount :
+						0) > 0;
+				})
 				this.goodsList = res.goods;
 				this.shopid = this.info.shopid;
-				checkDeliveryHour(this.info)
+				checkDeliveryHour(this.info);
+				this.isCanDelivery = res.cartCount - (res.isRefunding ? res.isRefunding : 0) - (res.refundAmount ? res.refundAmount :
+					0) > 0;
+				console.log("this.isCanDelivery", this.isCanDelivery)
 			},
 			navToGoodsPage(item) {
 				navToGoodsItemPage(item);
@@ -386,7 +395,7 @@
 				} else {
 					orderAdmin("addDelivery", {
 						_id: this.id,
-					},true).then(
+					}, true).then(
 						res => {
 							this.$api.msg('发货成功', 2000, false, "success");
 							this.info.state = 2;
@@ -410,7 +419,7 @@
 			selftakeOrder() {
 				orderAdmin("selftake", {
 					_id: this.id,
-				},true).then(
+				}, true).then(
 					res => {
 						this.$api.msg('提货完成', 2000, false, "success");
 						this.info.state = 3;
@@ -431,7 +440,7 @@
 			printTicket() {
 				orderAdmin("print", {
 					_id: this.id,
-				},true).then(res => {
+				}, true).then(res => {
 					this.$api.success("打印完成")
 				}, err => {
 					this.$api.msg("打印失败")
@@ -668,7 +677,8 @@
 
 		.prices {
 			justify-content: space-between;
-			.important{
+
+			.important {
 				font-size: $font-lg;
 			}
 		}
@@ -691,7 +701,8 @@
 			flex: 1;
 			margin-right: 12upx;
 		}
-		.avatar{
+
+		.avatar {
 			width: 80rpx;
 			height: 80rpx;
 			border-radius: 50%;
@@ -735,7 +746,8 @@
 			color: $font-color-warning;
 		}
 	}
-	.error{
+
+	.error {
 		text-align: center;
 	}
 </style>

@@ -20,7 +20,7 @@ const models = {
 			"gender", "status", "mobile", "email",
 			"mobile_confirmed", "balance",
 			"email_confirmed", "avatar", "comment", "birthday",
-			"coupons", "score", "member"
+			"coupons", "score", "member", "raisingPoint"
 		]);
 		//查询报错
 		if (res.code > 0) {
@@ -160,6 +160,22 @@ const models = {
 		return await uniID.updateUser({
 			uid: data.uid,
 			...entity
+		});
+	},
+	/**
+	 * 设置用户的自提点
+	 * @param {Object} data
+	 */
+	async setSelfRaisingPoint(data) {
+		const {
+			uid,
+			raisingPoint
+		} = data;
+		//位置
+		raisingPoint.location = new db.Geo.Point(raisingPoint.longitude, raisingPoint.latitude);
+		return await uniID.updateUser({
+			uid,
+			raisingPoint
 		});
 	},
 	/**

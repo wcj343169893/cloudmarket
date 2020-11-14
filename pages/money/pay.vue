@@ -16,7 +16,7 @@
 							<text>{{ item.desc }}</text>
 							<text v-if="!item.usable">{{ item.usableText }}</text>
 						</view>
-						<radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="index == 0" />
+						<radio :value="item.value" :disabled="!item.usable" color="#54b85d" :checked="payType == item.value" />
 					</label>
 				</block>
 			</radio-group>
@@ -91,8 +91,12 @@
 						this.orderInfo = res.order;
 						this.payment = res.payment;
 						if (res.payment.length > 0) {
-							//默认第一条
-							this.payType = res.payment[0].value;
+							//默认可用的第一条
+							let enablePayments = res.payment.filter((item)=>item.usable);
+							console.log(enablePayments)
+							if(enablePayments.length > 0){
+								this.payType = enablePayments[0].value;
+							}
 						}
 						//写入缓存
 						uni.setStorage({

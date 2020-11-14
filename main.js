@@ -13,7 +13,7 @@ import {
 } from '@/common/common.js'
 
 import mixin from './common/mixin/mixin'
-Vue.mixin(mixin) 
+Vue.mixin(mixin)
 
 Vue.config.productionTip = false
 Vue.prototype.$config = config;
@@ -62,14 +62,14 @@ Vue.filter('dateFormat', function(value, fmt) {
  * @param {Object} num
  */
 Vue.filter('toFixed', function(value, num) {
-	if(!num){
+	if (!num) {
 		//默认2位小数
-		num=2;
+		num = 2;
 	}
-	if(!value){
+	if (!value) {
 		return 0;
 	}
-	if(typeof(value)=="number"){
+	if (typeof(value) == "number") {
 		return value.toFixed(num);
 	}
 	return value;
@@ -79,18 +79,28 @@ Vue.filter('toFixed', function(value, num) {
  * @param {Object} value
  * @param {Object} num
  */
-Vue.filter('thumbImg', (value, fmt) =>{
-	if(!fmt){
+Vue.filter('thumbImg', (value, fmt) => {
+	if (!fmt) {
 		//腾讯云   ?imageMogr2/thumbnail/!200x200r/|imageMogr2/gravity/center/crop/200x200/interlace/0
-		fmt="";
+		fmt = "";
 	}
 	return value;
 });
-Vue.filter('avatar', (value) =>{
-	if(!value){
+Vue.filter('avatar', (value) => {
+	if (!value) {
 		return "/static/missing-face.png";
 	}
 	return value;
+});
+Vue.filter('formatDistance', (value) => {
+	if (!value) {
+		return "0m";
+	}
+	console.log(value)
+	if (value < 1000) {
+		return value + "m"
+	}
+	return value / 1000 + "km";
 });
 
 App.mpType = 'app'

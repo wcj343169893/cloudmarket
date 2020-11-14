@@ -50,7 +50,8 @@
 				serviceTime: "",
 				deliveryTypeMap: {
 					deliveryHome: "配送到家",
-					selfRaising: "到店自提/自提点",
+					selfRaising: "到店自提",
+					selfRaisingPoint: "自提点(不与到家/到店同享)",
 				},
 				deliveryTypes: [],
 				isPrint: false,
@@ -274,7 +275,11 @@
 					this.$api.success("修改成功");
 					setTimeout(() => {
 						//上一个页面刷新
-						this.$api.prePage().refreshList();
+						try{
+							this.$api.prePage().refreshList();
+						}catch(e){
+							//TODO handle the exception
+						}
 					}, 2000)
 				}, err => {
 					this.$api.msg("修改失败");

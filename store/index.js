@@ -22,6 +22,7 @@ const store = new Vuex.Store({
 		token: '',
 		stationId: 0, //分站id
 		shopId: 0, //分站店铺id，根据收货地址动态设置
+		isSelfRaisingPoint: false, //是否开启自提点,与到家和到店不同享
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
 		cartCount: 0, //购物车总数
@@ -35,8 +36,12 @@ const store = new Vuex.Store({
 			longitude: 0, //经度
 			name: "" //地址名称
 		},
-		globalClass:"",
-		globalAdminClass:"",
+		/**
+		 * 自提点位置
+		 */
+		raisingPoint: {},
+		globalClass: "",
+		globalAdminClass: "",
 		inviteCode: "",
 		userInfo: baseUserInfo,
 		jgLoginInit: false
@@ -115,7 +120,8 @@ const store = new Vuex.Store({
 		changeShopId(state, shop) {
 			state.shopId = shop.id;
 			state.categoryId = 0;
-			if(shop.currency){
+			state.isSelfRaisingPoint = shop.deliveryTypes && shop.deliveryTypes.indexOf("selfRaisingPoint") != -1;
+			if (shop.currency) {
 				state.globalClass = shop.currency;
 			}
 			console.log("store changeShopId");
@@ -137,7 +143,7 @@ const store = new Vuex.Store({
 		//设置管理店铺id
 		setAdminShop(state, shop) {
 			state.adminShopId = shop.id;
-			if(shop.currency){
+			if (shop.currency) {
 				state.globalAdminClass = shop.currency;
 			}
 			uni.setStorageSync('adminShopId', shop.id);
@@ -197,6 +203,11 @@ const store = new Vuex.Store({
 					...baseUserInfo,
 					...res
 				});
+				//用户选择的自提点
+				if(info.raisingPoint){
+					state.raisingPoint = info.raisingPoint;
+					delete info.raisingPoint;
+				}
 				state.userInfo = info;
 
 				uni.$emit('refreshCart'); //全局更新购物车
