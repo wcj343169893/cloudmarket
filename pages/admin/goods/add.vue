@@ -862,6 +862,7 @@
 					info.yuding.deduction = +info.yuding.deduction;
 					if (info.yuding.price + info.yuding.deduction >= info.price) {
 						this.$api.msg("预售价必须小于零售价")
+						this.submiting = false;
 						return;
 					}
 				} else if (this.saleType == "tuangou") {
@@ -889,6 +890,7 @@
 					info.tuangou.price = +info.tuangou.price;
 					if (info.tuangou.price >= info.price) {
 						this.$api.msg("团购价必须小于零售价")
+						this.submiting = false;
 						return;
 					}
 				}
