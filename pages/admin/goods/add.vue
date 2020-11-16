@@ -372,6 +372,7 @@
 					yuding: '提前预定',
 					tuangou: '社区团购',
 				},
+				miaosha: {},
 				yuding: {},
 				tuangou: {},
 				dateKey: "",
@@ -459,6 +460,9 @@
 				}
 				if (this.yuding && this.yuding.beginTime > 0) {
 					this.saleType = 'yuding';
+				}
+				if(this.miaosha && this.miaosha.endTime > Date.now()){
+					this.saleTypes.normal="秒杀销售";
 				}
 				this.categoryIdTmp = this.categories;
 				//异步查询商品详细
