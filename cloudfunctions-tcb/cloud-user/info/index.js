@@ -239,9 +239,11 @@ const models = {
 	 * @param {Object} shop
 	 */
 	async getShopOrderStatistics(shop) {
+		let time = new Date().getTime();
 		let statistics = {
 			unpaid: {
-				state: 0
+				state: 0,
+				lastPayTime: cmd.gt(time)
 			},
 			payup: {
 				state: 1,

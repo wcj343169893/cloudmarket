@@ -59,6 +59,7 @@ const modules = {
 	 * @param {Object} shop
 	 */
 	async getOrderStatistics(shop) {
+		let time = new Date().getTime();
 		//-2:deleted已删除，-1:canceled已取消，0:unpaid未付款，1:payup已付款，
 		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 		let statistics = {
@@ -71,7 +72,8 @@ const modules = {
 			unpaid: {
 				name: "待付款",
 				condition: {
-					state: 0
+					state: 0,
+					lastPayTime: cmd.gt(time)
 				}
 			},
 			payup: {
