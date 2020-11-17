@@ -247,72 +247,6 @@
 				"navigationBarTitleText": "限时抢购"
 			}
 		}, {
-			"path": "pages/admin/admin",
-			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue60f",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/admin/goods/list",
-			"style": {
-				"navigationBarTitleText": "商品列表",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/admin/goods/add",
-			"style": {
-				"navigationBarTitleText": "增加商品"
-			}
-		}, {
-			"path": "pages/admin/order/list",
-			"style": {
-				"navigationBarTitleText": "订单列表",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/admin/order/detail",
-			"style": {
-				"navigationBarTitleText": "订单详情",
-				"navigationStyle": "custom"
-			}
-		}, {
 			"path": "pages/user/team",
 			"style": {}
 		}, {
@@ -348,107 +282,8 @@
 				"navigationBarTitleText": ""
 			}
 		}, {
-			"path": "pages/admin/goods/skusBuilder",
-			"style": {
-				"navigationBarTitleText": "多规格构造器"
-			}
-		}, {
-			"path": "pages/admin/goods/category",
-			"style": {
-				"navigationBarTitleText": "分类管理"
-			}
-		}, {
-			"path": "pages/admin/goods/miaosha/list",
-			"style": {
-				"navigationBarTitleText": "秒杀管理"
-			}
-		}, {
-			"path": "pages/admin/ad/list",
-			"style": {
-				"navigationBarTitleText": "广告图管理"
-			}
-		}, {
-			"path": "pages/admin/ad/add",
-			"style": {
-				"navigationBarTitleText": "新增广告图"
-			}
-		}, {
-			"path": "pages/admin/goods/miaosha/add",
-			"style": {
-				"navigationBarTitleText": "新增秒杀"
-			}
-		}, {
-			"path": "pages/admin/docs/list",
-			"style": {
-				"navigationBarTitleText": "文档管理",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/admin/docs/add",
-			"style": {
-				"navigationBarTitleText": "新增文档"
-			}
-		}, {
-			"path": "pages/admin/set/set",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		}, {
-			"path": "pages/admin/set/delivery",
-			"style": {
-				"navigationBarTitleText": "配送到家设置"
-			}
-		}, {
-			"path": "pages/admin/set/printer/add",
-			"style": {
-				"navigationBarTitleText": "新增打印终端"
-			}
-		}, {
-			"path": "pages/admin/set/printer/list",
-			"style": {
-				"navigationBarTitleText": "打印终端管理"
-			}
-		}, {
-			"path": "pages/admin/order/numbers",
-			"style": {
-				"navigationBarTitleText": "输码验证"
-			}
-		}, {
 			"path": "pages/index/tuangou",
 			"style": {}
-		}, {
-			"path": "pages/admin/user/list",
-			"style": {
-				"navigationBarTitleText": "用户管理",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"fontSrc": "/static/yticon.ttf",
-							"text": "\ue7ce",
-							"fontSize": "24",
-							"color": "#303133",
-							"width": "46px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
-			"path": "pages/admin/search",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
 		}, {
 			"path": "pages/order/refund",
 			"style": {
@@ -460,35 +295,9 @@
 				"navigationBarTitleText": "退款详情"
 			}
 		}, {
-			"path": "pages/admin/set/pages",
-			"style": {
-				"navigationBarTitleText": "页面配置"
-			}
-		}, {
-			"path": "pages/admin/order/refund/list",
-			"style": {
-				"navigationBarTitleText": "退款申请",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "历史记录",
-							"fontSize": "12",
-							"color": "#303133",
-							"width": "52px",
-							"background": "rgba(0,0,0,0)"
-						}]
-					}
-				}
-			}
-		}, {
 			"path": "pages/user/balancelog",
 			"style": {
 				"navigationBarTitleText": "零钱明细"
-			}
-		}, {
-			"path": "pages/admin/order/refund/history",
-			"style": {
-				"navigationBarTitleText": "退款历史记录"
 			}
 		}, {
 			"path": "pages/index/marketCategory",
@@ -533,41 +342,53 @@
 				}
 			}
 		}, {
-			"path": "pages/admin/set/comment/tags",
+			"path": "pages/product/comment",
 			"style": {
-				"navigationBarTitleText": "评论标签管理"
-			}
-		}
-	    ,{
-            "path" : "pages/product/comment",
-            "style" : {
 				"navigationBarTitleText": "用户评价"
 			}
-        }
-        ,{
-            "path" : "pages/admin/statistics/datas",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "经营数据",
-                "enablePullDownRefresh": true
-            }
-            
-        }
-        ,{
-            "path" : "pages/admin/activities/list",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "营销活动",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/admin/activities/special/list",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "专题",
-                "enablePullDownRefresh": false,
+		}, {
+			"path": "pages/user/vip/add",
+			"style": {
+				"navigationBarTitleText": "会员卡申请",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/selfraisingpoint",
+			"style": {
+				"navigationBarTitleText": "选择自提点",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"subPackages": [{
+		"root": "pages/admin",
+		"pages": [{
+			"path": "admin",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60f",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "goods/list",
+			"style": {
+				"navigationBarTitleText": "商品列表",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -580,38 +401,214 @@
 						}]
 					}
 				}
-            }
-            
-        }
-        ,{
-            "path" : "pages/admin/activities/special/add",
-            "style" :                                                                                    
-            {
+			}
+		}, {
+			"path": "goods/add",
+			"style": {
+				"navigationBarTitleText": "增加商品"
+			}
+		}, {
+			"path": "order/list",
+			"style": {
+				"navigationBarTitleText": "订单列表",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "order/detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "set/comment/tags",
+			"style": {
+				"navigationBarTitleText": "评论标签管理"
+			}
+		}, {
+			"path": "statistics/datas",
+			"style": {
+				"navigationBarTitleText": "经营数据",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "activities/list",
+			"style": {
+				"navigationBarTitleText": "营销活动",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "activities/special/list",
+			"style": {
+				"navigationBarTitleText": "专题",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+
+		}, {
+			"path": "activities/special/add",
+			"style": {
 				"navigationStyle": "custom",
-                "navigationBarTitleText": "新增专题",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/user/vip/add",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "会员卡申请",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/index/selfraisingpoint",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "选择自提点",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+				"navigationBarTitleText": "新增专题",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "goods/skusBuilder",
+			"style": {
+				"navigationBarTitleText": "多规格构造器"
+			}
+		}, {
+			"path": "goods/category",
+			"style": {
+				"navigationBarTitleText": "分类管理"
+			}
+		}, {
+			"path": "goods/miaosha/list",
+			"style": {
+				"navigationBarTitleText": "秒杀管理"
+			}
+		}, {
+			"path": "ad/list",
+			"style": {
+				"navigationBarTitleText": "广告图管理"
+			}
+		}, {
+			"path": "ad/add",
+			"style": {
+				"navigationBarTitleText": "新增广告图"
+			}
+		}, {
+			"path": "goods/miaosha/add",
+			"style": {
+				"navigationBarTitleText": "新增秒杀"
+			}
+		}, {
+			"path": "docs/list",
+			"style": {
+				"navigationBarTitleText": "文档管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "docs/add",
+			"style": {
+				"navigationBarTitleText": "新增文档"
+			}
+		}, {
+			"path": "set/set",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		}, {
+			"path": "set/delivery",
+			"style": {
+				"navigationBarTitleText": "配送到家设置"
+			}
+		}, {
+			"path": "set/printer/add",
+			"style": {
+				"navigationBarTitleText": "新增打印终端"
+			}
+		}, {
+			"path": "set/printer/list",
+			"style": {
+				"navigationBarTitleText": "打印终端管理"
+			}
+		}, {
+			"path": "order/numbers",
+			"style": {
+				"navigationBarTitleText": "输码验证"
+			}
+		}, {
+			"path": "user/list",
+			"style": {
+				"navigationBarTitleText": "用户管理",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue7ce",
+							"fontSize": "24",
+							"color": "#303133",
+							"width": "46px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		}, {
+			"path": "set/pages",
+			"style": {
+				"navigationBarTitleText": "页面配置"
+			}
+		}, {
+			"path": "order/refund/list",
+			"style": {
+				"navigationBarTitleText": "退款申请",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "历史记录",
+							"fontSize": "12",
+							"color": "#303133",
+							"width": "52px",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		}, {
+			"path": "order/refund/history",
+			"style": {
+				"navigationBarTitleText": "退款历史记录"
+			}
+		}]
+	}],
+	"preloadRule": {
+		"pages/user/user": {
+			"network": "all",
+			"packages": ["pages/admin"]
+		}
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

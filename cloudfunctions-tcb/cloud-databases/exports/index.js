@@ -40,6 +40,16 @@ const models = {
 		}
 		return dbInit;
 	},
+	async users() {
+		let res = await usersCollection.where({
+			_id: cmd.exists(true)
+		}).limit(500).orderBy("id", "asc").get();
+		console.log("获得用户", res.data.length)
+		if (res.data.length > 0) {
+			return false;
+		}
+		return res.data;
+	},
 	/**
 	 * 导出商品数据，手动保存到imports中的goods.json，才能导入
 	 */
