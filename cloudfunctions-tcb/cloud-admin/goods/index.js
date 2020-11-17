@@ -101,13 +101,19 @@ const save = async (data, context) => {
 			return save(data, context);
 		}
 		data["modified"] = time;
-		let sts = ["miaosha", "yuding", "tuangou"];
-		if (data.saleType == "normal") {
-			for (let st of sts) {
-				data[st] = cmd.remove();
-			}
+		let sts = ["yuding", "tuangou"];
+		let rmField = {};
+		//预定和团购，会把秒杀去掉，避免双重优惠
+		if (sts.indexOf(data.saleType) != -1) {
+			sts.push("miaosha")
 		}
-		let res = await goodsCollection.doc(_id).update(data);
+		//把以前的字段删除
+		for (let st of sts) {
+			rmField[st] = cmd.remove();
+		}
+		let res = await goodsCollection.doc(_id).update({ ...rmField,
+			...data
+		});
 		if (res.goodsList == 0) {
 			//更新失败
 			data.message = "更新商品失败";

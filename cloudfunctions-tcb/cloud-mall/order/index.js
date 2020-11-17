@@ -381,6 +381,7 @@ const model = {
 			totalMoney: 1,
 			goods: 1,
 			shopid: 1,
+			shop: 1,
 			payInfo: 1,
 			yuding: 1,
 			refundApply: 1,
@@ -410,14 +411,18 @@ const model = {
 			data.message = "正在申请退款";
 			return false;
 		}
-		//将来要减去优惠券分摊部分
-		let total = parseInt(item.refundApplyAmount * goods.price * 100);
+		//将来要减去优惠券分摊部分，这里乘以店铺汇率
+		let currency = 1;
+		if (order.shop.currency) {
+			currency = order.shop.currency;
+		}
+		let total = parseInt(item.refundApplyAmount * currency * goods.price * 100);
 		let addRefundResult;
 		//预定订单，创建2个退款记录
 		if (order.yuding) {
 			/* addRefundResult = await addOrderRefund(uid, order.yuding.payInfo, order.yuding.price * 100, "申请退款", goods, order,
 				item); */
-			total -= order.yuding.price * 100;
+			total -= order.yuding.price * currency * 100;
 			console.log("addRefundResult", addRefundResult);
 		}
 		addRefundResult = await this.addOrderRefund(uid, order.payInfo, total, "申请退款", goods, order, item);
@@ -746,7 +751,7 @@ const model = {
 			inviteCode: 1,
 			latitude: 1,
 			longitude: 1,
-			refund: 1,//退货规则
+			refund: 1, //退货规则
 			delivery: 1,
 			deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
 			deliveryTypes: 1,
