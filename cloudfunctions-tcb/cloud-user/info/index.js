@@ -58,6 +58,7 @@ const models = {
 		//会员扩展信息
 		if (info) {
 			info.created = new Date().toISOString();
+			info.time = Date.now();
 			data.member = info;
 		}
 		//保存id

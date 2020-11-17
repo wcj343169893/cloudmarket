@@ -162,11 +162,11 @@ const models = {
 			},
 			yestertodayMember: {
 				member: cmd.exists(true),
-				register_date: cmd.gte(yestertodayTime).lt(todayTime)
+				"member.time": cmd.gte(yestertodayTime).lt(todayTime)
 			},
 			todayMember: {
 				member: cmd.exists(true),
-				register_date: cmd.gte(todayTime)
+				"member.time": cmd.gte(todayTime)
 			},
 		};
 		return statistics;

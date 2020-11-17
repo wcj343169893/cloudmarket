@@ -10,45 +10,17 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<yudingPage v-if="yuding" :yuding="yuding" :price="price" :title="title" :subTitle="subTitle"></yudingPage>
+		<block v-if="hasMiaosha">
+			<miaoshaPage :miaosha="miaosha" :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice"
+			 :monthlySale="monthlySale" :stock="stock" :visite="visite" :zhekou="zhekou"></miaoshaPage>
+			<normalPage :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice" :monthlySale="monthlySale"
+			 :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
+		</block>
+		<yudingPage v-else-if="yuding" :yuding="yuding" :price="price" :title="title" :subTitle="subTitle"></yudingPage>
 		<tuangouPage v-else-if="tuangou" :tuangou="tuangou" :price="originPrice" :title="title" :subTitle="subTitle"
 		 :monthlySale="monthlySale" :stock="stock"></tuangouPage>
-		<block v-else>
-			<miaoshaPage v-if="hasMiaosha" :miaosha="miaosha"></miaoshaPage>
-			<view class="introduce-section">
-				<text class="title">{{ title }}</text>
-				<view class="sub-title" v-if="subTitle && subTitle != ''">
-					<text>{{ subTitle }}</text>
-				</view>
-				<view class="price-box">
-					<text class="price">{{ price }}</text>
-					<block v-if="originPrice > 0 && originPrice > price">
-						<text class="price del">{{ originPrice }}</text>
-						<text class="coupon-tip">{{ zhekou }}折</text>
-					</block>
-				</view>
-				<view class="bot-row">
-					<text>月售: {{ monthlySale }}</text>
-					<text>库存: {{ stock }}</text>
-					<text>浏览量: {{ visite }}</text>
-				</view>
-			</view>
-		</block>
-
-		<!--  分享 -->
-		<!-- <view class="share-section" @click="share">
-			<view class="share-icon">
-				<text class="yticon icon-xingxing"></text>
-				返
-			</view>
-			<text class="tit">该商品分享可领49减10红包</text>
-			<text class="yticon icon-bangzhu1"></text>
-			<view class="share-btn">
-				立即分享
-				<text class="yticon icon-you"></text>
-			</view>
-		</view> -->
-
+		<normalPage v-else :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice" :monthlySale="monthlySale"
+		 :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
 		<view class="c-list " v-if="hasSku">
 			<view class="skuDialogPanel">
 				<view v-for="(item, index) in skuMap" :key="index">
@@ -157,6 +129,7 @@
 	import yudingPage from './components/yuding'; //预定页面
 	import tuangouPage from './components/tuangou'; //团购页面
 	import miaoshaPage from './components/miaosha'; //秒杀页面
+	import normalPage from './components/normal'; //秒杀页面
 	import commentPage from './components/comment.vue'; //评论列表
 	import {
 		showLoginDialog,
@@ -175,6 +148,7 @@
 			yudingPage,
 			miaoshaPage,
 			tuangouPage,
+			normalPage,
 			commentPage
 		},
 		data() {
@@ -446,13 +420,13 @@
 					this.getSaleRate();
 				}
 				//分享语
-				this.share={}
+				this.share = {}
 				if (item.share) {
 					this.share.title = item.share
 				} else {
 					this.share.title = item.title
 				}
-				if(!this.isCategoryShow){
+				if (!this.isCategoryShow) {
 					this.isSold = false;
 				}
 				this.loaded = true;

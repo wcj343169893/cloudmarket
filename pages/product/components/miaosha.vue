@@ -19,12 +19,12 @@
 	export default {
 		data() {
 			return {
-				
+
 			};
 		},
-		props:{
-			miaosha:{
-			type: Object,
+		props: {
+			miaosha: {
+				type: Object,
 				default: {}
 			},
 		}
@@ -32,7 +32,7 @@
 </script>
 
 <style lang="scss">
-.miaosha-section {
+	.miaosha-section {
 		$base-c: #e35650;
 		display: flex;
 		background: $base-c;

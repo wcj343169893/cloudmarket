@@ -148,14 +148,14 @@ const modules = {
 				name: "昨日会员",
 				condition: {
 					member: cmd.exists(true),
-					register_date: cmd.gte(yestertodayTime).lt(todayTime)
+					"member.time": cmd.gte(yestertodayTime).lt(todayTime)
 				}
 			},
 			todayMember: {
 				name: "今日会员",
 				condition: {
 					member: cmd.exists(true),
-					register_date: cmd.gte(todayTime)
+					"member.time": cmd.gte(todayTime)
 				}
 			},
 		};
