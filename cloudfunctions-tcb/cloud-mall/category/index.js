@@ -138,16 +138,24 @@ const cates = async (data) => {
 			cate.children = cate.children.filter(child => {
 				return child.isShow !== 0;
 			});
-			//存在推荐商品
-			if(cate.recommendGoods > 0){
-				//增加推荐分类
-				cate.children.unshift({
-					name: "推荐",
-					id: cate.id,
-					pid: cate.id,
-					isRecommend: 1
-				});
-			}
+		} else {
+			cate.children = [];
+		}
+		//自动创建本身
+		if (cate.children.length == 0) {
+			cate.children.unshift({
+				name: "全部",
+				id: cate.id,
+				pid: cate.id
+			});
+		} else if (cate.recommendGoods > 0) {
+			//存在推荐商品，增加推荐分类
+			cate.children.unshift({
+				name: "推荐",
+				id: cate.id,
+				pid: cate.id,
+				isRecommend: 1
+			});
 		}
 	})
 	return categories.data;

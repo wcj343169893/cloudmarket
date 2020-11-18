@@ -464,7 +464,7 @@
 					limit: this.limit,
 					cateid: category.id,
 					//sort: this.sortList.filter(item => item.current)[0].type,
-					isRecommend: category.id == category.pid,
+					isRecommend: !!category.isRecommend,
 					...sorts
 				}).then(
 					res => {
