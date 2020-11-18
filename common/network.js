@@ -50,6 +50,7 @@ const network = (options)=> {
 					reject(res.result);
 					return;
 				} else if (res.result.code === 401) {
+					uni.$emit('logoutEvent'); //全局更新购物车
 					//登录信息错误,需要重新登录
 					if (showLoginDialog && !isShowLoginDialog) {
 						isShowLoginDialog=true;
@@ -65,7 +66,6 @@ const network = (options)=> {
 									});
 								}
 								isShowLoginDialog=false;
-								uni.$emit('logoutEvent'); //全局更新购物车
 							}
 						});
 						return;

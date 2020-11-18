@@ -70,8 +70,15 @@ const updateGoodsStock = function(ele, xishu) {
  */
 const updateUserOrderCount = async function(uid, type, number, type2, shopid, totalMoney) {
 	//此接口已废弃，用户订单统计，商家订单统计采用实时查询
-	return false;
-	let data = {
+	if (shopid > 0 && type == "payup") {
+		return await updateShopDayStatistics(shopid, {
+			turnover: cmd.inc(totalMoney),
+			"order.paid": cmd.inc(1),
+			"order.users": cmd.addToSet(uid)
+		});
+	}
+	/* return false;
+	 let data = {
 		order: {}
 	};
 	data.order[type] = cmd.inc(+number);
@@ -92,8 +99,8 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid, to
 				"order.users": cmd.addToSet(uid)
 			});
 		}
-	}
-	return res;
+	} 
+	return res; */
 }
 /**
  * 增加用户积分
@@ -275,7 +282,7 @@ const getDate = (time) => {
 /**
  * 生成今日和昨日的时间戳，目前有8小时时差
  */
-const getDayTime = ()=>{
+const getDayTime = () => {
 	let date = getDate();
 	date.setHours(0);
 	date.setMinutes(0);
