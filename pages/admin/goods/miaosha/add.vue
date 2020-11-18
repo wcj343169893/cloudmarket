@@ -46,6 +46,12 @@
 		</view>
 		<!-- 折扣 -->
 		<view class="mix-list-cell b-b">
+			<text class="cell-tit clamp">*预告时间</text>
+			<kx-datetime class="cell-tip" :time="miaosha.showTime | dateFormat('yyyy-MM-dd hh:mm')" :end="beginTimeEndDate"
+			 @rundata="showTimeChange" :start="beginTimeStartDate" default="start"></kx-datetime>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="mix-list-cell b-b">
 			<text class="cell-tit clamp">*开始时间</text>
 			<kx-datetime class="cell-tip" :time="miaosha.beginTime | dateFormat('yyyy-MM-dd hh:mm')" :end="beginTimeEndDate"
 			 @rundata="beginTimeChange" :start="beginTimeStartDate" default="start"></kx-datetime>
@@ -161,6 +167,10 @@
 						this.$set(this.miaosha, 'rate', parseInt((this.miaosha.price / this.goods.price) * 100));
 					}
 					this.isLimit = this.miaosha.limit > 0;
+					if (!this.miaosha.showTime) {
+						//默认为开始时间的前34小时
+						this.miaosha.showTime = this.miaosha.beginTime + 24 * 3600 * 1000;
+					}
 				} else {
 					//默认参数
 					this.miaosha = {
@@ -195,6 +205,13 @@
 				let d = new Date();
 				d.setFullYear(d.getFullYear() + 1);
 				return dateFormat(d, 'yyyy-MM-dd');
+			},
+			//开始预告时间
+			showTimeChange(e) {
+				console.log(e);
+				//苹果时间问题
+				let d = new Date(e.replace(/-/g, '/'));
+				this.$set(this.miaosha, 'showTime', d.getTime());
 			},
 			beginTimeChange(e) {
 				console.log(e);

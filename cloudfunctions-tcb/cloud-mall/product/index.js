@@ -92,7 +92,7 @@ const models = {
 			isCategoryShow: 1,
 			isSold: 1,
 			"miaosha.stock": cmd.gt(0),
-			"miaosha.beginTime": cmd.lt(time + 24 * 3600 * 1000),
+			"miaosha.showTime": cmd.lt(time),
 			"miaosha.endTime": cmd.gt(time),
 		}).field({
 			_id: 0,

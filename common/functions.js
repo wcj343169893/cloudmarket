@@ -187,7 +187,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 		let isNewUser = !!goods.miaosha.isNewUser;
 		let newUserNotice = "首单";
 		goods.isCanAddToCart = !isNewUser;
-		if (goods.miaosha.beginTime > time + 24 * 3600 * 1000) {
+		if (!goods.miaosha.showTime) {
+			goods.miaosha.showTime = goods.miaosha.beginTime + 24 * 3600 * 1000;
+		}
+		if (goods.miaosha.showTime > time) {
 			//秒杀提前1天显示，这里不显示
 			delete goods.miaosha;
 		} else if (goods.miaosha.beginTime > time) {

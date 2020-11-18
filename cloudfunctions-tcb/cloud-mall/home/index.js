@@ -171,7 +171,7 @@ const models = {
 					isSold: 1,
 					miaosha: cmd.exists(true),
 					"miaosha.stock": cmd.gt(0),
-					"miaosha.beginTime": cmd.lt(time + 24 * 3600 * 1000),
+					"miaosha.showTime": cmd.lt(time),
 					"miaosha.endTime": cmd.gt(time),
 				},
 				sort: ["miaosha.beginTime", "asc"]
