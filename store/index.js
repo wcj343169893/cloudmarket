@@ -39,7 +39,9 @@ const store = new Vuex.Store({
 		/**
 		 * 自提点位置
 		 */
-		raisingPoint: {},
+		raisingPoint: {
+			name:"请选择自提点"
+		},
 		globalClass: "",
 		globalAdminClass: "",
 		inviteCode: "",
@@ -205,7 +207,7 @@ const store = new Vuex.Store({
 					...res
 				});
 				//用户选择的自提点
-				if(info.raisingPoint){
+				if(info.raisingPoint && info.raisingPoint._id){
 					state.raisingPoint = info.raisingPoint;
 					delete info.raisingPoint;
 				}

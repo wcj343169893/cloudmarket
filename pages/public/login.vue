@@ -319,7 +319,9 @@
 </script>
 
 <style lang="scss">
-	page {}
+	page {
+		background: #FFFFFF;
+	}
 
 	.mix-list-cell {
 		display: flex;
