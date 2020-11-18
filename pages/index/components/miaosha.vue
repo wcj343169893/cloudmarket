@@ -26,7 +26,8 @@
 							<text class="price">{{ item.price }}</text>
 							<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 						</view>
-						<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
+						<text v-if="item.isCanAddToCart" class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, item.miaosha.sku_id)"></text>
+						<text v-else class="sku_btn">查看</text>
 					</view>
 				</view>
 			</view>

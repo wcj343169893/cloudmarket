@@ -627,6 +627,10 @@ const model = {
 		let {
 			deliveryType
 		} = event;
+		let {
+			userInfo
+		} = context;
+		let isNewUser = !userInfo.order || userInfo.order.total == 0;
 		let beginTime = new Date().getTime();
 		//查询购物车选中数据
 		let shopid = parseInt(event.id);
@@ -825,6 +829,10 @@ const model = {
 							delete goo.skus;
 							if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
 								delete goo.miaosha;
+							} else if (!isNewUser && goo.miaosha.isNewUser) {
+								//新用户专享秒杀，如果已经下单过了，不再享受
+								console.log("老用户不享受秒杀价--多规格");
+								delete goo.miaosha;
 							}
 							goo["sku_id"] = sku.id;
 							delete sku.id;
@@ -838,6 +846,11 @@ const model = {
 					});
 				} else {
 					let key = ele.id + '_0';
+					if (!isNewUser && ele.miaosha.isNewUser) {
+						//新用户专享秒杀，如果已经下单过了，不再享受
+						console.log("老用户不享受秒杀价--单规格");
+						delete ele.miaosha;
+					}
 					Object.assign(ele, cartMap[key], {
 						hasSku: false,
 						name: "",
@@ -987,6 +1000,11 @@ const model = {
 				}
 				event.message = "商品库存不足";
 				event.data = data;
+				return false;
+			}
+			//再次校验商品必须存在
+			if (!data.goods || data.goods.length == 0) {
+				event.message = "提交订单失败!\n商品不存在";
 				return false;
 			}
 			let body = [];

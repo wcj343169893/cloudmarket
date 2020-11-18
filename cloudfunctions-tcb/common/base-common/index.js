@@ -69,18 +69,16 @@ const updateGoodsStock = function(ele, xishu) {
  * @param {Object} type2 类型转移到下一个类型，与type相反的数值
  */
 const updateUserOrderCount = async function(uid, type, number, type2, shopid, totalMoney) {
-	//此接口已废弃，用户订单统计，商家订单统计采用实时查询
-	if (shopid > 0 && type == "payup") {
-		return await updateShopDayStatistics(shopid, {
-			turnover: cmd.inc(totalMoney),
-			"order.paid": cmd.inc(1),
-			"order.users": cmd.addToSet(uid)
-		});
-	}
-	/* return false;
-	 let data = {
-		order: {}
+	//用户订单统计，商家订单统计采用实时查询
+	let data = {
+		order: {
+			total: cmd.inc(+number)
+		}
 	};
+	if (type == "unpaid") {
+		//订单总计
+		data.order["total"] = cmd.inc(+number);
+	}
 	data.order[type] = cmd.inc(+number);
 	if (type2) {
 		data.order[type2] = cmd.inc(+number * -1);
@@ -90,17 +88,19 @@ const updateUserOrderCount = async function(uid, type, number, type2, shopid, to
 	console.log(res);
 	//更新店铺订单数总计
 	if (shopid > 0) {
-		await updateShopStatistics(shopid, data);
+		res = await updateShopStatistics(shopid, data);
+		console.log(res);
 		//更新营业额，下单用户，已支付数量
 		if (type == "payup") {
-			await updateShopDayStatistics(shopid, {
+			res = await updateShopDayStatistics(shopid, {
 				turnover: cmd.inc(totalMoney),
 				"order.paid": cmd.inc(1),
 				"order.users": cmd.addToSet(uid)
 			});
+			console.log(res);
 		}
-	} 
-	return res; */
+	}
+	return res;
 }
 /**
  * 增加用户积分

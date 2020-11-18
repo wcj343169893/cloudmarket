@@ -95,7 +95,7 @@
 										<text class="price">{{ item.price }}</text>
 										<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 									</view>
-									<view class="sku_button" v-if="item.yuding"><text class="sku_btn">查看</text></view>
+									<view class="sku_button" v-if="item.yuding || !item.isCanAddToCart"><text class="sku_btn">查看</text></view>
 									<view class="sku_button" v-else-if="item.hasSku">
 										<text class="sub_number" v-if="item.cart > 0">{{ item.cart }}</text>
 										<text class="sku_btn" @click.stop="openSkus(item)">选规格</text>

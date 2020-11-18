@@ -100,13 +100,13 @@
 			</block>
 			<block v-else-if="tuangou">
 				<block v-if="tuangou.isBegin">
-					<button class="add-btn" @click="addToCart">加入购物车</button>
+					<button v-if="isCanAddToCart" class="add-btn" @click="addToCart">加入购物车</button>
 					<button class="add-btn spec" @click="buy">立即购买</button>
 				</block>
 				<button class="add-btn disabled" v-else>团购未开始</button>
 			</block>
 			<block v-else>
-				<button class="add-btn" @click="addToCart">加入购物车</button>
+				<button v-if="isCanAddToCart" class="add-btn" @click="addToCart">加入购物车</button>
 				<button class="add-btn spec" @click="buy">立即购买</button>
 			</block>
 		</view>
@@ -164,6 +164,7 @@
 				stock: 0,
 				visite: 0,
 				isSold: 1,
+				isCanAddToCart: true,
 				isCategoryShow: 1,
 				src: '',
 				imgs: [], //轮播图
