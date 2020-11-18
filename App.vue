@@ -240,6 +240,8 @@
 <style lang="scss">
 	@import url("./common/css/icon.css");
 	@import url("./common/css/font_taobao.css");
+	@import url("./common/css/colorui/main.css");
+	@import url("./common/css/colorui/icon.css");
 	@import url("./common/css/base.css");
 
 	view,

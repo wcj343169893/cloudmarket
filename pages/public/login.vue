@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<!-- #ifndef MP -->
 		<view class="mix-list-cell b-b">
 			<view class="region">
@@ -270,7 +270,7 @@
 					if (this.systemInfo.development) {
 						//测试入口，避免每次发送短信
 						let token =
-							"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDUxNDU0NzAsImV4cCI6MTYwNzczNzQ3MH0.gSApf9wMvNktDQJ2gdUyguvNAClUYt94_BnP97qQODM";
+							"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJiNGY3YjdkMjVmYjM3NzVkMDBiMGRlNGY1ZDg1NGVlMiIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDU2NjcyMjEsImV4cCI6MTYwODI1OTIyMX0.GFXIpysNMlKIo7RR5VSMWP4YW9Q5M7M43NusM6UHrgA";
 						//#ifdef APP-PLUS
 						token =
 							"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiY2QxNTkzMWM5NWZmYmFkY2QzMDhjODRjMjgzMzgyYTIiLCJpYXQiOjE2MDI4MTUyOTcsImV4cCI6MTYwNTQwNzI5N30.ANCBNBEPUgaQ2iIrbh6yVssPFoZukNwUgilyau12Puk";

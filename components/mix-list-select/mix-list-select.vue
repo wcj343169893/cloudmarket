@@ -1,24 +1,24 @@
 <template>
-	<view class="select-container">
+	<view class="select-container bg-white">
 		<mix-list-cell :title="title" :tips="tips2" :border="border" :navigateType="navigateType" @eventClick="selectSpecsType()"></mix-list-cell>
 		<uni-popup ref="showSpecsType" type="center">
-			<view class="popup">
-				<radio-group name="" @change="changeSpecsType" v-if="selectType == 'radio'">
-					<label class="mix-list-cell b-b" v-for="(item, index) in options" :key="index">
-						<text class="cell-tit clamp">{{ item }}</text>
-						<radio :value="index" :checked="def == index" />
+			<view class="flex bg-white cu-dialog">
+				<radio-group class="flex-sub" name="" @change="changeSpecsType" v-if="selectType == 'radio'">
+					<label class="cu-form-group" v-for="(item, index) in options" :key="index">
+						<view class="title">{{ item }}</view>
+						<radio :value="index" :checked="def == index" :class="def == index ?'checked':''"></radio>
 					</label>
 				</radio-group>
 				<block v-else>
 					<checkbox-group name="" @change="checkSpecsType">
-						<label class="mix-list-cell b-b" v-for="(item, index) in options" :key="index">
-							<text class="cell-tit clamp">{{ item }}</text>
-							<checkbox :value="index + ''" :checked="isChecked(index)" />
+						<label class="cu-form-group margin-top" v-for="(item, index) in options" :key="index">
+							<text class="title">{{ item }}</text>
+							<checkbox :value="index + ''" :checked="isChecked(index)" :class="isChecked(index) ?'checked':''"/>
 						</label>
 					</checkbox-group>
-					<view class="specsTitlesBtn">
-						<button class="add-btn cancel" @click="canceled">取消</button>
-						<button class="add-btn" @click="next">确定</button>
+					<view class="flex justify-center">
+						<button class="cu-btn bg-white margin-right-xs" @click="canceled">取消</button>
+						<button class="cu-btn bg-green" @click="next">确定</button>
 					</view>
 				</block>
 			</view>

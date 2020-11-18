@@ -21,7 +21,7 @@
 							</view>
 							<text class="address">
 								<text>{{ addressData.addressName }} {{ addressData.area }}</text>
-								<text v-if="juli > 0" class="m-l">距离:{{ juli }}km</text>
+								<text v-if="juli > 0" class="m-l">距离:{{ juli | formatDistance}}</text>
 							</text>
 						</view>
 						<text class="yticon icon-you"></text>
@@ -38,8 +38,25 @@
 				<mix-list-cell title="预计送达时间" border="" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
 			</block>
 			<block v-if="deliveryType == 'selfRaising'">
+				<!-- 自提点 -->
+				<view class="address-section b-b" v-if="isSelfRaisingPoint && raisingPoint._id" @click="navTo('/pages/index/selfraisingpoint')">
+					<view class="order-content">
+						<image :src="raisingPoint.src" mode="aspectFill" class="shoplogo"></image>
+						<view class="cen">
+							<view class="top">
+								<text class="name">{{ raisingPoint.name }}</text>
+								<text class="mobile">{{ raisingPoint.phone }}</text>
+							</view>
+							<text class="address">
+								<text>{{ raisingPoint.address }}</text>
+								<text v-if="zitiPointJuli > 0" class="m-l">距离:{{ zitiPointJuli | formatDistance}}</text>
+							</text>
+						</view>
+						<text class="yticon icon-you"></text>
+					</view>
+				</view>
 				<!-- 地址 -->
-				<view class="address-section b-b" @click="navToLocation(shop)">
+				<view class="address-section b-b" v-else @click="navToLocation(shop)">
 					<view class="order-content">
 						<image :src="shop.src" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
@@ -49,7 +66,7 @@
 							</view>
 							<text class="address">
 								<text>{{ shop.address }}</text>
-								<text v-if="zitiJuli > 0" class="m-l">距离:{{ zitiJuli }}km</text>
+								<text v-if="zitiJuli > 0" class="m-l">距离:{{ zitiJuli | formatDistance}}</text>
 							</text>
 						</view>
 						<text class="yticon icon-you"></text>
@@ -263,6 +280,7 @@
 				shop: {},
 				juli: 0,
 				zitiJuli: 0,
+				zitiPointJuli: 0,
 				selfRaising: {
 					name: "",
 					mobile: "",
@@ -284,7 +302,7 @@
 			this.loadData();
 		},
 		computed: {
-			...mapState(['hasLogin', 'shopId', 'stationId', 'location'])
+			...mapState(['hasLogin', 'shopId', 'stationId', 'location', 'isSelfRaisingPoint', 'raisingPoint'])
 		},
 		methods: {
 			async loadData() {
@@ -375,12 +393,26 @@
 					}
 				);
 			},
+			checkSelfRasingPoint() {
+				let fromLng = [];
+				if (this.raisingPoint && this.raisingPoint._id) {
+					fromLng.push([this.raisingPoint.latitude, this.raisingPoint.longitude].join(","));
+				}
+				mapDistance(fromLng.join(';'), this.shop.latitude + ',' + this.shop.longitude).then(res => {
+					console.log("mapDistance", res)
+					//自提点距离
+					this.zitiPointJuli = Number(res[0].elements[0].distance);
+				});
+			},
 			//检查收货地址是否在配送范围内
 			checkAddress() {
 				if (!this.addressData || !this.addressData.latitude) {
 					console.log("没有收货地址")
-					if(this.deliveryType=="selfRaising"){
+					if (this.deliveryType == "selfRaising") {
 						this.getFreight();
+						if (this.isSelfRaisingPoint) {
+							this.checkSelfRasingPoint();
+						}
 					}
 					return false;
 				}
@@ -388,20 +420,28 @@
 				let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' + this.location
 					.longitude
 				];
+				if (this.raisingPoint && this.raisingPoint._id) {
+					fromLng.push([this.raisingPoint.latitude, this.raisingPoint.longitude].join(","));
+				}
 				mapDistance(fromLng.join(';'), this.shop.latitude + ',' + this.shop.longitude).then(res => {
+					console.log("mapDistance", res)
 					//收货地址与店铺地址的距离
 					let juli = Number(res[0].elements[0].distance);
 					let zitiJuli = Number(res[1].elements[0].distance);
 					if (juli > 0) {
-						this.juli = juli / 1000;
+						this.juli = juli;
 						console.log('距离：', this.juli);
 						//超出配送范围
-						this.isOutOfRange = this.juli > this.shop.delivery.maxDistance;
+						this.isOutOfRange = this.juli / 1000 > this.shop.delivery.maxDistance;
 						//计算运费
 						this.getFreight();
 					}
 					if (zitiJuli > 0) {
-						this.zitiJuli = zitiJuli / 1000;
+						this.zitiJuli = zitiJuli;
+					}
+					if (res.length > 2) {
+						//自提点距离
+						this.zitiPointJuli = Number(res[2].elements[0].distance);
 					}
 				});
 			},
@@ -505,7 +545,7 @@
 					if (res.selfRaising) {
 						this.selfRaising = res.selfRaising;
 					}
-					if(this.deliveryType=="selfRaising"){
+					if (this.deliveryType == "selfRaising") {
 						//默认填写收货地址的姓名和电话
 						if (this.addressData.name && !this.selfRaising.name) {
 							this.selfRaising.name = this.addressData.name;
@@ -532,9 +572,15 @@
 					this.$api.msg('请填写收货地址');
 					return;
 				}
-				if (this.deliveryType == "selfRaising" && (!this.selfRaising.name || !this.selfRaising.mobile)) {
-					this.$api.msg('请填写自提姓名和手机号');
-					return;
+				if (this.deliveryType == "selfRaising") {
+					if (!this.selfRaising.name || !this.selfRaising.mobile) {
+						this.$api.msg('请填写自提姓名和手机号');
+						return;
+					}
+					if (!this.$api.checkStr(this.selfRaising.mobile, "mobile")) {
+						this.$api.msg('请填写自提手机号格式不正确');
+						return;
+					}
 				}
 				if (this.isSubmit) {
 					return;
@@ -552,6 +598,7 @@
 					deliveryHour: this.deliveryHour,
 					addressid: this.addressData._id,
 					selfRaising: this.selfRaising,
+					raisingPoint: this.isSelfRaisingPoint ? this.raisingPoint : undefined, //提货点自提
 					...this.ids
 				}, true).then(
 					res => {

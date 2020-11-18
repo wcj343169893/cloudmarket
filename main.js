@@ -9,6 +9,7 @@ import {
 	loading,
 	debounce,
 	throttle,
+	checkStr,
 	prePage,
 } from '@/common/common.js'
 
@@ -25,6 +26,7 @@ Vue.prototype.$api = {
 	debounce,
 	throttle,
 	loading,
+	checkStr,
 	prePage
 };
 /**
@@ -70,7 +72,7 @@ Vue.filter('toFixed', function(value, num) {
 		return 0;
 	}
 	if (typeof(value) == "number") {
-		return value.toFixed(num);
+		return value.toFixed(num).replace(".00","");
 	}
 	return value;
 });
@@ -96,7 +98,6 @@ Vue.filter('formatDistance', (value) => {
 	if (!value) {
 		return "0m";
 	}
-	console.log(value)
 	if (value < 1000) {
 		return value + "m"
 	}

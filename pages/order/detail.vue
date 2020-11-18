@@ -49,19 +49,40 @@
 			</view>
 		</view>
 		<view class="section ab m-t">
-			<view class="weui-flex address ">
-				<view @click="navToLocation(info.shop)">
-					<text>{{ info.shop.name }}</text>
+			<block v-if="info.raisingPoint">
+				<view class="weui-flex address ">
+					<view @click="navToLocation(info.raisingPoint)">
+						<text>自提点:{{ info.raisingPoint.name }}</text>
+					</view>
+					<view class="" @click="tel(info.raisingPoint.phone)" v-if="info.raisingPoint.phone">
+						<text class="yticon icon-dianhua-copy"></text>
+						<text class="m-l">联系</text>
+					</view>
+					<view class="" @click="tel(info.shop.phone)" v-else-if="info.shop.phone">
+						<text class="yticon icon-dianhua-copy"></text>
+						<text class="m-l">联系</text>
+					</view>
 				</view>
-				<view class="" @click="tel(info.shop.phone)" v-if="info.shop.phone">
-					<text class="yticon icon-dianhua-copy"></text>
-					<text class="m-l">联系</text>
+				<view class="weui-flex address b-b" @click="navToLocation(info.raisingPoint)">
+					<text>地址:{{ info.raisingPoint.address }}</text>
+					<text class="yticon icon-you"></text>
 				</view>
-			</view>
-			<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
-				<text>{{ info.shop.address }}</text>
-				<text class="yticon icon-you"></text>
-			</view>
+			</block>
+			<block v-else>
+				<view class="weui-flex address ">
+					<view @click="navToLocation(info.shop)">
+						<text>{{ info.shop.name }}</text>
+					</view>
+					<view class="" @click="tel(info.shop.phone)" v-if="info.shop.phone">
+						<text class="yticon icon-dianhua-copy"></text>
+						<text class="m-l">联系</text>
+					</view>
+				</view>
+				<view class="weui-flex address b-b" @click="navToLocation(info.shop)">
+					<text>地址:{{ info.shop.address }}</text>
+					<text class="yticon icon-you"></text>
+				</view>
+			</block>
 			<view class="weui-flex address b-b" v-if="info.deliveryHour">
 				<view><text>预约时间</text></view>
 				<view class="content">
@@ -369,7 +390,7 @@
 					loadMake: true, // 组件加载完成后自动生成二维码
 					src: '' // 二维码生成后的图片地址或base64
 				},
-				afterReceived:false
+				afterReceived: false
 			};
 		},
 		onLoad(options) {
@@ -435,7 +456,7 @@
 				this.info = res;
 				//收货后是否允许在线退货
 				this.afterReceived = this.info.shop.refund && this.info.shop.refund.afterReceived;
-				
+
 				res.goods.forEach(item => {
 					if (!item.refundAmount) {
 						item.refundAmount = 0;
@@ -443,7 +464,8 @@
 					if (!item.isRefunding) {
 						item.isRefunding = 0;
 					}
-					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding && (!this.info.makesureTime || !this.afterReceived);
+					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding && (!this.info.makesureTime || !this
+						.afterReceived);
 				})
 				if (this.moreGoodsCount > 0) {
 					this.goodsList = res.goods.slice(0, this.maxShowCount);
@@ -554,7 +576,7 @@
 				}).then(res => {
 					this.$api.success("申请成功");
 					this.info.isRefunding = 1;
-					this.$set(this.goodsList[this.refundItem.index],"isRefunding",1);
+					this.$set(this.goodsList[this.refundItem.index], "isRefunding", 1);
 					//this.goodsList[this.refundItem.index].isRefunding = 1;
 					this.goodsList[this.refundItem.index].canRefund = false;
 					this.updateState();
@@ -767,8 +789,6 @@
 	}
 
 	.weui-flex {
-		display: flex;
-		align-items: center;
 		position: relative;
 
 		&.start {
@@ -778,10 +798,6 @@
 		&.b-b {
 			padding-bottom: 12rpx;
 		}
-	}
-
-	.weui-flex__item {
-		flex: 1;
 	}
 
 	.header {

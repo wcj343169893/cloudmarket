@@ -11,6 +11,7 @@ const modules = {
 	users: require("./users"),
 	statistics: require("./statistics"),
 	special: require("./special"),
+	selfraising: require("./selfraising"),
 };
 const uniID = require('uni-id');
 /**

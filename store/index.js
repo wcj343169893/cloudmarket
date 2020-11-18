@@ -120,7 +120,8 @@ const store = new Vuex.Store({
 		changeShopId(state, shop) {
 			state.shopId = shop.id;
 			state.categoryId = 0;
-			state.isSelfRaisingPoint = shop.deliveryTypes && shop.deliveryTypes.indexOf("selfRaisingPoint") != -1;
+			//自提并且开启自提点
+			state.isSelfRaisingPoint = shop.selfRaisingPoint && shop.deliveryTypes.indexOf("selfRaising") != -1;
 			if (shop.currency) {
 				state.globalClass = shop.currency;
 			}

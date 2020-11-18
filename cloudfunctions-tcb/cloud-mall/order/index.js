@@ -84,6 +84,7 @@ const model = {
 			deliveryType: 1,
 			selfRaising: 1,
 			shop: 1,
+			raisingPoint: 1,
 			yuding: 1,
 			created: 1,
 			modified: 1,
@@ -209,6 +210,7 @@ const model = {
 			cancelStyle: 1,
 			shopid: 1,
 			shop: 1,
+			raisingPoint: 1,
 			freight: 1,
 			dayIndex: 1,
 			delivery: 1,
@@ -722,6 +724,10 @@ const model = {
 			} else if (type == "submit" && (!event.selfRaising || event.selfRaising.name == "")) {
 				event.message = "自提信息不存在";
 				return false;
+			}
+			//自提点信息
+			if (event.raisingPoint) {
+				data.raisingPoint = event.raisingPoint;
 			}
 		}
 		//查询默认收货地址,结算的时候，前端传addressid

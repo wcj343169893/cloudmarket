@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<empty v-if="loaded && printers.length == 0"></empty>
 		<view v-for="(item,index) in printers" :key="index" class="mix-list-cell b-b" hover-class="cell-hover"
 		 :hover-stay-time="50">

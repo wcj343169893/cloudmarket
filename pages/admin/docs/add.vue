@@ -7,7 +7,7 @@
 		</block>
 		<mix-list-input title="排序" type="number" :defContent="posid" placeholder="请输入排序" @change="changePosid"></mix-list-input>
 		<mix-list-input :isMust="!0" title="标题" :defContent="title" placeholder="请输入标题" @change="changeTitle"></mix-list-input>
-		<mix-list-input :defContent="content" type="textarea" :isMust="!0" title="内容" placeholder="请输入内容" @change="changeContent"></mix-list-input>
+		<mix-list-input :defContent="content" type="textarea" textAlign="content-left" :isMust="!0" title="内容" placeholder="请输入内容" @change="changeContent"></mix-list-input>
 		<view class="specsTitlesBtn"><button class="add-btn" @click="save">提交保存</button></view>
 	</view>
 </template>

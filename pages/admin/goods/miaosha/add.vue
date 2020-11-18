@@ -1,5 +1,5 @@
 <template>
-	<view class="container" :class="[globalAdminClass]">
+	<view class="container bg-white" :class="[globalAdminClass]">
 		<!-- 商品 -->
 		<block v-if="goods.id > 0">
 			<view class="goods-box-single b-b" @click="selectGoods()">
@@ -71,7 +71,7 @@
 		<view class="mix-list-cell" :class="{'b-b':isLimit}">
 			<text class="cell-tit clamp">是否限购</text>
 			<view class="cell-tip">
-				<switch @change="limitChange" :checked="isLimit" />
+				<switch @change="limitChange" :checked="isLimit" :class="isLimit ?'checked':''" />
 			</view>
 		</view>
 		<block v-if="isLimit">
@@ -82,7 +82,7 @@
 			<view class="mix-list-cell">
 				<text class="cell-tit clamp">新用户专享(首单)</text>
 				<view class="cell-tip">
-					<switch @change="newUserChange" :checked="miaosha.isNewUser" />
+					<switch @change="newUserChange" :checked="miaosha.isNewUser" :class="miaosha.isNewUser ?'checked':''"/>
 				</view>
 			</view>
 		</block>

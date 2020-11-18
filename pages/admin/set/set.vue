@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="mix-list-cell b-b" @click="changeAvatar" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="mix-list-cell b-b bg-white" @click="changeAvatar" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">图标</text>
 			<view class="cell-content content-right">
 				<image class="portrait" :src="src"></image>
@@ -13,6 +13,8 @@
 		<mix-list-input title="营业时间" :defContent="serviceTime" placeholder="请输入营业时间" @blur="changeServiceTime"></mix-list-input>
 		<mix-list-checkbox title="配送方式" field="deliveryTypes" type="checkbox" :defaultOptions="deliveryTypes" :options="deliveryTypeMap"
 		 @change="changeField"></mix-list-checkbox>
+		<mix-list-checkbox title="自提点" v-if="deliveryTypes && deliveryTypes.indexOf('selfRaising') !=-1" field="selfRaisingPoint"
+		 :defContent="selfRaisingPoint" @change="changeField"></mix-list-checkbox>
 		<mix-list-input title="支付倒计时" type="digit" :defContent="lastPayTimeMinute" field="lastPayTimeMinute" placeholder="请输入倒计时"
 		 @blur="changeFieldNumber">
 			<text class="moreText">分钟</text></mix-list-input>
@@ -50,8 +52,7 @@
 				serviceTime: "",
 				deliveryTypeMap: {
 					deliveryHome: "配送到家",
-					selfRaising: "到店自提",
-					selfRaisingPoint: "自提点(不与到家/到店同享)",
+					selfRaising: "到店/自提点自提"
 				},
 				deliveryTypes: [],
 				isPrint: false,
@@ -59,6 +60,7 @@
 				printers: [],
 				printersName: "",
 				exchangeRate: 1,
+				selfRaisingPoint: false,
 				lastPayTimeMinute: 5,
 				refund: {
 					days: 7,
@@ -275,9 +277,9 @@
 					this.$api.success("修改成功");
 					setTimeout(() => {
 						//上一个页面刷新
-						try{
+						try {
 							this.$api.prePage().refreshList();
-						}catch(e){
+						} catch (e) {
 							//TODO handle the exception
 						}
 					}, 2000)

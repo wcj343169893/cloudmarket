@@ -7,7 +7,7 @@
 		<view class="tongji">
 			<view v-for="(item,index) in statisticsData" :key="index" class="item">
 				<text class="name">{{item.name}}</text>
-				<text>{{item.count}}</text>
+				<text>{{item.count | toFixed}}</text>
 			</view>
 		</view>
 	</view>

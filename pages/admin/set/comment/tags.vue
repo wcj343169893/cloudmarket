@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<view v-for="(item,index) in tags" :key="index" class="item b-b">
 			<input type="text" v-model="item.name" placeholder="请输入"/>
 			<view class="buttons">

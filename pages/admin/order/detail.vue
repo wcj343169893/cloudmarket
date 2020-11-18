@@ -60,6 +60,21 @@
 					</view>
 				</view>
 				<block v-if="info.deliveryType == 'selfRaising'">
+					<block v-if="info.raisingPoint">
+						<view class="weui-flex address ">
+							<view @click="openMap(info.raisingPoint)">
+								<text>自提点:{{ info.raisingPoint.name }}</text>
+							</view>
+							<view class="" @click="tel(info.raisingPoint.phone)" v-if="info.raisingPoint.phone">
+								<text class="yticon icon-dianhua-copy"></text>
+								<text class="m-l">联系</text>
+							</view>
+						</view>
+						<view class="weui-flex address b-b" @click="openMap(info.raisingPoint)">
+							<text>地址:{{ info.raisingPoint.address }}</text>
+							<text class="yticon icon-you"></text>
+						</view>
+					</block>
 					<view class="weui-flex address b-b" v-if="info.deliveryHour">
 						<view>
 							<text>提货码:</text>
@@ -468,7 +483,7 @@
 			//打开地图
 			openMap(address) {
 				uni.openLocation({
-					name: address.addressName,
+					name: address.addressName || address.name,
 					address: address.address,
 					latitude: address.latitude,
 					longitude: address.longitude,

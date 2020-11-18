@@ -1,5 +1,5 @@
 <template>
-	<view class="input-container">
+	<view class="input-container bg-white">
 		<view class="mix-list-cell" :class="[border,type]">
 			<text class="cell-tit clamp" v-if="title && title.length>0">
 				<text v-if="isMust">*</text>

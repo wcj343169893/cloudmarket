@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @blur="changeUpc"></mix-list-input>
 		<view class="mix-list-cell b-b">
 			<text class="cell-tit clamp">*商品名称</text>
@@ -10,7 +10,11 @@
 			<input type="text" class="cell-content" maxlength="80" v-model="subTitle" placeholder="请输入副标题" />
 		</view>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
-		<mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell>
+		<!-- <mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell> -->
+		<mix-list-select border="b-b" @eventClick="changeSpecsType" title="规格和库存" :options="specsTypes" :defaultOption="specsType"></mix-list-select>
+		<block v-if="specsTypeTmp == 'multiple'">
+			<mix-list-cell title="规格名称" :tips="skuname.join('，')" @eventClick="navToSkuBuilder()"></mix-list-cell>
+		</block>
 		<view class="skus">
 			<block v-if="specsType == 'single'">
 				<admin-goods-sku :info="singleInfo" title="" @change="changeSku"></admin-goods-sku>
@@ -181,13 +185,15 @@
 							<view v-for="(itg,tindex) in deliveryTagNames" :key="tindex">
 								<label>
 									<text class="m-r">{{itg.name}}</text>
-									<checkbox :value="itg.value" :checked="deliveryTags.indexOf(itg.value) != -1" />
+									<checkbox :value="itg.value" :checked="deliveryTags.indexOf(itg.value) != -1" :class="deliveryTags.indexOf(itg.value) != -1?'checked':''" />
 								</label>
 							</view>
 						</checkbox-group>
 						<checkbox-group name="onlySelfTake" @change="changeOnlySelfTake">
-							<text class="m-r">仅自提</text>
-							<checkbox value="1" :checked="onlySelfTake==1" />
+							<label>
+								<text class="m-r">仅自提</text>
+								<checkbox value="1" :checked="onlySelfTake==1" :class="onlySelfTake==1?'checked':''" />
+							</label>
 						</checkbox-group>
 					</view>
 				</view>
@@ -209,7 +215,7 @@
 							</view>
 							<view class="children">
 								<label class="mix-list-cell b-b" v-for="(child, childindex) in item.children" :key="childindex">
-									<radio :value="index + '_' + item.id + '_' + child.id" :checked="child.checked" />
+									<radio :value="index + '_' + item.id + '_' + child.id" :checked="child.checked" :class="child.checked?'checked':''" />
 									<text class="cell-tit clamp">{{ child.name }}</text>
 								</label>
 							</view>
@@ -220,14 +226,14 @@
 		</uni-popup>
 		<uni-popup ref="showSpecsType" type="center">
 			<view class="popup">
-				<radio-group name="skus" @change="changeSpecsType">
+				<!-- 	<radio-group name="skus" @change="changeSpecsType">
 					<block v-for="(item, index) in specsTypes" :key="index">
 						<label class="mix-list-cell b-b">
 							<text class="cell-tit clamp">{{ item }}</text>
-							<radio :value="index" :checked="specsTypeTmp == index" />
+							<radio :value="index" :checked="specsTypeTmp == index" :class="specsTypeTmp == index?'checked':''" />
 						</label>
 					</block>
-				</radio-group>
+				</radio-group> -->
 				<block v-if="specsTypeTmp == 'multiple'">
 					<view class="specsTitlesDesc">
 						<text>最多选择{{ maxSpecsTitles }}种</text>
@@ -240,9 +246,9 @@
 							</view>
 						</block>
 					</view>
-					<view class="specsTitlesBtn" v-if="hasSpecs">
+					<view class="specsTitlesBtn">
 						<button class="add-btn cancel" @click="cancelSkuBuilder">取消</button>
-						<button class="add-btn" @click="navToSkuBuilder">下一步</button>
+						<button class="add-btn" v-if="hasSpecs" @click="navToSkuBuilder">下一步</button>
 					</view>
 				</block>
 			</view>
@@ -325,6 +331,7 @@
 					'时间',
 					'组合',
 					'运营商',
+					'提货点',
 					'适用年龄',
 					'适用人群'
 				],
@@ -461,8 +468,8 @@
 				if (this.yuding && this.yuding.beginTime > 0) {
 					this.saleType = 'yuding';
 				}
-				if(this.miaosha && this.miaosha.endTime > Date.now()){
-					this.saleTypes.normal="秒杀销售";
+				if (this.miaosha && this.miaosha.endTime > Date.now()) {
+					this.saleTypes.normal = "秒杀销售";
 				}
 				this.categoryIdTmp = this.categories;
 				//异步查询商品详细
@@ -582,17 +589,22 @@
 			},
 			setSpecsType(type) {
 				this.specsType = type;
+				this.specsTypeTmp = type;
 				this.specsTypeName = this.specsTypes[type];
 			},
 			changeSpecsType(n) {
-				this.specsTypeTmp = n.detail.value;
+				this.specsTypeTmp = n;
+				console.log(n)
+				this.setSpecsType(this.specsTypeTmp);
 				if (this.specsTypeTmp == 'single') {
-					this.setSpecsType(this.specsTypeTmp);
-					this.$refs['showSpecsType'].close();
+					//this.$refs['showSpecsType'].close();
 				} else {
 					//多规格，选择规格名称
+					this.$refs['showSpecsType'].open();
 				}
-				console.log(this.specsTypeTmp, this.specsTypeName);
+				/* this.specsTypeTmp = n.detail.value;
+				
+				console.log(this.specsTypeTmp, this.specsTypeName); */
 			},
 			//选择规格名称
 			selectSpecsTitle(index) {
@@ -629,13 +641,15 @@
 				});
 			},
 			cancelSkuBuilder() {
+				console.log("取消构造")
+				this.setSpecsType('single')
 				this.$refs['showSpecsType'].close();
 			},
 			navToSkuBuilder() {
 				uni.navigateTo({
 					url: '/pages/admin/goods/skusBuilder',
 					success: () => {
-						this.cancelSkuBuilder();
+						this.$refs['showSpecsType'].close();
 					}
 				});
 			},
@@ -746,7 +760,7 @@
 						page: 1,
 						limit: 50,
 						upc: val
-					},true).then(res => {
+					}, true).then(res => {
 						console.log(res)
 						if (res.length == 1) {
 							this.buildGoodsInfo(res[0]);
@@ -1092,13 +1106,14 @@
 		width: 700upx;
 		background: #ffffff;
 		border-radius: 12upx;
-		max-height: 400rpx;
+		max-height: 800rpx;
 		overflow-y: auto;
 
 		.cell-tit {
 			flex: 1;
 		}
-		.title{
+
+		.title {
 			text-align: center;
 			padding: 20rpx;
 		}

@@ -26,101 +26,110 @@
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			placeholder: '',
-			comefrom: null,
-			historyWords: [],
-			searchKeyWords: [],
-			historyKey: 'searchHistory'
-		};
-	},
-	onLoad(options) {
-		if (options.comefrom) {
-			this.comefrom = options.comefrom;
-		}
-		if (options.key) {
-			this.placeholder = options.key;
-		}
-		this.loadData();
-	},
-	methods: {
-		async loadData() {
-			//最多显示50条
-			let words = uni.getStorageSync(this.historyKey);
-			if(!words){
-				words=[];
-			}
-			this.historyWords = words.slice(0,50);
-			this.searchKeyWords = uni.getStorageSync('shopSearchGoodsKeywords');
+	export default {
+		data() {
+			return {
+				placeholder: '',
+				comefrom: null,
+				historyWords: [],
+				searchKeyWords: [],
+				historyKey: 'searchHistory'
+			};
 		},
-		search(e) {
-			console.log(e);
-			let data = uni.getStorageSync(this.historyKey);
-			if (!data) {
-				data = [];
+		onLoad(options) {
+			if (options.comefrom) {
+				this.comefrom = options.comefrom;
 			}
-			//如果已经存在，则需要移除
-			let data2 = [e];
-			data.map(ele => {
-				if (ele != e) {
-					data2.push(ele);
+			if (options.key) {
+				this.placeholder = options.key;
+			}
+			this.loadData();
+		},
+		methods: {
+			async loadData() {
+				//最多显示50条
+				let words = uni.getStorageSync(this.historyKey);
+				if (!words) {
+					words = [];
 				}
-			});
-			uni.setStorage({
-				key: this.historyKey,
-				data: data2
-			});
-			//记录历史
-			this.$api.prePage().reSearch(e);
-			uni.navigateBack({
-				delta: 1
-			});
-		},
-		//清空搜索记录
-		clean() {
-			uni.removeStorage({
-				key: this.historyKey
-			});
-			this.historyWords = [];
-		},
-		//取消搜索，返回上一页
-		cancel() {
-			uni.navigateBack({
-				delta: 1
-			});
+				this.historyWords = words.slice(0, 50);
+				this.searchKeyWords = uni.getStorageSync('shopSearchGoodsKeywords');
+			},
+			search(e) {
+				console.log(e);
+				let data = uni.getStorageSync(this.historyKey);
+				if (!data) {
+					data = [];
+				}
+				//如果已经存在，则需要移除
+				let data2 = [e];
+				data.map(ele => {
+					if (ele != e) {
+						data2.push(ele);
+					}
+				});
+				uni.setStorage({
+					key: this.historyKey,
+					data: data2
+				});
+				//记录历史
+				this.$api.prePage().reSearch(e);
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//清空搜索记录
+			clean() {
+				uni.removeStorage({
+					key: this.historyKey
+				});
+				this.historyWords = [];
+			},
+			//取消搜索，返回上一页
+			cancel() {
+				uni.navigateBack({
+					delta: 1
+				});
+			}
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-.container {
-	font-size: $font-base;
-}
-.content {
-	padding: 20upx;
-}
-.title {
-	font-size: $font-lg;
-	padding-bottom: 10upx;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-.weui-flex {
-	display: flex;
-	flex-wrap: wrap;
-}
-.words {
-	padding: 8upx 18upx;
-	background-color: #f5f5f5;
-	margin-right: 16upx;
-	border-radius: 8upx;
-	color: #888;
-}
-.m-t {
-	margin-top: 30upx;
-}
+	page {
+		background: #FFFFFF;
+	}
+
+	.container {
+		font-size: $font-base;
+	}
+
+	.content {
+		padding: 20upx;
+	}
+
+	.title {
+		font-size: $font-lg;
+		padding-bottom: 10upx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.weui-flex {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.words {
+		padding: 8upx 18upx;
+		background-color: #f5f5f5;
+		margin-right: 16upx;
+		border-radius: 8upx;
+		color: #888;
+	}
+
+	.m-t {
+		margin-top: 30upx;
+	}
 </style>

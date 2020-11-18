@@ -86,6 +86,9 @@ export default {
 </script>
 
 <style lang="scss">
+	page{
+		background: #FFFFFF;
+	}
 .content {
 	display: flex;
 	flex-direction: column;

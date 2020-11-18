@@ -20,7 +20,7 @@
 
 		<view class="row default-row">
 			<text class="tit">设为默认</text>
-			<switch :checked="addressData.default" color="#fa436a" @change="switchChange" />
+			<switch :checked="addressData.default" color="#fa436a" :class="addressData.default?'checked':''" @change="switchChange" />
 		</view>
 		<button class="add-btn" @click="confirm">{{submitText}}</button>
 	</view>
@@ -122,7 +122,7 @@ export default {
 				if(this.$api.prePage()){
 					this.$api.prePage().refreshList(data, this.manageType);
 				}
-				this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
+				this.$api.success(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
 				setTimeout(()=>{
 					uni.navigateBack();
 				},1500)

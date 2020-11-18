@@ -601,7 +601,16 @@
 			"style": {
 				"navigationBarTitleText": "退款历史记录"
 			}
-		}]
+		}    ,{
+                    "path" : "selfrasingPoint/selfrasingPoint",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "自提点",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 	}],
 	"preloadRule": {
 		"pages/user/user": {

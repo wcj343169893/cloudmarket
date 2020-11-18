@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<view v-for="(item, index) in categoriesData" :key="index" class="main b-b">
 			<view class="title">
 				<view class="subname">

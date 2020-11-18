@@ -24,6 +24,7 @@ const models = {
 			latitude: 1,
 			longitude: 1,
 			src: 1,
+			mobile: 1,
 			address: 1,
 			name: 1
 		}).skip((page - 1) * limit).limit(limit).get();

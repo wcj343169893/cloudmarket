@@ -1,26 +1,30 @@
 <template>
 	<view class="container">
-		<view class="location">
-			<view class="left">
-				<view class="">
-					<text>当前位置</text>
+		<view class="cu-list menu solid-bottom">
+			<view class="cu-item">
+				<view class="content padding-tb-sm">
+					<view>
+						<text class="">当前位置</text>
+					</view>
+					<view class="text-gray text-sm">
+						<text class="cuIcon-location margin-right-xs"></text>
+						<text>{{location.name}}</text>
+					</view>
 				</view>
-				<view class="">
-					<text class="taobaofont icon-locationfill"></text><text>{{location.name}}</text>
+				<view class="action">
+					<button class="cu-btn bg-green" @click="chooseLocation">修改地址</button>
 				</view>
-			</view>
-			<view class="more">
-				<button type="default" @click="chooseLocation">修改地址</button>
 			</view>
 		</view>
 		<takeaddressPage :dataList="selectedAddress"></takeaddressPage>
-		<view class="title">
-			<text>当前定位附近的自提点</text>
+		<view class="cu-bar bg-white solid-bottom margin-top">
+			<view class="action">
+				<text>当前定位附近的自提点</text>
+			</view>
 		</view>
 		<block v-if="loaded">
 			<takeaddressPage :dataList="nearestData" v-if="nearestData.length>0" @change="setSelfRaisingPoint"></takeaddressPage>
-			<view class="empty_address" v-else>
-				<image src="/static/store-face.png" class="img" mode="aspectFit"></image>
+			<view class="flex flex-column align-center bg-white padding-xl " v-else>
 				<text>当前定位1公里范围内，没有自提点~</text>
 				<text>可用切换其他地址看看~</text>
 				<!-- <text>或申请成为该位置的团长，足不出户，轻松赚钱！</text>
@@ -147,58 +151,13 @@
 					item.isChecked = true;
 					console.log(res)
 					this.setStateAttr({
-						raisingPoint: items
+						raisingPoint: item
 					})
+					this.$api.success("设置提货点成功")
 					this.selectedAddress = [item]
+					this.navTimeBack();
 				})
 			}
 		}
 	}
 </script>
-
-<style lang="scss" scoped>
-	page,
-	.container {
-		background: $background-color;
-		font-size: $font-base;
-		height: 100%;
-	}
-
-	.location {
-		display: flex;
-		align-items: center;
-		padding: 20rpx;
-
-		.left {
-			flex: 1;
-		}
-	}
-
-	.title {
-		padding: 20rpx;
-		font-size: $font-base;
-	}
-
-	.empty_address {
-		margin: 0rpx 20rpx 0;
-		border-radius: 20rpx;
-		background: #FFFFFF;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		font-size: $font-sm;
-		color: $font-color-light;
-		padding: 50rpx 20rpx 50rpx;
-		line-height: 50rpx;
-
-		.img {
-			width: 120rpx;
-			height: 120rpx;
-			margin-bottom: 50rpx;
-		}
-
-		.button {
-			margin-top: 50rpx;
-		}
-	}
-</style>

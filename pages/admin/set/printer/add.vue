@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<block v-if="loaded">
 			<mix-list-select border="b-b" @eventClick="changeCategory" title="品牌" :options="categories" :defaultOption="rtDef"></mix-list-select>
 			<mix-list-input :isMust="!0" title="设备号" placeholder="请输入设备号" @change="changeMachine"></mix-list-input>

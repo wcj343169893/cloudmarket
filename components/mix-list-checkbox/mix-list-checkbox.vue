@@ -1,9 +1,9 @@
 <template>
-	<view class="checkbox-container">
+	<view class="checkbox-container bg-white">
 		<view v-if="type=='switch'" class="mix-list-cell" :class="[border,type]" hover-class="cell-hover">
 			<text class="cell-tit clamp">{{ title }}</text>
 			<view class="cell-content content-right">
-				<switch :checked="!!content" @change="changeSwitch" />
+				<switch :checked="!!content" :class="!!content?'checked':''" @change="changeSwitch" />
 			</view>
 		</view>
 		<view v-else-if="type=='checkbox'" class="mix-list-cell" :class="[border,type]">
@@ -13,7 +13,7 @@
 					<block v-for="(item,index) in options" :key="index">
 						<label>
 							<text class="m-r">{{item}}</text>
-							<checkbox :value="index" :checked="checkedList.indexOf(index) != -1" />
+							<checkbox :value="index" :class="checkedList.indexOf(index) != -1?'checked':''" :checked="checkedList.indexOf(index) != -1" />
 						</label>
 					</block>
 				</checkbox-group>
@@ -81,12 +81,13 @@
 			if (this.defContent) {
 				this.content = this.defContent;
 			}
-			if(this.defaultOptions){
+			if (this.defaultOptions) {
 				this.checkedList = this.defaultOptions
 			}
 		},
 		methods: {
 			changeContent(e) {
+				this.checkedList = e.detail.value;
 				this.$emit('change', e.detail.value, this.field);
 			},
 			blurContent(e) {

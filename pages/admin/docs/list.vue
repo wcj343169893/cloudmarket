@@ -10,11 +10,14 @@
 					<view class="pagelink" v-if="item.pageLink">
 						<text>{{item.pageName}}</text><text>({{item.pageLink}})</text>
 					</view>
-					<view class="buttons">
+					<view class="buttons" v-if="type != 'chooseone'">
 						<button class="btn danger" @click.stop="del(item._id)">删除</button>
 						<button class="btn" @click.stop="preview(item._id)">预览</button>
 						<button class="btn" @click.stop="copy(item)">复制</button>
 						<button class="btn">修改</button>
+					</view>
+					<view class="buttons" v-else>
+						<button class="btn">选择</button>
 					</view>
 				</view>
 			</view>
@@ -77,7 +80,7 @@
 				}).then(
 					res => {
 						res.forEach((ele, ind) => {
-							if(ele.type=="mp_share"){
+							if (ele.type == "mp_share") {
 								ele.pageName = this.pageList[ele.pageLink]
 							}
 							this.dataList[ele.type].data.push(ele);
@@ -147,7 +150,7 @@
 			copy(item) {
 				docsAdmin('copy', {
 					_id: item._id,
-				},true).then(res => {
+				}, true).then(res => {
 					this.$api.success("复制成功")
 					let ele = { ...item,
 						_id: res.id

@@ -29,10 +29,10 @@
 					<text class="yticon icon-bianji"></text>
 					<text class="">输码验证</text>
 				</view>
-				<!-- <view class="fast-actions">
-					<text class="yticon icon-daifukuan"></text>
-					<text class="">财务结算</text>
-				</view> -->
+				<view class="fast-actions" @click="navTo('/pages/admin/selfrasingPoint/selfrasingPoint')">
+					<text class="yticon icon-shangpin"></text>
+					<text class="">自提点</text>
+				</view>
 				<view class="fast-actions" @click="navTo('/pages/admin/statistics/datas')">
 					<text class="yticon icon-tongji"></text>
 					<text class="">经营数据</text>

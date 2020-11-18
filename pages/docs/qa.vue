@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container bg-white">
 		<view class="icons">
 			<view class="options">
 				<view class="opt-item">
