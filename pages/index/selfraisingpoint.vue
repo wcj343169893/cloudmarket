@@ -128,7 +128,7 @@
 						}
 						this.setStateAttr({
 							location: {
-								name: data.address,
+								name: data.name || data.address,
 								latitude: data.latitude,
 								longitude: data.longitude,
 							}

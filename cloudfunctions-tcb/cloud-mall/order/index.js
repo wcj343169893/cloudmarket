@@ -827,11 +827,8 @@ const model = {
 							};
 							//删除多型号
 							delete goo.skus;
-							if (goo.miaosha && goo.miaosha.sku_id != sku.id) {
-								delete goo.miaosha;
-							} else if (!isNewUser && goo.miaosha.isNewUser) {
+							if (goo.miaosha && (goo.miaosha.sku_id != sku.id || (!isNewUser && goo.miaosha.isNewUser))) {
 								//新用户专享秒杀，如果已经下单过了，不再享受
-								console.log("老用户不享受秒杀价--多规格");
 								delete goo.miaosha;
 							}
 							goo["sku_id"] = sku.id;
@@ -846,7 +843,7 @@ const model = {
 					});
 				} else {
 					let key = ele.id + '_0';
-					if (!isNewUser && ele.miaosha.isNewUser) {
+					if (!isNewUser && ele.miaosha && ele.miaosha.isNewUser) {
 						//新用户专享秒杀，如果已经下单过了，不再享受
 						console.log("老用户不享受秒杀价--单规格");
 						delete ele.miaosha;
