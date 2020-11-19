@@ -1728,6 +1728,85 @@
 			}
 		]
 	},
+	"cloud_goods_special_activities": {
+		"data": [{
+			"banner": "http://market.cjblog.org/goods/1.jpg",
+			"beginTime": 1588313782526,
+			"description": "很便宜便宜很便宜便宜很便宜便宜，很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很电放费发送到水电费发新鲜",
+			"endTime": 1606924800000,
+			"goods": [{
+				"_id": "99ee0d4152644f368f0001619e9c628e",
+				"price": 127,
+				"src": "http://market.cjblog.org/goods/1.jpg",
+				"stock": 328,
+				"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+			}],
+			"goodsType": "normal",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 123457,
+			"title": "苹果特卖会"
+		}],
+		"index": [{
+				"IndexName": "index_shop",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "shopid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "cloud_goods_special_activities_openid_index_",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "_openid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			}
+		]
+	},
+	"cloud_self_raising_points": {
+		"data": [{
+			"address": "重庆市渝中区人民支路",
+			"latitude": 22.482297,
+			"location": {
+				"coordinates": [
+					107.082709,
+					29.154957
+				],
+				"type": "Point"
+			},
+			"longitude": 113.924079,
+			"mobile": "13500135000",
+			"name": "舒心火锅",
+			"src": "/static/store-face.png",
+			"uid": "9ffb2a485f38964200999b1f07cb7b80"
+		}],
+		"index": [{
+				"IndexName": "cloud_self_raising_points_openid_index_",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "_openid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "index_location",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "location",
+						"Direction": "2dsphere"
+					}],
+					"MgoIsUnique": false
+				}
+			}
+		]
+	},
 	"cloud_goods_visites": {
 		"data": [{
 			"goods_id": 10000,

@@ -17,8 +17,6 @@ const models = {
 		let res = await selfraisingCollection.where({
 			location: cmd.geoNear({
 				geometry: new db.Geo.Point(longitude, latitude),
-				minDistance: 0,
-				maxDistance: 2000,
 			})
 		}).field({
 			latitude: 1,

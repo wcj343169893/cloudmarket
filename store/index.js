@@ -40,7 +40,7 @@ const store = new Vuex.Store({
 		 * 自提点位置
 		 */
 		raisingPoint: {
-			name:"请选择自提点"
+			name: "请选择自提点"
 		},
 		globalClass: "",
 		globalAdminClass: "",
@@ -123,9 +123,12 @@ const store = new Vuex.Store({
 			state.shopId = shop.id;
 			state.categoryId = 0;
 			//自提并且开启自提点
-			state.isSelfRaisingPoint = shop.selfRaisingPoint && shop.deliveryTypes.indexOf("selfRaising") != -1;
+			state.isSelfRaisingPoint = shop.isSelfRaisingPoint;
 			if (shop.currency) {
 				state.globalClass = shop.currency;
+			}
+			if (!state.raisingPoint._id && shop.nearestRaisingPoint) {
+				state.raisingPoint = shop.nearestRaisingPoint;
 			}
 			console.log("store changeShopId");
 			this.dispatch('getCartCount');
@@ -207,7 +210,7 @@ const store = new Vuex.Store({
 					...res
 				});
 				//用户选择的自提点
-				if(info.raisingPoint && info.raisingPoint._id){
+				if (info.raisingPoint && info.raisingPoint._id) {
 					state.raisingPoint = info.raisingPoint;
 					delete info.raisingPoint;
 				}

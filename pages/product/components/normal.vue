@@ -4,17 +4,19 @@
 		<view class="sub-title" v-if="subTitle && subTitle != ''">
 			<text>{{ subTitle }}</text>
 		</view>
-		<view class="price-box">
-			<text class="price">{{ price }}</text>
-			<block v-if="originPrice > 0 && originPrice > price">
-				<text class="price del">{{ originPrice }}</text>
-				<text class="coupon-tip">{{ zhekou }}折</text>
-			</block>
-		</view>
-		<view class="bot-row">
-			<text>月售: {{ monthlySale }}</text>
-			<text>库存: {{ stock }}</text>
-			<text>浏览量: {{ visite }}</text>
+		<view class="stati">
+			<view class="price-box">
+				<text class="price">{{ price }}</text>
+				<block v-if="originPrice > 0 && originPrice > price">
+					<text class="price del">{{ originPrice }}</text>
+					<text class="coupon-tip">{{ zhekou }}折</text>
+				</block>
+			</view>
+			<view class="bot-row">
+				<text>月售:{{ monthlySale }}</text>
+				<text>库存:{{ stock }}</text>
+				<text>热度:{{ visite }}</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -90,7 +92,10 @@
 				flex-direction: column;
 			}
 		}
-
+		.stati{
+			display: flex;
+			justify-content: space-between;
+		}
 		.price-box {
 			display: flex;
 			align-items: baseline;
@@ -127,9 +132,12 @@
 			height: 50upx;
 			font-size: $font-sm;
 			color: $font-color-light;
-
+			flex: 1;
+			margin-left: 30rpx;
+			text-align: center;
+			justify-content: flex-end;
 			text {
-				flex: 1;
+				margin-left: 14rpx;
 			}
 		}
 	}

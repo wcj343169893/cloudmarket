@@ -10,12 +10,16 @@ const adCollection = db.collection('cloud_ads');
 //文档公开方法，直接可以调用
 const documents = require("../document");
 const shop = require("../shop");
+const {
+	nearest: nearestSelfraisingPoint
+} = require("../selfraising");
 const models = {
 	//首页
 	async index(data) {
 		let {
 			uid,
-			shopid
+			shopid,
+			raisingPoint
 		} = data;
 		let longitude = data.longitude ? +data.longitude : 113.92246555717469;
 		let latitude = data.latitude ? +data.latitude : 22.489059185437284;
@@ -63,6 +67,22 @@ const models = {
 				Object.assign(limits, {
 					...shopInfo.pages.home.limits
 				})
+			}
+			shopInfo.isSelfRaisingPoint = false;
+			if (shopInfo.selfRaisingPoint && shopInfo.deliveryTypes && shopInfo.deliveryTypes.indexOf("selfRaising") != -1) {
+				shopInfo.isSelfRaisingPoint = true;
+				//默认查询一条自提点
+				if (!raisingPoint || !raisingPoint._id) {
+					let raisingPointData = await nearestSelfraisingPoint({
+						page: 1,
+						limit: 1,
+						longitude,
+						latitude
+					});
+					if (raisingPointData.length > 0) {
+						shopInfo["nearestRaisingPoint"] = raisingPointData[0];
+					}
+				}
 			}
 			dataOut["shop"] = shopInfo;
 		}
@@ -128,7 +148,7 @@ const models = {
 				const {
 					data
 				} = await adCollection.where(conditions[key]).field(field).limit(limits[key]).orderBy("shopid", "desc").get();
-				if(data.length > 0){
+				if (data.length > 0) {
 					dataOut[key] = data;
 				}
 			}

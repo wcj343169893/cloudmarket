@@ -219,11 +219,13 @@
 			raisingPoint() {
 				console.log('watch raisingPoint');
 				//重新加载数据
-				this.loadData();
+				//this.loadData();
 			},
 			shopId(id) {
-				console.log('watch 店铺id改变,刷新当前页面');
-				this.loadData();
+				console.log('watch 店铺id改变,刷新当前页面', id, this.shop);
+				if (this.shop.id != id) {
+					this.loadData();
+				}
 			}
 		},
 		onLoad(options) {
@@ -298,13 +300,12 @@
 				console.log("开始获取首页数据")
 				getHomeFruitData({
 					shopid: this.shopId,
+					raisingPoint: this.raisingPoint,
 					stationId: this.stationId,
 					latitude: this.location.latitude,
 					longitude: this.location.longitude
 				}).then(res => {
 					this.isLoaded = true;
-					//修改默认附近店铺id
-					this.changeShopId(res.shop);
 					//广告
 					if (res.ads) {
 						let ads = res.ads;
@@ -353,6 +354,8 @@
 							data: this.shop
 						})
 					}
+					//修改默认附近店铺id
+					this.changeShopId(res.shop);
 					this.share = res.share;
 					uni.setStorage({
 						key: "app_share",

@@ -94,6 +94,7 @@
 			<view class="options">
 			</view>
 			<block v-if="isSold == 0"><text class="warning">已下架或已删除</text></block>
+			<block v-else-if="stock < 1"><text class="warning">卖光了</text></block>
 			<block v-else-if="yuding">
 				<button class="add-btn" v-if="yuding.isBegin" @click="payDingjin()">支付定金</button>
 				<button class="add-btn disabled" v-else>预售未开始</button>
