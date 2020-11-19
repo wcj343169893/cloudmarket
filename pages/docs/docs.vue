@@ -50,7 +50,9 @@
 
 <style lang="scss">
 	@import '@/common/css/github-markdown.css';
-
+	page{
+		background: #FFFFFF;
+	}
 	.container {}
 
 	.markdown-body {

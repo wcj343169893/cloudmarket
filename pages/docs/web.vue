@@ -31,4 +31,7 @@
 
 <style>
 
+	page{
+		background: #FFFFFF;
+	}
 </style>

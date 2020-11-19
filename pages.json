@@ -1,5 +1,12 @@
 {
 	"pages": [{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}, {
 			"path": "pages/index/fruit",
 			"style": {
 				"enablePullDownRefresh": true,
@@ -601,16 +608,14 @@
 			"style": {
 				"navigationBarTitleText": "退款历史记录"
 			}
-		}    ,{
-                    "path" : "selfrasingPoint/selfrasingPoint",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "自提点",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+		}, {
+			"path": "selfrasingPoint/selfrasingPoint",
+			"style": {
+				"navigationBarTitleText": "自提点",
+				"enablePullDownRefresh": false
+			}
+
+		}]
 	}],
 	"preloadRule": {
 		"pages/user/user": {
@@ -656,7 +661,7 @@
 		]
 	},
 	"condition": { //模式配置，仅开发期间生效
-		"current": 1, //当前激活的模式(list 的索引项)
+		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [{
 				"name": "index", //模式名称
 				"path": "pages/index/index", //启动页面，必选

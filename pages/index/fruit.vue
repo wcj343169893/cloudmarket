@@ -564,10 +564,8 @@
 			return this.getShareContent('/pages/index/fruit');
 		},
 		//#endif
-
-		// #ifndef MP
 		// 标题栏input搜索框点击
-		onNavigationBarSearchInputClicked: async function(e) {
+		onNavigationBarSearchInputClicked (e){
 			//this.$api.msg('点击了搜索框');
 			console.log('onNavigationBarSearchInputClicked');
 			this.navToSearch();
@@ -594,7 +592,6 @@
 				});
 			}
 		}
-		// #endif
 	};
 </script>
 

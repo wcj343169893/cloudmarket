@@ -71,6 +71,10 @@
 </script>
 
 <style lang="scss">
+	
+	page{
+		background: #FFFFFF;
+	}
 	.container {
 		font-size: $font-sm;
 	}
