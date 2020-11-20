@@ -2699,6 +2699,34 @@
 			}
 		]
 	},
+	"opendb-verify-codes": {
+		"data": [],
+		"index": [{
+			"IndexName": "mobile_code_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "mobile",
+					"Direction": "1"
+				}, {
+					"Name": "code",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "email_code_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "email",
+					"Direction": "1"
+				}, {
+					"Name": "code",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
 	"uni-app-version": {
 		"data": [{
 			"android": {
