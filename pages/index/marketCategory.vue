@@ -287,9 +287,8 @@
 		onLoad() {
 			this.loadData();
 		},
-		onShow() {
-		},
-		onHide(){
+		onShow() {},
+		onHide() {
 			this.closeCategoryPanel();
 		},
 		computed: {
@@ -378,9 +377,9 @@
 						this.categoryScrollLeft = 0;
 					}
 					if (!this.isOpenCategoryOne) {
-						setTimeout(()=>{
+						setTimeout(() => {
 							this.openCategoryPanel();
-						},200)
+						}, 200)
 						this.isOpenCategoryOne = true;
 					} else {
 						this.closeCategoryPanel();
@@ -755,6 +754,12 @@
 		background-color: #f8f8f8;
 		height: 100%;
 	}
+
+	/* #ifdef H5 */
+	.content {
+		height: 80%;
+	}
+	/* #endif */
 
 	.left-aside {
 		flex-shrink: 0;
