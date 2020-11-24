@@ -3,8 +3,9 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "home",
-	"action": "index",
+	"module": "utils",
+	"action": "getAddressGeo",
 	"data": {
+		"address":"南川万达广场"
 	}
 }

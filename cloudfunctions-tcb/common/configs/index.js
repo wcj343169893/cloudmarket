@@ -130,43 +130,6 @@ const model = {
 			}
 			return key;
 		});
-	},
-	/**
-	 * 根据经纬度，计算距离，如果需要在结算的时候，保证距离万无一失，就需要调用此接口，如果信任前端传过来的距离参数，就没必要调用
-	 * @param {Object} fromLatlng 起点坐标
-	 * @param {Object} toLatlng 终点坐标
-	 * @link https://lbs.qq.com/service/webService/webServiceGuide/webServiceMatrix
-	 */
-	async getMapDistance(fromLatlng, toLatlng) {
-		console.log(fromLatlng, toLatlng)
-		let fromLength = fromLatlng.split(";").length;
-		let toLength = toLatlng.split(";").length;
-		const res = await uniCloud.httpclient.request("https://apis.map.qq.com/ws/distance/v1/matrix", {
-			method: 'GET',
-			data: {
-				...config.qqmap,
-				from: fromLatlng,
-				to: toLatlng
-			},
-			dataType: 'json'
-		});
-		if (res.status == 200 && res.data.status == 0) {
-			//一对一，只返回一个结果
-			if (fromLength == toLength && toLength == 1) {
-				return res.data.result.rows[0].elements[0];
-			}
-			//多对一
-			if (toLength == 1) {
-				let data = [];
-				res.data.result.rows.map(ro => {
-					data.push(ro.elements[0]);
-				});
-				return data;
-			}
-			return res.data.result.rows;
-		}
-		//查询失败
-		return false;
 	}
 }
 module.exports = model;
