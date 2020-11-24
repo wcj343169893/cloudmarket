@@ -208,14 +208,17 @@ const models = {
 		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 		let statistics = {
 			unpaid: {
+				isDelete:0,
 				state: 0
 			},
 			payup: {
 				state: cmd.in([1, 2]),
+				isDelete:0,
 				isRefundAll: cmd.exists(false)
 			},
 			received: {
 				state: 3,
+				isDelete:0,
 				isRefundAll: cmd.exists(false)
 			}
 		};
