@@ -2,10 +2,12 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const goodsCollection = db.collection("cloud_goods");
+const ordersCollection = db.collection("cloud_orders");
 const usersCollection = db.collection("uni-id-users");
 const xlsx = require("node-xlsx");
 const {
 	getDayTime,
+	getDate,
 	getDateFormat
 } = require('base-common');
 const models = {
@@ -110,7 +112,7 @@ const models = {
 						address,
 						created
 					} = usr.member;
-					result.push([usr.id, name, idcard, mobile, address, created ? new Date(created) : new Date()]);
+					result.push([usr.id, name, idcard, mobile, address, created ? getDate(created) : getDate()]);
 				}
 			});
 			if (res.data.length < limit) {
@@ -135,6 +137,103 @@ const models = {
 				}]
 			};
 			let filename = state + getDateFormat("yyyy-MM-dd");
+			let buffer = xlsx.build([{
+				name: "mySheet",
+				data: result
+			}], options);
+			if (getContent) {
+				return buffer.toString('base64');
+			}
+			return {
+				mpserverlessComposedResponse: true, // 使用阿里云返回集成响应是需要此字段为true
+				statusCode: 200,
+				isBase64Encoded: true,
+				headers: {
+					'content-type': 'text/plain',
+					'Content-disposition': `attachment; filename=${filename}.xlsx`,
+				},
+				body: buffer.toString('base64')
+			}
+		}
+		return false;
+	},
+	/**
+	 * 导出自提点的订单和商品(待发货，已发货)
+	 * @param {Object} data
+	 * @link http://api.cjblog.org/databases/exports/selfraising?id=2fd465895fafc49500b4c1e063f2e69f
+	 */
+	async selfraising(data) {
+		const {
+			id,
+			state,
+			getContent
+		} = data;
+		let page = 1,
+			limit = 500,
+			condition = {
+				"raisingPoint._id": id,
+				state: 1,
+				isRefundAll: cmd.exists(false)
+			},
+			result = [];
+		let title = ["订单编号", "商品数量", "姓名", "电话", "提货时间", "时段", "提货码", "提货密码", "订单状态", "总金额", "商品ID", "商品标题", "商品规格",
+			"商品价格", "商品数量",
+			"UPC"
+		];
+		result.push(title);
+		for (let i = 0; i < 100; i++) {
+			const res = await ordersCollection.where(condition).skip((page - 1) * limit).limit(limit).orderBy("id", "asc").get();
+			if (res.data.length == 0) {
+				break;
+			}
+			res.data.map(order => {
+				if (!order.refundAmount) {
+					order.refundAmount = 0;
+				}
+				let base = [order.id, order.cartCount - order.refundAmount, order.selfRaising.name, order.selfRaising.mobile,
+					getDate(order.deliveryHour.id), order.deliveryHour.time, order.deliveryHour.number, order.deliveryHour.password,
+					order.state, order.totalMoney
+				];
+				let baseLength = base.length;
+				let index = 0;
+				order.goods.map((goods) => {
+					let cells = base;
+					if (!goods.refundAmount) {
+						goods.refundAmount = 0;
+					}
+					if (goods.amount - goods.refundAmount > 0) {
+						if (index > 0) {
+							cells = new Array(baseLength)
+						} else {
+							cells = base;
+						}
+						cells.push(goods.id);
+						cells.push(goods.title);
+						cells.push(goods.name);
+						cells.push(goods.price);
+						cells.push(goods.amount - goods.refundAmount);
+						cells.push(goods.upc);
+						result.push(cells);
+						index++;
+					}
+				})
+			});
+			if (res.data.length < limit) {
+				break;
+			}
+		}
+		if (result.length > 1) {
+			//宽度
+			const options = {
+				'!cols': []
+			};
+			for (let i = 0; i < title.length; i++) {
+				options['!cols'].push({
+					wch: 20
+				})
+			}
+
+			let filename = id + getDateFormat("yyyyMMddhhmmss");
 			let buffer = xlsx.build([{
 				name: "mySheet",
 				data: result

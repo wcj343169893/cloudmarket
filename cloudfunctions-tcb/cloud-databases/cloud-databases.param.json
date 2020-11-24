@@ -4,9 +4,9 @@
 
 {
 	"module": "exports",
-	"action": "member",
+	"action": "selfraising",
 	"data": {
-		"state":"allMember",
+		"id":"2fd465895fafc49500b4c1e063f2e69f",
 		"shopid":123457
 	}
 }

@@ -18,7 +18,7 @@
 					</view>
 				</view>
 				<view class="flex align-center margin-right-xs">
-					<button class="cu-btn bg-green sm " @click="change(item)">下载订单</button>
+					<!-- <button class="cu-btn bg-green sm " @click="change(item)">下载订单</button> -->
 				</view>
 			</view>
 		</view>
