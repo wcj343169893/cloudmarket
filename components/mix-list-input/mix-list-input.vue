@@ -5,7 +5,11 @@
 				<text v-if="isMust">*</text>
 				{{ title }}
 			</text>
-			<input v-if="type == 'text'" type="text" class="cell-content" :class="[textAlign]" @blur="blurContent" @input="changeContent"
+			<view v-if="disabled" class="cell-content" :class="[textAlign]">
+				<text v-if="content">{{content}}</text>
+				<text v-else>{{placeholder}}</text>
+			</view>
+			<input v-else-if="type == 'text'" type="text" class="cell-content" :class="[textAlign]" @blur="blurContent" @input="changeContent"
 			 v-model="content" :placeholder="placeholder" />
 			<input v-else-if="type == 'digit'" type="digit" class="cell-content" :class="[textAlign]" @input="changeContent"
 			 @blur="blurContent" v-model="content" :placeholder="placeholder" />
@@ -66,6 +70,10 @@ export default {
 			default: false
 		},	
 		withLocation: {
+			type: Boolean,
+			default: false
+		},
+		disabled: {
 			type: Boolean,
 			default: false
 		},

@@ -1,6 +1,7 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const $ = db.command.aggregate;
 const goodsCollection = db.collection("cloud_goods");
 const ordersCollection = db.collection("cloud_orders");
 const usersCollection = db.collection("uni-id-users");
@@ -163,20 +164,25 @@ const models = {
 	 * @link http://api.cjblog.org/databases/exports/selfraising?id=2fd465895fafc49500b4c1e063f2e69f
 	 */
 	async selfraising(data) {
-		const {
+		let {
 			id,
 			state,
 			getContent
 		} = data;
+		if (!state) {
+			state = 1;
+		} else {
+			state = parseInt(state);
+		}
 		let page = 1,
 			limit = 500,
 			condition = {
 				"raisingPoint._id": id,
-				state: 1,
+				state,
 				isRefundAll: cmd.exists(false)
 			},
 			result = [];
-		let title = ["订单编号", "商品数量", "姓名", "电话", "提货时间", "时段", "提货码", "提货密码", "订单状态", "总金额", "商品ID", "商品标题", "商品规格",
+		let title = ["订单号", "每日编号", "商品数量", "姓名", "电话", "提货时间", "时段", "提货码", "提货密码", "订单状态", "总金额", "商品ID", "商品标题", "商品规格",
 			"商品价格", "商品数量",
 			"UPC"
 		];
@@ -190,7 +196,8 @@ const models = {
 				if (!order.refundAmount) {
 					order.refundAmount = 0;
 				}
-				let base = [order.id, order.cartCount - order.refundAmount, order.selfRaising.name, order.selfRaising.mobile,
+				let base = [order.id, order.dayIndex, order.cartCount - order.refundAmount, order.selfRaising.name, order.selfRaising
+					.mobile,
 					getDate(order.deliveryHour.id), order.deliveryHour.time, order.deliveryHour.number, order.deliveryHour.password,
 					order.state, order.totalMoney
 				];

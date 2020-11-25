@@ -129,6 +129,31 @@
 					</view>
 				</view>
 			</view>
+			<view class="admin-section">
+				<block v-if="selfraising && selfraising.length > 0">
+					<view v-for="(item,index) in selfraising" :key="index" class="admin-shops b-b" @click="navToSelfRaisingAdmin(item)">
+						<image :src="item.src" mode="aspectFill"></image>
+						<view class="right">
+							<view class="content">
+								<view class="title clamp">
+									<text>{{item.name}}</text>
+									<text v-if="!item.state" class="desc">（审核中）</text>
+								</view>
+								<view class="desc">
+									<text>{{item.address}}</text>
+								</view>
+							</view>
+							<text class="yticon icon-you"></text>
+						</view>
+					</view>
+				</block>
+				<view class="admin-shops b-b justify-center" v-else>
+					<text>申请成为团长，足不出户，轻松赚钱！</text>
+				</view>
+				<view class="admin-shops flex justify-center" v-if="!selfraising || selfraising.length < 20">
+					<button class="cu-btn bg-green" @click="navTo('/pages/selfraisingpoint/add')">我要成为团长</button>
+				</view>
+			</view>
 
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
@@ -214,6 +239,7 @@
 					refund: 0
 				},
 				admin: [],
+				selfraising: [],
 				teamTips: "加入团队",
 				moving: false
 			};
@@ -307,6 +333,7 @@
 						//会员价格/年费
 						this.vipPrice = res.vipPrice;
 						this.admin = res.admin;
+						this.selfraising = res.selfraising;
 						if (res.order) {
 							//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 							for (let t in res.order) {
@@ -474,6 +501,9 @@
 				uni.switchTab({
 					url: `/pages/index/fruit`
 				})
+			},
+			navToSelfRaisingAdmin(item) {
+				this.navToItem('/pages/selfraisingpoint/admin',item);
 			},
 			getUserInfo() {
 				this.$store.dispatch('getUserInfo');
@@ -837,6 +867,12 @@
 		.content {
 			flex: 1;
 			margin-right: 20upx;
+		}
+
+		.desc {
+			margin-top: 12rpx;
+			font-size: $font-base;
+			color: $font-color-disabled;
 		}
 
 		.orders {

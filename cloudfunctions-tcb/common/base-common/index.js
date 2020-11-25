@@ -114,6 +114,33 @@ const updateUserScore = async function(uid, number) {
 	});
 }
 /**
+ * 增加用户收入
+ * @param {Object} uid
+ * @param {Object} number
+ */
+const updateUserIncome = async function(uid, number, description) {
+	console.log("updateUserIncome", uid, number);
+	let res = await userCollection.doc(uid).update({
+		balance: cmd.inc(number * 1)
+	});
+	console.log(res);
+	//查询余额
+	res = await userCollection.doc(uid).field({
+		balance: 1
+	}).get();
+	console.log(res);
+	//充值记录
+	let log = await addUserBalanceLog({
+		uid: uid,
+		type: 1, //0支出，1收入
+		balance: res.data[0].balance,
+		money: number * 1,
+		description: description,
+	});
+	console.log(description, log);
+	return res.data[0].balance;
+}
+/**
  * 增加/删除店铺商品数量统计
  * @param {Int} shopid 店铺id
  * @param {String} type 类型,baokuan，miaosha，online，shouqin，yuding
@@ -414,6 +441,7 @@ module.exports = {
 	updateShopDayStatistics,
 	shopGoodsInc,
 	genIdentityId,
+	updateUserIncome,
 	addUserBalanceLog,
 	getUserInfoById,
 	genOrderNo,

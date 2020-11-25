@@ -25,10 +25,10 @@
 		<block v-if="loaded">
 			<takeaddressPage :dataList="nearestData" v-if="nearestData.length>0" @change="setSelfRaisingPoint"></takeaddressPage>
 			<view class="flex flex-column align-center bg-white padding-xl " v-else>
-				<text>当前定位1公里范围内，没有自提点~</text>
+				<text>当前定位5公里范围内，没有自提点~</text>
 				<text>可用切换其他地址看看~</text>
-				<!-- <text>或申请成为该位置的团长，足不出户，轻松赚钱！</text>
-				<button type="primary" class="button">我要成为团长</button> -->
+				<text>或申请成为该位置的团长，足不出户，轻松赚钱！</text>
+				<button class="cu-btn bg-green margin-top" @click="navTo('/pages/selfraisingpoint/add')">我要成为团长</button>
 			</view>
 		</block>
 	</view>
@@ -80,7 +80,9 @@
 					latitude: this.location.latitude,
 					longitude: this.location.longitude
 				}).then(res => {
-					//this.nearestData = res;
+					if(this.page == 1){
+						this.nearestData = [];
+					}
 					let fromLats = [];
 					res.map(addr => {
 						fromLats.push([addr.latitude, addr.longitude].join(","))
@@ -137,6 +139,8 @@
 								longitude: data.longitude,
 							}
 						})
+						this.page = 0;
+						this.loadData();
 						console.log(this.location)
 					}
 				});

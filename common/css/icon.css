@@ -18,6 +18,27 @@
 	transition: 0.4s;
 }
 
+.yticon.lg {
+	font-size: 32upx;
+}
+
+.yticon.xl {
+	font-size: 36upx;
+}
+
+.yticon.xxl {
+	font-size: 60upx;
+}
+
+.yticon.sl {
+	font-size: 80upx;
+
+}
+
+.yticon.xsl {
+	font-size: 120upx;
+}
+
 .yticon.checked {
 	color: #54b85d;
 }
@@ -217,6 +238,7 @@
 .icon-balance:before {
 	content: '\e623';
 }
+
 .icon-delivery:before {
 	content: '\e609';
 }
@@ -372,6 +394,7 @@
 .icon-tongji::before {
 	content: '\e813';
 }
+
 .icon-gonggao::before {
 	content: '\e814';
 }

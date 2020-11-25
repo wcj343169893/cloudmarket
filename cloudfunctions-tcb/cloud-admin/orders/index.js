@@ -301,6 +301,26 @@ const selftake = async (data) => {
 	return res;
 }
 /**
+ * 按自提点发货
+ */
+const selftakebyraising = async (data) => {
+	const {
+		id,
+		operator,
+		shopid,
+	} = data;
+	return await orderCollection.where({
+		"raisingPoint._id": id,
+		state: 1,
+		shopid,
+		isRefundAll: cmd.exists(false)
+	}).update({
+		receivedTime: new Date().toISOString(),
+		receivedUid: operator,
+		state: 2
+	});
+}
+/**
  * 查询订单
  */
 const getOrderById = async (conditions, field) => {
@@ -366,6 +386,7 @@ module.exports = {
 	detail: detail,
 	addDelivery: addDelivery,
 	selftake,
+	selftakebyraising,
 	print: printOrder,
 	getRefunded,
 	passedRefund,

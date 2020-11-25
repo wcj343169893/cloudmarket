@@ -2,6 +2,7 @@
 const db = uniCloud.database();
 const cmd = db.command;
 const {
+	updateUserIncome,
 	addUserBalanceLog,
 	getDate
 } = require('base-common');
@@ -66,29 +67,7 @@ const modules = {
 			rechargeUid,
 			money
 		} = data;
-		let res = await usersCollection.where({
-			_id: rechargeUid
-		}).update({
-			balance: cmd.inc(money)
-		});
-		console.log("手动账户充值", res);
-		//查询余额
-		res = await usersCollection.where({
-			_id: rechargeUid
-		}).field({
-			balance: 1
-		}).get();
-		console.log(res);
-		//充值记录
-		let log = await addUserBalanceLog({
-			uid: rechargeUid,
-			type: 1, //0支出，1收入
-			balance: res.data[0].balance,
-			money: money,
-			description: "手动账户充值",
-		});
-		console.log("手动账户充值", log);
-		return res.data[0].balance;
+		return await updateUserIncome(rechargeUid, money, "手动账户充值");
 	},
 	async exports(data) {
 		const {
@@ -106,7 +85,7 @@ const modules = {
 			return false;
 		}
 		//导出为Excel
-		
+
 	},
 	getStateCondition() {
 		const {

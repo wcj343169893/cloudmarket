@@ -15,8 +15,11 @@ const models = {
 			latitude
 		} = data;
 		let res = await selfraisingCollection.where({
+			state: 1,
 			location: cmd.geoNear({
 				geometry: new db.Geo.Point(longitude, latitude),
+				minDistance: 0,
+				maxDistance: 5000
 			})
 		}).field({
 			latitude: 1,
@@ -30,6 +33,33 @@ const models = {
 			return false;
 		}
 		return res.data;
+	},
+	async applys(data) {
+		const {
+			_id,
+			longitude,
+			latitude,
+			uid
+		} = data;
+		data.location = new db.Geo.Point(longitude, latitude);
+		data.state = 0;
+		if (_id) {
+			//修改
+			delete data._id;
+			data.modified = new Date().toISOString();
+			return await selfraisingCollection.where({
+				_id,
+				uid
+			}).update(data);
+		} else {
+			//分成百分比,默认2%
+			data.rate = 2;
+			//佣金
+			data.commission = 0;
+			data.modified = new Date().toISOString();
+			data.created = new Date().toISOString();
+			return await selfraisingCollection.add(data);
+		}
 	}
 }
 module.exports = models;

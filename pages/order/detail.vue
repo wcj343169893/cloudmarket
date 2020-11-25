@@ -54,7 +54,7 @@
 					<view @click="navToLocation(info.raisingPoint)">
 						<text>自提点:{{ info.raisingPoint.name }}</text>
 					</view>
-					<view class="" @click="tel(info.raisingPoint.phone)" v-if="info.raisingPoint.phone">
+					<view class="" @click="tel(info.raisingPoint.mobile)" v-if="info.raisingPoint.mobile">
 						<text class="yticon icon-dianhua-copy"></text>
 						<text class="m-l">联系</text>
 					</view>
@@ -752,6 +752,8 @@
 			},
 			navToLocation(shop) {
 				uni.openLocation({
+					name: shop.name,
+					address: shop.address,
 					latitude: shop.latitude,
 					longitude: shop.longitude,
 					success: function() {

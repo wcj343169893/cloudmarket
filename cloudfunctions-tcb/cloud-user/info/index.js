@@ -12,6 +12,7 @@ const shopCollection = db.collection("cloud_shops");
 const ordersCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
+const selfraisingCollection = db.collection("cloud_self_raising_points");
 const models = {
 	//我的信息
 	async mine(data, context) {
@@ -90,32 +91,19 @@ const models = {
 		let info = res.userInfo;
 		//处理余额为2位小数
 		info.balance = info.balance ? info.balance.toFixed(2) * 1 : 0;
-		if (info.admin) {
-			//查询店铺的订单统计情况,以及店铺信息
-			let shops = await shopCollection.where({
-				id: cmd.in(info.admin)
-			}).field({
-				id: 1,
-				name: 1,
-				src: 1,
-				monthSale: 1,
-				address: 1,
-				order: 1,
-				banner: 1
-			}).orderBy("id", "desc").limit(30).get();
-			info.admin = [];
-			for (let shop of shops.data) {
-				await this.getShopOrderStatistics(shop);
-				info.admin.push(shop);
-			}
-		}
 		//免费开通会员最后期限
 		info.lastFreeVip = new Date().getTime() + 3600 * 1000 * 24 * 365;
 		//当前时间
 		info.time = new Date().getTime();
 		//88/年
 		info.vipPrice = 88;
+		//管理店铺
+		await this.getAdminShop(info);
+		//管理的提货点
+		await this.getAdminSelfRaisingPoint(info);
+		//我的订单统计
 		await this.getOrderStatistics(info);
+		//查询我的自提点（团长）
 		return info;
 	},
 	//开通会员，后续完成
@@ -208,17 +196,17 @@ const models = {
 		//2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
 		let statistics = {
 			unpaid: {
-				isDelete:0,
+				isDelete: 0,
 				state: 0
 			},
 			payup: {
 				state: cmd.in([1, 2]),
-				isDelete:0,
+				isDelete: 0,
 				isRefundAll: cmd.exists(false)
 			},
 			received: {
 				state: 3,
-				isDelete:0,
+				isDelete: 0,
 				isRefundAll: cmd.exists(false)
 			}
 		};
@@ -289,6 +277,55 @@ const models = {
 			...condition
 		}).count();
 		return res.total;
+	},
+	/**
+	 * 团长管理的提货点
+	 * @param {Object} info
+	 */
+	async getAdminSelfRaisingPoint(info) {
+		let res = await selfraisingCollection.where({
+			uid: info._id
+		}).limit(100).field({
+			address: 1,
+			latitude: 1,
+			longitude: 1,
+			mobile: 1,
+			name: 1,
+			state: 1,
+			head: 1,
+			inside: 1,
+			src: 1
+		}).orderBy("created", "desc").get();
+		if (res.data.length > 0) {
+			info.selfraising = res.data;
+		}
+	},
+	/**
+	 * 我管理的店铺
+	 * @param {Object} info
+	 */
+	async getAdminShop(info) {
+		if (info.admin) {
+			//查询店铺的订单统计情况,以及店铺信息
+			let shops = await shopCollection.where({
+				id: cmd.in(info.admin)
+			}).field({
+				id: 1,
+				name: 1,
+				src: 1,
+				monthSale: 1,
+				address: 1,
+				latitude: 1,
+				longitude: 1,
+				order: 1,
+				banner: 1
+			}).orderBy("id", "desc").limit(30).get();
+			info.admin = [];
+			for (let shop of shops.data) {
+				await this.getShopOrderStatistics(shop);
+				info.admin.push(shop);
+			}
+		}
 	},
 	async push(data) {
 		const {

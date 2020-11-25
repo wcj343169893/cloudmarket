@@ -4,6 +4,7 @@ const cmd = db.command;
 const {
 	updateGoodsMiaoshaStock,
 	updateGoodsStock,
+	updateUserIncome,
 	updateUserOrderCount,
 	updateUserScore,
 	genIdentityId,
@@ -17,6 +18,7 @@ const goodsCollection = db.collection('cloud_goods');
 const commentCollection = db.collection('cloud_goods_comments');
 const orderRefundsCollection = db.collection("cloud_order_refunds");
 const addressCollection = db.collection('cloud_addresses');
+const selfraisingCollection = db.collection("cloud_self_raising_points");
 const shopCollection = db.collection('cloud_shops');
 /**
  * 用户中心统一插件，位于common目录
@@ -65,40 +67,34 @@ const model = {
 					break;
 			}
 		}
-		data = await orderCollection.where(conditions).field({
-			id: 1,
-			totalMoney: 1,
-			freight: 1,
-			totalDiscount: 1,
-			state: 1,
-			created: 1,
-			goods: 1,
-			cartCount: 1,
-			address: 1,
-			cancelStyle: 1,
-			remark: 1,
-			shopid: 1,
-			dayIndex: 1,
-			delivery: 1,
-			deliveryHour: 1,
-			deliveryType: 1,
-			selfRaising: 1,
-			shop: 1,
-			raisingPoint: 1,
-			yuding: 1,
-			created: 1,
-			modified: 1,
-			payInfo: 1,
-			lastPayTime: 1,
-			cancelApply: 1,
-			isRefunding: 1,
-			refundAmount: 1,
-			isComment: 1,
-			//refundApply: 1
-		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
+		data = await orderCollection.where(conditions).field(this.getOrderFields()).skip((page - 1) * limit).limit(limit).orderBy(
+			"created", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
 		return data;
+	},
+	/**
+	 * 根据订单状态，提货点id，查询订单
+	 * @param {Object} data
+	 */
+	async listbyraisingpoint(data) {
+		const {
+			id,
+			page,
+			uid,
+			limit,
+			state
+		} = data;
+		let res = await orderCollection.where({
+			"raisingPoint._id": id,
+			"raisingPoint.uid": uid,
+			state: +state,
+		}).field(this.getOrderFields()).skip((page - 1) * limit).limit(limit).orderBy(
+			"created", "desc").get();
+		if (res.data.length == 0) {
+			return false;
+		}
+		return res.data;
 	},
 	/**
 	 * 未支付订单或者没有支付尾款的预售订单，才能取消订单，否则走退款流程
@@ -291,9 +287,49 @@ const model = {
 			state: 1,
 			totalMoney: 1,
 			uid: 1,
+			id: 1,
+			raisingPoint: 1,
 			shopid: 1
 		};
 
+		let order = await this.getOrderByConditions(conditions, fields);
+		if (!order) {
+			data.message = "订单不存在";
+			return false;
+		}
+		//确定收货,资金解冻
+		data = await orderCollection.doc(order._id).update({
+			state: 3,
+			makesureUid: uid,
+			makesureTime: new Date().toISOString()
+		});
+		await this.afterMakesure(order);
+		return data;
+	},
+	/**
+	 * 提货点确定用户提货
+	 * @param {Object} data
+	 */
+	async makesurebyraising(data) {
+		const {
+			uid,
+			id,
+			rid
+		} = data;
+		let conditions = {
+			"raisingPoint._id": rid,
+			"raisingPoint.uid": uid,
+			isDelete: 0,
+			_id: id,
+		};
+		let fields = {
+			state: 1,
+			totalMoney: 1,
+			uid: 1,
+			id: 1,
+			raisingPoint: 1,
+			shopid: 1
+		};
 		let order = await this.getOrderByConditions(conditions, fields);
 		if (!order) {
 			data.message = "订单不存在";
@@ -319,6 +355,15 @@ const model = {
 		//增加用户积分
 		res = await updateUserScore(order.uid, order.totalMoney);
 		console.log("updateUserScore", res);
+		//佣金
+		if (order.raisingPoint && order.raisingPoint.uid && order.raisingPoint.commission) {
+			//增加自提点佣金累计
+			await selfraisingCollection.doc(order.raisingPoint._id).update({
+				commission: cmd.inc(order.raisingPoint.commission * 1)
+			})
+			//增加自提点团长收入
+			await updateUserIncome(order.raisingPoint.uid, order.raisingPoint.commission, "团长佣金" + order.id);
+		}
 		//@todo 资金解冻,付款给商家，定时器处理，避免重复执行付款
 		return true;
 	},
@@ -333,6 +378,8 @@ const model = {
 			state: 1,
 			totalMoney: 1,
 			uid: 1,
+			id: 1,
+			raisingPoint: 1,
 			shopid: 1
 		});
 		return await this.afterMakesure(order);
@@ -726,8 +773,9 @@ const model = {
 				return false;
 			}
 			//自提点信息
-			if (event.raisingPoint) {
-				data.raisingPoint = event.raisingPoint;
+			if (event.raisingPoint && event.raisingPoint._id) {
+				//查询自提点详细信息
+				data.raisingPoint = await this.getSelfRaisingInfo(event.raisingPoint._id, shopid);
 			}
 		}
 		//查询默认收货地址,结算的时候，前端传addressid
@@ -1058,6 +1106,13 @@ const model = {
 			}
 			//预计送达时间
 			data["deliveryHour"] = event.deliveryHour;
+			//计算自提点佣金
+			if (data.raisingPoint) {
+				data.raisingPoint.commission = 0;
+				if (data.raisingPoint.rate > 0) {
+					data.raisingPoint.commission = (data.totalMoney * data.raisingPoint.rate / 100).toFixed(2);
+				}
+			}
 			//最后支付时间，否则自动取消订单,5分钟支付时间,预定订单30分钟
 			data["lastPayTime"] = (new Date()).getTime() + lastPayTimeMinute * 60 * 1000;
 			//用户设备信息
@@ -1235,6 +1290,33 @@ const model = {
 		return orders.data[0].selfRaising;
 	},
 	/**
+	 * 查询自提点信息
+	 * @param {Object} id
+	 */
+	async getSelfRaisingInfo(id, shopid) {
+		let selfraising = await selfraisingCollection.doc(id).field({
+			latitude: 1,
+			longitude: 1,
+			src: 1,
+			mobile: 1,
+			address: 1,
+			rate: 1,
+			state: 1,
+			rateShop: 1,
+			name: 1,
+			uid: 1,
+		}).get();
+		if (selfraising.data.length == 0) {
+			return false;
+		}
+		let raising = selfraising.data[0];
+		if (raising.rateShop && raising.rateShop[shopid]) {
+			raising.rate = raising.rateShop[shopid];
+		}
+		delete raising.rateShop;
+		return raising;
+	},
+	/**
 	 * 定时器，1.自动取消未付款的订单
 	 */
 	async timer() {
@@ -1298,6 +1380,39 @@ const model = {
 			return res;
 		}
 		return true;
+	},
+	getOrderFields() {
+		return {
+			id: 1,
+			totalMoney: 1,
+			freight: 1,
+			totalDiscount: 1,
+			state: 1,
+			created: 1,
+			goods: 1,
+			cartCount: 1,
+			address: 1,
+			cancelStyle: 1,
+			remark: 1,
+			shopid: 1,
+			dayIndex: 1,
+			delivery: 1,
+			deliveryHour: 1,
+			deliveryType: 1,
+			selfRaising: 1,
+			shop: 1,
+			raisingPoint: 1,
+			yuding: 1,
+			created: 1,
+			modified: 1,
+			payInfo: 1,
+			lastPayTime: 1,
+			cancelApply: 1,
+			isRefunding: 1,
+			refundAmount: 1,
+			isComment: 1,
+			//refundApply: 1
+		};
 	}
 }
 

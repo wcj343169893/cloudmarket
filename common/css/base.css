@@ -6,19 +6,82 @@
 .weui-flex__item {
 	flex: 1;
 }
-.flex-column{
+
+.flex-column {
 	flex-direction: column;
 	align-items: flex-start;
 }
-.m-r{
+
+.flex-column.align-center {
+	flex-direction: column;
+	align-items: center;
+}
+
+.m-r {
 	margin-right: 12rpx;
 }
+.margin-left-xxs {
+	margin-left: 6upx;
+}
+
 
 button.small {
 	line-height: 48rpx;
 	height: 48rpx;
 	font-size: 24rpx;
 }
+
 radio-group {
 	display: block;
+}
+
+.cu-list.custom>.panel {
+	position: relative;
+	padding-bottom: 16rpx;
+}
+
+
+.cu-list.custom>.panel>.cu-item {
+	position: relative;
+	display: flex;
+	background-color: #ffffff;
+	align-items: center;
+	padding: 20rpx 20rpx;
+}
+
+.cu-list.custom>.panel>.cu-item:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	box-sizing: border-box;
+	width: 200%;
+	height: 200%;
+	border-bottom: 1upx solid #ddd;
+	border-radius: inherit;
+	content: " ";
+	transform: scale(.5);
+	transform-origin: 0 0;
+	pointer-events: none
+}
+
+.cu-list.custom>.panel>.cu-item>.cu-avatar {}
+
+.cu-list.custom>.panel>.cu-item .content {
+	margin-left: 12rpx;
+		line-height: 1.3;
+}
+.cu-list.custom>.panel>.cu-item .content .text-desc{
+	margin-top: 6rpx;
+}
+
+.cu-list.custom>.panel>.buttons {
+	display: flex;
+	background-color: #ffffff;
+	align-items: center;
+	padding: 20rpx 20rpx;
+	justify-content: flex-end;
+}
+
+.cu-list.custom>.panel>.buttons .cu-btn{
+	margin-right: 20rpx;
 }

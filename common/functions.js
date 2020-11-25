@@ -697,9 +697,15 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 	uni.chooseImage({
 		count: number,
 		success: res => {
+			if (res.tempFilePaths.length < 1) {
+				return;
+			}
+			uni.showLoading({
+				title:"上传中"
+			})
 			let paths = [];
 			console.log(res)
-			if (chooseCallback) {
+			if (chooseCallback && successCallback) {
 				chooseCallback(res.tempFilePaths);
 			}
 			let promises = [];
@@ -714,7 +720,10 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				console.log(res);
 				if (successCallback) {
 					successCallback(res)
+				} else if (chooseCallback) {
+					chooseCallback(res)
 				}
+				uni.hideLoading()
 			});
 		}
 	});

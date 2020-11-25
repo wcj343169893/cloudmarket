@@ -286,10 +286,11 @@
 							uni.showLoading({
 								title: '图片上传中'
 							});
+							let field = uni.getStorageSync("avatarField");
 							//上传到服务器
 							cloudUploadFile(res.tempFilePath, cloudPath).then(url => {
-								this.$api.prePage().refreshFile(url);
-								this.$api.msg('上传成功');
+								this.$api.prePage().refreshFile(url,field);
+								this.$api.success('上传成功');
 								setTimeout(() => {
 									uni.navigateBack({
 										delta: 1
@@ -301,41 +302,6 @@
 									showCancel: false
 								});
 							})
-							/* uniCloud
-								.uploadFile({
-									filePath: res.tempFilePath,
-									cloudPath: cloudPath, //文件的绝对路径，包含文件名	阿里云非必填，腾讯云必填
-									onUploadProgress: progressEvent => {
-										console.log(progressEvent);
-										var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-									}
-								})
-								.then(result => {
-									uni.hideLoading();
-									if (!result.code) {
-										//上传成功
-										let url = fileDomain + cloudPath;
-										this.$api.prePage().refreshFile(url);
-										this.$api.msg('上传成功');
-										setTimeout(() => {
-											uni.navigateBack({
-												delta: 1
-											});
-										}, 1500);
-									} else {
-										uni.showModal({
-											title: '上传失败',
-											content: result.message,
-											showCancel: false
-										});
-									}
-								}); */
-							//this.$api.prePage().refreshFile(res.tempFilePath);
-							// 成功获得地址的地方
-							/* uni.previewImage({
-								current: '', // 当前显示图片的http链接
-								urls: [res.tempFilePath] // 需要预览的图片http链接列表
-							}); */
 						}
 					});
 				});

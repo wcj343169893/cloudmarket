@@ -367,6 +367,20 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/selfraisingpoint/add",
+			"style": {
+				"navigationBarTitleText": "申请自提点",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/selfraisingpoint/admin",
+			"style": {
+				"navigationBarTitleText": "自提点管理",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{

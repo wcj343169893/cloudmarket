@@ -567,7 +567,7 @@
 	.fixed-add-btn {
 		position: fixed;
 		left: 5%;
-		bottom: 0;
+		bottom: 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -585,7 +585,7 @@
 		position: fixed;
 		background: #FFFFFF;
 		left: 0;
-		bottom: 0;
+		bottom: 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
