@@ -138,6 +138,7 @@
 								<view class="title clamp">
 									<text>{{item.name}}</text>
 									<text v-if="!item.state" class="desc">（审核中）</text>
+									<text class="price margin-left-xxs">{{item.commission | toFixed}}</text>
 								</view>
 								<view class="desc">
 									<text>{{item.address}}</text>

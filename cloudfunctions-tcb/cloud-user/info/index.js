@@ -290,6 +290,7 @@ const models = {
 			latitude: 1,
 			longitude: 1,
 			mobile: 1,
+			commission: 1,
 			name: 1,
 			state: 1,
 			head: 1,
