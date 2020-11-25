@@ -8,6 +8,7 @@
 						<view class="title clamp">
 							<text>{{name}}</text>
 							<text v-if="!state" class="desc">（审核中）</text>
+							<text class="price margin-left-xxs">{{commission | toFixed}}</text>
 						</view>
 						<view class="desc">
 							<text>{{address}}</text>
@@ -103,6 +104,7 @@
 				latitude: 0,
 				longitude: 0,
 				state: 0,
+				commission: 0,
 				mobile: "",
 				name: "",
 				src: "",
