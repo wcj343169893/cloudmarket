@@ -19,6 +19,7 @@ const modules = {
 	shop: require('./shop'),
 	selfraising: require('./selfraising'),
 	utils: require('./utils'),
+	article: require('./article'),
 }
 /**
  * 必须登录才能访问,cart子模块，list方法

@@ -197,6 +197,13 @@
 						</checkbox-group>
 					</view>
 				</view>
+				<view class="mix-list-cell b-b">
+					<text class="cell-tit clamp">分成比例</text>
+					<view class="cell-content">
+						<slider :value="rate" min="0" max="100" class="cell-content" @change="rateChange" show-value />
+					</view>
+					<text class="more">%</text>
+				</view>
 			</view>
 		</view>
 		<view class="tmp submit"></view>
@@ -302,6 +309,7 @@
 				},
 				specsTitlesMap: [],
 				maxSpecsTitles: 2, //最多规格
+				rate: 100, //分成比例
 				hasSpecs: false,
 				specsTitles: [
 					'尺寸',
@@ -674,6 +682,9 @@
 					this.skus[index] = info;
 				}
 			},
+			rateChange(e) {
+				this.rate = +e.detail.value;
+			},
 			changeSaleType(val) {
 				console.log('changeSaleType', val);
 				this.saleType = val;
@@ -799,6 +810,7 @@
 					categories: this.categories,
 					description: this.description,
 					id: this.id,
+					rate: this.rate,
 					imgs: this.imgs,
 					banner: this.banner,
 					upc: this.upc,
@@ -1084,6 +1096,11 @@
 			margin-right: 20upx;
 		}
 
+		.more {
+			color: $font-color-light;
+			margin-left: 8upx;
+		}
+
 		.cell-content {
 			flex: 1;
 			font-size: $font-sm + 2upx;
@@ -1309,5 +1326,9 @@
 			left: 10rpx;
 			top: 0;
 		}
+	}
+
+	uni-slider {
+		margin: 0 0 0 20rpx;
 	}
 </style>

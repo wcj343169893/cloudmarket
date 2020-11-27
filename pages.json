@@ -381,6 +381,20 @@
 				"enablePullDownRefresh": false
 			}
 
+		},  {
+			"path": "pages/article/list",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/article/detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"subPackages": [{

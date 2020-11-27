@@ -129,7 +129,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="admin-section">
+			<view class="admin-section" v-if="applyTuanZhang">
 				<block v-if="selfraising && selfraising.length > 0">
 					<view v-for="(item,index) in selfraising" :key="index" class="admin-shops b-b" @click="navToSelfRaisingAdmin(item)">
 						<image :src="item.src" mode="aspectFill"></image>
@@ -240,7 +240,7 @@
 					refund: 0
 				},
 				admin: [],
-				selfraising: [],
+				selfraising: false,
 				teamTips: "加入团队",
 				moving: false
 			};
@@ -318,6 +318,12 @@
 					return "";
 				}
 				return this.$config.vipCard.bgImage;
+			},
+			applyTuanZhang() {
+				if (!this.$config.selfRaising) {
+					return false;
+				}
+				return this.$config.selfRaising.apply;
 			}
 		},
 		methods: {

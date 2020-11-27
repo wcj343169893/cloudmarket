@@ -857,6 +857,7 @@ const model = {
 			"upc": 1,
 			"originPrice": 1,
 			"miaosha": 1,
+			"rate": 1,
 			"yuding": 1,
 			"tuangou": 1,
 			"manjian": 1,
@@ -864,6 +865,8 @@ const model = {
 		}).get();
 		//判断是否存在只能自提的商品
 		let onlySelfTake = false;
+		//可分成金额
+		let rateTotalMoney = 0;
 		if (goods.data.length > 0) {
 			let goodsOut = [];
 			//处理选中数量
@@ -1019,6 +1022,11 @@ const model = {
 						data.cartCount += ele.amount;
 					}
 				}
+				if (!ele.rate) {
+					ele.rate = 100;
+				}
+				//可分成总金额
+				rateTotalMoney += ele.rate * ele.amount * ele.price / 100;
 			}
 		} else {
 			//结算商品不存在
@@ -1109,8 +1117,10 @@ const model = {
 			//计算自提点佣金
 			if (data.raisingPoint) {
 				data.raisingPoint.commission = 0;
+				data.raisingPoint.rateTotalMoney = rateTotalMoney;
 				if (data.raisingPoint.rate > 0) {
-					data.raisingPoint.commission = (data.totalMoney * data.raisingPoint.rate / 100).toFixed(2);
+					//可分成总金额*分成比例，舍去分以后的值
+					data.raisingPoint.commission = parseInt((rateTotalMoney * data.raisingPoint.rate).toFixed(2).split(".")[0])/100;
 				}
 			}
 			//最后支付时间，否则自动取消订单,5分钟支付时间,预定订单30分钟

@@ -701,7 +701,8 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				return;
 			}
 			uni.showLoading({
-				title:"上传中"
+				title:"上传中",
+				mask:true
 			})
 			let paths = [];
 			console.log(res)
@@ -724,6 +725,10 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 					chooseCallback(res)
 				}
 				uni.hideLoading()
+				uni.showToast({
+					title:"上传成功",
+					icon:"success"
+				});
 			});
 		}
 	});

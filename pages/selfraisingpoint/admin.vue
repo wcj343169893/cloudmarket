@@ -47,8 +47,9 @@
 			<view v-for="(item,index) in dataList" :key="index" :class="[item.shop.currency]" class="order-item">
 				<view class="i-top b-b">
 					<text class="time">{{ item.created | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
-					<view class="state">
-						<text class="num">共{{ item.cartCount }}件</text>
+					<view class="state" v-if="item.raisingPoint">
+						<text>佣金</text>
+						<text class="price warning">{{item.raisingPoint.commission | toFixed}}</text>
 					</view>
 				</view>
 				<view class="">
@@ -69,19 +70,23 @@
 					</view>
 				</view>
 				<view class="price-box">
+					<text class="num margin-right-xs">共{{ item.cartCount }}件</text>
 					<text class="">总金额</text>
-					<text class="margin-right-xs price">{{item.totalMoney}}</text>
-					<text class="">佣金</text>
-					<text class="price" v-if="item.raisingPoint">{{item.raisingPoint.commission | toFixed}}</text>
+					<text class="price">{{item.totalMoney}}</text>
 				</view>
-				<view class="price-box" v-if="item.selfRaising">
+				<view class="price-box" v-if="item.selfRaising" @click="tel(item.selfRaising.mobile)">
 					<text class="margin-right-xs">{{item.selfRaising.name}}</text>
-					<text class="margin-right-xs">{{item.selfRaising.mobile}}</text>
+					<text class="">{{item.selfRaising.mobile}}</text>
 				</view>
 				<view class="price-box" v-if="item.deliveryHour">
-					<text class="margin-right-xs">{{item.deliveryHour.time}}</text>
+					<text class="margin-right-xs">提货时间</text>
+					<text class="margin-right-xs">{{item.deliveryHour.id | dateFormat('yyyy-MM-dd')}}</text>
+					<text class="">{{item.deliveryHour.time}}</text>
+				</view>
+				<view class="price-box" v-if="item.deliveryHour">
+					<text class="margin-right-xs">提货码</text>
 					<text class="margin-right-xs text-red text-lg">{{item.deliveryHour.number}}</text>
-					<text class="margin-right-xs text-red text-lg">{{item.deliveryHour.password}}</text>
+					<text class=" text-red text-lg">{{item.deliveryHour.password}}</text>
 				</view>
 				<view class="action-box b-t" v-if="item.state == 2">
 					<button class="action-btn recom" @click.stop="makesure(item,index)">确定提货</button>
@@ -166,6 +171,11 @@
 							}, err => {})
 						}
 					}
+				})
+			},
+			tel(phone) {
+				uni.makePhoneCall({
+					phoneNumber: phone
 				})
 			},
 			tabSelect(e) {
@@ -265,7 +275,7 @@
 			}
 
 			.state {
-				color: $base-color;
+				color: $font-color-warning;
 			}
 
 			.del-btn {

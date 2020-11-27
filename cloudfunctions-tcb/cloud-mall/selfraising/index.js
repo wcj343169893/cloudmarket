@@ -12,14 +12,19 @@ const models = {
 			page,
 			limit,
 			longitude,
-			latitude
+			latitude,
 		} = data;
+		//默认5公里，直线距离
+		let distance = 5000;
+		if (data.distance) {
+			distance = +data.distance;
+		}
 		let res = await selfraisingCollection.where({
 			state: 1,
 			location: cmd.geoNear({
 				geometry: new db.Geo.Point(longitude, latitude),
 				minDistance: 0,
-				maxDistance: 5000
+				maxDistance: distance
 			})
 		}).field({
 			latitude: 1,

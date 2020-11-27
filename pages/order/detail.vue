@@ -798,7 +798,7 @@
 		}
 
 		&.b-b {
-			padding-bottom: 12rpx;
+			padding-bottom: 24rpx;
 		}
 	}
 
@@ -1004,7 +1004,7 @@
 
 	.address {
 		position: relative;
-		padding-bottom: 14upx;
+		padding-bottom: 24upx;
 
 		.content {
 			text-align: right;
@@ -1026,7 +1026,7 @@
 	.ab {
 		.weui-flex {
 			justify-content: space-between;
-			margin-bottom: 14upx;
+			margin-bottom: 24upx;
 		}
 	}
 
