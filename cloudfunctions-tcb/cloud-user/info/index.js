@@ -22,7 +22,7 @@ const models = {
 			"mobile_confirmed", "balance",
 			"email_confirmed", "avatar", "comment", "birthday",
 			"coupons", "score", "member", "raisingPoint"
-		]);
+		], context.userInfo);
 		//查询报错
 		if (res.code > 0) {
 			return res;
@@ -83,8 +83,8 @@ const models = {
 		return await this.setUserMember(uid, data, userInfo.id);
 	},
 	//信息统计
-	async statistics(data) {
-		let res = await getUserInfo(data.uid, ["order", "balance", "admin", "coupons", "score", "count"]);
+	async statistics(data, context) {
+		let res = await getUserInfo(data.uid, ["order", "balance", "admin", "coupons", "score", "count"], context.userInfo);
 		if (res.code > 0) {
 			return res;
 		}
@@ -346,9 +346,23 @@ const models = {
 	}
 }
 /**
- * uniid插件还未发布的方法
+ * 优先读取之前查询的信息
  */
-const getUserInfo = async (uid, field) => {
+const getUserInfo = async (uid, field, userInfo) => {
+	if (userInfo) {
+		let data = {
+			_id: uid
+		};
+		for (let f of field) {
+			if (userInfo[f] !== undefined) {
+				data[f] = userInfo[f];
+			}
+		}
+		return {
+			code: 0,
+			userInfo: data
+		};
+	}
 	return await uniID.getUserInfo({
 		uid,
 		field
