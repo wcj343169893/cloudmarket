@@ -1206,12 +1206,12 @@ const model = {
 	async getFreight(data) {
 		const {
 			deliveryType,
-			juli,
 			totalMoney,
 			shopid,
 			selfRaising,
 			uid,
 		} = data;
+		let juli = data.juli/1000;
 		let shop = data.shop;
 		let freight = 0;
 		let freightTitle = "免配送费";
