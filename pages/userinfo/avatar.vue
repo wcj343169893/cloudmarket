@@ -29,11 +29,7 @@
 				</view>
 			</view>
 			<canvas canvas-id="myCanvas" :style="'position:absolute;border: 1px solid red; width:' + imageW + 'px;height:' + imageH + 'px;top:-9999px;left:-9999px;'"></canvas>
-			<!-- #ifdef MP -->
-			<view class="buttons">
-				<button type="default" @click="getImageInfo">确定</button>
-			</view>
-			<!-- #endif -->
+			<button class="fixed-add-btn" @click="getImageInfo">确定裁剪并保存</button>
 		</view>
 	</view>
 </template>
@@ -698,7 +694,7 @@
 
 	.buttons {
 		position: fixed;
-		bottom: 0rpx;
+		bottom: 30rpx;
 		width: 94%;
 		left: 3%;
 		background: #000000;

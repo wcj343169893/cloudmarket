@@ -19,6 +19,10 @@ const models = {
 		if (data.distance) {
 			distance = +data.distance;
 		}
+		//经纬度必传
+		if (!longitude || !latitude) {
+			return false;
+		}
 		let res = await selfraisingCollection.where({
 			state: 1,
 			location: cmd.geoNear({

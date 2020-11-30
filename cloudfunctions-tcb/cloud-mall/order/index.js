@@ -778,6 +778,11 @@ const model = {
 				data.raisingPoint = await this.getSelfRaisingInfo(event.raisingPoint._id, shopid);
 			}
 		}
+		let transaction;
+		if (type == "submit") {
+			//启动事务
+			transaction = await db.startTransaction()
+		}
 		//查询默认收货地址,结算的时候，前端传addressid
 		let addressCondition = {
 			uid: uid
@@ -1054,15 +1059,19 @@ const model = {
 			//检查是否存在库存不足的商品
 			if (data.stockNotEnough.lengt > 0) {
 				//归还秒杀库存1
-				for (let ele of decrStockMiaoshaGoodsSuccess) {
+				/* for (let ele of decrStockMiaoshaGoodsSuccess) {
 					await updateGoodsMiaoshaStock(ele, -1);
-				}
+				} */
+				//事务回滚
+				await transaction.rollback();
 				event.message = "商品库存不足";
 				event.data = data;
 				return false;
 			}
 			//再次校验商品必须存在
 			if (!data.goods || data.goods.length == 0) {
+				//事务回滚
+				await transaction.rollback();
 				event.message = "提交订单失败!\n商品不存在";
 				return false;
 			}
@@ -1087,15 +1096,17 @@ const model = {
 				body.push(ele.title + ele.name);
 			}
 			if (isGoodsError) {
-				//归还秒杀库存2
+				/* //归还秒杀库存2
 				for (let ele of decrStockMiaoshaGoodsSuccess) {
 					await updateGoodsMiaoshaStock(ele, -1);
 				}
 				//归还商品库存
 				for (let ele of decrStockGoodsSuccess) {
 					await updateGoodsStock(ele, -1);
-				}
+				} */
 				event.message = "提交订单失败!\n商品库存不足";
+				//事务回滚
+				await transaction.rollback();
 				return false;
 			}
 			//console.log(data.goods)
@@ -1120,7 +1131,8 @@ const model = {
 				data.raisingPoint.rateTotalMoney = rateTotalMoney;
 				if (data.raisingPoint.rate > 0) {
 					//可分成总金额*分成比例，舍去分以后的值
-					data.raisingPoint.commission = parseInt((rateTotalMoney * data.raisingPoint.rate).toFixed(2).split(".")[0])/100;
+					data.raisingPoint.commission = parseInt((rateTotalMoney * data.raisingPoint.rate).toFixed(2).split(".")[0]) /
+						100;
 				}
 			}
 			//最后支付时间，否则自动取消订单,5分钟支付时间,预定订单30分钟
@@ -1183,10 +1195,14 @@ const model = {
 			//保存订单
 			let res = await orderCollection.add(data);
 			if (!res.id) {
+				await transaction.rollback();
+				console.log("提交订单失败，事务回滚")
 				event.message = "提交订单失败";
 				return false;
 			}
-
+			//提交事务
+			console.log("提交事务");
+			await transaction.commit();
 			//删除购物车cartId-------------我怀疑不支持异步操作--------单个商品结算+多商品结算
 			if (cartIds.indexOf("none") == -1) {
 				let delCart = await cartCollection.where({
@@ -1211,7 +1227,7 @@ const model = {
 			selfRaising,
 			uid,
 		} = data;
-		let juli = data.juli/1000;
+		let juli = data.juli / 1000;
 		let shop = data.shop;
 		let freight = 0;
 		let freightTitle = "免配送费";

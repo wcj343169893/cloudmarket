@@ -168,7 +168,7 @@ const model = {
 				//如果自己是平台，则需要扣除商家的配送费
 			}
 			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息
-			await orderCollection.doc(order._id).update({
+			return await orderCollection.doc(order._id).update({
 				dayIndex,
 				isPrint,
 				delivery: riderDelivery,
