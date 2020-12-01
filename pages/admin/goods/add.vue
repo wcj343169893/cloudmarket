@@ -69,10 +69,18 @@
 						</view>
 						<text class="cell-more yticon icon-you"></text>
 					</view>
-					<view class="mix-list-cell" @click="selectDatePicker('yuding.finalPaymentEndTime')">
+					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.finalPaymentEndTime')">
 						<text class="cell-tit clamp">*结束付尾款</text>
 						<view class="cell-tip">
 							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
+					<view class="mix-list-cell" @click="selectDatePicker('autoOffTime')">
+						<text class="cell-tit clamp">*结束自动下架</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="autoOffTime">{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -115,7 +123,14 @@
 						</view>
 						<text class="cell-more yticon icon-you"></text>
 					</view>
-
+					<view class="mix-list-cell b-b" @click="selectDatePicker('autoOffTime')">
+						<text class="cell-tit clamp">*结束自动下架</text>
+						<view class="cell-tip">
+							<view class="uni-input" v-if="autoOffTime">{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-else>选择时间</view>
+						</view>
+						<text class="cell-more yticon icon-you"></text>
+					</view>
 					<view class="mix-list-cell" @click="uploadBanner">
 						<text class="cell-tit clamp">*横图</text>
 						<view class="cell-tip">尺寸710*350</view>
@@ -137,9 +152,9 @@
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="imgs b-b">
-			<view class="h-list" v-if="srcPreview && srcPreview != ''">
+			<view class="h-list" v-if="src && src != ''">
 				<view class="h-list-image">
-					<image :src="srcPreview" mode="aspectFill"></image>
+					<image :src="src" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -286,6 +301,7 @@
 	} from 'vuex';
 	import {
 		uploadFiles,
+		uploadFileCut,
 		dateFormat
 	} from '@/common/functions.js';
 	import {
@@ -393,7 +409,8 @@
 				dateKey: "",
 				dateString: "",
 				onlySelfTake: "0",
-				otherGoods: []
+				otherGoods: [],
+				autoOffTime: false
 			};
 		},
 		computed: {
@@ -416,7 +433,7 @@
 				return new Date().getFullYear()
 			},
 			endYear() {
-				return new Date().getFullYear() + 1;
+				return new Date().getFullYear() + 3;
 			}
 		},
 		onLoad(options) {
@@ -691,7 +708,7 @@
 			},
 			//上传图片
 			uploadSrc() {
-				uploadFiles(
+				/* uploadFiles(
 					'goods_face',
 					1,
 					srcs => {
@@ -700,7 +717,11 @@
 					srcs => {
 						this.src = srcs[0];
 					}
-				);
+				); */
+				uploadFileCut("goods_face", "src");
+			},
+			refreshFile(url, field) {
+				this[field] = url;
 			},
 			//上传轮播图
 			uploadImgs() {
@@ -805,6 +826,10 @@
 					return;
 				}
 				this.submiting = true;
+				//强制限制原价不能小于售价
+				if (this.originPrice <= this.price) {
+					this.originPrice = 0;
+				}
 				let info = {
 					_id: this._id,
 					categories: this.categories,
@@ -827,6 +852,7 @@
 					net_weight: this.net_weight,
 					manufacture: this.manufacture,
 					saleType: this.saleType,
+					autoOffTime: this.autoOffTime,
 					onlySelfTake: this.onlySelfTake, //是否仅支持自提
 					deliveryTags: this.deliveryTags
 				};

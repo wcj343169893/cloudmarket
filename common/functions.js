@@ -683,7 +683,31 @@ const navToAdDetail = (item) => {
 		navToDocWebPage(link);
 	}
 }
-
+/**
+ * 上传图片并裁剪
+ */
+const uploadFileCut = (name,field)=>{
+	uni.chooseImage({
+		count: 1, //默认9
+		sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+		success: function(res) {
+			console.log(res);
+			if (res.tempFilePaths.length > 0) {
+				uni.setStorage({
+					key: 'avatar',
+					data: res.tempFilePaths[0]
+				});
+				uni.setStorage({
+					key: 'avatarField',
+					data: field
+				});
+				uni.navigateTo({
+					url: '/pages/userinfo/avatar'
+				});
+			}
+		}
+	});
+};
 /**
  * 批量上传多个文件
  * @param {Object} name
@@ -959,5 +983,6 @@ export {
 	checkAppUpdate,
 	mapDistance,
 	checkDeliveryHour,
-	navToAdDetail
+	navToAdDetail,
+	uploadFileCut
 }

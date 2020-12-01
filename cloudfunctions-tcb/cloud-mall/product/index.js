@@ -272,7 +272,9 @@ const models = {
 			isSold: 1,
 			saleType: "tuangou",
 			tuangou: cmd.exists(true),
+			autoOffTime: cmd.exists(true),
 			"tuangou.endTime": cmd.lt(time),
+			autoOffTime: cmd.lt(time),//自动下架时间戳
 		}).update({
 			isSold: 0,
 			offlineNotice: "过期团购自动下架",
@@ -286,7 +288,9 @@ const models = {
 			isSold: 1,
 			saleType: "yuding",
 			yuding: cmd.exists(true),
+			autoOffTime: cmd.exists(true),
 			"yuding.endTime": cmd.lt(time),
+			autoOffTime: cmd.lt(time),//自动下架时间戳
 		}).update({
 			isSold: 0,
 			offlineNotice: "过期预定自动下架",

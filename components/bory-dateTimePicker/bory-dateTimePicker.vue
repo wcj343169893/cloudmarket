@@ -211,7 +211,7 @@
 				let len, timeArray, index;
 				let array = getTimeArray(value);
 				let [year, month, day, hour, minute, second] = array;
-				this.days = this.initTimeData(getOneMonthDays(year, month), 1);
+				this.days = this.initTimeData(getOneMonthDays(year, month-1), 1);
 				let names = ['year', 'month', 'day', 'hour', 'minute', 'second'];
 				switch (this.type) {
 					case "date":

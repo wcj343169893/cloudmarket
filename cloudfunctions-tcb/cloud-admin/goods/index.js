@@ -46,6 +46,7 @@ const list = async (data, context) => {
 		monthlySale: 1,
 		categories: 1,
 		miaosha: 1,
+		autoOffTime: 1,
 		manjian: 1,
 		modified: 1,
 		saleType: 1,
@@ -454,7 +455,9 @@ const addMiaosha = async (data) => {
 		data.message = "原商品不存在";
 		return false;
 	}
-	let saveData = {};
+	let saveData = {
+		autoOffTime:data.autoOffTime
+	};
 	saveData[data.field] = data.miaosha;
 	//商品变化了,移除旧商品的秒杀信息
 	if (data.oldId && data.oldId != data._id) {

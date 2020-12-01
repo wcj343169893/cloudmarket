@@ -44,23 +44,36 @@
 			<text class="yticon icon-jia1"></text>
 			<text>请选择1件商品</text>
 		</view>
-		<!-- 折扣 -->
-		<view class="mix-list-cell b-b">
+		<view class="mix-list-cell b-b" @click="selectDatePicker('miaosha.showTime')">
 			<text class="cell-tit clamp">*预告时间</text>
-			<kx-datetime class="cell-tip" :time="miaosha.showTime | dateFormat('yyyy-MM-dd hh:mm')" :end="beginTimeEndDate"
-			 @rundata="showTimeChange" :start="beginTimeStartDate" default="start"></kx-datetime>
+			<view class="cell-tip">
+				<view class="uni-input" v-if="miaosha.showTime">{{ miaosha.showTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+				<view class="uni-input" v-else>选择时间</view>
+			</view>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="mix-list-cell b-b">
+		<view class="mix-list-cell b-b" @click="selectDatePicker('miaosha.beginTime')">
 			<text class="cell-tit clamp">*开始时间</text>
-			<kx-datetime class="cell-tip" :time="miaosha.beginTime | dateFormat('yyyy-MM-dd hh:mm')" :end="beginTimeEndDate"
-			 @rundata="beginTimeChange" :start="beginTimeStartDate" default="start"></kx-datetime>
+			<view class="cell-tip">
+				<view class="uni-input" v-if="miaosha.beginTime">{{ miaosha.beginTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+				<view class="uni-input" v-else>选择时间</view>
+			</view>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="mix-list-cell b-b">
+		<view class="mix-list-cell b-b" @click="selectDatePicker('miaosha.endTime')">
 			<text class="cell-tit clamp">*结束时间</text>
-			<kx-datetime class="cell-tip" :time="miaosha.endTime | dateFormat('yyyy-MM-dd hh:mm')" :end="endTimeEndDate"
-			 @rundata="endTimeChange" :start="endTimeStartDate" default="start"></kx-datetime>
+			<view class="cell-tip">
+				<view class="uni-input" v-if="miaosha.endTime">{{ miaosha.endTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+				<view class="uni-input" v-else>选择时间</view>
+			</view>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="mix-list-cell b-b" @click="selectDatePicker('autoOffTime')">
+			<text class="cell-tit clamp">*结束自动下架</text>
+			<view class="cell-tip">
+				<view class="uni-input" v-if="autoOffTime">{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+				<view class="uni-input" v-else>选择时间</view>
+			</view>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="mix-list-cell b-b">
@@ -82,10 +95,13 @@
 			<view class="mix-list-cell">
 				<text class="cell-tit clamp">新用户专享(首单)</text>
 				<view class="cell-tip">
-					<switch @change="newUserChange" :checked="miaosha.isNewUser" :class="miaosha.isNewUser ?'checked':''"/>
+					<switch @change="newUserChange" :checked="miaosha.isNewUser" :class="miaosha.isNewUser ?'checked':''" />
 				</view>
 			</view>
 		</block>
+
+		<bory-dateTimePicker ref='date-time' :startYear="startYear" :endYear="endYear" :datestring="dateString"
+		 :indicatorStyle='indicatorStyle' type='datetime' @change='dateTimeChange'></bory-dateTimePicker>
 		<view class="submit"><button class="add-btn" @click="save">提交保存</button></view>
 	</view>
 </template>
@@ -118,6 +134,9 @@
 				skusDef: '',
 				skuMap: {},
 				isLimit: false,
+				autoOffTime: false,
+				dateKey: "",
+				dateString: "",
 				submiting: false
 			};
 		},
@@ -135,20 +154,17 @@
 			}
 		},
 		computed: {
-			beginTimeStartDate() {
-				return dateFormat(false, 'yyyy-MM-dd');
+			indicatorStyle() {
+				return {
+					background: 'rgba(255,0,0,.2)',
+					height: '40px',
+				};
 			},
-			beginTimeEndDate() {
-				return this.getDefaultEndDate();
+			startYear() {
+				return new Date().getFullYear()
 			},
-			endTimeStartDate() {
-				if (this.miaosha && this.miaosha.beginTime) {
-					return dateFormat(this.miaosha.beginTime, 'yyyy-MM-dd hh:mm');
-				}
-				return dateFormat(false, 'yyyy-MM-dd');
-			},
-			endTimeEndDate() {
-				return this.getDefaultEndDate();
+			endYear() {
+				return new Date().getFullYear() + 3;
 			}
 		},
 		methods: {
@@ -160,6 +176,9 @@
 			//处理商品信息
 			updateGoodsInfo(data) {
 				this.goods = data;
+				if(this.goods.autoOffTime){
+					this.autoOffTime = this.goods.autoOffTime;
+				}
 				if (data[this.field]) {
 					this.miaosha = data[this.field];
 					if (!this.miaosha.rate) {
@@ -253,6 +272,37 @@
 				this.goods.price = skuInfo.price;
 				this.getMiaoshaPrice();
 			},
+			selectDatePicker(key) {
+				this.dateKey = key;
+				this.dateString = dateFormat(this.getArrData(key), 'yyyy-MM-dd hh:mm:ss');
+				console.log(this.dateString);
+				this.$refs['date-time'].show();
+			},
+			dateTimeChange(e) {
+				console.log("dateTimeChange", e);
+				e = new Date(e.replace(/-/g, '/')).getTime();
+				console.log("dateTimeChange", e);
+				let arr = this.dateKey.split(".");
+				console.log(arr);
+				if (arr.length == 1) {
+					this.$set(this, arr[0], e)
+				} else if (arr.length == 2) {
+					this.$set(this[arr[0]], arr[1], e)
+				} else if (arr.length == 3) {
+					this.$set(this[arr[0]][arr[1]], arr[2], e)
+				}
+				console.log(this[arr[0]])
+			},
+			getArrData(string) {
+				let arr = string.split(".");
+				if (arr.length == 1) {
+					return this[arr[0]];
+				} else if (arr.length == 2) {
+					return this[arr[0]] ? this[arr[0]][arr[1]] : "";
+				} else if (arr.length == 3) {
+					return this[arr[0]] && this[arr[0]][arr[1]] ? this[arr[0]][arr[1]][arr[2]] : "";
+				}
+			},
 			//保存秒杀信息
 			save() {
 				if (!this.goods.id) {
@@ -287,6 +337,7 @@
 				goodsAdmin('addMiaosha', {
 					oldId: this.oldId,
 					_id: this.goods._id,
+					autoOffTime: this.autoOffTime,
 					miaosha: this.miaosha,
 					field: this.field
 				}, true).then(

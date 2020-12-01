@@ -32,6 +32,7 @@ const models = {
 			address: 1,
 			rate: 1,
 			state: 1,
+			commission: 1,
 			rateShop: 1,
 			name: 1
 		}).skip((page - 1) * limit).limit(limit).get();

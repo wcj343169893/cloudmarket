@@ -276,16 +276,22 @@
 						canvasId: 'myCanvas',
 						success: res => {
 							let day = new Date();
+							let field = uni.getStorageSync("avatarField");
+							if(!field){
+								field="user";
+							}
 							//// 在H5平台下，tempFilePath 为 base64
-							let p = ['user', 'images', day.getFullYear(), day.getMonth() + 1, day.getDate(), day.getTime() + '.jpg'];
+							let p = [field, 'images', day.getFullYear(), day.getMonth() + 1, day.getDate(), day.getTime() + '.jpg'];
 							let cloudPath = p.join('/');
 							uni.showLoading({
 								title: '图片上传中'
 							});
-							let field = uni.getStorageSync("avatarField");
 							//上传到服务器
 							cloudUploadFile(res.tempFilePath, cloudPath).then(url => {
-								this.$api.prePage().refreshFile(url,field);
+								try{
+									this.$api.prePage().refreshFile(url,field);
+								}catch(e){
+								}
 								this.$api.success('上传成功');
 								setTimeout(() => {
 									uni.navigateBack({

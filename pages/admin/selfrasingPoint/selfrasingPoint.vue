@@ -9,6 +9,10 @@
 						<view class="text-black">
 							<text>{{ item.name }}</text>
 							<text class="margin-left-sm" v-if="item.mobile" @click.stop="tel(item.mobile)">{{item.mobile}}</text>
+							<block v-if="item.commission">
+								<text class="margin-left-sm">佣金</text>
+								<text class="price">{{item.commission}}</text>
+							</block>
 
 						</view>
 						<view class="text-gray text-sm flex flex-direction">
