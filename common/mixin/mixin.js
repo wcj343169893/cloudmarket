@@ -30,13 +30,15 @@ export default {
 		/**
 		 * navigatorTo跳转页面
 		 * @param {String} url
-		 * @param {Object} options
-		 * @param {Boolean} options.login 是否检测登录  
+		 * @param {Boolean} checkLogin 是否检测登录  
 		 */
-		navTo(url, options = {}) {
+		navTo(url, checkLogin) {
 			this.$finishSubmit();
 			if (!url) {
 				return;
+			}
+			if (checkLogin && !this.$store.state.hasLogin) {
+				url = "/pages/public/login";
 			}
 			uni.navigateTo({
 				url

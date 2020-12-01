@@ -31,7 +31,7 @@
 				<block v-if="applyTuanZhang">
 					<text class="margin-top-xs">或申请成为该位置的团长，</text>
 					<text class="margin-top-xs">足不出户，轻松赚钱！</text>
-					<button class="cu-btn bg-green margin-top" @click="navTo('/pages/selfraisingpoint/add')">我要成为团长</button>
+					<button class="cu-btn bg-green margin-top" @click="navTo('/pages/selfraisingpoint/add',true)">我要成为团长</button>
 				</block>
 			</view>
 		</block>
@@ -137,6 +137,9 @@
 				this.nearestData.map(addr => {
 					fromLats.push([addr.latitude, addr.longitude].join(","))
 				})
+				if(fromLats.length == 0){
+					return false;
+				}
 				let index = 0;
 				//计算距离
 				mapDistance(fromLats.join(";"), [this.location.latitude,
