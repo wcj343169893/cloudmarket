@@ -34,10 +34,8 @@
 				<text class="cell-tit clamp">*秒杀折扣</text>
 				<slider :value="miaosha.rate" min="1" max="99" class="cell-content" @change="rateChange" show-value />
 			</view>
-			<view class="mix-list-cell b-b">
-				<text class="cell-tit clamp">折后售价</text>
-				<input type="digit" class="cell-content" @input="changeMiaoshaPrice" v-model="miaosha.price" placeholder="请输入折扣价" />
-			</view>
+			<mix-list-input title="折后售价" type="digit" :defContent="miaosha.price" field="miaosha.price" placeholder="请输入折扣价"
+			 @change="changeField"></mix-list-input>
 		</block>
 		<!-- 沒有商品 -->
 		<view v-else class="add_tmp b-b" @click="selectGoods()">
@@ -76,11 +74,8 @@
 			</view>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="mix-list-cell b-b">
-			<text class="cell-tit clamp">*秒杀库存</text>
-			<input type="digit" class="cell-content" v-model="miaosha.stock" placeholder="请输入库存" />
-		</view>
-
+		<mix-list-input title="秒杀库存" type="number" :defContent="miaosha.stock" field="miaosha.stock" placeholder="请输入库存"
+		 @change="changeField"></mix-list-input>
 		<view class="mix-list-cell" :class="{'b-b':isLimit}">
 			<text class="cell-tit clamp">是否限购</text>
 			<view class="cell-tip">
@@ -88,10 +83,8 @@
 			</view>
 		</view>
 		<block v-if="isLimit">
-			<view class="mix-list-cell">
-				<text class="cell-tit clamp">订单限购</text>
-				<input type="digit" class="cell-content" v-model="miaosha.limit" placeholder="请输入限购数量" />
-			</view>
+			<mix-list-input title="订单限购" type="number" :defContent="miaosha.limit" field="miaosha.limit" placeholder="请输入限购数量"
+			 @change="changeField"></mix-list-input>
 			<view class="mix-list-cell">
 				<text class="cell-tit clamp">新用户专享(首单)</text>
 				<view class="cell-tip">
@@ -102,7 +95,7 @@
 
 		<bory-dateTimePicker ref='date-time' :startYear="startYear" :endYear="endYear" :datestring="dateString"
 		 :indicatorStyle='indicatorStyle' type='datetime' @change='dateTimeChange'></bory-dateTimePicker>
-		<view class="submit"><button class="add-btn" @click="save">提交保存</button></view>
+		<button class="fixed-add-btn" @click="save">提交保存</button>
 	</view>
 </template>
 
@@ -176,7 +169,7 @@
 			//处理商品信息
 			updateGoodsInfo(data) {
 				this.goods = data;
-				if(this.goods.autoOffTime){
+				if (this.goods.autoOffTime) {
 					this.autoOffTime = this.goods.autoOffTime;
 				}
 				if (data[this.field]) {
@@ -315,6 +308,7 @@
 					endTime: '结束秒杀时间',
 					stock: '秒杀库存'
 				};
+				this.miaosha.isLimit = this.isLimit;
 				if (this.isLimit) {
 					fields['limit'] = '限购数量';
 				} else {
@@ -383,7 +377,9 @@
 </script>
 
 <style lang="scss">
-	.container {}
+	.container {
+		padding-bottom: 120rpx;
+	}
 
 	.goods-box-single {
 		display: flex;
@@ -537,6 +533,7 @@
 
 	.submit {
 		padding-top: 40rpx;
+		padding-bottom: 30rpx;
 	}
 
 	.add-btn {

@@ -167,7 +167,9 @@ const incrCartNumber = function(number) {
 const updateGoodsTags = function(goods, isPrecise) {
 	let tags = [];
 	//最大单品加入99件
-	goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
+	if(!goods.isLimit){
+		goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
+	}
 	//是否存在多规格
 	goods["hasSku"] = false;
 	if (goods.skus && goods.skus.length > 0) {
@@ -183,9 +185,10 @@ const updateGoodsTags = function(goods, isPrecise) {
 	//console.log("updateGoodsTags");
 	goods.isCanAddToCart = true;
 	let time = new Date().getTime();
+	let isNewUser = !!goods.isNewUser;
+	goods.isCanAddToCart = !isNewUser;
 	if (goods.miaosha) {
-		let isNewUser = !!goods.miaosha.isNewUser;
-		let newUserNotice = "首单";
+		isNewUser = !!goods.miaosha.isNewUser;
 		goods.isCanAddToCart = !isNewUser;
 		if (!goods.miaosha.showTime) {
 			goods.miaosha.showTime = goods.miaosha.beginTime + 24 * 3600 * 1000;
@@ -201,12 +204,6 @@ const updateGoodsTags = function(goods, isPrecise) {
 					type: "info",
 					text: "未开始"
 				});
-				if (isNewUser) {
-					tags.push({
-						type: "info",
-						text: newUserNotice
-					});
-				}
 			}
 		} else if (time < goods.miaosha.endTime && goods.miaosha.stock > 0) {
 			goods.miaosha.isBegin = true;
@@ -216,12 +213,6 @@ const updateGoodsTags = function(goods, isPrecise) {
 					type: "warning",
 					text: "抢购中"
 				});
-				if (isNewUser) {
-					tags.push({
-						type: "warning",
-						text: newUserNotice
-					});
-				}
 			}
 			//如果是多规格商品
 			if (goods.hasSku) {
@@ -235,12 +226,6 @@ const updateGoodsTags = function(goods, isPrecise) {
 							type: "warning",
 							text: "抢购中"
 						}];
-						if (isNewUser) {
-							tags.push({
-								type: "warning",
-								text: newUserNotice
-							});
-						}
 					} else {
 						Object.assign(goods.skus[index], {
 							originPrice: sku.price,
@@ -263,12 +248,6 @@ const updateGoodsTags = function(goods, isPrecise) {
 						type: "warning",
 						text: "抢购中"
 					});
-					if (isNewUser) {
-						tags.push({
-							type: "warning",
-							text: newUserNotice
-						});
-					}
 				}
 				goods.originPrice = goods.price;
 				goods.price = goods.miaosha.price;
@@ -309,6 +288,9 @@ const updateGoodsTags = function(goods, isPrecise) {
 			delete goods.yuding;
 		}
 	} else if (goods.tuangou) {
+		if (goods.tuangou.beginTime > time) {
+			goods.isCanAddToCart = false;
+		}
 		if (goods.tuangou.endTime < time) {
 			//团购已结束
 			delete goods.tuangou;
@@ -322,6 +304,13 @@ const updateGoodsTags = function(goods, isPrecise) {
 				goods.price = goods.tuangou.price;
 			}
 		}
+	}
+
+	if (isNewUser) {
+		tags.push({
+			type: "info",
+			text: "首单"
+		});
 	}
 	if (goods.manjian) {}
 	goods["tags"] = tags;
@@ -686,7 +675,7 @@ const navToAdDetail = (item) => {
 /**
  * 上传图片并裁剪
  */
-const uploadFileCut = (name,field)=>{
+const uploadFileCut = (name, field) => {
 	uni.chooseImage({
 		count: 1, //默认9
 		sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -725,8 +714,8 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				return;
 			}
 			uni.showLoading({
-				title:"上传中",
-				mask:true
+				title: "上传中",
+				mask: true
 			})
 			let paths = [];
 			console.log(res)
@@ -750,8 +739,8 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				}
 				uni.hideLoading()
 				uni.showToast({
-					title:"上传成功",
-					icon:"success"
+					title: "上传成功",
+					icon: "success"
 				});
 			});
 		}

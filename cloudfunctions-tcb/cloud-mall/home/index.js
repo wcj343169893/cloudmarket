@@ -174,6 +174,9 @@ const models = {
 			skus: 1,
 			skuname: 1,
 			yuding: 1,
+			isNewUser: 1,
+			isLimit: 1,
+			limit: 1,
 			monthlySale: 1,
 			tuangou: 1,
 			stock: 1

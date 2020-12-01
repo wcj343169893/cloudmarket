@@ -40,7 +40,7 @@
 			<view class="c-row amount b-b">
 				<text class="tit">数量</text>
 				<view class="bz-list con">
-					<uni-number-box :min="0" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
+					<uni-number-box :min="1" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
 				</view>
 			</view>
 			<view class="c-row b-b">

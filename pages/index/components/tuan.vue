@@ -33,7 +33,8 @@
 								<text class="price">{{ item.price | toFixed }}</text>
 								<text class="price del" v-if="item.originPrice > 0">{{ item.originPrice | toFixed }}</text>
 							</view>
-							<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
+							<text class="sku_btn yticon icon-gouwuche_" v-if="item.isCanAddToCart" @click.stop="saveCartAmount(item, 0)"></text>
+							<text class="sku_btn" v-else>查看</text>
 						</view>
 						<view class="miaoshaTime basc">
 							<text>提货时间：</text><text>{{item.tuangou.pickup | dateFormat('MM-dd hh:mm')}}</text>

@@ -11,7 +11,7 @@ const models = {
 			uid
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		//查询列表
@@ -35,7 +35,7 @@ const models = {
 			uid
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		let carts = await cartCollection.where({
@@ -77,6 +77,9 @@ const models = {
 				"originPrice": 1,
 				"monthlySale": 1,
 				"categories": 1,
+				isNewUser: 1,
+				isLimit: 1,
+				limit: 1,
 				"miaosha": 1,
 				"manjian": 1,
 				"yuding": 1,
@@ -97,7 +100,7 @@ const models = {
 			cartIds
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		//批量选中
@@ -123,7 +126,7 @@ const models = {
 			cartIds
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		let condition = {
@@ -143,7 +146,7 @@ const models = {
 			uid
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		let goodsList = data.data;
@@ -174,7 +177,7 @@ const models = {
 			uid
 		} = event;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		//增加或者删除
@@ -209,7 +212,7 @@ const models = {
 			uid
 		} = event;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return false;
 		}
 		//设置结算属性
@@ -248,7 +251,7 @@ const models = {
 			uid
 		} = data;
 		//必须要店铺id
-		if(!shopid){
+		if (!shopid) {
 			return "0";
 		}
 		const $ = db.command.aggregate
@@ -319,17 +322,22 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 			goodsInfo.src = sku.src;
 		}
 	}
+	if (!goodsInfo.miaosha && goodsInfo.isLimit && goodsInfo.limit > 0 && goodsInfo.limit < amount) {
+		ele.message = `商品限购${goodsInfo.limit}件`;
+		return false;
+	}
 	//判断是否限购，只有秒杀商品指定型号,支持没有型号情况，必须在秒杀期间
-	if (goodsInfo.miaosha && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime) {
-		if ((!ele.sku_id || ele.sku_id == goodsInfo.miaosha.sku_id) && goodsInfo.miaosha.limit > 0 &&
-			goodsInfo.miaosha.limit < amount) {
-			ele.message = `商品限购${goodsInfo.miaosha.limit}件`;
+	if (goodsInfo.miaosha && time < goodsInfo.miaosha.endTime && time > goodsInfo.miaosha.beginTime && (!ele.sku_id ||
+			ele.sku_id == goodsInfo.miaosha.sku_id)) {
+		if (goodsInfo.miaosha.isLimit && goodsInfo.miaosha.limit > 0 && goodsInfo.miaosha.limit < amount) {
+			ele.message = `秒杀商品限购${goodsInfo.miaosha.limit}件`;
 			return false;
 		}
 		goodsInfo.price = goodsInfo.miaosha.price;
 	} else if (goodsInfo.tuangou && time < goodsInfo.tuangou.endTime && time > goodsInfo.tuangou.beginTime) {
 		goodsInfo.price = goodsInfo.tuangou.price;
 	}
+
 	if (cartsOld.data.length == 0) {
 		//新增
 		return await cartCollection.add({
@@ -373,6 +381,9 @@ const getGoodsById = async function(id) {
 		price: 1,
 		skus: 1,
 		stock: 1,
+		isNewUser: 1,
+		isLimit: 1,
+		limit: 1,
 		miaosha: 1,
 		tuangou: 1
 	}).limit(1).get();

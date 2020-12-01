@@ -214,6 +214,7 @@
 						let goodsSkusMap = {};
 						res.goods.map(ele => {
 							updateGoodsTags(ele, true);
+							console.log("updateGoodsTags",ele)
 							if (!this.skuCart[ele.id]) {
 								this.skuCart[ele.id] = {};
 							}
@@ -347,11 +348,13 @@
 						amount: numb
 					}).then(res => {
 						console.log(res);
+						this.cartList[index].cart = numb;
+					}, err => {
+						this.$api.msg(err.message)
+						console.log(err);
 					});
-					this.cartList[index].cart = numb;
 				} else {
 					console.log('更新购物车data列表', index);
-					this.cartList[index].cart = numb;
 					editCart({
 						shopid: this.shopId,
 						stationId: this.stationId,
@@ -361,6 +364,10 @@
 						amount: numb
 					}).then(res => {
 						console.log(res);
+						this.cartList[index].cart = numb;
+					}, err => {
+						this.$api.msg(err.message)
+						console.log(err);
 					});
 				}
 			},

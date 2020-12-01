@@ -24,7 +24,7 @@
 								</view>
 							</view>
 							<view class="buttons">
-								<text class="sku_btn" v-if="item.yuding">查看</text>
+								<text class="sku_btn" v-if="item.yuding || !item.isCanAddToCart">查看</text>
 								<text class="sku_btn" v-else-if="item.hasSku" @click.stop="openSku(item)">选规格</text>
 								<text class="sku_btn yticon icon-gouwuche_" v-else @click.stop="saveCartAmount(item, 0)"></text>
 							</view>

@@ -219,9 +219,13 @@
 					</view>
 					<text class="more">%</text>
 				</view>
+				<mix-list-checkbox title="是否限购" field="isLimit" :defContent="isLimit" @change="changeField"></mix-list-checkbox>
+				<block v-if="isLimit">
+					<mix-list-input title="订单限购" type="number" border=" " :defContent="limit" field="limit" placeholder="请输入限购数量" @change="changeField"></mix-list-input>
+					<!-- <mix-list-checkbox title="新用户专享(首单)" field="isNewUser" :defContent="isNewUser" @change="changeField"></mix-list-checkbox> -->
+				</block>
 			</view>
 		</view>
-		<view class="tmp submit"></view>
 		<view class="specsTitlesBtn submit"><button class="add-btn" @click="save">提交</button></view>
 		<uni-popup ref="showCateory" type="bottom">
 			<view class="specsTitlesBtn selectCategory b-b">
@@ -410,7 +414,10 @@
 				dateString: "",
 				onlySelfTake: "0",
 				otherGoods: [],
-				autoOffTime: false
+				autoOffTime: false,
+				limit:1,
+				isLimit: false,
+				isNewUser: false,
 			};
 		},
 		computed: {
@@ -854,7 +861,10 @@
 					saleType: this.saleType,
 					autoOffTime: this.autoOffTime,
 					onlySelfTake: this.onlySelfTake, //是否仅支持自提
-					deliveryTags: this.deliveryTags
+					deliveryTags: this.deliveryTags,
+					limit:this.limit,
+					isLimit:this.isLimit,
+					isNewUser:this.isNewUser,
 				};
 				//多规格
 				if (this.skus && this.skus.length > 0) {
@@ -1072,12 +1082,21 @@
 				} else if (arr.length == 3) {
 					return this[arr[0]] && this[arr[0]][arr[1]] ? this[arr[0]][arr[1]][arr[2]] : "";
 				}
-			}
+			},
+			limitChange(e) {
+				this.isLimit = e.target.value;
+			},
+			newUserChange(e) {
+				this.isNewUser = !!e.target.value;
+			},
 		}
 	};
 </script>
 
 <style lang="scss" scoped>
+	.container{
+		padding-bottom: 120rpx;
+	}
 	.icon .mix-list-cell.b-b:after {
 		left: 90upx;
 	}

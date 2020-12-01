@@ -46,6 +46,9 @@ const models = {
 			guarantee_period: 1,
 			storage_condition: 1,
 			net_weight: 1,
+			isNewUser: 1,
+			isLimit: 1,
+			limit: 1,
 			service_purpose: 1,
 			description: 1,
 			yuding: 1
@@ -75,6 +78,10 @@ const models = {
 			//favorite  是否收藏
 			//查询已加入购物车信息amount
 			//await getGoodsCart(data,uid);
+		}
+		if(!data.isLimit){
+			delete data.limit;
+			delete data.isNewUser;
 		}
 		return data;
 	},

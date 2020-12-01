@@ -703,7 +703,7 @@ const model = {
 				_id: "none",
 				goods_id: +event.goods.id,
 				sku_id: event.goods.sku_id > 0 ? +event.goods.sku_id : 0,
-				amount: +event.goods.amount,
+				amount: event.goods.amount > 0 ? +event.goods.amount : 1,
 				price: 0
 			});
 		} else if (event.goodslist) {
@@ -861,6 +861,9 @@ const model = {
 			"skus": 1,
 			"upc": 1,
 			"originPrice": 1,
+			isNewUser: 1,
+			isLimit: 1,
+			limit: 1,
 			"miaosha": 1,
 			"rate": 1,
 			"yuding": 1,
@@ -892,6 +895,8 @@ const model = {
 							if (goo.miaosha && (goo.miaosha.sku_id != sku.id || (!isNewUser && goo.miaosha.isNewUser))) {
 								//新用户专享秒杀，如果已经下单过了，不再享受
 								delete goo.miaosha;
+							} else if (!isNewUser && goo.isNewUser) {
+								//不能享受折扣
 							}
 							goo["sku_id"] = sku.id;
 							delete sku.id;
@@ -932,6 +937,10 @@ const model = {
 			}
 			let time = new Date().getTime();
 			for (let ele of goodsOut) {
+				//限购
+				if (ele.isLimit && ele.limit > 0 && ele.limit < ele.amount) {
+					ele.amount = ele.limit;
+				}
 				//提前预定，有折扣
 				if (ele.yuding && ele.yuding.beginTime < time && ele.yuding.endTime > time) {
 					//@todo 在预订时间内，仅支付定金,如果已经过了预定期，则不生效
