@@ -381,7 +381,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		},  {
+		}, {
 			"path": "pages/article/list",
 			"style": {
 				"navigationBarTitleText": "",
@@ -393,6 +393,17 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/video",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
 			}
 
 		}
@@ -673,7 +684,15 @@
 				"iconPath": "static/tab-cate.png",
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"
+			}, 
+			// #ifndef APP-PLUS
+			{
+				"pagePath": "pages/index/video",
+				"iconPath": "static/play.png",
+				"selectedIconPath": "static/play.png",
+				"text": "视频"
 			},
+			//#endif
 			{
 				"pagePath": "pages/index/cart",
 				"iconPath": "static/tab-cart.png",
