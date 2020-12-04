@@ -24,6 +24,7 @@ const models = {
 			src: 1,
 			shopid: 1,
 			imgs: 1, //轮播图
+			video: 1,
 			score: 1,
 			price: 1,
 			skuname: 1,

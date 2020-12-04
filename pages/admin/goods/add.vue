@@ -170,6 +170,16 @@
 				</view>
 			</scroll-view>
 		</view>
+		<view class="mix-list-cell" @click="uploadVideo">
+			<text class="cell-tit clamp">介绍视频</text>
+			<view class="cell-tip">点击上传</view>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="imgs b-b">
+			<view class="h-list" v-if="video && video.url">
+				<j-video :url="video.url" :poster="src" height="220px" width="690rpx"></j-video>
+			</view>
+		</view>
 		<view class="mix-list-cell" @click="uploadDescImgs">
 			<text class="cell-tit clamp">图文介绍</text>
 			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
@@ -221,7 +231,8 @@
 				</view>
 				<mix-list-checkbox title="是否限购" field="isLimit" :defContent="isLimit" @change="changeField"></mix-list-checkbox>
 				<block v-if="isLimit">
-					<mix-list-input title="订单限购" type="number" border=" " :defContent="limit" field="limit" placeholder="请输入限购数量" @change="changeField"></mix-list-input>
+					<mix-list-input title="订单限购" type="number" border=" " :defContent="limit" field="limit" placeholder="请输入限购数量"
+					 @change="changeField"></mix-list-input>
 					<!-- <mix-list-checkbox title="新用户专享(首单)" field="isNewUser" :defContent="isNewUser" @change="changeField"></mix-list-checkbox> -->
 				</block>
 			</view>
@@ -306,6 +317,7 @@
 	import {
 		uploadFiles,
 		uploadFileCut,
+		uploadVideo,
 		dateFormat
 	} from '@/common/functions.js';
 	import {
@@ -410,12 +422,13 @@
 				miaosha: {},
 				yuding: {},
 				tuangou: {},
+				video: {},
 				dateKey: "",
 				dateString: "",
 				onlySelfTake: "0",
 				otherGoods: [],
 				autoOffTime: false,
-				limit:1,
+				limit: 1,
 				isLimit: false,
 				isNewUser: false,
 			};
@@ -715,7 +728,7 @@
 			},
 			//上传图片
 			uploadSrc() {
-				/* uploadFiles(
+				uploadFiles(
 					'goods_face',
 					1,
 					srcs => {
@@ -724,8 +737,8 @@
 					srcs => {
 						this.src = srcs[0];
 					}
-				); */
-				uploadFileCut("goods_face", "src");
+				);
+				//uploadFileCut("goods_face", "src");
 			},
 			refreshFile(url, field) {
 				this[field] = url;
@@ -740,6 +753,15 @@
 					},
 					srcs => {
 						this.imgs = this.imgs.concat(srcs);
+					}
+				);
+			},
+			uploadVideo() {
+				uploadVideo(
+					'video',
+					info => {
+						this.video = info;
+						//this.imgs = this.imgs.concat(srcs);
 					}
 				);
 			},
@@ -862,9 +884,10 @@
 					autoOffTime: this.autoOffTime,
 					onlySelfTake: this.onlySelfTake, //是否仅支持自提
 					deliveryTags: this.deliveryTags,
-					limit:this.limit,
-					isLimit:this.isLimit,
-					isNewUser:this.isNewUser,
+					limit: this.limit,
+					isLimit: this.isLimit,
+					isNewUser: this.isNewUser,
+					video:this.video
 				};
 				//多规格
 				if (this.skus && this.skus.length > 0) {
@@ -1094,9 +1117,11 @@
 </script>
 
 <style lang="scss" scoped>
-	.container{
+	.container {
 		padding-bottom: 120rpx;
+		overflow-x: hidden;
 	}
+
 	.icon .mix-list-cell.b-b:after {
 		left: 90upx;
 	}

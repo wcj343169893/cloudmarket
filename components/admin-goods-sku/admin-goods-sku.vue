@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="goods_sku_container">
 		<view class="mix-list-cell b-b" v-if="name != ''">
 			<text class="index">{{index+1}}</text>
 			<text class="cell-content title">{{ name }}</text>
@@ -112,7 +112,7 @@
 </script>
 
 <style lang="scss">
-	.container {
+	.goods_sku_container {
 		background-color: #ffffff;
 		border-radius: 20upx;
 		position: relative;

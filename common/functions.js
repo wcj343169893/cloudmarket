@@ -167,7 +167,7 @@ const incrCartNumber = function(number) {
 const updateGoodsTags = function(goods, isPrecise) {
 	let tags = [];
 	//最大单品加入99件
-	if(!goods.isLimit){
+	if (!goods.isLimit) {
 		goods.limit = goods.limit || goods.stock < 100 ? goods.stock : 99;
 	}
 	//是否存在多规格
@@ -698,6 +698,50 @@ const uploadFileCut = (name, field) => {
 	});
 };
 /**
+ * 上传视频
+ */
+const uploadVideo = (name, successCallback) => {
+	uni.chooseVideo({
+		count: 1,
+		sourceType: ['camera', 'album'],
+		success: (res) => {
+			console.log(res)
+			// self.src = res.tempFilePath;
+			if (res.tempFilePath) {
+				uni.showLoading({
+					title: "视频上传中",
+					mask: true
+				})
+				let pArr = res.tempFilePath.split(".");
+				//(pArr[pArr.length - 1]).toLocaleLowerCase()
+				let cpath = name + '/' + (Math.random() + '').substr(2) + '.mp4';
+				console.log(cpath, res)
+				cloudUploadFile(res.tempFilePath, cpath).then(url => {
+					successCallback({
+						url,
+						size: res.size,
+						duration: res.duration,
+						width: res.width,
+						height: res.height,
+					});
+					uni.hideLoading()
+					uni.showToast({
+						title: "上传成功",
+						icon: "success"
+					});
+				}, err => {
+					uni.hideLoading();
+					uni.showToast({
+						title: "上传失败",
+						icon: "none"
+					});
+					console.log("上传失败了")
+				})
+			}
+		}
+	});
+}
+/**
  * 批量上传多个文件
  * @param {Object} name
  * @param {Object} number
@@ -714,7 +758,7 @@ const uploadFiles = function(name, number, chooseCallback, successCallback) {
 				return;
 			}
 			uni.showLoading({
-				title: "上传中",
+				title: "图片上传中",
 				mask: true
 			})
 			let paths = [];
@@ -968,6 +1012,7 @@ export {
 	navToDocWebPage,
 	navMicLogin,
 	uploadFiles,
+	uploadVideo,
 	cloudUploadFile,
 	checkAppUpdate,
 	mapDistance,

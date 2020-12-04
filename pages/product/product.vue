@@ -3,6 +3,9 @@
 		<pageHeader ref="pageHeader" :referer="referer"></pageHeader>
 		<view class="carousel">
 			<swiper indicator-dots circular="true" duration="400">
+				<swiper-item class="swiper-item" v-if="video && video.url">
+					<j-video :url="video.url" :poster="src" height="750rpx" width="750rpx"></j-video>
+				</swiper-item>
 				<swiper-item class="swiper-item" v-for="(item, index) in imgs" :key="index">
 					<view class="image-wrapper">
 						<image :src="item" class="loaded" mode="aspectFill"></image>
@@ -79,6 +82,10 @@
 				<text class="yticon icon-you"></text>
 			</view>
 			<commentPage :commentTagStatics="commentTagStatics" :comment="comment"></commentPage>
+		</view>
+		<view class="detail-desc" v-if="video && video.url">
+			<view class="d-header"><text>动态展区</text></view>
+			<j-video :url="video.url" :poster="src" height="220px" width="750rpx"></j-video>
 		</view>
 		<view class="detail-desc">
 			<view class="d-header"><text>图文详情</text></view>
@@ -183,6 +190,7 @@
 				zhekou: 0,
 				service: [],
 				amount: 1,
+				video: false,
 				favorite: false,
 				hasSku: false,
 				guarantee_period: '',
@@ -335,7 +343,11 @@
 					});
 					this.description = desMap.join('');
 				}
-				this.imgs.unshift(item.src);
+				if (item.video) {
+					this.video = item.video;
+				}else{
+					this.imgs.unshift(item.src);
+				}
 				if (item.hasSku) {
 					//多规格
 					let skuMap = [];
