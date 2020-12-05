@@ -276,7 +276,7 @@ export default {
 .bottom {
 	position: absolute;
 	z-index: 90;
-	bottom: 40rpx;
+	bottom: 50rpx;
 	left: 30rpx;
 	color: #ffffff;
 	.playPanel {
@@ -285,7 +285,7 @@ export default {
 		border-radius: 20rpx;
 	}
 	.uname {
-		margin-top: 30rpx;
+		margin-top: 20rpx;
 		padding-left: 20rpx;
 		font-size: 32rpx;
 	}
