@@ -1,38 +1,41 @@
 <template>
 	<view class="container">
-		<cu-custom :tabs="tabs" :current="tabCurrent" @tabClick="tabSelect" :fixed="true"></cu-custom>
-		<swiper :vertical="true" :style="swiperStyle" @change="change">
-			<swiper-item v-for="(item, index) in dataList" :key="index" style="overflow: hidden;" @click="clickPause(item, index)">
-				<video class="video" :id="item.id" :poster-for-crawler="item.poster" :poster="item.poster" :style="item.style"
-				 :loop="true" :controls="false" @play="play(item, index)" @pause="pause(item, index)" @error="error(item, index)"
-				 @ended="ended(item, index)" @waiting="waiting(item, index)" :autoplay="index==0" :show-center-play-btn="false" :src="item.url"></video>
-				<view class="pauseIcon" v-if="item.pause"><text class="taobaofont icon-video_light"></text></view>
-				<view class="right avatar" :src="item.user.avatar" mode="aspectFill"></view>
-				<view class="right">
-					<view class="like margin-top">
-						<view class="taobaofont icon-likefill"></view>
-					</view>
-					<view class="like">{{ item.statistics.like }}</view>
+		<!-- #ifdef MP -->
+		<!-- 顶部栏 -->
+		<page-header :showFillView="true" :showLocationView="false"></page-header>
+		<!-- #endif -->
+		<view class="videos">
+			<view v-for="(item,index) in dataList" :key="index" class="padding-sm bg-white margin-sm video-item">
+				<view class="header">
+					<image :src="item.user.avatar" mode="aspectFill" class="cu-avatar round"></image>
+					<text class="margin-left-sm">{{item.user.nickname}}</text>
 				</view>
-				<view class="bottom">
-					<view class="playPanel">
-						<text class="taobaofont icon-sound"></text>
-						<text>{{ item.statistics.play }}次播放</text>
-					</view>
-					<view class="uname">
-						<text>@{{ item.user.nickname }}</text>
-					</view>
-					<view class="title">
-						<text>{{ item.title }}</text>
-					</view>
+				<view class="video-section">
+					<video v-if="item.loaded" :id="item.id" class="video" @loadedmetadata="loadedmetadata(item,index)"
+					 :show-center-play-btn="false" object-fit="cover" :loop="true" :src="item.url" :poster="item.poster" :controls="false"
+					 controls @play="play(item,index)" @fullscreenclick="fullscreenclick(item,index)" @pause="pause(item,index)"
+					 @error="error(item,index)" @click="clickPause(item,index)"></video>
+					<text v-if="!item.play" class="taobaofont icon-playfill text-white text-xxl btn-play" @click="clickPause(item,index)"></text>
 				</view>
-			</swiper-item>
-		</swiper>
+				<view class="bottom margin-top-sm">
+					<text>{{item.title}}</text>
+				</view>
+				<view class="state flex justify-end margin-top-xs align-center">
+					<text>{{item.statistics.play | formatNumber}}次播放</text>
+					<text class="margin-left-sm taobaofont icon-likefill text-red"></text>
+					<text class="margin-left-xxs">{{item.statistics.like | formatNumber}}</text>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import pageHeader from './components/page-header.vue';
 	export default {
+		components: {
+			pageHeader
+		},
 		data() {
 			return {
 				tabs: [{
@@ -59,6 +62,12 @@
 		onLoad() {
 			this.loadData();
 		},
+		onHide() {
+			this.pauseAll();
+		},
+		onShow() {
+			this.playAgain();
+		},
 		methods: {
 			tabSelect(index) {
 				this.tabCurrent = index;
@@ -68,7 +77,7 @@
 						duration: 13,
 						height: 960,
 						size: 3266693,
-						url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-btgorwvhvem50683c0/5ffc5e80-3615-11eb-b997-9918a5dda011.mp4',
+						url: 'http://image.xsyxsc.com/item/utv/20201205/Uno1ZQ%3D%3D.mp4',
 						width: 544,
 						title: '还没见面，就不见面',
 						statistics: {
@@ -85,13 +94,12 @@
 						duration: 5,
 						height: 640,
 						size: 3266693,
-						poster: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods/src/0/5786823106700687.jpg',
-						url: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/video/5929447737237924.mp4',
+						url: 'http://image.xsyxsc.com/item/utv/20201205/Uno1cQ%3D%3D.mp4',
 						width: 480,
 						title: '还没见面，就不见面',
 						statistics: {
-							play: 2343534,
-							like: 3455
+							play: 23433534,
+							like: 34525
 						},
 						user: {
 							_id: 'b4f7b7d25fb3775d00b0de4f5d854ee2',
@@ -103,13 +111,12 @@
 						duration: 13,
 						height: 960,
 						size: 3266693,
-						poster: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods/src/0/5786823106700687.jpg',
-						url: 'https://limitao.myuan.cn/gongyong/shangchuan/yinpin/33/2020/05/kiWKkG17OY0522ySS50SiL2NBWNi01.mp4',
+						url: 'http://image.xsyxsc.com/item/utv/20201205/UnoyRg%3D%3D.mp4',
 						width: 544,
 						title: '还没见面，就不见面',
 						statistics: {
-							play: 2343534,
-							like: 3455
+							play: 23435434,
+							like: 345566
 						},
 						user: {
 							_id: 'b4f7b7d25fb3775d00b0de4f5d854ee2',
@@ -121,8 +128,24 @@
 						duration: 5,
 						height: 544,
 						size: 3266693,
-						poster: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods/src/0/5786823106700687.jpg',
-						url: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/video/WeChat_20201203174023.mp4',
+						url: 'http://image.xsyxsc.com/item/utv/20201205/UnoyNg%3D%3D.mp4',
+						width: 544,
+						title: '还没见面，就不见面',
+						statistics: {
+							play: 234353498,
+							like: 34557778
+						},
+						user: {
+							_id: 'b4f7b7d25fb3775d00b0de4f5d854ee2',
+							nickname: '乡村小兵',
+							avatar: 'https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg'
+						}
+					},
+					{
+						duration: 5,
+						height: 544,
+						size: 3266693,
+						url: 'http://image.xsyxsc.com/item/utv/20201205/UnoxTg%3D%3D.mp4',
 						width: 544,
 						title: '还没见面，就不见面',
 						statistics: {
@@ -145,7 +168,8 @@
 				let winRate = windowWidth / windowHeight;
 				data.forEach((ele, index) => {
 					ele.id = 'video_' + index;
-					ele.pause = true;
+					ele.play = false;
+					ele.loaded = false;
 					let vRate = ele.width / ele.height;
 					if (ele.width >= ele.height || vRate - winRate > 0.2) {} else {
 						console.log(winRate + ' ' + vRate);
@@ -161,20 +185,18 @@
 							} else {
 								outWidth = windowWidth;
 							}
-							console.log(outWidth);
 							ele.style = `width:${outWidth}px;height:${windowHeight}px;left:${left}px`;
 						}
 					}
 					ele.poster = this.getPosterUrl(ele);
 				});
 				this.dataList = data;
+				this.dataList.map(ele => {
+					this.videoContentList.push(uni.createVideoContext(ele.id));
+				});
+				this.dataList[0].loaded = true;
 				this.$nextTick(() => {
-					data.map(ele => {
-						this.videoContentList.push(uni.createVideoContext(ele.id));
-					});
-					setTimeout(() => {
-						this.videoContentList[0].play();
-					}, 500);
+					this.videoContentList[0].play();
 				});
 			},
 			getPosterUrl(item) {
@@ -184,36 +206,57 @@
 				if (item.url.indexOf('bspapp.com') > 0) {
 					return item.url + '?x-oss-process=video/snapshot,t_1000,f_jpg,w_750,m_fast';
 				}
-				return false;
+				return "";
 			},
 			error(item, index) {
 				console.log(item);
+				this.$api.msg("错误" + index)
 			},
 			ended(item, index) {
 				console.log('ended', index);
 			},
-			change(e) {
-				const {
-					current
-				} = e.detail;
-				this.videoContentList.map(video => {
+			play(item, index) {
+				item.play = true;
+				console.log("play", index)
+				this.videoContentList.forEach((video, i) => {
+					if (index != i) {
+						video.pause();
+						this.dataList[i].play = false;
+					}
+				});
+			},
+			pauseAll() {
+				console.log("pauseAll")
+				this.videoContentList.forEach((video, i) => {
 					video.pause();
 				});
-				setTimeout(() => {
-					this.videoContentList[current].play();
-				}, 500);
 			},
-			play(item) {
-				item.pause = false;
+			playAgain() {
+				this.dataList.map((video, index) => {
+					if (video.play) {
+						this.videoContentList[index].play();
+					}
+				})
 			},
 			pause(item) {
-				item.pause = true;
+				item.play = false;
+			},
+			loadedmetadata(item, index) {
+				console.log("loadedmetadata", index)
+				if (index < this.dataList.length - 1) {
+					this.dataList[index + 1].loaded = true;
+				}
 			},
 			waiting(item, index) {
 				console.log('waiting', index);
 			},
+			fullscreenclick(item, index) {
+				console.log("fullscreenclick")
+			},
 			clickPause(item, index) {
-				if (item.pause) {
+				console.log("clickPause", index)
+				if (!item.play) {
+					this.pauseAll();
 					this.videoContentList[index].play();
 				} else {
 					this.videoContentList[index].pause();
@@ -224,72 +267,32 @@
 </script>
 
 <style lang="scss">
-	.container {
-		height: 100%;
+	.video-item {
+		border-radius: 20rpx;
+		position: relative;
+	}
+
+	.btn-play {
+		position: absolute;
+		left: calc(50% - 40rpx);
+		top: 230rpx;
+		border: 2rpx solid #FFFFFF;
+		border-radius: 50%;
+		padding: 8rpx 8rpx 8rpx 12rpx;
+	}
+
+	.video-section {
+		position: relative;
+		width: 100%;
+		height: 500rpx;
+		border-radius: 14rpx;
 		background: #000000;
+		margin-top: 12rpx;
 	}
 
 	.video {
 		width: 100%;
-		height: 100%;
-	}
-
-	.pauseIcon {
-		position: absolute;
-		left: calc(50% - 50rpx);
-		top: calc(50% - 50rpx);
-
-		.taobaofont {
-			font-size: 100rpx;
-			color: #ffffff;
-		}
-	}
-
-	.right {
-		position: absolute;
-		z-index: 90;
-		right: 30rpx;
-		top: calc(50% - 50rpx);
-		color: #ffffff;
-		text-align: center;
-
-		.icon-likefill {
-			font-size: 60rpx;
-		}
-	}
-
-	.avatar {
-		right: 20rpx;
-		top: calc(50% - 120rpx);
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 50%;
-		border: 1rpx solid #ffffff;
-	}
-
-	.bottom {
-		position: absolute;
-		z-index: 90;
-		bottom: 50rpx;
-		left: 30rpx;
-		color: #ffffff;
-
-		.playPanel {
-			background: rgba(0, 0, 0, 0.47);
-			padding: 8rpx 20rpx;
-			border-radius: 20rpx;
-		}
-
-		.uname {
-			margin-top: 20rpx;
-			padding-left: 20rpx;
-			font-size: 32rpx;
-		}
-
-		.title {
-			padding-left: 20rpx;
-			margin-top: 8rpx;
-			font-size: 28rpx;
-		}
+		height: 500rpx;
+		border-radius: 14rpx;
 	}
 </style>

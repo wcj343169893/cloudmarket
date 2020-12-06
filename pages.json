@@ -398,12 +398,11 @@
 		}, {
 			"path": "pages/index/video",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
+				"navigationBarTitleText": "视频",
+				// #ifdef MP
 				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
+				// #endif
+				"enablePullDownRefresh": true
 			}
 
 		}

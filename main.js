@@ -72,7 +72,7 @@ Vue.filter('toFixed', function(value, num) {
 		return 0;
 	}
 	if (typeof(value) == "number") {
-		return value.toFixed(num).replace(".00","");
+		return value.toFixed(num).replace(".00", "");
 	}
 	return value;
 });
@@ -102,6 +102,18 @@ Vue.filter('formatDistance', (value) => {
 		return value + "m"
 	}
 	return value / 1000 + "km";
+});
+Vue.filter('formatNumber', (value) => {
+	if (!value) {
+		return "0";
+	}
+	if (value < 1000) {
+		return value;
+	}
+	if (value < 10000000) {
+		return (value / 10000).toFixed(2) + "w";
+	}
+	return (value / 100000000).toFixed(2) + "亿";
 });
 
 App.mpType = 'app'
