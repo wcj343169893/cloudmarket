@@ -456,7 +456,7 @@ const addMiaosha = async (data) => {
 		return false;
 	}
 	let saveData = {
-		autoOffTime:data.autoOffTime
+		autoOffTime: data.autoOffTime
 	};
 	saveData[data.field] = data.miaosha;
 	//商品变化了,移除旧商品的秒杀信息
@@ -524,7 +524,7 @@ const getStateCondition = (state, shopid, fields, key, upc) => {
 				shopid,
 				isCategoryShow: 0
 			}).and({
-				title: new RegExp(key.trim())
+				title: key ? new RegExp(key.trim()) : undefined
 			});
 			order = ["offlineTime", "desc"];
 			break;

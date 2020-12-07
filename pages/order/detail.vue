@@ -93,18 +93,29 @@
 				</view>
 			</view>
 			<block v-if="info.deliveryType == 'selfRaising' && info.payInfo">
-				<view class="weui-flex address b-b" @click="zoomCode(info.deliveryHour)" v-if="info.deliveryHour">
-					<view class="warning">
-						<text>提货码:</text>
-						<text>{{ info.deliveryHour.number }}</text>
-					</view>
-					<view class="content">
+				<tki-qrcode v-if="qrcode.ifShow" cid="qrcode1" ref="qrcode" :val="qrcode.val" :size="qrcode.size" :unit="qrcode.unit"
+				 :background="qrcode.background" :foreground="qrcode.foreground" :pdground="qrcode.pdground" :icon="qrcode.icon"
+				 :iconSize="qrcode.iconsize" :lv="qrcode.lv" :onval="qrcode.onval" :loadMake="qrcode.loadMake" :usingComponents="true"
+				 @result="qrR"></tki-qrcode>
+				<view class="weui-flex address b-b" v-if="info.deliveryHour">
+					<view class="" style="text-align: center;flex: 1;">
+						<view class="warning">
+							<text>提货码:</text>
+							<text>{{ info.deliveryHour.number }}</text>
+						</view>
 						<view class="warning">
 							<text>密码:</text>
 							<text>{{ info.deliveryHour.password }}</text>
 						</view>
+						<view class="warning">
+							<view class="">
+								<text>仅提供给店员提货扫码，</text>
+							</view>
+							<view class="">
+								<text>请勿泄露给他人，以免造成财产损失</text>
+							</view>
+						</view>
 					</view>
-					<text class="yticon icon-you"></text>
 				</view>
 			</block>
 			<view class="weui-flex address b-b" v-else-if="info.address && info.address._id">
@@ -267,23 +278,6 @@
 				</view>
 			</block>
 		</view>
-		<uni-popup ref="showCode" type="center">
-			<view class="code-section" v-if="info.deliveryHour">
-				<tki-qrcode v-if="qrcode.ifShow" cid="qrcode1" ref="qrcode" :val="qrcode.val" :size="qrcode.size" :unit="qrcode.unit"
-				 :background="qrcode.background" :foreground="qrcode.foreground" :pdground="qrcode.pdground" :icon="qrcode.icon"
-				 :iconSize="qrcode.iconsize" :lv="qrcode.lv" :onval="qrcode.onval" :loadMake="qrcode.loadMake" :usingComponents="true"
-				 @result="qrR" />
-
-				<view class="warning">
-					<text>{{ info.deliveryHour.number }}</text>
-				</view>
-				<view class="warning">
-					<text>{{ info.deliveryHour.password }}</text>
-				</view>
-				<view><text>仅提供给店员提货扫码</text></view>
-				<view><text>请勿泄露给他人</text></view>
-			</view>
-		</uni-popup>
 		<uni-popup ref="showRefund" type="center">
 			<view class="refund">
 				<view class="section ab">
@@ -378,7 +372,7 @@
 				qrcode: {
 					ifShow: false,
 					val: '二维码', // 要生成的二维码值
-					size: 200, // 二维码大小
+					size: 400, // 二维码大小
 					unit: 'upx', // 单位
 					background: '#ffffff', // 背景色
 					foreground: '#000000', // 前景色
@@ -479,6 +473,12 @@
 
 				this.updateState();
 				checkDeliveryHour(this.info);
+				//自提二维码
+				if (this.info.deliveryType == 'selfRaising' && this.info.payInfo) {
+					setTimeout(() => {
+						this.zoomCode(this.info.deliveryHour);
+					}, 1000)
+				}
 			},
 			/**
 			 * 订单状态
@@ -765,7 +765,7 @@
 			zoomCode(info) {
 				this.qrcode.val = 'ziti::' + [info.number, info.password].join('_');
 				this.qrcode.ifShow = true;
-				this.$refs.showCode.open();
+				//this.$refs.showCode.open();
 			},
 			qrR(src) {
 				//console.log('qr', src);
