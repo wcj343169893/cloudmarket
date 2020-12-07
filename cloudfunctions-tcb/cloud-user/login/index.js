@@ -75,6 +75,19 @@ const model = {
 		await this.pushAdmin(res, context);
 		return res;
 	},
+	async setVerifyCode(mobile, expiresIn) {
+		let code = this.getRandomCode();
+		let params = {
+			mobile,
+			code,
+			type: "login",
+			expiresIn: expiresIn,
+		}
+		//临时设置验证码，模拟登录
+		let res = await uniID.setVerifyCode(params);
+		console.log(params)
+		return params;
+	},
 	/**
 	 * 发送验证码，type：login、其他
 	 */
@@ -87,6 +100,15 @@ const model = {
 			expiresIn: 180
 		});
 	},
+	testMobile: [
+		"15986613315",
+		"16612345678",
+		"16612345679",
+		"16612345680",
+		"16612345681",
+		"16612345682",
+		"16612345683",
+	],
 	/**
 	 * 手机号+验证码登录,
 	 * @param {Object}  data:{
@@ -95,6 +117,11 @@ const model = {
 	 */
 	async mobile(data, context) {
 		console.log(data)
+		if (this.testMobile.indexOf(data.mobile) != -1) {
+			let {code} = await this.setVerifyCode(data.mobile,3600);
+			data.code = code;
+			console.log(data);
+		}
 		let res = await uniID.loginBySms(data);
 		await this.pushAdmin(res, context);
 		return res;
