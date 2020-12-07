@@ -372,7 +372,7 @@
 				qrcode: {
 					ifShow: false,
 					val: '二维码', // 要生成的二维码值
-					size: 400, // 二维码大小
+					size: 500, // 二维码大小
 					unit: 'upx', // 单位
 					background: '#ffffff', // 背景色
 					foreground: '#000000', // 前景色
