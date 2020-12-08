@@ -1020,7 +1020,7 @@
 				let prevField = "";
 				for (let fie in fields) {
 					if (prev > data[fie]) {
-						this.$api.msg(`${fields[prevField]}必须大于或等于${fields[fie]}`);
+						this.$api.msg(`${fields[prevField]}必须小于或等于${fields[fie]}`);
 						return false;
 					}
 					prev = data[fie];

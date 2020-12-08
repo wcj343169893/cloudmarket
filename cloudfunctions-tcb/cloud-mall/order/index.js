@@ -679,7 +679,7 @@ const model = {
 		let {
 			userInfo
 		} = context;
-		let isNewUser = !userInfo.order || userInfo.order.total == 0;
+		let isNewUser = !userInfo.order || !userInfo.order.total || userInfo.order.total == 0;
 		let beginTime = new Date().getTime();
 		//查询购物车选中数据
 		let shopid = parseInt(event.id);

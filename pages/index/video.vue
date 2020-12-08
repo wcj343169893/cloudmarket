@@ -38,7 +38,6 @@
 				</view>
 				<view class="bottom margin-top-sm">
 					<text>{{ item.title }}</text>
-					<text v-if="item.play">正在播放</text>
 				</view>
 				<view class="state flex justify-end margin-top-xs align-center">
 					<text>{{ item.statistics.play | formatNumber }}次播放</text>
