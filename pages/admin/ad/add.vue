@@ -52,7 +52,8 @@
 			},
 			imageStyle(){
 				let size = this.typeSies[this.type];
-				return `width:${size.width}rpx;height:${size.height}rpx`;
+				let left = (750-size.width)/2;
+				return `width:${size.width}rpx;height:${size.height}rpx;margin-left:${left}rpx`;
 			},
 			imageCover(){
 				let size = this.typeSies[this.type];

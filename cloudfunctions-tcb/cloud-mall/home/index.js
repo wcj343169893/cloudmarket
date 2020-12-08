@@ -30,6 +30,7 @@ const models = {
 			newest: 30,
 			ads: 5,
 			adBanners: 5,
+			adDialogs: 1,
 			category: 10,
 			recommend: 5
 		};
@@ -139,6 +140,10 @@ const models = {
 			}),
 			adBanners: {
 				type: "home_banner_after_category",
+				shopid: cmd.in([0, shopid])
+			},
+			adDialogs: {
+				type: "home_dialog",
 				shopid: cmd.in([0, shopid])
 			}
 		}

@@ -192,6 +192,7 @@
 				address: '开启定位获得位置/收货地址',
 				carouselList: [],
 				adBanners: [],
+				adDialogs: {},
 				recommendCategoriesList: [],
 				miaoshaList: [],
 				newestList: [],
@@ -315,6 +316,13 @@
 					}
 					if (res.adBanners) {
 						this.adBanners = res.adBanners;
+					} else {
+						this.adBanners = [];
+					}
+					if (res.adDialogs) {
+						this.adDialogs = res.adDialogs;
+					} else {
+						this.adDialogs = {};
 					}
 					if (res.categories) {
 						this.recommendCategoriesList = res.categories;
@@ -565,7 +573,7 @@
 		},
 		//#endif
 		// 标题栏input搜索框点击
-		onNavigationBarSearchInputClicked (e){
+		onNavigationBarSearchInputClicked(e) {
 			//this.$api.msg('点击了搜索框');
 			console.log('onNavigationBarSearchInputClicked');
 			this.navToSearch();

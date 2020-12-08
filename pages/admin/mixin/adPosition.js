@@ -3,16 +3,21 @@ export default {
 		return {
 			types: {
 				home_swiper: '首页轮播',
+				home_dialog: '首页弹窗',
 				home_banner_after_category: '首页分类后banner',
 			},
 			typeSies: {
 				home_swiper: {
-					width:750,
-					height:375
+					width: 750,
+					height: 375
+				},
+				home_dialog: {
+					width: 460,
+					height: 560
 				},
 				home_banner_after_category: {
-					width:750,
-					height:200
+					width: 750,
+					height: 200
 				},
 			}
 		}
