@@ -457,6 +457,17 @@ const cloudUser = (model,action,data,isShowLoading)=>{
 		isShowLoading: !!isShowLoading
 	})
 }
+const cloudVideo = (model,action,data,isShowLoading)=>{
+	return network({
+		url: "cloud-video",
+		data: {
+			module: model,
+			action: action,
+			data
+		},
+		isShowLoading: !!isShowLoading
+	})
+}
 export {
 	getHomeFruitData,
 	getMiaosha,
@@ -478,6 +489,7 @@ export {
 	payInfo,
 	payment,
 	orders,
+	cloudVideo,
 	getUserInfo,
 	saveUserInfo,
 	getGoodsVisites,

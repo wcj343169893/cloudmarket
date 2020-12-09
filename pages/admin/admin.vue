@@ -58,6 +58,10 @@
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
+				<view class="order-item" @click="btnEditGoodsScan" hover-class="common-hover" :hover-stay-time="50">
+					<text class="yticon icon-saomiao"></text>
+					<text>扫条码</text>
+				</view>
 			</view>
 		</view>
 		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all')" tips="账户充值"></mix-list-cell>
@@ -84,7 +88,8 @@
 		mapMutations
 	} from 'vuex';
 	import {
-		shopAdmin
+		shopAdmin,
+		goodsAdmin
 	} from '@/common/admin_request.js';
 	export default {
 		data() {
@@ -148,7 +153,7 @@
 			async loadData(showLoading) {
 				//优先读取缓存
 				let info = uni.getStorageSync(`adminShopInfo_${this.shopid}`);
-				if(!info){
+				if (!info) {
 					info = uni.getStorageSync('adminShopInfo');
 				}
 				if (info) {
@@ -249,6 +254,42 @@
 							setTimeout(() => {
 								this.$api.msg('二维码无法识别');
 							}, 100);
+						}
+					},
+					fail: () => {
+						console.log('扫码失败');
+						setTimeout(() => {
+							this.$api.msg('二维码无法识别');
+						}, 100);
+					}
+				});
+			},
+			btnEditGoodsScan() {
+				// 只允许通过相机扫码
+				uni.scanCode({
+					onlyFromCamera: true,
+					success: res => {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						if (res.result && res.result.trim() != "") {
+							goodsAdmin("list", {
+								page: 1,
+								limit: 1,
+								upc: res.result
+							}, true).then(res => {
+								uni.setStorage({
+									key: 'adminEditGoods',
+									data: res[0],
+									success: () => {
+										uni.navigateTo({
+											url: '/pages/admin/goods/add'
+										});
+									}
+								});
+							}, err => {
+								console.log("没有商品")
+								this.$api.msg('没有商品');
+							});
 						}
 					},
 					fail: () => {
@@ -379,7 +420,6 @@
 
 		.yticon {
 			font-size: 48upx;
-			margin-bottom: 18upx;
 			color: #fa436a;
 		}
 

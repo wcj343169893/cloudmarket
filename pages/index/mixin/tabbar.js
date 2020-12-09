@@ -28,21 +28,22 @@ export default {
 		this.resetTabCartCount();
 		console.log("onShow mixin")
 	},
-	onHide(){
+	onHide() {
 		this.closeSku();
 	},
 	methods: {
 		...mapMutations(['incrCartNumber', 'updateCartNumber', 'updateCartMap', 'setStateAttr']),
 		resetTabCartCount() {
+			let cartIndex = 3;
 			//console.log("this.cartCount", this.cartCount)
 			if (this.cartCount > 0) {
 				uni.setTabBarBadge({
-					index: 2,
+					index: cartIndex,
 					text: '' + this.cartCount
 				})
 			} else {
 				uni.removeTabBarBadge({
-					index: 2
+					index: cartIndex
 				})
 			}
 			this.resetGoodsCart()
@@ -50,8 +51,8 @@ export default {
 		resetGoodsCart() {
 
 		},
-		closeSku(){
-			if(this.closeSkuDialog){
+		closeSku() {
+			if (this.closeSkuDialog) {
 				this.closeSkuDialog();
 			}
 		},
@@ -68,7 +69,7 @@ export default {
 				appends: true,
 				amount: 1
 			};
-			cloudMall("cart", "edit", cart,true).then(
+			cloudMall("cart", "edit", cart, true).then(
 				res => {
 					console.log(res);
 					this.$api.success('加入购物车成功');

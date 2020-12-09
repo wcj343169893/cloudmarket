@@ -22,6 +22,7 @@ const store = new Vuex.Store({
 		token: '',
 		stationId: 0, //分站id
 		shopId: 0, //分站店铺id，根据收货地址动态设置
+		globalShopInfo: {},
 		isSelfRaisingPoint: false, //是否开启自提点,与到家和到店不同享
 		adminShopId: 0, //管理店铺id
 		categoryId: 0, //选中主分类
@@ -120,6 +121,7 @@ const store = new Vuex.Store({
 		},
 		//修改最近店铺id
 		changeShopId(state, shop) {
+			state.globalShopInfo = shop;
 			state.shopId = shop.id;
 			state.categoryId = 0;
 			//自提并且开启自提点

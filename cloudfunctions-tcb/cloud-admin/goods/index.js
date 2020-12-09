@@ -88,6 +88,7 @@ const save = async (data, context) => {
 		data.categories.map(cate => {
 			if (!cate.isShow) {
 				data.isCategoryShow = 0;
+				data.offlineTime = time;
 			}
 		})
 	}

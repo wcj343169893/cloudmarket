@@ -66,11 +66,18 @@
 					<text class="item">{{ guarantee_period }}</text>
 				</view>
 			</view>
-			<view class="c-row" v-if="storage_condition!=''">
+			<view class="c-row b-b" v-if="storage_condition!=''">
 				<text class="tit">保存条件</text>
 				<view class="bz-list con">
 					<text class="item">{{ storage_condition }}</text>
 				</view>
+			</view>
+		</view>
+		<view id="video" class="rating-wrap column" @click="addVideo" v-if="globalShopInfo && globalShopInfo.pages && globalShopInfo.pages.product && globalShopInfo.pages.product.limits.addVideo > 0">
+			<view class="e-header">
+				<text class="tit">我要参与</text>
+				<text class="tip">{{globalShopInfo.pages.product.titles.addVideo}}</text>
+				<text class="yticon icon-you"></text>
 			</view>
 		</view>
 		<!-- 评价 -->
@@ -94,6 +101,10 @@
 
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom" :class="{ show: canAddCart }">
+			<navigator url="/pages/index/fruit" open-type="switchTab" class="p-b-btn weui-flex flex-column margin-right">
+				<text class="yticon icon-xiatubiao--copy"></text>
+				<text>首页</text>
+			</navigator>
 			<navigator url="/pages/index/cart" open-type="switchTab" class="p-b-btn weui-flex flex-column">
 				<text class="yticon icon-gouwuche"></text>
 				<text>购物车</text>
@@ -213,7 +224,7 @@
 			};
 		},
 		computed: {
-			...mapState(['hasLogin', 'userInfo'])
+			...mapState(['hasLogin', 'userInfo', 'globalShopInfo'])
 		},
 		async onLoad(options) {
 			if (!options.id) {
@@ -343,9 +354,9 @@
 					});
 					this.description = desMap.join('');
 				}
-				if (item.video) {
+				if (item.video && item.video.url) {
 					this.video = item.video;
-				}else{
+				} else {
 					this.imgs.unshift(item.src);
 				}
 				if (item.hasSku) {
@@ -756,6 +767,9 @@
 						navToCreateOrder();
 					}
 				});
+			},
+			addVideo() {
+				this.navToItem("/pages/video/add", uni.getStorageSync("goodsInfo"));
 			},
 			refreshList() {},
 			stopPrevent() {},
@@ -1247,6 +1261,11 @@
 			font-size: $font-base;
 			color: $font-color-warning;
 		}
+
+		.yticon {
+			font-size: 30upx;
+			color: $base-color;
+		}
 	}
 
 	.add-btn {
@@ -1431,11 +1450,6 @@
 	.p-b-btn {
 		font-size: $font-ssm;
 		align-items: center;
-	}
-
-	.icon-gouwuche {
-		font-size: 30upx;
-		color: $base-color;
 	}
 
 	.sub-title {

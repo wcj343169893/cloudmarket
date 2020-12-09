@@ -146,29 +146,11 @@
 				</view>
 			</view>
 		</block>
-		<view class="mix-list-cell" @click="uploadSrc">
-			<text class="cell-tit clamp">*主图</text>
-			<view class="cell-tip">尺寸800*800</view>
-			<text class="cell-more yticon icon-you"></text>
+		<view class="mix-list-cell b-b">
+			<cloud-image title="主图" tips="最佳尺寸750*750" v-model="src"></cloud-image>
 		</view>
-		<view class="imgs b-b">
-			<view class="h-list" v-if="src && src != ''">
-				<view class="h-list-image">
-					<image :src="src" mode="aspectFill"></image>
-				</view>
-			</view>
-		</view>
-		<view class="mix-list-cell imgs" @click="uploadImgs">
-			<text class="cell-tit clamp">轮播图</text>
-			<view class="cell-tip">尺寸800*800</view>
-			<text class="cell-more yticon icon-you"></text>
-		</view>
-		<view class="imgs b-b">
-			<scroll-view scroll-x class="h-list" v-if="imgsPreview.length > 0">
-				<view v-for="(item, index) in imgsPreview" :key="index" class="h-list-image" @click="delImg(index)">
-					<image :src="item" mode="aspectFill"></image>
-				</view>
-			</scroll-view>
+		<view class="mix-list-cell b-b">
+			<cloud-image title="轮播图" tips="最佳尺寸750*750" v-model="imgs" :imageNumber="8"></cloud-image>
 		</view>
 		<view class="mix-list-cell" @click="uploadVideo">
 			<text class="cell-tit clamp">介绍视频</text>
@@ -180,18 +162,10 @@
 				<j-video :url="video.url" :poster="src" height="220px" width="690rpx"></j-video>
 			</view>
 		</view>
-		<view class="mix-list-cell" @click="uploadDescImgs">
-			<text class="cell-tit clamp">图文介绍</text>
-			<view class="cell-tip">此处默认显示320*240,前端显示原始尺寸</view>
-			<text class="cell-more yticon icon-you"></text>
+		<view class="mix-list-cell b-b">
+			<cloud-image title="图文介绍" v-model="descriptionImgs" :imageNumber="9"></cloud-image>
 		</view>
-		<view class="imgs b-b">
-			<view v-for="(item, index) in descriptionImgs" :key="index" class="d-list-image">
-				<text class="number">{{ index + 1 }}</text>
-				<image :src="item" mode="aspectFill"></image>
-			</view>
-		</view>
-		<label class="mix-list-cell">
+		<label class="mix-list-cell ">
 			<text class="cell-tit clamp">非必要信息</text>
 		</label>
 		<view class="skus">
@@ -836,6 +810,7 @@
 						console.log("没有商品")
 					});
 				}
+				this.upc = val;
 			},
 			/**
 			 * 选中商品
@@ -862,7 +837,7 @@
 				let info = {
 					_id: this._id,
 					categories: this.categories,
-					description: this.description,
+					description: this.descriptionImgs.join(";"),
 					id: this.id,
 					rate: this.rate,
 					imgs: this.imgs,

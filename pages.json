@@ -654,6 +654,16 @@
 			}
 
 		}]
+	}, {
+		"root": "pages/video",
+		"pages": [{
+			"path": "add",
+			"style": {
+				"navigationBarTitleText": "发布视频",
+				"enablePullDownRefresh": false
+			}
+
+		}]
 	}],
 	"preloadRule": {
 		"pages/user/user": {
@@ -683,7 +693,7 @@
 				"iconPath": "static/tab-cate.png",
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"
-			}, 
+			},
 			{
 				"pagePath": "pages/index/video",
 				"iconPath": "static/play.png",

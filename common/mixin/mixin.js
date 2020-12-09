@@ -162,6 +162,16 @@ export default {
 				this[fs[0]][fs[1]] = val;
 			}
 		},
+		getObjectProperty(obj, fields) {
+			if (!fields) {
+				return {}
+			}
+			let out = {}
+			for (let key of fields) {
+				out[key] = obj[key]
+			}
+			return out;
+		},
 		stopPrevent() {},
 		/**
 		 * 获取分享参数

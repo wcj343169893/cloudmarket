@@ -62,6 +62,15 @@
 							"yuding": "限时预定",
 							"recommend": "精品推荐",
 						}
+					},
+					"product": {
+						"name": "商品详情",
+						"limits": {
+							addVideo: 1,
+						},
+						"titles": {
+							addVideo: "发布视频"
+						}
 					}
 				},
 				shopinfo: {}

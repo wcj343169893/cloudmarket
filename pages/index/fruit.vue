@@ -106,6 +106,7 @@
 			</view>
 			<normalPage :dataList="newestList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
 		</block>
+		<dialogAdPage v-if="adDialogs" :ad="adDialogs"></dialogAdPage>
 		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 		<!-- 选规格 -->
 		<uni-popup ref="showsku" type="center" :mask-click="true">
@@ -154,6 +155,7 @@
 	import normalPage from './components/normal.vue';
 	import bannerPage from './components/banner.vue';
 	import addressPage from './components/address.vue';
+	import dialogAdPage from './components/dialogAd.vue';
 	import tabbarMixin from './mixin/tabbar'
 	import {
 		getHomeFruitData,
@@ -178,7 +180,8 @@
 			yudingPage,
 			normalPage,
 			bannerPage,
-			addressPage
+			addressPage,
+			dialogAdPage
 		},
 		data() {
 			return {
@@ -192,7 +195,7 @@
 				address: '开启定位获得位置/收货地址',
 				carouselList: [],
 				adBanners: [],
-				adDialogs: {},
+				adDialogs: false,
 				recommendCategoriesList: [],
 				miaoshaList: [],
 				newestList: [],
@@ -320,9 +323,9 @@
 						this.adBanners = [];
 					}
 					if (res.adDialogs) {
-						this.adDialogs = res.adDialogs;
+						this.adDialogs = res.adDialogs[0];
 					} else {
-						this.adDialogs = {};
+						this.adDialogs = false;
 					}
 					if (res.categories) {
 						this.recommendCategoriesList = res.categories;

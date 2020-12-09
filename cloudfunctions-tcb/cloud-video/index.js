@@ -1,22 +1,107 @@
 'use strict';
+/**
+ * 用户中心统一插件，位于common目录
+ * @url https://ext.dcloud.net.cn/plugin?id=2116
+ */
+const uniID = require('uni-id');
+/**
+ * 必须登录才能访问,cart子模块，list方法
+ */
+const mustLoginActions = {
+	address: ["*"],
+}
+/**
+ * 获取用户信息，但是不校验
+ */
+const getUserInfoActions = {
+	info: ["*"]
+}
 exports.main = async (event, context) => {
-	//event为客户端上传的参数
-	console.log('event : ', event)
-	const res = await uniCloud.httpclient.request("https://v.douyin.com/JXveE1S/", {
-		method: 'GET',
-		dataType: 'text'
-	})
-	let url = res.headers.location;
-	console.log(res.headers.location)
-	let idArr = url.split("?")[0].split("/");
-	let id = idArr[idArr.length - 2];
-	let api = `https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=${id}`;
-	const res2 = await uniCloud.httpclient.request(api, {
-		method: 'GET',
-		dataType: 'json'
-	})
-	if(res2.data.item_list){
-		return res2.data.item_list[0];
+	const {
+		module,
+		action,
+		data,
+		uniIdToken,
+		Type
+	} = event;
+	let model = require(`./${module}`);
+	if (!model) {
+		return {
+			code: 404,
+			message: "模块不存在",
+		}
 	}
-	return res2
+	let payload;
+	let tokenData = {};
+	if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
+			action))) {
+		//仅仅是获得的用户信息，有可能没有
+		payload = await uniID.checkToken(uniIdToken);
+		if (!payload.code) {
+			data.uid = payload.uid;
+			context.userInfo = payload.userInfo;
+		} else {
+			data.uid = false;
+			context.userInfo = {};
+		}
+	} else if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
+			action))) {
+		//token检查，必须登录
+		payload = await uniID.checkToken(uniIdToken);
+		if (payload.code && payload.code > 0) {
+			console.log("登录失效", event, payload)
+			return {
+				code: 401,
+				event,
+				message: payload.msg
+			}
+		}
+		//uid在后续保存操作中，会存入数据库，uid为ObjectId，例如：29ce6e168a89414daf110a96b4300c02
+		data.uid = payload.uid;
+		//userInfo为连带查询数据，后续接口可能会用到
+		context.userInfo = payload.userInfo;
+	}
+	if (payload && payload.token) {
+		tokenData = {
+			token: payload.token,
+			tokenExpired: payload.tokenExpired
+		}
+	}
+	let result = false;
+	//预防有分页查询的接口，提前过滤page的有效性
+	if (data.page) {
+		data.page = data.page < 1 ? 1 : +data.page;
+	}
+	//预防有分页查询的接口，提前过滤limit的有效性
+	if (data.limit) {
+		data.limit = data.limit < 1 ? 20 : +data.limit;
+	}
+	try {
+		result = await model[action](data, context);
+	} catch (e) {
+		console.log("error", event, e);
+		return {
+			code: 500,
+			message: "系统错误",
+			...e
+		}
+	}
+	if (!result) {
+		return {
+			code: 404,
+			message: "暂无数据",
+			...data
+		};
+	} else if (result.code > 0) {
+		return {
+			code: 404,
+			message: result.msg || "暂无数据",
+		}
+	}
+	return {
+		code: 200,
+		data: result,
+		message: "操作成功",
+		...tokenData
+	};
 };
