@@ -769,7 +769,7 @@
 				});
 			},
 			addVideo() {
-				this.navToItem("/pages/video/add", uni.getStorageSync("goodsInfo"));
+				this.navToItem("/pages/video/add", uni.getStorageSync("goodsInfo"), true);
 			},
 			refreshList() {},
 			stopPrevent() {},
