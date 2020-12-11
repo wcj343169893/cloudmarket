@@ -32,8 +32,8 @@
 				<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address" @navToAddress="navToAddress"></addressPage>
 			</block>
 		</view>
-		<!-- 口号 -->
-		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0" @click="navToDocPageByType('app_goods_charge')">
+		<!-- 配送口号 -->
+		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.deliveryTypes.indexOf('deliveryHome')!= -1 " @click="navToDocPageByType('app_goods_charge')">
 			<view class="kouhao_item">
 				<text class="yticon icon-chps"></text>
 				<text>最快{{ shop.delivery.time }}分钟送达</text>
