@@ -31,9 +31,10 @@
 	import {
 		navToAdDetail,
 	} from '@/common/functions.js';
+	import searchMixin from '../mixin/search.js';
 	import adPosition from '../mixin/adPosition.js';
 	export default {
-		mixins: [adPosition],
+		mixins: [searchMixin,adPosition],
 		data() {
 			return {
 				dataList: {}
