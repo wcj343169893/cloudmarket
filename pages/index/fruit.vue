@@ -33,7 +33,7 @@
 			</block>
 		</view>
 		<!-- 配送口号 -->
-		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.deliveryTypes.indexOf('deliveryHome')!= -1 " @click="navToDocPageByType('app_goods_charge')">
+		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.hasDeliveryHome" @click="navToDocPageByType('app_goods_charge')">
 			<view class="kouhao_item">
 				<text class="yticon icon-chps"></text>
 				<text>最快{{ shop.delivery.time }}分钟送达</text>
@@ -353,6 +353,7 @@
 					this.titles = res.titles;
 					if (res.shop) {
 						this.shop = res.shop;
+						this.shop.hasDeliveryHome = res.shop.deliveryTypes && res.shop.deliveryTypes.indexOf('deliveryHome') != -1;
 						this.searchKeyWords = res.shop.searchGoodsKeywords;
 						//同时写入缓存，在分类页面也能调用
 						uni.setStorage({
