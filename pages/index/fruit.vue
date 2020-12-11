@@ -252,7 +252,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'checkLogout']),
+			...mapMutations(['changeShopId', 'shopFixedId', 'changeMainCateId', 'setUserLocation', 'checkLogout']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问
@@ -303,7 +303,7 @@
 			async loadData() {
 				console.log("开始获取首页数据")
 				getHomeFruitData({
-					shopid: this.shopId,
+					shopid: this.shopFixedId,
 					raisingPoint: this.raisingPoint,
 					stationId: this.stationId,
 					latitude: this.location.latitude,

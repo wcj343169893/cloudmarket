@@ -194,7 +194,7 @@
 			//分享过来的店铺id，正常访问是没有的，这里可以防止分类页面没有店铺id的尴尬
 			if (options.query.shopid) {
 				this.setStateAttr({
-					shopId: +options.query.shopid
+					shopFixedId: +options.query.shopid
 				})
 			}
 
