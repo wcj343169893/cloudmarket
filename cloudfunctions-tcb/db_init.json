@@ -1845,6 +1845,30 @@
 			}
 		]
 	},
+	"cloud_videos": {
+		"data": [],
+		"index": [{
+				"IndexName": "cloud_videos_openid_index_",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "_openid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "index_state",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "state",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			}
+		]
+	},
 	"opendb-admin-log": {
 		"data": []
 	},
