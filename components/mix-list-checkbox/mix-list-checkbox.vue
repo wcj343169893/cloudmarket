@@ -75,6 +75,12 @@
 					this.content = val;
 				}
 				console.log(val)
+			},
+			defaultOptions(val, oldVal) {
+				if (val != oldVal) {
+					this.checkedList = val;
+				}
+				console.log(val)
 			}
 		},
 		created() {
