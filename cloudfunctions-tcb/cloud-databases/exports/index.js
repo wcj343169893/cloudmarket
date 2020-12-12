@@ -346,7 +346,7 @@ const models = {
 			let content = [];
 			let config = getConfig();
 			//会员信息下载地址
-			let url = [config.domain, "/databases/exports/member", "?state=" + date].join("");
+			let url = [config.domain, "/databases/exports/member", "?date=" + date].join("");
 			content.push(`<p>${date}查询到会员信息${memberRes.total}条</p>`);
 			content.push(`<p>开始时间戳：${beginTime}</p>`);
 			content.push(`<p>结束时间戳：${endTime}</p>`);
