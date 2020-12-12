@@ -9,8 +9,11 @@ const config = require("./config.json");
 let paymentConfigTmp = {};
 const path = require("path");
 const model = {
-	getConfig() {
-		return config;
+	getConfig(name) {
+		if (!name) {
+			return config;
+		}
+		return config[name];
 	},
 	/**
 	 * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 

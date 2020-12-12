@@ -154,7 +154,22 @@
 		"key": "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5",
 		"mode": "bicycling"
 	},
-	"user":{
-		"autoSetId":true
+	"user": {
+		"autoSetId": true
+	},
+	"email": {
+		"transport": {
+			"host": "smtp.163.com",
+			"port": 465,
+			"secure": true,
+			"auth": {
+				"user": "xxxxxxx@163.com",
+				"pass": "OKGJ123456RBPTE"
+			}
+		},
+		"send": {
+			"from": "管理员 <xxxxxxx@163.com>",
+			"to": "343169893@qq.com"
+		}
 	}
 }

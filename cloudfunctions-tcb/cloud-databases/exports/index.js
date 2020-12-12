@@ -6,11 +6,16 @@ const goodsCollection = db.collection("cloud_goods");
 const ordersCollection = db.collection("cloud_orders");
 const usersCollection = db.collection("uni-id-users");
 const xlsx = require("node-xlsx");
+const nodemailer = require("nodemailer");
 const {
 	getDayTime,
 	getDate,
 	getDateFormat
 } = require('base-common');
+const {
+	getConfig
+} = require('configs');
+const path = require("path");
 const models = {
 	limits: {
 		cloud_users: 3,
@@ -81,14 +86,26 @@ const models = {
 	async member(data) {
 		const {
 			state,
+			date,
 			getContent
 		} = data;
 		let condition = {
 			_id: cmd.exists(true)
 		};
 		let statistics = this.getUserStateCondition();
+		let filename = "excel";
 		if (state && statistics[state]) {
+			filename = state + getDateFormat("yyyy-MM-dd");
 			condition = statistics[state];
+		} else if (date) {
+			filename = date;
+			//指定日期,2020-12-12
+			let beginTime = new Date(`${date}T00:00:00.000Z`).getTime();
+			let endTime = new Date(`${date}T23:59:59.999Z`).getTime();
+			condition = {
+				member: cmd.exists(true),
+				"member.time": cmd.gte(beginTime).lte(endTime)
+			};
 		}
 		//分页查询数据
 		let page = 1,
@@ -137,7 +154,7 @@ const models = {
 					wch: 20
 				}]
 			};
-			let filename = state + getDateFormat("yyyy-MM-dd");
+
 			let buffer = xlsx.build([{
 				name: "mySheet",
 				data: result
@@ -287,5 +304,71 @@ const models = {
 		};
 		return statistics;
 	},
+	async sendEmail(data) {
+		let config = getConfig("email");
+		if (!config || !config.transport) {
+			return false;
+		}
+		// Generate test SMTP service account from ethereal.email
+		// Only needed if you don't have a real mail account for testing
+		//let testAccount = await nodemailer.createTestAccount();
+		console.log("开始发送")
+		// create reusable transporter object using the default SMTP transport
+		let transporter = nodemailer.createTransport(config.transport);
+		console.log("创建账号")
+		// send mail with defined transport object
+		let info = await transporter.sendMail({
+			subject: "邮件主题", // Subject line
+			...config.send,
+			...data
+		});
+		console.log("Message sent: ", info.messageId);
+		return info;
+	},
+	/**
+	 * 每日定时任务,1.发送会员邮件，2.数据报表邮件
+	 * @param {Object} data
+	 */
+	async timer(data) {
+		//昨日时间
+		let date = getDateFormat("yyyy-MM-dd", Date.now() - 3600 * 24 * 1000);
+		let beginTime = new Date(`${date}T00:00:00.000Z`).getTime();
+		let endTime = new Date(`${date}T23:59:59.999Z`).getTime();
+		const memberRes = await usersCollection.where({
+			member: cmd.exists(true),
+			"member.time": cmd.gte(beginTime).lte(endTime)
+		}).count();
+		if (memberRes.total > 0) {
+			let file = await this.member({
+				date: date,
+				getContent: true
+			});
+			let content = [];
+			let config = getConfig();
+			//会员信息下载地址
+			let url = [config.domain, "/databases/exports/member", "?state=" + date].join("");
+			content.push(`<p>${date}查询到会员信息${memberRes.total}条</p>`);
+			content.push(`<p>开始时间戳：${beginTime}</p>`);
+			content.push(`<p>结束时间戳：${endTime}</p>`);
+			content.push(`<p><a href="${url}">重新获取</a></p>`);
+			content.push(`<p>${url}</p>`);
+			//查询会员数量
+			return await this.sendEmail({
+				subject: `${date}会员${memberRes.total}人`,
+				html: content.join(""),
+				attachments: [{
+					filename: `${date}.xlsx`,
+					content: file,
+					encoding: 'base64'
+				}]
+			});
+		} else {
+			//没有会员
+			return await this.sendEmail({
+				subject: `${date}会员没有新会员`,
+				html: `<p>${date}没有新注册会员</p>`
+			});
+		}
+	}
 };
 module.exports = models;

@@ -80,6 +80,7 @@
 		 tips="秒杀/专题"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
+		<mix-list-cell icon="icon-tuijian" iconColor="#54b4ef" title="视频管理" @eventClick="navToItem('/pages/admin/video/add')" tips="添加视频"></mix-list-cell>
 	</view>
 </template>
 

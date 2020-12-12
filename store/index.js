@@ -21,7 +21,7 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		token: '',
 		stationId: 0, //分站id
-		shopFixedId:0,//强制只访问这一个店铺
+		shopFixedId: 0, //强制只访问这一个店铺
 		shopId: 0, //分站店铺id，根据收货地址动态设置
 		globalShopInfo: {},
 		isSelfRaisingPoint: false, //是否开启自提点,与到家和到店不同享
@@ -124,6 +124,9 @@ const store = new Vuex.Store({
 		changeShopId(state, shop) {
 			state.globalShopInfo = shop;
 			state.shopId = shop.id;
+			if (shop.shopFixedId) {
+				state.shopFixedId = shop.shopFixedId;
+			}
 			state.categoryId = 0;
 			//自提并且开启自提点
 			state.isSelfRaisingPoint = shop.isSelfRaisingPoint;

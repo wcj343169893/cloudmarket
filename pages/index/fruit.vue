@@ -210,7 +210,10 @@
 			};
 		},
 		computed: {
-			...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location', 'isSelfRaisingPoint', 'raisingPoint'])
+			...mapState(['hasLogin', 'userInfo', 'stationId', 'shopId', 'location', 'isSelfRaisingPoint', 'raisingPoint']),
+			shopFixedId(id) {
+				return this.$store.state.shopFixedId;
+			}
 		},
 		watch: {
 			location() {
@@ -252,7 +255,7 @@
 			this.goNext += 1;
 		},
 		methods: {
-			...mapMutations(['changeShopId', 'shopFixedId', 'changeMainCateId', 'setUserLocation', 'checkLogout']),
+			...mapMutations(['changeShopId', 'changeMainCateId', 'setUserLocation', 'checkLogout']),
 			async getUserLocation() {
 				console.log('开始获取定位');
 				//1.如果存在经纬度，则直接访问

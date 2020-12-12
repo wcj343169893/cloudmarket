@@ -9,9 +9,15 @@ exports.main = async (event, context) => {
 		module,
 		action,
 		data,
-		path
+		path,
+		Type
 	} = event;
-	if (path) {
+	//报表定时器
+	if (Type == "Timer") {
+		console.log("定时器", event);
+		module = "exports";
+		action = "timer";
+	} else if (path) {
 		//开启url后，有些通知,不需要登录
 		let paths = path.split("/");
 		//模块

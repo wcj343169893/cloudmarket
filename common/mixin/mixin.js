@@ -49,13 +49,17 @@ export default {
 		 * @param {Object} url
 		 * @param {Object} item
 		 */
-		navToItem(url, item , checkLogin) {
+		navToItem(url, item, checkLogin) {
 			if (checkLogin && !this.$store.state.hasLogin) {
 				url = "/pages/public/login";
 			}
 			this.$submitData(() => {
 				if (item) {
 					uni.setStorageSync(this.itemDataKey, item);
+				} else {
+					uni.removeStorage({
+						key: this.itemDataKey
+					})
 				}
 				this.navTo(url);
 			});

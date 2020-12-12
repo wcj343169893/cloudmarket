@@ -394,7 +394,7 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
+			//#ifndef MP
 		}, {
 			"path": "pages/index/video",
 			"style": {
@@ -404,7 +404,7 @@
 				// #endif
 				"enablePullDownRefresh": true
 			}
-
+			//#endif
 		}
 	],
 	"subPackages": [{
@@ -653,6 +653,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "video/add",
+			"style": {
+				"navigationBarTitleText": "发布视频",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}, {
 		"root": "pages/video",
@@ -694,12 +701,14 @@
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"
 			},
+			//#ifndef MP
 			{
 				"pagePath": "pages/index/video",
 				"iconPath": "static/play.png",
 				"selectedIconPath": "static/play.png",
 				"text": "视频"
 			},
+			//#endif
 			{
 				"pagePath": "pages/index/cart",
 				"iconPath": "static/tab-cart.png",

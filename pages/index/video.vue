@@ -32,7 +32,7 @@
 						</view>
 					</view>
 					<view class="state margin-top-xs align-center margin-left-sm" @click="like(item)">
-						<text>{{ item.statistics.play | formatNumber }}次播放</text>
+						<text class="text-sm">{{ item.statistics.play | formatNumber }}次播放</text>
 						<view class="">
 							<text class="margin-left-sm taobaofont icon-likefill" :class="{'text-red':item.isLike}"></text>
 							<text class="margin-left-xxs">{{ item.statistics.like | formatNumber }}</text>
@@ -105,6 +105,12 @@
 			uni.stopPullDownRefresh();
 			this.page = 0;
 			this.loadData();
+		},
+		//滑到底部加载更多
+		onReachBottom() {
+			if (this.loadingType != 'noMore') {
+				this.loadData();
+			}
 		},
 		methods: {
 			tabSelect(index) {

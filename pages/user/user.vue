@@ -504,13 +504,14 @@
 				})
 			},
 			navToShopHome(item) {
+				item.shopFixedId = item.id;
 				this.changeShopId(item);
 				uni.switchTab({
 					url: `/pages/index/fruit`
 				})
 			},
 			navToSelfRaisingAdmin(item) {
-				this.navToItem('/pages/selfraisingpoint/admin',item);
+				this.navToItem('/pages/selfraisingpoint/admin', item);
 			},
 			getUserInfo() {
 				this.$store.dispatch('getUserInfo');
