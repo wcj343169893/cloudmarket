@@ -123,6 +123,7 @@
 					title: this.title,
 					poster: this.poster,
 					url: this.url,
+					shopid: this.adminShopId,
 					content: this.content,
 					duration: this.duration,
 					width: this.width,

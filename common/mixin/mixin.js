@@ -15,6 +15,9 @@ export default {
 		shopId() {
 			return this.$store.state.shopId;
 		},
+		adminShopId() {
+			return this.$store.state.adminShopId;
+		},
 		globalClass() {
 			return this.$store.state.globalClass;
 		},

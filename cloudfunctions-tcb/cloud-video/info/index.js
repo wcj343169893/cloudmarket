@@ -12,10 +12,12 @@ const model = {
 			page,
 			limit,
 			uid,
+			shopid,
 			state
 		} = data;
 		let conditions = {
-			state: 1
+			state: 1,
+			shopid
 		}
 		let res = await videoCollection.where(conditions).skip((page - 1) * limit).limit(limit).field({
 			goods: 1,

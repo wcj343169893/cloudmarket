@@ -119,6 +119,7 @@
 					title: this.title,
 					poster: this.poster,
 					url: this.url,
+					shopid: this.shopId,
 					content: this.content,
 					duration: this.duration,
 					width: this.width,

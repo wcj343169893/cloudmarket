@@ -87,6 +87,14 @@
 				return `height:${height}px;`;
 			}
 		},
+		watch: {
+			shopId(id) {
+				console.log('watch 店铺id改变,刷新当前页面', id);
+				this.pauseAll();
+				this.page = 0;
+				this.loadData();
+			}
+		},
 		onLoad() {
 			this.init();
 			this.loadData();
@@ -131,6 +139,7 @@
 				this.loadingType = "loading";
 				this.page++;
 				cloudVideo("info", "square", {
+					shopid: this.shopId,
 					page: this.page,
 					limit: this.limit
 				}).then(res => {
