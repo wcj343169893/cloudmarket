@@ -348,13 +348,13 @@ const models = {
 			//会员信息下载地址
 			let url = [config.domain, "/databases/exports/member", "?date=" + date].join("");
 			content.push(`<p>${date}查询到会员信息${memberRes.total}条</p>`);
-			content.push(`<p>开始时间戳：${beginTime}</p>`);
-			content.push(`<p>结束时间戳：${endTime}</p>`);
+			content.push(`<p>开始时间戳:${beginTime},结束时间戳:${endTime}</p>`);
 			content.push(`<p><a href="${url}">重新获取</a></p>`);
 			content.push(`<p>${url}</p>`);
+			content.push(`<p>更改日期,即可查询其他日期的数据</p>`);
 			//查询会员数量
 			return await this.sendEmail({
-				subject: `${date}会员${memberRes.total}人`,
+				subject: `${date}新申请${memberRes.total}会员`,
 				html: content.join(""),
 				attachments: [{
 					filename: `${date}.xlsx`,
