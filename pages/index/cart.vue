@@ -349,6 +349,7 @@
 					}).then(res => {
 						console.log(res);
 						this.cartList[index].cart = numb;
+						this.calcTotal();
 					}, err => {
 						this.$api.msg(err.message)
 						console.log(err);
@@ -365,6 +366,7 @@
 					}).then(res => {
 						console.log(res);
 						this.cartList[index].cart = numb;
+						this.calcTotal();
 					}, err => {
 						this.$api.msg(err.message)
 						console.log(err);
@@ -382,7 +384,6 @@
 				//数量
 				let num = parseInt(number);
 				this.updateCartDataList(gid, sid, num);
-				this.calcTotal();
 			},
 			//选中状态处理
 			check(type, index) {
