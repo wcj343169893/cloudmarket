@@ -28,6 +28,7 @@
 				name: '',
 				idcard: '',
 				mobile: '',
+				mobileReg: /^1[3456789]\d{9}$/,
 				address: ''
 			};
 		},
@@ -66,6 +67,9 @@
 			changeAddress(e, field) {
 				this.address = e.address || e;
 			},
+			checkMobile() {
+				return this.mobileReg.test(this.mobile);
+			},
 			save() {
 				let data = {
 					name: this.name,
@@ -81,6 +85,11 @@
 				};
 				if (!this.checkFields(data, fields)) {
 					return false;
+				}
+				//再次验证手机号码
+				if (!this.checkMobile()) {
+					this.$api.msg('手机号格式不正确');
+					return;
 				}
 				let content = [];
 				for (let fi in fields) {
