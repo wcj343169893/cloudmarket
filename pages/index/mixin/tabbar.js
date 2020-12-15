@@ -34,10 +34,7 @@ export default {
 	methods: {
 		...mapMutations(['incrCartNumber', 'updateCartNumber', 'updateCartMap', 'setStateAttr']),
 		resetTabCartCount() {
-			let cartIndex = 3;
-			//#ifdef MP
-			cartIndex = 2;
-			//#endif
+			let cartIndex = 2;
 			//console.log("this.cartCount", this.cartCount)
 			if (this.cartCount > 0) {
 				uni.setTabBarBadge({
