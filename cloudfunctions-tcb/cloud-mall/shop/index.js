@@ -27,6 +27,7 @@ const models = {
 			latitude
 		} = data;
 		let res = await shopCollection.where({
+			state:true,
 			lnglat: cmd.geoNear({
 				geometry: new db.Geo.Point(longitude, latitude),
 				// minDistance: 0,

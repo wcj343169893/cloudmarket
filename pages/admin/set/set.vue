@@ -33,6 +33,7 @@
 		<mix-list-input title="退换货周期" type="digit" :defContent="refund.days" field="refund.days" placeholder="请输入退换货周期" @blur="changeFieldNumber">
 			<text class="moreText">天</text></mix-list-input>
 		<mix-list-checkbox title="收货后退货" field="refund.afterReceived" :defContent="refund.afterReceived" @change="changeField"></mix-list-checkbox>
+		<mix-list-checkbox title="是否启用" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
 	</view>
 </template>
 <script>
@@ -56,6 +57,7 @@
 				},
 				deliveryTypes: [],
 				isPrint: false,
+				state: false,
 				goodsCommentTags: [],
 				printers: [],
 				printersName: "",

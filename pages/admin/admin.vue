@@ -10,7 +10,7 @@
 					<image class="portrait" :src="src"></image>
 				</view>
 				<view class="info-box">
-					<text class="username">{{ name }}({{ shopid }})</text>
+					<text class="username">{{ name }}({{ id }})</text>
 					<view class="desc">
 						<view class="">
 							<text>{{ address }}</text>
@@ -95,7 +95,7 @@
 	export default {
 		data() {
 			return {
-				shopid: 0,
+				id: 0,
 				secondPage: false,
 				secondPageState: false,
 				isSetTitle: false,
@@ -110,8 +110,8 @@
 			};
 		},
 		onLoad(options) {
-			this.shopid = +options.shopid;
-			console.log(this.shopid, options);
+			this.id = +options.shopid;
+			console.log(this.id, options);
 			if (options.second) {
 				//进一步跳转到下一页页面
 				this.secondPage = options.second;
@@ -122,7 +122,7 @@
 			this.loadData(false);
 		},
 		onUnload() {
-			this.shopid = 0;
+			this.id = 0;
 			uni.removeStorage({
 				key: "adminShopInfo"
 			});
@@ -153,7 +153,7 @@
 			...mapMutations(['setAdminShop']),
 			async loadData(showLoading) {
 				//优先读取缓存
-				let info = uni.getStorageSync(`adminShopInfo_${this.shopid}`);
+				let info = uni.getStorageSync(`adminShopInfo_${this.id}`);
 				if (!info) {
 					info = uni.getStorageSync('adminShopInfo');
 				}
@@ -161,7 +161,7 @@
 					this.buildShopInfo(info);
 				}
 				shopAdmin('info', {
-					shopid: this.shopid
+					adminShopid: this.id
 				}, showLoading).then(
 					res => {
 						uni.setStorage({
@@ -169,7 +169,7 @@
 							data: res
 						})
 						uni.setStorage({
-							key: `adminShopInfo_${this.shopid}`,
+							key: `adminShopInfo_${this.id}`,
 							data: res
 						})
 						this.buildShopInfo(res);
@@ -209,16 +209,16 @@
 			navToOrder(state) {
 				console.log(state)
 				if (state == "refunded") {
-					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${this.shopid}`);
+					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${this.id}`);
 				} else {
-					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${this.shopid}`);
+					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${this.id}`);
 				}
 			},
 			navToGoods(state) {
-				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${this.shopid}`);
+				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${this.id}`);
 			},
 			navToUsers(state) {
-				this.navTo(`/pages/admin/user/list?state=${state}&shopid=${this.shopid}`);
+				this.navTo(`/pages/admin/user/list?state=${state}&shopid=${this.id}`);
 			},
 			//新增商品
 			navToAddGoods() {

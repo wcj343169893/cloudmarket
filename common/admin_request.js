@@ -66,13 +66,15 @@ const specialAdmin = function(action, data, isShowLoading) {
 
 const adminNetwork = (module, action, data, isShowLoading) => {
 	isShowLoading = isShowLoading === true;
+	if (!data) {
+		data = {};
+	}
 	//统一读取店铺id,必填项
 	let adminShopId = uni.getStorageSync("adminShopId");
 	if (!adminShopId) {
 		return false;
-	}
-	if (data.shopid) {
-		adminShopId = data.shopid;
+	} else if (data.adminShopid) {
+		adminShopId = data.adminShopid;
 	}
 	//console.log(adminShopId)
 	return network({
@@ -88,7 +90,7 @@ const adminNetwork = (module, action, data, isShowLoading) => {
 	});
 }
 
-const cloudDatabases = (model,action,data,isShowLoading)=>{
+const cloudDatabases = (model, action, data, isShowLoading) => {
 	return network({
 		url: "cloud-databases",
 		data: {
