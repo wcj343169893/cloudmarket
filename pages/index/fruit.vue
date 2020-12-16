@@ -3,7 +3,7 @@
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<!-- 顶部栏 -->
-		<page-header :showFillView="true" :bgColor="titleNViewBackground"></page-header>
+		<page-header :showFillView="true" :bgColor="titleNViewBackground" @navToAddress="navToAddress"></page-header>
 		<!-- #endif -->
 		<!-- 头部轮播 -->
 		<view class="carousel-section" v-if="isLoaded">

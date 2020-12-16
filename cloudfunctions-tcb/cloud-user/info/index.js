@@ -310,16 +310,6 @@ const models = {
 			//查询店铺的订单统计情况,以及店铺信息
 			let shops = await shopCollection.where({
 				id: cmd.in(info.admin)
-			}).field({
-				id: 1,
-				name: 1,
-				src: 1,
-				monthSale: 1,
-				address: 1,
-				latitude: 1,
-				longitude: 1,
-				order: 1,
-				banner: 1
 			}).orderBy("id", "desc").limit(30).get();
 			info.admin = [];
 			for (let shop of shops.data) {

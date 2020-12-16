@@ -9,7 +9,7 @@
 				backgroundColor:bgColor
 			}" :class="{emptyLocation:!showLocationView}"
 		>
-			<view v-if="showLocationView" class="btn center" @click="navTo('/pages/index/chooseAddress')">
+			<view v-if="showLocationView" class="btn center" @click="navToAddress">
 				<text class="yticon icon-icon-test"></text>
 				<view class="msg"></view>
 			</view>
@@ -71,6 +71,9 @@ export default {
 			uni.navigateTo({
 				url: url
 			});
+		},
+		navToAddress() {
+			this.$emit("navToAddress")
 		}
 	}
 };
