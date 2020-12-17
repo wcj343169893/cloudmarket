@@ -55,7 +55,7 @@
 				<text>{{ item.name }}</text>
 			</view>
 		</view>
-		<view class="shop-notice m-t b-b" v-if="shop.notice && shop.notice.length>0" @click="navTo('/pages/index/video')">
+		<view class="shop-notice m-t b-b" v-if="shop.notice && shop.notice.length>0">
 			<text class="yticon icon-gonggao"></text>
 			<text>{{shop.notice}}</text>
 		</view>
