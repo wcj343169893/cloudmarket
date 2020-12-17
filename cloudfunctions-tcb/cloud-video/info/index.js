@@ -1,7 +1,11 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const $ = db.command.aggregate
 const videoCollection = db.collection("cloud_videos");
+const {
+	dbcache
+} = require("base-common");
 const model = {
 	/**
 	 * 视频广场，分页查询
@@ -12,12 +16,20 @@ const model = {
 			page,
 			limit,
 			uid,
+			vuid,
+			extIds,
 			shopid,
 			state
 		} = data;
 		let conditions = {
 			state: 1,
 			shopid
+		}
+		if (vuid) {
+			conditions.uid = vuid;
+		}
+		if (extIds) {
+			conditions._id = cmd.nin(extIds)
 		}
 		let res = await videoCollection.where(conditions).skip((page - 1) * limit).limit(limit).field({
 			goods: 1,
@@ -39,6 +51,38 @@ const model = {
 			video.likes = undefined;
 		})
 		return res.data;
+	},
+	/**
+	 * 查询该用户的播放和喜欢次数
+	 * @param {Object} data
+	 */
+	async user(data) {
+		const {
+			id,
+			shopid
+		} = data;
+		let key = "video_owner_" + id;
+		//查询该用户的播放和喜欢次数，缓存1小时
+		let res = await dbcache(key);
+		if (res) {
+			return res;
+		}
+		let res2 = await videoCollection.aggregate()
+			.match({
+				shopid,
+				uid: id
+			})
+			.group({
+				_id: '$uid',
+				like: $.sum('$statistics.like'),
+				play: $.sum('$statistics.play'),
+			})
+			.end();
+		if (res2.data.length > 0) {
+			await dbcache(key, res2.data[0]);
+			return res2.data[0];
+		}
+		return {};
 	},
 	/**
 	 * 播放视频

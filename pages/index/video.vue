@@ -7,7 +7,7 @@
 		<!-- <scroll-view scroll-y :scroll-with-animation="scrollWithAnimation" enable-back-to-top class="videos" :scroll-top="tabScrollTop"> -->
 		<view class="videos">
 			<view v-for="(item, index) in dataList" :id="'main_' + item.id" :key="index" class="padding-sm bg-white margin-sm video-item">
-				<view class="header">
+				<view class="header" @click="navToUserPage(item)">
 					<image :src="item.user.avatar" mode="aspectFill" class="cu-avatar round"></image>
 					<text class="margin-left-sm">{{ item.user.nickname }}</text>
 				</view>
@@ -81,12 +81,6 @@
 				videoContentList: []
 			};
 		},
-		computed: {
-			swiperStyle() {
-				let height = this.systemInfo.windowHeight;
-				return `height:${height}px;`;
-			}
-		},
 		watch: {
 			shopId(id) {
 				console.log('watch 店铺id改变,刷新当前页面', id);
@@ -157,6 +151,16 @@
 				console.log("navToGoodsPage main")
 				navToGoodsItemPage(item);
 			},
+			/**
+			 * 跳转用户视频列表
+			 * @param {Object} item
+			 */
+			navToUserPage(item) {
+				this.navToItem("/pages/video/list", {
+					first:item,
+					user: item.user
+				})
+			},
 			buildData(data, page) {
 				const {
 					windowHeight,
@@ -203,6 +207,9 @@
 					});
 				} else {
 					this.dataList = this.dataList.concat(data);
+					this.$nextTick(() => {
+						this.loadOthers((page - 1) * this.limit);
+					});
 				}
 				data.map(ele => {
 					this.videoContentList.push(uni.createVideoContext(ele.id));

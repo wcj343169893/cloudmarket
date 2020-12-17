@@ -36,21 +36,23 @@
 				<text>选择视频 --> 分享 --> 复制链接</text>
 			</view>
 		</block>
-		<mix-list-input title="标题" type="text" :defContent="title" field="title" placeholder="请输入标题" @change="changeField"></mix-list-input>
-		<mix-list-input type="text" title="视频地址" :defContent="url" field="url" placeholder="输入地址或者上传" @change="changeField"></mix-list-input>
-		<view class="mix-list-cell" @click="uploadVideo">
-			<text class="cell-tit clamp">视频文件</text>
-			<view class="cell-tip">点击上传</view>
-			<text class="cell-more yticon icon-you"></text>
-		</view>
-		<view class="imgs b-b">
-			<view class="h-list" v-if="url">
-				<j-video :url="url" :poster="poster" height="220px" width="690rpx"></j-video>
+		<block v-if="isShowData">
+			<mix-list-input title="标题" type="text" :defContent="title" field="title" placeholder="请输入标题" @change="changeField"></mix-list-input>
+			<mix-list-input type="text" title="视频地址" :defContent="url" field="url" placeholder="输入地址或者上传" @change="changeField"></mix-list-input>
+			<view class="mix-list-cell" @click="uploadVideo">
+				<text class="cell-tit clamp">视频文件</text>
+				<view class="cell-tip">点击上传</view>
+				<text class="cell-more yticon icon-you"></text>
 			</view>
-		</view>
-		<view class="mix-list-cell b-b">
-			<cloud-image title="视频封面" tips="点击上传" v-model="poster"></cloud-image>
-		</view>
+			<view class="imgs b-b">
+				<view class="h-list" v-if="url">
+					<j-video :url="url" :poster="poster" height="220px" width="690rpx"></j-video>
+				</view>
+			</view>
+			<view class="mix-list-cell b-b">
+				<cloud-image title="视频封面" tips="点击上传" v-model="poster"></cloud-image>
+			</view>
+		</block>
 		<button class="fixed-add-btn" @click="save">发布</button>
 	</view>
 </template>
@@ -84,6 +86,14 @@
 		onLoad() {
 			this.loadData()
 		},
+		computed: {
+			isShowData() {
+				if (this.type != "douyin") {
+					return true;
+				}
+				return (this.type == "douyin" && this.loaded)
+			}
+		},
 		methods: {
 			loadData() {
 				this.goods = this.getItemData();
@@ -99,6 +109,7 @@
 					for (let key in res) {
 						this[key] = res[key]
 					}
+					this.loaded = true;
 					this.content = n;
 				}, err => {
 					this.$api.msg("解析失败")

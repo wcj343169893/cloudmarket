@@ -3,9 +3,10 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "douyin",
-	"action": "getInfo",
+	"module": "info",
+	"action": "user",
 	"data": {
-		"content": "#拳击 #格斗#你kin你擦  这反应速度简直了！@抖音格斗  https://v.douyin.com/J4Ub7He/ 复制此链接，打开抖音搜索，直接观看视频！"
+		"shopid": 123458,
+		"id": "dd8d23355fb377ff00ba5cc63e2b46e5"
 	}
 }

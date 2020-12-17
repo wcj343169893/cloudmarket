@@ -670,6 +670,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "list",
+			"style": {
+				"navigationBarTitleText": "他的视频",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}],
 	"preloadRule": {
