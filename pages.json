@@ -660,6 +660,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "video/list",
+			"style": {
+				"navigationBarTitleText": "视频列表",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}, {
 		"root": "pages/video",

@@ -149,7 +149,7 @@ const model = {
 		} = context
 		//状态：0待审核，1发布，-1下架
 		Object.assign(data, {
-			state: 1,
+			state: 0,
 			created: Date.now(),
 			statistics: {
 				play: 0,

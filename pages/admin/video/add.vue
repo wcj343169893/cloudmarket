@@ -53,6 +53,9 @@
 				<cloud-image title="视频封面" tips="点击上传" v-model="poster"></cloud-image>
 			</view>
 		</block>
+		<view class="padding-sm">
+			<text>添加的视频将直接展示</text>
+		</view>
 		<button class="fixed-add-btn" @click="save">发布</button>
 	</view>
 </template>
@@ -61,6 +64,9 @@
 	import {
 		cloudVideo
 	} from '@/common/request.js';
+	import {
+		adminNetwork
+	} from '@/common/admin_request.js';
 	import {
 		uploadVideo
 	} from '@/common/functions.js';
@@ -150,7 +156,7 @@
 					this.submiting = false;
 					return;
 				}
-				cloudVideo("info", "save", info, true).then(res => {
+				adminNetwork("video", "save", info, true).then(res => {
 					console.log(res)
 					this.$api.success("发布成功");
 					this.navTimeBack();

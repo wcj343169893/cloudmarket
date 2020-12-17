@@ -7,6 +7,8 @@ const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const ordersCollection = db.collection("cloud_orders");
 const usersCollection = db.collection("uni-id-users");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
+const videoCollection = db.collection("cloud_videos");
+const video = require("../video")
 const {
 	getDate
 } = require('base-common');
@@ -36,6 +38,8 @@ const modules = {
 		await this.getGoodsStatistics(shop);
 		//用户简单统计，总用户，昨日新增，今日新增
 		await this.getUsersStatistics(shop);
+		//视频统计，全部，昨日新增，今日新增
+		await video.statistics(shop);
 		return shop;
 	},
 	/**

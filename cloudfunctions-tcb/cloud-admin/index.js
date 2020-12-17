@@ -12,6 +12,7 @@ const modules = {
 	statistics: require("./statistics"),
 	special: require("./special"),
 	selfraising: require("./selfraising"),
+	video: require("./video"),
 };
 const uniID = require('uni-id');
 /**
