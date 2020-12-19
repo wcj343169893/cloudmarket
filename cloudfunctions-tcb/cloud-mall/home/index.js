@@ -21,6 +21,8 @@ const models = {
 			shopid,
 			raisingPoint
 		} = data;
+		//默认店铺id
+		let defaultShopId = 123457;
 		let longitude = data.longitude ? +data.longitude : 113.92246555717469;
 		let latitude = data.latitude ? +data.latitude : 22.489059185437284;
 		let limits = {
@@ -58,6 +60,9 @@ const models = {
 				longitude,
 				latitude
 			});
+		}
+		if (!shopInfo) {
+			shopInfo = await shop.getById(defaultShopId);
 		}
 		if (shopInfo) {
 			shopid = shopInfo.id;
