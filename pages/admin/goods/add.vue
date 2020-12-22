@@ -224,8 +224,8 @@
 							<view class="header">
 								<text>{{ item.name }}</text>
 							</view>
-							<view class="children">
-								<label class="mix-list-cell b-b" v-for="(child, childindex) in item.children" :key="childindex">
+							<view class="children b-b">
+								<label class="mix-list-cell" v-for="(child, childindex) in item.children" :key="childindex">
 									<radio :value="index + '_' + item.id + '_' + child.id" :checked="child.checked" :class="child.checked?'checked':''" />
 									<text class="cell-tit clamp">{{ child.name }}</text>
 								</label>
@@ -477,7 +477,7 @@
 				if (this.banner) {
 					this.bannerPreview = this.banner;
 				}
-				if (this.skus && this.skus.length > 0) {
+				if (!this.specsType && this.skus && this.skus.length > 0) {
 					this.setSpecsType('multiple');
 					this.specsTypeTmp = 'multiple';
 				}
@@ -566,6 +566,13 @@
 				this.categoryIdTmp = [];
 				let ids = e.detail.value;
 				ids = ids.split('_');
+				this.categoriesData.forEach(par => {
+					if (par.children) {
+						par.children.forEach(chi => {
+							chi.checked = false;
+						})
+					}
+				})
 				let cates = this.categoriesData[+ids[0]];
 				this.categoryIdTmp.push({
 					id: cates.id,
@@ -575,6 +582,7 @@
 				});
 				cates.children.map(child => {
 					if (ids[1] != ids[2] && child.id == +ids[2]) {
+						child.checked = true;
 						child.pid = cates.id;
 						this.categoryIdTmp.push(child);
 					}
@@ -849,6 +857,7 @@
 					stock: this.stock,
 					title: this.title,
 					subTitle: this.subTitle,
+					specsType: this.specsType,
 					share: this.share,
 					guarantee_period: this.guarantee_period,
 					storage_condition: this.storage_condition,
@@ -862,8 +871,11 @@
 					limit: this.limit,
 					isLimit: this.isLimit,
 					isNewUser: this.isNewUser,
-					video:this.video
+					video: this.video
 				};
+				if (this.specsType == "single") {
+					info.skus = this.skus = [];
+				}
 				//多规格
 				if (this.skus && this.skus.length > 0) {
 					Object.assign(info, {
@@ -1335,6 +1347,14 @@
 
 	.catespopupScroll {
 		height: 700upx;
+		.children{
+			display: flex;
+			flex-wrap: wrap;
+			position: relative;
+			.cell-tit{
+				margin-left: 12rpx;
+			}
+		}
 	}
 
 	.catespopup {

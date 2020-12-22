@@ -377,7 +377,7 @@
 					item.skus.map(sku => {
 						let names = sku.name.split('&gt;');
 						names.map((n, i) => {
-							if (skuMap[i]['childName'].indexOf(n) == -1) {
+							if (skuMap[i] && skuMap[i]['childName'] && skuMap[i]['childName'].indexOf(n) == -1) {
 								skuMap[i]['child'].push({
 									value: n,
 									//stock: sku.stock,//没有用

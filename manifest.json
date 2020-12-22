@@ -20,7 +20,8 @@
             "Maps" : {},
             "iBeacon" : {},
             "VideoPlayer" : {},
-            "Geolocation" : {}
+            "Geolocation" : {},
+            "OAuth" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -81,7 +82,8 @@
                         "appid" : "wxa8e2090ff8638329",
                         "appsecret" : "",
                         "UniversalLinks" : ""
-                    }
+                    },
+                    "univerify" : {}
                 },
                 "share" : {},
                 "geolocation" : {

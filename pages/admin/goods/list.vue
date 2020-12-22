@@ -395,10 +395,12 @@
 					return;
 				}
 				let shopInfo = uni.getStorageSync("adminShopInfo");
-				let goodsTypes = shopInfo.goodsTypes.filter(e => e.state == this.state);
-				uni.setNavigationBarTitle({
-					title: goodsTypes[0].name
-				});
+				if(shopInfo.goodsTypes){
+					let goodsTypes = shopInfo.goodsTypes.filter(e => e.state == this.state);
+					uni.setNavigationBarTitle({
+						title: goodsTypes[0].name
+					});
+				}
 			},
 			//重新刷新页面数据
 			refreshList() {
