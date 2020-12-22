@@ -50,7 +50,7 @@
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
-			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item.id)">
+			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
 				<image :src="item.src"></image>
 				<text>{{ item.name }}</text>
 			</view>
@@ -368,6 +368,15 @@
 							key: 'serviceShopInfo',
 							data: this.shop
 						})
+						//启用优惠券，如果占用位置大于数组长度，将展示在最后
+						if (this.shop.coupons && this.shop.coupons.enable) {
+							this.recommendCategoriesList.splice(Number(this.shop.coupons.index), 1, {
+								id: 0,
+								name: this.shop.coupons.title,
+								page: "/pages/product/coupons",
+								src: this.shop.coupons.icon
+							})
+						}
 					}
 					//修改默认附近店铺id
 					this.changeShopId(res.shop);
@@ -392,11 +401,19 @@
 			navToDocPageByType(id) {
 				navToDocPageByType(id);
 			},
-			navToCategoryPage(id) {
-				this.changeMainCateId(+id);
-				uni.switchTab({
-					url: `/pages/index/marketCategory`
-				});
+			navToCategoryPage(item) {
+				if (item.page) {
+					//跳转其他页面
+					uni.navigateTo({
+						url: item.page
+					})
+				} else {
+					//切换分类
+					this.changeMainCateId(+item.id);
+					uni.switchTab({
+						url: `/pages/index/marketCategory`
+					});
+				}
 			},
 			navToGoodsPage(item) {
 				console.log("navToGoodsPage main")

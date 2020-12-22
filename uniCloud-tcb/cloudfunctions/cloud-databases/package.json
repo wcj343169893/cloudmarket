@@ -1,18 +1,24 @@
 {
-    "cloudfunction-config": {
-        "memorySize": 256,
-        "path": "/databases",
-        "timeout": 60,
-        "triggers": [
-            {
-                "config": "0 0 0 * * * *",
-                "name": "myTrigger",
-                "type": "timer"
-            }
-        ]
-    },
-    "description": "",
-    "main": "index.js",
-    "name": "cloud-databases",
-    "version": "1.0.0"
+	"cloudfunction-config": {
+		"memorySize": 256,
+		"path": "/databases",
+		"timeout": 60,
+		"triggers": [
+			{
+				"config": "0 0 0 * * * *",
+				"name": "myTrigger",
+				"type": "timer"
+			}
+		]
+	},
+	"description": "",
+	"main": "index.js",
+	"name": "cloud-databases",
+	"version": "1.0.0",
+	"dependencies": {
+		"base-common": "file:../common/base-common",
+		"configs": "file:../common/configs",
+		"node-xlsx": "^0.15.0",
+		"nodemailer": "^6.4.16"
+	}
 }

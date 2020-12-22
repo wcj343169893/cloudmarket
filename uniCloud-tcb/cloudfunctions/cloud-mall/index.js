@@ -20,6 +20,7 @@ const modules = {
 	selfraising: require('./selfraising'),
 	utils: require('./utils'),
 	article: require('./article'),
+	coupon: require('./coupon'),
 }
 /**
  * 必须登录才能访问,cart子模块，list方法
@@ -30,6 +31,7 @@ const mustLoginActions = {
 	order: ["*"],
 	payment: ["wxpay", "alipay", "balance", "info"],
 	product: ["visite"],
+	coupon: ["takeit"],
 }
 /**
  * 获取用户信息，但是不校验
@@ -40,6 +42,7 @@ const getUserInfoActions = {
 	order: ["dealstate"],
 	product: ["detail"],
 	selfraising: ["*"],
+	product: ["list"],
 }
 
 /**

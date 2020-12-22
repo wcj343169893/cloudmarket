@@ -406,7 +406,16 @@
 			}
 			//#endif
 		}
-	],
+	    ,{
+            "path" : "pages/product/coupons",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "领券中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 		"root": "pages/admin",
 		"pages": [{
@@ -664,6 +673,13 @@
 			"path": "video/list",
 			"style": {
 				"navigationBarTitleText": "视频列表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "coupon/list",
+			"style": {
+				"navigationBarTitleText": "优惠券管理",
 				"enablePullDownRefresh": false
 			}
 

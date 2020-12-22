@@ -1,18 +1,18 @@
 <template>
-	<view class="cloud-image">
+	<view class="cloud-image" :class="[border]">
 		<view class="cloud-image__content">
 			<block v-if="imageNumber==1">
 				<view class="flex justify-between">
 					<text class="text-black">{{title}}</text>
 					<text class="text-sm margin-left-sm text-gray">{{tips}}</text>
 				</view>
-				<view class="">
+				<view class="padding-top-xs">
 					<image v-if="val" :src="val" mode="aspectFill" class="image" @click="upload"></image>
 					<uni-icons v-if="isShowIcon" class="content-image-icon" :type="suffixIcon" size="100" color="#c0c4cc" @click="upload"></uni-icons>
 				</view>
 			</block>
 			<block v-else>
-				<view class="flex justify-between">
+				<view class="flex justify-between padding-bottom-xs">
 					<view class="">
 						<text class="text-black">{{title}}</text>
 						<text class="text-sm margin-left-sm text-gray">{{tips}}</text>
@@ -49,6 +49,14 @@
 				default: 'image'
 			},
 			title: {
+				type: String,
+				default: ''
+			},
+			border: {
+				type: String,
+				default: 'b-b'
+			},
+			field: {
 				type: String,
 				default: ''
 			},
@@ -137,10 +145,10 @@
 			uploadCallback(srcs) {
 				if (this.imageNumber == 1) {
 					this.val = srcs[0]
-					this.$emit('input', this.val);
+					this.$emit('input', this.val, this.field);
 				} else {
 					this.srcList = this.srcList.concat(srcs)
-					this.$emit('input', this.srcList);
+					this.$emit('input', this.srcList, this.field);
 				}
 
 			},
@@ -222,8 +230,15 @@
 
 <style lang="scss">
 	.cloud-image {
+		padding: 20upx $page-row-spacing;
+		position: relative;
+		background: #FFFFFF;
 		width: 100%;
 		overflow: auto;
+
+		&.b-b:after {
+			left: 30upx;
+		}
 	}
 
 	.image {

@@ -33,6 +33,13 @@
 		<mix-list-input title="退换货周期" type="digit" :defContent="refund.days" field="refund.days" placeholder="请输入退换货周期" @blur="changeFieldNumber">
 			<text class="moreText">天</text></mix-list-input>
 		<mix-list-checkbox title="收货后退货" field="refund.afterReceived" :defContent="refund.afterReceived" @change="changeField"></mix-list-checkbox>
+		<mix-list-checkbox title="启用优惠券" field="coupons.enable" :defContent="coupons.enable" @change="changeField"></mix-list-checkbox>
+		<block v-if="coupons.enable">
+			<mix-list-input title="优惠券标题" :defContent="coupons.title" field="coupons.title" placeholder="请输入优惠券标题" @blur="changeField"></mix-list-input>
+			<mix-list-input title="占用位置" type="digit" :defContent="coupons.index" field="coupons.index" placeholder="请输入占用分类位置"
+			 @blur="changeFieldNumber"></mix-list-input>
+			<cloud-image title="优惠券入口图标" tips="最佳尺寸100*100" :value="coupons.icon" field="coupons.icon" @input="changeField"></cloud-image>
+		</block>
 		<mix-list-checkbox title="是否启用" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
 	</view>
 </template>
@@ -63,6 +70,8 @@
 				printersName: "",
 				exchangeRate: 1,
 				selfRaisingPoint: false,
+				hasCoupons: false,
+				coupons: {},
 				lastPayTimeMinute: 5,
 				refund: {
 					days: 7,
@@ -313,6 +322,7 @@
 		padding: 20upx $page-row-spacing;
 		line-height: 60upx;
 		position: relative;
+		background: #FFFFFF;
 
 		&.imgs {
 			padding-bottom: 0;

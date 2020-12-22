@@ -44,9 +44,7 @@
 					<j-video :url="url" :poster="poster" height="220px" width="690rpx"></j-video>
 				</view>
 			</view>
-			<view class="mix-list-cell b-b">
-				<cloud-image title="视频封面" tips="点击上传" v-model="poster"></cloud-image>
-			</view>
+			<cloud-image title="视频封面" tips="点击上传" v-model="poster"></cloud-image>
 		</block>
 		<button class="fixed-add-btn" @click="save">发布</button>
 	</view>

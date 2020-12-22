@@ -68,8 +68,16 @@
 				type: Array,
 				default: () => []
 			},
+			value: [Boolean, Number, String, Array],
 		},
 		watch: {
+			value(newVal) {
+				if (newVal && newVal.length != undefined) {
+					this.checkedList = newVal;
+				} else {
+					this.content = newVal;
+				}
+			},
 			defContent(val, oldVal) {
 				if (val != oldVal) {
 					this.content = val;
@@ -84,6 +92,11 @@
 			}
 		},
 		created() {
+			if (this.value && this.value.length != undefined) {
+				this.checkedList = this.value;
+			} else {
+				this.content = this.value;
+			}
 			if (this.defContent) {
 				this.content = this.defContent;
 			}
@@ -94,12 +107,14 @@
 		methods: {
 			changeContent(e) {
 				this.checkedList = e.detail.value;
+				this.$emit('input', e.detail.value);
 				this.$emit('change', e.detail.value, this.field);
 			},
 			blurContent(e) {
 				this.$emit('blur', e.detail.value, this.field);
 			},
 			changeSwitch(e) {
+				this.$emit('input', e.detail.value);
 				this.$emit('change', !!e.detail.value, this.field);
 			},
 		}

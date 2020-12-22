@@ -127,9 +127,6 @@
 
 <script>
 	import {
-		mapState
-	} from 'vuex';
-	import {
 		goodsAdmin
 	} from '@/common/admin_request.js';
 	import {

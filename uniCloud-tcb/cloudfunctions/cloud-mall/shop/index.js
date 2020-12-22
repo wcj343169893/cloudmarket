@@ -68,6 +68,7 @@ const models = {
 			serviceTime: 1,
 			searchGoodsKeywords: 1,
 			src: 1,
+			coupons: 1,
 			pages: 1
 		};
 	}

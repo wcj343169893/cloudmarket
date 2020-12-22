@@ -88,7 +88,7 @@
 		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')"
 		 tips="商品分类"></mix-list-cell>
 		<mix-list-cell icon="taobaofont icon-activity" iconColor="#54b4ef" title="营销活动" @eventClick="navTo('/pages/admin/activities/list')"
-		 tips="秒杀/专题"></mix-list-cell>
+		 tips="秒杀/专题/优惠券"></mix-list-cell>
 		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
 		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
 	</view>
@@ -114,6 +114,7 @@
 				banner: '/static/banner.jpg',
 				address: '',
 				notice: '',
+				coupons:{},
 				orderTypes: [],
 				goodsTypes: [],
 				userTypes: [],

@@ -308,15 +308,16 @@ const getDate = (time) => {
 }
 /**
  * 生成今日和昨日的时间戳，目前有8小时时差
+ * @param {int} number 往前天数 
  */
-const getDayTime = () => {
+const getDayTime = (number = 1) => {
 	let date = getDate();
 	date.setHours(0);
 	date.setMinutes(0);
 	date.setSeconds(0);
 	date.setMilliseconds(0);
 	let todayTime = date.getTime();
-	date.setDate(date.getDate() - 1);
+	date.setDate(date.getDate() - number);
 	let yestertodayTime = date.getTime();
 	return {
 		todayTime,

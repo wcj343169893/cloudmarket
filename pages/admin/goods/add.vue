@@ -146,12 +146,8 @@
 				</view>
 			</view>
 		</block>
-		<view class="mix-list-cell b-b">
-			<cloud-image title="主图" tips="最佳尺寸750*750" v-model="src"></cloud-image>
-		</view>
-		<view class="mix-list-cell b-b">
-			<cloud-image title="轮播图" tips="最佳尺寸750*750" v-model="imgs" :imageNumber="8"></cloud-image>
-		</view>
+		<cloud-image title="主图" tips="最佳尺寸750*750" v-model="src"></cloud-image>
+		<cloud-image title="轮播图" tips="最佳尺寸750*750" v-model="imgs" :imageNumber="8"></cloud-image>
 		<view class="mix-list-cell" @click="uploadVideo">
 			<text class="cell-tit clamp">介绍视频</text>
 			<view class="cell-tip">点击上传</view>
@@ -162,9 +158,7 @@
 				<j-video :url="video.url" :poster="src" height="220px" width="690rpx"></j-video>
 			</view>
 		</view>
-		<view class="mix-list-cell b-b">
-			<cloud-image title="图文介绍" v-model="descriptionImgs" :imageNumber="9"></cloud-image>
-		</view>
+		<cloud-image title="图文介绍" v-model="descriptionImgs" :imageNumber="9"></cloud-image>
 		<label class="mix-list-cell ">
 			<text class="cell-tit clamp">非必要信息</text>
 		</label>
