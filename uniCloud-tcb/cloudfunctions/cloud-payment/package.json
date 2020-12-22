@@ -1,0 +1,18 @@
+{
+    "cloudfunction-config": {
+        "memorySize": 256,
+        "path": "/market_notify",
+        "timeout": 20,
+        "triggers": [
+            {
+                "config": "18 1/10 * * * * *",
+                "name": "refund",
+                "type": "timer"
+            }
+        ]
+    },
+    "description": "",
+    "main": "index.js",
+    "name": "cloud-payment",
+    "version": "1.0.0"
+}

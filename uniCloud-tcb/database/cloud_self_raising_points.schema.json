@@ -1,0 +1,70 @@
+{
+	"bsonType": "object",
+	"required": ["address", "latitude", "longitude", "mobile", "name"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"address": {
+			"bsonType": "string",
+			"title": "地址",
+			"description": "详细地址"
+		},
+		"latitude": {
+			"bsonType": "double",
+			"title": "维度"
+		},
+		"longitude": {
+			"bsonType": "double",
+			"title": "经度"
+		},
+		"location": {
+			"bsonType": "object",
+			"title": "地理位置",
+			"description": "经纬度地址"
+		},
+		"mobile": {
+			"bsonType": "string",
+			"title": "电话",
+			"description": ""
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "名称"
+		},
+		"src": {
+			"bsonType": "string",
+			"title": "封面图",
+			"description": ""
+		},
+		"uid": {
+			"bsonType": "string",
+			"title": "用户",
+			"description": ""
+		},
+		"rate": {
+			"bsonType": "int",
+			"title": "分成比例",
+			"description": "百分比"
+		},
+		"state": {
+			"bsonType": "bool",
+			"title": "状态",
+			"description": "",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "审核中",
+				"value": 0
+			}, {
+				"text": "通过",
+				"value": 1
+			}]
+		}
+	}
+}

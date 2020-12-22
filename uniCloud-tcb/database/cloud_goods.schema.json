@@ -1,0 +1,95 @@
+{
+	"bsonType": "object",
+	"required": ["title", "price", "shopid", "stock"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"id": {
+			"bsonType": "int",
+			"title": "编号"
+		},
+		"src": {
+			"bsonType": "string",
+			"title": "封面图"
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "商品名称",
+			"defaultValue": ""
+		},
+		"subTitle": {
+			"bsonType": "string",
+			"title": "子标题",
+			"defaultValue": ""
+		},
+		"price": {
+			"bsonType": "double",
+			"title": "销售价格",
+			"defaultValue": 0
+		},
+		"originPrice": {
+			"bsonType": "double",
+			"title": "原价",
+			"defaultValue": 0
+		},
+		"monthlySale": {
+			"bsonType": "int",
+			"title": "月售量",
+			"defaultValue": 0
+		},
+		"shopid": {
+			"bsonType": "int",
+			"title": "店铺",
+			"description": "商品店铺",
+			"foreignKey": "cloud_shops.id",
+			"enum": {
+				"collection": "cloud_shops",
+				"field": "name as text, id as value"
+			},
+			"permission": {
+				"write": false
+			}
+		},
+		"stock": {
+			"bsonType": "int",
+			"title": "剩余库存",
+			"defaultValue": 100
+		},
+		"visite": {
+			"bsonType": "int",
+			"title": "浏览量",
+			"defaultValue": 0
+		},
+		"isSold": {
+			"bsonType": "int",
+			"title": "是否销售",
+			"description": "销售类型：0 下架 1 在售",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "下架",
+				"value": 0
+			}, {
+				"text": "在售",
+				"value": 1
+			}]
+		},
+		"posid": {
+			"bsonType": "int",
+			"title": "排序",
+			"defaultValue": 0
+		},
+		"score": {
+			"bsonType": "int",
+			"title": "评分",
+			"description": "商品评分，1-10",
+			"defaultValue": 10
+		}
+	}
+}

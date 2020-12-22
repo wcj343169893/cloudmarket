@@ -1,0 +1,18 @@
+{
+    "cloudfunction-config": {
+        "memorySize": 256,
+        "path": "",
+        "timeout": 20,
+        "triggers": [
+            {
+                "config": "28 1/10 * * * * *",
+                "name": "myTrigger",
+                "type": "timer"
+            }
+        ]
+    },
+    "description": "",
+    "main": "index.js",
+    "name": "cloud-admin",
+    "version": "1.0.0"
+}

@@ -1,0 +1,41 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"mobile": {
+			"bsonType": "string",
+			"description": "手机号码"
+		},
+		"email": {
+			"bsonType": "string",
+			"description": "邮箱"
+		},
+		"code": {
+			"bsonType": "string",
+			"description": "验证码"
+		},
+		"type": {
+			"bsonType": "string",
+			"description": "验证类型：login, bind, unbind, pay"
+		},
+		"state": {
+			"bsonType": "int",
+			"description": "验证状态：0 未验证、1 已验证、2 已作废"
+		},
+		"ip": {
+			"bsonType": "string",
+			"description": "请求时客户端IP地址"
+		},
+		"created_at": {
+			"bsonType": "timestamp",
+			"description": "创建时间"
+		},
+		"expired_at": {
+			"bsonType": "timestamp",
+			"description": "过期时间"
+		}
+	}
+}

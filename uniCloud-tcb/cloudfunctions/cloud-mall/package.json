@@ -1,0 +1,18 @@
+{
+    "cloudfunction-config": {
+        "memorySize": 256,
+        "path": "",
+        "timeout": 10,
+        "triggers": [
+            {
+                "config": "10 1/2 * * * * *",
+                "name": "myTrigger",
+                "type": "timer"
+            }
+        ]
+    },
+    "description": "",
+    "main": "index.js",
+    "name": "cloud-mall",
+    "version": "1.0.0"
+}

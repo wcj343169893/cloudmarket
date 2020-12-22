@@ -1,0 +1,18 @@
+{
+    "cloudfunction-config": {
+        "memorySize": 256,
+        "path": "/databases",
+        "timeout": 60,
+        "triggers": [
+            {
+                "config": "0 0 0 * * * *",
+                "name": "myTrigger",
+                "type": "timer"
+            }
+        ]
+    },
+    "description": "",
+    "main": "index.js",
+    "name": "cloud-databases",
+    "version": "1.0.0"
+}
