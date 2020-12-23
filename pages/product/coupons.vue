@@ -11,14 +11,15 @@
 						<text v-else-if="item.category" class="margin-left-sm text-yellow text-sm">限定分类可用</text>
 						<text v-else class="margin-left-sm text-yellow text-sm">全店通用</text>
 					</view>
-					<view class="time text-sm padding-top-xs">
+					<view class="time text-xs padding-top-xs">
 						<text>{{ item.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
 						<text class="padding-xs">~</text>
 						<text>{{ item.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
 					</view>
 				</view>
-				<view class="padding-right-xs" @click="takeit(item)">
+				<view class="padding-right-xs text-sm" @click="takeit(item)">
 					<text v-if="item.canGetAmount > 0" class="text-green">领取</text>
+					<text v-else class="text-grey">已领取</text>
 				</view>
 			</view>
 		</view>

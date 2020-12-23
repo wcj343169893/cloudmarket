@@ -3,9 +3,10 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "utils",
-	"action": "getAddressGeo",
+	"module": "coupon",
+	"action": "list",
 	"data": {
-		"address":"南川万达广场"
+		"uid":"b4f7b7d25fb3775d00b0de4f5d854ee2",
+		"shopid":123457
 	}
 }

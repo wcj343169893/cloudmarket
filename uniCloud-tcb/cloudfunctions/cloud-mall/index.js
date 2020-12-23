@@ -42,7 +42,7 @@ const getUserInfoActions = {
 	order: ["dealstate"],
 	product: ["detail"],
 	selfraising: ["*"],
-	product: ["list"],
+	coupon: ["list"],
 }
 
 /**
