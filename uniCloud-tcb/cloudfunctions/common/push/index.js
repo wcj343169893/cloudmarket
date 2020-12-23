@@ -75,7 +75,10 @@ const getShopClientIdsByShopid = async (shopid, appId) => {
 	}
 	let cids = [];
 	users.data.map(u => {
-		cids.push(u.push[appId].clientid);
+		//cid不能重复
+		if (cids.indexOf(u.push[appId].clientid) == -1) {
+			cids.push(u.push[appId].clientid);
+		}
 	});
 	return cids;
 }
