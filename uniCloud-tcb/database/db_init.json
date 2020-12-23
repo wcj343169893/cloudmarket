@@ -109,6 +109,92 @@
 			}
 		]
 	},
+	"cloud_coupon_users": {
+		"data": [{
+			"amount": 1,
+			"beginTime": 1608619364079,
+			"created": 1608691213273,
+			"endTime": 1608739199999,
+			"goods": [{
+				"_id": "c54bd3a25f7927cb00d91d380109ef86",
+				"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+			}],
+			"id": "73f70d5c5fe195f400505f8e51d732d3",
+			"limit": 2,
+			"manjine": {
+				"amount": 5,
+				"condition": 50
+			},
+			"shopid": 123457,
+			"state": 0,
+			"today": true,
+			"type": 1,
+			"uid": "b4f7b7d25fb3775d00b0de4f5d854ee2"
+		}],
+		"index": [{
+			"IndexName": "cloud_coupon_users_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_coupons": {
+		"data": [{
+			"beginTime": 1608619364079,
+			"endTime": 1640155364000,
+			"goods": [{
+				"_id": "c54bd3a25f7927cb00d91d380109ef86",
+				"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装"
+			}],
+			"limit": 2,
+			"manjine": {
+				"amount": 5,
+				"condition": 50
+			},
+			"shopid": 123457,
+			"state": 1,
+			"today": true,
+			"type": 1
+		}],
+		"index": [{
+				"IndexName": "cloud_coupons_openid_index_",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+						"Name": "_openid",
+						"Direction": "1"
+					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "index_shop",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+							"Name": "shopid",
+							"Direction": "1"
+						},
+						{
+							"Name": "state",
+							"Direction": "1"
+						},
+						{
+							"Name": "beginTime",
+							"Direction": "1"
+						},
+						{
+							"Name": "endTime",
+							"Direction": "1"
+						}
+					],
+					"MgoIsUnique": false
+				}
+			}
+		]
+	},
 	"cloud_documents": {
 		"data": [{
 			"content": "Q：是否支持无理由退换货？  \nA：生鲜产品（包括蔬菜水果、鲜蛋肉禽、水产海鲜等）、乳品（鲜奶）因时效性较强，不支持无理由退换货，仅支持质量问题退换货；非生鲜类产品，在未拆封、损坏等不影响二次销售的情况下，支持无理由退换货。  \n\nQ：商品申请退换货时效？  \nA：生鲜商品如有质量问题请于收到商品起24小时内提出退换货申请； 非生鲜类商品自顾客收到商品起48小时内，如符合以下条件，我们将提供退换货服务：  \n（1）商品无损坏、无缺少，不影响二次销售；  \n（2）若您购买的商品有赠品，办理退换货时，须同时将赠品全部退回。  \n\nQ：不支持退换货的情形有哪些？  \nA：（1）参加限时抢购、特价促销的商品，非质量问题不支持退换货；  \n   （2）任何因用户保管储藏导致出现质量问题的商品，商品已使用或损坏等影响二次销售的情况，不支持退换货；  \n   （3）主张实物与网站图片存在一定色差的，不支持退换货；  \n   （4）非所售卖的商品，不支持退换货；  \n   （5）加工类商品、水产类等商品非本身质量问题，不支持退换货；  \n\nQ：是否需要保留原商品？  \nA：申请退款后须完整保留好原商品和小票，如需取货我们将在您选择的取货时间内上门取回，如遇特殊情况可能会延迟上门取货；如无需取回我们会发送短信通知您，感谢您的理解与支持  \n\nQ：是否取货要在原订单地址？  \nA：取货是按照您的订单地址上门取货。  \n\nQ：申请退货时是否需要另行支付运费？  \nA：本APP提供免费上门取货服务。  \n\nQ：购买商品时已支付运费在申请退货时是否退还？  \nA：若用户仅申请部分退款，运费不退还。  \n\nQ：如何取消退换货？  \nA：如果您申请了退换货后，需要取消，请您联系客服为您处理。  ",
@@ -153,57 +239,34 @@
 	},
 	"cloud_goods": {
 		"data": [{
-			"banner": "",
 			"categories": [{
-					"id": 1004,
-					"isShow": 1,
-					"name": "大分类一"
-				},
-				{
-					"id": 2002,
-					"name": "小分类yi"
-				}
-			],
-			"deliveryTags": [],
+				"id": 1013,
+				"isShow": 1,
+				"name": "肉禽蛋",
+				"pid": 0
+			}],
+			"created": 1599194170506,
 			"description": "",
-			"id": 10000,
+			"id": 10057,
 			"imgs": [
-				"http://market.cjblog.org/goods/1.1.jpg",
-				"http://market.cjblog.org/goods/1.2.jpg",
-				"http://market.cjblog.org/goods/1.3.jpg"
+				"http://market.cjblog.org/goods/3924395551899309.jpg",
+				"http://market.cjblog.org/goods/1258215925552998.jpg",
+				"http://market.cjblog.org/goods/9680119282941286.jpg",
+				"http://market.cjblog.org/goods/20542030947132062.jpg"
 			],
 			"isCategoryShow": 1,
 			"isSold": 1,
-			"miaosha": {
-				"beginTime": 1602432000000,
-				"endTime": 1604160000000,
-				"id": "5e75bd15b1e402004d1dbbce",
-				"limit": 1,
-				"price": 40.64,
-				"rate": 32,
-				"sales": 51,
-				"showTime": 1605628800000,
-				"sku_id": 0,
-				"state": "ended",
-				"stock": 49
-			},
-			"modified": 1602486435792,
-			"monthlySale": 159,
-			"onlySelfTake": "0",
-			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"monthlySale": 1,
+			"onlineTime": 1599194170506,
+			"operator": 10000,
 			"originPrice": 0,
-			"posid": 1,
-			"price": 127,
-			"saleType": "normal",
-			"score": 0.98,
-			"share": "",
+			"price": 74,
+			"score": 1,
 			"shopid": 123457,
-			"src": "http://market.cjblog.org/goods/1.jpg",
-			"stock": 328,
-			"subTitle": "",
-			"title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
-			"upc": "6937950100280",
-			"visite": 1362
+			"src": "http://market.cjblog.org/goods/8444754049337726.jpg",
+			"stock": 131,
+			"title": "发2只正宗土鸡农家散养2年老母鸡新鲜草鸡笨鸡走地鸡柴鸡整只鸡肉",
+			"visite": 13
 		}],
 		"index": [{
 				"IndexName": "index_cate",
@@ -717,7 +780,7 @@
 		"data": [{
 			"key": "users",
 			"name": "用户编号",
-			"value": 10484
+			"value": 10510
 		}],
 		"index": [{
 				"IndexName": "index_key",
@@ -1061,24 +1124,46 @@
 	},
 	"cloud_self_raising_points": {
 		"data": [{
-			"address": "重庆市渝中区大同巷3-4号",
-			"approvedTime": 1606286088450,
-			"latitude": 29.555818044071,
+			"address": "永东茶馆",
+			"approved": {
+				"123458": {
+					"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+					"time": 1606706492247
+				},
+				"123460": {
+					"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+					"time": 1608022570790
+				},
+				"123462": {
+					"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+					"time": 1608022779477
+				}
+			},
+			"commission": 131.25,
+			"created": "2020-11-30T03:21:15.957Z",
+			"head": "",
+			"inside": "",
+			"latitude": 29.1703,
 			"location": {
 				"coordinates": [
-					106.57304714813,
-					29.555818044071
+					107.008577,
+					29.1703
 				],
 				"type": "Point"
 			},
-			"longitude": 106.57304714813,
-			"mobile": "13500135000",
-			"name": "邓邦子",
-			"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
-			"rate": 3,
-			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/selfraising/2020-11-24/260814931602239.jpg",
+			"longitude": 107.008577,
+			"mobile": "15986613313",
+			"modified": "2020-11-30T03:21:15.957Z",
+			"name": "茶馆",
+			"rate": 2,
+			"rateShop": {
+				"123458": 12,
+				"123460": 1,
+				"123462": 0
+			},
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/11/30/1606706442415.jpg",
 			"state": 1,
-			"uid": "9ffb2a485f38964200999b1f07cb7b80"
+			"uid": "b4f7b7d25fb3775d00b0de4f5d854ee2"
 		}],
 		"index": [{
 				"IndexName": "cloud_self_raising_points_openid_index_",
@@ -1253,8 +1338,7 @@
 					"name": "快餐"
 				}
 			],
-			"currency": "cny",
-			"dayStatisticsLog": "20201129",
+			"dayStatisticsLog": "20201024",
 			"delivery": {
 				"deliveryDay": 4,
 				"deliveryPeriod": [{
@@ -1272,34 +1356,6 @@
 					{
 						"begin": 48600,
 						"end": 52200
-					},
-					{
-						"begin": 52200,
-						"end": 55800
-					},
-					{
-						"begin": 55800,
-						"end": 59400
-					},
-					{
-						"begin": 59400,
-						"end": 63000
-					},
-					{
-						"begin": 63000,
-						"end": 66600
-					},
-					{
-						"begin": 66600,
-						"end": 70200
-					},
-					{
-						"begin": 70200,
-						"end": 73800
-					},
-					{
-						"begin": 73800,
-						"end": 77400
 					}
 				],
 				"freeMoney": 10,
@@ -1313,9 +1369,9 @@
 			},
 			"deliverySupportType": 3,
 			"deliveryTypes": [
+				"deliveryHome",
 				"selfRaising"
 			],
-			"exchangeRate": 1,
 			"goods": {
 				"baokuan": 12,
 				"delete": 1,
@@ -1346,12 +1402,11 @@
 				"买对了",
 				"包装精美",
 				"老板人很好",
-				"送货即时",
-				"么么"
+				"送货即时"
 			],
 			"hasManjian": 1,
 			"id": 123457,
-			"isPrint": false,
+			"isPrint": true,
 			"latitude": 29.154957,
 			"lnglat": {
 				"coordinates": [
@@ -1380,20 +1435,18 @@
 			"online": true,
 			"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
 			"order": {
-				"canceled": 334,
+				"canceled": 330,
 				"deleted": 10,
-				"delivered": 11,
-				"payup": 93,
-				"received": 13,
+				"delivered": 8,
+				"payup": 95,
+				"received": 11,
 				"refunded": 0,
-				"total": 14,
 				"unpaid": 2
 			},
 			"pages": {
 				"home": {
 					"limits": {
-						"adBanners": 5,
-						"ads": 10,
+						"ads": 5,
 						"category": 10,
 						"miaosha": 2,
 						"newest": 10,
@@ -1420,7 +1473,6 @@
 				"杏子",
 				"葡萄"
 			],
-			"selfRaisingPoint": true,
 			"serviceArea": {
 				"coordinates": [
 					[
@@ -1514,6 +1566,7 @@
 			},
 			"serviceTime": "早上7点到晚上10点",
 			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
+			"state": true,
 			"stationId": 500119,
 			"uid": "9ffb2a485f38964200999b1f07cb7b80"
 		}],
@@ -1846,7 +1899,137 @@
 		]
 	},
 	"cloud_videos": {
-		"data": [],
+		"data": [{
+			"content": "",
+			"created": 1607506257550,
+			"duration": 22222,
+			"goods": {
+				"_id": "e373396c5f64878e00116b157655de63",
+				"categories": [{
+						"id": 10970,
+						"isRecommend": 1,
+						"isShow": 1,
+						"name": "时令水果",
+						"pid": 0,
+						"posid": 2,
+						"recommendGoods": 0,
+						"shopid": 123458,
+						"src": "https://646f-douwei-cad38c-1302662516.tcb.qcloud.la/category_icon/2020-09-11/605737505188113.jpg"
+					},
+					{
+						"checked": true,
+						"id": 10971,
+						"isRecommend": 0,
+						"isShow": 1,
+						"name": "瓜果其他",
+						"pid": 10970,
+						"posid": 16,
+						"shopid": 123458,
+						"src": "https://wdfimg.www.sxwdf.net/43c8e20200723114850389.png"
+					}
+				],
+				"commentTagStatics": [],
+				"description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-11-27/33140756666740423.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-11-27/23507985059036618.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-11-27/6998047684421826.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-11-27/8173996058589343.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-11-27/5440400750454627.jpg",
+				"guarantee_period": "",
+				"hasMiaosha": true,
+				"hasSku": false,
+				"id": 21094,
+				"imgs": [
+					"https://646f-douwei-cad38c-1302662516.tcb.qcloud.la/goods_imgs/2020-09-18/5233829135295773.jpg",
+					"https://646f-douwei-cad38c-1302662516.tcb.qcloud.la/goods_imgs/2020-09-18/16854709612956076.jpg",
+					"https://646f-douwei-cad38c-1302662516.tcb.qcloud.la/goods_imgs/2020-09-18/5501071222647106.jpg"
+				],
+				"isCanAddToCart": false,
+				"isCategoryShow": 1,
+				"isLimit": true,
+				"isNewUser": true,
+				"isSold": 1,
+				"limit": 2,
+				"miaosha": {
+					"beginTime": 1603555200000,
+					"endTime": 1607616000000,
+					"hour": "30",
+					"isBegin": true,
+					"isEnd": false,
+					"isLimit": true,
+					"isNewUser": true,
+					"isStart": true,
+					"limit": 2,
+					"minute": "50",
+					"price": 0.6,
+					"rate": 1,
+					"sales": 9,
+					"second": "15",
+					"showTime": 1603641600000,
+					"sku_id": 0,
+					"startTime": 1607504985140,
+					"state": "started",
+					"statusName": "抢购中",
+					"statusSubName": "距结束",
+					"stock": 81
+				},
+				"monthlySale": 17,
+				"net_weight": "",
+				"originPrice": 59.9,
+				"price": 0.6,
+				"saleType": "normal",
+				"score": 1,
+				"service": [
+					"假一赔十"
+				],
+				"share": "",
+				"shopid": 123458,
+				"sku_id": 0,
+				"src": "https://646f-douwei-cad38c-1302662516.tcb.qcloud.la/goods_face/2020-09-18/37412867725874277.jpg",
+				"stock": 83,
+				"storage_condition": "常温",
+				"subTitle": "一颗颗小小的葡萄 颜色晶莹剔透",
+				"tags": [{
+						"text": "抢购中",
+						"type": "warning"
+					},
+					{
+						"text": "首单",
+						"type": "info"
+					}
+				],
+				"title": "秒杀红提10斤装",
+				"video": {
+					"duration": 8,
+					"height": 640,
+					"size": 3266693,
+					"url": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/video/5929447737237924.mp4",
+					"width": 480
+				},
+				"visite": 6,
+				"visitor": "b4f7b7d25fb3775d00b0de4f5d854ee2"
+			},
+			"height": 1280,
+			"likes": [
+				"b4f7b7d25fb3775d00b0de4f5d854ee2"
+			],
+			"originUrl": "https://v.douyin.com/J4Ub7He/",
+			"players": [
+				"b4f7b7d25fb3775d00b0de4f5d854ee2"
+			],
+			"poster": "https://p26-dy.byteimg.com/img/tos-cn-p-0015/6f328095ebf24ecbab6430f0aa5565c5~c5_300x400.jpeg?from=2563711402_large",
+			"shopid": 123458,
+			"state": 1,
+			"statistics": {
+				"like": 1,
+				"play": 2
+			},
+			"title": "#拳击 #格斗#你kin你擦  这反应速度简直了！@抖音格斗",
+			"type": "douyin",
+			"uid": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+			"url": "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300f9a0000bv83v2hdvtk0hvib9t0g&ratio=720p&line=0",
+			"user": {
+				"_id": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+				"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+				"nickname": "太阳公公"
+			},
+			"width": 720
+		}],
 		"index": [{
 				"IndexName": "cloud_videos_openid_index_",
 				"MgoKeySchema": {
@@ -1854,6 +2037,21 @@
 						"Name": "_openid",
 						"Direction": "1"
 					}],
+					"MgoIsUnique": false
+				}
+			},
+			{
+				"IndexName": "index_u",
+				"MgoKeySchema": {
+					"MgoIndexKeys": [{
+							"Name": "shopid",
+							"Direction": "1"
+						},
+						{
+							"Name": "uid",
+							"Direction": "1"
+						}
+					],
 					"MgoIsUnique": false
 				}
 			},
@@ -1964,21 +2162,13 @@
 	"uni-id-permissions": {
 		"data": [{
 			"comment": "",
-			"create_date": 1605855689273,
+			"create_date": 1608715857454,
 			"permission_id": "USER_ADD",
-			"permission_name": "添加用户"
+			"permission_name": "增加用户"
 		}]
 	},
 	"uni-id-roles": {
-		"data": [{
-			"comment": "",
-			"create_date": 1605855729973,
-			"permission": [
-				"USER_ADD"
-			],
-			"role_id": "editor",
-			"role_name": "编辑"
-		}]
+		"data": []
 	},
 	"uni-id-users": {
 		"data": [{
@@ -1986,10 +2176,11 @@
 				123457,
 				123458,
 				123459,
-				123460
+				123460,
+				123462
 			],
 			"avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
-			"balance": 511.04,
+			"balance": 9480.21,
 			"birthday": "2020-06-03",
 			"coupons": 2,
 			"gender": 1,
@@ -2001,8 +2192,8 @@
 				"portrait": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c7806020-73dc-11ea-b43d-2358b31b6ce6.jpg",
 				"shopid": 123457
 			}],
-			"last_login_date": 1606566619036,
-			"last_login_ip": "106.92.123.107",
+			"last_login_date": 1608690803133,
+			"last_login_ip": "192.168.99.107",
 			"member": {
 				"address": "重庆市南川区新华路5号",
 				"created": "2020-11-13T07:02:35.056Z",
@@ -2016,51 +2207,51 @@
 			"my_invite_code": "ABCDEF",
 			"nickname": "太阳公公",
 			"order": {
-				"canceled": 71,
+				"canceled": 77,
 				"deleted": 2,
-				"delivered": -5,
-				"payup": 105,
-				"received": 21,
-				"total": 87,
+				"delivered": -9,
+				"payup": 115,
+				"received": 26,
+				"total": 127,
 				"unpaid": -1
 			},
 			"push": {
 				"N5wQHWUKnv8POOTCnGtFU8": {
 					"appid": "N5wQHWUKnv8POOTCnGtFU8",
 					"appkey": "t318VmJI2p84991gl61VY4",
-					"clientid": "6d653c19f83f44eb7e52fb7bbeb23c11",
+					"clientid": "b4ac22725202f2b9ba85c0aaa613507f",
 					"id": "unipush",
-					"token": "6d653c19f83f44eb7e52fb7bbeb23c11"
+					"token": "b4ac22725202f2b9ba85c0aaa613507f"
 				},
 				"pPyZWvH3Fa6PXba10aJ009": {
 					"appid": "pPyZWvH3Fa6PXba10aJ009",
 					"appkey": "b7dOGlNPHR7pqwUxDhpTi4",
 					"clientid": "3f465d1cb641a0d02f8317447af6442b",
 					"id": "unipush",
-					"token": "94f7dc4652361a6cf23f7ef76ec907961b244254f1f236d7effa11daaac98306"
+					"token": "50bf1ab1acd4f882609a288550deaff68ae31d7ee21c9e48a476b45359e74ed6"
 				}
 			},
 			"raisingPoint": {
-				"_id": "6127fe145fbdeedd005b6eda39bd3eaf",
-				"address": "永东茶馆",
+				"_id": "2a7b532a5fd9c4d901bd625727879140",
+				"address": "臻品超市(兴隆店)",
 				"isChecked": false,
-				"juli": 2575,
-				"latitude": 29.1703,
+				"juli": 2596,
+				"latitude": 29.170182,
 				"location": {
 					"coordinates": [
-						107.008577,
-						29.1703
+						107.008091,
+						29.170182
 					],
 					"type": "Point"
 				},
-				"longitude": 107.008577,
-				"mobile": "15986613313",
-				"name": "茶馆",
-				"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/11/25/1606282944468.jpg"
+				"longitude": 107.008091,
+				"mobile": "13500135000",
+				"name": "臻品超市",
+				"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/src/images/2020/12/16/1608107193203.jpg"
 			},
 			"register_date": 1597544002549,
 			"register_ip": "125.62.5.114",
-			"score": 2371.12,
+			"score": 3273.32,
 			"token": []
 		}]
 	}
