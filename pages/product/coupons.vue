@@ -23,6 +23,7 @@
 				</view>
 			</view>
 		</view>
+		<uni-load-more :status="loadingType"></uni-load-more>
 	</view>
 </template>
 
@@ -43,11 +44,13 @@
 			loadData() {
 				cloudMall("coupon", "list", {
 					shopid: this.shopId
-				}).then(res => {
+				},false).then(res => {
 					this.dataList = res;
 					this.loaded = true;
+					this.loadingType = "noMore"
 				}, err => {
 					this.loaded = true;
+					this.loadingType = "noMore"
 				});
 			},
 			takeit(item) {
