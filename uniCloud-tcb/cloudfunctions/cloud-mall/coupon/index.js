@@ -47,7 +47,7 @@ const model = {
 			state: 1,
 			beginTime: cmd.lt(t),
 			endTime: cmd.gt(t)
-		}).get();
+		}).orderBy("beginTime", "desc").get();
 		//没有优惠券
 		if (res.data.length == 0) {
 			return false;
@@ -168,6 +168,136 @@ const model = {
 		});
 		return maps;
 	},
+	async getGoodsCouponsList(data) {
+		const {
+			uid,
+			shopid,
+			couponsId
+		} = data;
+		console.log("查询优惠券", couponsId)
+		//一件商品只能用一张
+		let t = Date.now();
+		let goodsIds = [];
+		let goodsTotal = {};
+		data.goods.map(g => {
+			//秒杀商品不能使用优惠券
+			if (!g.miaosha) {
+				//多规格，合并为一条
+				if (goodsIds.indexOf(g._id) == -1) {
+					goodsIds.push(g._id);
+					goodsTotal[g._id] = g.totalMoney;
+				} else {
+					goodsTotal[g._id] += g.totalMoney;
+				}
+			}
+		});
+		data.goodsIds = goodsIds;
+		data.goodsTotalMoney = goodsTotal;
+
+		let coupons = await this.mine({
+			goods: {
+				_id: cmd.in(goodsIds)
+			},
+			shopid,
+			uid,
+			state: 0,
+			beginTime: cmd.lt(t),
+			endTime: cmd.gt(t)
+		});
+		if (coupons.length == 0) {
+			return;
+		}
+		data.coupons = [];
+		data.couponsDisabled = [];
+		//判断可用和不可用
+		let isChecked = false;
+		for (let cou of coupons) {
+			cou.checked = false;
+			cou.innerGoodsIds = [];
+			if (cou.manjine && cou.goods) {
+				//此张优惠券统计到的总金额，可能是多个商品累加的
+				cou.totalMoney = 0;
+				cou.goods.map(g => {
+					if (goodsTotal[g._id]) {
+						cou.totalMoney += goodsTotal[g._id];
+						cou.innerGoodsIds.push(g._id);
+					}
+				})
+				//判断条件
+				if (cou.totalMoney >= cou.manjine.condition) {
+					//可用
+					if (couponsId) {
+						console.log("比较优惠券", cou._id, couponsId)
+						if (cou._id == couponsId) {
+							cou.checked = true;
+							isChecked = true;
+						}
+					} else if (!isChecked) {
+						//首次自动选择
+						cou.checked = true;
+						isChecked = true;
+						data.couponsId = cou._id;
+					}
+					data.coupons.push(cou);
+				} else {
+					data.couponsDisabled.push(cou);
+				}
+			}
+			if (cou.checked) {
+				data.couponsChecked = cou;
+				if (data.submit) {
+					data.totalDiscount += cou.price;
+					data.totalMoney -= cou.price;
+					let per = cou.price / cou.totalMoney;
+					//分摊优惠到各个商品
+					data.goods.forEach(g => {
+						if (cou.innerGoodsIds.indexOf(g._id) != -1) {
+							g.discount += Number((per * g.totalMoney).toFixed(2));
+						}
+					});
+					console.log(JSON.stringify(data.goods))
+					//更新优惠券为已使用，使用时间
+					let res2 = await couponUserCollection.where({
+						_id: cou._id,
+						state: 0,
+						uid,
+						beginTime: cmd.lt(t),
+						endTime: cmd.gt(t)
+					}).update({
+						state: 1,
+						useTime: Date.now()
+					});
+					if (res2.updated < 1) {
+						throw new Error("优惠券使用失败");
+					}
+					console.log("使用优惠券成功", cou._id);
+				}
+			}
+
+		}
+	},
+	/**
+	 * 取消一条
+	 * @param {Object} ids
+	 */
+	async canceled(coupons) {
+		console.log("返还优惠券", coupons._id)
+		await couponUserCollection.doc(coupons._id).update({
+			state: 0
+		});
+	},
+	/**
+	 * 取消多条
+	 * @param {Object} ids
+	 */
+	async canceledMany(ids) {
+		console.log("返还优惠券", ids)
+		await couponUserCollection.where({
+			_id: cmd.in(ids)
+		}).update({
+			state: 0
+		});
+	},
 	/**
 	 * 自己领取的优惠券
 	 * @param {Object} data
@@ -180,7 +310,8 @@ const model = {
 		if (!uid) {
 			return [];
 		}
-		let res = await couponUserCollection.where(data).get();
+		//按优惠金额倒序排列
+		let res = await couponUserCollection.where(data).orderBy("price", "desc").get();
 		return res.data;
 	},
 }

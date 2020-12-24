@@ -12,6 +12,9 @@ export default {
 		}
 	},
 	computed: {
+		isLogin() {
+			return this.$store.state.hasLogin;
+		},
 		shopId() {
 			return this.$store.state.shopId;
 		},
@@ -41,10 +44,29 @@ export default {
 				return;
 			}
 			if (checkLogin && !this.$store.state.hasLogin) {
-				url = "/pages/public/login";
+				this.navToLogin();
+				return;
 			}
 			uni.navigateTo({
 				url
+			})
+		},
+		navToLoginNotice() {
+			uni.showModal({
+				title: "温馨提示",
+				content: '您还未登录，请登录后再操作',
+				cancelText: '再逛逛',
+				confirmText: '去登录',
+				success: (res) => {
+					if (res.confirm) {
+						this.navToLogin();
+					}
+				}
+			});
+		},
+		navToLogin() {
+			uni.navigateTo({
+				url: "/pages/public/login"
 			})
 		},
 		/**

@@ -54,7 +54,7 @@
 				getUserInfo({
 					page: this.page,
 					limit: this.limit
-				}, "balancelog").then(res => {
+				}, "balancelog",false).then(res => {
 					this.balanceList = this.balanceList.concat(res)
 					if (res.length < this.limit) {
 						this.loadingType = 'noMore'

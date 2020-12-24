@@ -53,16 +53,16 @@
 
 			<view class="tj-sction">
 				<view class="tj-item" @click="navTo('/pages/user/balancelog')">
-					<text class="num">{{ userInfo.balance | toFixed }}</text>
+					<text class="num">{{ balance | toFixed }}</text>
 					<text>余额</text>
 				</view>
-				<view class="tj-item">
-					<text class="num" v-if="userInfo.coupons">{{ userInfo.coupons }}</text>
+				<view class="tj-item" @click="navTo('/pages/user/coupons')">
+					<text class="num" v-if="coupons">{{ coupons }}</text>
 					<text class="num" v-else>0</text>
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">{{ userInfo.score | toFixed }}</text>
+					<text class="num">{{ score | toFixed }}</text>
 					<text>积分</text>
 				</view>
 			</view>
@@ -230,6 +230,9 @@
 				inviteNumber: "",
 				freeVip: true,
 				vipPrice: 88,
+				coupons: 0,
+				balance: 0,
+				score: 0,
 				hasVisiteGoods: false,
 				visiteGoodsList: [],
 				order: {
@@ -246,6 +249,7 @@
 			};
 		},
 		onLoad() {
+			this.init();
 			this.loadData();
 		},
 		onShow() {
@@ -328,6 +332,9 @@
 		},
 		methods: {
 			...mapMutations(['login', 'logout', 'changeShopId']),
+			init() {
+				this.buildUserInfo(this.userInfo);
+			},
 			async loadData() {
 				this.isLoaded = true;
 				this.isLoading = true;
@@ -340,6 +347,7 @@
 						//会员价格/年费
 						this.vipPrice = res.vipPrice;
 						this.admin = res.admin;
+						this.buildUserInfo(res);
 						this.selfraising = res.selfraising;
 						if (res.order) {
 							//-1:canceled已取消，0:unpaid未付款，1:payup已付款，2:delivered已发货，3:received已收货，4:estimated已评价，refunded退款
@@ -379,6 +387,11 @@
 					}
 					this.teamTips = "加入团队";
 				}
+			},
+			buildUserInfo(res) {
+				this.coupons = res.coupons;
+				this.balance = res.balance;
+				this.score = res.score;
 			},
 			previewAvatar() {
 				if (!this.hasLogin) {

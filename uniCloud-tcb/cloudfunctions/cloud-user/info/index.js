@@ -13,6 +13,7 @@ const ordersCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const selfraisingCollection = db.collection("cloud_self_raising_points");
+const couponUserCollection = db.collection("cloud_coupon_users");
 const models = {
 	//我的信息
 	async mine(data, context) {
@@ -103,6 +104,8 @@ const models = {
 		await this.getAdminSelfRaisingPoint(info);
 		//我的订单统计
 		await this.getOrderStatistics(info);
+		//我的有效优惠券数量
+		await this.getCouponsStatistics(info);
 		//查询我的自提点（团长）
 		return info;
 	},
@@ -333,6 +336,58 @@ const models = {
 		});
 		console.log("更新用户推送配置", uid, data, result);
 		return data;
+	},
+	/**
+	 * 查询优惠券总数
+	 * @param {Object} data
+	 */
+	async getCouponsStatistics(data) {
+		let t = Date.now();
+		let res = await couponUserCollection.where({
+			uid: data.uid,
+			state: 0,
+			beginTime: cmd.lt(t),
+			endTime: cmd.gt(t)
+		}).count();
+		data.coupons = res.total;
+	},
+	/**
+	 * 分页查询优惠券
+	 */
+	async coupons(data) {
+		const {
+			page,
+			limit,
+			uid,
+			state
+		} = data;
+		let t = Date.now();
+		let conditions = {
+			uid
+		};
+		//0未使用，1已使用，2已过期
+		//可用
+		if (state == 0) {
+			Object.assign(conditions, {
+				state,
+				beginTime: cmd.lt(t),
+				endTime: cmd.gt(t)
+			})
+		} else if (state == 2) {
+			//过期
+			Object.assign(conditions, {
+				endTime: cmd.lt(t)
+			})
+		}else{
+			//已使用
+			conditions.state = 1;
+		}
+		//created 领券时间
+		let res = await couponUserCollection.where(conditions).orderBy("created", "desc").skip((page - 1) * limit).limit(limit).get();
+		if (res.data.length == 0) {
+			return false;
+		}
+		return res.data;
 	}
 }
 /**

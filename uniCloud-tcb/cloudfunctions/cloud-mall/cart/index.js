@@ -311,7 +311,7 @@ const saveCartInfo = async function(ele, shopid, uid, date) {
 		return false;
 	}
 	let time = new Date().getTime();
-	if (goodsInfo.skus) {
+	if (goodsInfo.skus && goodsInfo.skus.length > 0) {
 		let sku = goodsInfo.skus.filter(sku => {
 			return sku.id == ele.sku_id;
 		});

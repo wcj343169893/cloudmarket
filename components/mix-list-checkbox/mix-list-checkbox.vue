@@ -114,6 +114,7 @@
 				this.$emit('blur', e.detail.value, this.field);
 			},
 			changeSwitch(e) {
+				this.content = e.detail.value;
 				this.$emit('input', e.detail.value);
 				this.$emit('change', !!e.detail.value, this.field);
 			},

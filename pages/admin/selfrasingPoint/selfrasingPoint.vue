@@ -11,7 +11,7 @@
 							<text class="margin-left-sm" v-if="item.mobile" @click.stop="tel(item.mobile)">{{item.mobile}}</text>
 							<block v-if="item.commission">
 								<text class="margin-left-sm">佣金</text>
-								<text class="price">{{item.commission}}</text>
+								<text class="price">{{item.commission | toFixed}}</text>
 							</block>
 
 						</view>

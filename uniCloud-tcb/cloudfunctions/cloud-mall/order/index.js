@@ -20,6 +20,7 @@ const orderRefundsCollection = db.collection("cloud_order_refunds");
 const addressCollection = db.collection('cloud_addresses');
 const selfraisingCollection = db.collection("cloud_self_raising_points");
 const shopCollection = db.collection('cloud_shops');
+const coupons = require("../coupon");
 /**
  * 用户中心统一插件，位于common目录
  * @url https://ext.dcloud.net.cn/plugin?id=2116
@@ -114,6 +115,7 @@ const model = {
 			yuding: 1,
 			payInfo: 1,
 			body: 1,
+			couponsChecked: 1,
 			uid: 1,
 		};
 		let conditions = {
@@ -180,6 +182,10 @@ const model = {
 			}
 		} else {
 			await this.pushOrderCancelInfo(order._id, "您的订单已取消。");
+		}
+		//已使用的优惠券
+		if (order.couponsChecked) {
+			await coupons.canceled(order.couponsChecked);
 		}
 		return result;
 	},
@@ -465,7 +471,11 @@ const model = {
 		if (order.shop.currency) {
 			currency = order.shop.currency;
 		}
-		let total = parseInt(item.refundApplyAmount * currency * goods.price * 100);
+		let perDiscount = 0;
+		if (goods.discount) {
+			perDiscount = goods.discount / goods.amount;
+		}
+		let total = parseInt(item.refundApplyAmount * currency * (goods.price - perDiscount) * 100);
 		let addRefundResult;
 		//预定订单，创建2个退款记录
 		if (order.yuding) {
@@ -754,6 +764,8 @@ const model = {
 		let data = {
 			"shopid": shopid,
 			"uid": uid,
+			submit: type == "submit",
+			couponsId: event.couponsId,
 			"cartCount": 0, //总件数
 			"totalMoney": 0,
 			"stockNotEnough": [],
@@ -768,7 +780,7 @@ const model = {
 		if (deliveryType == "selfRaising") {
 			if (event.selfRaising) {
 				data["selfRaising"] = event.selfRaising;
-			} else if (type == "submit" && (!event.selfRaising || event.selfRaising.name == "")) {
+			} else if (data.submit && (!event.selfRaising || event.selfRaising.name == "")) {
 				event.message = "自提信息不存在";
 				return false;
 			}
@@ -779,7 +791,7 @@ const model = {
 			}
 		}
 		let transaction;
-		if (type == "submit") {
+		if (data.submit) {
 			//启动事务
 			transaction = await db.startTransaction()
 		}
@@ -795,7 +807,7 @@ const model = {
 			let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
 			if (address.data.length > 0) {
 				data["address"] = address.data[0];
-			} else if (type == "submit") {
+			} else if (data.submit) {
 				//配送订单，收货地址不存在
 				event.message = "收货地址不存在";
 				return false;
@@ -879,6 +891,8 @@ const model = {
 			let goodsOut = [];
 			//处理选中数量
 			goods.data.map(ele => {
+				//单品优惠金额，在退款的时候，要单独计算
+				ele.discount = 0;
 				//商品只能自提
 				if (ele.onlySelfTake == 1) {
 					onlySelfTake = true;
@@ -928,7 +942,7 @@ const model = {
 				//仅支持自提
 				data["shop"]["deliveryTypes"] = ["selfRaising"];
 			}
-			if (type == "submit") {
+			if (data.submit) {
 				//判断配送类型是否支持deliveryType
 				if (data["shop"]["deliveryTypes"].indexOf(data.deliveryType) == -1) {
 					event.message = "店铺配送方式不支持";
@@ -974,7 +988,7 @@ const model = {
 								.limit == 0 || ele.miaosha.limit >= ele.amount)) {
 							//同步更新秒杀库存，相当于拿钥匙
 							let isMiaoshaError = false;
-							if (type == "submit") {
+							if (data.submit) {
 								let res = await updateGoodsMiaoshaStock(ele, 1);
 								console.log("updateGoodsMiaoshaStock", res);
 								if (res.updated < 1) {
@@ -1027,7 +1041,7 @@ const model = {
 							ele.cutPrice = ele.cartPrice - ele.price;
 						}
 						//购物车总价格
-						data.totalMoney += ele.price * ele.amount;
+						data.totalMoney += ele.totalMoney = ele.price * ele.amount;
 						if (ele.originPrice > 0) {
 							//购物车总折扣
 							data.totalDiscount += (ele.originPrice - ele.price) * ele.amount;
@@ -1042,6 +1056,8 @@ const model = {
 				//可分成总金额
 				rateTotalMoney += ele.rate * ele.amount * ele.price / 100;
 			}
+			//查询可用的优惠券
+			await coupons.getGoodsCouponsList(data);
 		} else {
 			//结算商品不存在
 			event.message = "商品不存在";
@@ -1362,6 +1378,7 @@ const model = {
 		}).field({
 			goods: 1,
 			uid: 1,
+			couponsChecked: 1,
 			shopid: 1
 		}).get();
 		if (orders.data.length > 0) {
@@ -1377,6 +1394,7 @@ const model = {
 				cancelStyle: "auto",
 				modified: new Date().toISOString()
 			});
+			let couponsIds = [];
 			for (let order of orders.data) {
 				for (let ele of order.goods) {
 					if (ele.miaosha) {
@@ -1389,6 +1407,12 @@ const model = {
 				//更新用户已取消和未支付数量
 				let resUser = await updateUserOrderCount(order.uid, "canceled", 1, "unpaid", order.shopid);
 				console.log("resUser", resUser);
+				if (order.couponsChecked) {
+					couponsIds.push(order.couponsChecked._id)
+				}
+			}
+			if (couponsIds.length > 0) {
+				await coupons.canceledMany(couponsIds);
 			}
 		}
 	},

@@ -80,7 +80,7 @@ const getAllCategories = function(data) {
 		isShowLoading: true
 	})
 }
-const getCategories = function(action,data) {
+const getCategories = function(action, data) {
 	return network({
 		url: "cloud-mall",
 		data: {
@@ -317,7 +317,7 @@ const mobileAutoLogin = function(data) {
  * 获取自己的信息
  * @param {Object} data
  */
-const getUserInfo = function(data, action) {
+const getUserInfo = function(data, action, isShowLoading = true) {
 	action = action || "mine";
 	return network({
 		url: "cloud-user",
@@ -327,7 +327,7 @@ const getUserInfo = function(data, action) {
 			data
 		},
 		auth: true,
-		isShowLoading: true
+		isShowLoading: isShowLoading
 	})
 }
 const getUserStatistics = function(data) {
@@ -435,7 +435,7 @@ const micLogin = function(data, provider) {
 		}
 	})
 }
-const cloudMall = (model,action,data,isShowLoading)=>{
+const cloudMall = (model, action, data, isShowLoading) => {
 	return network({
 		url: "cloud-mall",
 		data: {
@@ -446,7 +446,7 @@ const cloudMall = (model,action,data,isShowLoading)=>{
 		isShowLoading: !!isShowLoading
 	})
 }
-const cloudUser = (model,action,data,isShowLoading)=>{
+const cloudUser = (model, action, data, isShowLoading) => {
 	return network({
 		url: "cloud-user",
 		data: {
@@ -457,7 +457,7 @@ const cloudUser = (model,action,data,isShowLoading)=>{
 		isShowLoading: !!isShowLoading
 	})
 }
-const cloudVideo = (model,action,data,isShowLoading)=>{
+const cloudVideo = (model, action, data, isShowLoading) => {
 	return network({
 		url: "cloud-video",
 		data: {

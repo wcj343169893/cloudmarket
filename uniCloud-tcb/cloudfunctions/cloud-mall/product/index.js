@@ -80,7 +80,7 @@ const models = {
 			//查询已加入购物车信息amount
 			//await getGoodsCart(data,uid);
 		}
-		if(!data.isLimit){
+		if (!data.isLimit) {
 			delete data.limit;
 			delete data.isNewUser;
 		}
@@ -228,6 +228,39 @@ const models = {
 		}).skip((page - 1) * limit).limit(limit).orderBy(...orderBy).get();
 		return result.data;
 	},
+	async getByIds(data) {
+		const {
+			shopid,
+			ids
+		} = data;
+		let condition = {
+			shopid: shopid,
+			isCategoryShow: 1,
+			isSold: 1,
+			_id: cmd.in(ids)
+		};
+		let result = await goodsCollection.where(condition).field({
+			id: 1,
+			title: 1,
+			subTitle: 1,
+			stock: 1,
+			src: 1,
+			isSold: 1,
+			score: 1,
+			price: 1,
+			default_checked_sku_id: 1, //多规格默认选中
+			skuname: 1,
+			skus: 1,
+			originPrice: 1,
+			monthlySale: 1,
+			categories: 1,
+			miaosha: 1,
+			yuding: 1,
+			manjian: 1,
+			tuangou: 1,
+		}).get();
+		return result.data;
+	},
 	//用户的商品浏览记录
 	async visite(data) {
 		const {
@@ -282,7 +315,7 @@ const models = {
 			tuangou: cmd.exists(true),
 			autoOffTime: cmd.exists(true),
 			"tuangou.endTime": cmd.lt(time),
-			autoOffTime: cmd.lt(time),//自动下架时间戳
+			autoOffTime: cmd.lt(time), //自动下架时间戳
 		}).update({
 			isSold: 0,
 			offlineNotice: "过期团购自动下架",
@@ -298,7 +331,7 @@ const models = {
 			yuding: cmd.exists(true),
 			autoOffTime: cmd.exists(true),
 			"yuding.endTime": cmd.lt(time),
-			autoOffTime: cmd.lt(time),//自动下架时间戳
+			autoOffTime: cmd.lt(time), //自动下架时间戳
 		}).update({
 			isSold: 0,
 			offlineNotice: "过期预定自动下架",

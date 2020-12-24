@@ -178,7 +178,6 @@
 	import {
 		navToGoodsItemPage,
 		navToLoginPage,
-		showLoginDialog,
 		updateGoodsTags
 	} from '@/common/functions.js';
 	export default {
@@ -513,8 +512,8 @@
 			/**打开sku选择弹窗**/
 			openSkus(item) {
 				if (!this.hasLogin) {
-					this.showLoginDialog();
-					return;
+					this.navToLoginNotice();
+					return false;
 				}
 				//处理规格结构
 				let skus = item.skus;
@@ -650,12 +649,6 @@
 			},
 			change(e) {
 				console.log('是否打开:' + e.show);
-			},
-			showLoginDialog() {
-				//登录提示框
-				showLoginDialog();
-				//console.log("showLoginDialog")
-				//this.$refs['showlogin'].open();
 			},
 			closeLoginDialog() {
 				this.$refs['showlogin'].close();

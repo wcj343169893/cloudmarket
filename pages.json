@@ -254,9 +254,6 @@
 				"navigationBarTitleText": "限时抢购"
 			}
 		}, {
-			"path": "pages/user/team",
-			"style": {}
-		}, {
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索"
@@ -300,11 +297,6 @@
 			"path": "pages/order/refundDetail",
 			"style": {
 				"navigationBarTitleText": "退款详情"
-			}
-		}, {
-			"path": "pages/user/balancelog",
-			"style": {
-				"navigationBarTitleText": "零钱明细"
 			}
 		}, {
 			"path": "pages/index/marketCategory",
@@ -405,12 +397,19 @@
 				"enablePullDownRefresh": true
 			}
 			//#endif
+		}, {
+			"path": "pages/coupons/coupons",
+			"style": {
+				"navigationBarTitleText": "领券中心",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	    ,{
-            "path" : "pages/product/coupons",
+            "path" : "pages/coupons/goods",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "领券中心",
+                "navigationBarTitleText": "优惠商品",
                 "enablePullDownRefresh": false
             }
             
@@ -701,11 +700,31 @@
 			}
 
 		}]
+	}, {
+		"root": "pages/user",
+		"pages": [{
+				"path": "team",
+				"style": {}
+			},
+			{
+				"path": "balancelog",
+				"style": {
+					"navigationBarTitleText": "零钱明细"
+				}
+			}, {
+				"path": "coupons",
+				"style": {
+					"navigationBarTitleText": "我的优惠券",
+					"enablePullDownRefresh": false
+				}
+
+			}
+		]
 	}],
 	"preloadRule": {
 		"pages/user/user": {
 			"network": "all",
-			"packages": ["pages/admin"]
+			"packages": ["pages/admin", "pages/user"]
 		}
 	},
 	"globalStyle": {

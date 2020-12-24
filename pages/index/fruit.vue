@@ -5,109 +5,116 @@
 		<!-- 顶部栏 -->
 		<page-header :showFillView="true" :bgColor="titleNViewBackground" @navToAddress="navToAddress"></page-header>
 		<!-- #endif -->
-		<!-- 头部轮播 -->
-		<view class="carousel-section" v-if="isLoaded">
-			<!-- 标题栏和状态栏占位符 -->
-			<view class="titleNview-placing"></view>
-			<block v-if="carouselList && carouselList.length > 0">
-				<!-- 背景色区域 -->
-				<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
-				<!--收货地址-->
-				<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address" @navToAddress="navToAddress"></addressPage>
-				<swiper class="carousel" circular @change="swiperChange">
-					<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
-						<image :src="item.src" />
-					</swiper-item>
-				</swiper>
-				<!-- 自定义swiper指示器 -->
-				<view class="swiper-dots">
-					<text class="num">{{ swiperCurrent + 1 }}</text>
-					<text class="sign">/</text>
-					<text class="num">{{ swiperLength }}</text>
+		<block v-if="isLoaded">
+			<!-- 头部轮播 -->
+			<view class="carousel-section">
+				<!-- 标题栏和状态栏占位符 -->
+				<view class="titleNview-placing"></view>
+				<block v-if="carouselList && carouselList.length > 0">
+					<!-- 背景色区域 -->
+					<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
+					<!--收货地址-->
+					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address"
+					 @navToAddress="navToAddress"></addressPage>
+					<swiper class="carousel" circular @change="swiperChange">
+						<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
+							<image :src="item.src" />
+						</swiper-item>
+					</swiper>
+					<!-- 自定义swiper指示器 -->
+					<view class="swiper-dots">
+						<text class="num">{{ swiperCurrent + 1 }}</text>
+						<text class="sign">/</text>
+						<text class="num">{{ swiperLength }}</text>
+					</view>
+				</block>
+				<block v-else>
+					<view class="titleNview-background-tmp"></view>
+					<!--收货地址-->
+					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address"
+					 @navToAddress="navToAddress"></addressPage>
+				</block>
+			</view>
+			<!-- 配送口号 -->
+			<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.hasDeliveryHome" @click="navToDocPageByType('app_goods_charge')">
+				<view class="kouhao_item">
+					<text class="yticon icon-chps"></text>
+					<text>最快{{ shop.delivery.time }}分钟送达</text>
 				</view>
+				<view class="kouhao_item">
+					<text class="yticon icon-money"></text>
+					<text>{{ shop.delivery.minPrice }}元起送</text>
+					<text v-if="shop.delivery.money == 0">{{ shop.delivery.money }}配送费</text>
+				</view>
+				<view class="kouhao_item">
+					<text class="yticon icon-dunpai"></text>
+					<text>安心退换</text>
+				</view>
+			</view>
+			<!-- 分类 -->
+			<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
+				<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
+					<image :src="item.src"></image>
+					<text>{{ item.name }}</text>
+				</view>
+			</view>
+			<view class="shop-notice m-t b-b" v-if="shop.notice && shop.notice.length>0">
+				<text class="yticon icon-gonggao"></text>
+				<text>{{shop.notice}}</text>
+			</view>
+			<block v-if="miaoshaList && miaoshaList.length > 0">
+				<!-- banner图广告 -->
+				<bannerPage v-if="adBanners.length>0" :ad="adBanners[0]"></bannerPage>
+				<view class="f-header" @click="navToSecKillGoods">
+					<view class="icon">&nbsp;</view>
+					<view class="tit-box"><text class="tit">{{titles.miaosha}}</text></view>
+					<text class="yticon icon-you"></text>
+				</view>
+				<miaoshaPage :dataList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
 			</block>
-			<block v-else>
-				<view class="titleNview-background-tmp"></view>
-				<!--收货地址-->
-				<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address" @navToAddress="navToAddress"></addressPage>
+			<block v-if="tuangouList && tuangouList.length > 0">
+				<!-- banner图广告 -->
+				<bannerPage v-if="adBanners.length>1" :ad="adBanners[1]"></bannerPage>
+				<view class="f-header" @click="navTo('/pages/index/tuangou')">
+					<view class="icon">&nbsp;</view>
+					<view class="tit-box"><text class="tit">{{titles.tuangou}}</text></view>
+					<text class="yticon icon-you"></text>
+				</view>
+				<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
 			</block>
+			<block v-if="yudingList && yudingList.length > 0">
+				<!-- banner图广告 -->
+				<bannerPage v-if="adBanners.length>2" :ad="adBanners[2]"></bannerPage>
+				<view class="f-header">
+					<view class="icon">&nbsp;</view>
+					<view class="tit-box"><text class="tit">{{titles.yuding}}</text></view>
+				</view>
+				<yudingPage :dataList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
+			</block>
+			<block v-if="recommendList.length > 0">
+				<!-- banner图广告 -->
+				<bannerPage v-if="adBanners.length>3" :ad="adBanners[3]"></bannerPage>
+				<view class="f-header">
+					<view class="icon">&nbsp;</view>
+					<view class="tit-box"><text class="tit">{{titles.recommend}}</text></view>
+				</view>
+				<normalPage :dataList="recommendList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
+			</block>
+			<block v-if="newestList.length > 0">
+				<!-- banner图广告 -->
+				<bannerPage v-if="adBanners.length>4" :ad="adBanners[4]"></bannerPage>
+				<view class="f-header">
+					<view class="icon">&nbsp;</view>
+					<view class="tit-box"><text class="tit">{{titles.newest}}</text></view>
+				</view>
+				<normalPage :dataList="newestList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
+			</block>
+			<dialogAdPage v-if="adDialogs" :ad="adDialogs"></dialogAdPage>
+			<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
+		</block>
+		<view class="loadingPage" v-else>
+			<text>正在努力加载中</text>
 		</view>
-		<!-- 配送口号 -->
-		<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.hasDeliveryHome" @click="navToDocPageByType('app_goods_charge')">
-			<view class="kouhao_item">
-				<text class="yticon icon-chps"></text>
-				<text>最快{{ shop.delivery.time }}分钟送达</text>
-			</view>
-			<view class="kouhao_item">
-				<text class="yticon icon-money"></text>
-				<text>{{ shop.delivery.minPrice }}元起送</text>
-				<text v-if="shop.delivery.money == 0">{{ shop.delivery.money }}配送费</text>
-			</view>
-			<view class="kouhao_item">
-				<text class="yticon icon-dunpai"></text>
-				<text>安心退换</text>
-			</view>
-		</view>
-		<!-- 分类 -->
-		<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
-			<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
-				<image :src="item.src"></image>
-				<text>{{ item.name }}</text>
-			</view>
-		</view>
-		<view class="shop-notice m-t b-b" v-if="shop.notice && shop.notice.length>0">
-			<text class="yticon icon-gonggao"></text>
-			<text>{{shop.notice}}</text>
-		</view>
-		<block v-if="miaoshaList && miaoshaList.length > 0">
-			<!-- banner图广告 -->
-			<bannerPage v-if="adBanners.length>0" :ad="adBanners[0]"></bannerPage>
-			<view class="f-header" @click="navToSecKillGoods">
-				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">{{titles.miaosha}}</text></view>
-				<text class="yticon icon-you"></text>
-			</view>
-			<miaoshaPage :dataList="miaoshaList" @saveCartAmount="saveCartAmount"></miaoshaPage>
-		</block>
-		<block v-if="tuangouList && tuangouList.length > 0">
-			<!-- banner图广告 -->
-			<bannerPage v-if="adBanners.length>1" :ad="adBanners[1]"></bannerPage>
-			<view class="f-header" @click="navTo('/pages/index/tuangou')">
-				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">{{titles.tuangou}}</text></view>
-				<text class="yticon icon-you"></text>
-			</view>
-			<tuangouPage :dataList="tuangouList" @saveCartAmount="saveCartAmount"></tuangouPage>
-		</block>
-		<block v-if="yudingList && yudingList.length > 0">
-			<!-- banner图广告 -->
-			<bannerPage v-if="adBanners.length>2" :ad="adBanners[2]"></bannerPage>
-			<view class="f-header">
-				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">{{titles.yuding}}</text></view>
-			</view>
-			<yudingPage :dataList="yudingList" @saveCartAmount="saveCartAmount"></yudingPage>
-		</block>
-		<block v-if="recommendList.length > 0">
-			<!-- banner图广告 -->
-			<bannerPage v-if="adBanners.length>3" :ad="adBanners[3]"></bannerPage>
-			<view class="f-header">
-				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">{{titles.recommend}}</text></view>
-			</view>
-			<normalPage :dataList="recommendList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
-		</block>
-		<block v-if="newestList.length > 0">
-			<!-- banner图广告 -->
-			<bannerPage v-if="adBanners.length>4" :ad="adBanners[4]"></bannerPage>
-			<view class="f-header">
-				<view class="icon">&nbsp;</view>
-				<view class="tit-box"><text class="tit">{{titles.newest}}</text></view>
-			</view>
-			<normalPage :dataList="newestList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
-		</block>
-		<dialogAdPage v-if="adDialogs" :ad="adDialogs"></dialogAdPage>
-		<view class="bottom" v-show="isLoaded"><text>以下没数据了</text></view>
 		<!-- 选规格 -->
 		<uni-popup ref="showsku" type="center" :mask-click="true">
 			<view class="skuDialogPanel">
@@ -167,7 +174,6 @@
 		updateGoodsTags,
 		navToDocPageByType,
 		navToAdDetail,
-		showLoginDialog,
 		getLocationAddress
 	} from '@/common/functions.js';
 
@@ -312,7 +318,6 @@
 					latitude: this.location.latitude,
 					longitude: this.location.longitude
 				}).then(res => {
-					this.isLoaded = true;
 					//广告
 					if (res.ads) {
 						let ads = res.ads;
@@ -373,7 +378,7 @@
 							this.recommendCategoriesList.splice(Number(this.shop.coupons.index), 1, {
 								id: 0,
 								name: this.shop.coupons.title,
-								page: "/pages/product/coupons",
+								page: "/pages/coupons/coupons",
 								src: this.shop.coupons.icon
 							})
 						}
@@ -385,6 +390,7 @@
 						key: "app_share",
 						data: this.share
 					})
+					this.isLoaded = true;
 				});
 			},
 			//轮播图切换修改背景色
@@ -455,8 +461,8 @@
 			},
 			openSku(item) {
 				if (!this.hasLogin) {
-					showLoginDialog();
-					return;
+					this.navToLoginNotice();
+					return false;
 				}
 				//处理规格结构
 				let skus = item.skus;
@@ -1054,5 +1060,12 @@
 		.icon-gonggao {
 			font-size: $font-sm;
 		}
+	}
+
+	.loadingPage {
+		text-align: center;
+		padding-top: 600rpx;
+		color: $font-color-disabled;
+		height: 1950rpx;
 	}
 </style>

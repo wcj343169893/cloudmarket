@@ -119,14 +119,18 @@
 		</view>
 
 		<!-- 优惠明细 -->
-		<view class="yt-list">
-			<!-- <view class="yt-list-cell b-b" @click="toggleMask('show')">
+		<view class="yt-list" @click="toggleMask('show')">
+			<view class="yt-list-cell b-b" v-if="couponList && couponList.length > 0">
 				<view class="cell-icon">券</view>
 				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">选择优惠券</text>
+				<view class="cell-tip active" v-if="couponsChecked._id">
+					<text>已优惠</text>
+					<text class="price">{{couponsDiscount}}</text>
+				</view>
+				<text class="cell-tip active" v-else>选择优惠券</text>
 				<text class="cell-more wanjia wanjia-gengduo-d"></text>
-			</view> -->
-			<view class="yt-list-cell ">
+			</view>
+			<view class="yt-list-cell " v-else>
 				<view class="cell-icon hb">减</view>
 				<text class="cell-tit clamp">优惠券</text>
 				<text class="cell-tip disabled">暂无可用优惠</text>
@@ -160,7 +164,7 @@
 				<text class="cell-tit clamp">优惠金额</text>
 				<text class="cell-tip red">
 					<text>-</text>
-					<text class="price">{{ totalDiscount }}</text>
+					<text class="price">{{ totalDiscount + couponsDiscount }}</text>
 				</text>
 			</view>
 			<view class="yt-list-cell b-b">
@@ -184,8 +188,8 @@
 		<view class="footer" v-if="!isOutOfRange">
 			<view class="price-content">
 				<text>{{ totalTitle }}</text>
-				<text v-if="yuding" class="price warning">{{ totalMoney | toFixed }}</text>
-				<text v-else class="price warning">{{ (totalMoney + freight) | toFixed }}</text>
+				<text v-if="yuding" class="price warning">{{ totalMoney-couponsDiscount | toFixed }}</text>
+				<text v-else class="price warning">{{ (totalMoney + freight -couponsDiscount) | toFixed }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -198,21 +202,44 @@
 		<view class="mask" :class="maskState === 0 ? 'none' : maskState === 1 ? 'show' : ''" @click="toggleMask">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
 				<!-- 优惠券页面，仿mt -->
-				<view class="coupon-item" v-for="(item, index) in couponList" :key="index">
+				<view class="coupon-item" v-for="(item, index) in couponList" :key="index" @click="checkCoupons(item)">
 					<view class="con">
 						<view class="left">
-							<text class="title">{{ item.title }}</text>
-							<text class="time">有效期至</text>
+							<view class="title">
+								<text>{{ item.title }}</text>
+								<text v-if="item.goods" class="text-xs margin-left-xs text-yellow">部分商品可用</text>
+							</view>
+							<text class="time">有效期至：{{ item.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
 						</view>
-						<view class="right">
-							<text class="price">{{ item.price }}</text>
-							<text>满30可用</text>
+						<view class="right" v-if="item.manjine">
+							<text class="price">{{ item.manjine.amount }}</text>
+							<text>满{{item.manjine.condition}}可用</text>
 						</view>
-
 						<view class="circle l"></view>
 						<view class="circle r"></view>
 					</view>
-					<text class="tips">限新用户使用</text>
+					<text class="tips">{{ item.memo }}</text>
+					<view class="yticon icon-xuanzhong2 result" :class="{ checked: item.checked }"></view>
+				</view>
+				<view v-if="couponsDisabled && couponsDisabled.length > 0">
+					<view class="padding-left-sm">
+						<text>以下优惠券不可用</text>
+					</view>
+					<view class="coupon-item disabled" v-for="(item, index) in couponsDisabled" :key="index">
+						<view class="con">
+							<view class="left">
+								<text class="title">{{ item.title }}</text>
+								<text class="time">有效期至：{{ item.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
+							</view>
+							<view class="right" v-if="item.manjine">
+								<text class="price">{{ item.manjine.amount }}</text>
+								<text>满{{item.manjine.condition}}可用</text>
+							</view>
+							<view class="circle l"></view>
+							<view class="circle r"></view>
+						</view>
+						<text class="tips">{{ item.memo }}</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -258,10 +285,10 @@
 			return {
 				maskState: 0, //优惠券面板显示状态
 				remark: '', //备注
-				couponList: [{
-					title: '新用户专享优惠券',
-					price: 5
-				}],
+				couponList: [],
+				couponsDisabled: [],
+				couponsChecked: {},
+				couponsDiscount: 0,
 				ids: [],
 				dataList: [],
 				priceTitle: '单价',
@@ -347,6 +374,16 @@
 						}
 						if (res.pickup) {
 							this.pickup = res.pickup;
+						}
+						if (res.coupons) {
+							this.couponList = res.coupons;
+						}
+						if (res.couponsDisabled) {
+							this.couponsDisabled = res.couponsDisabled;
+						}
+						if (res.couponsChecked) {
+							this.couponsChecked = res.couponsChecked;
+							this.checkCouponsDiscount();
 						}
 						if (this.stockNotEnough.length > 0) {
 							uni.showModal({
@@ -558,12 +595,29 @@
 			},
 			//显示优惠券面板
 			toggleMask(type) {
+				if (type == "show") {
+					if (this.couponList.length == 0 && this.couponsDisabled.length == 0) {
+						return false;
+					}
+				}
 				let timer = type === 'show' ? 10 : 300;
 				let state = type === 'show' ? 1 : 0;
 				this.maskState = 2;
 				setTimeout(() => {
 					this.maskState = state;
 				}, timer);
+			},
+			checkCoupons(item) {
+				this.couponList.forEach(e => {
+					e.checked = false;
+				})
+				this.couponsChecked = item;
+				item.checked = true;
+				this.checkCouponsDiscount();
+				this.toggleMask("close")
+			},
+			checkCouponsDiscount() {
+				this.couponsDiscount = this.couponsChecked.price;
 			},
 			//提交订单，并跳转到支付页面
 			submit() {
@@ -591,6 +645,7 @@
 					stationId: this.stationId,
 					location: this.location,
 					type: 'submit',
+					couponsId: this.couponsChecked._id,
 					remark: this.remark,
 					juli: this.juli,
 					deliveryType: this.deliveryType,
@@ -999,6 +1054,7 @@
 		flex-direction: column;
 		margin: 20upx 24upx;
 		background: #fff;
+		position: relative;
 
 		.con {
 			display: flex;
@@ -1054,7 +1110,6 @@
 			color: $base-color;
 
 			&:before {
-				content: '￥';
 				font-size: 34upx;
 			}
 		}
@@ -1080,6 +1135,23 @@
 				left: auto;
 				right: -6upx;
 			}
+		}
+
+		&.disabled {
+
+			.title,
+			.price,
+			.tips,
+			.right,
+			.time {
+				color: $font-color-disabled;
+			}
+		}
+
+		.yticon.result {
+			position: absolute;
+			right: 20rpx;
+			bottom: 10rpx;
 		}
 	}
 
