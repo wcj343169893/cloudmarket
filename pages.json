@@ -404,17 +404,31 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/coupons/goods",
+			"style": {
+				"navigationBarTitleText": "优惠商品",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user/team",
+			"style": {}
+		},
+		{
+			"path": "pages/user/balancelog",
+			"style": {
+				"navigationBarTitleText": "零钱明细"
+			}
+		}, {
+			"path": "pages/user/coupons",
+			"style": {
+				"navigationBarTitleText": "我的优惠券",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/coupons/goods",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "优惠商品",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"subPackages": [{
 		"root": "pages/admin",
 		"pages": [{
@@ -700,31 +714,11 @@
 			}
 
 		}]
-	}, {
-		"root": "pages/user",
-		"pages": [{
-				"path": "team",
-				"style": {}
-			},
-			{
-				"path": "balancelog",
-				"style": {
-					"navigationBarTitleText": "零钱明细"
-				}
-			}, {
-				"path": "coupons",
-				"style": {
-					"navigationBarTitleText": "我的优惠券",
-					"enablePullDownRefresh": false
-				}
-
-			}
-		]
 	}],
 	"preloadRule": {
 		"pages/user/user": {
 			"network": "all",
-			"packages": ["pages/admin", "pages/user"]
+			"packages": ["pages/admin"]
 		}
 	},
 	"globalStyle": {

@@ -344,7 +344,7 @@ const models = {
 	async getCouponsStatistics(data) {
 		let t = Date.now();
 		let res = await couponUserCollection.where({
-			uid: data.uid,
+			uid: data._id,
 			state: 0,
 			beginTime: cmd.lt(t),
 			endTime: cmd.gt(t)
