@@ -98,9 +98,9 @@ const model = {
 				//指定天数内可用
 				const {
 					yestertodayTime: endTime
-				} = getDayTime(coupons.days * -1);
+				} = getDayTime(coupons.days * -1 + 1);
 				if (endTime < coupons.endTime) {
-					coupons.endTime = endTime;
+					coupons.endTime = endTime - 1;
 				}
 			} else if (coupons.today) {
 				//仅当天可用
