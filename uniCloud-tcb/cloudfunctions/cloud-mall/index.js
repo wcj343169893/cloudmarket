@@ -55,9 +55,10 @@ exports.main = async (event, context) => {
 		action,
 		data,
 		uniIdToken,
-		Type
+		Type,
+		timingTriggerConfig
 	} = event;
-	if (Type == "Timer") {
+	if (Type == "Timer" || timingTriggerConfig) {
 		console.log(event);
 		for (let model in modules) {
 			//执行每个模块的定时器

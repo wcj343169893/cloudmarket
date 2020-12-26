@@ -22,10 +22,11 @@ exports.main = async (event, context) => {
 		action,
 		data,
 		Type,
+		timingTriggerConfig,
 		uniIdToken
 	} = event;
 	//退款定时器
-	if (Type == "Timer") {
+	if (Type == "Timer" || timingTriggerConfig) {
 		console.log("退款定时器", event);
 		return await actions.refund(event, context);
 	}

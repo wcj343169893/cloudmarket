@@ -63,7 +63,7 @@ const models = {
 			phone: 1,
 			currency: 1,
 			deliveryTypes: 1,
-			selfRaisingPoint: 1,
+			selfRaising: 1,
 			dayStatisticsLog: 1,
 			serviceTime: 1,
 			searchGoodsKeywords: 1,

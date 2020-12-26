@@ -215,11 +215,23 @@
 			"bsonType": "array",
 			"title": "商品搜索词"
 		},
-		"selfRaisingPoint": {
-			"bsonType": "bool",
-			"title": "开启自提点",
-			"description": "",
-			"defaultValue": false
+		"selfRaising": {
+			"bsonType": "object",
+			"title": "自提点",
+			"properties": {
+				"point": {
+					"bsonType": "bool",
+					"title": "开启自提点",
+					"description": "",
+					"defaultValue": false
+				},
+				"distance": {
+					"bsonType": "int",
+					"title": "覆盖半径",
+					"description": "覆盖半径",
+					"defaultValue": 5000
+				}
+			}
 		},
 		"serviceTime": {
 			"bsonType": "string",

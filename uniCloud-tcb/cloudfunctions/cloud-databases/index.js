@@ -10,10 +10,11 @@ exports.main = async (event, context) => {
 		action,
 		data,
 		path,
-		Type
+		Type,
+		timingTriggerConfig
 	} = event;
 	//报表定时器
-	if (Type == "Timer") {
+	if (Type == "Timer" || timingTriggerConfig) {
 		console.log("定时器", event);
 		module = "exports";
 		action = "timer";

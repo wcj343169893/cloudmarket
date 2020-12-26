@@ -75,7 +75,7 @@ const models = {
 				})
 			}
 			shopInfo.isSelfRaisingPoint = false;
-			if (shopInfo.selfRaisingPoint && shopInfo.deliveryTypes && shopInfo.deliveryTypes.indexOf("selfRaising") != -1) {
+			if (shopInfo.selfRaising.enable && shopInfo.deliveryTypes && shopInfo.deliveryTypes.indexOf("selfRaising") != -1) {
 				shopInfo.isSelfRaisingPoint = true;
 				//默认查询一条自提点
 				if (!raisingPoint || !raisingPoint._id) {

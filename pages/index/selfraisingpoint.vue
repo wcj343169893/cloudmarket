@@ -74,6 +74,11 @@
 				return this.$config.selfRaising.apply;
 			},
 			selfraisingDistance() {
+				//每个店铺可以设置不同的距离
+				if (this.$store.state.globalShopInfo && this.$store.state.globalShopInfo.selfRaising && this.$store.state.globalShopInfo
+					.selfRaising.distance > 0) {
+					return this.$store.state.globalShopInfo.selfRaising.distance;
+				}
 				if (!this.$config.selfRaising) {
 					return 1000;
 				}
@@ -137,7 +142,7 @@
 				this.nearestData.map(addr => {
 					fromLats.push([addr.latitude, addr.longitude].join(","))
 				})
-				if(fromLats.length == 0){
+				if (fromLats.length == 0) {
 					return false;
 				}
 				let index = 0;
