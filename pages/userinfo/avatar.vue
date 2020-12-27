@@ -253,7 +253,8 @@
 			getImageInfo() {
 				var _this = this;
 				uni.showLoading({
-					title: '图片生成中'
+					title: '图片生成中',
+					mask:true
 				});
 				// 将图片写入画布
 				const ctx = uni.createCanvasContext('myCanvas');
