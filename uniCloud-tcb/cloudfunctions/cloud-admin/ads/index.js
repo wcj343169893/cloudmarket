@@ -28,6 +28,8 @@ const model = {
 	async add(data) {
 		if (data.redirectType == "goods") {
 			data.link = `/pages/product/product?id=${data.goods.id}`;
+		} else if (data.redirectType == "couponsList") {
+			data.link = `/pages/coupons/coupons`;
 		} else if (data.redirectType == "docs") {
 			data.link = `/pages/docs/docs?id=${data.docs._id}`;
 		} else if (data.redirectType == "none") {

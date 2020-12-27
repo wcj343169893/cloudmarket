@@ -34,6 +34,7 @@
 					none: '不跳转',
 					goods: '商品详情页面',
 					web: 'http网站',
+					couponsList: '优惠券列表',
 					docs: '文档详情页'
 				},
 				rtDef: 'none',

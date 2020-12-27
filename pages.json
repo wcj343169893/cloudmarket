@@ -693,6 +693,23 @@
 			"path": "coupon/list",
 			"style": {
 				"navigationBarTitleText": "优惠券管理",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "coupon/add",
+			"style": {
+				"navigationBarTitleText": "新增"
+			}
+		}, {
+			"path": "coupon/edit",
+			"style": {
+				"navigationBarTitleText": "修改"
+			}
+		}, {
+			"path": "goods/category/select",
+			"style": {
+				"navigationBarTitleText": "选择分类",
 				"enablePullDownRefresh": false
 			}
 

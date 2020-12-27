@@ -1,0 +1,168 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"beginTime": {
+			"bsonType": "int",
+			"title": "开始时间戳"
+		},
+		"endTime": {
+			"bsonType": "int",
+			"title": "结束时间戳"
+		},
+		"goods": {
+			"bsonType": "array",
+			"title": "商品列表",
+			"properties": {
+				"_id": {
+					"bsonType": "string"
+				},
+				"title": {
+					"bsonType": "string"
+				}
+			}
+		},
+		"category": {
+			"bsonType": "array",
+			"title": "分类列表",
+			"properties": {
+				"_id": {
+					"bsonType": "string"
+				},
+				"title": {
+					"bsonType": "string"
+				},
+				"id": {
+					"bsonType": "int"
+				}
+			}
+		},
+		"limit": {
+			"bsonType": "int",
+			"title": "限制领取张数",
+			"defaultValue": 1
+		},
+		"stock": {
+			"bsonType": "int",
+			"title": "总库存",
+			"defaultValue": 100
+		},
+		"manjine": {
+			"bsonType": "object",
+			"title": "金额满减",
+			"properties": {
+				"amount": {
+					"bsonType": "double",
+					"title": "优惠金额",
+					"defaultValue": 1
+				},
+				"condition": {
+					"bsonType": "double",
+					"title": "条件",
+					"defaultValue": 10
+				}
+			}
+		},
+		"manshuliang": {
+			"bsonType": "object",
+			"title": "数量满减",
+			"properties": {
+				"amount": {
+					"bsonType": "double",
+					"title": "优惠金额",
+					"defaultValue": 1
+				},
+				"condition": {
+					"bsonType": "int",
+					"title": "条件",
+					"defaultValue": 10
+				}
+			}
+		},
+		"memo": {
+			"bsonType": "string",
+			"title": "说明"
+		},
+		"price": {
+			"bsonType": "double",
+			"title": "优惠金额",
+			"defaultValue": 1
+		},
+		"shopid": {
+			"bsonType": "int",
+			"title": "店铺id"
+		},
+		"state": {
+			"bsonType": "int",
+			"title": "状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "草稿箱",
+				"value": 0
+			}, {
+				"text": "已发布",
+				"value": 1
+			}, {
+				"text": "已停用",
+				"value": 2
+			}]
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "标题"
+		},
+		"today": {
+			"bsonType": "bool",
+			"title": "是否当日可用"
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"type": {
+			"bsonType": "int",
+			"title": "类型",
+			"enum": [{
+				"text": "商品券",
+				"value": 1
+			}, {
+				"text": "分类券",
+				"value": 2
+			}, {
+				"text": "店铺券",
+				"value": 3
+			}]
+		},
+		"style": {
+			"bsonType": "string",
+			"title": "类型",
+			"enum": [{
+				"text": "满金额减",
+				"value": "manjine"
+			}, {
+				"text": "满数量减",
+				"value": "manshuliang"
+			}]
+		}
+	}
+}

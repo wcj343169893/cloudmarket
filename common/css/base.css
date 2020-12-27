@@ -85,3 +85,18 @@ radio-group {
 .cu-list.custom>.panel>.buttons .cu-btn{
 	margin-right: 20rpx;
 }
+
+.uni-forms-item.flex-item{}
+.uni-forms-item.flex-item .uni-forms-item__content{
+	display: flex;
+	align-items: center;
+}
+
+.suoluetu{
+	width:100rpx;
+	height: 100rpx;
+	border-radius: 20rpx;
+}
+.container-fixed{
+	padding-bottom: 120rpx;
+}

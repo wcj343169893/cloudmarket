@@ -95,6 +95,7 @@ uniCloud 有资源限制，如果获取不到数据属正常现象，稍后重�
 
 #### 微信小程序-万德福超市
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)  
+![柔然科技](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-gowv8so9ludhf98439/1bbf1e20-47fd-11eb-a16f-5b3e54966275.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 

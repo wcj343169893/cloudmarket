@@ -39,12 +39,13 @@ const model = {
 			return false;
 		}
 		//state 1有效
-		//type 1商品券，2店铺券
+		//type 1商品券,2分类券,3店铺券
 		let t = Date.now();
 		let res = await couponCollection.where({
 			shopid,
 			type,
 			state: 1,
+			stock: cmd.gt(0),
 			beginTime: cmd.lt(t),
 			endTime: cmd.gt(t)
 		}).orderBy("beginTime", "desc").get();
@@ -112,6 +113,23 @@ const model = {
 					coupons.endTime = endTime - 1;
 				}
 			}
+			//区分商品和分类券
+			if (coupons.type == 1) {
+				delete coupons.category;
+			} else if (coupons.type == 2) {
+				delete coupons.goods;
+			} else {
+				delete coupons.category;
+				delete coupons.goods;
+			}
+			let styles = ["manjine", "manshuliang"];
+			//排除不支持的结算方式
+			styles.map(st => {
+				if (coupons.style != st) {
+					delete coupons[st];
+				}
+			});
+
 			//新增领取记录
 			let addRes = await couponUserCollection.add({
 				...coupons,
@@ -124,6 +142,7 @@ const model = {
 			});
 			if (addRes.inserted > 0) {
 				await couponCollection.doc(_id).update({
+					stock: cmd.inc(-1),
 					statistics: {
 						count: cmd.inc(1)
 					}

@@ -4,7 +4,7 @@
 	"tokenExpiresIn": 2592000,
 	"tokenExpiresThreshold": 86400,
 	"passwordErrorLimit": 6,
-	"bindTokenToDevice": false,
+	"bindTokenToDevice": true,
 	"passwordErrorRetryTime": 3600,
 	"autoSetInviteCode": true,
 	"forceInviteCode": false,
