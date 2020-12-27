@@ -29,7 +29,7 @@
 				</view>
 			</view>
 			<canvas canvas-id="myCanvas" :style="'position:absolute;border: 1px solid red; width:' + imageW + 'px;height:' + imageH + 'px;top:-9999px;left:-9999px;'"></canvas>
-			<button class="fixed-add-btn" disabled="isSubmit" @click="getImageInfo">确定裁剪并保存</button>
+			<button class="fixed-add-btn" :disabled="isSubmit" @click="getImageInfo">确定裁剪并保存</button>
 		</view>
 	</view>
 </template>
@@ -101,7 +101,8 @@
 		 */
 		onLoad(options) {
 			const sysInfo = this.systemInfo;
-			this.qualityWidth = this.pageinfo.DRAW_IMAGE_W = this.cutB = this.cropperW = this.cropperInitW = this.SCREEN_WIDTH = sysInfo.screenWidth;
+			this.qualityWidth = this.pageinfo.DRAW_IMAGE_W = this.cutB = this.cropperW = this.cropperInitW = this.SCREEN_WIDTH =
+				sysInfo.screenWidth;
 			this.cropperH = this.cropperInitH = this.SCREEN_HEIGHT = sysInfo.screenHeight;
 			this.pageinfo.PR = sysInfo.pixelRatio;
 		},
@@ -147,7 +148,8 @@
 							this.pageinfo.IMG_REAL_W = this.SCREEN_WIDTH;
 							this.pageinfo.IMG_REAL_H = this.SCREEN_WIDTH / this.pageinfo.IMG_RATIO;
 						} else if (this.SCREEN_WIDTH / this.SCREEN_HEIGHT < this.pageinfo.IMG_RATIO) {
-							console.log('SCREEN_WIDTH/this.SCREEN_HEIGHT,this.pageinfo.IMG_RATIO', this.SCREEN_WIDTH / this.SCREEN_HEIGHT, this.pageinfo.IMG_RATIO);
+							console.log('SCREEN_WIDTH/this.SCREEN_HEIGHT,this.pageinfo.IMG_RATIO', this.SCREEN_WIDTH / this.SCREEN_HEIGHT,
+								this.pageinfo.IMG_RATIO);
 							this.pageinfo.IMG_REAL_W = this.SCREEN_WIDTH;
 							this.pageinfo.IMG_REAL_H = this.SCREEN_WIDTH / this.pageinfo.IMG_RATIO;
 						} else {
@@ -156,7 +158,8 @@
 							this.pageinfo.IMG_REAL_W = this.SCREEN_HEIGHT * this.pageinfo.IMG_RATIO;
 						}
 						let minRange = this.pageinfo.IMG_REAL_W < this.pageinfo.IMG_REAL_H ? this.pageinfo.IMG_REAL_W : this.pageinfo.IMG_REAL_H;
-						this.pageinfo.INIT_DRAG_POSITION = minRange > this.pageinfo.INIT_DRAG_POSITION ? this.pageinfo.INIT_DRAG_POSITION : minRange;
+						this.pageinfo.INIT_DRAG_POSITION = minRange > this.pageinfo.INIT_DRAG_POSITION ? this.pageinfo.INIT_DRAG_POSITION :
+							minRange;
 						// 根据图片的宽高显示不同的效果   保证图片可以正常显示
 						console.log('实际宽高', res.width, res.height);
 						console.log('显示宽高', this.pageinfo.IMG_REAL_W, this.pageinfo.IMG_REAL_H);
@@ -254,8 +257,11 @@
 				var _this = this;
 				uni.showLoading({
 					title: '图片生成中',
-					mask:true
+					mask: true
 				});
+				if (this.isSubmit) {
+					return;
+				}
 				this.isSubmit = true;
 				// 将图片写入画布
 				const ctx = uni.createCanvasContext('myCanvas');
@@ -279,8 +285,8 @@
 						success: res => {
 							let day = new Date();
 							let field = uni.getStorageSync("avatarField");
-							if(!field){
-								field="user";
+							if (!field) {
+								field = "user";
 							}
 							//// 在H5平台下，tempFilePath 为 base64
 							let p = [field, 'images', day.getFullYear(), day.getMonth() + 1, day.getDate(), day.getTime() + '.jpg'];
@@ -290,10 +296,9 @@
 							});
 							//上传到服务器
 							cloudUploadFile(res.tempFilePath, cloudPath).then(url => {
-								try{
-									this.$api.prePage().refreshFile(url,field);
-								}catch(e){
-								}
+								try {
+									this.$api.prePage().refreshFile(url, field);
+								} catch (e) {}
 								this.$api.success('上传成功');
 								setTimeout(() => {
 									uni.navigateBack({
@@ -339,7 +344,8 @@
 					case 'left':
 						var dragLength = (this.pageinfo.T_PAGE_X - e.touches[0].pageX) * this.pageinfo.DRAFG_MOVE_RATIO;
 						if (this.pageinfo.CUT_L - dragLength < 0) dragLength = this.pageinfo.CUT_L;
-						if (this.pageinfo.CUT_L - dragLength > this.cropperW - this.cutR) dragLength = this.pageinfo.CUT_L - (this.cropperW - this.cutR);
+						if (this.pageinfo.CUT_L - dragLength > this.cropperW - this.cutR) dragLength = this.pageinfo.CUT_L - (this.cropperW -
+							this.cutR);
 						if (this.pageinfo.CUT_B - dragLength < 0) dragLength = this.pageinfo.CUT_B;
 
 						this.setData({
@@ -350,7 +356,8 @@
 					case 'top':
 						var dragLength = (this.pageinfo.T_PAGE_Y - e.touches[0].pageY) * this.pageinfo.DRAFG_MOVE_RATIO;
 						if (this.pageinfo.CUT_T - dragLength < 0) dragLength = this.pageinfo.CUT_T;
-						if (this.pageinfo.CUT_T - dragLength > this.cropperH - this.cutB) dragLength = this.pageinfo.CUT_T - (this.cropperH - this.cutB);
+						if (this.pageinfo.CUT_T - dragLength > this.cropperH - this.cutB) dragLength = this.pageinfo.CUT_T - (this.cropperH -
+							this.cutB);
 						if (this.pageinfo.CUT_R - dragLength < 0) dragLength = this.pageinfo.CUT_R;
 
 						this.setData({
