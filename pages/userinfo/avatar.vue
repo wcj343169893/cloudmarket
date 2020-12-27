@@ -29,7 +29,7 @@
 				</view>
 			</view>
 			<canvas canvas-id="myCanvas" :style="'position:absolute;border: 1px solid red; width:' + imageW + 'px;height:' + imageH + 'px;top:-9999px;left:-9999px;'"></canvas>
-			<button class="fixed-add-btn" @click="getImageInfo">确定裁剪并保存</button>
+			<button class="fixed-add-btn" disabled="isSubmit" @click="getImageInfo">确定裁剪并保存</button>
 		</view>
 	</view>
 </template>
@@ -256,6 +256,7 @@
 					title: '图片生成中',
 					mask:true
 				});
+				this.isSubmit = true;
 				// 将图片写入画布
 				const ctx = uni.createCanvasContext('myCanvas');
 				ctx.drawImage(_this.imageSrc, 0, 0, this.pageinfo.IMG_REAL_W, this.pageinfo.IMG_REAL_H);
@@ -300,6 +301,7 @@
 									});
 								}, 1500);
 							}, err => {
+								this.isSubmit = false;
 								uni.showModal({
 									title: '上传失败',
 									showCancel: false
