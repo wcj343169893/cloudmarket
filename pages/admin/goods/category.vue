@@ -97,6 +97,7 @@
 					id: false,
 					name: '',
 					pid: 0,
+					isShow:true,
 					goodsCount: 0,
 					children: []
 				});
@@ -116,6 +117,7 @@
 				this.categoriesData[index].children.push({
 					id: false,
 					name: '',
+					isShow:true,
 					pid: part.id,
 					goodsCount: 0
 				});
