@@ -793,7 +793,9 @@ const model = {
 		let transaction;
 		if (data.submit) {
 			//启动事务
-			transaction = await db.startTransaction()
+			transaction = await db.startTransaction();
+			//随机方法
+			data["id"] = genOrderNo();
 		}
 		//查询默认收货地址,结算的时候，前端传addressid
 		let addressCondition = {
@@ -876,6 +878,7 @@ const model = {
 			isNewUser: 1,
 			isLimit: 1,
 			limit: 1,
+			categories: 1,
 			"miaosha": 1,
 			"rate": 1,
 			"yuding": 1,
@@ -1177,7 +1180,7 @@ const model = {
 			//字典表递增获得位id,不靠谱
 			//data["id"] = await genIdentityId("orders");
 			//随机方法
-			data["id"] = genOrderNo();
+			// data["id"] = genOrderNo();
 			if (data.yuding) {
 				//获得预定支付订单id
 				data.yuding.id = "YD_" + genOrderNo();
@@ -1217,6 +1220,7 @@ const model = {
 				endTime: endTime,
 				consuming: endTime - beginTime
 			};
+			console.log("准备订单数据完成", data);
 			//保存订单
 			let res = await orderCollection.add(data);
 			if (!res.id) {

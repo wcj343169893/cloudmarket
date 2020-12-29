@@ -6,6 +6,11 @@ const couponUserCollection = db.collection("cloud_coupon_users");
 const {
 	getDayTime
 } = require('base-common');
+//优惠券类型
+const couponsTypes = {
+	manjine: require('./type/manjine'),
+	manshuliang: require('./type/manshuliang')
+};
 const model = {
 	async exists(data) {
 		const {
@@ -196,85 +201,66 @@ const model = {
 		console.log("查询优惠券", couponsId)
 		//一件商品只能用一张
 		let t = Date.now();
-		let goodsIds = [];
-		let goodsTotal = {};
-		data.goods.map(g => {
-			//秒杀商品不能使用优惠券
-			if (!g.miaosha) {
-				//多规格，合并为一条
-				if (goodsIds.indexOf(g._id) == -1) {
-					goodsIds.push(g._id);
-					goodsTotal[g._id] = g.totalMoney;
-				} else {
-					goodsTotal[g._id] += g.totalMoney;
-				}
-			}
-		});
-		data.goodsIds = goodsIds;
-		data.goodsTotalMoney = goodsTotal;
-
-		let coupons = await this.mine({
-			goods: {
-				_id: cmd.in(goodsIds)
-			},
+		//所有商品的统计，总价，数量，分类下的总价和数量
+		this.getGoodsStatics(data)
+		//查询这个店铺可用的优惠券(店铺券，分类券，商品券)
+		let mineCondition = {
 			shopid,
 			uid,
 			state: 0,
 			beginTime: cmd.lt(t),
 			endTime: cmd.gt(t)
-		});
+		};
+		//查询指定的优惠券id，后面在判断的时候，优惠券也只存在一条
+		if (couponsId) {
+			mineCondition._id = couponsId;
+		}
+		let coupons = await this.mine(mineCondition);
 		if (coupons.length == 0) {
+			//没有优惠券
 			return;
 		}
+		//可用优惠券
 		data.coupons = [];
+		//不可用优惠券
 		data.couponsDisabled = [];
 		//判断可用和不可用
 		let isChecked = false;
 		for (let cou of coupons) {
+			//获得指定类型的优惠券
+			let coupon = couponsTypes[cou.style];
 			cou.checked = false;
-			cou.innerGoodsIds = [];
-			if (cou.manjine && cou.goods) {
-				//此张优惠券统计到的总金额，可能是多个商品累加的
-				cou.totalMoney = 0;
-				cou.goods.map(g => {
-					if (goodsTotal[g._id]) {
-						cou.totalMoney += goodsTotal[g._id];
-						cou.innerGoodsIds.push(g._id);
-					}
-				})
-				//判断条件
-				if (cou.totalMoney >= cou.manjine.condition) {
-					//可用
-					if (couponsId) {
-						console.log("比较优惠券", cou._id, couponsId)
-						if (cou._id == couponsId) {
-							cou.checked = true;
-							isChecked = true;
-						}
-					} else if (!isChecked) {
-						//首次自动选择
-						cou.checked = true;
-						isChecked = true;
-						data.couponsId = cou._id;
-					}
-					data.coupons.push(cou);
-				} else {
-					data.couponsDisabled.push(cou);
+			//处理符合优惠券的商品信息
+			coupon.statistical(cou, data);
+			//判断条件，所有优惠券只能用一张
+			if (coupon.check(cou)) {
+				//可用
+				if (!isChecked) {
+					//首次自动选择
+					console.log("首次自动选择", cou._id, couponsId)
+					cou.checked = true;
+					isChecked = true;
+					data.couponsId = cou._id;
 				}
+				data.coupons.push(cou);
+			} else {
+				//不可用
+				data.couponsDisabled.push(cou);
 			}
 			if (cou.checked) {
 				data.couponsChecked = cou;
+				console.log(cou)
 				if (data.submit) {
-					data.totalDiscount += cou.price;
-					data.totalMoney -= cou.price;
-					let per = cou.price / cou.totalMoney;
+					data.totalDiscount += cou.discount;
+					data.totalMoney -= cou.discount;
+					let per = cou.discount / cou.totalMoney;
 					//分摊优惠到各个商品
 					data.goods.forEach(g => {
 						if (cou.innerGoodsIds.indexOf(g._id) != -1) {
 							g.discount += Number((per * g.totalMoney).toFixed(2));
 						}
 					});
-					console.log(JSON.stringify(data.goods))
+					//console.log(JSON.stringify(data.goods))
 					//更新优惠券为已使用，使用时间
 					let res2 = await couponUserCollection.where({
 						_id: cou._id,
@@ -284,16 +270,82 @@ const model = {
 						endTime: cmd.gt(t)
 					}).update({
 						state: 1,
+						useData: {
+							ids: data.goodsTotalIds,
+							order: data.id,
+							money: data.goodsTotalMoneyMap,
+							amount: data.goodsTotalAmountMap,
+							category: data.goodsTotalCategoryMap
+						},
 						useTime: Date.now()
 					});
 					if (res2.updated < 1) {
 						throw new Error("优惠券使用失败");
 					}
 					console.log("使用优惠券成功", cou._id);
+					delete data.goodsTotalIds;
+					//所有商品总价统计
+					delete data.goodsTotalMoney;
+					delete data.goodsTotalMoneyMap;
+					//所有商品数量统计
+					delete data.goodsTotalAmount;
+					delete data.goodsTotalAmountMap;
+					//分类累加统计
+					delete data.goodsTotalCategoryMap;
+
+					delete data.coupons;
+					delete data.couponsDisabled;
 				}
 			}
 
 		}
+	},
+	/**
+	 * 获得此次订单的商品统计
+	 * @param {Object} data
+	 */
+	getGoodsStatics(data) {
+		let goodsIds = [];
+		//所有商品总价统计
+		data.goodsTotalMoney = 0;
+		data.goodsTotalMoneyMap = {};
+		//所有商品数量统计
+		data.goodsTotalAmount = 0;
+		data.goodsTotalAmountMap = {};
+		//分类累加统计
+		data.goodsTotalCategoryMap = {};
+		data.goods.map(g => {
+			//秒杀商品不能使用优惠券
+			if (!g.miaosha) {
+				//多规格，合并为一条
+				if (goodsIds.indexOf(g._id) == -1) {
+					goodsIds.push(g._id);
+					data.goodsTotalMoneyMap[g._id] = g.totalMoney;
+					data.goodsTotalAmountMap[g._id] = g.amount;
+				} else {
+					data.goodsTotalMoneyMap[g._id] += g.totalMoney;
+					data.goodsTotalAmountMap[g._id] += g.amount;
+				}
+				if (g.categories) {
+					g.categories.map(cate => {
+						if (!data.goodsTotalCategoryMap[cate.id]) {
+							data.goodsTotalCategoryMap[cate.id] = {
+								totalMoney: 0,
+								totalAmount: 0,
+								gids: []
+							}
+						}
+						data.goodsTotalCategoryMap[cate.id].totalAmount += g.amount;
+						data.goodsTotalCategoryMap[cate.id].totalMoney += g.totalMoney;
+						data.goodsTotalCategoryMap[cate.id].gids.push(g._id);
+					});
+				}
+
+				data.goodsTotalAmount += g.amount;
+				data.goodsTotalMoney += g.totalMoney;
+			}
+		});
+		data.goodsTotalIds = goodsIds;
 	},
 	/**
 	 * 取消一条
