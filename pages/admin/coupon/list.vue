@@ -7,32 +7,36 @@
 		</view>
 		<view class="container padding container-fixed" :class="[globalAdminClass]">
 			<unicloud-db ref="udb" collection="cloud_coupons" orderby="modified desc,created desc, _id desc" :options="options"
-			 :where="where" :page-size="options.pageSize" :page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error}">
+			 :where="where" :page-size="options.pageSize" :page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error}"
+			 @load="onqueryload">
 				<view class="order-item bg-white radius padding-sm margin-bottom-sm" v-for="(item, index) in data" :key="index"
 				 @click="navToItem('/pages/admin/coupon/edit?id='+item._id)">
 					<view class="text-lg">
 						<text>{{item.title}}</text>
 					</view>
-					<view class="item flex align-center" v-if="item.manjine">
-						<text class="price text-lg">{{item.manjine.amount}}</text>
+					<view class="item flex align-center">
+						<text class="price text-lg" v-if="item.manjine">{{item.manjine.amount}}</text>
+						<text class="price text-lg" v-else-if="item.manshuliang">{{item.manshuliang.amount}}</text>
 						<view class="text-sm flex-sub">
 							<view class="text-lg">
-								<text>满{{item.manjine.condition}}元可用</text>
+								<text v-if="item.manjine">满{{item.manjine.condition}}元可用</text>
+								<text v-else-if="item.manshuliang">满{{item.manshuliang.condition}}件可用</text>
 								<text v-if="item.type == 1" class="margin-left-sm text-yellow text-sm">商品券</text>
 								<text v-else-if="item.type == 2" class="margin-left-sm text-yellow text-sm">分类券</text>
 								<text v-else-if="item.type == 3" class="margin-left-sm text-yellow text-sm">店铺券</text>
 							</view>
 							<view class="time text-sm padding-top-xs">
-								<text>{{ item.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
+								<text>{{ item.beginTime  }}</text>
 								<text class="padding-xs">~</text>
-								<text>{{ item.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</text>
+								<text>{{ item.endTime  }}</text>
 								<view class="text-xs">
 									<text>{{item.memo}}</text>
 								</view>
 							</view>
 							<view class="time text-sm padding-top-xs">
-								<text>库存：{{item.stock}}</text>
-								<text class="padding-left-sm">已领取：{{item.statistics?item.statistics.count:0}}</text>
+								<text>库存：{{item.stock?item.stock:0}}</text>
+								<text class="padding-left-sm">已领取：{{item.statistics && item.statistics.count?item.statistics.count:0}}</text>
+								<text class="padding-left-sm">已使用：{{item.statistics && item.statistics.used?item.statistics.used:0}}</text>
 							</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -57,6 +61,9 @@
 	import {
 		adminNetwork
 	} from '@/common/admin_request.js';
+	import {
+		dateFormat
+	} from '@/common/functions.js';
 	export default {
 		data() {
 			return {
@@ -110,6 +117,16 @@
 				}, err => {}).finally(f => {
 					this.loaded = true;
 				}); */
+			},
+			onqueryload(data, ended, pagination) {
+				data.forEach(item => {
+					if (item.beginTime) {
+						item.beginTime = dateFormat(item.beginTime, 'yyyy-MM-dd hh:mm:ss');
+					}
+					if (item.endTime) {
+						item.endTime = dateFormat(item.endTime, 'yyyy-MM-dd hh:mm:ss');
+					}
+				})
 			},
 			refreshList() {
 				this.$refs.udb.loadData({

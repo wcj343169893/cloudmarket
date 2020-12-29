@@ -1399,6 +1399,7 @@ const model = {
 				modified: new Date().toISOString()
 			});
 			let couponsIds = [];
+			let couponsOriginId = [];
 			for (let order of orders.data) {
 				for (let ele of order.goods) {
 					if (ele.miaosha) {
@@ -1413,10 +1414,11 @@ const model = {
 				console.log("resUser", resUser);
 				if (order.couponsChecked) {
 					couponsIds.push(order.couponsChecked._id)
+					couponsOriginId.push(order.couponsChecked.id)
 				}
 			}
 			if (couponsIds.length > 0) {
-				await coupons.canceledMany(couponsIds);
+				await coupons.canceledMany(couponsIds,couponsOriginId);
 			}
 		}
 	},

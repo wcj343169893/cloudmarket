@@ -290,6 +290,13 @@ const model = {
 						throw new Error("优惠券使用失败");
 					}
 					console.log("使用优惠券成功", cou._id);
+					//更新优惠券已使用数量
+					await couponCollection.doc(cou.id).update({
+						statistics: {
+							used: cmd.inc(1)
+						}
+					})
+					console.log("优惠券使用统计", cou.id);
 					delete data.goodsTotalIds;
 					//所有商品总价统计
 					delete data.goodsTotalMoney;
@@ -358,22 +365,34 @@ const model = {
 	 * @param {Object} ids
 	 */
 	async canceled(coupons) {
-		console.log("返还优惠券", coupons._id)
+		console.log("返还优惠券", coupons._id, coupons.id)
 		await couponUserCollection.doc(coupons._id).update({
 			state: 0
 		});
+		await couponCollection.doc(coupons.id).update({
+			statistics: {
+				used: cmd.inc(-1)
+			}
+		})
 	},
 	/**
 	 * 取消多条
 	 * @param {Object} ids
 	 */
-	async canceledMany(ids) {
+	async canceledMany(ids, couponsOriginIds) {
 		console.log("返还优惠券", ids)
 		await couponUserCollection.where({
 			_id: cmd.in(ids)
 		}).update({
 			state: 0
 		});
+		await couponCollection.where({
+			_id: cmd.in(couponsOriginIds)
+		}).update({
+			statistics: {
+				used: cmd.inc(-1)
+			}
+		})
 	},
 	/**
 	 * 自己领取的优惠券
