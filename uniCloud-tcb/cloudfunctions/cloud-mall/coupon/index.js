@@ -232,6 +232,13 @@ const model = {
 			cou.checked = false;
 			//处理符合优惠券的商品信息
 			coupon.statistical(cou, data);
+		}
+		//根据优惠金额倒序排序
+		coupons.sort((a, b) => a.discount - b.discount);
+		//抽取可用优惠券
+		for (let cou of coupons) {
+			//获得指定类型的优惠券
+			let coupon = couponsTypes[cou.style];
 			//判断条件，所有优惠券只能用一张
 			if (coupon.check(cou)) {
 				//可用
@@ -297,7 +304,6 @@ const model = {
 					delete data.couponsDisabled;
 				}
 			}
-
 		}
 	},
 	/**

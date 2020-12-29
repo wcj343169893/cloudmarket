@@ -222,7 +222,7 @@
 					<view class="yticon icon-xuanzhong2 result" :class="{ checked: item.checked }"></view>
 				</view>
 				<view v-if="couponsDisabled && couponsDisabled.length > 0">
-					<view class="padding-left-sm">
+					<view class="padding-xs">
 						<text>以下优惠券不可用</text>
 					</view>
 					<view class="coupon-item disabled" v-for="(item, index) in couponsDisabled" :key="index">
@@ -658,7 +658,7 @@
 				}, true).then(
 					res => {
 						let id = res;
-						let money = this.totalMoney + this.freight;
+						let money = this.totalMoney + this.freight - this.couponsDiscount;
 						//this.isSubmit = false;
 						//刷新购物车列表
 						/* try {
