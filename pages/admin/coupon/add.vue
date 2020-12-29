@@ -36,21 +36,21 @@
 				<uni-data-checkbox v-model="formData.style" :localdata="formOptions.style_localdata" />
 			</uni-forms-item>
 			<block v-if="formData.style == 'manjine'">
-				<uni-forms-item name="" label="满足条件" class="flex-item">
+				<uni-forms-item label="满足条件" class="flex-item">
 					<uni-easyinput type="number" v-model="formData.manjine.condition" />
 					<text class="margin-left-sm">元</text>
 				</uni-forms-item>
-				<uni-forms-item name="" label="优惠金额" class="flex-item">
+				<uni-forms-item label="优惠金额" class="flex-item">
 					<uni-easyinput type="number" v-model="formData.manjine.amount" />
 					<text class="margin-left-sm">元</text>
 				</uni-forms-item>
 			</block>
 			<block v-else-if="formData.style == 'manshuliang'">
-				<uni-forms-item name="" label="满足条件" class="flex-item">
+				<uni-forms-item label="满足条件" class="flex-item">
 					<uni-easyinput type="number" v-model="formData.manshuliang.condition" />
 					<text class="margin-left-sm">件</text>
 				</uni-forms-item>
-				<uni-forms-item name="" label="优惠金额" class="flex-item">
+				<uni-forms-item label="优惠金额" class="flex-item">
 					<uni-easyinput type="number" v-model="formData.manshuliang.amount" />
 					<text class="margin-left-sm">元</text>
 				</uni-forms-item>
@@ -160,7 +160,7 @@
 				rules: {
 					...getValidator(["beginTime", "endTime", "goods", "category", "limit", "manjine", "memo", "shopid", "state",
 						"title", "today",
-						"type", "style","stock"
+						"type", "style", "stock"
 					])
 				}
 			}
