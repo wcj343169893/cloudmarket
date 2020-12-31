@@ -16,6 +16,9 @@ export default {
 			return this.$store.state.hasLogin;
 		},
 		shopId() {
+			if(this.shopid){
+				return this.shopid;
+			}
 			return this.$store.state.shopId;
 		},
 		adminShopId() {
@@ -209,13 +212,17 @@ export default {
 		 * 获取分享参数
 		 * @param {Object} path
 		 */
-		getShareContent(path, query = []) {
+		getShareContent(path, query = [], redirect) {
 			let imageUrl, title = "";
 			if (this.userInfo && this.userInfo.my_invite_code) {
 				query.push('u=' + this.userInfo.my_invite_code);
 			}
 			if (this.shopId) {
 				query.push(`shopid=${this.shopId}`)
+			}
+			if (redirect) {
+				path="/pages/index/fruit";
+				query.push(`rdt=${redirect}`)
 			}
 			if (!this.share.title || this.share.title.trim() == "") {
 				//读取首页分享
@@ -233,7 +240,11 @@ export default {
 					imageUrl = this.share.imageUrl;
 				}
 			}
-			console.log(title)
+			console.log({
+				title,
+				imageUrl,
+				path: path + "?" + query.join('&')
+			})
 			return {
 				title,
 				imageUrl,

@@ -275,18 +275,20 @@
 				// 来自页面内分享按钮
 				console.log(res.target);
 			}
-			let query = [`id=${this.id}`, 'referer=share'];
+			let query = [`id=${this.id}`];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}
-			return this.getShareContent('/pages/product/product', query);
+			//return this.getShareContent('/pages/product/product', query);
+			return this.getShareContent('', query, "product");
 		},
 		onShareTimeline(res) {
-			let query = [`id=${this.id}`, 'referer=share'];
+			let query = [`id=${this.id}`];
 			if (this.default_sku_id) {
 				query.push(`sid=${this.default_sku_id}`)
 			}
-			return this.getShareContent('/pages/product/product', query);
+			//return this.getShareContent('/pages/product/product', query);
+			return this.getShareContent('', query, "product");
 		},
 		//#endif
 		methods: {
@@ -453,6 +455,11 @@
 				}
 				if (!this.isCategoryShow) {
 					this.isSold = false;
+				}
+				//再次设置店铺id
+				console.log("this.shopid",this.shopid)
+				if(!this.shopid){
+					
 				}
 				this.loaded = true;
 			},

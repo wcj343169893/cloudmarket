@@ -26,8 +26,12 @@ const models = {
 			longitude,
 			latitude
 		} = data;
+		//必须保证有经纬度
+		if (!longitude || !latitude) {
+			return false;
+		}
 		let res = await shopCollection.where({
-			state:true,
+			state: true,
 			lnglat: cmd.geoNear({
 				geometry: new db.Geo.Point(longitude, latitude),
 				// minDistance: 0,

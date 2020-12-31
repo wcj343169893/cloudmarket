@@ -238,12 +238,19 @@
 				console.log('watch 店铺id改变,刷新当前页面', id, this.shop);
 				if (this.shop.id != id) {
 					this.loadData();
+				} else {
+					console.log("店铺没有改变")
 				}
 			}
 		},
 		onLoad(options) {
 			console.log("fruit onload", options)
-			this.getUserLocation();
+			if (!options.shopid) {
+				this.getUserLocation();
+			} else {
+				this.loadData();
+			}
+			this.pageRedirect(options);
 			uni.$on('logoutEvent', () => {
 				console.log("触发全局退出事件")
 				this.checkLogout();
@@ -588,6 +595,35 @@
 					uni.navigateTo({
 						url: `/pages/index/chooseAddress`
 					});
+				}
+			},
+			pageRedirect(options) {
+				let query = "";
+				let queryArr = [];
+				for (let key in options) {
+					queryArr.push(`${key}=${options[key]}`)
+				}
+				query = queryArr.join("&");
+				let pageMap = {
+					"product": "/pages/product/product"
+				};
+				//检测是否需要跳转
+				if (options.rdt && pageMap[options.rdt]) {
+					//页面跳转
+					let url = pageMap[options.rdt] + "?" + query;
+					setTimeout(() => {
+						uni.navigateTo({
+							url
+						})
+					}, 500)
+				} else if (options.sdt && pageMap[options.sdt]) {
+					//导航栏切换
+					let url = pageMap[options.rdt];
+					setTimeout(() => {
+						uni.switchTab({
+							url
+						})
+					}, 500)
 				}
 			}
 		},

@@ -4,6 +4,7 @@ const cmd = db.command;
 const NodeRSA = require('node-rsa');
 const jwt = require('jsonwebtoken');
 const uniID = require('uni-id');
+const userCollection = db.collection("uni-id-users");
 //极光配置，公钥需要设置到极光后台，app包名需要对应上，否则无法验证
 const {
 	getLoginConfig,
@@ -118,7 +119,9 @@ const model = {
 	async mobile(data, context) {
 		console.log(data)
 		if (this.testMobile.indexOf(data.mobile) != -1) {
-			let {code} = await this.setVerifyCode(data.mobile,3600);
+			let {
+				code
+			} = await this.setVerifyCode(data.mobile, 3600);
 			data.code = code;
 			console.log(data);
 		}
@@ -142,6 +145,8 @@ const model = {
 					inviteCode: data.inviteCode
 				});
 				console.log("设置微信用户邀请码", res.uid, data.inviteCode)
+				//同步邀请者的提货点
+				await this.syncInfoByInviteCode(data.inviteCode, res.uid);
 			}
 			await this.pushAdmin(res, context);
 			return res;
@@ -196,6 +201,33 @@ const model = {
 				uid: res.uid,
 				admin: [123457, 123458, 123460]
 			});
+		}
+	},
+	/**
+	 * 同步邀请者的信息
+	 * @param {Object} code
+	 * @param {Object} uid
+	 */
+	async syncInfoByInviteCode(code, uid) {
+		if (!code) {
+			return false;
+		}
+		let inviteInfo = await userCollection.where({
+			my_invite_code: code
+		}).limit(1).get();
+		if (inviteInfo.data.length == 0) {
+			console.log("邀请者信息不存在")
+			return;
+		}
+		let {
+			raisingPoint
+		} = inviteInfo.data[0];
+		//同步提货点
+		if (raisingPoint) {
+			await userCollection.doc(uid).update({
+				raisingPoint
+			});
+			console.log("同步邀请者提货点完成", raisingPoint)
 		}
 	}
 }

@@ -15,12 +15,15 @@ const {
 } = require("../selfraising");
 const models = {
 	//首页
-	async index(data) {
+	async index(data, context) {
 		let {
 			uid,
 			shopid,
 			raisingPoint
 		} = data;
+		const {
+			userInfo
+		} = context;
 		//默认店铺id
 		let defaultShopId = 123457;
 		let longitude = data.longitude ? +data.longitude : 113.92246555717469;
@@ -75,18 +78,24 @@ const models = {
 				})
 			}
 			shopInfo.isSelfRaisingPoint = false;
-			if (shopInfo.selfRaising && shopInfo.selfRaising.enable && shopInfo.deliveryTypes && shopInfo.deliveryTypes.indexOf("selfRaising") != -1) {
+			if (shopInfo.selfRaising && shopInfo.selfRaising.enable && shopInfo.deliveryTypes && shopInfo.deliveryTypes.indexOf(
+					"selfRaising") != -1) {
 				shopInfo.isSelfRaisingPoint = true;
 				//默认查询一条自提点
 				if (!raisingPoint || !raisingPoint._id) {
-					let raisingPointData = await nearestSelfraisingPoint({
-						page: 1,
-						limit: 1,
-						longitude,
-						latitude
-					});
-					if (raisingPointData.length > 0) {
-						shopInfo["nearestRaisingPoint"] = raisingPointData[0];
+					//优先默认用户自己设置的提货点
+					if (userInfo && userInfo.raisingPoint) {
+						shopInfo["nearestRaisingPoint"] = userInfo.raisingPoint;
+					} else {
+						let raisingPointData = await nearestSelfraisingPoint({
+							page: 1,
+							limit: 1,
+							longitude,
+							latitude
+						});
+						if (raisingPointData.length > 0) {
+							shopInfo["nearestRaisingPoint"] = raisingPointData[0];
+						}
 					}
 				}
 			}
