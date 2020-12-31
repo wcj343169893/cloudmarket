@@ -7,7 +7,7 @@
 		</view>
 		<view class="container padding container-fixed" :class="[globalAdminClass]">
 			<unicloud-db ref="udb" collection="cloud_coupons" orderby="modified desc,created desc, _id desc" :options="options"
-			 :where="where" :page-size="options.pageSize" :page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error}"
+			 :where="dbWhere" :page-size="options.pageSize" :page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error}"
 			 @load="onqueryload">
 				<view class="order-item bg-white radius padding-sm margin-bottom-sm" v-for="(item, index) in data" :key="index"
 				 @click="navToItem('/pages/admin/coupon/edit?id='+item._id)">
@@ -96,15 +96,22 @@
 				}]
 			};
 		},
-		onLoad() {
-			this.tab(0);
-		},
+		onLoad() {},
 		onPullDownRefresh() { //下拉刷新
 			this.$refs.udb.loadData({
 				clear: true //可选参数，是否清空数据
 			}, () => {
 				uni.stopPullDownRefresh()
 			})
+		},
+		computed: {
+			dbWhere() {
+				let where = ["shopid == " + this.adminShopId];
+				if (this.where) {
+					where.push(this.where);
+				}
+				return where.join(" && ");
+			}
 		},
 		//滑到底部加载更多
 		onReachBottom() {
@@ -134,14 +141,12 @@
 				}, () => {})
 			},
 			tab(index) {
-				let where = ["shopid == " + this.adminShopId];
 				this.tabs.forEach((t, i) => {
 					t.selected = i == index;
 					if (t.selected && this.tabs[index].where) {
-						where.push(this.tabs[index].where)
+						this.where = this.tabs[index].where;
 					}
 				})
-				this.where = where.join(" && ");
 			}
 		}
 	}
