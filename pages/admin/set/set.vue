@@ -44,6 +44,7 @@
 			<cloud-image title="优惠券入口图标" tips="最佳尺寸100*100" :value="coupons.icon" field="coupons.icon" @input="changeField"></cloud-image>
 		</block>
 		<mix-list-checkbox title="是否启用" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
+		<mix-list-cell title="开分店" @eventClick="navTo('/pages/admin/set/copy')" tips="设置分类/商品/文档/广告"></mix-list-cell>
 	</view>
 </template>
 <script>

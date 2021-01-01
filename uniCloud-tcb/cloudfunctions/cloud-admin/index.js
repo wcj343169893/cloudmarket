@@ -14,6 +14,7 @@ const modules = {
 	selfraising: require("./selfraising"),
 	video: require("./video"),
 	coupon: require("./coupon"),
+	imports: require("./imports"),
 };
 const uniID = require('uni-id');
 /**

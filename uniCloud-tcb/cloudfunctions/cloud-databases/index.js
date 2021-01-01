@@ -2,6 +2,12 @@
 const db = uniCloud.database();
 const cmd = db.command;
 /**
+ * 必须登录才能访问,cart子模块，list方法
+ */
+const mustLoginActions = {
+	imports: ["*"],
+}
+/**
  * 导出、导入集合数据
  */
 exports.main = async (event, context) => {
@@ -40,6 +46,11 @@ exports.main = async (event, context) => {
 			data = Object.assign(data, querystring.parse(event.body));
 		}
 		console.log(module, action, data);
+	}
+	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
+			action))) {
+		//不允许直接访问
+		return false;
 	}
 	let model = require(`./${module}`);
 	let result;

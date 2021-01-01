@@ -713,6 +713,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "set/copy",
+			"style": {
+				"navigationBarTitleText": "开分店",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}, {
 		"root": "pages/video",

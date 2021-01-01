@@ -129,7 +129,9 @@ export default {
 			this.isSubmit = true;
 			//如果回调不成功，则认为本次执行完毕
 			if (!fn()) {
-				this.$finishSubmit();
+				setTimeout(()=>{
+					this.$finishSubmit();
+				},500)
 			}
 		},
 		/**

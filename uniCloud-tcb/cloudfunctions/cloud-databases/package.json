@@ -1,6 +1,6 @@
 {
 	"cloudfunction-config": {
-		"memorySize": 256,
+		"memorySize": 1024,
 		"path": "/databases",
 		"timeout": 60,
 		"triggers": [

@@ -12,6 +12,7 @@ const {
 } = require('base-common');
 const models = {
 	shopid: 0,
+	originShopId: 0,
 	/**
 	 * 新旧分类id
 	 */
@@ -22,21 +23,39 @@ const models = {
 	 * @param {Object} event
 	 */
 	async copy(event) {
-		let res;
+		const {
+			database,
+			synchronization,
+			originShopId,
+			users
+		} = event;
 		//复制店铺
-		res = await this.shop(event);
+		let res = await this.shop({
+			synchronization,
+			originShopId
+		});
 		console.log("店铺复制完成", res)
 		//添加用户管理权限
-		res = await this.addUserShopAdmin(event);
-		console.log("添加用户管理权限完成", res);
-		res = await this.goodsCategory(event);
-		console.log("分类复制完成", res)
-		res = await this.goods(event);
-		console.log("商品复制完成", res)
-		res = await this.documents(event);
-		console.log("说明文档复制完成", res)
-		res = await this.ads(event);
-		console.log("广告复制完成", res)
+		if (users) {
+			res = await this.addUserShopAdmins(users);
+			console.log("添加用户管理权限完成", res);
+		}
+		if (database.category) {
+			res = await this.goodsCategory();
+			console.log("分类复制完成", res)
+			if (database.goods) {
+				res = await this.goods();
+				console.log("商品复制完成", res)
+			}
+		}
+		if (database.documents) {
+			res = await this.documents();
+			console.log("说明文档复制完成", res)
+		}
+		if (database.ads) {
+			res = await this.ads();
+			console.log("广告复制完成", res)
+		}
 		return res;
 	},
 	/**
@@ -44,11 +63,24 @@ const models = {
 	 * @param {Object} event
 	 */
 	async shop(event) {
-		let info = require("./shop.json");
+		let info = {};
+		if (event.originShopId) {
+			let res = await shopCollection.where({
+				id: +event.originShopId
+			}).get();
+			if (res.data.length == 0) {
+				return false;
+			}
+			info = res.data[0];
+			this.originShopId = info.id;
+		} else {
+			info = require("./shop.json");
+		}
 		this.shopid = await genIdentityId("shops");
 		info = Object.assign(info, {
 			...event
 		}, {
+			_id: undefined,
 			id: this.shopid,
 			dayStatisticsLog: undefined,
 			goods: {},
@@ -73,19 +105,37 @@ const models = {
 		}
 	},
 	/**
+	 * 添加用户管理店铺权限
+	 * @param {Object} event
+	 */
+	async addUserShopAdmins(users) {
+		return await userCollection.where({
+			_id: cmd.in(users)
+		}).update({
+			role: ["admin"],
+			admin: cmd.addToSet(this.shopid)
+		});
+	},
+	/**
 	 * 一次导入所有分类,最好分类id不一样
 	 */
-	async goodsCategory(event) {
-		const {
-			shopid
-		} = event;
-		let categoryList = require("./goodsCategory.json");
-		if (shopid) {
-			this.shopid = shopid;
+	async goodsCategory() {
+		let categoryList;
+		if (this.originShopId) {
+			let res = await categoryCollection.where({
+				shopid: this.originShopId
+			}).orderBy("id", "asc").get();
+			if (res.data.length == 0) {
+				return false;
+			}
+			categoryList = res.data;
+		} else {
+			categoryList = require("./goodsCategory.json");
 		}
 		//计算总个数，包含一级和二级
 		let cateCount = categoryList.length;
 		categoryList.forEach(main => {
+			main._id = undefined;
 			if (main.children) {
 				cateCount += main.children.length;
 			}
@@ -105,6 +155,9 @@ const models = {
 		console.log(res);
 
 	},
+	/**
+	 * 弃用
+	 */
 	async getCategoryImg() {
 		let categoryList = require("./goodsCategory.json");
 		let path = "https://xxx.tcb.qcloud.la";
@@ -116,6 +169,9 @@ const models = {
 		});
 		return urls;
 	},
+	/**
+	 * 弃用
+	 */
 	async getGoodsImg() {
 		const goodsList = require("./goods.json");
 		let path = "https://xxx.tcb.qcloud.la";
@@ -161,14 +217,19 @@ const models = {
 	 * 分页导入商品1571，商品id新生成
 	 */
 	async goods(event) {
-		const {
-			shopid,
-			domain
-		} = event;
-		if (shopid) {
-			this.shopid = shopid;
+		let goodsList;
+		if (this.originShopId) {
+			let res = await goodsCollection.where({
+				shopid: this.originShopId
+			}).limit(1000).get();
+			if (res.data.length == 0) {
+				return false;
+			}
+			goodsList = res.data;
+		} else {
+			//从配置文件分配导入
+			goodsList = require("./goods.json");
 		}
-		const goodsList = require("./goods.json");
 		let data = [],
 			res;
 		let startId = await genIdentityId("goods", goodsList.length) - goodsList.length;
@@ -184,12 +245,13 @@ const models = {
 				})
 			}
 			//替换图片域名
-			if (domain) {
+			/* if (domain) {
 				this.replaceGoodsUrlDomain(goods, domain);
-			}
+			} */
 			goods = Object.assign(goods, {
 				shopid: this.shopid,
 				id: startId,
+				originId: goods._id,
 				_id: undefined
 			});
 			data.push(goods);
@@ -206,14 +268,20 @@ const models = {
 	/**
 	 * 批量复制文档
 	 */
-	async documents(event) {
-		const {
-			shopid
-		} = event;
-		if (shopid) {
-			this.shopid = shopid;
+	async documents() {
+		let documentList
+		if (this.originShopId) {
+			let res = await documentsCollection.where({
+				shopid: this.originShopId
+			}).get();
+			if (res.data.length == 0) {
+				return false;
+			}
+			documentList = res.data;
+		} else {
+			documentList = require("./documents.json");
 		}
-		let documentList = require("./documents.json");
+
 		documentList.forEach(doc => {
 			doc = Object.assign(doc, {
 				shopid: this.shopid,
@@ -229,13 +297,18 @@ const models = {
 	 * @param {Object} event
 	 */
 	async ads(event) {
-		const {
-			shopid
-		} = event;
-		if (shopid) {
-			this.shopid = shopid;
+		let data
+		if (this.originShopId) {
+			let res = await adsCollection.where({
+				shopid: this.originShopId
+			}).get();
+			if (res.data.length == 0) {
+				return false;
+			}
+			data = res.data;
+		} else {
+			data = require("./ads.json");
 		}
-		let data = require("./ads.json");
 		data.forEach(doc => {
 			doc = Object.assign(doc, {
 				shopid: this.shopid,

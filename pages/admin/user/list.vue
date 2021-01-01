@@ -32,7 +32,7 @@
 							<text>余额：</text>
 							<text>{{item.balance | toFixed}}</text>
 						</view>
-						<text class="button">充值</text>
+						<text class="button" v-if="type=='charge'">充值</text>
 					</view>
 					<view class="">
 						<text>手机号：</text>
@@ -54,11 +54,24 @@
 						<text v-if="item.register_date > 0">{{item.register_date | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 						<text v-else>无记录</text>
 					</view>
+					<block v-if="type == 'chooseone'">
+						<view class="flex"><button class="cu-btn margin-tb-sm sm" @click.stop="choose(item)">选择</button></view>
+					</block>
+					<block v-else-if="type == 'choosemany'">
+						<view class="flex">
+							<button class="cu-btn bg-green margin-tb-sm sm" v-if="item.selected" @click.stop="select(item)">已选择</button>
+							<button class="cu-btn margin-tb-sm sm" v-else @click.stop="select(item)">请选择</button>
+						</view>
+					</block>
 				</view>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
 		<uni-fab v-if="state.indexOf('Member') != -1" :content="fab.content" @trigger="fabTrigger" horizontal="right"></uni-fab>
+		<view class="fixed-area" v-if="type == 'choosemany'">
+			<text>已选择{{selectLength}}人</text>
+			<button class="cu-btn bg-green margin-tb-sm sm margin-left-sm" @click="choosemany()">确定</button>
+		</view>
 		<uni-popup ref="rechargePop" type="dialog">
 			<uni-popup-dialog type="warn" title="账户充值" placeholder="请输入充值金额" mode="input" :before-close="true" @close="close"
 			 @confirm="confirm"></uni-popup-dialog>
@@ -81,6 +94,9 @@
 		},
 		data() {
 			return {
+				type: 'normal',
+				selectLength: 0,
+				selectedIds: [],
 				limit: 20,
 				sortList: [{
 						name: '综合排序',
@@ -106,7 +122,7 @@
 				],
 				listType: 'column', //列表类型 column竖向列表 row 横向列表
 				userList: [],
-				state: "",
+				state: "all",
 				rechargeItem: {},
 				fab: {
 					pattern: {},
@@ -118,12 +134,24 @@
 			};
 		},
 		onLoad(options) {
-			this.state = options.state;
+			if (options.state) {
+				this.state = options.state;
+			}
+			if (options.type) {
+				this.type = options.type;
+				this.loadSelectedIds();
+			}
 			this.loadData();
 			//设置标题
 			this.setNavTitle();
 		},
 		methods: {
+			loadSelectedIds() {
+				this.selectedIds = uni.getStorageSync("selectedIds");
+				if (this.selectedIds) {
+					this.selectLength = this.selectedIds.length;
+				}
+			},
 			async loadData() {
 				this.loadingType = 'loading';
 				this.page++;
@@ -135,6 +163,9 @@
 					sort: this.sortList.filter(item => item.current)[0].type,
 				}, false).then(res => {
 					res.forEach(usr => {
+						if (this.type == "choosemany") {
+							usr.selected = this.selectedIds.indexOf(usr._id) != -1;
+						}
 						if (!usr.balance) {
 							usr.balance = 0;
 						}
@@ -244,7 +275,7 @@
 				//#ifdef APP-PLUS
 				uni.setClipboardData({
 					data: url,
-					success: ()=> {
+					success: () => {
 						this.$api.success('下载地址已复制')
 					}
 				});
@@ -264,7 +295,36 @@
 						}
 					}
 				}); */
-			}
+			},
+			choose(item) {
+				//选中数据，并传递个上一个界面
+				this.$api.prePage().refreshList(item, "users");
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					});
+				}, 100);
+			},
+			select(item) {
+				item.selected = !item.selected;
+				if (item.selected) {
+					this.selectLength++;
+				} else {
+					this.selectLength--;
+				}
+			},
+			choosemany() {
+				let userList = this.userList.filter(g => {
+					return g.selected;
+				})
+				//选中数据，并传递个上一个界面
+				this.$api.prePage().refreshList(userList, "users");
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					});
+				}, 100);
+			},
 		}
 	}
 </script>
