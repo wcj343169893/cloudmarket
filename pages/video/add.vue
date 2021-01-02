@@ -3,7 +3,7 @@
 		<!-- 商品 -->
 		<block v-if="goods.id > 0">
 			<view class="goods-box-single b-b">
-				<image class="goods-img" :src="goods.src" mode="aspectFill"></image>
+				<image class="goods-img" :src="goods.src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
 						<text class="title clamp">{{ goods.title }}</text>

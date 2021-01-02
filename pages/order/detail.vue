@@ -153,7 +153,7 @@
 						<view class="weui-flex start">
 							<view class="weui-flex-check">
 								<view class="image-wrapper">
-									<image :src="item.src" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
+									<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
 									 @error="onImageError('goodsList', index)"></image>
 								</view>
 							</view>

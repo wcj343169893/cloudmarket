@@ -8,7 +8,7 @@
 							<view class="weui-flex-check">
 								<view class="image-wrapper">
 									<image
-										:src="item.src"
+										:src="item.src | thumbImg('120x120')"
 										:class="[item.loaded]"
 										mode="aspectFill"
 										lazy-load

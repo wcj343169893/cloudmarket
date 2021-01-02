@@ -4,7 +4,7 @@
 		<view class="cu-list custom">
 			<view class="panel" v-for="(item,index) in dataList" :key="index">
 				<view class="cu-item" @click="navToLocation(item)">
-					<image class="cu-avatar round lg" :src="item.src" mode="aspectFill"></image>
+					<image class="cu-avatar round lg" :src="item.src | thumbImg('120x120')" mode="aspectFill"></image>
 					<view class="content">
 						<view class="text-black">
 							<text>{{ item.name }}</text>

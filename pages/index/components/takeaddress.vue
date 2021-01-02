@@ -2,7 +2,7 @@
 	<view class="">
 		<view class="cu-list menu-avatar">
 			<view class="cu-item" v-for="(item,index) in dataList" :key="index">
-				<image class="cu-avatar round lg" :src="item.src" mode="aspectFill"></image>
+				<image class="cu-avatar round lg" :src="item.src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="content">
 					<view class="text-black">
 						<text>{{ item.name }}</text>

@@ -54,7 +54,7 @@
 			<!-- 分类 -->
 			<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
 				<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
-					<image :src="item.src"></image>
+					<image :src="item.src | thumbImg('80x80')"></image>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>

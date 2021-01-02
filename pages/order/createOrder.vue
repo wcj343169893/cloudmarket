@@ -41,7 +41,7 @@
 				<!-- 自提点 -->
 				<view class="address-section b-b" v-if="isSelfRaisingPoint && raisingPoint._id" @click="navTo('/pages/index/selfraisingpoint')">
 					<view class="order-content">
-						<image :src="raisingPoint.src" mode="aspectFill" class="shoplogo"></image>
+						<image :src="raisingPoint.src | thumbImg('120x120')" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
 							<view class="top">
 								<text class="name">{{ raisingPoint.name }}</text>
@@ -58,7 +58,7 @@
 				<!-- 地址 -->
 				<view class="address-section b-b" v-else @click="navToLocation(shop)">
 					<view class="order-content">
-						<image :src="shop.src" mode="aspectFill" class="shoplogo"></image>
+						<image :src="shop.src | thumbImg('120x120')" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
 							<view class="top">
 								<text class="name">{{ shop.name }}</text>
@@ -86,7 +86,7 @@
 					<scroll-view scroll-x="true" class="goods_list">
 						<view class="scoll-wrapper">
 							<view class="g-item" v-for="(item, index) in dataList" :key="index">
-								<image :src="item.src"></image>
+								<image :src="item.src | thumbImg('120x120')"></image>
 							</view>
 						</view>
 					</scroll-view>
@@ -101,7 +101,7 @@
 			</block>
 			<block v-else>
 				<view class="goods-box-single" v-for="(goodsItem, index) in dataList" :key="index">
-					<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+					<image class="goods-img" :src="goodsItem.src | thumbImg('120x120')" mode="aspectFill"></image>
 					<view class="right">
 						<view class="">
 							<text class="title">{{ goodsItem.title }}</text>

@@ -77,14 +77,26 @@ Vue.filter('toFixed', function(value, num) {
 	return value;
 });
 /**
- * 动态处理缩略图
+ * 动态处理缩略图，居中短边裁剪
  * @param {Object} value
- * @param {Object} num
+ * @param {Object} fmt 宽x高 200x200
  */
 Vue.filter('thumbImg', (value, fmt) => {
 	if (!fmt) {
-		//腾讯云   ?imageMogr2/thumbnail/!200x200r/|imageMogr2/gravity/center/crop/200x200/interlace/0
-		fmt = "";
+		fmt = "200x200";
+	}
+	if (!value) {
+		return "/static/errorImage.jpg"
+	}
+	fmt = fmt.toLowerCase();
+	if (value.indexOf("bspapp.com") > -1) {
+		let wh = fmt.split("x");
+		fmt = `w_${wh[0]},h_${wh[1]}`;
+		//阿里云?x-oss-process=image/resize,m_fill,w_300,h_300
+		return [value, "?x-oss-process=image/resize,m_fill,", fmt].join("");
+	} else if (value.indexOf("qcloud.la") > -1) {
+		//腾讯云?imageMogr2/crop/300x300/gravity/center
+		return [value, "?imageMogr2/crop/", fmt, "/gravity/center"].join("");
 	}
 	return value;
 });

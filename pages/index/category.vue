@@ -23,7 +23,7 @@
 						<view v-for="(item, index) in category.goods" :key="index" class="goodsList">
 							<view class="weui-flex">
 								<view class="image-wrapper" @click="navToGoodsPage(item)">
-									<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+									<image :src="item.src | thumbImg('120x120')" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 								</view>
 								<view class="desc weui-flex__item">
 									<view class="" @click="navToGoodsPage(item)">

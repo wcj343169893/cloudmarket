@@ -2,7 +2,7 @@
 	<view class="container">
 		<view v-for="(item,index) in goodsList" :key="index" class="item">
 			<view class="goodsInfo">
-				<image :src="item.src" mode="aspectFill" class="image"></image>
+				<image :src="item.src | thumbImg('120x120')" mode="aspectFill" class="image"></image>
 				<view class="info">
 					<text class="">{{item.title}}</text>
 					<text class="sub">{{item.name}}</text>

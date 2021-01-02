@@ -3,7 +3,7 @@
 		<view class="space"></view>
 		<!-- 店铺基本信息区域 -->
 		<view class="shopinfo weui-flex" id="shopinfo">
-			<view class="image-wrapper"><image :src="shopinfo.src" mode="aspectFill"></image></view>
+			<view class="image-wrapper"><image :src="shopinfo.src | thumbImg('120x120')" mode="aspectFill"></image></view>
 			<view class="desc">
 				<view class="">
 					<text class="title">{{ shopinfo.name }}</text>

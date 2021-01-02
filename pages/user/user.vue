@@ -104,7 +104,7 @@
 					<text>我的门店</text>
 				</view>
 				<view v-for="(item,index) in admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
-					<image :src="item.src" mode="aspectFill" @click.stop="navToShopHome(item)"></image>
+					<image :src="item.src | thumbImg('120x120')" mode="aspectFill" @click.stop="navToShopHome(item)"></image>
 					<view class="right">
 						<view class="content">
 							<view class="title clamp">
@@ -132,7 +132,7 @@
 			<view class="admin-section" v-if="applyTuanZhang">
 				<block v-if="selfraising && selfraising.length > 0">
 					<view v-for="(item,index) in selfraising" :key="index" class="admin-shops b-b" @click="navToSelfRaisingAdmin(item)">
-						<image :src="item.src" mode="aspectFill"></image>
+						<image :src="item.src | thumbImg('120x120')" mode="aspectFill"></image>
 						<view class="right">
 							<view class="content">
 								<view class="title clamp">
@@ -166,7 +166,7 @@
 					</view>
 					<scroll-view scroll-x class="h-list">
 						<view v-for="(item, index) in visiteGoodsList" :key="index" class="h-list-image">
-							<image :src="item.src" @click="navToGoods(item)" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+							<image :src="item.src | thumbImg('160x160')" @click="navToGoods(item)" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 						</view>
 					</scroll-view>
 				</block>

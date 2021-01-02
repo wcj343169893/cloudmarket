@@ -11,7 +11,7 @@
 				 :class="{ current: item.id == mainCurrentId }" :style="{
 							width: cateWidth
 						}">
-					<image :src="item.src" mode="aspectFill"></image>
+					<image :src="item.src | thumbImg('80x80')" mode="aspectFill"></image>
 					<view class="">
 						<text>{{ item.name }}</text>
 					</view>
@@ -33,7 +33,7 @@
 					 :class="{ current: item.id == mainCurrentId }" :style="{
 							width: cateWidth
 						}">
-						<image :src="item.src" mode="aspectFill"></image>
+						<image :src="item.src | thumbImg('80x80')" mode="aspectFill"></image>
 						<view class="">
 							<text>{{ item.name }}</text>
 						</view>
@@ -74,7 +74,7 @@
 					<view v-for="(item, index) in goodsList" :key="index" class="goodsList" @click="navToGoodsPage(item)">
 						<view class="weui-flex">
 							<view class="image-wrapper">
-								<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+								<image :src="item.src | thumbImg('120x120')" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
 							</view>
 							<view class="desc weui-flex__item">
 								<view class="">

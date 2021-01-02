@@ -10,7 +10,7 @@
 			<uni-forms-item name="goods" label="商品列表" v-if="formData.type==1">
 				<block v-if="formData.goods && formData.goods.length > 0">
 					<view v-for="(g , index) in formData.goods" :key="index" class="flex align-center margin-bottom-sm">
-						<image class="suoluetu" :src="g.src" mode="aspectFill"></image>
+						<image class="suoluetu" :src="g.src | thumbImg('120x120')" mode="aspectFill"></image>
 						<view class="text-sm flex-sub margin-left-sm">
 							<view class="">
 								<text class="title">{{ g.title }}</text>

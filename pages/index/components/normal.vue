@@ -4,7 +4,7 @@
 			<view class="newest-section">
 				<view v-for="(item, index) in dataList" :key="index" class="floor-item" @click="navToGoodsPage(item)">
 					<view class="image-content">
-						<image :src="item.src" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" class="img"></image>
+						<image :src="item.src | thumbImg" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" class="img"></image>
 					</view>
 					<view class="content">
 						<view class="title clamp">

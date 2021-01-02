@@ -21,7 +21,7 @@
 				</view>
 				<view class="flex align-center justify-between margin-top-sm">
 					<view class="header flex-sub flex align-center" v-if="item.goods && item.goods._id" @click="navToGoodsPage(item.goods)">
-						<image :src="item.goods.src" mode="aspectFill" class="cu-avatar round"></image>
+						<image :src="item.goods.src | thumbImg('120x120')" mode="aspectFill" class="cu-avatar round"></image>
 						<view class="margin-left-sm flex flex-column flex-sub">
 							<text>{{ item.goods.title }}</text>
 							<text class="text-sm">{{ item.goods.subTitle }}</text>

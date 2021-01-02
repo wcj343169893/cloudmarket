@@ -4,7 +4,7 @@
 			<view class="seckill-section2">
 				<view v-for="(item,index) in dataList" :key="index" @click="navToGoodsPage(item)" class="sec2 sec3">
 					<view class="image-content">
-						<image :src="item.banner" mode="aspectFill" lazy-load="true" class="img"></image>
+						<image :src="item.banner | thumbImg('710x350')" mode="aspectFill" lazy-load="true" class="img"></image>
 					</view>
 					<view class="content">
 						<view class="title clamp">

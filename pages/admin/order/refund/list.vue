@@ -41,7 +41,7 @@
 				</view>
 			</view>
 			<view class="goods-box-single b-b">
-				<image class="goods-img" :src="item.goods.src" mode="aspectFill"></image>
+				<image class="goods-img" :src="item.goods.src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
 						<text class="title">{{ item.goods.title }}</text>

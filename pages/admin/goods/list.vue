@@ -3,7 +3,7 @@
 		<empty v-if="loaded === true && goodsList.length === 0"></empty>
 		<view class="order-item" v-for="(item, index) in goodsList" :key="index">
 			<view class="goods-box-single" @click="preview(item)">
-				<image class="goods-img" :src="item.src" mode="aspectFill"></image>
+				<image class="goods-img" :src="item.src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
 						<text class="title clamp">{{ item.title }}</text>

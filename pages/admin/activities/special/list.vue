@@ -13,11 +13,11 @@
 			<view class="">
 				<scroll-view v-if="item.goods.length > 1" class="goods-box" scroll-x>
 					<view v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex" class="goods-item" v-if="goodsIndex < 20">
-						<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+						<image class="goods-img" :src="goodsItem.src | thumbImg('120x120')" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
 				<view v-else class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex">
-					<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+					<image class="goods-img" :src="goodsItem.src | thumbImg('120x120')" mode="aspectFill"></image>
 					<view class="right">
 						<view class="">
 							<text class="title clamp">{{ goodsItem.title }}</text>

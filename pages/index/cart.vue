@@ -18,7 +18,7 @@
 							<view class="weui-flex-check">
 								<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
 								<view class="image-wrapper" @click="navToGoodsPage(item)">
-									<image :src="item.src" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('cartList', index)"
+									<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('cartList', index)"
 									 @error="onImageError('cartList', index)"></image>
 								</view>
 							</view>
@@ -66,7 +66,7 @@
 								<view class="weui-flex-check"><text>失效</text></view>
 								<view class="desc">
 									<view class="image-wrapper" @click="navToGoodsPage(item)">
-										<image :src="item.src" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('notEnoughCartList', index)"
+										<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('notEnoughCartList', index)"
 										 @error="onImageError('notEnoughCartList', index)"></image>
 									</view>
 									<view class="desc-name">

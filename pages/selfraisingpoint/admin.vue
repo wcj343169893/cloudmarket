@@ -2,7 +2,7 @@
 	<view class="">
 		<view class="admin-section">
 			<view class="admin-shops b-b" @click="edit">
-				<image :src="src" mode="aspectFill"></image>
+				<image :src="src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="right">
 					<view class="content">
 						<view class="title clamp">
@@ -54,7 +54,7 @@
 				</view>
 				<view class="">
 					<view class="goods-box-single" v-for="(goodsItem, goodsIndex) in item.goods" :key="goodsIndex">
-						<image class="goods-img" :src="goodsItem.src" mode="aspectFill"></image>
+						<image class="goods-img" :src="goodsItem.src | thumbImg('120x120')" mode="aspectFill"></image>
 						<view class="right">
 							<view class="">
 								<text class="title">{{ goodsItem.title }}</text>
