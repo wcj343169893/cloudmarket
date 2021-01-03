@@ -1,0 +1,17 @@
+{
+  "name": "uni-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "configs": "file:../common/configs",
+    "uni-cloud-router": "file:../common/uni-cloud-router",
+    "uni-id": "file:../common/uni-id"
+  }
+}
