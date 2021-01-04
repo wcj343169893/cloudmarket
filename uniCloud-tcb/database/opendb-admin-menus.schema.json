@@ -29,6 +29,11 @@
 			"bsonType": "string",
 			"description": "父级菜单Id"
 		},
+		"pid": {
+			"bsonType": "string",
+			"description": "父级Id",
+			"parentKey": "_id"
+		},
 		"permission": {
 			"bsonType": "array",
 			"description": "菜单权限列表"

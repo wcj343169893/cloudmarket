@@ -2,10 +2,10 @@
 	"bsonType": "object",
 	"required": ["role_id"],
 	"permission": {
-		"read": false,
-		"create": false,
-		"update": false,
-		"delete": false
+		"read": true,
+		"create": "'ROLE_MANAGE_ADD' in auth.permission",
+		"update": "'ROLE_MANAGE_EDIT' in auth.permission",
+		"delete": "'ROLE_MANAGE_DELETE' in auth.permission"
 	},
 	"properties": {
 		"_id": {

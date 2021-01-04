@@ -8,7 +8,7 @@
 		"permission_id": {
 			"bsonType": "string",
 			"description": "权限唯一标识，不可修改，不允许重复",
-			"label": "权限标识",
+			"title": "权限标识",
 			"component": {
 				"name": "input"
 			}
@@ -16,15 +16,25 @@
 		"permission_name": {
 			"bsonType": "string",
 			"description": "权限名称",
-			"label": "权限名称",
+			"title": "权限名称",
 			"component": {
 				"name": "input"
 			}
 		},
+		"parent_id": {
+			"bsonType": "string",
+			"title": "父id",
+			"description": "父id",
+			"parentKey": "_id"
+		},
+		"gen_child": {
+			"bsonType": "bool",
+			"title": "生成子集"
+		},
 		"comment": {
 			"bsonType": "string",
 			"description": "备注",
-			"label": "备注",
+			"title": "备注",
 			"component": {
 				"name": "textarea"
 			}
