@@ -31,10 +31,12 @@ const models = {
 			operator
 		} = event;
 		//复制店铺
+		let result = [];
 		let res = await this.shop({
 			synchronization,
 			originShopId
 		});
+		result.push(res)
 		console.log("店铺复制完成", res)
 		//添加用户管理权限
 		if (!users) {
@@ -42,24 +44,30 @@ const models = {
 		}
 		users.push(operator)
 		res = await this.addUserShopAdmins(users);
+		result.push(res)
 		console.log("添加用户管理权限完成", res);
 		if (database.category) {
 			res = await this.goodsCategory();
+			result.push(res)
 			console.log("分类复制完成", res)
 			if (database.goods) {
 				res = await this.goods();
+				result.push(res)
 				console.log("商品复制完成", res)
 			}
 		}
 		if (database.documents) {
 			res = await this.documents();
+			result.push(res)
 			console.log("说明文档复制完成", res)
 		}
 		if (database.ads) {
 			res = await this.ads();
+			result.push(res)
 			console.log("广告复制完成", res)
 		}
-		return res;
+		//返回结果数组
+		return result;
 	},
 	/**
 	 * 复制店铺，得到一个新的店铺id
