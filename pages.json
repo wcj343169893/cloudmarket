@@ -720,6 +720,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "set/service",
+			"style": {
+				"navigationBarTitleText": "服务宗旨",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}, {
 		"root": "pages/video",

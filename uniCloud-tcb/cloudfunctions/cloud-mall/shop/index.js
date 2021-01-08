@@ -65,6 +65,7 @@ const models = {
 			delivery: 1,
 			notice: 1,
 			phone: 1,
+			services:1,
 			currency: 1,
 			deliveryTypes: 1,
 			selfRaising: 1,

@@ -62,11 +62,8 @@ const models = {
 			return false;
 		}
 		data = goods.data[0];
-		//承诺服务
-		data["service"] = [
-			"7天无理由退换货",
-			"假一赔十",
-		];
+		//商品单独承诺服务
+		data["service"] = [];
 		if (data.service_purpose) {
 			data.service = data.service_purpose.split(";");
 			delete data.service_purpose;
@@ -161,7 +158,7 @@ const models = {
 			shopid: shopid,
 			isCategoryShow: 1,
 			isSold: 1,
-			title: new RegExp(key)
+			title: new RegExp(key,"i")
 		}).field({
 			_id: 0,
 			id: 1,

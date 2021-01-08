@@ -169,7 +169,7 @@
 				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期" @change="changeField"></mix-list-input>
 				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition" placeholder="请输入保存条件"
 				 @change="changeField"></mix-list-input>
-				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入服务宗旨" @change="changeField"></mix-list-input>
+				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入服务宗旨,分号隔开" @change="changeField"></mix-list-input>
 				<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField"></mix-list-input>
 				<view class="mix-list-cell b-b">
 					<text class="cell-tit clamp">配送注意事项</text>
@@ -377,7 +377,7 @@
 				subTitle: '',
 				guarantee_period: '',
 				storage_condition: '常温',
-				service_purpose: '假一赔十',
+				service_purpose: '',
 				net_weight: '',
 				manufacture: '',
 				submiting: false,

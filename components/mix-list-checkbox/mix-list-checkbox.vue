@@ -2,7 +2,10 @@
 	<view class="checkbox-container bg-white">
 		<view v-if="type=='switch'" class="mix-list-cell" :class="[border,type]" hover-class="cell-hover">
 			<text class="cell-tit clamp">{{ title }}</text>
-			<view class="cell-content content-right">
+			<view class="cell-content">
+			</view>
+			<text class="cell-tip">{{tips}}</text>
+			<view class="cell-more">
 				<switch :checked="!!content" :class="!!content?'checked':''" @change="changeSwitch" />
 			</view>
 		</view>
@@ -43,6 +46,10 @@
 			border: {
 				type: String,
 				default: 'b-b'
+			},
+			tips: {
+				type: String,
+				default: ''
 			},
 			type: {
 				type: String,
@@ -146,6 +153,12 @@
 				margin-right: 20upx;
 			}
 
+			.cell-tip {
+				font-size: $font-sm;
+				color: $font-color-light;
+				max-width: 400upx;
+			}
+
 			.cell-content {
 				flex: 1;
 				font-size: $font-sm + 2upx;
@@ -160,6 +173,13 @@
 				&.normal {
 					color: $font-color-dark;
 				}
+			}
+
+			.cell-more {
+				align-self: center;
+				font-size: 30upx;
+				color: $font-color-base;
+				margin-left: $uni-spacing-row-sm;
 			}
 
 			&.checkbox {

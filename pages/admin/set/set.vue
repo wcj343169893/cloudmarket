@@ -32,7 +32,6 @@
 		<mix-list-select border="b-b" @eventClick="changeCurrency" title="货币" :options="currencys" :defaultOption="currency"></mix-list-select>
 		<mix-list-input v-if="currency!='cny'" title="兑人民币汇率" :defContent="exchangeRate" field="exchangeRate" placeholder="请输入兑人民币汇率"
 		 @blur="changeExchangeRate"></mix-list-input>
-		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
 		<mix-list-input title="退换货周期" type="digit" :defContent="refund.days" field="refund.days" placeholder="请输入退换货周期" @blur="changeFieldNumber">
 			<text class="moreText">天</text></mix-list-input>
 		<mix-list-checkbox title="收货后退货" field="refund.afterReceived" :defContent="refund.afterReceived" @change="changeField"></mix-list-checkbox>
@@ -43,8 +42,10 @@
 			 @blur="changeFieldNumber"></mix-list-input>
 			<cloud-image title="优惠券入口图标" tips="最佳尺寸100*100" :value="coupons.icon" field="coupons.icon" @input="changeField"></cloud-image>
 		</block>
-		<mix-list-checkbox title="是否启用" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
+		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
+		<mix-list-cell title="店铺服务宗旨" @eventClick="navTo('/pages/admin/set/service')" :tips="serviceResult"></mix-list-cell>
 		<mix-list-cell title="开分店" @eventClick="navTo('/pages/admin/set/copy')" tips="设置分类/商品/文档/广告"></mix-list-cell>
+		<mix-list-checkbox title="是否启用" tips="店铺经营开关" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
 	</view>
 </template>
 <script>
@@ -107,6 +108,12 @@
 			tagResult() {
 				if (this.goodsCommentTags && this.goodsCommentTags.length > 0) {
 					return this.goodsCommentTags.slice(0, 3).join(",") + "...";
+				}
+				return "未设置"
+			},
+			serviceResult(){
+				if (this.services && this.services.length > 0) {
+					return this.services.slice(0, 3).join(",") + "...";
 				}
 				return "未设置"
 			}

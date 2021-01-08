@@ -46,8 +46,16 @@
 					<uni-number-box :min="1" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
 				</view>
 			</view>
-			<view class="c-row b-b">
-				<text class="tit">服务</text>
+			<view class="c-row b-b" v-if="globalShopInfo && globalShopInfo.services">
+				<text class="tit">店铺服务</text>
+				<view class="bz-list con">
+					<block v-for="(ser, serIndex) in globalShopInfo.services" :key="serIndex">
+						<text class="item">·{{ ser }}</text>
+					</block>
+				</view>
+			</view>
+			<view class="c-row b-b" v-if="service && service.length>0">
+				<text class="tit">商品承诺</text>
 				<view class="bz-list con">
 					<block v-for="(ser, serIndex) in service" :key="serIndex">
 						<text class="item">·{{ ser }}</text>
