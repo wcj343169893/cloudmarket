@@ -1,12 +1,17 @@
 'use strict';
 const db = uniCloud.database();
+const querystring = require('querystring');
 const cmd = db.command;
 /**
  * 必须登录才能访问,cart子模块，list方法
  */
 const mustLoginActions = {
 	imports: ["*"],
+	setsync: ["*"],
 }
+const {
+	getConfig
+} = require('configs');
 /**
  * 导出、导入集合数据
  */
@@ -43,14 +48,21 @@ exports.main = async (event, context) => {
 			data = Object.assign(data, event.queryStringParameters);
 		}
 		if (event.body) {
-			data = Object.assign(data, querystring.parse(event.body));
+			//data = Object.assign(data, querystring.parse(event.body));
+			data = Object.assign(data, JSON.parse(event.body));
 		}
-		console.log(module, action, data);
+	}
+	console.log(module, action, data);
+	if(!module || !action){
+		return false;
 	}
 	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
 			action))) {
-		//不允许直接访问
-		return false;
+		let {token} = data;
+		if(token != getConfig("apiToken")){
+			//token不正确
+			return false;
+		}
 	}
 	let model = require(`./${module}`);
 	let result;
