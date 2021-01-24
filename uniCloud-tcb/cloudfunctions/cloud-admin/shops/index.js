@@ -37,10 +37,20 @@ const modules = {
 		//实时统计商品数量
 		await this.getGoodsStatistics(shop);
 		//用户简单统计，总用户，昨日新增，今日新增
-		await this.getUsersStatistics(shop);
+		//await this.getUsersStatistics(shop);
 		//视频统计，全部，昨日新增，今日新增
 		await video.statistics(shop);
 		return shop;
+	},
+	/**
+	 * 系统管理面板
+	 * @param {Object} data
+	 * @param {Object} context
+	 */
+	async manager(data, context) {
+		//用户简单统计，总用户，昨日新增，今日新增
+		await this.getUsersStatistics(data);
+		return data;
 	},
 	/**
 	 * 保存店铺信息

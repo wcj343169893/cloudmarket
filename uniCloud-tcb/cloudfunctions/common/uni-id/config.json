@@ -14,6 +14,9 @@
 			"weixin" : {
 				"appid" : "wx59ded2343a9d2e42",
 				"appsecret" : "fdf6d98cb931eebe9d28665e4d76acb2"
+			},
+			"apple":	{
+				"bundleId": "your APP bundleId"
 			}
 		}
 	},
@@ -39,6 +42,11 @@
 			"codeExpiresIn": 180,
 			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
 			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"
+		},
+		"univerify": {
+			"appid":"your appid",
+			"apiKey": "your apiKey",
+			"apiSecret": "your apiSecret"
 		}
 	}
 }

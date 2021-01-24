@@ -16,7 +16,7 @@ export default {
 			return this.$store.state.hasLogin;
 		},
 		shopId() {
-			if(this.shopid){
+			if (this.shopid) {
 				return this.shopid;
 			}
 			return this.$store.state.shopId;
@@ -92,6 +92,17 @@ export default {
 				this.navTo(url);
 			});
 		},
+		navToLoad(url) {
+			uni.navigateTo({
+				url,
+				events: {
+					refreshData: () => {
+						this.page = 0;
+						this.loadData()
+					}
+				}
+			})
+		},
 		navTimeBack(fn) {
 			setTimeout(() => {
 				uni.navigateBack({})
@@ -129,9 +140,9 @@ export default {
 			this.isSubmit = true;
 			//如果回调不成功，则认为本次执行完毕
 			if (!fn()) {
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.$finishSubmit();
-				},500)
+				}, 500)
 			}
 		},
 		/**
@@ -223,7 +234,7 @@ export default {
 				query.push(`shopid=${this.shopId}`)
 			}
 			if (redirect) {
-				path="/pages/index/fruit";
+				path = "/pages/index/fruit";
 				query.push(`rdt=${redirect}`)
 			}
 			if (!this.share.title || this.share.title.trim() == "") {

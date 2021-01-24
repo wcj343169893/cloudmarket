@@ -5,6 +5,7 @@
 {
 	"module": "mall",
 	"action": "info",
+	"Type": "Timer",
 	"data": {
 		"id": "2020082409373559213213"
 	},

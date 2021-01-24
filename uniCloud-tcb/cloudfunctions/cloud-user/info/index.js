@@ -3,6 +3,7 @@ const db = uniCloud.database();
 const cmd = db.command;
 const uniID = require('uni-id');
 const {
+	addUserBalanceLog,
 	genIdentityId
 } = require('base-common');
 const {
@@ -14,6 +15,8 @@ const orderRefundsCollection = db.collection("cloud_order_refunds");
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const selfraisingCollection = db.collection("cloud_self_raising_points");
 const couponUserCollection = db.collection("cloud_coupon_users");
+const userCashoutCollection = db.collection("cloud_user_cashouts");
+const userCollection = db.collection("uni-id-users");
 const models = {
 	//我的信息
 	async mine(data, context) {
@@ -22,7 +25,7 @@ const models = {
 			"gender", "status", "mobile", "email",
 			"mobile_confirmed", "balance",
 			"email_confirmed", "avatar", "comment", "birthday",
-			"coupons", "score", "member", "raisingPoint"
+			"coupons", "score", "member", "raisingPoint", "wx_openid", "ali_openid", "role"
 		], context.userInfo);
 		//查询报错
 		if (res.code > 0) {
@@ -85,7 +88,8 @@ const models = {
 	},
 	//信息统计
 	async statistics(data, context) {
-		let res = await getUserInfo(data.uid, ["order", "balance", "admin", "coupons", "score", "count"], context.userInfo);
+		let res = await getUserInfo(data.uid, ["order", "nickname", "balance", "admin", "coupons", "score", "count"],
+			context.userInfo);
 		if (res.code > 0) {
 			return res;
 		}
@@ -114,6 +118,68 @@ const models = {
 		//限时开通途径，free
 		let channel = data.channel;
 		data.message = "开通失败";
+		return false;
+	},
+	/**
+	 * 申请提现
+	 * @param {Object} data
+	 */
+	async cashout({
+		uid,
+		money
+	}, {
+		userInfo
+	}) {
+		//余额不足
+		if (money > userInfo.balance) {
+			console.log("余额不足", money, userInfo.balance)
+			return false;
+		}
+
+		if (!userInfo.wx_openid && !userInfo.ali_openid) {
+			console.log("未绑定微信/支付宝")
+			return false;
+		}
+		money = +money;
+		let transaction = await db.startTransaction();
+		let res = await userCollection.where({
+			_id: uid,
+			balance: cmd.gte(money)
+		}).update({
+			balance: cmd.inc(money * -1),
+		});
+		if (res.updated > 0) {
+			userInfo.balance = userInfo.balance - money;
+			let uinfo = await getUserInfo(uid, [
+				"id", "nickname",
+				"gender", "status", "mobile", "email", "avatar",
+				"comment", "birthday", "member", "wx_openid",
+				"ali_openid", "role", "last_login_date", "register_date", "balance"
+			], userInfo);
+			res = await userCashoutCollection.add({
+				uid,
+				money,
+				state: 0,
+				user: uinfo.userInfo,
+				created: Date.now()
+			})
+			console.log("提现记录：", res)
+			let log = await addUserBalanceLog({
+				uid: uid,
+				type: 0, //0支出，1收入
+				balance: userInfo.balance,
+				money: money,
+				description: "提现",
+				cashout: {
+					_id: res.id,
+					state: 0
+				}
+			});
+			console.log("收支日志：", log)
+			transaction.commit();
+			return res;
+		}
+		transaction.rollback();
 		return false;
 	},
 	/**
@@ -378,12 +444,13 @@ const models = {
 			Object.assign(conditions, {
 				endTime: cmd.lt(t)
 			})
-		}else{
+		} else {
 			//已使用
 			conditions.state = 1;
 		}
 		//created 领券时间
-		let res = await couponUserCollection.where(conditions).orderBy("created", "desc").skip((page - 1) * limit).limit(limit).get();
+		let res = await couponUserCollection.where(conditions).orderBy("created", "desc").skip((page - 1) * limit).limit(
+			limit).get();
 		if (res.data.length == 0) {
 			return false;
 		}

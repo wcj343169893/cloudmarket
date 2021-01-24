@@ -94,6 +94,19 @@ const getOrderTypes = function() {
 		'refunded': '退款/售后'
 	};
 }
+export const cashoutState = (usr)=>{
+	if (usr.state == 0) {
+		usr.message = "申请中";
+	} else if (usr.state == 1) {
+		usr.message = "审核通过";
+	} else if (usr.state == 2) {
+		usr.message = "已到账，请查收";
+	} else if (usr.state == -2) {
+		usr.message = "已拒绝";
+	} else {
+		usr.message = "申请失败";
+	}
+}
 /**
  * 获取后台商品查询类型
  */

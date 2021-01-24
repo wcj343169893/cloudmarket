@@ -5,6 +5,7 @@
 			<view class="content">
 				<view class="">
 					<text class="">{{item.description}}</text>
+					<text v-if="item.cashout" class="text-sm margin-left-xs text-gray">{{item.cashout.message}}</text>
 				</view>
 				<view class="desc">
 					<text>{{item.created | dateFormat('MM-dd hh:mm') }}</text>
@@ -25,6 +26,7 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<button class="cu-btn bg-green fixed-add-btn" @click="navToLoad('/pages/user/cashout')">申请提现</button>
 	</view>
 </template>
 
@@ -32,6 +34,9 @@
 	import {
 		getUserInfo
 	} from '@/common/request.js'
+	import {
+		cashoutState,
+	} from '@/common/functions.js';
 	export default {
 		data() {
 			return {
@@ -54,11 +59,20 @@
 				getUserInfo({
 					page: this.page,
 					limit: this.limit
-				}, "balancelog",false).then(res => {
+				}, "balancelog", false).then(res => {
+					if (this.page == 1) {
+						this.balanceList = []
+					}
+					res.forEach(item => {
+						if (item.cashout) {
+							cashoutState(item.cashout);
+						}
+					})
 					this.balanceList = this.balanceList.concat(res)
 					if (res.length < this.limit) {
 						this.loadingType = 'noMore'
 					}
+					this.loaded = true;
 				}, err => {
 					this.loadingType = 'noMore'
 				})
@@ -72,6 +86,7 @@
 	.container {
 		background: $background-color;
 		font-size: $font-base;
+		padding-bottom: 60rpx;
 	}
 
 	.items {

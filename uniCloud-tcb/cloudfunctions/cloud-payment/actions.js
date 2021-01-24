@@ -1,4 +1,6 @@
 'use strict';
+const db = uniCloud.database();
+const cmd = db.command;
 const crypto = require('crypto');
 const {
 	getPaymentConfig
@@ -14,7 +16,7 @@ const orders = {
  * 支付方式
  */
 const payments = {
-	wxpay: require('./payment/unipay'),
+	wxpay: require('./payment/wxpay'),
 	alipay: require('./payment/unipay'),
 	balance: require('./payment/balance'),
 	delivery: require('./payment/delivery'),
@@ -168,6 +170,75 @@ const actions = {
 				}
 			} else {
 				console.log("refund无需处理", model)
+			}
+		}
+		await this.transfers();
+	},
+	/**
+	 * 账户提现，只查询审核通过的订单
+	 */
+	async transfers() {
+		const userCashoutCollection = db.collection("cloud_user_cashouts");
+		const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
+		let {
+			data
+		} = await userCashoutCollection.where({
+			state: 1
+		}).orderBy("created", "asc").limit(10).get();
+		if (data.length > 0) {
+			for (let cash of data) {
+				let type = "",
+					platform = "app-plus",
+					openid = "";
+				//优先微信
+				if (cash.user.wx_openid) {
+					type = "wxpay";
+					if (cash.user.wx_openid["app-plus"]) {
+						//app平台微信openid
+						openid = cash.user.wx_openid["app-plus"];
+					} else if (cash.wx_openid["mp-weixin"]) {
+						//微信小程序平台openid
+						openid = cash.user.wx_openid["mp-weixin"];
+						platform = "mp-weixin";
+					}
+				} else if (cash.user.ali_openid) {
+					type = "alipay";
+					openid = cash.user.ali_openid;
+				}
+				if (type) {
+					let res = await payments[type].transfers({
+						partner_trade_no: cash._id,
+						openid,
+						amount: parseInt(cash.money * 100),
+						desc: "账户提现"
+					}, platform, type);
+					console.log("支付端口转账", res);
+					let result = {};
+					if (res !== false) {
+						result = {
+							state: 2,
+							result: res
+						};
+						console.log("更新账户日志--成功");
+					} else {
+						//转账失败
+						result = {
+							state: -1,
+							result: res
+						};
+						console.log("更新账户日志--失败", res);
+					}
+					res = await userCashoutCollection.doc(cash._id).update(result)
+					console.log("userCashoutCollection", res);
+					res = await userBalanceLogCollection.where({
+						cashout: {
+							_id: cash._id
+						}
+					}).update({
+						cashout: result
+					})
+					console.log("userBalanceLogCollection", res);
+				}
 			}
 		}
 	}

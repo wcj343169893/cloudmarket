@@ -60,6 +60,7 @@
 	import {
 		navToDocPageByType
 	} from '@/common/functions.js';
+	let weixinAuthService
 	export default {
 		data() {
 			return {
@@ -109,6 +110,16 @@
 			//重新加载app，即可自动登录
 			this.micLogin();
 			//#endif
+			// #ifdef APP-PLUS
+			plus.oauth.getServices((services) => {
+				weixinAuthService = services.find((service) => {
+					return service.id === 'weixin'
+				})
+				if (weixinAuthService) {
+					this.hasWeixinAuth = true
+				}
+			});
+			// #endif
 		},
 		computed: {
 			...mapState(['inviteCode', 'jgLoginInit'])
@@ -132,15 +143,16 @@
 			 * 微信授权登录
 			 */
 			async wxLogin(provider = "weixin") {
+				// #ifdef MP-WEIXIN
 				uni.login({
 					provider: provider,
 					success: (loginRes) => {
 						console.log('loginRes', loginRes);
 						console.log('inviteCode', this.inviteCode);
-						//微信获取用户信息，并登录
+						//微信获取用户信息，并登录 
 						cloudUser("login", provider, {
 							inviteCode: this.inviteCode,
-							code: loginRes.code
+							code: loginRes
 						}).then(res => {
 							console.log("login success", res);
 							this.loginSuccess(res);
@@ -149,6 +161,27 @@
 						});
 					}
 				});
+				// #endif
+
+
+				// #ifdef APP-PLUS
+				weixinAuthService.authorize((res) => {
+					cloudUser("login", provider, {
+						inviteCode: this.inviteCode,
+						code: res
+					}).then(res => {
+						console.log("login success", res);
+						this.loginSuccess(res);
+					}, err => {
+						this.$api.msg(err.message || "企业必须认证才有登录能力")
+					});
+				}, (err) => {
+					console.log(err)
+
+					this.$api.msg(err.message || "企业必须认证才有登录能力")
+
+				});
+				// #endif
 			},
 			async jgLogin() {
 				if (!this.jgLoginInit) {

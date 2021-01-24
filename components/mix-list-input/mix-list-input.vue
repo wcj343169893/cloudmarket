@@ -106,6 +106,7 @@ export default {
 	methods: {
 		changeContent(e) {
 			this.$emit('change', e.detail.value,this.field);
+			this.$emit('input', e.detail.value,this.field);
 		},
 		blurContent(e){
 			this.$emit('blur', e.detail.value,this.field);

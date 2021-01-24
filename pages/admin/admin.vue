@@ -64,7 +64,7 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all','charge')" tips="账户充值"></mix-list-cell>
+<!-- 		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all','charge')" tips="账户充值"></mix-list-cell>
 		<view class="cover-container">
 			<view class="order-section">
 				<view class="order-item" v-for="(item, index) in userTypes" :key="index" hover-class="common-hover" @click="navToUsers(item.state)"
@@ -73,7 +73,7 @@
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<mix-list-cell icon="icon-tuijian" iconColor="#54b4ef" title="视频管理" @eventClick="navToItem('/pages/admin/video/add')"
 		 tips="添加视频"></mix-list-cell>
 		<view class="cover-container">

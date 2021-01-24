@@ -727,6 +727,27 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "manager",
+			"style": {
+				"navigationBarTitleText": "系统管理",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "cashout/list",
+			"style": {
+				"navigationBarTitleText": "提现管理",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "cashout/balancelog",
+			"style": {
+				"navigationBarTitleText": "账户日志",
+				"enablePullDownRefresh": false
+			}
+
 		}]
 	}, {
 		"root": "pages/video",
@@ -744,6 +765,15 @@
 				"enablePullDownRefresh": false
 			}
 
+		}]
+	}, {
+		"root": "pages/user",
+		"pages": [{
+			"path": "cashout",
+			"style": {
+				"navigationBarTitleText": "申请提现",
+				"enablePullDownRefresh": false
+			}
 		}]
 	}],
 	"preloadRule": {

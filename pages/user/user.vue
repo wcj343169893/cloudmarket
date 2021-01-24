@@ -180,8 +180,9 @@
 				<mix-list-cell icon="icon-dianhua-copy" iconColor="#54b4ef" title="联系客服" @eventClick="navTo('/pages/docs/qa')"></mix-list-cell>
 				<!-- #ifndef MP -->
 				<!-- 小程序不需要退出登录，更新，缓存等 -->
-				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
+				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
 				<!-- #endif -->
+				<mix-list-cell v-if="userInfo.role && userInfo.role.indexOf('admin') != -1" icon="icon-shezhi1" iconColor="#00aa00" title="系统管理"  @eventClick="navTo('/pages/admin/manager')"></mix-list-cell>
 			</view>
 		</view>
 		<uni-popup ref="vipPopup" type="center">
@@ -249,11 +250,12 @@
 			};
 		},
 		onLoad() {
-			this.init();
-			this.loadData();
+			/* this.init();
+			this.loadData(); */
 		},
 		onShow() {
 			if (!this.isLoading) {
+				this.init();
 				this.loadData();
 			}
 		},

@@ -63,7 +63,9 @@ const usersAdmin = function(action, data, isShowLoading) {
 const specialAdmin = function(action, data, isShowLoading) {
 	return adminNetwork("special", action, data, isShowLoading);
 }
-
+const cashoutAdmin = function(action, data, isShowLoading) {
+	return adminNetwork("cashout", action, data, isShowLoading);
+}
 const adminNetwork = (module, action, data, isShowLoading) => {
 	isShowLoading = isShowLoading === true;
 	if (!data) {
@@ -72,7 +74,9 @@ const adminNetwork = (module, action, data, isShowLoading) => {
 	//统一读取店铺id,必填项
 	let adminShopId = uni.getStorageSync("adminShopId");
 	if (!adminShopId) {
-		return false;
+		return new Promise((resolve, reject) => {
+			reject("error")
+		});
 	} else if (data.adminShopid) {
 		adminShopId = data.adminShopid;
 	}
@@ -112,5 +116,6 @@ export {
 	usersAdmin,
 	adminNetwork,
 	specialAdmin,
-	cloudDatabases
+	cloudDatabases,
+	cashoutAdmin
 }

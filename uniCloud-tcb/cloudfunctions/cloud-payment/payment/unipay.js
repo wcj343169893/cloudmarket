@@ -97,6 +97,14 @@ const models = {
 			usableText: "",
 			desc: ""
 		}
+	},
+	getPaymentConfig,
+	uniPay,
+	getUniPayIns(data) {
+		let config = getPaymentConfig(data.platform, data.type, true);
+		let uniPayIns = uniPay[config["uniPay"]](config);
+		console.log("config", config)
+		return uniPayIns;
 	}
 }
 module.exports = models;

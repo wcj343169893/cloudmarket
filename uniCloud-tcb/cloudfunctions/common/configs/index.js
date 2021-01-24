@@ -32,11 +32,11 @@ const model = {
 	/**
 	 * 返回支付配置
 	 */
-	getPaymentConfig(platform, provider, isRefund) {
+	getPaymentConfig(platform, provider, needPfx) {
 		if (!provider) {
 			return config[platform]["payment"];
 		}
-		let key = [platform, isRefund, provider].join("_");
+		let key = [platform, needPfx, provider].join("_");
 		if (paymentConfigTmp[key]) {
 			return paymentConfigTmp[key];
 		}
@@ -45,7 +45,7 @@ const model = {
 		};
 		//console.log("getPaymentConfig", res);
 		if (provider == "wxpay") {
-			if (res.pfx && res.pfx != '' && isRefund) {
+			if (res.pfx && res.pfx != '' && needPfx) {
 				let fullPath = path.resolve(__dirname, "cert", res.pfx);
 				try {
 					console.log("p12文件读取", fullPath);
