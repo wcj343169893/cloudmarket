@@ -208,8 +208,8 @@
 		left: 0;
 		display: flex;
 		padding: 10upx 30upx 30upx;
-		background-color: #ffffff;
 		justify-content: space-between;
+		z-index: 999;
 
 		.action-btn {
 			flex: 1;
