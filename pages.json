@@ -69,6 +69,38 @@
 				"enablePullDownRefresh": true
 			}
 		}, {
+				"path": "pages/index/user",
+				"style": {
+					"enablePullDownRefresh": true,
+					"navigationBarTitleText": "我的",
+					// #ifdef MP
+					"navigationStyle": "custom",
+					// #endif
+					"app-plus": {
+						"bounce": "none",
+						"titleNView": {
+							"type": "transparent",
+							"buttons": [{
+									"fontSrc": "/static/yticon.ttf",
+									"text": "\ue60f",
+									"fontSize": "24",
+									"color": "#303133",
+									"width": "46px",
+									"background": "rgba(0,0,0,0)"
+								},
+								{
+									"fontSrc": "/static/yticon.ttf",
+									"text": "\ue744",
+									"fontSize": "28",
+									"color": "#303133",
+									"background": "rgba(0,0,0,0)",
+									"redDot": true
+								}
+							]
+						}
+					}
+				}
+			}, {
 			"path": "pages/public/login",
 			"style": {
 				"navigationBarTitleText": "登录/注册",
@@ -76,38 +108,6 @@
 				"app-plus": {
 					//"titleNView": false,
 					"animationType": "slide-in-bottom"
-				}
-			}
-		}, {
-			"path": "pages/user/user",
-			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "我的",
-				// #ifdef MP
-				"navigationStyle": "custom",
-				// #endif
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60f",
-								"fontSize": "24",
-								"color": "#303133",
-								"width": "46px",
-								"background": "rgba(0,0,0,0)"
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "28",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": true
-							}
-						]
-					}
 				}
 			}
 		}, {
@@ -346,13 +346,6 @@
 				"navigationBarTitleText": "用户评价"
 			}
 		}, {
-			"path": "pages/user/vip/add",
-			"style": {
-				"navigationBarTitleText": "会员卡申请",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/index/selfraisingpoint",
 			"style": {
 				"navigationBarTitleText": "选择自提点",
@@ -408,22 +401,6 @@
 			"path": "pages/coupons/goods",
 			"style": {
 				"navigationBarTitleText": "优惠商品",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/user/team",
-			"style": {}
-		},
-		{
-			"path": "pages/user/balancelog",
-			"style": {
-				"navigationBarTitleText": "零钱明细"
-			}
-		}, {
-			"path": "pages/user/coupons",
-			"style": {
-				"navigationBarTitleText": "我的优惠券",
 				"enablePullDownRefresh": false
 			}
 
@@ -769,17 +746,41 @@
 	}, {
 		"root": "pages/user",
 		"pages": [{
-			"path": "cashout",
-			"style": {
-				"navigationBarTitleText": "申请提现",
-				"enablePullDownRefresh": false
+				"path": "cashout",
+				"style": {
+					"navigationBarTitleText": "申请提现",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "vip/add",
+				"style": {
+					"navigationBarTitleText": "会员卡申请",
+					"enablePullDownRefresh": false
+				}
+
+			}, {
+				"path": "team",
+				"style": {}
+			},
+			{
+				"path": "balancelog",
+				"style": {
+					"navigationBarTitleText": "零钱明细"
+				}
+			}, {
+				"path": "coupons",
+				"style": {
+					"navigationBarTitleText": "我的优惠券",
+					"enablePullDownRefresh": false
+				}
+
 			}
-		}]
+		]
 	}],
 	"preloadRule": {
-		"pages/user/user": {
+		"pages/index/fruit": {
 			"network": "all",
-			"packages": ["pages/admin"]
+			"packages": ["pages/admin", "pages/user"]
 		}
 	},
 	"globalStyle": {
@@ -812,7 +813,7 @@
 				"text": "购物车"
 			},
 			{
-				"pagePath": "pages/user/user",
+				"pagePath": "pages/index/user",
 				"iconPath": "static/tab-my.png",
 				"selectedIconPath": "static/tab-my-current.png",
 				"text": "我的"

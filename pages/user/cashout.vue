@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="text-center padding flex flex-column align-center">
-			<text class="price">{{userInfo.balance}}</text>
+			<text class="price">{{userInfo.balance | toFixed}}</text>
 			<text class="text-sm text-gray">可提现金额</text>
 		</view>
 		<mix-list-input title="提现金额" type="digit" v-model="money" placeholder="请输入提现金额"></mix-list-input>

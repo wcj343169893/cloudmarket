@@ -108,7 +108,7 @@
 										setTimeout(() => {
 											this.$store.dispatch('getUserInfo');
 											uni.switchTab({
-												url: '/pages/user/user'
+												url: '/pages/index/user'
 											});
 										}, 1500);
 									},
