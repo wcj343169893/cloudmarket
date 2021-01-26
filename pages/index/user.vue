@@ -182,7 +182,9 @@
 				<!-- 小程序不需要退出登录，更新，缓存等 -->
 				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
 				<!-- #endif -->
-				<mix-list-cell v-if="userInfo.role && userInfo.role.indexOf('admin') != -1" icon="icon-shezhi1" iconColor="#00aa00" title="系统管理"  @eventClick="navTo('/pages/admin/manager')"></mix-list-cell>
+				<block v-if="userInfo.role">
+					<mix-list-cell v-if="userInfo.role.indexOf('admin') != -1" icon="icon-shezhi1" iconColor="#00aa00" title="系统管理"  @eventClick="navTo('/pages/admin/manager')"></mix-list-cell>
+				</block>
 			</view>
 		</view>
 		<uni-popup ref="vipPopup" type="center">
