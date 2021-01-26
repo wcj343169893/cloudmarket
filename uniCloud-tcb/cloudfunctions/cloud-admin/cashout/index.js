@@ -69,29 +69,29 @@ const model = {
 			finish: 2,
 			refuse: -2
 		}
-
+		let stateValue = states[state];
 		let res = await userCashoutCollection.doc(id).update({
-			state: states[state]
+			state: stateValue
 		});
 		console.log(res)
+		let transaction = await db.startTransaction();
 		//拒绝，返还金额
-		if (state !== "pass" && res.updated == 1) {
+		if (state == "refuse" && res.updated == 1) {
 			//更新用户余额
-			let transaction = await db.startTransaction();
-			res = await userBalanceLogCollection.where({
-				cashout: {
-					_id: info._id
-				}
-			}).update({
-				cashout: {
-					state: -2,
-				}
-			})
-			console.log(res)
 			res = await updateUserIncome(info.uid, info.money, "提现退回")
 			console.log(res)
-			transaction.commit();
 		}
+		res = await userBalanceLogCollection.where({
+			cashout: {
+				_id: info._id
+			}
+		}).update({
+			cashout: {
+				state: stateValue,
+			}
+		})
+		console.log(res)
+		transaction.commit();
 		return res;
 	},
 	/**
