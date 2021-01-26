@@ -61,8 +61,8 @@
 					<block v-if="item.state > -2 && item.state < 2">
 						<button class="action-btn recom" @click.stop="pass(item,index)">通过</button>
 						<button class="action-btn warning" @click.stop="refuse(item,index)">拒绝</button>
+						<button class="action-btn" @click.stop="finish(item,index)">线下支付</button>
 					</block>
-					<button v-if="item.state > -2" class="action-btn" @click.stop="finish(item,index)">线下支付</button>
 				</view>
 			</view>
 		</view>
