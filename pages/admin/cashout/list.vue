@@ -18,13 +18,16 @@
 						<image :src="item.user.avatar" mode="aspectFill" lazy-load="true"></image>
 					</view>
 					<view class="content">
+						<view class="flex align-center">
+							<text class="price">{{item.money | toFixed}}</text>
+							<text class="text-sm margin-left-sm flex-sub">{{item.message}}</text>
+						</view>
 						<view class="title clamp">
 							<text v-if="item.user.nickname">{{ item.user.nickname }}</text>
 							<text v-else>游客<text class="sub">（未修改）</text></text>
 							<text v-if="item.user.wx_openid" class="yticon icon-weixin"></text>
 							<text v-if="item.user.ali_openid" class="yticon icon-alipay"></text>
 							<text class="sub" v-if="item.user.id">（{{item.user.id}}）</text>
-							<text class="text-sm">{{item.message}}</text>
 						</view>
 						<view class="fields">
 							<view class="field-content">
@@ -54,11 +57,12 @@
 					</view>
 				</view>
 				<view class="action-box b-t">
-					<button class="action-btn" @click.stop="navTo('/pages/admin/cashout/balancelog?id='+item.user._id)">查看账户日志</button>
-					<block v-if="item.state > -2">
+					<button class="action-btn" @click.stop="navTo('/pages/admin/cashout/balancelog?id='+item.user._id)">日志</button>
+					<block v-if="item.state > -2 && item.state < 2">
 						<button class="action-btn recom" @click.stop="pass(item,index)">通过</button>
 						<button class="action-btn warning" @click.stop="refuse(item,index)">拒绝</button>
 					</block>
+					<button v-if="item.state > -2" class="action-btn" @click.stop="finish(item,index)">线下支付</button>
 				</view>
 			</view>
 		</view>
@@ -174,6 +178,15 @@
 				cashoutAdmin("save", {
 					id: item._id,
 					state: "refuse",
+				}, true).then(res => {
+					this.refreshList();
+				})
+			},
+			finish(item, index) {
+				this.dataList[index].state = 2
+				cashoutAdmin("save", {
+					id: item._id,
+					state: "finish",
 				}, true).then(res => {
 					this.refreshList();
 				})
@@ -416,5 +429,9 @@
 			background: $btn-color-warning;
 			color: #fff;
 		}
+	}
+
+	.price {
+		font-size: 60rpx;
 	}
 </style>

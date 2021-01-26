@@ -64,9 +64,14 @@ const model = {
 			return false;
 		}
 		info = info.data[0];
+		let states = {
+			pass: 1,
+			finish: 2,
+			refuse: -2
+		}
 
 		let res = await userCashoutCollection.doc(id).update({
-			state: state == "pass" ? 1 : -2
+			state: states[state]
 		});
 		console.log(res)
 		//拒绝，返还金额
