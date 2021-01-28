@@ -15,11 +15,36 @@ const models = {
 		let newData = [];
 		let outData = {
 			updated: 0,
+			exists: 0,
 			upserted: 0
 		};
 		if (data.data) {
+			let upcs = data.data.map(i => {
+				i.upc
+			});
+			let oldDatas = await goodsCollection.where({
+				upc: info.upc
+			}).field({
+				title: 1,
+				price: 1,
+				stock: 1,
+			}).limit(500).get();
+			let goodsMap = {};
+			oldDatas.data.map(o => {
+				goodsMap[o.upc] = o;
+			});
 			for (let key in data.data) {
 				let info = data.data[key];
+				if (!goodsMap[info.upc]) {
+					console.log("新增", info.upc)
+					newData.push(info);
+					continue;
+				} else if (goodsMap[info.upc].title == info.title && goodsMap[info.upc].price == info.price &&
+					goodsMap[info.upc].stock == info.stock) {
+					console.log("info.upc 信息相同", info.upc)
+					outData.exists++;
+					continue;
+				}
 				let res = await goodsCollection.where({
 					upc: info.upc
 				}).update({
@@ -28,13 +53,7 @@ const models = {
 					price: info.price,
 					stock: info.stock
 				});
-				//console.log(res,info)
-				if (res.updated == 0) {
-					//新增数据
-					newData.push(info);
-				} else {
-					outData.updated++;
-				}
+				outData.updated++;
 			}
 		}
 		if (newData.length > 0) {
