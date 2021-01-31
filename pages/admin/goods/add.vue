@@ -609,6 +609,7 @@
 				this.$refs['showSpecsType'].open();
 			},
 			setSpecsType(type) {
+				this.hasSpecs = type=="multiple";
 				this.specsType = type;
 				this.specsTypeTmp = type;
 				this.specsTypeName = this.specsTypes[type];
@@ -654,7 +655,7 @@
 					this.specsTitlesMap[index].checkedIndex = stm.length + 1;
 					stm.push(this.specsTitlesMap[index]);
 				}
-				this.hasSpecs = stm.length > 0;
+				//this.hasSpecs = stm.length > 0;
 				this.skunameTmp = stm;
 				uni.setStorage({
 					key: 'skuBuilder',
