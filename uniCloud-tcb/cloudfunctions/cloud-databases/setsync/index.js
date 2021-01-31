@@ -62,7 +62,20 @@ const models = {
 				startId++;
 				goods = Object.assign(goods, {
 					shopid: this.shopid,
-					id: startId
+					id: startId,
+					isCategoryShow:0,
+					isSold:0,
+					categories: [
+					    {
+					        "id": 1004,
+					        "isShow": 1,
+					        "name": "大分类一"
+					    },
+					    {
+					        "id": 2002,
+					        "name": "小分类yi"
+					    }
+					]
 				});
 				delete goods._id;
 				outData.upserted++;
