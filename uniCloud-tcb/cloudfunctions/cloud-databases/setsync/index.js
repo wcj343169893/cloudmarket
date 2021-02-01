@@ -23,7 +23,7 @@ const models = {
 				i.upc
 			});
 			let oldDatas = await goodsCollection.where({
-				upc: info.upc
+				upc: cmd.in(upcs)
 			}).field({
 				title: 1,
 				price: 1,

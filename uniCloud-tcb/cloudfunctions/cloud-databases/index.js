@@ -53,15 +53,17 @@ exports.main = async (event, context) => {
 		}
 	}
 	console.log(module, action, data);
-	if(!module || !action){
+	if (!module || !action) {
 		return false;
 	}
 	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
 			action))) {
-		let {token} = data;
-		if(token != getConfig("apiToken")){
+		let {
+			token
+		} = data;
+		if (token != getConfig("apiToken")) {
 			//token不正确
-			return false;
+			return "token error";
 		}
 	}
 	let model = require(`./${module}`);
