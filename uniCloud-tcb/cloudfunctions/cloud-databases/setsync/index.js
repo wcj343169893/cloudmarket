@@ -20,19 +20,23 @@ const models = {
 		};
 		if (data.data) {
 			let upcs = data.data.map(i => {
-				i.upc
+				return i.upc
 			});
-			let oldDatas = await goodsCollection.where({
-				upc: cmd.in(upcs)
-			}).field({
-				title: 1,
-				price: 1,
-				stock: 1,
-			}).limit(500).get();
 			let goodsMap = {};
-			oldDatas.data.map(o => {
-				goodsMap[o.upc] = o;
-			});
+			if (upcs && upcs.length > 0) {
+				let oldDatas = await goodsCollection.where({
+					upc: cmd.in(upcs)
+				}).field({
+					title: 1,
+					price: 1,
+					stock: 1,
+					upc: 1,
+				}).limit(500).get();
+				oldDatas.data.map(o => {
+					goodsMap[o.upc] = o;
+				});
+			}
+
 			for (let key in data.data) {
 				let info = data.data[key];
 				if (!goodsMap[info.upc]) {
@@ -63,18 +67,17 @@ const models = {
 				goods = Object.assign(goods, {
 					shopid: this.shopid,
 					id: startId,
-					isCategoryShow:0,
-					isSold:0,
-					categories: [
-					    {
-					        "id": 1004,
-					        "isShow": 1,
-					        "name": "大分类一"
-					    },
-					    {
-					        "id": 2002,
-					        "name": "小分类yi"
-					    }
+					isCategoryShow: 0,
+					isSold: 0,
+					categories: [{
+							"id": 1004,
+							"isShow": 1,
+							"name": "大分类一"
+						},
+						{
+							"id": 2002,
+							"name": "小分类yi"
+						}
 					]
 				});
 				delete goods._id;
