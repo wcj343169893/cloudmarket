@@ -53,7 +53,7 @@ const models = {
 					upc: info.upc
 				}).update({
 					modified: Date.now(),
-					title: info.title,
+					//title: info.title,
 					price: info.price,
 					stock: info.stock
 				});
