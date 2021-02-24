@@ -1,0 +1,118 @@
+{
+	"bsonType": "object",
+	"permission": {
+		"create": false,
+		"delete": false,
+		"read": true,
+		"update": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"bank_name": {
+			"bsonType": "string",
+			"description": "请输入银行",
+			"title": "收款银行",
+			"trim": "both"
+		},
+		"bank_number": {
+			"bsonType": "string",
+			"description": "请输入卡号",
+			"title": "收款卡号",
+			"trim": "both"
+		},
+		"business_license": {
+			"bsonType": "string",
+			"description": "营业执照",
+			"title": "营业执照",
+			"trim": "both"
+		},
+		"code": {
+			"bsonType": "string",
+			"description": "企业代码",
+			"title": "企业代码",
+			"trim": "both"
+		},
+		"code_type": {
+			"bsonType": "int",
+			"description": "企业代码类型",
+			"title": "企业代码类型"
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"food_license": {
+			"bsonType": "string",
+			"description": "食品安全许可证",
+			"title": "食品安全许可证"
+		},
+		"introduction": {
+			"bsonType": "string",
+			"description": "公司简介",
+			"title": "公司简介",
+			"trim": "both"
+		},
+		"legal_persona_license_back": {
+			"bsonType": "string",
+			"description": "法人身份证反面",
+			"title": "法人身份证反面"
+		},
+		"legal_persona_license_front": {
+			"bsonType": "string",
+			"description": "法人身份证正面",
+			"title": "法人身份证正面",
+			"trim": "both"
+		},
+		"legal_persona_name": {
+			"bsonType": "string",
+			"description": "法人姓名",
+			"title": "法人姓名",
+			"trim": "both"
+		},
+		"legal_persona_wechat": {
+			"bsonType": "string",
+			"description": "法人微信",
+			"title": "法人微信",
+			"trim": "both"
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"name": {
+			"bsonType": "string",
+			"description": "企业名",
+			"title": "企业名",
+			"trim": "both"
+		},
+		"operater": {
+			"bsonType": "string",
+			"description": "操作员",
+			"forceDefaultValue": {
+				"$env": "uid"
+			},
+			"foreignKey": "uni-id-users._id",
+			"title": "操作员"
+		},
+		"phone": {
+			"bsonType": "string",
+			"description": "电话",
+			"title": "电话",
+			"trim": "both"
+		},
+		"shop_imgs": {
+			"bsonType": "array",
+			"description": "店铺图片",
+			"title": "店铺图片"
+		}
+	},
+	"required": []
+}

@@ -38,10 +38,6 @@
 </template>
 
 <script>
-	//#ifdef APP-PLUS
-	//极光登录插件
-	const jv = uni.requireNativePlugin('JG-JVerification');
-	//#endif
 	import {
 		mobileAutoLogin,
 		getToken,
@@ -104,7 +100,7 @@
 		onLoad() {
 			//在应用初始化调用
 			//#ifdef APP-PLUS
-			//this.jgLogin();
+			this.jgLogin();
 			//#endif
 			//#ifdef MP
 			//重新加载app，即可自动登录
@@ -183,71 +179,39 @@
 				});
 				// #endif
 			},
-			async jgLogin() {
-				if (!this.jgLoginInit) {
-					this.$api.msg(this.loginBtnText + "初始化失败!")
-					return;
-				}
-				uni.showLoading({
-					mask: true,
-					title: this.loadingText
-				});
-				console.log("开始极光登录")
-				if (jv) {
-					jv.checkVerifyEnable(result => {
-						console.log(result)
-						if (result.enable) {
-							this.loginAuth();
-						} else {
-							//页面输入手机号+验证码登录
-							this.$api.msg("当前网络环境不可用!")
-							uni.hideLoading();
+			async jgLogin(provider = "univerify") {
+				uni.login({
+					provider: provider,
+					univerifyStyle: {
+						otherLoginButton: {
+							"visible": "true"
 						}
-					});
-				} else {
-					uni.hideLoading();
-				}
-			},
-			loginAuth() {
-				uni.hideLoading();
-				jv.loginAuth({
-						autoFinish: true,
-						timeout: 5000
+						// 自定义登录框样式
+						//参考`univerifyStyle 数据结构`
 					},
-					result => {
-						// 结果监听
-						console.log('jv.loginAuth', result);
-						if (result.code == 6000) {
-							//登录成功
-							this.loginWithToken(result.content);
-						} else {
-							//手动返回
-							this.navBack();
-						}
+					success: res => {
+						console.log('loginRes', res);
+						cloudUser("login", provider, {
+							inviteCode: this.inviteCode,
+							...res.authResult
+						}).then(res => {
+							console.log("login success", res);
+							this.loginSuccess(res);
+							uni.closeAuthView();
+						}, err => {
+							this.$api.msg(err.message || "企业必须认证才有登录能力")
+							uni.closeAuthView();
+						});
 					},
-					event => {
-						// 事件监听
-						let code = event.code;
-						let eventDesc = event.content;
-						console.log('jv.loginAuth', event);
+					fail: res => { // 登录失败
+						console.log(res.errCode)
+						console.log(res.errMsg)
+						uni.closeAuthView();
 					}
-				);
-			},
-			loginWithToken(token) {
-				mobileAutoLogin({
-					token: token,
-					inviteCode: this.inviteCode
-				}).then(
-					res => {
-						console.log(res);
-						//this.login(res);
-						this.loginSuccess(res);
-					},
-					err => {
-						this.$api.msg('登录失败' + err.message);
-						this.navTimeBack();
-					}
-				);
+				})
+
+
+
 			},
 			navTimeBack() {
 				setTimeout(() => {

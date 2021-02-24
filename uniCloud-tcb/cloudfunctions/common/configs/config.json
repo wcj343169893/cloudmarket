@@ -33,6 +33,10 @@
 			}
 		},
 		"oauth": {
+			"univerify": {
+				"apiKey": "7f43c6e10ad5fa66376180376be23f2a",
+				"apiSecret": "c2837fdc9b4ca9c31d340b99d14a12da"
+			},
 			"jiguang": {
 				"url": "https://api.verification.jpush.cn/v1/web/loginTokenVerify",
 				"Authorization": "Basic ZDM1NTI4OThjYjQxMDk4ODExNTg5ZGM2OjNmZTRlNWMxOTcxZGQyY2ZjM2FiOWEzMQ==",

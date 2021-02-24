@@ -1,8 +1,4 @@
 <script>
-	//#ifdef APP-PLUS
-	//极光登录插件,提前预取号，提高登录速度
-	const jv = uni.requireNativePlugin('JG-JVerification');
-	//#endif
 	/**
 	 * vuex管理登陆状态，具体可以参考官方登陆模板示例
 	 */
@@ -63,34 +59,22 @@
 				Vue.prototype.systemInfo = systemInfo;
 			},
 			/**
-			 * 初始化极光一键登录
+			 * 初始化一键登录
 			 */
-			async initLogin() {
-				if (!jv) {
-					console.log('不支持jv');
-					return;
-				}
-				jv.init({
-						timeout: 7000,
-						isProduction: true
-					},
-					result => {
-						console.log('jv.init', result);
-					}
-				);
-				jv.isInitSuccess(result => {
-					console.log('jv.isInitSuccess', result);
-					this.setStateAttr({
-						jgLoginInit: result["enable"]
-					})
-				});
-				jv.checkVerifyEnable(result => {
-					console.log('jv.checkVerifyEnable', result);
-				});
-				//预取号
-				jv.preLogin(7000, result => {
-					console.log('jv.preLogin', result);
-				});
+			async initUniverify(){
+				uni.preLogin({
+				    provider: 'univerify',
+				    success(){  //预登录成功
+				        // 显示一键登录选项
+						console.log("一键登录初始化成功")
+				    },
+				    fail(res){  // 预登录失败
+				        // 不显示一键登录选项（或置灰）
+				    // 根据错误信息判断失败原因，如有需要可将错误提交给统计服务器
+				        console.log(res.errCode)
+				        console.log(res.errMsg)
+				    }
+				})
 			},
 			/**
 			 * 初始化push相关
@@ -211,8 +195,8 @@
 			}
 			this.checkLogin();
 			//#ifdef APP-PLUS
-			//初始化极光一键登录
-			this.initLogin();
+			//初始化一键登录
+			this.initUniverify();
 			//初始化推送
 			this.initPush();
 			//#endif

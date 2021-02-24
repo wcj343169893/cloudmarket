@@ -1,0 +1,29 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"address":{
+			"bsonType":"object",
+			"title":"地址"
+		},
+		"uid":{
+			"bsonType": "string",
+			"title": "用户",
+			"description": "用户",
+			"enum": {
+				"collection": "uni-id-users",
+				"field": "_id as value, nickname as text"
+			},
+			"foreignKey": "uni-id-users._id"
+		}
+	}
+}

@@ -247,7 +247,28 @@
 			"bsonType": "string",
 			"title": "创建者",
 			"description": "",
-			"foreignKey": "uni-id-users._id"
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"selfRaisingPoint":{
+			"bsonType":"bool",
+			"title":"自提点"
 		}
 	}
 }

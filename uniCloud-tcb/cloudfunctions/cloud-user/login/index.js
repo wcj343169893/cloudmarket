@@ -18,6 +18,40 @@ const model = {
 	getRandomCode() {
 		return (Math.random() + "").substr(2, 6);
 	},
+	async univerify(data, context) {
+		let {
+			openid,
+			access_token
+		} = data;
+		let configs = getLoginConfig("app-plus", "univerify");
+		let res = await uniCloud.getPhoneNumber({
+			provider: 'univerify',
+			apiKey: configs.apiKey, // 在开发者中心开通服务并获取apiKey
+			apiSecret: configs.apiSecret, // 在开发者中心开通服务并获取apiSecret
+			access_token: access_token,
+			openid: openid
+		})
+		if (!res.success) {
+			console.log("一键登录失败", res)
+			return false;
+		}
+		console.log(data, res);
+		let mobileName = res.phoneNumber;
+		let code = this.getRandomCode();
+		let params = {
+			mobile: mobileName,
+			code,
+			inviteCode: data.inviteCode ? data.inviteCode : false,
+			type: "login",
+			expiresIn: 3600,
+		}
+		//临时设置验证码，模拟登录
+		res = await uniID.setVerifyCode(params);
+		delete params.type;
+		res = await uniID.loginBySms(params);
+		await this.pushAdmin(res, context);
+		return res;
+	},
 	//登录模块，支持极光一键登录，手机号+验证码登录，微信授权登录
 	async jiguang(data, context) {
 		//只有app端支持极光context.PLATFORM
