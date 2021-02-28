@@ -146,11 +146,11 @@ const model = {
 		//取消申请
 		await this.pushOrderCancelInfo(order._id, "您的取消申请已提交。");
 		for (let ele of order.goods) {
-			if (ele.miaosha) {
+			/* if (ele.miaosha) {
 				let res = await updateGoodsMiaoshaStock(ele, -1);
 				console.log("updateGoodsMiaoshaStock", res);
-			}
-			let resStock = await updateGoodsStock(ele, -1);
+			} */
+			let resStock = await updateGoodsStock(ele, -1, true);
 			console.log("updateGoodsStock", resStock);
 		}
 		//更新用户已取消和未支付数量
@@ -1418,7 +1418,7 @@ const model = {
 				}
 			}
 			if (couponsIds.length > 0) {
-				await coupons.canceledMany(couponsIds,couponsOriginId);
+				await coupons.canceledMany(couponsIds, couponsOriginId);
 			}
 		}
 	},

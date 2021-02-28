@@ -1,8 +1,15 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+const coupons = require("../coupon");
 const {
-	updateUserOrderCount
+	updateGoodsMiaoshaStock,
+	updateGoodsStock,
+	updateUserIncome,
+	updateUserOrderCount,
+	updateUserScore,
+	genIdentityId,
+	genOrderNo
 } = require('base-common');
 const orderCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
@@ -93,6 +100,72 @@ const list = async (data, context) => {
 	return res.data;
 }
 /**
+ * 取消订单
+ */
+const cancel = async (data) => {
+	const {
+		_id,
+		shopid
+	} = data;
+	let order = await getOrderById({
+		_id,
+		shopid
+	}, {
+		shopid: 1,
+		couponsChecked: 1,
+		goods: 1,
+		uid:1,
+		state: 1,
+	});
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	if (order.state < 0) {
+		data.message = "订单已取消";
+		return false;
+	} else if (order.state > 0) {
+		//@todo 用户已付款，发送通知和取消申请，正常情况不会出现在这里，用户需发起退款申请
+		return false;
+	}
+	//如果未付款，可以直接取消，
+	//已付款，或者已付定金，则发起取消请求
+	//取消未付款订单
+	let result = await orderCollection.doc(order._id).update({
+		state: -1,
+		cancelStyle: "shop"
+	});
+	//取消申请
+	await pushOrderCancelInfo(order._id, "您的取消申请已提交。");
+	for (let ele of order.goods) {
+		let resStock = await updateGoodsStock(ele, -1, true);
+		console.log("updateGoodsStock", resStock);
+	}
+	//更新用户已取消和未支付数量
+	let resUser = await updateUserOrderCount(order.uid, "canceled", 1, "unpaid", order.shopid);
+	console.log("resUser", resUser);
+	let time = new Date().getTime();
+	await pushOrderCancelInfo(order._id, "您的订单已取消。");
+	//已使用的优惠券
+	if (order.couponsChecked) {
+		await coupons.canceled(order.couponsChecked);
+	}
+	return result;
+}
+/**
+ * 添加取消订单进度
+ * @param {Object} id 
+ * @param {Object} message
+ */
+const pushOrderCancelInfo = async (id, message) => {
+	return await orderCollection.doc(id).update({
+		cancelApply: cmd.push({
+			message: message,
+			time: new Date().getTime()
+		})
+	});
+}
+/**
  * 分页查询退款申请
  */
 const getRefunded = async (data) => {
@@ -109,7 +182,8 @@ const getRefunded = async (data) => {
 	if (state != "all") {
 		condition["state"] = state;
 	}
-	const res = await orderRefundsCollection.where(condition).orderBy("id", "desc").skip((page - 1) * limit).limit(limit)
+	const res = await orderRefundsCollection.where(condition).orderBy("id", "desc").skip((page - 1) * limit).limit(
+			limit)
 		.get();
 	if (res.data.length == 0) {
 		return false;
@@ -391,5 +465,6 @@ module.exports = {
 	getRefunded,
 	passedRefund,
 	refuseRefund,
-	comment
+	comment,
+	cancel
 }

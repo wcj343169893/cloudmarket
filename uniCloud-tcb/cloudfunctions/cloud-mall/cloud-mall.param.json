@@ -3,10 +3,11 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "coupon",
-	"action": "list",
+	"module": "utils",
+	"action": "getLocationAddress",
 	"data": {
 		"uid":"b4f7b7d25fb3775d00b0de4f5d854ee2",
-		"shopid":123457
+		"shopid":123457,
+		"fromLatlng":"29.155126,107.103398"
 	}
 }

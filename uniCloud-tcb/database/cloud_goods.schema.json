@@ -11,13 +11,54 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"operater": {
+			"bsonType": "string",
+			"title": "操作员",
+			"description": "操作员",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
 		"id": {
 			"bsonType": "int",
 			"title": "编号"
 		},
 		"src": {
 			"bsonType": "string",
-			"title": "封面图"
+			"title": "封面图",
+			"component": {
+				"name": "cloud-image",
+				"props": {
+					"name": "src",
+					"v-model": "formData.src"
+				}
+			}
+		},
+		"banner": {
+			"bsonType": "string",
+			"title": "横图",
+			"component": {
+				"name": "cloud-image",
+				"props": {
+					"name": "banner",
+					"v-model": "formData.banner"
+				}
+			}
 		},
 		"title": {
 			"bsonType": "string",
@@ -52,9 +93,6 @@
 			"enum": {
 				"collection": "cloud_shops",
 				"field": "name as text, id as value"
-			},
-			"permission": {
-				"write": false
 			}
 		},
 		"stock": {
@@ -65,6 +103,12 @@
 		"visite": {
 			"bsonType": "int",
 			"title": "浏览量",
+			"defaultValue": 0
+		},
+		"limit": {
+			"bsonType": "int",
+			"title": "限购数量",
+			"description": "0不限制",
 			"defaultValue": 0
 		},
 		"isSold": {
@@ -80,16 +124,119 @@
 				"value": 1
 			}]
 		},
+		"isLimit": {
+			"bsonType": "bool",
+			"title": "是否限购",
+			"description": "",
+			"defaultValue": false
+		},
+		"isNewUser": {
+			"bsonType": "bool",
+			"title": "是否新用户",
+			"description": "",
+			"defaultValue": false
+		},
+		"isRecommend": {
+			"bsonType": "bool",
+			"title": "是否推荐",
+			"description": "",
+			"defaultValue": false
+		},
 		"posid": {
 			"bsonType": "int",
 			"title": "排序",
 			"defaultValue": 0
+		},
+		"onlySelfTake": {
+			"bsonType": "int",
+			"defaultValue": 0,
+			"title": "仅自提",
+			"enum": [{
+				"text": "否",
+				"value": 0
+			}, {
+				"text": "是",
+				"value": 1
+			}]
+		},
+		"saleType": {
+			"bsonType": "string",
+			"title": "销售类型",
+			"enum": [{
+				"text": "正常销售",
+				"value": "normal"
+			}, {
+				"text": "提前预定",
+				"value": "yuding"
+			}, {
+				"text": "社区团购",
+				"value": "tuangou"
+			}]
 		},
 		"score": {
 			"bsonType": "int",
 			"title": "评分",
 			"description": "商品评分，1-10",
 			"defaultValue": 10
+		},
+		"share": {
+			"bsonType": "string",
+			"title": "分享词"
+		},
+		"skus": {
+			"bsonType": "array",
+			"title": "多规格"
+		},
+		"skuname": {
+			"bsonType": "array",
+			"title": "规格名称"
+		},
+		"specsType": {
+			"bsonType": "string",
+			"title": "规格类型",
+			"enum": [{
+				"text": "单规格",
+				"value": "single"
+			}, {
+				"text": "多规格",
+				"value": "multiple"
+			}]
+		},
+		"storage_condition": {
+			"bsonType": "string",
+			"title": "储存条件"
+		},
+		"net_weight": {
+			"bsonType": "string",
+			"title": "净重"
+		},
+		"manufacture": {
+			"bsonType": "string",
+			"title": "生成日期"
+		},
+		"guarantee_period": {
+			"bsonType": "string",
+			"title": "保质期"
+		},
+		"tuangou": {
+			"bsonType": "object",
+			"title": "团购信息"
+		},
+		"upc": {
+			"bsonType": "string",
+			"title": "条码"
+		},
+		"imgs": {
+			"bsonType": "array",
+			"title": "轮播图",
+			"component": {
+				"name": "cloud-image",
+				"props": {
+					"name": "imgs",
+					"v-model": "formData.imgs",
+					":imageNumber": 8
+				}
+			}
 		}
 	}
 }

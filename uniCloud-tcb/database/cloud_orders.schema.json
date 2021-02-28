@@ -11,11 +11,137 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
-		"address":{
-			"bsonType":"object",
-			"title":"地址"
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
 		},
-		"uid":{
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"operater": {
+			"bsonType": "string",
+			"title": "操作员",
+			"description": "操作员",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
+		"id": {
+			"bsonType": "int",
+			"title": "编号"
+		},
+		"address": {
+			"bsonType": "object",
+			"title": "地址"
+		},
+		"body": {
+			"bsonType": "string",
+			"title": "内容"
+		},
+		"cancelApply": {
+			"bsonType": "array",
+			"title": "取消订单请求"
+		},
+		"cancelStyle": {
+			"bsonType": "string",
+			"title": "取消类型",
+			"enum": [{
+				"text": "自动",
+				"value": "auto"
+			}, {
+				"text": "用户",
+				"value": "user"
+			}, {
+				"text": "商家",
+				"value": "shop"
+			}]
+		},
+		"cartCount": {
+			"bsonType": "int",
+			"title": "购物车数量"
+		},
+		"deliveryHour": {
+			"bsonType": "object",
+			"title": "配送时间"
+		},
+		"deliveryType": {
+			"bsonType": "string",
+			"title": "配送方式",
+			"enum": [{
+				"text": "送到家",
+				"value": "deliveryHome"
+			}, {
+				"text": "自提",
+				"value": "selfRaising"
+			}]
+		},
+		"freight": {
+			"bsonType": "double",
+			"title": "运费"
+		},
+		"goods": {
+			"bsonType": "array",
+			"title": "商品"
+		},
+		"isDelete": {
+			"bsonType": "int",
+			"title": "是否删除",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "否",
+				"value": 0
+			}, {
+				"text": "是",
+				"value": 1
+			}]
+		},
+		"juli": {
+			"bsonType": "double",
+			"title": "距离"
+		},
+		"lastPayTime": {
+			"bsonType": "timestamp",
+			"title": "最后支付时间"
+		},
+		"platform": {
+			"bsonType": "string",
+			"title": "操作平台"
+		},
+		"remark": {
+			"bsonType": "string",
+			"title": "备注"
+		},
+		"shopid": {
+			"bsonType": "int",
+			"title": "店铺",
+			"description": "商品店铺",
+			"foreignKey": "cloud_shops.id",
+			"enum": {
+				"collection": "cloud_shops",
+				"field": "name as text, id as value"
+			}
+		},
+		"state": {
+			"bsonType": "int",
+			"title": "状态"
+		},
+		"totalDiscount": {
+			"bsonType": "double",
+			"title": "优惠金额"
+		},
+		"totalMoney": {
+			"bsonType": "double",
+			"title": "总金额"
+		},
+		"uid": {
 			"bsonType": "string",
 			"title": "用户",
 			"description": "用户",

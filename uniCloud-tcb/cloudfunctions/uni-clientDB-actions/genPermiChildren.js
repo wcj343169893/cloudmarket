@@ -12,6 +12,7 @@ module.exports = {
 			let par = state.newData;
 			//生成增删改权限
 			let arr = {
+				"LIST": "列表",
 				"ADD": "新增",
 				"EDIT": "修改",
 				"DELETE": "删除"

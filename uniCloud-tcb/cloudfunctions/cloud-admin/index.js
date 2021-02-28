@@ -57,13 +57,21 @@ exports.main = async (event, context) => {
 			data: payload
 		}
 	}
-	//简单判断用户权限
-	if (!payload.userInfo.admin || payload.userInfo.admin.indexOf(shopid) == -1) {
+	if (!payload.role.includes('admin') && !payload.permission.includes([module, action].join("/"))) {
 		return {
 			code: 403,
 			message: "无权操作",
+			path: [module, action].join("/")
 		}
 	}
+	//简单判断用户权限
+	/* if (!payload.userInfo.admin || payload.userInfo.admin.indexOf(shopid) == -1) {
+		return {
+			code: 403,
+			message: "无权操作",
+			payload
+		}
+	} */
 	//data.uid = payload.uid;
 	context.userInfo = payload.userInfo;
 	//强制传递操作者，如果是更新数据，会写入数据库，这里的uid是ObjectId
