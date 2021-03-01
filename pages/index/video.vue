@@ -4,7 +4,7 @@
 		<!-- 顶部栏 -->
 		<page-header :showFillView="true" :showLocationView="false"></page-header>
 		<!-- #endif -->
-		<!-- <scroll-view scroll-y :scroll-with-animation="scrollWithAnimation" enable-back-to-top class="videos" :scroll-top="tabScrollTop"> -->
+		<empty v-if="loaded === true && dataList.length === 0"></empty>
 		<view class="videos">
 			<view v-for="(item, index) in dataList" :id="'main_' + item.id" :key="index" class="padding-sm bg-white margin-sm video-item">
 				<view class="header" @click="navToUserPage(item)">
@@ -130,6 +130,11 @@
 				this.dataList = [];
 			},
 			async loadData() {
+				if(!this.$store.state.globalShopInfo.video){
+					this.loadingType = 'noMore';
+					this.loaded = true;
+					return false;
+				}
 				this.loadingType = "loading";
 				this.page++;
 				cloudVideo("info", "square", {

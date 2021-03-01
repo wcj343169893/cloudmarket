@@ -45,6 +45,7 @@
 		<mix-list-cell title="订单评论标签" @eventClick="navTo('/pages/admin/set/comment/tags')" :tips="tagResult"></mix-list-cell>
 		<mix-list-cell title="店铺服务宗旨" @eventClick="navTo('/pages/admin/set/service')" :tips="serviceResult"></mix-list-cell>
 		<mix-list-cell title="开分店" @eventClick="navTo('/pages/admin/set/copy')" tips="设置分类/商品/文档/广告"></mix-list-cell>
+		<mix-list-checkbox title="视频功能" field="video" :defContent="video" @change="changeField"></mix-list-checkbox>
 		<mix-list-checkbox title="是否启用" tips="店铺经营开关" field="state" :defContent="state" @change="changeField"></mix-list-checkbox>
 	</view>
 </template>
@@ -70,6 +71,7 @@
 				deliveryTypes: [],
 				isPrint: false,
 				state: false,
+				video: false,
 				goodsCommentTags: [],
 				printers: [],
 				printersName: "",

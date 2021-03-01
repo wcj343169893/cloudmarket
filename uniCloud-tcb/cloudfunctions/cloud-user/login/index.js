@@ -233,6 +233,7 @@ const model = {
 		if (res.type == "register" && context.APPID == "__UNI__9900639") {
 			await uniID.updateUser({
 				uid: res.uid,
+				role:["admin"],
 				admin: [123457, 123458, 123460]
 			});
 		}
