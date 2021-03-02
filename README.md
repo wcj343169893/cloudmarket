@@ -42,12 +42,11 @@
 #### H5预览
 ![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
 
-#### 微信小程序管理后台，审核通过后微信没有通知，请间隔10分钟左右再次扫码或者联系群主
-![管理后台体验](https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/oXpHq0ASLsN6cYLKaTIYG1dlnGAM.jpg)  
+#### 微信小程序管理后台
+![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg) 
 
 #### 微信小程序-万德福超市
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/3d402b60-d7a6-11ea-9dfb-6da8e309e0d8.jpg)  
-![柔然科技](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-gowv8so9ludhf98439/1bbf1e20-47fd-11eb-a16f-5b3e54966275.jpg)  
 
 #### IOS暂时没有开发者账号，没有发布
 
