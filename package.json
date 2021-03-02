@@ -1,0 +1,27 @@
+{
+	"name": "cloudmarket",
+	"version": "2.1.9",
+	"description": "云上商城，是以综合支付及信息服务为服务理念，结合社交元素，为中小企业销售和营销提供全生命周期管理的SAAS商城系统。商户只需进行简单的配置，即可以最低成本快速搭建专属小程序、App、H5。满足实体店铺营销推广需求，抢占线上流量，并为消费者提供良好的购物体验，最终增强商户品牌知名度和客户粘性。",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://gitee.com/zhujue/cloudmarket.git"
+	},
+	"keywords": [],
+	"author": "343169893@qq.com",
+	"license": "ISC",
+	"uni_modules": {
+		"encrypt": [
+			"uniCloud/cloudfunctions/cloud-payment/index.js",
+			"uniCloud/cloudfunctions/cloud-payment/action.js",
+			"uniCloud/cloudfunctions/cloud-payment/payment/balance.js",
+			"uniCloud/cloudfunctions/cloud-payment/payment/delivery.js",
+			"uniCloud/cloudfunctions/cloud-payment/payment/unipay.js",
+			"uniCloud/cloudfunctions/cloud-payment/payment/wxpay.js",
+			"uniCloud/cloudfunctions/cloud-admin/action.js"
+		]
+	}
+}

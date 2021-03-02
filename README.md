@@ -10,7 +10,11 @@
 
 ## 安装使用 (详见[产品手册](https://www.yuque.com/books/share/24ba8cf0-212e-4cbd-9f02-f322d2ddbb58))
 
-
+### pc后台
+[源代码](https://gitee.com/cq-soft/market-admin)  
+[后台地址](http://market.cjblog.org/admin/)  
+测试账户：shop_manager  
+测试密码：123456  
 
 ### 咨询与售后
 * 交流QQ群：298724327  
