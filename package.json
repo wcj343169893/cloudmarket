@@ -21,7 +21,8 @@
 			"uniCloud/cloudfunctions/cloud-payment/payment/delivery.js",
 			"uniCloud/cloudfunctions/cloud-payment/payment/unipay.js",
 			"uniCloud/cloudfunctions/cloud-payment/payment/wxpay.js",
-			"uniCloud/cloudfunctions/cloud-admin/action.js"
+			"uniCloud/cloudfunctions/cloud-admin/index.js",
+			"uniCloud/cloudfunctions/cloud-admin/shops/index.js"
 		]
 	}
 }
