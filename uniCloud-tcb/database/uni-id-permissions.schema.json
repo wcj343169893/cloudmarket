@@ -1,6 +1,12 @@
 {
 	"bsonType": "object",
 	"required": ["permission_id", "permission_name"],
+	"permission": {
+		"read": true,
+		"create": "'PERMISSION_MANAGE_ADD' in auth.permission",
+		"update": "'PERMISSION_MANAGE_EDIT' in auth.permission",
+		"delete": "'PERMISSION_MANAGE_DELETE' in auth.permission"
+	},
 	"properties": {
 		"_id": {
 			"description": "存储文档 ID，系统自动生成"
