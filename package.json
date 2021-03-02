@@ -15,14 +15,14 @@
 	"license": "ISC",
 	"uni_modules": {
 		"encrypt": [
-			"uniCloud/cloudfunctions/cloud-payment/index.js",
-			"uniCloud/cloudfunctions/cloud-payment/action.js",
-			"uniCloud/cloudfunctions/cloud-payment/payment/balance.js",
-			"uniCloud/cloudfunctions/cloud-payment/payment/delivery.js",
-			"uniCloud/cloudfunctions/cloud-payment/payment/unipay.js",
-			"uniCloud/cloudfunctions/cloud-payment/payment/wxpay.js",
-			"uniCloud/cloudfunctions/cloud-admin/index.js",
-			"uniCloud/cloudfunctions/cloud-admin/shops/index.js"
+			"uniCloud-tcb/cloudfunctions/cloud-payment/index.js",
+			"uniCloud-tcb/cloudfunctions/cloud-payment/action.js",
+			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/balance.js",
+			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/delivery.js",
+			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/unipay.js",
+			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/wxpay.js",
+			"uniCloud-tcb/cloudfunctions/cloud-admin/index.js",
+			"uniCloud-tcb/cloudfunctions/cloud-admin/shops/index.js"
 		]
 	}
 }
