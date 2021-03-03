@@ -66,18 +66,8 @@ const store = new Vuex.Store({
 			uni.setStorageSync('uni_id_token_expires', provider.tokenExpired);
 			//设置登录状态
 			state.hasLogin = true;
-			if (provider.userInfo) {
-				//用户选择的自提点
-				if (provider.userInfo.raisingPoint && provider.userInfo.raisingPoint._id) {
-					state.raisingPoint = provider.userInfo.raisingPoint;
-					delete provider.userInfo.raisingPoint;
-				}
-				state.userInfo = provider.userInfo;
-				uni.$emit('refreshCart'); //全局更新购物车
-			} else {
-				//更新用户信息
-				this.dispatch('getUserInfo');
-			}
+			//更新用户信息
+			this.dispatch('getUserInfo');
 			this.dispatch('updatePushClient');
 			this.dispatch('getCartCount');
 		},
