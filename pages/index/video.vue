@@ -4,49 +4,55 @@
 		<!-- 顶部栏 -->
 		<page-header :showFillView="true" :showLocationView="false"></page-header>
 		<!-- #endif -->
-		<empty v-if="loaded === true && dataList.length === 0"></empty>
-		<view class="videos">
-			<view v-for="(item, index) in dataList" :id="'main_' + item.id" :key="index" class="padding-sm bg-white margin-sm video-item">
-				<view class="header" @click="navToUserPage(item)">
-					<image :src="item.user.avatar" mode="aspectFill" class="cu-avatar round"></image>
-					<text class="margin-left-sm">{{ item.user.nickname }}</text>
-				</view>
-				<view class="video-section">
-					<video v-if="item.loaded" :id="item.id" class="video" :show-center-play-btn="showCenterPlayBtn" :object-fit="objectFit"
-					 :src="item.url" :loop="loop" :poster="item.poster" :controls="false" :enable-play-gesture="true" controls
-					 @loadedmetadata="loadedmetadata(item, index)" @play="play(item, index)" @waiting="waiting(item, index)"
-					 @fullscreenclick="fullscreenclick(item, index)" @ended="ended(item, index)" @pause="pause(item, index)" @error="error(item, index)"
-					 @click="clickPause(item, index)"></video>
-					<!-- <cover-image v-if="!item.play" src="/static/play.png" class="btn-play" @click="clickPause(item, index)"></cover-image> -->
-					<!-- <text v-if="!item.play" class="taobaofont icon-playfill text-white text-xxl btn-play" @click="clickPause(item, index)"></text> -->
-				</view>
-				<view class="bottom margin-top-sm">
-					<text>{{ item.title }}</text>
-					<text class="text-sm margin-left-sm">{{ item.statistics.play | formatNumber }}次播放</text>
-				</view>
-				<view class="flex align-center justify-between margin-top-sm">
-					<view class="header flex-sub flex align-center" v-if="item.goods && item.goods._id" @click="navToGoodsPage(item.goods)">
-						<image :src="item.goods.src | thumbImg('120x120')" mode="aspectFill" class="cu-avatar round"></image>
-						<view class="margin-left-sm flex flex-column flex-sub">
-							<text>{{ item.goods.title }}</text>
-							<text class="text-sm">{{ item.goods.subTitle }}</text>
+		<block v-if="!isOpen">
+			<normalPage :dataList="newestList" @openSku="openSku" @saveCartAmount="saveCartAmount"></normalPage>
+		</block>
+		<block v-else>
+			<empty v-if="loaded === true && dataList.length === 0"></empty>
+			<view class="videos">
+				<view v-for="(item, index) in dataList" :id="'main_' + item.id" :key="index" class="padding-sm bg-white margin-sm video-item">
+					<view class="header" @click="navToUserPage(item)">
+						<image :src="item.user.avatar" mode="aspectFill" class="cu-avatar round"></image>
+						<text class="margin-left-sm">{{ item.user.nickname }}</text>
+					</view>
+					<view class="video-section">
+						<video v-if="item.loaded" :id="item.id" class="video" :show-center-play-btn="showCenterPlayBtn" :object-fit="objectFit"
+						 :src="item.url" :loop="loop" :poster="item.poster" :controls="false" :enable-play-gesture="true" controls
+						 @loadedmetadata="loadedmetadata(item, index)" @play="play(item, index)" @waiting="waiting(item, index)"
+						 @fullscreenclick="fullscreenclick(item, index)" @ended="ended(item, index)" @pause="pause(item, index)" @error="error(item, index)"
+						 @click="clickPause(item, index)"></video>
+						<!-- <cover-image v-if="!item.play" src="/static/play.png" class="btn-play" @click="clickPause(item, index)"></cover-image> -->
+						<!-- <text v-if="!item.play" class="taobaofont icon-playfill text-white text-xxl btn-play" @click="clickPause(item, index)"></text> -->
+					</view>
+					<view class="bottom margin-top-sm">
+						<text>{{ item.title }}</text>
+						<text class="text-sm margin-left-sm">{{ item.statistics.play | formatNumber }}次播放</text>
+					</view>
+					<view class="flex align-center justify-between margin-top-sm">
+						<view class="header flex-sub flex align-center" v-if="item.goods && item.goods._id" @click="navToGoodsPage(item.goods)">
+							<image :src="item.goods.src | thumbImg('120x120')" mode="aspectFill" class="cu-avatar round"></image>
+							<view class="margin-left-sm flex flex-column flex-sub">
+								<text>{{ item.goods.title }}</text>
+								<text class="text-sm">{{ item.goods.subTitle }}</text>
+							</view>
 						</view>
-					</view>
-					<view class="" v-else>
-					</view>
-					<view class="state margin-top-xs align-center margin-left-sm" @click="like(item)">
-						<text class="margin-left-sm taobaofont icon-likefill" :class="{'text-red':item.isLike}"></text>
-						<text class="margin-left-xxs">{{ item.statistics.like | formatNumber }}</text>
+						<view class="" v-else>
+						</view>
+						<view class="state margin-top-xs align-center margin-left-sm" @click="like(item)">
+							<text class="margin-left-sm taobaofont icon-likefill" :class="{'text-red':item.isLike}"></text>
+							<text class="margin-left-xxs">{{ item.statistics.like | formatNumber }}</text>
+						</view>
 					</view>
 				</view>
 			</view>
-		</view>
-		<uni-load-more :status="loadingType"></uni-load-more>
+			<uni-load-more :status="loadingType"></uni-load-more>
+		</block>
 	</view>
 </template>
 
 <script>
 	import pageHeader from './components/page-header.vue';
+	import normalPage from './components/normal.vue';
 	import {
 		cloudVideo
 	} from '@/common/request.js';
@@ -55,10 +61,12 @@
 	} from '@/common/functions.js';
 	export default {
 		components: {
-			pageHeader
+			pageHeader,
+			normalPage,
 		},
 		data() {
 			return {
+				isOpen: true,
 				tabs: [{
 						title: '推荐'
 					},
@@ -78,6 +86,7 @@
 				loop: true,
 				autoNext: false,
 				dataList: [],
+				newestList: [],
 				videoContentList: []
 			};
 		},
@@ -130,9 +139,11 @@
 				this.dataList = [];
 			},
 			async loadData() {
-				if(!this.$store.state.globalShopInfo.video){
+				if (!this.$store.state.globalShopInfo.video) {
 					this.loadingType = 'noMore';
 					this.loaded = true;
+					this.isOpen = false;
+					this.newestList = uni.getStorageSync("shop_goods_newest_list");
 					return false;
 				}
 				this.loadingType = "loading";

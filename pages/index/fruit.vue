@@ -353,6 +353,11 @@
 					this.newestList.forEach(item => {
 						updateGoodsTags(item);
 					});
+					uni.setStorage({
+						key:"shop_goods_newest_list",
+						data:this.newestList
+					})
+					console.log("this.newestList",this.newestList)
 					this.recommendList = res.recommend;
 					this.recommendList.forEach(item => {
 						updateGoodsTags(item);
