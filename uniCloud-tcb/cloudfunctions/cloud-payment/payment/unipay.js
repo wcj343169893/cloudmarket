@@ -34,14 +34,40 @@ const models = {
 		if (order.shop && order.shop.currency != "cny" && order.shop.exchangeRate && order.shop.exchangeRate != 1) {
 			totalFee = parseInt(order.totalMoney * order.shop.exchangeRate * 100);
 		}
-		return await uniPayIns.getOrderInfo({
-			openid: openid, //支付宝小程序、微信小程序必填
+		let requestOptions = {
+			//openid: openid, //支付宝小程序、微信小程序必填
 			subject: order.body.substr(0, 20), // 微信支付时不可填写此项
 			body: order.body.substr(0, 30),
 			outTradeNo: order.outTradeNo, //订单号
 			totalFee, // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址
-		});
+		}
+		//微信服务商模式
+		if (config.sub_appid) {
+			let params = Object.assign(requestOptions, {
+				sub_appid: config.sub_appid,
+				sub_mch_id: config.sub_mch_id,
+				sub_openid: openid,
+			});
+			console.log("params", params);
+			const orderResult = await uniPayIns.unifiedOrder(params)
+			if (!orderResult.prepayId) {
+				throw new Error(orderResult.errMsg || '获取prepayId失败')
+			}
+			console.log("orderResult", orderResult);
+			//以子商户appid发起支付
+			uniPayIns.options.appId = config.sub_appid;
+			const payParams = uniPayIns._getPayParamsByPrepayId(
+				orderResult.prepayId,
+				params.signType || uniPayIns.options.signType
+			)
+			console.log("params", params);
+			return Object.assign(orderResult, payParams)
+		} else {
+			//普通模式//支付宝小程序、微信小程序必填
+			requestOptions.openid = openid;
+			return await uniPayIns.getOrderInfo(requestOptions);
+		}
 	},
 	/**
 	 * 验证请求的数据是否合法
@@ -71,6 +97,13 @@ const models = {
 		let config = getPaymentConfig(payInfo.platform, payInfo.type, true);
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		let payName = payInfo.typeName || payInfo.name;
+		//微信服务商模式
+		if (config.sub_appid) {
+			order = Object.assign(order, {
+				sub_appid: config.sub_appid,
+				sub_mch_id: config.sub_mch_id,
+			});
+		}
 		try {
 			let res = await uniPayIns.refund(order);
 			console.log("unipay refund", JSON.stringify(res));

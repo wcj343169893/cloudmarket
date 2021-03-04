@@ -1,5 +1,5 @@
 {
-	"domain": "http://www.mydomain.com",
+	"domain": "http://api.cjblog.org",
 	"notify-floder": "market_notify",
 	"tokenSecret": "4e50313a45f5fbe0",
 	"app-plus": {
@@ -51,10 +51,12 @@
 				"uniPay": "initWeixin",
 				"name": "微信",
 				"payName": "微信支付",
-				"appId": "wx399393ad0d5e4d31",
-				"mchId": "1576725141",
+				"appId": "wxcfb12cd3b92a58ed",
+				"mchId": "1604863346",
+				"sub_appid": false,
+				"sub_mch_id": false,
 				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
-				"pfx": ""
+				"pfx": "1604863346_20210304_cert.p12"
 			},
 			"balance": {
 				"uniPay": "initBalance",

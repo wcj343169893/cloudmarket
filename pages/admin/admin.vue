@@ -64,7 +64,7 @@
 				</view>
 			</view>
 		</view>
-<!-- 		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all','charge')" tips="账户充值"></mix-list-cell>
+		<!-- 		<mix-list-cell icon="icon-tuandui" iconColor="#54b4ef" title="用户管理" @eventClick="navToUsers('all','charge')" tips="账户充值"></mix-list-cell>
 		<view class="cover-container">
 			<view class="order-section">
 				<view class="order-item" v-for="(item, index) in userTypes" :key="index" hover-class="common-hover" @click="navToUsers(item.state)"
@@ -114,7 +114,7 @@
 				banner: '/static/banner.jpg',
 				address: '',
 				notice: '',
-				coupons:{},
+				coupons: {},
 				orderTypes: [],
 				goodsTypes: [],
 				userTypes: [],
@@ -220,8 +220,8 @@
 			},
 			navToOrder(state) {
 				console.log(state)
-				if (state == "refunded") {
-					this.navTo(`/pages/admin/order/refund/list?state=verifying&shopid=${this.id}`);
+				if (state.indexOf("/") > -1) {
+					this.navTo(`/pages/admin/order/${state}`);
 				} else {
 					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${this.id}`);
 				}
@@ -229,7 +229,7 @@
 			navToGoods(state) {
 				this.navTo(`/pages/admin/goods/list?state=${state}&shopid=${this.id}`);
 			},
-			navToUsers(state,type) {
+			navToUsers(state, type) {
 				this.navTo(`/pages/admin/user/list?state=${state}&shopid=${this.id}&type=${type}`);
 			},
 			//新增商品

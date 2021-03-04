@@ -126,8 +126,15 @@ const modules = {
 			state: "verifying"
 		});
 		shop["orderTypes"].push({
-			name: "退款/售后",
-			state: "refunded",
+			name: "退款中",
+			state: "refund/list?state=verifying",
+			number: number
+		});
+		//历史退款
+		number = await this.getOrderRefundStatisticsByCondition(shop.id);
+		shop["orderTypes"].push({
+			name: "所有退款",
+			state: "refund/history",
 			number: number
 		});
 	},

@@ -457,6 +457,9 @@ const model = {
 		if (!goods.refundAmount) {
 			goods.refundAmount = 0;
 		}
+		if (!item.refundApplyAmount) {
+			item.refundApplyAmount = 1;
+		}
 		//判断申请数量是否合法
 		if ((goods.amount - goods.refundAmount) < item.refundApplyAmount) {
 			data.message = "申请退款数量不合法";
@@ -467,23 +470,25 @@ const model = {
 			return false;
 		}
 		//将来要减去优惠券分摊部分，这里乘以店铺汇率
-		let currency = 1;
-		if (order.shop.currency) {
-			currency = order.shop.currency;
+		let exchangeRate = 1;
+		if (order.shop.exchangeRate) {
+			exchangeRate = order.shop.exchangeRate;
 		}
 		let perDiscount = 0;
 		if (goods.discount) {
 			perDiscount = goods.discount / goods.amount;
 		}
-		let total = parseInt(item.refundApplyAmount * currency * (goods.price - perDiscount) * 100);
+		console.log("addRefundApply", item.refundApplyAmount, exchangeRate, goods.price, perDiscount);
+		let total = parseInt(item.refundApplyAmount * exchangeRate * (goods.price - perDiscount) * 100);
 		let addRefundResult;
 		//预定订单，创建2个退款记录
 		if (order.yuding) {
 			/* addRefundResult = await addOrderRefund(uid, order.yuding.payInfo, order.yuding.price * 100, "申请退款", goods, order,
 				item); */
-			total -= order.yuding.price * currency * 100;
+			total -= order.yuding.price * exchangeRate * 100;
 			console.log("addRefundResult", addRefundResult);
 		}
+		console.log("addRefundResult 开始 total:", total);
 		addRefundResult = await this.addOrderRefund(uid, order.payInfo, total, "申请退款", goods, order, item);
 		console.log("addRefundResult", addRefundResult);
 		//isRefunding:1,正在退款中,同意之后，更新  refundAmount
@@ -517,6 +522,7 @@ const model = {
 	 * @param {Object} payInfo 
 	 */
 	async addOrderRefund(uid, payInfo, refundFee, refundDesc, goods, order, item) {
+		console.log("addOrderRefund", uid, payInfo, refundFee, refundDesc, goods, order, item);
 		let id = await genIdentityId("order_refunds");
 		if (refundFee > payInfo.totalFee) {
 			refundFee = payInfo.totalFee;
