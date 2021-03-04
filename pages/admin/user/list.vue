@@ -17,7 +17,7 @@
 		<view class="users-section">
 			<view v-for="(item,index) in userList" :key="index" class="item" @click="detail(item)">
 				<view class="image-content">
-					<image :src="item.avatar" mode="aspectFill" lazy-load="true"></image>
+					<image :src="item.avatar | avatar" mode="aspectFill" lazy-load="true"></image>
 				</view>
 				<view class="content">
 					<view class="title clamp">

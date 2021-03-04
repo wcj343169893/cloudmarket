@@ -81,10 +81,10 @@
 				</view>
 			</view>
 		</view>
-		<view id="video" class="rating-wrap column" @click="addVideo" v-if="globalShopInfo && globalShopInfo.pages && globalShopInfo.pages.product && globalShopInfo.pages.product.limits.addVideo > 0">
+		<view id="video" class="rating-wrap column" @click="addVideo" v-if="globalShopInfo && globalShopInfo.video">
 			<view class="e-header">
 				<text class="tit">我要参与</text>
-				<text class="tip">{{globalShopInfo.pages.product.titles.addVideo}}</text>
+				<text class="tip">{{globalShopInfo.pages&&globalShopInfo.pages.product?globalShopInfo.pages.product.titles.addVideo:"去参与"}}</text>
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
@@ -465,9 +465,9 @@
 					this.isSold = false;
 				}
 				//再次设置店铺id
-				console.log("this.shopid",this.shopid)
-				if(!this.shopid){
-					
+				console.log("this.shopid", this.shopid)
+				if (!this.shopid) {
+
 				}
 				this.loaded = true;
 			},

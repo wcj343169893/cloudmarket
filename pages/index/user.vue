@@ -4,7 +4,7 @@
 			<image class="bg" src="/static/user-bg2.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box" @click="previewAvatar">
-					<image class="portrait" :src="userInfo.avatar"></image>
+					<image class="portrait" :src="userInfo.avatar | avatar" mode="aspectFill"></image>
 				</view>
 				<view class="info-box">
 					<!-- #ifdef MP-WEIXIN -->

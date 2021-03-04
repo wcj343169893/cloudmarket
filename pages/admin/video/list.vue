@@ -4,7 +4,7 @@
 		<view class="videos">
 			<view v-for="(item, index) in dataList" :id="'main_' + item.id" :key="index" class="padding-sm bg-white margin-sm video-item">
 				<view class="header" @click="navToUserPage(item)">
-					<image :src="item.user.avatar" mode="aspectFill" class="cu-avatar round"></image>
+					<image :src="item.user.avatar | avatar" mode="aspectFill" class="cu-avatar round"></image>
 					<text class="margin-left-sm">{{ item.user.nickname }}</text>
 				</view>
 				<view class="video-section">
@@ -35,8 +35,9 @@
 					</view>
 				</view>
 				<view class="buttons flex align-center justify-end margin-top-sm">
+					<text>{{item.stateText}}</text>
 					<button class="action-btn warning" @click.stop="verify(item,index,-1)">拒绝</button>
-					<button class="action-btn recom" v-if="item.state == 0" @click.stop="verify(item,index,1)">审核通过</button>
+					<button class="action-btn recom" v-if="item.state != 1" @click.stop="verify(item,index,1)">审核通过</button>
 				</view>
 			</view>
 		</view>
@@ -77,6 +78,11 @@
 				scrollWithAnimation: true,
 				loop: true,
 				autoNext: false,
+				states:{
+					"-1":"拒绝",
+					"0":"审核中",
+					"1":"通过",
+				},
 				dataList: [],
 				videoContentList: []
 			};
@@ -183,8 +189,8 @@
 					ele.top = 0;
 					ele.bottom = 0;
 					ele.poster = this.getPosterUrl(ele);
+					ele.stateText = this.states[ele.state];
 				});
-
 				if (page == 1) {
 					this.videoContentList = [];
 					this.dataList = data;
@@ -342,6 +348,7 @@
 					} else {
 						item.state = state;
 					}
+					item.stateText = this.states[item.state];
 				}, err => {
 					this.$api.msg("操作失败")
 				});

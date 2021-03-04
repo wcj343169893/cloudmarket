@@ -379,17 +379,15 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-			//#ifndef MP
 		}, {
 			"path": "pages/index/video",
 			"style": {
-				"navigationBarTitleText": "视频",
+				"navigationBarTitleText": "有妖气",
 				// #ifdef MP
 				"navigationStyle": "custom",
 				// #endif
 				"enablePullDownRefresh": true
 			}
-			//#endif
 		}, {
 			"path": "pages/coupons/coupons",
 			"style": {
@@ -805,6 +803,12 @@
 				"iconPath": "static/tab-cate.png",
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"
+			},
+			{
+				"pagePath": "pages/index/video",
+				"iconPath": "static/tab-play.png",
+				"selectedIconPath": "static/tab-play-current.png",
+				"text": "有妖气"
 			},
 			{
 				"pagePath": "pages/index/cart",
