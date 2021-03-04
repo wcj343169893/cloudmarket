@@ -2906,21 +2906,6 @@
     "opendb-admin-log": {
         "data": []
     },
-    "opendb-admin-menus": {
-        "data": [
-            {
-                "create_date": 1602662469396,
-                "enable": true,
-                "icon": "uni-icons-gear",
-                "menu_id": "system_management",
-                "name": "系统管理",
-                "parent_id": "",
-                "permission": [],
-                "sort": 1000,
-                "url": ""
-            }
-        ]
-    },
     "opendb-news-articles": {
         "data": [
             {
@@ -3011,41 +2996,6 @@
             }
         ]
     },
-    "uni-id-permissions": {
-        "data": [
-            {
-                "comment": "",
-                "create_date": 1609574533245,
-                "parent_id": "b45a21d55ff160e203675222560028be",
-                "permission_id": "USER_MANAGE",
-                "permission_name": "用户管理"
-            }
-        ]
-    },
-    "uni-id-roles": {
-        "data": [
-            {
-                "comment": "aa",
-                "create_date": 1609518844378,
-                "permission": [
-                    "SHOP_MANAGE",
-                    "SHOP_MANAGE_ADD",
-                    "SHOP_MANAGE_EDIT",
-                    "SYSTEM_LOGIN",
-                    "SYSTEM_MANAGE",
-                    "USER_MANAGE",
-                    "USER_MANAGE_ADD",
-                    "USER_MANAGE_EDIT",
-                    "self/changePwd",
-                    "system/user/addUser",
-                    "user/login",
-                    "user/logout"
-                ],
-                "role_id": "shop_manager",
-                "role_name": "店长"
-            }
-        ]
-    },
     "uni-id-users": {
         "data": [
             {
@@ -3065,5 +3015,669 @@
                 "username": "admin"
             }
         ]
-    }
+    },
+	"opendb-admin-menus": {
+	    "data": [
+	        {
+	            "create_date": 1602662469396,
+	            "enable": true,
+	            "icon": "uni-icons-gear",
+	            "parent_id": "",
+	            "sort": 1000,
+	            "menu_id": "system_management",
+	            "name": "系统管理",
+	            "permission": [],
+	            "url": ""
+	        },
+	        {
+	            "enable": true,
+	            "icon": "",
+	            "menu_id": "system_role",
+	            "parent_id": "system_management",
+	            "create_date": 1602662469397,
+	            "name": "角色管理",
+	            "permission": [
+	                "ROLE_MANAGE",
+	                "ROLE_MANAGE_LIST",
+	                "SYSTEM_MANAGE"
+	            ],
+	            "pid": "0a4429175fd72b08017823d34b7e9897",
+	            "sort": 1020,
+	            "url": "/pages/system/role/list"
+	        },
+	        {
+	            "create_date": 1602662469396,
+	            "parent_id": "system_management",
+	            "permission": [
+	                "PERMISSION_MANAGE",
+	                "PERMISSION_MANAGE_LIST",
+	                "SYSTEM_MANAGE"
+	            ],
+	            "sort": 1030,
+	            "url": "/pages/system/permission/tree",
+	            "enable": true,
+	            "icon": "",
+	            "menu_id": "system_permission",
+	            "name": "权限管理",
+	            "pid": "0a4429175fd72b08017823d34b7e9897"
+	        },
+	        {
+	            "enable": true,
+	            "permission": [],
+	            "pid": "0a4429175fd72b08017823df63a0c513",
+	            "sort": 131,
+	            "icon": "",
+	            "menu_id": "news_article_admin",
+	            "name": "文章管理",
+	            "parent_id": "news_management",
+	            "url": "/pages/opendb-news-articles/list"
+	        },
+	        {
+	            "sort": 130,
+	            "url": "",
+	            "enable": true,
+	            "icon": "cuIcon-shop",
+	            "menu_id": "news_management",
+	            "name": "新闻管理",
+	            "parent_id": "",
+	            "permission": []
+	        },
+	        {
+	            "enable": true,
+	            "menu_id": "news_comment_admin",
+	            "parent_id": "news_management",
+	            "sort": 133,
+	            "icon": "",
+	            "name": "评论",
+	            "permission": [],
+	            "pid": "0a4429175fd72b08017823df63a0c513",
+	            "url": "/pages/opendb-news-comments/list"
+	        },
+	        {
+	            "enable": true,
+	            "parent_id": "news_management",
+	            "sort": 132,
+	            "icon": "",
+	            "menu_id": "news_category_admin",
+	            "name": "文章分类",
+	            "permission": [],
+	            "pid": "0a4429175fd72b08017823df63a0c513",
+	            "url": "/pages/opendb-news-categories/list"
+	        },
+	        {
+	            "enable": true,
+	            "menu_id": "system_menu_tree",
+	            "name": "菜单管理",
+	            "permission": [
+	                "MENU_MANAGE",
+	                "MENU_MANAGE_LIST",
+	                "SYSTEM_MANAGE"
+	            ],
+	            "pid": "0a4429175fd72b08017823d34b7e9897",
+	            "url": "/pages/system/menu/tree",
+	            "icon": "",
+	            "parent_id": "system_management",
+	            "sort": 1041
+	        },
+	        {
+	            "menu_id": "system_user",
+	            "name": "用户管理",
+	            "icon": "",
+	            "url": "/pages/system/user/list",
+	            "sort": 1042,
+	            "pid": "0a4429175fd72b08017823d34b7e9897",
+	            "parent_id": "system_management",
+	            "permission": [
+	                "SYSTEM_MANAGE",
+	                "USER_MANAGE",
+	                "USER_MANAGE_ADD",
+	                "USER_MANAGE_EDIT",
+	                "system/user/addUser"
+	            ],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "display",
+	            "name": "总览",
+	            "icon": "cuIcon-shop",
+	            "url": "/pages/index/index",
+	            "pid": "",
+	            "parent_id": "",
+	            "permission": [
+	                "system_manage",
+	                "user/login"
+	            ],
+	            "enable": true,
+	            "sort": 1
+	        },
+	        {
+	            "icon": "cuIcon-shop",
+	            "parent_id": "mall_management",
+	            "pid": "21ded5cb5ff17ca8038a05533083a454",
+	            "sort": 100,
+	            "url": "/pages/cloud_shops/list",
+	            "enable": true,
+	            "menu_id": "shop_management",
+	            "name": "店铺管理",
+	            "permission": [
+	                "MALL_MANAGE",
+	                "MALL_SHOP_MANAGE",
+	                "MALL_SHOP_MANAGE_LIST"
+	            ]
+	        },
+	        {
+	            "menu_id": "mall_management",
+	            "name": "店铺管理",
+	            "icon": "cuIcon-shop",
+	            "url": "",
+	            "sort": 100,
+	            "pid": "",
+	            "parent_id": "",
+	            "permission": [],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "cloud_goods",
+	            "name": "商品管理",
+	            "icon": "cuIcon-shop",
+	            "url": "/pages/cloud_goods/list",
+	            "sort": 102,
+	            "pid": "28ee4e3e603da9e7085fed6675554a6b",
+	            "parent_id": "goods_manage",
+	            "permission": [
+	                "MALL_GOODS_MANAGE",
+	                "MALL_GOODS_MANAGE_LIST",
+	                "MALL_MANAGE"
+	            ],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "cloud_orders",
+	            "name": "订单管理",
+	            "icon": "cuIcon-shop",
+	            "url": "/pages/cloud_orders/list",
+	            "sort": 103,
+	            "pid": "28ee4e3e603daa340860237849dbe1fb",
+	            "parent_id": "order_manage",
+	            "permission": [
+	                "MALL_MANAGE",
+	                "MALL_ORDER_MANAGE",
+	                "MALL_ORDER_MANAGE_LIST"
+	            ],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "goods_manage",
+	            "name": "商品管理",
+	            "icon": "cuIcon-shop",
+	            "url": "",
+	            "sort": 101,
+	            "pid": "",
+	            "parent_id": "",
+	            "permission": [],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "order_manage",
+	            "name": "订单管理",
+	            "icon": "cuIcon-shop",
+	            "url": "",
+	            "sort": 102,
+	            "pid": "",
+	            "parent_id": "",
+	            "permission": [],
+	            "enable": true
+	        },
+	        {
+	            "menu_id": "goods_category_manage",
+	            "name": "分类管理",
+	            "icon": "cuIcon-shop",
+	            "url": "/pages/cloud_goods_categories/list",
+	            "sort": 102,
+	            "pid": "28ee4e3e603da9e7085fed6675554a6b",
+	            "parent_id": "goods_manage",
+	            "permission": [],
+	            "enable": true
+	        }
+	    ]
+	},
+	"uni-id-permissions": {
+	    "data": [
+	        {
+	            "comment": "",
+	            "create_date": 1609574533245,
+	            "permission_id": "USER_MANAGE",
+	            "permission_name": "用户管理",
+	            "parent_id": "b45a21d55ff160e203675222560028be"
+	        },
+	        {
+	            "comment": "",
+	            "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+	            "permission_id": "USER_MANAGE_ADD",
+	            "permission_name": "增加用户",
+	            "create_date": 1609575612579
+	        },
+	        {
+	            "comment": "",
+	            "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+	            "permission_id": "USER_MANAGE_EDIT",
+	            "permission_name": "修改用户",
+	            "create_date": 1609575635272
+	        },
+	        {
+	            "comment": "",
+	            "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+	            "permission_id": "USER_MANAGE_DELETE",
+	            "permission_name": "删除用户",
+	            "create_date": 1609575652369
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": false,
+	            "parent_id": "",
+	            "permission_id": "SYSTEM_MANAGE",
+	            "permission_name": "系统管理",
+	            "create_date": 1609654498690
+	        },
+	        {
+	            "comment": "登录后台必备",
+	            "gen_child": "",
+	            "parent_id": "023ce9555ff17515032ba51250d38df3",
+	            "permission_id": "user/login",
+	            "permission_name": "后台登录api",
+	            "create_date": 1609654537208
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": true,
+	            "parent_id": "b45a21d55ff160e203675222560028be",
+	            "permission_id": "ROLE_MANAGE",
+	            "permission_name": "角色管理",
+	            "create_date": 1609656444421
+	        },
+	        {
+	            "permission_id": "ROLE_MANAGE_ADD",
+	            "permission_name": "新增角色",
+	            "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "ROLE_MANAGE_EDIT",
+	            "permission_name": "修改角色",
+	            "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "ROLE_MANAGE_DELETE",
+	            "permission_name": "删除角色",
+	            "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+	            "comment": ""
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": false,
+	            "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+	            "permission_id": "system/user/addUser",
+	            "permission_name": "添加用户api",
+	            "create_date": 1609657158372
+	        },
+	        {
+	            "comment": "",
+	            "create_date": 1609659669280,
+	            "gen_child": false,
+	            "parent_id": "",
+	            "permission_id": "LOGIN_MANAGE",
+	            "permission_name": "登录必备"
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": false,
+	            "parent_id": "023ce9555ff17515032ba51250d38df3",
+	            "permission_id": "self/changePwd",
+	            "permission_name": "修改密码",
+	            "create_date": 1609659951629
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": false,
+	            "parent_id": "023ce9555ff17515032ba51250d38df3",
+	            "permission_id": "user/logout",
+	            "permission_name": "退出登录",
+	            "create_date": 1609659976327
+	        },
+	        {
+	            "comment": "",
+	            "gen_child": false,
+	            "parent_id": "",
+	            "permission_id": "MALL_MANAGE",
+	            "permission_name": "市场管理",
+	            "create_date": 1609661179867
+	        },
+	        {
+	            "gen_child": true,
+	            "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+	            "permission_id": "MALL_SHOP_MANAGE",
+	            "permission_name": "店铺管理",
+	            "create_date": 1614496557637
+	        },
+	        {
+	            "permission_id": "MALL_SHOP_MANAGE_LIST",
+	            "permission_name": "列表店铺",
+	            "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_SHOP_MANAGE_ADD",
+	            "permission_name": "新增店铺",
+	            "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_SHOP_MANAGE_EDIT",
+	            "permission_name": "修改店铺",
+	            "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_SHOP_MANAGE_DELETE",
+	            "permission_name": "删除店铺",
+	            "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+	            "comment": ""
+	        },
+	        {
+	            "gen_child": true,
+	            "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+	            "permission_id": "MALL_GOODS_MANAGE",
+	            "permission_name": "商品管理",
+	            "create_date": 1614496573187
+	        },
+	        {
+	            "permission_id": "MALL_GOODS_MANAGE_LIST",
+	            "permission_name": "列表商品",
+	            "parent_id": "b00064a7603b433d07925fba78380fc9",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_GOODS_MANAGE_ADD",
+	            "permission_name": "新增商品",
+	            "parent_id": "b00064a7603b433d07925fba78380fc9",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_GOODS_MANAGE_EDIT",
+	            "permission_name": "修改商品",
+	            "parent_id": "b00064a7603b433d07925fba78380fc9",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_GOODS_MANAGE_DELETE",
+	            "permission_name": "删除商品",
+	            "parent_id": "b00064a7603b433d07925fba78380fc9",
+	            "comment": ""
+	        },
+	        {
+	            "gen_child": true,
+	            "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+	            "permission_id": "MALL_ORDER_MANAGE",
+	            "permission_name": "订单管理",
+	            "create_date": 1614496588731
+	        },
+	        {
+	            "permission_id": "MALL_ORDER_MANAGE_LIST",
+	            "permission_name": "列表订单",
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_ORDER_MANAGE_ADD",
+	            "permission_name": "新增订单",
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_ORDER_MANAGE_EDIT",
+	            "permission_name": "修改订单",
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MALL_ORDER_MANAGE_DELETE",
+	            "permission_name": "删除订单",
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "comment": ""
+	        },
+	        {
+	            "gen_child": true,
+	            "parent_id": "b45a21d55ff160e203675222560028be",
+	            "permission_id": "MENU_MANAGE",
+	            "permission_name": "菜单管理",
+	            "create_date": 1614497046494
+	        },
+	        {
+	            "permission_id": "MENU_MANAGE_LIST",
+	            "permission_name": "列表菜单",
+	            "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MENU_MANAGE_ADD",
+	            "permission_name": "新增菜单",
+	            "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MENU_MANAGE_EDIT",
+	            "permission_name": "修改菜单",
+	            "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "MENU_MANAGE_DELETE",
+	            "permission_name": "删除菜单",
+	            "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+	            "comment": ""
+	        },
+	        {
+	            "gen_child": true,
+	            "parent_id": "b45a21d55ff160e203675222560028be",
+	            "permission_id": "PERMISSION_MANAGE",
+	            "permission_name": "权限管理",
+	            "create_date": 1614497088700
+	        },
+	        {
+	            "permission_id": "PERMISSION_MANAGE_LIST",
+	            "permission_name": "列表权限",
+	            "parent_id": "28ee4e3e603b4540080af19c73301590",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "PERMISSION_MANAGE_ADD",
+	            "permission_name": "新增权限",
+	            "parent_id": "28ee4e3e603b4540080af19c73301590",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "PERMISSION_MANAGE_EDIT",
+	            "permission_name": "修改权限",
+	            "parent_id": "28ee4e3e603b4540080af19c73301590",
+	            "comment": ""
+	        },
+	        {
+	            "permission_id": "PERMISSION_MANAGE_DELETE",
+	            "permission_name": "删除权限",
+	            "parent_id": "28ee4e3e603b4540080af19c73301590",
+	            "comment": ""
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+	            "permission_id": "ROLE_MANAGE_LIST",
+	            "permission_name": "角色列表",
+	            "create_date": 1614497246099
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+	            "permission_id": "USER_MANAGE_LIST",
+	            "permission_name": "用户列表",
+	            "create_date": 1614497265208
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "permission_id": "orders/cancel",
+	            "permission_name": "取消订单",
+	            "create_date": 1614497633092
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "permission_id": "orders/addDelivery",
+	            "permission_name": "订单发货",
+	            "create_date": 1614497648841
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "permission_id": "orders/printOrder",
+	            "permission_name": "打印小票",
+	            "create_date": 1614505081651
+	        },
+	        {
+	            "gen_child": false,
+	            "parent_id": "28ee4e3e603b434c080a928404c239d1",
+	            "permission_id": "orders/selftake",
+	            "permission_name": "订单自提",
+	            "create_date": 1614505101054
+	        }
+	    ]
+	},
+	"uni-id-roles": {
+	    "data": [
+	        {
+	            "create_date": 1609518844378,
+	            "permission": [
+	                "LOGIN_MANAGE",
+	                "MALL_GOODS_MANAGE",
+	                "MALL_GOODS_MANAGE_ADD",
+	                "MALL_GOODS_MANAGE_DELETE",
+	                "MALL_GOODS_MANAGE_EDIT",
+	                "MALL_GOODS_MANAGE_LIST",
+	                "MALL_MANAGE",
+	                "MALL_ORDER_MANAGE",
+	                "MALL_ORDER_MANAGE_ADD",
+	                "MALL_ORDER_MANAGE_DELETE",
+	                "MALL_ORDER_MANAGE_EDIT",
+	                "MALL_ORDER_MANAGE_LIST",
+	                "MALL_SHOP_MANAGE",
+	                "MALL_SHOP_MANAGE_ADD",
+	                "MALL_SHOP_MANAGE_DELETE",
+	                "MALL_SHOP_MANAGE_EDIT",
+	                "MALL_SHOP_MANAGE_LIST",
+	                "MENU_MANAGE",
+	                "MENU_MANAGE_ADD",
+	                "MENU_MANAGE_DELETE",
+	                "MENU_MANAGE_EDIT",
+	                "MENU_MANAGE_LIST",
+	                "PERMISSION_MANAGE",
+	                "PERMISSION_MANAGE_ADD",
+	                "PERMISSION_MANAGE_DELETE",
+	                "PERMISSION_MANAGE_EDIT",
+	                "PERMISSION_MANAGE_LIST",
+	                "ROLE_MANAGE",
+	                "ROLE_MANAGE_ADD",
+	                "ROLE_MANAGE_DELETE",
+	                "ROLE_MANAGE_EDIT",
+	                "ROLE_MANAGE_LIST",
+	                "SYSTEM_MANAGE",
+	                "USER_MANAGE",
+	                "USER_MANAGE_ADD",
+	                "USER_MANAGE_DELETE",
+	                "USER_MANAGE_EDIT",
+	                "USER_MANAGE_LIST",
+	                "orders/addDelivery",
+	                "orders/cancel",
+	                "orders/printOrder",
+	                "orders/selftake",
+	                "self/changePwd",
+	                "system/user/addUser",
+	                "user/login",
+	                "user/logout"
+	            ],
+	            "role_id": "shop_manager",
+	            "role_name": "店长",
+	            "comment": "aa"
+	        },
+	        {
+	            "comment": "",
+	            "permission": [
+	                "LOGIN_MANAGE",
+	                "MALL_GOODS_MANAGE",
+	                "MALL_GOODS_MANAGE_ADD",
+	                "MALL_GOODS_MANAGE_EDIT",
+	                "MALL_GOODS_MANAGE_LIST",
+	                "MALL_MANAGE",
+	                "MALL_ORDER_MANAGE",
+	                "MALL_ORDER_MANAGE_EDIT",
+	                "MALL_ORDER_MANAGE_LIST",
+	                "MALL_SHOP_MANAGE",
+	                "MALL_SHOP_MANAGE_EDIT",
+	                "MALL_SHOP_MANAGE_LIST",
+	                "orders/addDelivery",
+	                "orders/cancel",
+	                "orders/printOrder",
+	                "orders/selftake",
+	                "self/changePwd",
+	                "user/login",
+	                "user/logout"
+	            ],
+	            "role_id": "godown_keeper",
+	            "role_name": "仓库管理员",
+	            "create_date": 1609581032695
+	        },
+	        {
+	            "comment": "",
+	            "permission": [
+	                "USER_MANAGE",
+	                "USER_MANAGE_ADD",
+	                "USER_MANAGE_EDIT",
+	                "USER_MANAGE_DELETE",
+	                "SHOP_MANAGE",
+	                "SHOP_MANAGE_ADD",
+	                "SHOP_MANAGE_EDIT",
+	                "SHOP_MANAGE_DELETE",
+	                "GOODS_MANAGE",
+	                "GOODS_MANAGE_ADD",
+	                "GOODS_MANAGE_EDIT",
+	                "GOODS_MANAGE_DELETE",
+	                "SYSTEM_MANAGE",
+	                "user/login",
+	                "ROLE_MANAGE",
+	                "ROLE_MANAGE_ADD",
+	                "ROLE_MANAGE_EDIT",
+	                "ROLE_MANAGE_DELETE",
+	                "system/user/addUser",
+	                "SYSTEM_LOGIN",
+	                "self/changePwd",
+	                "user/logout",
+	                "MALL_MANAGE"
+	            ],
+	            "role_id": "admin",
+	            "role_name": "超级管理员",
+	            "create_date": 1609653905258
+	        },
+	        {
+	            "comment": "",
+	            "permission": [
+	                "LOGIN_MANAGE",
+	                "self/changePwd",
+	                "user/login",
+	                "user/logout"
+	            ],
+	            "role_id": "new_empty",
+	            "role_name": "new_empty",
+	            "create_date": 1609661430096
+	        }
+	    ]
+	}
 }
