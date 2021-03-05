@@ -114,7 +114,7 @@ const cancel = async (data) => {
 		shopid: 1,
 		couponsChecked: 1,
 		goods: 1,
-		uid:1,
+		uid: 1,
 		state: 1,
 	});
 	if (!order) {
@@ -332,6 +332,36 @@ const addDelivery = async (data) => {
 	return res;
 }
 /**
+ * 订单改价格
+ */
+const changePrice = async (data) => {
+	const {
+		_id,
+		money,
+		shopid
+	} = data;
+	let order = await getOrderById({
+		_id,
+		shopid
+	}, {
+		originTotalMoney: 1,
+		totalMoney: 1
+	});
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	if (!order.originTotalMoney) {
+		order.originTotalMoney = order.totalMoney;
+	}
+	let res = await orderCollection.doc(_id).update({
+		originTotalMoney: order.originTotalMoney,
+		totalMoney: money
+	});
+	return res;
+}
+
+/**
  * 查詢单个訂單信息，支持提货码查询商品
  */
 const detail = async (data) => {
@@ -466,5 +496,6 @@ module.exports = {
 	passedRefund,
 	refuseRefund,
 	comment,
-	cancel
+	cancel,
+	changePrice
 }
