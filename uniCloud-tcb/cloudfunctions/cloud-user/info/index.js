@@ -387,6 +387,19 @@ const models = {
 			}
 		}
 	},
+	async shops(data,context){
+		const {userInfo} = context;
+		if(userInfo.admin){
+			let res = await shopCollection.where({
+				id: cmd.in(userInfo.admin)
+			}).field({
+				id:1,
+				name:1
+			}).orderBy("id", "desc").limit(50).get();
+			return res.data;
+		}
+		return false;
+	},
 	async push(data) {
 		const {
 			uid,

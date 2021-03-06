@@ -1,7 +1,7 @@
 // 开发文档：https://uniapp.dcloud.io/uniCloud/clientdb?id=action
 module.exports = {
 	before: async (state, event) => {
-		let key = state.collection.split("_")[1];
+		let key = state.collection.replace("cloud_","");
 		state.newData.id = await genIdentityId(key);
 	},
 	after: async (state, event, error, result) => {

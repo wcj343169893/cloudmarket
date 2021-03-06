@@ -41,7 +41,29 @@ module.exports = class UserService extends Service {
 		}
 		this.ctx.auth = auth // 设置当前请求的 auth 对象
 	}
-
+	async getAdminShops(userInfo) {
+		let conditions = false;
+		const cmd = this.db.command;
+		if (userInfo.role && userInfo.role.indexOf("admin") != -1) {
+			conditions = {
+				_id: cmd.exists(true)
+			}
+		}
+		//管理所有店铺
+		if (userInfo.admin) {
+			conditions = {
+				id: cmd.in(userInfo.admin)
+			};
+		}
+		if (!conditions) {
+			return [];
+		}
+		let res = await this.db.collection('cloud_shops').where(conditions).field({
+			id: 1,
+			name: 1
+		}).orderBy("id", "desc").limit(50).get();
+		return res.data;
+	}
 	async hasAdmin() {
 		const {
 			total

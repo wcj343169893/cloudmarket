@@ -10,6 +10,102 @@
 	"properties": {
 		"_id": {
 			"description": "ID，系统自动生成"
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"operater": {
+			"bsonType": "string",
+			"title": "操作员",
+			"description": "操作员",
+			"foreignKey": "uni-id-users._id",
+			"forceDefaultValue": {
+				"$env": "uid"
+			}
+		},
+		"goodsCount": {
+			"bsonType": "int",
+			"defaultValue": 0,
+			"title": "商品数量"
+		},
+		"id": {
+			"bsonType": "int",
+			"title": "编号"
+		},
+		"src": {
+			"bsonType": "string",
+			"title": "图片",
+			"component": {
+				"name": "cloud-image",
+				"props": {
+					"name": "src",
+					"v-model": "formData.src"
+				}
+			}
+		},
+		"isRecommend": {
+			"bsonType": "int",
+			"title": "是否推荐",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "否",
+				"value": 0
+			}, {
+				"text": "是",
+				"value": 1
+			}]
+		},
+		"isShow": {
+			"bsonType": "int",
+			"title": "是否显示",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "否",
+				"value": 0
+			}, {
+				"text": "是",
+				"value": 1
+			}]
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "名称"
+		},
+		"parent_id": {
+			"bsonType": "string",
+			"title": "父id",
+			"description": "父id",
+			"parentKey": "_id"
+		},
+		"posid": {
+			"bsonType": "int",
+			"title": "排序，asc"
+		},
+		"recommendGoods": {
+			"bsonType": "int",
+			"defaultValue": 0,
+			"title": "推荐商品数量"
+		},
+		"shopid": {
+			"bsonType": "int",
+			"title": "店铺编号",
+			"foreignKey": "cloud_shops.id",
+			"enum": {
+				"collection": "cloud_shops",
+				"field": "name as text, id as value"
+			}
 		}
+
 	}
 }

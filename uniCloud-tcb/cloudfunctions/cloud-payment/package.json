@@ -1,7 +1,7 @@
 {
 	"cloudfunction-config": {
 		"memorySize": 256,
-		"path": "/market_notify",
+		"path": "/http/market_notify",
 		"timeout": 20,
 		"triggers": [
 			{

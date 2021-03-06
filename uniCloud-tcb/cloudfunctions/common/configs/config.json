@@ -1,6 +1,6 @@
 {
 	"domain": "http://api.cjblog.org",
-	"notify-floder": "market_notify",
+	"notify-floder": "http/market_notify",
 	"tokenSecret": "4e50313a45f5fbe0",
 	"app-plus": {
 		"payment": {

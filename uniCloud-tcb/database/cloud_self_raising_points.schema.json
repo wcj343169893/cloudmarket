@@ -11,6 +11,20 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
 		"address": {
 			"bsonType": "string",
 			"title": "地址",
@@ -54,7 +68,7 @@
 			"description": "百分比"
 		},
 		"state": {
-			"bsonType": "bool",
+			"bsonType": "int",
 			"title": "状态",
 			"description": "",
 			"defaultValue": 0,
