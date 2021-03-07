@@ -330,7 +330,6 @@
 				categories: [],
 				categoriesData: [],
 				categoryIdTmp: [],
-				categoryName: '请选择',
 				specsTypeName: '单规格',
 				specsType: 'single', //single单规格，multiple多规格
 				specsTypeTmp: 'single', //临时single单规格，multiple多规格
@@ -453,6 +452,14 @@
 			},
 			endYear() {
 				return new Date().getFullYear() + 3;
+			},
+			categoryName(){
+				if(this.categories && this.categories.length>0){
+					return this.categories.filter(e=>e.parent_id).map(e=>e.name).join("、");
+				}else if(this.categoriesData.length == 0){
+					return "没有分类"
+				}
+				return "请选择"
 			}
 		},
 		onLoad(options) {
@@ -506,9 +513,6 @@
 					this.setSpecsType('multiple');
 					this.specsTypeTmp = 'multiple';
 				}
-				if (this.categories.length > 0) {
-					this.categoryName = this.categories[this.categories.length - 1].name;
-				}
 				if (this.yuding && this.yuding.beginTime > 0) {
 					this.saleType = 'yuding';
 				}
@@ -544,7 +548,6 @@
 					},
 					err => {
 						//没有分类
-						this.categoryName = '没有分类';
 					}
 				);
 			},
@@ -587,10 +590,8 @@
 			},
 			//单项选择商品分类，如果要多选，有点麻烦，由单选改为多选
 			changeCategory(e) {
-				console.log(e);
 				this.categoryIdTmp = [];
 				let ids = e.detail.value.map(id => +id);
-				console.log(ids)
 				this.categoriesData.forEach(par => {
 					par.checked = false;
 					if (par.children) {
@@ -630,8 +631,6 @@
 			savaSelectCategory() {
 				if (this.categoryIdTmp.length > 0) {
 					this.categories = this.categoryIdTmp;
-					this.categoryName = this.categoryIdTmp[this.categoryIdTmp.length - 1].name;
-
 					//默认选中
 					this.categoriesData.forEach(ele => {
 						ele.children.forEach(chi => {
