@@ -137,24 +137,26 @@ const models = {
 		categoryList = res.data;
 		//计算总个数，包含一级和二级
 		let cateCount = categoryList.length;
-		categoryList.forEach(main => {
-			main._id = undefined;
-			if (main.children) {
-				cateCount += main.children.length;
-			}
-		});
 		this.cateStartId = await genIdentityId("goods_categories", cateCount) - cateCount;
+		let parentCate = categoryList.filter(e => !e.parent_id);
+		let parentIdMap = {};
+		for (let cate of parentCate) {
+			let _id = cate._id;
+			this.replaceCategoryInfo(cate);
+			let res2 = await categoryCollection.add(cate);
+			cate._id = res2.id
+			parentIdMap[_id] = cate;
+		}
+		let childrenCate = categoryList.filter(e => e.parent_id);
 
-		categoryList.forEach(main => {
-			this.replaceCategoryInfo(main);
-			if (main.children) {
-				main.children.forEach(cate => {
-					cate.pid = main.id;
-					this.replaceCategoryInfo(cate);
-				})
+		childrenCate.forEach(cate => {
+			if (parentIdMap[cate.parent_id]) {
+				cate.pid = parentIdMap[cate.parent_id].id;
+				cate.parent_id = parentIdMap[cate.parent_id]._id;
+				this.replaceCategoryInfo(cate);
 			}
 		})
-		res = await categoryCollection.add(categoryList);
+		res = await categoryCollection.add(childrenCate);
 		console.log(res);
 		return res;
 	},
@@ -280,7 +282,8 @@ const models = {
 			id: this.cateStartId,
 			_id: undefined
 		});
-		this.cateIdsMap[id] = Object.assign({ ...cate
+		this.cateIdsMap[id] = Object.assign({
+			...cate
 		}, {
 			children: undefined
 		});

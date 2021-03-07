@@ -590,6 +590,7 @@
 			},
 			//单项选择商品分类，如果要多选，有点麻烦，由单选改为多选
 			changeCategory(e) {
+				console.log( e.detail.value)
 				this.categoryIdTmp = [];
 				let ids = e.detail.value.map(id => +id);
 				this.categoriesData.forEach(par => {
@@ -640,6 +641,7 @@
 
 					this.$refs['showCateory'].close();
 				} else {
+					this.categories = [];
 					this.$api.msg('请选择分类');
 				}
 			},
