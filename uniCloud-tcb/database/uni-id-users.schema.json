@@ -115,6 +115,15 @@
 			"description": "头像地址",
 			"trim": "both"
 		},
+		"admin": {
+			"bsonType": "array",
+			"title": "管理店铺",
+			"foreignKey": "cloud_shops.id",
+			"enum": {
+				"collection": "cloud_shops",
+				"field": "name as text, id as value"
+			}
+		},
 		"role": {
 			"bsonType": "array",
 			"title": "角色",
