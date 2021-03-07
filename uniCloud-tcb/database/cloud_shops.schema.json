@@ -266,9 +266,9 @@
 				"$env": "now"
 			}
 		},
-		"selfRaisingPoint":{
-			"bsonType":"bool",
-			"title":"自提点"
+		"selfRaisingPoint": {
+			"bsonType": "bool",
+			"title": "自提点"
 		}
 	}
 }

@@ -106,6 +106,5 @@
 				"field": "name as text, id as value"
 			}
 		}
-
 	}
 }
