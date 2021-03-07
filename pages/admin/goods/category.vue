@@ -6,14 +6,19 @@
 					<text class="num">{{ index + 1 }}</text>
 					<input type="text" value="" v-model="item.name" placeholder="请输入主分类名称" />
 				</view>
-				<button type="default" v-if="!item.isShow" class="add-btn small" @click="changeIsShow(index,false,1)">显示</button>
-				<button type="default" v-else class="add-btn small disable" @click="changeIsShow(index,false,0)">隐藏</button>
+				<button type="default" v-if="!item.isShow" class="add-btn small"
+					@click="changeIsShow(index,false,1)">显示</button>
+				<button type="default" v-else class="add-btn small disable"
+					@click="changeIsShow(index,false,0)">隐藏</button>
 
-				<button type="default" v-if="!item.isRecommend" class="add-btn small" @click="changeRecommend(index,1)">推荐</button>
-				<button type="default" v-else class="add-btn small disable" @click="changeRecommend(index,0)">不推</button>
+				<button type="default" v-if="!item.isRecommend" class="add-btn small"
+					@click="changeRecommend(index,1)">推荐</button>
+				<button type="default" v-else class="add-btn small disable"
+					@click="changeRecommend(index,0)">不推</button>
 				<image class="cate-image" :src="cateImgs[index]" mode="aspectFill" @click="changeIcon(index)"></image>
 				<view class="">
-					<text v-if="!item.children || item.children.length == 0" class="yticon icon-jia2" @click.stop="addChild(index)"></text>
+					<text v-if="!item.children || item.children.length == 0" class="yticon icon-jia2"
+						@click.stop="addChild(index)"></text>
 					<text class="yticon icon-shanchu4 m-l" @click.stop="delParent(index)"></text>
 				</view>
 			</view>
@@ -23,9 +28,12 @@
 						<text class="num">{{ index + 1 }}.{{ childIndex + 1 }}</text>
 						<input type="text" value="" v-model="child.name" placeholder="请输入子分类名称" />
 					</view>
-					<button type="default" v-if="child.isShow===0" class="add-btn small" @click="changeIsShow(index,childIndex,1)">显示</button>
-					<button type="default" v-else class="add-btn small disable" @click="changeIsShow(index,childIndex,0)">隐藏</button>
-					<text class="yticon icon-jia2" v-if="item.children.length == childIndex + 1" @click.stop="addChild(index)"></text>
+					<button type="default" v-if="child.isShow===0" class="add-btn small"
+						@click="changeIsShow(index,childIndex,1)">显示</button>
+					<button type="default" v-else class="add-btn small disable"
+						@click="changeIsShow(index,childIndex,0)">隐藏</button>
+					<text class="yticon icon-jia2" v-if="item.children.length == childIndex + 1"
+						@click.stop="addChild(index)"></text>
 					<text class="yticon icon-shanchu4" v-else @click.stop="delChild(childIndex, index)"></text>
 				</view>
 			</view>
@@ -34,6 +42,7 @@
 		<view class="specsTitlesBtn" v-if="isLoaded">
 			<button class="add-btn cancel" @click="addParent">增加主分类</button>
 			<button class="add-btn" @click="save">保存</button>
+			<button class="add-btn cancel" @click="exchange">转换老数据</button>
 		</view>
 	</view>
 </template>
@@ -50,7 +59,7 @@
 			return {
 				categoriesData: [],
 				cateImgs: {},
-				changeIconIndex:0,
+				changeIconIndex: 0,
 				submit: false,
 				isLoaded: false
 			};
@@ -97,7 +106,7 @@
 					id: false,
 					name: '',
 					pid: 0,
-					isShow:true,
+					isShow: 1,
 					goodsCount: 0,
 					children: []
 				});
@@ -117,7 +126,7 @@
 				this.categoriesData[index].children.push({
 					id: false,
 					name: '',
-					isShow:true,
+					isShow: 1,
 					pid: part.id,
 					goodsCount: 0
 				});
@@ -159,7 +168,7 @@
 					count: 1, //默认9
 					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['camera', 'album'], //从相册选择
-					success: (res) =>{
+					success: (res) => {
 						if (res.tempFilePaths.length > 0) {
 							uni.setStorage({
 								key: 'avatar',
@@ -198,6 +207,11 @@
 						this.submit = false;
 					}
 				);
+			},
+			exchange() {
+				categoryAdmin('exchange', {}, true).then(res => {
+					console.log(res)
+				})
 			}
 		}
 	};

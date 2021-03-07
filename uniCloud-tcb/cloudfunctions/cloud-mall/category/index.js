@@ -122,43 +122,53 @@ const cates = async (data) => {
 		shopid: shopid,
 		isShow: 1,
 	}).field({
-		_id: 0,
 		id: 1,
 		src: 1,
 		name: 1,
-		children: 1,
+		parent_id: 1,
+		//children: 1,
 		recommendGoods: 1
 	}).orderBy("posid", "asc").get();
 	if (categories.data.length == 0) {
 		return false;
 	}
+	//parent_id处理成上下级关系
+	let childrenMap = {};
+	let parentList = [];
 	//过滤不显示的子集
 	categories.data.forEach(cate => {
-		if (cate.children) {
-			cate.children = cate.children.filter(child => {
-				return child.isShow !== 0;
+		cate.children = [];
+		if (!cate.parent_id) {
+			parentList.push(cate);
+		} else {
+			if (!childrenMap[cate.parent_id]) {
+				childrenMap[cate.parent_id] = [];
+			}
+			childrenMap[cate.parent_id].push(cate);
+		}
+	})
+	//前端只需要2级分类
+	parentList.forEach(pcat => {
+		if (!childrenMap[pcat._id]) {
+			pcat.children.unshift({
+				name: "全部",
+				id: pcat.id,
+				pid: pcat.id
 			});
 		} else {
-			cate.children = [];
+			pcat.children = childrenMap[pcat._id];
 		}
-		//自动创建本身
-		if (cate.children.length == 0) {
-			cate.children.unshift({
-				name: "全部",
-				id: cate.id,
-				pid: cate.id
-			});
-		} else if (cate.recommendGoods > 0) {
+		if (pcat.recommendGoods > 0) {
 			//存在推荐商品，增加推荐分类
-			cate.children.unshift({
+			pcat.children.unshift({
 				name: "推荐",
-				id: cate.id,
-				pid: cate.id,
+				id: pcat.id,
+				pid: pcat.id,
 				isRecommend: 1
 			});
 		}
-	})
-	return categories.data;
+	});
+	return parentList;
 }
 module.exports = {
 	main,

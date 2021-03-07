@@ -11,15 +11,36 @@ const {
  */
 const list = async (data, context) => {
 	//查询列表
-	let res = await categoryCollection.where({
+	let categories = await categoryCollection.where({
 		shopid: data.shopid
 	}).orderBy("posid", "asc").get();
-	if (res.data.length == 0) {
+	if (categories.data.length == 0) {
 		//data.message = "暂无数据";
 		console.log(data)
 		return false;
 	}
-	return res.data;
+	//parent_id处理成上下级关系
+	let childrenMap = {};
+	let parentList = [];
+	//过滤不显示的子集
+	categories.data.forEach(cate => {
+		cate.children = [];
+		if (!cate.parent_id) {
+			parentList.push(cate);
+		} else {
+			if (!childrenMap[cate.parent_id]) {
+				childrenMap[cate.parent_id] = [];
+			}
+			childrenMap[cate.parent_id].push(cate);
+		}
+	})
+	//前端只需要2级分类
+	parentList.forEach(pcat => {
+		if (childrenMap[pcat._id]) {
+			pcat.children = childrenMap[pcat._id];
+		}
+	});
+	return parentList;
 }
 
 const save = async (data) => {
@@ -27,30 +48,17 @@ const save = async (data) => {
 		data.message = "数据不能为空";
 		return false;
 	}
+	let newCount = 0;
+	let existsData = [];
 	//查询店铺旧数据
 	let res = await categoryCollection.where({
 		shopid: data.shopid
 	}).field({
 		id: 1,
-		children: 1,
 		isShow: 1
 	}).get();
-	let oldData = [];
-	let oldIdData = [];
-	let newCount = 0;
-	let existsData = [];
-	let existsIdData = [];
-	if (res.data.length > 0) {
-		res.data.map(ele => {
-			oldData.push(ele._id);
-			oldIdData.push(ele.id);
-			if (ele.children) {
-				ele.children.map(child => {
-					oldIdData.push(child.id);
-				})
-			}
-		})
-	}
+	//老数据的_id
+	let oldData = res.data.map(ele => ele._id);
 	//计算新增个数
 	data.data.map(ele => {
 		if (!ele.id) {
@@ -72,48 +80,50 @@ const save = async (data) => {
 	const getNewNumber = function() {
 		return firstId++;
 	}
-	//新增或者修改
-	for (let ele of data.data) {
-		ele.name = checkCategoryName(ele.name);
-		if (!ele.id) {
-			//新增
-			ele.id = getNewNumber();
+	let posid = 0;
+	let shopid = data.shopid;
+	const saveCategories = async (data, parent_id, pid) => {
+		for (let ele of data) {
+			ele.name = checkCategoryName(ele.name);
+			let children = [];
 			if (ele.children) {
-				ele.children.forEach(ele2 => {
-					ele2.name = checkCategoryName(ele2.name);
-					ele2.id = getNewNumber();
+				children = [...ele.children];
+			}
+			delete ele.children;
+			ele.posid = posid;
+			let _id;
+			if (!ele._id) {
+				if (!ele.id) {
+					ele.id = getNewNumber();
+				}
+				//新增
+				Object.assign(ele, {
+					shopid,
+					pid,
+					parent_id,
+					goodsCount: 0,
+					recommendGoods: 0,
+					created: Date.now(),
+					modified: Date.now(),
 				})
+				let res = await categoryCollection.add(ele);
+				_id = res.id;
+			} else {
+				_id = ele._id;
+				ele.modified = Date.now();
+				//已经存在的分类
+				existsData.push(_id);
+				delete ele._id;
+				await categoryCollection.doc(_id).update(ele);
 			}
-			Object.assign(ele, {
-				shopid: data.shopid,
-				pid: 0,
-				goodsCount: 0,
-				posid: 0
-			})
-			await categoryCollection.add(ele);
-		} else {
-			let id = ele._id;
-			existsData.push(id);
-			if (ele.isShow !== 0) {
-				existsIdData.push(ele.id);
+			posid++;
+			if (children.length > 0) {
+				await saveCategories(children, _id, ele.id);
 			}
-			//修改,包含修改子类
-			ele.shopid = data.shopid;
-			if (ele.children) {
-				ele.children.forEach(ele2 => {
-					ele2.name = checkCategoryName(ele2.name);
-					if (!ele2.id) {
-						ele2.id = getNewNumber();
-					} else if (ele.isShow !== 0 && ele2.isShow !== 0) {
-						//只保存显示的分类id
-						existsIdData.push(ele2.id);
-					}
-				})
-			}
-			delete ele._id;
-			await categoryCollection.doc(id).update(ele);
 		}
 	}
+	//新增或者修改
+	await saveCategories(data.data, "", 0);
 	//获取旧数据与存在数据的差集
 	let delData = oldData.filter(function(v) {
 		return existsData.indexOf(v) === -1;
@@ -125,26 +135,6 @@ const save = async (data) => {
 			_id: cmd.in(delData)
 		}).remove();
 	}
-	let hideIdData = oldIdData.filter(function(v) {
-		return existsIdData.indexOf(v) === -1;
-	});
-	console.log("hide or delete id", hideIdData);
-	//显示
-	await goodsCollection.where({
-		shopid: data.shopid,
-		'categories.id': cmd.in(existsIdData)
-	}).update({
-		'categories.$.isShow':1,
-		isCategoryShow: 1
-	});
-	//隐藏
-	await goodsCollection.where({
-		shopid: data.shopid,
-		'categories.id': cmd.in(hideIdData)
-	}).update({
-		'categories.$.isShow':0,
-		isCategoryShow: 0
-	});
 	return true;
 };
 /**
@@ -156,7 +146,28 @@ const checkCategoryName = (name) => {
 	}
 	return name;
 }
+/**
+ * 转换分类，以前的子集children，改为平铺parent_id
+ */
+const exchange = async (data) => {
+	console.log("开始转换分类")
+	//查询列表
+	let categories = await categoryCollection.where({
+		shopid: data.shopid
+	}).orderBy("posid", "asc").get();
+	if (categories.data.length == 0) {
+		//data.message = "暂无数据";
+		console.log(data)
+		return false;
+	}
+	return await save({
+		data: categories.data,
+		shopid: data.shopid
+	});
+}
+
 module.exports = {
-	list: list,
-	save: save
+	list,
+	save,
+	exchange
 }

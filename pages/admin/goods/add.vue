@@ -1,6 +1,7 @@
 <template>
 	<view class="container bg-white">
-		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @blur="changeUpc"></mix-list-input>
+		<mix-list-input title="商品条码" :withScan="!0" :defContent="upc" field="upc" placeholder="输入或扫描" @blur="changeUpc">
+		</mix-list-input>
 		<view class="mix-list-cell b-b">
 			<text class="cell-tit clamp">*商品名称</text>
 			<input type="text" class="cell-content" maxlength="40" v-model="title" placeholder="请输入商品名称" />
@@ -11,7 +12,8 @@
 		</view>
 		<mix-list-cell title="*商品分类" :tips="categoryName" @eventClick="selectCategory()"></mix-list-cell>
 		<!-- <mix-list-cell title="规格和库存" border="" :tips="specsTypeName" navigateType="down" @eventClick="selectSpecsType()"></mix-list-cell> -->
-		<mix-list-select border="b-b" @eventClick="changeSpecsType" title="规格和库存" :options="specsTypes" :defaultOption="specsType"></mix-list-select>
+		<mix-list-select border="b-b" @eventClick="changeSpecsType" title="规格和库存" :options="specsTypes"
+			:defaultOption="specsType"></mix-list-select>
 		<block v-if="specsTypeTmp == 'multiple'">
 			<mix-list-cell title="规格名称" :tips="skuname.join('，')" @eventClick="navToSkuBuilder()"></mix-list-cell>
 		</block>
@@ -21,13 +23,14 @@
 			</block>
 			<block v-else>
 				<block v-for="(item, index) in skus" :key="index">
-					<admin-goods-sku :info="item" :index="index" title="" :ismultiple="!0" @del="deleteSku" @change="changeSku"></admin-goods-sku>
+					<admin-goods-sku :info="item" :index="index" title="" :ismultiple="!0" @del="deleteSku"
+						@change="changeSku"></admin-goods-sku>
 					<view class="tmp" v-if="index< skus.length-1"></view>
 				</block>
 			</block>
 		</view>
-		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''" :defaultOption="saleType"
-		 @eventClick="changeSaleType"></mix-list-select>
+		<mix-list-select title="*销售类型" :options="saleTypes" :border="saleType == 'normal' ? 'b-b' : ''"
+			:defaultOption="saleType" @eventClick="changeSaleType"></mix-list-select>
 		<!-- saleType预定设置 -->
 		<block v-if="saleType == 'yuding'">
 			<view class="yuding-section">
@@ -42,13 +45,15 @@
 					</view>
 					<!-- 多规格商品选择支持的规格 -->
 					<block v-if="specsType == 'multiple'">
-						<mix-list-select title="*支持规格" :options="getSkuNames" :defaultOptions="yuding.sku_ids" selectType="checkbox"
-						 @eventClick="changeYudingSku"></mix-list-select>
+						<mix-list-select title="*支持规格" :options="getSkuNames" :defaultOptions="yuding.sku_ids"
+							selectType="checkbox" @eventClick="changeYudingSku"></mix-list-select>
 					</block>
 					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.beginTime')">
 						<text class="cell-tit clamp">*开始预定</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="yuding.beginTime">{{ yuding.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="yuding.beginTime">
+								{{ yuding.beginTime | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -56,7 +61,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.endTime')">
 						<text class="cell-tit clamp">*结束预定</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="yuding.endTime">{{ yuding.endTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="yuding.endTime">
+								{{ yuding.endTime | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -64,7 +71,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.finalPaymentBeginTime')">
 						<text class="cell-tit clamp">*开始付尾款</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="yuding.finalPaymentBeginTime">
+								{{ yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -72,7 +81,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('yuding.finalPaymentEndTime')">
 						<text class="cell-tit clamp">*结束付尾款</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="yuding.finalPaymentEndTime">{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="yuding.finalPaymentEndTime">
+								{{ yuding.finalPaymentEndTime | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -80,7 +91,9 @@
 					<view class="mix-list-cell" @click="selectDatePicker('autoOffTime')">
 						<text class="cell-tit clamp">*结束自动下架</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="autoOffTime">{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="autoOffTime">
+								{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -102,7 +115,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.beginTime')">
 						<text class="cell-tit clamp">*开始团购</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="tuangou.beginTime">{{ tuangou.beginTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="tuangou.beginTime">
+								{{ tuangou.beginTime  | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -110,7 +125,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.endTime')">
 						<text class="cell-tit clamp">*结束团购</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="tuangou.endTime">{{ tuangou.endTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="tuangou.endTime">
+								{{ tuangou.endTime  | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -118,7 +135,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('tuangou.pickup')">
 						<text class="cell-tit clamp">*开始提货</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="tuangou.pickup">{{ tuangou.pickup  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="tuangou.pickup">
+								{{ tuangou.pickup  | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -126,7 +145,9 @@
 					<view class="mix-list-cell b-b" @click="selectDatePicker('autoOffTime')">
 						<text class="cell-tit clamp">*结束自动下架</text>
 						<view class="cell-tip">
-							<view class="uni-input" v-if="autoOffTime">{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}</view>
+							<view class="uni-input" v-if="autoOffTime">
+								{{ autoOffTime  | dateFormat('yyyy-MM-dd hh:mm') }}
+							</view>
 							<view class="uni-input" v-else>选择时间</view>
 						</view>
 						<text class="cell-more yticon icon-you"></text>
@@ -164,13 +185,18 @@
 		</label>
 		<view class="skus">
 			<view class="sub-container">
-				<mix-list-input title="净含量" :defContent="net_weight" field="net_weight" placeholder="请输入净含量" @change="changeField"></mix-list-input>
-				<mix-list-input title="生产日期" :defContent="manufacture" field="manufacture" placeholder="请输入生产日期" @change="changeField"></mix-list-input>
-				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期" @change="changeField"></mix-list-input>
-				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition" placeholder="请输入保存条件"
-				 @change="changeField"></mix-list-input>
-				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose" placeholder="请输入服务宗旨,分号隔开" @change="changeField"></mix-list-input>
-				<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语" @change="changeField"></mix-list-input>
+				<mix-list-input title="净含量" :defContent="net_weight" field="net_weight" placeholder="请输入净含量"
+					@change="changeField"></mix-list-input>
+				<mix-list-input title="生产日期" :defContent="manufacture" field="manufacture" placeholder="请输入生产日期"
+					@change="changeField"></mix-list-input>
+				<mix-list-input title="保质期" :defContent="guarantee_period" field="guarantee_period" placeholder="请输入保质期"
+					@change="changeField"></mix-list-input>
+				<mix-list-input title="保存条件" :defContent="storage_condition" field="storage_condition"
+					placeholder="请输入保存条件" @change="changeField"></mix-list-input>
+				<mix-list-input title="服务宗旨" :defContent="service_purpose" field="service_purpose"
+					placeholder="请输入服务宗旨,分号隔开" @change="changeField"></mix-list-input>
+				<mix-list-input title="分享语" :defContent="share" field="share" placeholder="请输入分享语"
+					@change="changeField"></mix-list-input>
 				<view class="mix-list-cell b-b">
 					<text class="cell-tit clamp">配送注意事项</text>
 					<view class="cell-content content-right">
@@ -178,7 +204,8 @@
 							<view v-for="(itg,tindex) in deliveryTagNames" :key="tindex">
 								<label>
 									<text class="m-r">{{itg.name}}</text>
-									<checkbox :value="itg.value" :checked="deliveryTags.indexOf(itg.value) != -1" :class="deliveryTags.indexOf(itg.value) != -1?'checked':''" />
+									<checkbox :value="itg.value" :checked="deliveryTags.indexOf(itg.value) != -1"
+										:class="deliveryTags.indexOf(itg.value) != -1?'checked':''" />
 								</label>
 							</view>
 						</checkbox-group>
@@ -197,10 +224,11 @@
 					</view>
 					<text class="more">%</text>
 				</view>
-				<mix-list-checkbox title="是否限购" field="isLimit" :defContent="isLimit" @change="changeField"></mix-list-checkbox>
+				<mix-list-checkbox title="是否限购" field="isLimit" :defContent="isLimit" @change="changeField">
+				</mix-list-checkbox>
 				<block v-if="isLimit">
-					<mix-list-input title="订单限购" type="number" border=" " :defContent="limit" field="limit" placeholder="请输入限购数量"
-					 @change="changeField"></mix-list-input>
+					<mix-list-input title="订单限购" type="number" border=" " :defContent="limit" field="limit"
+						placeholder="请输入限购数量" @change="changeField"></mix-list-input>
 					<!-- <mix-list-checkbox title="新用户专享(首单)" field="isNewUser" :defContent="isNewUser" @change="changeField"></mix-list-checkbox> -->
 				</block>
 			</view>
@@ -213,19 +241,21 @@
 			</view>
 			<view class="catespopup">
 				<scroll-view scroll-y="true" class="catespopupScroll">
-					<radio-group name="categorys" @change="changeCategory">
+					<checkbox-group name="categorys" @change="changeCategory">
 						<view class="cates" v-for="(item, index) in categoriesData" :key="index">
 							<view class="header">
 								<text>{{ item.name }}</text>
 							</view>
 							<view class="children b-b">
-								<label class="mix-list-cell" v-for="(child, childindex) in item.children" :key="childindex">
-									<radio :value="index + '_' + item.id + '_' + child.id" :checked="child.checked" :class="child.checked?'checked':''" />
+								<label class="mix-list-cell" v-for="(child, childindex) in item.children"
+									:key="childindex">
+									<checkbox :value="'' + child.id" :checked="child.checked"
+										:class="child.checked?'checked':''" />
 									<text class="cell-tit clamp">{{ child.name }}</text>
 								</label>
 							</view>
 						</view>
-					</radio-group>
+					</checkbox-group>
 				</scroll-view>
 			</view>
 		</uni-popup>
@@ -245,7 +275,8 @@
 					</view>
 					<view class="specsTitles">
 						<block v-for="(item, index) in specsTitlesMap" :key="index">
-							<view class="specsTitles_item" :class="{ checked: item.checked }" @click="selectSpecsTitle(index)">
+							<view class="specsTitles_item" :class="{ checked: item.checked }"
+								@click="selectSpecsTitle(index)">
 								<text>{{ item.name }}</text>
 								<text v-if="item.checked" class="specsTitles_item_number">{{ item.checkedIndex }}</text>
 							</view>
@@ -274,7 +305,7 @@
 			</view>
 		</uni-popup>
 		<bory-dateTimePicker ref='date-time' :startYear="startYear" :endYear="endYear" :datestring="dateString"
-		 :indicatorStyle='indicatorStyle' type='datetime' @change='dateTimeChange'></bory-dateTimePicker>
+			:indicatorStyle='indicatorStyle' type='datetime' @change='dateTimeChange'></bory-dateTimePicker>
 	</view>
 </template>
 
@@ -554,33 +585,42 @@
 			selectCategory() {
 				this.$refs['showCateory'].open();
 			},
-			//单项选择商品分类，如果要多选，有点麻烦
+			//单项选择商品分类，如果要多选，有点麻烦，由单选改为多选
 			changeCategory(e) {
 				console.log(e);
 				this.categoryIdTmp = [];
-				let ids = e.detail.value;
-				ids = ids.split('_');
+				let ids = e.detail.value.map(id => +id);
+				console.log(ids)
 				this.categoriesData.forEach(par => {
+					par.checked = false;
 					if (par.children) {
 						par.children.forEach(chi => {
-							chi.checked = false;
+							chi.checked = ids.indexOf(chi.id) > -1;
+							if (chi.checked) {
+								par.checked = true;
+								this.categoryIdTmp.push({
+									_id: chi._id,
+									id: chi.id,
+									pid: chi.pid,
+									parent_id: chi.parent_id,
+									isShow: chi.isShow,
+									name: chi.name
+								});
+							}
 						})
 					}
-				})
-				let cates = this.categoriesData[+ids[0]];
-				this.categoryIdTmp.push({
-					id: cates.id,
-					pid: 0,
-					isShow: cates.isShow,
-					name: cates.name
 				});
-				cates.children.map(child => {
-					if (ids[1] != ids[2] && child.id == +ids[2]) {
-						child.checked = true;
-						child.pid = cates.id;
-						this.categoryIdTmp.push(child);
-					}
+				this.categoriesData.filter(e => e.checked).forEach(cate => {
+					this.categoryIdTmp.push({
+						_id: cate._id,
+						id: cate.id,
+						pid: cate.pid,
+						parent_id: cate.parent_id,
+						isShow: cate.isShow,
+						name: cate.name
+					});
 				});
+				console.log(this.categoryIdTmp)
 			},
 			//关闭分类选择
 			cancelSelectCategory() {
@@ -609,7 +649,7 @@
 				this.$refs['showSpecsType'].open();
 			},
 			setSpecsType(type) {
-				this.hasSpecs = type=="multiple";
+				this.hasSpecs = type == "multiple";
 				this.specsType = type;
 				this.specsTypeTmp = type;
 				this.specsTypeName = this.specsTypes[type];
@@ -1342,11 +1382,13 @@
 
 	.catespopupScroll {
 		height: 700upx;
-		.children{
+
+		.children {
 			display: flex;
 			flex-wrap: wrap;
 			position: relative;
-			.cell-tit{
+
+			.cell-tit {
 				margin-left: 12rpx;
 			}
 		}
