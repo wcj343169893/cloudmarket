@@ -42,7 +42,7 @@
 		<view class="specsTitlesBtn" v-if="isLoaded">
 			<button class="add-btn cancel" @click="addParent">增加主分类</button>
 			<button class="add-btn" @click="save">保存</button>
-			<button class="add-btn cancel" @click="exchange">转换老数据</button>
+			<!-- <button class="add-btn cancel" @click="exchange">转换老数据</button> -->
 		</view>
 	</view>
 </template>
