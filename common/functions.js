@@ -1,6 +1,11 @@
 //全局变量，是否正在跳转中，防止双击跳转两个页面
 var isRedirect = false;
-import config from '@/config'
+import config from '@/config';
+//#ifdef H5
+import {
+	jsonp
+} from 'vue-jsonp';
+//#endif
 /**
  * 订单状态
  * @param {Object} ele
@@ -94,7 +99,7 @@ const getOrderTypes = function() {
 		'refunded': '退款/售后'
 	};
 }
-export const cashoutState = (usr)=>{
+export const cashoutState = (usr) => {
 	if (usr.state == 0) {
 		usr.message = "申请中";
 	} else if (usr.state == 1) {
@@ -368,7 +373,8 @@ const dateFormat = function(value, fmt) {
 	}
 	for (let k in o) {
 		if (new RegExp('(' + k + ')').test(fmt)) {
-			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k])
+				.length)))
 		}
 	}
 	return fmt;
@@ -520,10 +526,11 @@ const navMicLogin = function(type) {
 									key: userInfoKey,
 									data: result.data
 								});
-								auth.signInWithTicket(result.data.ticket).then(() => {
-									// 登录成功
-									console.log('客户端登录成功');
-								});
+								auth.signInWithTicket(result.data.ticket).then(
+									() => {
+										// 登录成功
+										console.log('客户端登录成功');
+									});
 							} else if (result.code == 404 && result.data) {
 								//在后面的授权登录的时候，传到服务器，自动绑定
 								uni.setStorage({
@@ -879,26 +886,32 @@ const checkAppUpdate = (isForce, systemInfo, callback) => {
 										success: (downloadResult) => {
 											uni.hideLoading();
 											if (downloadResult.statusCode === 200) {
-												plus.runtime.install(downloadResult.tempFilePath, {
-													force: false
-												}, (e) => {
-													uni.showModal({
-														showCancel: false,
-														confirmText: "重启",
-														content: "安装完成",
-														success: (r) => {
-															if (r.confirm) {
-																plus.runtime.restart();
+												plus.runtime.install(downloadResult
+													.tempFilePath, {
+														force: false
+													}, (e) => {
+														uni.showModal({
+															showCancel: false,
+															confirmText: "重启",
+															content: "安装完成",
+															success: (
+																r
+															) => {
+																if (r
+																	.confirm
+																) {
+																	plus.runtime
+																		.restart();
+																}
 															}
-														}
-													})
-												}, (err) => {
-													uni.showModal({
-														showCancel: false,
-														confirmText: "确定",
-														content: "安装失败"
+														})
+													}, (err) => {
+														uni.showModal({
+															showCancel: false,
+															confirmText: "确定",
+															content: "安装失败"
+														});
 													});
-												});
 											}
 										},
 										fail: err => {
@@ -930,6 +943,22 @@ const checkAppUpdate = (isForce, systemInfo, callback) => {
 const mapDistance = function(fromLatlng, toLatlng) {
 	console.log(fromLatlng, toLatlng)
 	return new Promise((resolve, reject) => {
+		//#ifdef H5
+		jsonp(`https://apis.map.qq.com/ws/distance/v1/matrix`, {
+			output: "jsonp",
+			mode: "bicycling",
+			from: fromLatlng,
+			to: toLatlng,
+			key: config.qqmapWxKey
+		}).then(res => {
+			console.log(res)
+			if (res.status) {
+				reject();
+			}
+			resolve(res.result);
+		})
+		return;
+		//#endif
 		uni.request({
 			url: `https://apis.map.qq.com/ws/distance/v1/matrix`,
 			data: {
@@ -962,6 +991,22 @@ export const getLocationAddress = function(fromLatlng, poi_options) {
 	poi_options = poi_options || "address_format=short;policy=5";
 	return new Promise((resolve, reject) => {
 		console.log(fromLatlng)
+		//#ifdef H5
+		jsonp(`https://apis.map.qq.com/ws/geocoder/v1/`, {
+			location: fromLatlng,
+			get_poi: 1,
+			output: "jsonp",
+			poi_options: poi_options,
+			key: config.qqmapWxKey
+		}).then(res => {
+			console.log(res)
+			if (res.status) {
+				reject();
+			}
+			resolve(res.result);
+		})
+		return;
+		//#endif
 		uni.request({
 			url: `https://apis.map.qq.com/ws/geocoder/v1/`,
 			data: {

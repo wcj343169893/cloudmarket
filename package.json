@@ -24,5 +24,8 @@
 			"uniCloud-tcb/cloudfunctions/cloud-admin/index.js",
 			"uniCloud-tcb/cloudfunctions/cloud-admin/shops/index.js"
 		]
+	},
+	"dependencies": {
+		"vue-jsonp": "^2.0.0"
 	}
 }
