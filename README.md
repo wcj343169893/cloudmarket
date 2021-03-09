@@ -8,22 +8,28 @@
 • 生鲜电商  
 • 连锁便利店  
 
-## 安装使用 (详见[产品手册](https://www.yuque.com/books/share/24ba8cf0-212e-4cbd-9f02-f322d2ddbb58))
+### 体验商城前端+移动端后台
+[点此进入app发行页面](https://m3w.cn/xbb)，体验h5，app，微信小程序，包含移动端管理  
+
+![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg) 
 
 ### pc后台
-[后台地址](http://market.cjblog.org/admin/)，需要源码请联系群主  
+[后台地址](http://market.cjblog.org/admin/)  
 测试账户：shop_manager  
 测试密码：123456  
+需要源码请联系群主  
 
 ### 咨询与售后
 * 交流QQ群：298724327  
-* 如您已购买本产品，请联系作者加入售后群，联系作者QQ：343169893   
+* 如您已购买本产品，联系作者QQ：343169893   
 
 ### 柔然科技承接软件定制开发
 * 联系人：文经理
 * QQ：343169893
 * [柔然科技官网](http://cjblog.org/)
 
+
+## 安装使用 (详见[产品手册](https://www.yuque.com/books/share/24ba8cf0-212e-4cbd-9f02-f322d2ddbb58))
 
 ### 系统图标
 用了3个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
@@ -33,19 +39,6 @@
 [预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)  
 [手机淘宝图标库](http://market.cjblog.org/font_2174075_cl718eoy90k/demo_index.html)
 ```<text class="taobaofont icon-activity"></text>```  
-
-
-#### Android版本
-![Android版本](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/7dfbf1b0-0c81-11eb-9dfb-6da8e309e0d8.png)
-
-#### H5预览
-![扫码体验](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/c2f3e1d0-cc7e-11ea-8bd0-2998ac5bbf7e.png)   
-
-#### 微信小程序演示，前端+移动端后台
-![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg) 
-
-
-#### IOS暂时没有开发者账号，没有发布
 
 ### 参考项目和包含插件
 [uni-id](https://ext.dcloud.net.cn/plugin?id=2116)  

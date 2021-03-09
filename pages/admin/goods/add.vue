@@ -453,10 +453,11 @@
 			endYear() {
 				return new Date().getFullYear() + 3;
 			},
-			categoryName(){
-				if(this.categories && this.categories.length>0){
-					return this.categories.filter(e=>e.parent_id).map(e=>e.name).join("、");
-				}else if(this.categoriesData.length == 0){
+			categoryName() {
+				if (this.categories && this.categories.length > 0) {
+					return this.categories.filter(e => !e.hasOwnProperty("parent_id") || e.parent_id).map(e => e.name)
+						.join("、");
+				} else if (this.categoriesData.length == 0) {
 					return "没有分类"
 				}
 				return "请选择"
@@ -590,7 +591,7 @@
 			},
 			//单项选择商品分类，如果要多选，有点麻烦，由单选改为多选
 			changeCategory(e) {
-				console.log( e.detail.value)
+				console.log(e.detail.value)
 				this.categoryIdTmp = [];
 				let ids = e.detail.value.map(id => +id);
 				this.categoriesData.forEach(par => {
