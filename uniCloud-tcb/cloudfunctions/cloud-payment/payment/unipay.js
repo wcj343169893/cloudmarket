@@ -31,7 +31,8 @@ const models = {
 		// 支付结果通知地址,经过测试，http地址也能作为通知地址
 		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module);
 		let totalFee = parseInt(order.totalMoney * 100);
-		if (order.shop && order.shop.currency != "cny" && order.shop.exchangeRate && order.shop.exchangeRate != 1) {
+		if (order.shop && order.shop.currency != "cny" && order.shop.exchangeRate && order.shop.exchangeRate !=
+			1) {
 			totalFee = parseInt(order.totalMoney * order.shop.exchangeRate * 100);
 		}
 		let requestOptions = {
@@ -42,13 +43,17 @@ const models = {
 			totalFee, // 金额，单位分
 			notifyUrl: notifyUrl // 支付结果通知地址
 		}
-		//微信服务商模式
-		if (config.sub_appid) {
+		//微信服务商模式https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_1
+		if (config.sub_mch_id) {
 			let params = Object.assign(requestOptions, {
-				sub_appid: config.sub_appid,
 				sub_mch_id: config.sub_mch_id,
-				sub_openid: openid,
 			});
+			if (config.sub_appid) {
+				params.sub_openid = openid;
+				params.sub_appid = config.sub_appid;
+			} else {
+				params.openid = openid;
+			}
 			console.log("params", params);
 			const orderResult = await uniPayIns.unifiedOrder(params)
 			if (!orderResult.prepayId) {
@@ -56,7 +61,9 @@ const models = {
 			}
 			console.log("orderResult", orderResult);
 			//以子商户appid发起支付
-			uniPayIns.options.appId = config.sub_appid;
+			if (config.sub_appid) {
+				uniPayIns.options.appId = config.sub_appid;
+			}
 			const payParams = uniPayIns._getPayParamsByPrepayId(
 				orderResult.prepayId,
 				params.signType || uniPayIns.options.signType
@@ -98,11 +105,11 @@ const models = {
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		let payName = payInfo.typeName || payInfo.name;
 		//微信服务商模式
-		if (config.sub_appid) {
-			order = Object.assign(order, {
-				sub_appid: config.sub_appid,
-				sub_mch_id: config.sub_mch_id,
-			});
+		if (config.sub_mch_id) {
+			order.sub_mch_id = config.sub_mch_id;
+			if (config.sub_appid) {
+				order.sub_appid = config.sub_appid;
+			}
 		}
 		try {
 			let res = await uniPayIns.refund(order);

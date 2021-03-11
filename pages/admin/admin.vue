@@ -39,22 +39,24 @@
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-dingdan" iconColor="#54b4ef" title="订单管理" @eventClick="navToOrder('all')" tips="全部"></mix-list-cell>
+		<mix-list-cell icon="icon-dingdan" iconColor="#54b4ef" title="订单管理" @eventClick="navToOrder('all')" tips="全部">
+		</mix-list-cell>
 		<view class="cover-container">
 			<!-- 订单信息统计 -->
 			<view class="order-section">
-				<view class="order-item" v-for="(item, index) in orderTypes" :key="index" @click="navToOrder(item.state)"
-				 hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" v-for="(item, index) in orderTypes" :key="index"
+					@click="navToOrder(item.state)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-shangpin" iconColor="#54b4ef" title="商品管理" @eventClick="navToAddGoods()" tips="新增"></mix-list-cell>
+		<mix-list-cell icon="icon-shangpin" iconColor="#54b4ef" title="商品管理" @eventClick="navToAddGoods()" tips="新增">
+		</mix-list-cell>
 		<view class="cover-container">
 			<view class="order-section">
-				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index" @click="navToGoods(item.state)"
-				 hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" v-for="(item, index) in goodsTypes" :key="index"
+					@click="navToGoods(item.state)" hover-class="common-hover" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
@@ -74,23 +76,25 @@
 				</view>
 			</view>
 		</view> -->
-		<mix-list-cell icon="icon-tuijian" iconColor="#54b4ef" title="视频管理" @eventClick="navToItem('/pages/admin/video/add')"
-		 tips="添加视频"></mix-list-cell>
+		<mix-list-cell icon="icon-tuijian" iconColor="#54b4ef" title="视频管理"
+			@eventClick="navToItem('/pages/admin/video/add')" tips="添加视频"></mix-list-cell>
 		<view class="cover-container">
 			<view class="order-section">
-				<view class="order-item" v-for="(item, index) in videoTypes" :key="index" hover-class="common-hover" @click="navTo('/pages/admin/video/list?state='+item.state)"
-				 :hover-stay-time="50">
+				<view class="order-item" v-for="(item, index) in videoTypes" :key="index" hover-class="common-hover"
+					@click="navTo('/pages/admin/video/list?state='+item.state)" :hover-stay-time="50">
 					<text class="number">{{ item.number }}</text>
 					<text>{{ item.name }}</text>
 				</view>
 			</view>
 		</view>
-		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理" @eventClick="navTo('/pages/admin/goods/category')"
-		 tips="商品分类"></mix-list-cell>
-		<mix-list-cell icon="taobaofont icon-activity" iconColor="#54b4ef" title="营销活动" @eventClick="navTo('/pages/admin/activities/list')"
-		 tips="秒杀/专题/优惠券"></mix-list-cell>
-		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')" tips="首页滚动广告图"></mix-list-cell>
-		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')" tips="首页分享/功能说明"></mix-list-cell>
+		<mix-list-cell icon="icon-fenlei1" iconColor="#54b4ef" title="分类管理"
+			@eventClick="navTo('/pages/admin/goods/category')" tips="商品分类"></mix-list-cell>
+		<mix-list-cell icon="taobaofont icon-activity" iconColor="#54b4ef" title="营销活动"
+			@eventClick="navTo('/pages/admin/activities/list')" tips="秒杀/专题/优惠券"></mix-list-cell>
+		<mix-list-cell icon="icon-shouye" iconColor="#54b4ef" title="广告管理" @eventClick="navTo('/pages/admin/ad/list')"
+			tips="首页滚动广告图"></mix-list-cell>
+		<mix-list-cell icon="icon-bianji" iconColor="#54b4ef" title="文档管理" @eventClick="navTo('/pages/admin/docs/list')"
+			tips="首页分享/功能说明"></mix-list-cell>
 	</view>
 </template>
 
@@ -222,6 +226,8 @@
 				console.log(state)
 				if (state.indexOf("/") > -1) {
 					this.navTo(`/pages/admin/order/${state}`);
+				} else if (state == "refunded") {
+					this.navTo(`/pages/admin/order/refund/list?state=verifying`);
 				} else {
 					this.navTo(`/pages/admin/order/list?state=${state}&shopid=${this.id}`);
 				}

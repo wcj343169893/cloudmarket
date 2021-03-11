@@ -68,8 +68,9 @@ const model = {
 					break;
 			}
 		}
-		data = await orderCollection.where(conditions).field(this.getOrderFields()).skip((page - 1) * limit).limit(limit).orderBy(
-			"created", "desc").get();
+		data = await orderCollection.where(conditions).field(this.getOrderFields()).skip((page - 1) * limit)
+			.limit(limit).orderBy(
+				"created", "desc").get();
 		data["page"] = page;
 		data["limit"] = limit;
 		return data;
@@ -169,7 +170,8 @@ const model = {
 				await this.pushOrderCancelInfo(order._id, "您的预售订单拦截成功，正在进行退款审核，请耐心等待。");
 				let goods = order.goods[0];
 				//退款定时器,全额退款,只有一件商品
-				await this.addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee, "取消订单", goods,
+				await this.addOrderRefund(order.uid, order.yuding.payInfo, order.yuding.payInfo.totalFee,
+					"取消订单", goods,
 					order, {
 						refundApplyAmount: goods.amount,
 						index: 0,
@@ -538,7 +540,7 @@ const model = {
 			fee: refundFee,
 			description: refundDesc,
 			goods,
-			created: new Date().toISOString(),
+			created: Date.getTime(),
 			steps: [{
 				title: "提交申请",
 				desc: "您的退款已申请成功，待客服审核中",
@@ -609,6 +611,7 @@ const model = {
 				}
 			}
 			let comm = {
+				state:0,//0未审核，1通过，-1失败
 				goods_id: g_id,
 				shopid: order.shopid,
 				order_id: order._id,
@@ -617,7 +620,7 @@ const model = {
 					avatar: userInfo.avatar,
 					nickname: nickname
 				},
-				created: new Date().toISOString(),
+				created: Date.getTime(),
 				...com
 			};
 			goodsList[g_id].comment = comm;
@@ -812,7 +815,8 @@ const model = {
 		}
 		//只有配送才需要收货地址
 		if (deliveryType == "deliveryHome") {
-			let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1).get();
+			let address = await addressCollection.where(addressCondition).orderBy("default", "desc").limit(1)
+				.get();
 			if (address.data.length > 0) {
 				data["address"] = address.data[0];
 			} else if (data.submit) {
@@ -911,11 +915,13 @@ const model = {
 						let key = ele.id + '_' + sku.id;
 						if (cartMap[key] && cartMap[key].amount > 0) {
 							//相当于clone对象
-							let goo = { ...ele
+							let goo = {
+								...ele
 							};
 							//删除多型号
 							delete goo.skus;
-							if (goo.miaosha && (goo.miaosha.sku_id != sku.id || (!isNewUser && goo.miaosha.isNewUser))) {
+							if (goo.miaosha && (goo.miaosha.sku_id != sku.id || (!isNewUser &&
+									goo.miaosha.isNewUser))) {
 								//新用户专享秒杀，如果已经下单过了，不再享受
 								delete goo.miaosha;
 							} else if (!isNewUser && goo.isNewUser) {
@@ -967,7 +973,8 @@ const model = {
 				//提前预定，有折扣
 				if (ele.yuding && ele.yuding.beginTime < time && ele.yuding.endTime > time) {
 					//@todo 在预订时间内，仅支付定金,如果已经过了预定期，则不生效
-					let yuding = { ...ele.yuding
+					let yuding = {
+						...ele.yuding
 					};
 					//更改商品原价=原价-抵扣价,最大抵扣完，不会出现负数
 					let price = ele.price - (yuding.deduction - yuding.price);
@@ -993,7 +1000,8 @@ const model = {
 					//普通购买
 					if (ele.miaosha) {
 						//秒杀库存一定大于购买数量,如果秒杀限量，购买数量不能大于限量
-						if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime && ele.miaosha.stock >= ele.amount && (ele.miaosha
+						if (time < ele.miaosha.endTime && time > ele.miaosha.beginTime && ele.miaosha.stock >=
+							ele.amount && (ele.miaosha
 								.limit == 0 || ele.miaosha.limit >= ele.amount)) {
 							//同步更新秒杀库存，相当于拿钥匙
 							let isMiaoshaError = false;
@@ -1147,9 +1155,8 @@ const model = {
 			//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 			//备注
 			data["remark"] = event.remark;
-			const day = new Date().toISOString();
-			data["created"] = day;
-			data["modified"] = day;
+			data["created"] = Date.getTime();
+			data["modified"] = Date.getTime();
 			//如果是自提，需要生成提货码
 			if (data.deliveryType == "selfRaising") {
 				//顺序编号
@@ -1165,7 +1172,8 @@ const model = {
 				data.raisingPoint.rateTotalMoney = rateTotalMoney;
 				if (data.raisingPoint.rate > 0) {
 					//可分成总金额*分成比例，舍去分以后的值
-					data.raisingPoint.commission = parseInt((rateTotalMoney * data.raisingPoint.rate).toFixed(2).split(".")[0]) /
+					data.raisingPoint.commission = parseInt((rateTotalMoney * data.raisingPoint.rate).toFixed(2)
+							.split(".")[0]) /
 						100;
 				}
 			}

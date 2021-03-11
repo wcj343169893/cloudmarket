@@ -13,7 +13,7 @@ const list = async (data, context) => {
 	//查询列表
 	let categories = await categoryCollection.where({
 		shopid: data.shopid
-	}).orderBy("posid", "asc").get();
+	}).limit(500).orderBy("posid", "asc").get();
 	if (categories.data.length == 0) {
 		//data.message = "暂无数据";
 		console.log(data)
@@ -53,7 +53,7 @@ const save = async (data) => {
 	//查询店铺旧数据
 	let res = await categoryCollection.where({
 		shopid: data.shopid
-	}).field({
+	}).limit(500).field({
 		id: 1,
 		isShow: 1
 	}).get();

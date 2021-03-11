@@ -293,6 +293,7 @@ const models = {
 		} = data;
 		let result = await commentCollection.where({
 			shopid: shopid,
+			state:1,//后台审核通过的评论，可以在前端显示
 			goods_id: goodsid,
 		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
 		if (result.data.length == 0) {
