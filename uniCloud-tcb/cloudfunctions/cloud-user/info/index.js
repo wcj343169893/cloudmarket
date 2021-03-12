@@ -88,7 +88,7 @@ const models = {
 	},
 	//信息统计
 	async statistics(data, context) {
-		let res = await getUserInfo(data.uid, ["order", "nickname", "balance", "admin", "coupons", "score", "count"],
+		let res = await getUserInfo(data.uid, ["id","order", "nickname", "balance", "admin", "coupons", "score", "count"],
 			context.userInfo);
 		if (res.code > 0) {
 			return res;
