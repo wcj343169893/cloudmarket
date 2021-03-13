@@ -540,7 +540,7 @@ const model = {
 			fee: refundFee,
 			description: refundDesc,
 			goods,
-			created: Date.getTime(),
+			created: Date.now(),
 			steps: [{
 				title: "提交申请",
 				desc: "您的退款已申请成功，待客服审核中",
@@ -620,7 +620,7 @@ const model = {
 					avatar: userInfo.avatar,
 					nickname: nickname
 				},
-				created: Date.getTime(),
+				created: Date.now(),
 				...com
 			};
 			goodsList[g_id].comment = comm;
@@ -1155,8 +1155,8 @@ const model = {
 			//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 			//备注
 			data["remark"] = event.remark;
-			data["created"] = Date.getTime();
-			data["modified"] = Date.getTime();
+			data["created"] = Date.now();
+			data["modified"] = Date.now();
 			//如果是自提，需要生成提货码
 			if (data.deliveryType == "selfRaising") {
 				//顺序编号
