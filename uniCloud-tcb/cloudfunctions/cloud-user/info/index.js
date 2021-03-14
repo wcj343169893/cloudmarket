@@ -88,7 +88,9 @@ const models = {
 	},
 	//信息统计
 	async statistics(data, context) {
-		let res = await getUserInfo(data.uid, ["id","order", "nickname", "balance", "admin", "coupons", "score", "count"],
+		let res = await getUserInfo(data.uid, ["id", "order", "nickname", "balance", "admin", "coupons",
+				"score", "count"
+			],
 			context.userInfo);
 		if (res.code > 0) {
 			return res;
@@ -314,6 +316,7 @@ const models = {
 				isRefundAll: cmd.exists(false)
 			}
 		}
+		shop["order"] = {};
 		for (let key in statistics) {
 			shop["order"][key] = await this.getOrderStatisticsByCondition({
 				shopid: shop.id,
@@ -387,14 +390,16 @@ const models = {
 			}
 		}
 	},
-	async shops(data,context){
-		const {userInfo} = context;
-		if(userInfo.admin){
+	async shops(data, context) {
+		const {
+			userInfo
+		} = context;
+		if (userInfo.admin) {
 			let res = await shopCollection.where({
 				id: cmd.in(userInfo.admin)
 			}).field({
-				id:1,
-				name:1
+				id: 1,
+				name: 1
 			}).orderBy("id", "desc").limit(50).get();
 			return res.data;
 		}
@@ -462,7 +467,8 @@ const models = {
 			conditions.state = 1;
 		}
 		//created 领券时间
-		let res = await couponUserCollection.where(conditions).orderBy("created", "desc").skip((page - 1) * limit).limit(
+		let res = await couponUserCollection.where(conditions).orderBy("created", "desc").skip((page - 1) *
+			limit).limit(
 			limit).get();
 		if (res.data.length == 0) {
 			return false;

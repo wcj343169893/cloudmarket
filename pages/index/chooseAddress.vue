@@ -30,7 +30,8 @@
 			</view>
 		</block>
 		<view class="sec-header"><text>当前地址</text></view>
-		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0" @click="checkAddress(currentAddress)">
+		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0"
+			@click="checkAddress(currentAddress)">
 			<view class="wrapper">
 				<view class="address-box">
 					<text class="address">{{ currentAddress.addressName }}</text>
@@ -54,8 +55,8 @@
 		<view class="">
 			<!-- <map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange"
 			 :show-location="show_location" style="width: 100%;height: 300px;"></map> -->
-			<map id="map" class="map"  min-scale="10" :scale="17" :show-location="true" :latitude="latitude"
-			 :longitude="longitude" @regionchange="onRegionchange">
+			<map id="map" class="map" min-scale="10" :scale="17" :show-location="true" :latitude="latitude"
+				:longitude="longitude" @regionchange="onRegionchange">
 				<cover-image class="map-center-icon" src="/static/location-center.png"></cover-image>
 			</map>
 		</view>
@@ -125,7 +126,9 @@
 			if (this.hasLogin) {
 				this.loadData();
 			}
-			this.getLocation(false);
+			setTimeout(() => {
+				this.getLocation(false);
+			}, 300);
 			if (this.location && this.location.latitude > 0) {
 				this.latitude = this.location.latitude;
 				this.longitude = this.location.longitude;
@@ -162,7 +165,8 @@
 						if (isMsg) {
 							this.$api.msg('重新定位失败');
 						}
-					},complete: () => {
+					},
+					complete: () => {
 						this.reverseGeocoder();
 					}
 				});
@@ -196,22 +200,25 @@
 					get_poi: 1,
 					poi_options: "page_size=30;page_index=1",
 					success: res => {
-						console.log(res);
-						this.currentAddress = {
+						console.log("reverseGeocoder", res);
+						/* this.currentAddress = {
 							addressName: res.result.address,
-							latitude: res.result.location.latitude,
-							longitude: res.result.location.longitude,
+							latitude: res.result.location.lat,
+							longitude: res.result.location.lng,
 							address:""
-						};
+						}; */
 						this.nearAddressList = [];
 						res.result.pois.map((e) => {
 							this.nearAddressList.push({
 								addressName: e.title,
 								address: e.address,
-								latitude: e.location.latitude,
-								longitude: e.location.longitude
+								latitude: e.location.lat,
+								longitude: e.location.lng
 							});
 						})
+						if (this.nearAddressList.length > 0) {
+							this.currentAddress = this.nearAddressList[0];
+						}
 					},
 					fail: err => {
 						console.log(err)
@@ -219,6 +226,7 @@
 				});
 			},
 			checkAddress(item) {
+				console.log("checkAddress item", item)
 				let info = {
 					id: item._id || false,
 					name: item.addressName,
