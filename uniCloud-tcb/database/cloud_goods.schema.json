@@ -70,6 +70,10 @@
 			"title": "子标题",
 			"defaultValue": ""
 		},
+		"categories": {
+			"bsonType": "array",
+			"title": "分类"
+		},
 		"price": {
 			"bsonType": "double",
 			"title": "销售价格",
