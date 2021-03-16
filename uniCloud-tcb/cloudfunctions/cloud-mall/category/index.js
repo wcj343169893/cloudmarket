@@ -128,7 +128,7 @@ const cates = async (data) => {
 		parent_id: 1,
 		//children: 1,
 		recommendGoods: 1
-	}).orderBy("posid", "asc").get();
+	}).limit(500).orderBy("posid", "asc").get();
 	if (categories.data.length == 0) {
 		return false;
 	}
