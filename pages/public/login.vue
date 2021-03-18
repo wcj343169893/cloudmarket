@@ -148,7 +148,7 @@
 						//微信获取用户信息，并登录 
 						cloudUser("login", provider, {
 							inviteCode: this.inviteCode,
-							code: loginRes
+							code: loginRes.code
 						}).then(res => {
 							console.log("login success", res);
 							this.loginSuccess(res);
