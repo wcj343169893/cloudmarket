@@ -31,8 +31,10 @@ const model = {
 	},
 	/**
 	 * 返回支付配置
+	 * @param {String} platform 运行平台，返回值为 mp-weixin、app-plus等
+	 * @param {String} provider 服务供应商：alipay，wxpay 
 	 */
-	getPaymentConfig(platform, provider, needPfx) {
+	getPaymentConfig(platform, provider, needPfx, shopPayment = {}) {
 		if (!provider) {
 			return config[platform]["payment"];
 		}
@@ -43,6 +45,12 @@ const model = {
 		let res = {
 			...config[platform]["payment"][provider]
 		};
+		//合并店铺支付配置，格式与config.json保持一致
+		if (shopPayment && shopPayment[platform] && shopPayment[platform][provider]) {
+			res = Object.assign(res, {
+				...shopPayment[platform][provider]
+			});
+		}
 		//console.log("getPaymentConfig", res);
 		if (provider == "wxpay") {
 			if (res.pfx && res.pfx != '' && needPfx) {

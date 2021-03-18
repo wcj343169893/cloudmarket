@@ -535,6 +535,7 @@ const model = {
 			orderId: order._id,
 			payInfo,
 			uid: uid,
+			shop:order.shop,
 			shopid: order.shopid,
 			state: "verifying", //verifying审核中，successed成功,failed失败
 			fee: refundFee,
@@ -839,6 +840,7 @@ const model = {
 			latitude: 1,
 			longitude: 1,
 			refund: 1, //退货规则
+			payment: 1, //支付规则,作为子商户
 			delivery: 1,
 			deliverySupportType: 1, //仅仅兼容之前测试版本，将来去掉
 			deliveryTypes: 1,

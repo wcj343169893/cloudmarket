@@ -17,7 +17,7 @@ const models = {
 	 * @param {Object} context
 	 */
 	async app(order, data, context) {
-		let config = getPaymentConfig(context.PLATFORM, data.provider);
+		let config = getPaymentConfig(context.PLATFORM, data.provider, false, order.shop.payment);
 		if (!config) {
 			//其他支付
 			data.message = getStringFormat("payment.error");
