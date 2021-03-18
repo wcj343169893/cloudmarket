@@ -80,7 +80,7 @@
 		},
 		watch: {
 			value(newVal) {
-				if (typeof newVal == "object") {
+				if (this.value && typeof newVal == "object") {
 					this.srcList = newVal
 				} else {
 					this.val = newVal
@@ -105,8 +105,8 @@
 			}
 		},
 		created() {
-			console.log(typeof this.value)
-			if (typeof this.value == "object") {
+			console.log(typeof this.value,this.value)
+			if (this.value && typeof this.value == "object") {
 				this.srcList = this.value
 			} else {
 				this.val = this.value
