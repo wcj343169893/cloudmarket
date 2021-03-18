@@ -143,7 +143,7 @@ const models = {
 	async addUserBalanceLog(data) {
 		//记录余额变动历史user_balance_logs
 		return await userBalanceLogCollection.add({
-			created: new Date().toISOString(),
+			created: Date.now(),
 			...data
 		});
 	},

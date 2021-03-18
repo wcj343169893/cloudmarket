@@ -55,7 +55,7 @@ const models = {
 		if (_id) {
 			//修改
 			delete data._id;
-			data.modified = new Date().toISOString();
+			data.modified = Date.now();
 			return await selfraisingCollection.where({
 				_id,
 				uid
@@ -65,8 +65,8 @@ const models = {
 			data.rate = 2;
 			//佣金
 			data.commission = 0;
-			data.modified = new Date().toISOString();
-			data.created = new Date().toISOString();
+			data.modified = Date.now();
+			data.created = Date.now();
 			return await selfraisingCollection.add(data);
 		}
 	}

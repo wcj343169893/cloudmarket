@@ -95,7 +95,7 @@ const model = {
 	 */
 	async updatePaymentInfo(event) {
 		//console.log(event);
-		let time = new Date().toISOString();
+		let time = Date.now();
 		//reserve_
 		let outTradeNo = event.outTradeNo;
 		let data = await orderCollection.where({
@@ -209,11 +209,11 @@ const model = {
 	async refundSuccess(refund) {
 		let res = await orderRefundsCollection.doc(refund._id).update({
 			refundStatus: "successed",
-			modified: new Date().toISOString(),
+			modified: Date.now(),
 			steps: cmd.unshift({
 				title: getStringFormat("order.refundSuccess"),
 				desc: refund.message,
-				time: new Date().toISOString()
+				time: Date.now()
 			})
 		});
 		console.log("处理退款记录", res);

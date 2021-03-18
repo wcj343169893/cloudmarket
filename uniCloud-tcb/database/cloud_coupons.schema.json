@@ -13,11 +13,11 @@
 			"description": "ID，系统自动生成"
 		},
 		"beginTime": {
-			"bsonType": "int",
+			"bsonType": "timestamp",
 			"title": "开始时间戳"
 		},
 		"endTime": {
-			"bsonType": "int",
+			"bsonType": "timestamp",
 			"title": "结束时间戳"
 		},
 		"goods": {

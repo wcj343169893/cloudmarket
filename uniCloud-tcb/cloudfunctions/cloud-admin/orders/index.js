@@ -214,7 +214,7 @@ const passedRefund = async (data) => {
 			title: "退款中",
 			operator,
 			desc: "您的退款申请已通过，待财务退款中",
-			time: new Date().toISOString()
+			time: Date.now()
 		})
 	});
 	let orderMain = await getOrderById({
@@ -272,7 +272,7 @@ const refuseRefund = async (data) => {
 			title: "退款失败",
 			operator,
 			desc: "您的退款申请已拒绝",
-			time: new Date().toISOString()
+			time: Date.now()
 		})
 	});
 	//更新主订单
@@ -308,7 +308,7 @@ const addDelivery = async (data) => {
 	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update({
-		deliveredTime: new Date().toISOString(),
+		deliveredTime: Date.now(),
 		deliveredUid: data.operator,
 		state: 2
 	});
@@ -396,7 +396,7 @@ const selftake = async (data) => {
 	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update({
-		receivedTime: new Date().toISOString(),
+		receivedTime: Date.now(),
 		receivedUid: data.operator,
 		state: 3
 	});
@@ -419,7 +419,7 @@ const selftakebyraising = async (data) => {
 		shopid,
 		isRefundAll: cmd.exists(false)
 	}).update({
-		receivedTime: new Date().toISOString(),
+		receivedTime: Date.now(),
 		receivedUid: operator,
 		state: 2
 	});

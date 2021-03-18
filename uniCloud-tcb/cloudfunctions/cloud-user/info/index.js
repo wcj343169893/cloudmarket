@@ -62,7 +62,7 @@ const models = {
 		}
 		//会员扩展信息
 		if (info) {
-			info.created = new Date().toISOString();
+			info.created = Date.now();
 			info.time = Date.now();
 			data.member = info;
 		}

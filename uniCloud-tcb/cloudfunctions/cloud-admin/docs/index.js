@@ -54,13 +54,13 @@ const model = {
 				data.message = "原数据不存在";
 				return false;
 			}
-			data.modified = new Date().toISOString();
+			data.modified = Date.now();
 			return await docCollection.where({
 				shopid: data.shopid,
 				_id: _id
 			}).update(data);
 		}
-		data.created = new Date().toISOString();
+		data.created = Date.now();
 		return await docCollection.add(data);
 	},
 	/**

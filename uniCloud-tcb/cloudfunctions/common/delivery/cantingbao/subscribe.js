@@ -38,13 +38,13 @@ const models = {
 		switch (content.OrderState) {
 			case 23:
 				//代表商家已发货，商家不用手动点发货
-				result.deliveredTime = new Date().toISOString();
+				result.deliveredTime = Date.now();
 				result.deliveredUid = "rider";
 				result.state = 2;
 				break;
 			case 254:
 				//代表用户已收货，用户不需要手动点收货
-				result.makesureTime = new Date().toISOString();
+				result.makesureTime = Date.now();
 				result.makesureUid = "rider";
 				result.state = 3;
 				break;

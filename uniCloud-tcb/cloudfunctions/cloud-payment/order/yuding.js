@@ -7,7 +7,7 @@ const mall = require('./mall.js');
 const model = {
 	...mall,
 	async updatePaymentInfo(event) {
-		let time = new Date().toISOString();
+		let time = Date.now();
 		let outTradeNo = event.outTradeNo;
 		let data = await orderCollection.where({
 			state: 0,

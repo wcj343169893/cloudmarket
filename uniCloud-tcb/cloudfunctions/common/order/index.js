@@ -14,7 +14,7 @@ const {print} = require('printers');
  */
 const updateOrderPaymentInfo = async function(event) {
 	//console.log(event);
-	let time = new Date().toISOString();
+	let time = Date.now();
 	//reserve_
 	let outTradeNo = event.outTradeNo;
 	let conditions1 = {

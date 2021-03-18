@@ -182,7 +182,7 @@ const updateShopStatistics = async (shopid, data) => {
  */
 const updateShopDayStatistics = async (shopid, data, isGetData, uid) => {
 	let dayTime = getDateString();
-	data.updated = new Date().toISOString();
+	data.updated = Date.now();
 	let res = await shopStatisticsCollection.where({
 		shopid,
 		day: dayTime
@@ -254,7 +254,7 @@ const genIdentityId = async function(key, inc) {
 const addUserBalanceLog = async function(data) {
 	//记录余额变动历史user_balance_logs
 	return await userBalanceLogCollection.add({
-		created: new Date().toISOString(),
+		created: Date.now(),
 		...data
 	});
 }

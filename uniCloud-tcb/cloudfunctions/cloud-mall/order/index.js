@@ -309,7 +309,7 @@ const model = {
 		data = await orderCollection.doc(order._id).update({
 			state: 3,
 			makesureUid: uid,
-			makesureTime: new Date().toISOString()
+			makesureTime: Date.now()
 		});
 		await this.afterMakesure(order);
 		return data;
@@ -347,7 +347,7 @@ const model = {
 		data = await orderCollection.doc(order._id).update({
 			state: 3,
 			makesureUid: uid,
-			makesureTime: new Date().toISOString()
+			makesureTime: Date.now()
 		});
 		await this.afterMakesure(order);
 		return data;
@@ -545,7 +545,7 @@ const model = {
 			steps: [{
 				title: "提交申请",
 				desc: "您的退款已申请成功，待客服审核中",
-				time: new Date().toISOString()
+				time: Date.now()
 			}],
 			...item
 		});
@@ -1412,7 +1412,7 @@ const model = {
 			}).update({
 				state: -1,
 				cancelStyle: "auto",
-				modified: new Date().toISOString()
+				modified: Date.now()
 			});
 			let couponsIds = [];
 			let couponsOriginId = [];
