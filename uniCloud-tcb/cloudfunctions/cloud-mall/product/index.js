@@ -43,7 +43,7 @@ const models = {
 			starStatics: 1,
 			commentTagStatics: 1,
 			commentCount: 1,
-			comment: 1,
+			//comment: 1,
 			guarantee_period: 1,
 			storage_condition: 1,
 			net_weight: 1,
@@ -77,6 +77,13 @@ const models = {
 			//查询已加入购物车信息amount
 			//await getGoodsCart(data,uid);
 		}
+		//实时查询审核通过的评论
+		data.comment = await this.comment({
+			page:1,
+			limit:2,
+			shopid:data.shopid,
+			goodsid:data._id
+		});
 		if (!data.isLimit) {
 			delete data.limit;
 			delete data.isNewUser;
@@ -297,7 +304,7 @@ const models = {
 			goods_id: goodsid,
 		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
 		if (result.data.length == 0) {
-			return false;
+			return [];
 		}
 		return result.data;
 	},

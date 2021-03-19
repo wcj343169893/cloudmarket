@@ -259,11 +259,6 @@
 				console.log(item)
 			},
 			setNavTitle() {
-				let shopInfo = uni.getStorageSync("adminShopInfo");
-				let userTypes = shopInfo.userTypes.filter(e => e.state == this.state);
-				uni.setNavigationBarTitle({
-					title: userTypes[0].name
-				});
 			},
 			fabTrigger({
 				index,
