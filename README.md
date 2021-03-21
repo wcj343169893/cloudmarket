@@ -50,8 +50,5 @@
 ### 参考项目和包含插件
 [uni-id](https://ext.dcloud.net.cn/plugin?id=2116)  
 [uniPay](https://ext.dcloud.net.cn/plugin?id=1835)  
-[极光认证官方SDK](https://ext.dcloud.net.cn/plugin?id=1356)  
 [日期时间选择 DateTime](https://ext.dcloud.net.cn/plugin?id=1496)  
 [搜索框组件](https://ext.dcloud.net.cn/plugin?id=94)  
-[mix-mall 电商项目模版](https://ext.dcloud.net.cn/plugin?id=200)  
-[国云商城](https://ext.dcloud.net.cn/plugin?id=2413)  
