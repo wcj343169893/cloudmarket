@@ -108,8 +108,17 @@
 							<text class="m-l">{{ info.address.mobile }}</text>
 						</view>
 						<text>{{ info.address.addressName }}{{info.address.area}}</text>
+						<view class="" v-if="info.address.province">
+							<text>{{info.address.province}}</text>
+							<text>{{info.address.city}}</text>
+							<text>{{info.address.district}}</text>
+						</view>
 						<view class="">
 							<text>{{ info.address.address }}</text>
+						</view>
+						<view class="flex margin-top-sm">
+							<button type="default" class="action-btn recom" @click.stop="printExpress">电子面单</button>
+							<button type="default" class="action-btn" @click.stop="addExpress">录入单号</button>
 						</view>
 					</view>
 					<text class="yticon icon-you"></text>
@@ -301,6 +310,12 @@
 			</view>
 		</block>
 		<popExpress ref="expPopup" :value="express"></popExpress>
+		<uni-popup ref="expressPopup" type="center">
+			<view class="padding bg-white">
+				<expressInput @canceled="closeExpressPopup" :showNumber="showNumber" @comfirm="comfirmExpress">
+				</expressInput>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -309,7 +324,8 @@
 		mapState
 	} from 'vuex';
 	import {
-		orderAdmin
+		orderAdmin,
+		cloudExpress
 	} from '@/common/admin_request.js';
 	import {
 		orders
@@ -324,6 +340,7 @@
 		data() {
 			return {
 				id: 0,
+				showNumber: true,
 				number: false,
 				password: false,
 				goodsList: [],
@@ -333,7 +350,7 @@
 				shopid: 0,
 				express: {}, //单条配送信息
 				info: {
-					express:[],
+					express: [],
 					shop: {}
 				},
 				isError: false
@@ -481,6 +498,52 @@
 				}, err => {
 					this.$api.msg("打印失败")
 				})
+			},
+			closeExpressPopup() {
+				console.log("closeExpressPopup")
+				this.$refs.expressPopup.close()
+			},
+			comfirmExpress(e) {
+				console.log("comfirmExpress", e)
+				this.$refs.expressPopup.close()
+				if (this.showNumber) {
+					//手动输入
+					orderAdmin("addExpress", {
+						_id: this.id,
+						express: e
+					}).then(res => {
+						this.$api.msg("录入单号成功");
+					}, err => {
+						this.$api.msg("录入失败");
+					})
+				} else {
+					if (e.code) {
+						//云端打印
+						let info = {
+							shop: this.info.shop,
+							address: this.info.address,
+							count: 1,
+							company: e.code
+						};
+						cloudExpress("", "print", info, true).then(res => {
+							this.$api.success("打印完成")
+						}, err => {
+							this.$api.msg("打印失败")
+						})
+					} else {
+						this.$api.msg("快递公司不能为空")
+					}
+				}
+			},
+			printExpress() {
+				this.showNumber = false;
+				//快递发货,弹出输入单号
+				this.$refs.expressPopup.open()
+			},
+			addExpress() {
+				this.showNumber = true;
+				//快递发货,弹出输入单号
+				this.$refs.expressPopup.open()
 			},
 			//查看评价
 			evaluateOrder() {

@@ -180,9 +180,15 @@
 	},
 	"apiToken": "DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570F",
 	"express": {
-		"api":"kuai100",
+		"api": "kuai100",
 		"key": "NpwhbOgw8996",
 		"customer": "27076142710A847DD9D03B5FE27019C3",
-		"expires":21600
+		"secret": "8b264a40de8543dfae0e1f34c11b646b",
+		"userid": "33ef8693e61641b0b3e41eb7389a986d",
+		"partnerId": "",
+		"partnerKey": "",
+		"tempid": "",
+		"siid": "",
+		"expires": 21600
 	}
 }

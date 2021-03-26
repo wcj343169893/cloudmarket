@@ -105,6 +105,17 @@ const cloudDatabases = (model, action, data, isShowLoading) => {
 		isShowLoading: !!isShowLoading
 	})
 }
+const cloudExpress = (model, action, data, isShowLoading) => {
+	return network({
+		url: "cloud-express",
+		data: {
+			module: model,
+			action: action,
+			data
+		},
+		isShowLoading: !!isShowLoading
+	})
+}
 export {
 	shopAdmin,
 	printerAdmin,
@@ -117,5 +128,6 @@ export {
 	adminNetwork,
 	specialAdmin,
 	cloudDatabases,
+	cloudExpress,
 	cashoutAdmin
 }

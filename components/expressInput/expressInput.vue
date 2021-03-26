@@ -14,7 +14,7 @@
 				</view>
 			</picker>
 		</view>
-		<view class="row">
+		<view class="row" v-if="showNumber">
 			<text class="expressTitle">快递单号</text>
 			<view class="inputBox flex">
 				<input @blur="getCom" v-model="express.number" placeholder="请输入快递单号" class="expressNumber" type="text"
@@ -48,6 +48,12 @@
 					number: "" //快递单号
 				}
 			};
+		},
+		props:{
+			showNumber:{
+				type:Boolean,
+				default:true
+			}
 		},
 		created() {
 			this.expressList = expressList;

@@ -9,6 +9,7 @@ exports.main = async (event, context) => {
 		data,
 		Type
 	} = event;
+	console.log(config);
 	let model = require(`./company/${config.api}`);
 	if (!model) {
 		return {
