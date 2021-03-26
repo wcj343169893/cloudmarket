@@ -118,16 +118,27 @@
 					</view>
 				</view>
 			</block>
-			<view class="weui-flex address b-b" v-else-if="info.address && info.address._id">
-				<view><text>收货地址</text></view>
-				<view class="content">
-					<view>
-						<text>{{ info.address.name }}</text>
-						<text class="m-l">{{ info.address.mobile }}</text>
+			<block v-else-if="info.address && info.address._id">
+				<view class="weui-flex address b-b" >
+					<view><text>收货地址</text></view>
+					<view class="content">
+						<view>
+							<text>{{ info.address.name }}</text>
+							<text class="m-l">{{ info.address.mobile }}</text>
+						</view>
+						<text>{{ info.address.addressName }}</text>
 					</view>
-					<text>{{ info.address.addressName }}</text>
 				</view>
-			</view>
+				<view class="weui-flex address b-b" v-if="info.express">
+					<view class=""><text>快递配送</text></view>
+					<view class="">
+						<view v-for="(exp,index2) in info.express" :key="index2" class="" @click="showExpress(exp)">
+							<text>{{index2+1}}:{{exp.company}}</text>
+							<text class="margin-left-sm">{{exp.number}}</text>
+						</view>
+					</view>
+				</view>
+			</block>
 			<view class="weui-flex address b-b" v-else-if="info.selfRaising && info.selfRaising.name">
 				<view><text>自提信息</text></view>
 				<view class="content">
@@ -311,6 +322,7 @@
 				</view>
 			</view>
 		</uni-popup>
+		<popExpress ref="expPopup" :value="express"></popExpress>
 	</view>
 </template>
 
@@ -342,7 +354,9 @@
 				stateTip: '',
 				stateContent: '',
 				stateTipColor: '',
+				express:{},
 				info: {
+					express:[],
 					shop: {}
 				},
 				isYuding: false,
@@ -769,6 +783,12 @@
 			},
 			qrR(src) {
 				//console.log('qr', src);
+			},
+			showExpress(express) {
+				this.express = express;
+				setTimeout(() => {
+					this.$refs.expPopup.open();
+				}, 200)
 			}
 		}
 	};

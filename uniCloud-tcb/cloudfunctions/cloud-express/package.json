@@ -1,0 +1,17 @@
+{
+  "name": "cloud-express",
+  "version": "1.0.0",
+  "description": "查看快递信息",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base-common": "file:..\\common\\base-common",
+    "configs": "file:..\\common\\configs",
+    "md5-node": "^1.0.1"
+  }
+}

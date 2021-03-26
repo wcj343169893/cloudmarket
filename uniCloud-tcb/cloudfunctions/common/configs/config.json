@@ -178,5 +178,11 @@
 			"to": "343169893@qq.com"
 		}
 	},
-	"apiToken":"DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570F"
+	"apiToken": "DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570F",
+	"express": {
+		"api":"kuai100",
+		"key": "NpwhbOgw8996",
+		"customer": "27076142710A847DD9D03B5FE27019C3",
+		"expires":21600
+	}
 }

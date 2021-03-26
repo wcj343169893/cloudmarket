@@ -23,7 +23,8 @@
 						<block v-else>
 							<text>应付尾款：</text>
 							<text class="price">{{ info.yuding.finishPaymentPrice | toFixed}}</text>
-							<text class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
+							<text
+								class="m-l">{{ info.yuding.finalPaymentBeginTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 						</block>
 					</view>
 					<!-- 退款进度 -->
@@ -39,13 +40,16 @@
 				</view>
 				<view class="buttons">
 					<button type="default" class="action-btn" @click="printTicket">打印小票</button>
-					<block v-if="info.state == 1"><button type="default" class="action-btn" v-if="isCanDelivery" @click="addDelivery(false)">确定发货</button></block>
+					<block v-if="info.state == 1"><button type="default" class="action-btn" v-if="isCanDelivery"
+							@click="addDelivery(false)">确定发货</button></block>
 					<block v-else-if="info.state == 2">
 						<block v-if="info.deliveryType == 'selfRaising'">
-							<button type="default" class="action-btn" @click="selftakeOrder()" v-if="isCanDelivery">确定提货</button>
+							<button type="default" class="action-btn" @click="selftakeOrder()"
+								v-if="isCanDelivery">确定提货</button>
 						</block>
 					</block>
-					<block v-else-if="info.state == 4"><button type="default" class="action-btn recom" @click="evaluateOrder">查看评价</button></block>
+					<block v-else-if="info.state == 4"><button type="default" class="action-btn recom"
+							@click="evaluateOrder">查看评价</button></block>
 					<block v-else></block>
 				</view>
 			</view>
@@ -119,6 +123,15 @@
 							<view class="">
 								<text>{{info.userInfo.id}}</text>
 							</view>
+						</view>
+					</view>
+				</view>
+				<view class="weui-flex address b-b" v-if="info.express">
+					<view class=""><text>快递配送</text></view>
+					<view class="">
+						<view v-for="(exp,index2) in info.express" :key="index2" class="" @click="showExpress(exp)">
+							<text>{{index2+1}}:{{exp.company}}</text>
+							<text class="margin-left-sm">{{exp.number}}</text>
 						</view>
 					</view>
 				</view>
@@ -197,8 +210,9 @@
 							<view class="weui-flex start">
 								<view class="weui-flex-check">
 									<view class="image-wrapper">
-										<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
-										 @error="onImageError('goodsList', index)"></image>
+										<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]"
+											mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
+											@error="onImageError('goodsList', index)"></image>
 									</view>
 								</view>
 								<view class="desc weui-flex__item">
@@ -226,9 +240,11 @@
 										</view>
 									</view>
 									<view class="buttons">
-										<button type="default" v-if="item.state && item.state == 4" class="action-btn" @click.stop="refundOrder(item)">查看退款申请</button>
+										<button type="default" v-if="item.state && item.state == 4" class="action-btn"
+											@click.stop="refundOrder(item)">查看退款申请</button>
 
-										<button type="default" v-if="info.state == 1 && item.isCanDelivery" class="action-btn" @click.stop="addDelivery(item)">单独发货</button>
+										<button type="default" v-if="info.state == 1 && item.isCanDelivery"
+											class="action-btn" @click.stop="addDelivery(item)">单独发货</button>
 									</view>
 								</view>
 							</view>
@@ -236,7 +252,8 @@
 					</view>
 				</block>
 				<view class="more-btn">
-					<text><text class="important">{{ goodsCount }}</text>种商品，共<text class="important">{{ info.cartCount }}</text>件</text>
+					<text><text class="important">{{ goodsCount }}</text>种商品，共<text
+							class="important">{{ info.cartCount }}</text>件</text>
 				</view>
 			</view>
 			<view class="m-t"></view>
@@ -283,6 +300,7 @@
 				<text>订单不存在</text>
 			</view>
 		</block>
+		<popExpress ref="expPopup" :value="express"></popExpress>
 	</view>
 </template>
 
@@ -313,7 +331,9 @@
 				maxShowCount: 3,
 				isCanDelivery: true,
 				shopid: 0,
+				express: {}, //单条配送信息
 				info: {
+					express:[],
 					shop: {}
 				},
 				isError: false
@@ -352,17 +372,16 @@
 						//从缓存读取
 						this.orderInfo(item);
 						this.loaded = true;
-					} else {
-						//从网络获取
-						orderAdmin("detail", {
-							_id: this.id
-						}, true).then(res => {
-							this.loaded = true;
-							this.orderInfo(res);
-						}, err => {
-							this.isError = true;
-						});
 					}
+					//从网络获取
+					orderAdmin("detail", {
+						_id: this.id
+					}, true).then(res => {
+						this.loaded = true;
+						this.orderInfo(res);
+					}, err => {
+						this.isError = true;
+					});
 				}
 			},
 			orderInfo(res) {
@@ -381,13 +400,15 @@
 				this.goodsCount = res.goods.length;
 				this.info = res;
 				res.goods.forEach(goods => {
-					goods.isCanDelivery = goods.amount - (goods.isRefunding ? goods.isRefunding : 0) - (goods.refundAmount ? goods.refundAmount :
+					goods.isCanDelivery = goods.amount - (goods.isRefunding ? goods.isRefunding : 0) - (goods
+						.refundAmount ? goods.refundAmount :
 						0) > 0;
 				})
 				this.goodsList = res.goods;
 				this.shopid = this.info.shopid;
 				checkDeliveryHour(this.info);
-				this.isCanDelivery = res.cartCount - (res.isRefunding ? res.isRefunding : 0) - (res.refundAmount ? res.refundAmount :
+				this.isCanDelivery = res.cartCount - (res.isRefunding ? res.isRefunding : 0) - (res.refundAmount ? res
+					.refundAmount :
 					0) > 0;
 				console.log("this.isCanDelivery", this.isCanDelivery)
 			},
@@ -499,6 +520,12 @@
 			},
 			navBack() {
 				uni.navigateBack();
+			},
+			showExpress(express) {
+				this.express = express;
+				setTimeout(() => {
+					this.$refs.expPopup.open();
+				}, 200)
 			}
 		}
 	};

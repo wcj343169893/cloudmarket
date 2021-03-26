@@ -285,6 +285,31 @@ const refuseRefund = async (data) => {
 	return res;
 }
 /**
+ * 录入快递单号
+ */
+const addExpress = async (data) => {
+	let conditions = {
+		_id: data._id,
+		shopid: data.shopid
+	};
+	let order = await getOrderById(conditions, {
+		selfRaising: 1,
+		express: 1,
+		state: 1,
+		shopid: 1,
+		uid: 1
+	});
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	//快递信息,直接支持多条
+	let res = await orderCollection.doc(order._id).update({
+		express: cmd.push(data.express)
+	});
+	return res;
+}
+/**
  * 订单发货
  */
 const addDelivery = async (data) => {
@@ -306,12 +331,13 @@ const addDelivery = async (data) => {
 		data.message = "订单状态异常" + order.state;
 		return false;
 	}
-	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
-	let res = await orderCollection.doc(order._id).update({
+	let saveData = {
 		deliveredTime: Date.now(),
 		deliveredUid: data.operator,
 		state: 2
-	});
+	};
+	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
+	let res = await orderCollection.doc(order._id).update(saveData);
 	//更新用户已发货和已收货
 	let resUser = await updateUserOrderCount(order.uid, "delivered", 1, "payup", order.shopid);
 	//TODO 自提订单，发送短信
@@ -489,6 +515,7 @@ module.exports = {
 	list: list,
 	detail: detail,
 	addDelivery: addDelivery,
+	addExpress,
 	selftake,
 	selftakebyraising,
 	print: printOrder,

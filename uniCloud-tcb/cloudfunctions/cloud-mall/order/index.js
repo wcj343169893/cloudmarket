@@ -218,6 +218,7 @@ const model = {
 			freight: 1,
 			dayIndex: 1,
 			delivery: 1,
+			express: 1,
 			deliveryHour: 1,
 			deliveryType: 1,
 			selfRaising: 1,

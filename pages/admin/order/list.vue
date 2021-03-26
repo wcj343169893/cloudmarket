@@ -1,7 +1,8 @@
 <template>
 	<view class="container" :class="[globalAdminClass]">
 		<empty v-if="loaded === true && orderList.length === 0"></empty>
-		<view v-for="(item, index) in orderList" :key="index" class="order-item" :class="[item.shop.currency]" @click="navToOrderDetail(item)">
+		<view v-for="(item, index) in orderList" :key="index" class="order-item" :class="[item.shop.currency]"
+			@click="navToOrderDetail(item)">
 			<view class="i-top b-b">
 				<text class="time">{{ item.created  | dateFormat('yyyy-MM-dd hh:mm:ss')  }}</text>
 				<text class="state" :style="{ color: item.stateTipColor }">{{ item.stateTip }}</text>
@@ -18,7 +19,8 @@
 						<view class="">
 							<text class="title clamp">{{ goodsItem.title }}</text>
 						</view>
-						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
+						<text class="attr-box"
+							v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 						<view class="attr-box">
 							<text>{{item.priceTitle}}:</text>
 							<text class="price">{{ goodsItem.price | toFixed}}</text>
@@ -69,19 +71,34 @@
 			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
-				<view class="action-box b-t"><button class="action-btn recom" v-if="item.isCanDelivery" @click.stop="addDelivery(item,index)">确定发货</button></view>
+				<view class="action-box b-t">
+					<button class="action-btn recom" v-if="item.isCanDelivery"
+						@click.stop="addDelivery(item,index)">确定发货</button>
+					<button class="action-btn recom"
+						@click.stop="addExpress(item,index)">录入单号</button>
+				</view>
 			</block>
 			<!-- 已发货 -->
 			<block v-if="item.state == 2">
 				<view class="action-box b-t">
-					<button class="action-btn recom" v-if="item.deliveryType == 'selfRaising'" @click.stop="selftakeOrder(item,index)">确定提货</button>
+					<button class="action-btn recom" v-if="item.deliveryType == 'selfRaising'"
+						@click.stop="selftakeOrder(item,index)">确定提货</button>
+					<button class="action-btn recom"
+						@click.stop="addExpress(item,index)">录入单号</button>
 				</view>
 			</block>
+
 			<!-- 已收货，待评价 -->
-			<view class="action-box b-t" v-if="item.state == 3"><button class="action-btn" @click.stop="evaluateOrder(item)">查看评价</button></view>
+			<view class="action-box b-t" v-if="item.state == 3"><button class="action-btn"
+					@click.stop="evaluateOrder(item)">查看评价</button></view>
 		</view>
 
 		<uni-load-more :status="loadingType"></uni-load-more>
+		<uni-popup ref="expressPopup" type="center">
+			<view class="padding bg-white">
+				<expressInput @canceled="closeExpressPopup" @comfirm="comfirmExpress"></expressInput>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -98,6 +115,8 @@
 		mixins: [searchMixin],
 		data() {
 			return {
+				formData: {},
+				formDataIndex: 0,
 				shopid: 0,
 				state: "",
 				limit: 10,
@@ -138,7 +157,8 @@
 								ele.priceTitle = "预售价";
 							}
 							checkDeliveryHour(ele);
-							ele.isCanDelivery = ele.cartCount - (ele.isRefunding ? ele.isRefunding : 0) - (ele.refundAmount ? ele.refundAmount :
+							ele.isCanDelivery = ele.cartCount - (ele.isRefunding ? ele.isRefunding : 0) - (
+								ele.refundAmount ? ele.refundAmount :
 								0) > 0;
 						});
 						this.orderList = this.orderList.concat(res);
@@ -171,6 +191,28 @@
 			},
 			//发送支付提醒
 			sendPayMessage() {},
+			closeExpressPopup() {
+				console.log("closeExpressPopup")
+				this.$refs.expressPopup.close()
+			},
+			comfirmExpress(e) {
+				console.log("comfirmExpress", e)
+				this.$refs.expressPopup.close()
+				orderAdmin("addExpress", {
+					_id: this.formData._id,
+					express: e
+				}).then(res => {
+					this.$api.msg("录入单号成功");
+				}, err => {
+					this.$api.msg("录入失败");
+				})
+			},
+			addExpress(item, index) {
+				this.formData = item;
+				this.formDataIndex = index;
+				//快递发货,弹出输入单号
+				this.$refs.expressPopup.open()
+			},
 			//发货
 			addDelivery(item, index) {
 				orderAdmin("addDelivery", {

@@ -13,6 +13,8 @@
 		<mix-list-input title="最远服务里程" type="number" :defContent="maxDistance" placeholder="请输入" @blur="changeMaxDistance"><text
 			 class="moreText">公里</text></mix-list-input>
 		<mix-list-input title="预计送达时间" type="number" :defContent="time" placeholder="请输入" @blur="changeTime"><text class="moreText">分钟</text></mix-list-input>
+		<mix-list-input title="最快发货" type="number" :defContent="fastestDeliveryDay" placeholder="请输入" @blur="changeFastestDeliveryDay"><text
+			 class="moreText">天</text></mix-list-input>
 		<mix-list-input title="最多可预订天数" type="number" :defContent="deliveryDay" placeholder="请输入" @blur="changeDeliveryDay"><text
 			 class="moreText">天</text></mix-list-input>
 		<view class="mix-list-cell">
@@ -47,6 +49,7 @@
 	export default {
 		data() {
 			return {
+				fastestDeliveryDay: 1,
 				deliveryDay: 4,
 				deliveryPeriodHour: [],
 				deliveryPeriod: [],
@@ -117,6 +120,9 @@
 			changeDeliveryDay(e) {
 				this.deliveryDay = +e;
 			},
+			changeFastestDeliveryDay(e) {
+				this.fastestDeliveryDay = +e;
+			},
 			add(index) {
 				let last;
 				//默认增加半小时
@@ -143,6 +149,7 @@
 				let deliveryPeriod = [];
 				let data = {
 					deliveryDay: this.deliveryDay,
+					fastestDeliveryDay: this.fastestDeliveryDay,
 					freeMoney: this.freeMoney,
 					maxDistance: this.maxDistance,
 					minDistance: this.minDistance,

@@ -488,7 +488,7 @@
 				this.deliveryDays = [];
 				let dayNames = ['今天', '明天', '后天'];
 				let day = new Date();
-				let baseDay = 0;
+				let baseDay = +delivery.fastestDeliveryDay;
 				//如果商品是预售，提货时间自动推迟到付尾款时间开始
 				let todayTime = new Date(dateFormat(false, 'yyyy/MM/dd')).getTime();
 				if (this.yuding) {
