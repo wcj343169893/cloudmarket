@@ -3,7 +3,6 @@
 		<view class="titleNview-address" v-if="isSelfRaisingPoint">
 			<text class="taobaofont icon-shoplight m-r"></text>
 			<text>{{raisingPoint.name}}</text>
-			<text class="taobaofont icon-right" style="font-size: 1em;"></text>
 		</view>
 		<view class="titleNview-address" v-else-if="address != ''">
 			<text>送至:{{ address }}</text>

@@ -255,7 +255,6 @@
 			},
 			navToAddAddress() {
 				console.log(this.hasLogin)
-				return;
 				if (!this.hasLogin) {
 					navToLoginPage();
 					return;
