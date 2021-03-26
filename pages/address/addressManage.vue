@@ -28,6 +28,7 @@
 
 <script>
 import { address } from '@/common/request.js';
+import { getLocationAddress } from '@/common/functions.js';
 export default {
 	data() {
 		return {
@@ -88,6 +89,14 @@ export default {
 					this.addressData.latitude = data.latitude;
 					//113.930507
 					this.addressData.longitude = data.longitude;
+					//省市县，方便匹配快递规则
+					getLocationAddress([data.latitude,data.longitude].join(",")).then(res=>{
+						this.addressData.adcode = res.ad_info.adcode;
+						this.addressData.address = res.formatted_addresses.recommend;
+						this.addressData.province = res.ad_info.province;
+						this.addressData.city = res.ad_info.city;
+						this.addressData.district = res.ad_info.district;
+					})
 				}
 			});
 		},

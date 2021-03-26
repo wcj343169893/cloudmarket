@@ -1163,7 +1163,7 @@
 		.main-category-panel {
 			display: flex;
 			padding-right: 50rpx;
-			overflow: hidden;
+			// overflow: hidden;
 			position: relative;
 			z-index: 13;
 			background: #FFFFFF;
