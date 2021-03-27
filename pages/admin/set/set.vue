@@ -13,9 +13,9 @@
 		<mix-list-input title="营业时间" :defContent="serviceTime" placeholder="请输入营业时间" @blur="changeServiceTime"></mix-list-input>
 		<mix-list-checkbox title="配送方式" field="deliveryTypes" type="checkbox" :defaultOptions="deliveryTypes" :options="deliveryTypeMap"
 		 @change="changeField"></mix-list-checkbox>
-		<mix-list-checkbox title="自提点" v-if="deliveryTypes && deliveryTypes.indexOf('selfRaising') !=-1" field="selfRaising.enable"
+		<mix-list-checkbox title="首页选择自提点" v-if="deliveryTypes && deliveryTypes.indexOf('selfRaising') !=-1" field="selfRaising.enable"
 		 :defContent="selfRaising.enable" @change="changeField"></mix-list-checkbox>
-		<mix-list-input v-if="selfRaising.enable" title="自提点覆盖半径" type="digit" :defContent="selfRaising.distance" field="selfRaising.distance"
+		<mix-list-input v-if="deliveryTypes && deliveryTypes.indexOf('selfRaising') !=-1" title="自提点覆盖半径" type="digit" :defContent="selfRaising.distance" field="selfRaising.distance"
 		 placeholder="请输入自提点距离" @blur="changeFieldNumber">
 			<text class="moreText">米</text></mix-list-input>
 		<mix-list-input title="支付倒计时" type="digit" :defContent="lastPayTimeMinute" field="lastPayTimeMinute" placeholder="请输入倒计时"

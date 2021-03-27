@@ -104,7 +104,7 @@
 						].join(","))
 						.then(res1 => {
 							res.forEach((addr, index) => {
-								addr.juli = Number(res1[index].elements[0].distance)
+								addr.juli = Number(res1.rows[index].elements[0].distance)
 							})
 							this.dataList = this.dataList.concat(res);
 							this.loaded = true;

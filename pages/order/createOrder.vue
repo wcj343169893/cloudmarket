@@ -3,14 +3,19 @@
 		<!-- 标题栏和状态栏占位符 -->
 		<view class="deliver-section">
 			<view class="delivery-types" v-if="deliveryTypes.length > 1">
-				<view class="items" :class="{ current: deliveryType == 'deliveryHome' }" v-if="deliveryTypes.indexOf('deliveryHome') != -1"
-				 @click="changeDtype('deliveryHome')"><text>配送到家</text></view>
-				<view class="items" :class="{ current: deliveryType == 'selfRaising' }" v-if="deliveryTypes.indexOf('selfRaising') != -1"
-				 @click="changeDtype('selfRaising')"><text>到店自提</text></view>
+				<view class="items" :class="{ current: deliveryType == 'deliveryHome' }"
+					v-if="deliveryTypes.indexOf('deliveryHome') != -1" @click="changeDtype('deliveryHome')">
+					<text>配送到家</text>
+				</view>
+				<view class="items" :class="{ current: deliveryType == 'selfRaising' }"
+					v-if="deliveryTypes.indexOf('selfRaising') != -1" @click="changeDtype('selfRaising')">
+					<text>到店自提</text>
+				</view>
 			</view>
 			<block v-if="deliveryType == 'deliveryHome'">
 				<!-- 地址 -->
-				<navigator v-if="addressData._id" url="/pages/address/address?source=settlement" class="address-section b-b">
+				<navigator v-if="addressData._id" url="/pages/address/address?source=settlement"
+					class="address-section b-b">
 					<view class="order-content">
 						<text class="yticon icon-shouhuodizhi"></text>
 						<view class="cen">
@@ -35,11 +40,13 @@
 						<text class="yticon icon-you"></text>
 					</view>
 				</navigator>
-				<mix-list-cell title="预计送达时间" border="" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
+				<mix-list-cell title="预计送达时间" border="" :tips="deliveryHour.name + ' ' + deliveryHour.time"
+					@eventClick="selectTime()"></mix-list-cell>
 			</block>
 			<block v-if="deliveryType == 'selfRaising'">
 				<!-- 自提点 -->
-				<view class="address-section b-b" v-if="isSelfRaisingPoint && raisingPoint._id" @click="navTo('/pages/index/selfraisingpoint')">
+				<view class="address-section b-b" v-if="raisingPoint._id"
+					@click="navTo('/pages/index/selfraisingpoint')">
 					<view class="order-content">
 						<image :src="raisingPoint.src | thumbImg('120x120')" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
@@ -56,7 +63,7 @@
 					</view>
 				</view>
 				<!-- 地址 -->
-				<view class="address-section b-b" v-else @click="navToLocation(shop)">
+				<view class="address-section b-b" v-else @click="navTo('/pages/index/selfraisingpoint')">
 					<view class="order-content">
 						<image :src="shop.src | thumbImg('120x120')" mode="aspectFill" class="shoplogo"></image>
 						<view class="cen">
@@ -72,11 +79,13 @@
 						<text class="yticon icon-you"></text>
 					</view>
 				</view>
-				<mix-list-cell title="预约自提时间" :tips="deliveryHour.name + ' ' + deliveryHour.time" @eventClick="selectTime()"></mix-list-cell>
-				<mix-list-input title="姓名" textAlign="content-right light" field="selfRaising.name" :defContent="selfRaising.name"
-				 placeholder="请输入姓名" @blur="changeField"></mix-list-input>
-				<mix-list-input title="手机号" type="number" border="" textAlign="content-right light" field="selfRaising.mobile"
-				 :defContent="selfRaising.mobile" placeholder="请输入手机号" @blur="changeField"></mix-list-input>
+				<mix-list-cell title="预约自提时间" :tips="deliveryHour.name + ' ' + deliveryHour.time"
+					@eventClick="selectTime()"></mix-list-cell>
+				<mix-list-input title="姓名" textAlign="content-right light" field="selfRaising.name"
+					:defContent="selfRaising.name" placeholder="请输入姓名" @blur="changeField"></mix-list-input>
+				<mix-list-input title="手机号" type="number" border="" textAlign="content-right light"
+					field="selfRaising.mobile" :defContent="selfRaising.mobile" placeholder="请输入手机号"
+					@blur="changeField"></mix-list-input>
 			</block>
 		</view>
 		<view class="goods-section">
@@ -106,10 +115,12 @@
 						<view class="">
 							<text class="title">{{ goodsItem.title }}</text>
 						</view>
-						<text class="attr-box" v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
+						<text class="attr-box"
+							v-if="goodsItem.subName && goodsItem.subName.length > 0">{{ goodsItem.subName }}</text>
 						<view class="attr-box">
 							<text>{{ priceTitle }}:</text>
-							<text class="price">{{ (goodsItem.originPrice > 0 ? goodsItem.originPrice : goodsItem.price) | toFixed }}</text>
+							<text
+								class="price">{{ (goodsItem.originPrice > 0 ? goodsItem.originPrice : goodsItem.price) | toFixed }}</text>
 							<text>数量:</text>
 							<text>{{ goodsItem.amount }}</text>
 						</view>
@@ -180,7 +191,8 @@
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
-				<input class="desc" type="text" v-model="remark" placeholder="请填写备注信息" placeholder-class="placeholder" />
+				<input class="desc" type="text" v-model="remark" placeholder="请填写备注信息"
+					placeholder-class="placeholder" />
 			</view>
 		</view>
 
@@ -250,15 +262,15 @@
 			</view>
 			<view class="times">
 				<scroll-view scroll-y="true" class="days-scroll">
-					<view v-for="(item, index) in deliveryDays" :key="index" class="days b-b" :class="{ current: item.checked }"
-					 @click="checkDay(index)">
+					<view v-for="(item, index) in deliveryDays" :key="index" class="days b-b"
+						:class="{ current: item.checked }" @click="checkDay(index)">
 						<text>{{ item.name }}</text>
 						<text class="m-l">{{ item.time }}</text>
 					</view>
 				</scroll-view>
 				<scroll-view scroll-y="true" class="hours-scroll">
-					<view class="hours b-b" v-for="(item, index) in deliveryHours" :class="{ current: item.checked }" :key="index"
-					 @click="checkHour(index)">
+					<view class="hours b-b" v-for="(item, index) in deliveryHours" :class="{ current: item.checked }"
+						:key="index" @click="checkHour(index)">
 						<text>{{ item.time }}</text>
 						<text class="yticon icon-right" v-if="item.checked"></text>
 					</view>
@@ -454,7 +466,8 @@
 					return false;
 				}
 				//计算2点的距离
-				let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' + this.location
+				let fromLng = [this.addressData.latitude + ',' + this.addressData.longitude, this.location.latitude + ',' +
+					this.location
 					.longitude
 				];
 				if (this.raisingPoint && this.raisingPoint._id) {
@@ -488,7 +501,8 @@
 				this.deliveryDays = [];
 				let dayNames = ['今天', '明天', '后天'];
 				let day = new Date();
-				let baseDay = +delivery.fastestDeliveryDay;
+				let baseDay = delivery && delivery.fastestDeliveryDay ? delivery.fastestDeliveryDay : 0;
+				console.log("this.shop", this.shop, baseDay)
 				//如果商品是预售，提货时间自动推迟到付尾款时间开始
 				let todayTime = new Date(dateFormat(false, 'yyyy/MM/dd')).getTime();
 				if (this.yuding) {
@@ -529,7 +543,8 @@
 									endTime: dep.end * 1000 + todayTime,
 									checked: !isChecked,
 									name: name == '' ? info.time : name,
-									time: dateFormat(dep.begin * 1000 + todayTime, 'hh:mm') + '-' + dateFormat(dep.end * 1000 + todayTime,
+									time: dateFormat(dep.begin * 1000 + todayTime, 'hh:mm') + '-' + dateFormat(dep
+										.end * 1000 + todayTime,
 										'hh:mm')
 								});
 								if (!isChecked) {
@@ -547,7 +562,8 @@
 								endTime: dep.end * 1000 + todayTime,
 								checked: false,
 								name: name == '' ? info.time : name,
-								time: dateFormat(dep.begin * 1000 + todayTime, 'hh:mm') + '-' + dateFormat(dep.end * 1000 + todayTime,
+								time: dateFormat(dep.begin * 1000 + todayTime, 'hh:mm') + '-' + dateFormat(dep
+									.end * 1000 + todayTime,
 									'hh:mm')
 							});
 						}
@@ -649,11 +665,12 @@
 					remark: this.remark,
 					juli: this.juli,
 					deliveryType: this.deliveryType,
-					freight: this.deliveryType == "deliveryHome" ? this.freight : 0, //本机计算运费，如果交给服务器，还需要再去计算2点的距离,但是本地计算不靠谱
+					freight: this.deliveryType == "deliveryHome" ? this.freight :
+					0, //本机计算运费，如果交给服务器，还需要再去计算2点的距离,但是本地计算不靠谱
 					deliveryHour: this.deliveryHour,
 					addressid: this.addressData._id,
 					selfRaising: this.selfRaising,
-					raisingPoint: this.isSelfRaisingPoint ? this.raisingPoint : undefined, //提货点自提
+					raisingPoint: this.deliveryType == "selfRaising" ? this.raisingPoint : undefined, //提货点自提
 					...this.ids
 				}, true).then(
 					res => {
@@ -694,6 +711,7 @@
 			},
 			checkDay(index) {
 				this.deliveryDayIndex = index;
+				console.log("this.deliveryDays", this.deliveryDays)
 				this.deliveryHours = this.deliveryDays[index].children;
 				this.deliveryDays.forEach(e => {
 					e.checked = false;
