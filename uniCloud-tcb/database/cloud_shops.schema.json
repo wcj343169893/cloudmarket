@@ -181,6 +181,11 @@
 			"title": "经度",
 			"description": ""
 		},
+		"lnglat": {
+			"bsonType": "object",
+			"title": "位置",
+			"description": ""
+		},
 		"monthSale": {
 			"bsonType": "int",
 			"title": "月售",
@@ -269,6 +274,66 @@
 		"selfRaisingPoint": {
 			"bsonType": "bool",
 			"title": "自提点"
+		},
+		"state": {
+			"bsonType": "bool",
+			"title": "是否启用"
+		},
+		"video": {
+			"bsonType": "bool",
+			"title": "是否启用视频"
+		},
+		"dayStatisticsLog": {
+			"bsonType": "string",
+			"title": "统计日期"
+		},
+		"deliverySupportType": {
+			"bsonType": "int",
+			"title": "配送支持类型"
+		},
+		"lastPayTimeMinute": {
+			"bsonType": "int",
+			"title": "支付等待时长（分）"
+		},
+		"hasManjian": {
+			"bsonType": "int",
+			"title": "是否满减"
+		},
+		"stationId": {
+			"bsonType": "int",
+			"title": "分站id"
+		},
+		"perCapita": {
+			"bsonType": "double",
+			"title": "人均消费"
+		},
+		"coupons": {
+			"bsonType": "object",
+			"title": "优惠券"
+		},
+		"goods": {
+			"bsonType": "object",
+			"title": "商品统计"
+		},
+		"order": {
+			"bsonType": "object",
+			"title": "订单统计"
+		},
+		"pages": {
+			"bsonType": "object",
+			"title": "页面配置"
+		},
+		"addressObject": {
+			"bsonType": "object",
+			"title": "地址完整信息"
+		},
+		"manjians": {
+			"bsonType": "array",
+			"title": "满减信息"
+		},
+		"printers": {
+			"bsonType": "array",
+			"title": "打印机"
 		}
 	}
 }
