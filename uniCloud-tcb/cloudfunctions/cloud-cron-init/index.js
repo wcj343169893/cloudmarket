@@ -1,8 +1,13 @@
 'use strict';
 const db = uniCloud.database();
 const cmd = db.command;
+//商品日销量
 const goodsDaySalesCollection = db.collection("cloud_goods_day_sales");
+//店铺日销量
 const goodsShopDaySalesCollection = db.collection("cloud_goods_shop_day_sales");
+const {
+	getDateFormat,
+} = require('base-common');
 /**
  * 每日定时自动创建默认数据
  */
@@ -24,7 +29,7 @@ const genGoodsDaySalesCollection = async (isReplace) => {
 	}).orderBy("day", "desc").limit(1).get();
 	let lastDay;
 	if (sales.data.length == 0) {
-		lastDay = "20201101";
+		lastDay = getDateFormat("yyyy-MM-dd");
 	} else {
 		lastDay = sales.data[0].day;
 	}
@@ -36,6 +41,7 @@ const genGoodsDaySalesCollection = async (isReplace) => {
 		//商品销量
 		let saleRes = await goodsDaySalesCollection.add({
 			day: dayTime,
+			total: 0,
 			goods: {}
 		});
 		console.log("saleRes", saleRes);
@@ -53,7 +59,7 @@ const genGoodsShopDaySalesCollection = async (isReplace) => {
 	}).orderBy("day", "desc").limit(1).get();
 	let lastDay;
 	if (sales.data.length == 0) {
-		lastDay = "20201101";
+		lastDay = getDateFormat("yyyy-MM-dd");
 	} else {
 		lastDay = sales.data[0].day;
 	}
@@ -65,6 +71,7 @@ const genGoodsShopDaySalesCollection = async (isReplace) => {
 		//店铺每日销量
 		let saleRes = await goodsShopDaySalesCollection.add({
 			day: dayTime,
+			total: 0,
 			shops: {}
 		});
 		console.log("saleRes", saleRes);
@@ -74,25 +81,11 @@ const genGoodsShopDaySalesCollection = async (isReplace) => {
 
 /**
  * 获取日期字符串，例如：20200521
- * @param {string} date 原始日期，例如：20200521
+ * @param {string} date 原始日期，例如：2020-05-21
  * @param {int} n  增加天数
  */
 const getDateString = function(date, n) {
-	let day = new Date(date.substr(0, 4) + "-" + date.substr(4, 2) + "-" + date.substr(-2, 2) + " 00:00:00");
+	let day = new Date(date + " 00:00:00");
 	day.setDate(day.getDate() + n);
-	let dayTime = day.getFullYear() + "";
-	let month = day.getMonth() + 1;
-	let dayNumber = day.getDate();
-
-	if (month < 10) {
-		dayTime += "0" + month;
-	} else {
-		dayTime += month;
-	}
-	if (dayNumber < 10) {
-		dayTime += "0" + dayNumber;
-	} else {
-		dayTime += dayNumber;
-	}
-	return dayTime;
+	return getDateFormat("yyyy-MM-dd",day.getTime());
 }

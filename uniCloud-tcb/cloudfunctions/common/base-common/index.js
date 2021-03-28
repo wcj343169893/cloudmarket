@@ -378,7 +378,7 @@ const checkDeliveryHour = function(info) {
  * 获取日期字符串，例如：20200521
  */
 const getDateString = function() {
-	return getDateFormat("yyyyMMdd");
+	return getDateFormat("yyyy-MM-dd");
 }
 
 const filterFields = (event, strinFields, intFields) => {

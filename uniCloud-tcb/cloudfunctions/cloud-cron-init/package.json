@@ -1,18 +1,21 @@
 {
-    "cloudfunction-config": {
-        "memorySize": 256,
-        "path": "",
-        "timeout": 10,
-        "triggers": [
-            {
-                "config": "0 0 0 * * * *",
-                "name": "myTrigger",
-                "type": "timer"
-            }
-        ]
-    },
-    "description": "",
-    "main": "index.js",
-    "name": "cloud-cron-init",
-    "version": "1.0.0"
+	"cloudfunction-config": {
+		"memorySize": 256,
+		"path": "",
+		"timeout": 10,
+		"triggers": [
+			{
+				"config": "0 0 0 * * * *",
+				"name": "myTrigger",
+				"type": "timer"
+			}
+		]
+	},
+	"description": "",
+	"main": "index.js",
+	"name": "cloud-cron-init",
+	"version": "1.0.0",
+	"dependencies": {
+		"base-common": "file:../common/base-common"
+	}
 }

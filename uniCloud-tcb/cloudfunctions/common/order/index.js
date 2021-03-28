@@ -8,7 +8,9 @@ const {
 	updateUserOrderCount,
 	getDateString
 } = require('base-common');
-const {print} = require('printers');
+const {
+	print
+} = require('printers');
 /**
  * 订单支付完成之后
  */
@@ -59,21 +61,21 @@ const updateOrderPaymentInfo = async function(event) {
 	if (data.updated == 1) {
 		let orderData = await orderCollection.where(conditions1).field({
 			uid: 1,
-			id:1,
+			id: 1,
 			goods: 1,
 			shopid: 1,
 			yuding: 1,
-			shop:1,
-			juli:1,
-			address:1,
-			deliveryType:1,
-			deliveryHour:1,
-			created:1,
-			remark:1,
-			totalMoney:1,
-			totalDiscount:1,
-			deduction:1,
-			freight:1,
+			shop: 1,
+			juli: 1,
+			address: 1,
+			deliveryType: 1,
+			deliveryHour: 1,
+			created: 1,
+			remark: 1,
+			totalMoney: 1,
+			totalDiscount: 1,
+			deduction: 1,
+			freight: 1,
 			cartCount: 1
 		}).limit(1).get();
 		let order = orderData.data[0];
@@ -88,10 +90,11 @@ const updateOrderPaymentInfo = async function(event) {
 			let res = await updateUserOrderCount(order.uid, "payup", 1, "unpaid", order.shopid);
 			console.log("updateUserOrderCount", res);
 			// 打印订单
-			res = await print(order,order.shopid);
+			res = await print(order, order.shopid);
 			console.log("print", res);
 		}
 
+		let total = 0;
 		//商品销量日志
 		let up = {
 			goods: {}
@@ -102,10 +105,15 @@ const updateOrderPaymentInfo = async function(event) {
 		order.goods.map((g) => {
 			//每件商品销量
 			up.goods[g._id] = cmd.inc(g.amount * 1);
+			total += g.amount * 1;
 		});
 		//店铺销量
 		shopSales.shops[order.shopid] = cmd.inc(order.cartCount * 1)
 		let dayTime = getDateString();
+
+		//当天累计
+		up.total = cmd.inc(total);
+		shopSales.total = cmd.inc(total);
 
 		//商品销量
 		let saleRes = await goodsDaySalesCollection.where({

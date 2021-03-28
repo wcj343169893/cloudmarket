@@ -136,17 +136,22 @@ const model = {
 			let up = {
 				goods: {}
 			};
+			let total = 0;
 			let shopSales = {
 				shops: {}
 			};
 			order.goods.map((g) => {
 				//每件商品销量
 				up.goods[g._id] = cmd.inc(g.amount * 1);
+				total += g.amount * 1;
 			});
+			//当天累计
+			up.total = cmd.inc(total);
+			shopSales.total = cmd.inc(total);
 			//店铺销量
 			shopSales.shops[order.shopid] = cmd.inc(order.cartCount * 1)
 			let dayTime = getDateString();
-
+			console.log("goods_day_sales",up)
 			//商品销量
 			res = await goodsDaySalesCollection.where({
 				day: dayTime
