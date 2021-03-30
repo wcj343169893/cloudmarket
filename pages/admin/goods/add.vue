@@ -523,9 +523,11 @@
 				this.categoryIdTmp = this.categories;
 				//异步查询商品详细
 				/*  */
-				if (this.description.trim() != '') {
+				if (this.description.indexOf(";") != -1) {
 					//多图
 					this.descriptionImgs = this.description.split(';');
+				} else {
+					this.descriptionImgs = this.description;
 				}
 			},
 			async loadCategory() {
@@ -822,10 +824,12 @@
 						this.descriptionImgs = this.descriptionImgs.concat(srcs);
 					},
 					srcs => {
+						//直接保存数据
 						if (this.description != "") {
-							this.description = [this.description, srcs.join(';')].join(";");
+							this.description = this.description.concat(
+								srcs); // [this.description, srcs.join(';')].join(";");
 						} else {
-							this.description = srcs.join(';');
+							this.description = srcs; //srcs.join(';');
 						}
 					}
 				);
@@ -882,7 +886,7 @@
 				let info = {
 					_id: this._id,
 					categories: this.categories,
-					description: this.descriptionImgs.join(";"),
+					description: this.descriptionImgs,
 					id: this.id,
 					rate: this.rate,
 					imgs: this.imgs,

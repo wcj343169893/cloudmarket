@@ -14,16 +14,17 @@
 			</swiper>
 		</view>
 		<block v-if="hasMiaosha">
-			<miaoshaPage :miaosha="miaosha" :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice"
-			 :monthlySale="monthlySale" :stock="stock" :visite="visite" :zhekou="zhekou"></miaoshaPage>
-			<normalPage :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice" :monthlySale="monthlySale"
-			 :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
+			<miaoshaPage :miaosha="miaosha" :price="price" :title="title" :subTitle="subTitle"
+				:originPrice="originPrice" :monthlySale="monthlySale" :stock="stock" :visite="visite" :zhekou="zhekou">
+			</miaoshaPage>
+			<normalPage :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice"
+				:monthlySale="monthlySale" :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
 		</block>
 		<yudingPage v-else-if="yuding" :yuding="yuding" :price="price" :title="title" :subTitle="subTitle"></yudingPage>
 		<tuangouPage v-else-if="tuangou" :tuangou="tuangou" :price="originPrice" :title="title" :subTitle="subTitle"
-		 :monthlySale="monthlySale" :stock="stock"></tuangouPage>
-		<normalPage v-else :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice" :monthlySale="monthlySale"
-		 :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
+			:monthlySale="monthlySale" :stock="stock"></tuangouPage>
+		<normalPage v-else :price="price" :title="title" :subTitle="subTitle" :originPrice="originPrice"
+			:monthlySale="monthlySale" :stock="stock" :visite="visite" :zhekou="zhekou"></normalPage>
 		<view class="c-list " v-if="hasSku">
 			<view class="skuDialogPanel">
 				<view v-for="(item, index) in skuMap" :key="index">
@@ -31,8 +32,9 @@
 						<text>{{ item.name }}</text>
 					</view>
 					<view class="skuoptions">
-						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item" :class="{ active: item.active == index2, disabled: sname.disabled }"
-						 @click="selectSku(index, index2)">
+						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item"
+							:class="{ active: item.active == index2, disabled: sname.disabled }"
+							@click="selectSku(index, index2)">
 							<text>{{ sname.value }}</text>
 						</view>
 					</view>
@@ -43,7 +45,8 @@
 			<view class="c-row amount b-b">
 				<text class="tit">数量</text>
 				<view class="bz-list con">
-					<uni-number-box :min="1" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount" @change="bindChange"></uni-number-box>
+					<uni-number-box :min="1" :max="limit" :stock="stock" :keys="id + '_' + sku_id" :value="amount"
+						@change="bindChange"></uni-number-box>
 				</view>
 			</view>
 			<view class="c-row b-b" v-if="globalShopInfo && globalShopInfo.services">
@@ -84,7 +87,8 @@
 		<view id="video" class="rating-wrap column" @click="addVideo" v-if="globalShopInfo && globalShopInfo.video">
 			<view class="e-header">
 				<text class="tit">我要参与</text>
-				<text class="tip">{{globalShopInfo.pages&&globalShopInfo.pages.product?globalShopInfo.pages.product.titles.addVideo:"去参与"}}</text>
+				<text
+					class="tip">{{globalShopInfo.pages&&globalShopInfo.pages.product?globalShopInfo.pages.product.titles.addVideo:"去参与"}}</text>
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
@@ -109,7 +113,8 @@
 
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom" :class="{ show: canAddCart }">
-			<navigator url="/pages/index/fruit" open-type="switchTab" class="p-b-btn weui-flex flex-column margin-right">
+			<navigator url="/pages/index/fruit" open-type="switchTab"
+				class="p-b-btn weui-flex flex-column margin-right">
 				<text class="yticon icon-xiatubiao--copy"></text>
 				<text>首页</text>
 			</navigator>
@@ -205,7 +210,7 @@
 				categories: [],
 				miaosha: {},
 				manjian: {},
-				description: '',
+				description: [],
 				zhekou: 0,
 				service: [],
 				amount: 1,
@@ -357,11 +362,19 @@
 				for (let field in item) {
 					this[field] = item[field];
 				}
-				if (this.description.trim() != '') {
+				if (this.description) {
 					let desMap = [];
-					this.description.split(';').map(ele => {
-						desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`);
-					});
+					if (this.description.indexOf(";") != -1) {
+						//图片字符串
+						this.description.split(';').map(ele => {
+							desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`);
+						});
+					} else {
+						//图片数组
+						this.description.map(ele => {
+							desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`);
+						})
+					}
 					this.description = desMap.join('');
 				}
 				if (item.video && item.video.url) {
@@ -387,7 +400,8 @@
 					item.skus.map(sku => {
 						let names = sku.name.split('&gt;');
 						names.map((n, i) => {
-							if (skuMap[i] && skuMap[i]['childName'] && skuMap[i]['childName'].indexOf(n) == -1) {
+							if (skuMap[i] && skuMap[i]['childName'] && skuMap[i]['childName'].indexOf(n) ==
+								-1) {
 								skuMap[i]['child'].push({
 									value: n,
 									//stock: sku.stock,//没有用
@@ -737,7 +751,8 @@
 						skuname['child'].forEach(n2 => {
 							let joinName = [clickName.value, n2.value].sort().join('&gt;');
 							//不存在组合或者库存不足
-							n2.disabled = this.nameHash.indexOf(joinName) == -1 || this.nameMap[joinName].stock < 1;
+							n2.disabled = this.nameHash.indexOf(joinName) == -1 || this.nameMap[joinName]
+								.stock < 1;
 						});
 					}
 				});
