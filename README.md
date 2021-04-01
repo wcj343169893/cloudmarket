@@ -21,10 +21,10 @@
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/b7db532d-e16f-4f1f-923b-f4cb8322afdf.png?x-oss-process=image/resize,m_fill,w_200,h_200)  
 ![良田拾度](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/0268e6df-5db8-4e15-b263-d0dabefb12ff.png?x-oss-process=image/resize,m_fill,w_200,h_200)
 ### pc后台
-[后台地址](http://xbb.cqsort.com/admin/)  
+[http://xbb.cqsort.com/admin/](http://xbb.cqsort.com/admin/)  
 测试账户：shop_manager  
 测试密码：123456  
-需要源码请联系群主  
+已经完全开源，详见后台插件-[商城后台管理系统](https://ext.dcloud.net.cn/plugin?id=4400)  
 
 ### 咨询与售后
 * 交流QQ群：298724327  
@@ -37,7 +37,12 @@
 
 
 ## 安装使用 (详见[产品手册](https://www.yuque.com/books/share/24ba8cf0-212e-4cbd-9f02-f322d2ddbb58))
-
+### 微信小程序安装教程：  
+https://v.qq.com/x/page/n3224rpjd2w.html  
+https://v.qq.com/x/page/t3224pz1q7g.html  
+### pc后台安装教程：  
+https://v.qq.com/x/page/l3234qid9pf.html  
+https://v.qq.com/x/page/i3235gxkkpz.html  
 ### 系统图标
 用了3个ttf图标文件，用[百度字体编辑器](http://fontstore.baidu.com/static/editor/index.html)可以查看和编辑字体，用法  
 ```<text class="yticon icon-dingwei"></text>```  
