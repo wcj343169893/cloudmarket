@@ -1,4 +1,5 @@
 /unpackage
 GPUCache
-node_modules
 /.hbuilderx
+node_modules
+!/node_modules
