@@ -79,7 +79,9 @@ const actions = {
 		//如果订单强制切换通知module，则这里优先，正常情况下不需要切换
 		data.module = order.module || module;
 		//生成支付id，每个outTradeNo不同，固定长度30位，精确到毫秒
-		order.outTradeNo = [(new Date()).getTime(), crypto.createHash("md5").update(data.uid).digest("hex").substring(0, 17)]
+		order.outTradeNo = [(new Date()).getTime(), crypto.createHash("md5").update(data.uid).digest("hex")
+				.substring(0, 17)
+			]
 			.join("");
 		//更新支付id
 		let res = await orders[data.module].updateOutTradeNo(order);
@@ -196,7 +198,7 @@ const actions = {
 					if (cash.user.wx_openid["app-plus"]) {
 						//app平台微信openid
 						openid = cash.user.wx_openid["app-plus"];
-					} else if (cash.wx_openid["mp-weixin"]) {
+					} else if (cash.user.wx_openid["mp-weixin"]) {
 						//微信小程序平台openid
 						openid = cash.user.wx_openid["mp-weixin"];
 						platform = "mp-weixin";
