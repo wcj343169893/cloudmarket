@@ -476,8 +476,8 @@
 				mapDistance(fromLng.join(';'), this.shop.latitude + ',' + this.shop.longitude).then(res => {
 					console.log("mapDistance", res)
 					//收货地址与店铺地址的距离
-					let juli = Number(res.rows[0].elements[0].distance);
-					let zitiJuli = Number(res.rows[1].elements[0].distance);
+					let juli = Number(res[0].elements[0].distance);
+					let zitiJuli = Number(res[1].elements[0].distance);
 					if (juli > 0) {
 						this.juli = juli;
 						console.log('距离：', this.juli);
@@ -489,9 +489,9 @@
 					if (zitiJuli > 0) {
 						this.zitiJuli = zitiJuli;
 					}
-					if (res.rows.length > 2) {
+					if (res.length > 2) {
 						//自提点距离
-						this.zitiPointJuli = Number(res.rows[2].elements[0].distance);
+						this.zitiPointJuli = Number(res[2].elements[0].distance);
 					}
 				});
 			},

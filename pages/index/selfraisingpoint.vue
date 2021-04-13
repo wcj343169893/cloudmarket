@@ -151,7 +151,6 @@
 						this.location.longitude
 					].join(","))
 					.then(res1 => {
-						res1 = res1.rows;
 						if (this.raisingPoint._id) {
 							this.selectedAddress[0].juli = Number(res1[index].elements[0].distance);
 							index++;

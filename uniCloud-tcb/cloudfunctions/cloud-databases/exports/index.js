@@ -130,7 +130,9 @@ const models = {
 						address,
 						created
 					} = usr.member;
-					result.push([usr.id, name, idcard, mobile, address, created ? getDate(created) : getDate()]);
+					result.push([usr.id, name, idcard, mobile, address, created ? getDate(created) :
+						getDate()
+					]);
 				}
 			});
 			if (res.data.length < limit) {
@@ -199,13 +201,15 @@ const models = {
 				isRefundAll: cmd.exists(false)
 			},
 			result = [];
-		let title = ["订单号", "每日编号", "商品数量", "姓名", "电话", "提货时间", "时段", "提货码", "提货密码", "订单状态", "总金额", "商品ID", "商品标题", "商品规格",
+		let title = ["订单号", "每日编号", "商品数量", "姓名", "电话", "提货时间", "时段", "提货码", "提货密码", "订单状态", "总金额", "商品ID",
+			"商品标题", "商品规格",
 			"商品价格", "商品数量",
 			"UPC"
 		];
 		result.push(title);
 		for (let i = 0; i < 100; i++) {
-			const res = await ordersCollection.where(condition).skip((page - 1) * limit).limit(limit).orderBy("id", "asc").get();
+			const res = await ordersCollection.where(condition).skip((page - 1) * limit).limit(limit).orderBy(
+				"id", "asc").get();
 			if (res.data.length == 0) {
 				break;
 			}
@@ -213,9 +217,11 @@ const models = {
 				if (!order.refundAmount) {
 					order.refundAmount = 0;
 				}
-				let base = [order.id, order.dayIndex, order.cartCount - order.refundAmount, order.selfRaising.name, order.selfRaising
+				let base = [order.id, order.dayIndex, order.cartCount - order.refundAmount, order
+					.selfRaising.name, order.selfRaising
 					.mobile,
-					getDate(order.deliveryHour.id), order.deliveryHour.time, order.deliveryHour.number, order.deliveryHour.password,
+					getDate(order.deliveryHour.id), order.deliveryHour.time, order.deliveryHour
+					.number, order.deliveryHour.password,
 					order.state, order.totalMoney
 				];
 				let baseLength = base.length;
@@ -276,7 +282,14 @@ const models = {
 				body: buffer.toString('base64')
 			}
 		}
-		return false;
+		return {
+			mpserverlessComposedResponse: true, // 使用阿里云返回集成响应是需要此字段为true
+			statusCode: 200,
+			headers: {
+				'content-type': 'text/html',
+			},
+			body: "暂无内容"
+		};
 	},
 	getUserStateCondition() {
 		const {

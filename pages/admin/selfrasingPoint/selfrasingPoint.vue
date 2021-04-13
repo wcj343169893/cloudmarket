@@ -8,7 +8,8 @@
 					<view class="content">
 						<view class="text-black">
 							<text>{{ item.name }}</text>
-							<text class="margin-left-sm" v-if="item.mobile" @click.stop="tel(item.mobile)">{{item.mobile}}</text>
+							<text class="margin-left-sm" v-if="item.mobile"
+								@click.stop="tel(item.mobile)">{{item.mobile}}</text>
 							<block v-if="item.commission">
 								<text class="margin-left-sm">佣金</text>
 								<text class="price">{{item.commission | toFixed}}</text>
@@ -19,7 +20,8 @@
 							<view class="text-desc">
 								<text class="cuIcon-addressbook margin-right-xs"></text>
 								<text>{{ item.address }}</text>
-								<text class="margin-left-sm text-sm text-gray" v-if="item.juli">{{item.juli | formatDistance}}</text>
+								<text class="margin-left-sm text-sm text-gray"
+									v-if="item.juli">{{item.juli | formatDistance}}</text>
 							</view>
 						</view>
 					</view>
@@ -27,22 +29,22 @@
 				<view class="buttons">
 					<button v-if="!item.state" class="cu-btn bg-red sm " @click="approved(item,index)">审核通过</button>
 					<block v-else>
-						<button class="cu-btn bg-red sm " @click="approved(item,index)"><text>分成比例</text><text class="margin-left-xxs text-white"
-							 v-if="item.rate">{{item.rate}}%</text></button>
-						<button class="cu-btn bg-olive sm " @click="download(item,index,1)"><text>待发货</text><text class="margin-left-xxs text-white"
-							 v-if="item.rate">{{item.payup}}</text></button>
-						<button class="cu-btn bg-cyan sm " @click="download(item,index,2)"><text>已发货</text><text class="margin-left-xxs text-white"
-							 v-if="item.rate">{{item.delivered}}</text></button>
-						<button class="cu-btn bg-orange sm " @click="delivery(item,index)"><text>一键发货</text><text class="margin-left-xxs text-white"
-							 v-if="item.rate">{{item.payup}}</text></button>
+						<button class="cu-btn bg-red sm " @click="approved(item,index)"><text>分成比例</text><text
+								class="margin-left-xxs text-white" v-if="item.rate">{{item.rate}}%</text></button>
+						<button class="cu-btn bg-olive sm " @click="download(item,index,1)"><text>待发货</text><text
+								class="margin-left-xxs text-white" v-if="item.rate">{{item.payup}}</text></button>
+						<button class="cu-btn bg-cyan sm " @click="download(item,index,2)"><text>已发货</text><text
+								class="margin-left-xxs text-white" v-if="item.rate">{{item.delivered}}</text></button>
+						<button class="cu-btn bg-orange sm " @click="delivery(item,index)"><text>一键发货</text><text
+								class="margin-left-xxs text-white" v-if="item.rate">{{item.payup}}</text></button>
 					</block>
 				</view>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
 		<uni-popup ref="ratePopup" type="dialog">
-			<uni-popup-dialog mode="input" title="设置分成比例" placeholder="请输入分成比例" type="input" message="成功消息" :duration="2000"
-			 @confirm="confirmRatePopup"></uni-popup-dialog>
+			<uni-popup-dialog mode="input" title="设置分成比例" placeholder="请输入分成比例" type="input" message="成功消息"
+				:duration="2000" @confirm="confirmRatePopup"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -98,17 +100,17 @@
 					res.map(addr => {
 						fromLats.push([addr.latitude, addr.longitude].join(","))
 					})
-					//计算与店铺的距离
-					mapDistance(fromLats.join(";"), [info.latitude,
+					//计算与店铺的距离,需要申请很高的配额
+					/* mapDistance(fromLats.join(";"), [info.latitude,
 							info.longitude
 						].join(","))
 						.then(res1 => {
 							res.forEach((addr, index) => {
 								addr.juli = Number(res1.rows[index].elements[0].distance)
 							})
-							this.dataList = this.dataList.concat(res);
-							this.loaded = true;
-						})
+						}) */
+					this.dataList = this.dataList.concat(res);
+					this.loaded = true;
 					if (res.length < this.limit) {
 						this.loadingType = 'noMore';
 					}

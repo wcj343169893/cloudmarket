@@ -969,10 +969,11 @@ const mapDistance = function(fromLatlng, toLatlng) {
 			},
 			success: (res) => {
 				console.log(res)
-				if (!res.data || !res.data.result) {
-					reject();
+				if (res.data && res.data.result && res.data.result.rows) {
+					resolve(res.data.result.rows);
+					return;
 				}
-				resolve(res.data.result.rows);
+				reject();
 			},
 			fail: (err) => {
 				console.log(err)
