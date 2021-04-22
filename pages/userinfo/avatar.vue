@@ -44,7 +44,7 @@
 		 */
 		data() {
 			return {
-				imageSrc: 'https://img-cdn-qiniu.dcloud.net.cn/demo_crop.jpg',
+				imageSrc: '',
 				isShowImg: false,
 				SCREEN_WIDTH: 0,
 				SCREEN_HEIGHT: 0,

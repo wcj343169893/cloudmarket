@@ -261,6 +261,7 @@ export default {
 			return {
 				title,
 				imageUrl,
+				query: query.join('&'),
 				path: path + "?" + query.join('&')
 			};
 		}

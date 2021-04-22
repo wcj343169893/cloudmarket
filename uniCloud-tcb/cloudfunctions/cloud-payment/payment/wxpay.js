@@ -17,10 +17,13 @@ const models = {
 		});
 		uniPayIns.paths["mmpaymkttransfers"] = "/mmpaymkttransfers/promotion/transfers"
 		//https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers
+		let publicParams = uniPayIns._getPublicParams();
 		const requestOptions = {
 			...data,
 			check_name: "NO_CHECK",
-			...uniPayIns._getPublicParams()
+			mch_appid: publicParams.appid, //商户账号appid字段名不同
+			mchid: publicParams.mchId, //微信支付分配的商户号
+			nonce_str:publicParams.nonceStr
 		}
 		console.log("requestOptions", requestOptions)
 		try {
