@@ -48,7 +48,10 @@ exports.main = async (event, context) => {
 		return event;
 	}
 	//token检查,全部都需要
-	let payload = await uniID.checkToken(uniIdToken);
+	let payload = await uniID.checkToken(uniIdToken, {
+		needPermission: true,
+		needUserInfo: true,
+	});
 	let tokenData = {};
 	if (payload.code && payload.code > 0) {
 		return {
@@ -57,7 +60,7 @@ exports.main = async (event, context) => {
 			data: payload
 		}
 	}
-	if (!payload.role.includes('admin')) {
+	if (!payload.role || (!payload.role.includes('admin') && !payload.role.includes('shop_manager'))) {
 		if (!payload.permission.includes([module, action].join("/"))) {
 			return {
 				code: 403,
