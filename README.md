@@ -16,7 +16,6 @@
 ### 更多案例...
 
 ![臻品超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/08446f47-6a2e-448d-9362-539dc259ef2a.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![我要吃](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/2b8c70f3-120b-451c-81b5-8ee188f50b9b.png?x-oss-process=image/resize,m_fill,w_200,h_200)
 ![逸乐优选](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/40cc50a9-6595-4351-81a8-9db941c2f766.png?x-oss-process=image/resize,m_fill,w_200,h_200)
 ![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/b7db532d-e16f-4f1f-923b-f4cb8322afdf.png?x-oss-process=image/resize,m_fill,w_200,h_200)  
 ![良田拾度](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/0268e6df-5db8-4e15-b263-d0dabefb12ff.png?x-oss-process=image/resize,m_fill,w_200,h_200)

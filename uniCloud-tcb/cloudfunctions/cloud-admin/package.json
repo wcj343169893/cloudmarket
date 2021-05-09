@@ -3,8 +3,7 @@
 		"memorySize": 256,
 		"path": "",
 		"timeout": 20,
-		"triggers": [
-		]
+		"triggers": []
 	},
 	"description": "",
 	"main": "index.js",

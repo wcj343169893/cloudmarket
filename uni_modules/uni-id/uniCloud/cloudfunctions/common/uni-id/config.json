@@ -38,7 +38,7 @@
 	},
 	"service": {
 		"sms": {
-			"name": "»·»ªø∆ºº",
+			"name": "",
 			"codeExpiresIn": 180,
 			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
 			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"
