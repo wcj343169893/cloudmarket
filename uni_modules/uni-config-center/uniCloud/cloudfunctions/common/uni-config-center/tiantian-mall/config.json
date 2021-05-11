@@ -1,0 +1,182 @@
+{
+	"domain": "http://api.cjblog.org",
+	"notify-floder": "/http/mall/payment/notify",
+	"tokenSecret": "4e50313a45f5fbe0",
+	"app-plus": {
+		"payment": {
+			"alipay": {
+				"uniPay": "initAlipay",
+				"name": "支付宝",
+				"payName": "支付宝支付",
+				"appId": "201916540934089",
+				"mchId": "15295677371",
+				"privateKey": "MIIEvgIBADANBgkqhki",
+				"alipayPublicKey": "MIIBIjANBgkqhkiG"
+			},
+			"wxpay": {
+				"uniPay": "initWeixin",
+				"name": "微信",
+				"payName": "微信支付",
+				"appId": "weixin appid",
+				"mchId": "15295677371",
+				"key": "f750595974cd90718a452242",
+				"pfx": ""
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
+			}
+		},
+		"oauth": {
+			"univerify": {
+				"apiKey": "7f43c6e10ad5fa66376180376be23f2a",
+				"apiSecret": "c2837fdc9b4ca9c31d340b99d14a12da"
+			}
+		}
+	},
+	"mp-weixin": {
+		"payment": {
+			"wxpay": {
+				"uniPay": "initWeixin",
+				"name": "微信",
+				"payName": "微信支付",
+				"appId": "wxcfb12cd3b92a58ed",
+				"mchId": "1605159056",
+				"sub_appid": false,
+				"sub_mch_id": false,
+				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
+				"pfx": "1604863346_20210304_cert.p12"
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
+			}
+		}
+	},
+	"mp-alipay": {
+		"payment": {
+			"alipay": {
+				"uniPay": "initAlipay",
+				"name": "支付宝",
+				"payName": "支付宝支付",
+				"appId": "alipay appid",
+				"mchId": "15295677371",
+				"privateKey": "alipay privateKey",
+				"alipayPublicKey": "alipay publicKey"
+			},
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额",
+				"payName": "余额支付"
+			}
+		}
+	},
+	"h5": {
+		"payment": {
+			"balance": {
+				"uniPay": "initBalance",
+				"name": "余额",
+				"payName": "余额支付"
+			},
+			"delivery": {
+				"uniPay": "initDelivery",
+				"name": "货到付款"
+			}
+		}
+	},
+	"service": {
+		"sms": {
+			"templateId": {
+				"login": "10190"
+			}
+		}
+	},
+	"push": {
+		"default": {
+			"appId": "N5wQHWUKnv8POOTCnGtFU8",
+			"appkey": "t318VmJI2p84991gl61VY4",
+			"appSecret": "wF9SqqDvk3ANRMoMtrbPm1",
+			"mastersecret": "udzQP1wLwWAQEeozJgYZ15",
+			"packageName": "com.gengyun"
+		}
+	},
+	"templates": {
+		"payment": {
+			"error": "支付方式错误",
+			"notExist": "支付方式不存在",
+			"refundSuccessContent": "退款将退回至您的{payName}账户，请注意查收。",
+			"refundFailed": "{payName}退款失败",
+			"balance": "可用余额￥{balance}",
+			"balanceNotEnough": "余额不足",
+			"balanceNotEnoughNotice": "余额不足，请选择其他支付方式"
+		},
+		"order": {
+			"timeOut": "订单已超时",
+			"canceled": "订单已取消",
+			"paid": "订单已支付",
+			"notExist": "订单不存在",
+			"depositPaid": "已支付定金",
+			"depositBody": "定金：{body}",
+			"finalBody": "尾款：{body}",
+			"refundSuccess": "退款成功",
+			"refundSuccessCycle": "您的退款已受理完成，到账周期可查看退款明细。"
+		},
+		"system": {
+			"error": "系统错误，请联系店主",
+			"notfund": "暂无数据",
+			"success": "操作成功"
+		}
+	},
+	"delivery": {
+		"cantingbao": {
+			"key": "84Qrm9NwSCTVanyldcak9LJpX",
+			"secret": "XYEUJBWYBEBSVGV81832",
+			"product": false
+		}
+	},
+	"qqmap": {
+		"key": "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5",
+		"mode": "bicycling"
+	},
+	"user": {
+		"autoSetId": true
+	},
+	"email": {
+		"transport": {
+			"host": "smtp.163.com",
+			"port": 465,
+			"secure": true,
+			"auth": {
+				"user": "xxxxxxx@163.com",
+				"pass": "OKGJ123456RBPTE"
+			}
+		},
+		"send": {
+			"from": "管理员 <xxxxxxx@163.com>",
+			"to": "343169893@qq.com"
+		}
+	},
+	"apiToken": "DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570F",
+	"express": {
+		"api": "kuai100",
+		"key": "NpwhbOgw8996",
+		"customer": "27076142710A847DD9D03B5FE27019C3",
+		"secret": "8b264a40de8543dfae0e1f34c11b646b",
+		"userid": "33ef8693e61641b0b3e41eb7389a986d",
+		"partnerId": "",
+		"partnerKey": "",
+		"tempid": "",
+		"siid": "",
+		"expires": 21600
+	}
+}
