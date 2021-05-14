@@ -8,14 +8,10 @@
 				</view>
 				<view class="info-box">
 					<!-- #ifdef MP-WEIXIN -->
-					<view class="username" v-if="userInfo.isSetNickname" @click="navTo('/pages/userinfo/userinfo')">
+					<view class="username" @click="navToUserInfo">
 						<text>{{ userInfo.nickname }}</text>
 						<text class="account" v-if="userInfo.id && !enableVipCard">（{{userInfo.id}}）</text>
 					</view>
-					<button class="username" v-else open-type="getUserInfo" @getuserinfo="mpWxGetUserInfo">
-						<text>{{ userInfo.nickname }}</text>
-						<text class="account" v-if="userInfo.id && !enableVipCard">（{{userInfo.id}}）</text>
-					</button>
 					<!-- #endif -->
 					<!-- #ifndef MP-WEIXIN -->
 					<view class="username" @click="navTo('/pages/userinfo/userinfo')">
@@ -210,6 +206,7 @@
 		getGoodsVisites,
 		getUserStatistics,
 		saveUserInfo,
+		cloudUser
 	} from '@/common/request.js';
 	import {
 		navToGoodsItemPage
@@ -519,6 +516,27 @@
 				uni.navigateTo({
 					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
 				})
+			},
+			navToUserInfo(){
+				if(this.userInfo.isSetNickname){
+					this.navTo('/pages/userinfo/userinfo')
+				}else{
+					//没有授权，必须获取用户信息，新接口，需要判断一下
+					wx.getUserProfile({
+						desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+						success: (res) => {
+							console.log("wx.getUserProfile res", res)
+							cloudUser("info", "saveByMpWeixin", {
+								userInfo: res.userInfo
+							}, true).then(res => {
+								//更新成功，修改本地用户信息
+								this.$store.dispatch('getUserInfo');
+							}, err => {
+								//更新失败
+							})
+						}
+					})
+				}
 			},
 			navToShopHome(item) {
 				item.shopFixedId = item.id;

@@ -1,26 +1,30 @@
 {
-	"passwordSecret": "passwordSecret-demo",
-	"tokenSecret": "tokenSecret-demo",
-	"tokenExpiresIn": 7200,
-	"tokenExpiresThreshold": 600,
+	"passwordSecret": "58d0605d96a11d2b62430",
+	"tokenSecret": "4e50313a45f5fbe0",
+	"tokenExpiresIn": 2592000,
+	"tokenExpiresThreshold": 86400,
 	"passwordErrorLimit": 6,
+	"bindTokenToDevice": true,
 	"passwordErrorRetryTime": 3600,
-	"autoSetInviteCode": false,
+	"autoSetInviteCode": true,
 	"forceInviteCode": false,
 	"app-plus": {
 		"tokenExpiresIn": 2592000,
 		"oauth" : {
 			"weixin" : {
-				"appid" : "weixin appid",
-				"appsecret" : "weixin appsecret"
+				"appid" : "wx59ded2343a9d2e42",
+				"appsecret" : "fdf6d98cb931eebe9d28665e4d76acb2"
+			},
+			"apple":	{
+				"bundleId": "your APP bundleId"
 			}
 		}
 	},
 	"mp-weixin": {
 		"oauth" : {
 			"weixin" : {
-				"appid" : "weixin appid",
-				"appsecret" : "weixin appsecret"
+				"appid": "wx59ded2343a9d2e42",
+				"appsecret": "fdf6d98cb931eebe9d28665e4d76acb2"
 			}
 		}
 	},
@@ -34,10 +38,15 @@
 	},
 	"service": {
 		"sms": {
-			"name": "DCloud",
-			"codeExpiresIn": 300,
-			"smsKey": "your sms key",
-			"smsSecret": "your sms secret"
+			"name": "",
+			"codeExpiresIn": 180,
+			"smsKey": "343d50c784e50313a45f5fbe062f78a3",
+			"smsSecret": "1f8d5cf9f06265b32a92c8483e52038e"
+		},
+		"univerify": {
+			"appid":"your appid",
+			"apiKey": "your apiKey",
+			"apiSecret": "your apiSecret"
 		}
 	}
 }
