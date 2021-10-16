@@ -1,6 +1,4 @@
-// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
 {
-	"name": "",
 	"bsonType": "object",
 	"required": [],
 	"permission": {
@@ -14,10 +12,17 @@
 			"description": "ID，系统自动生成"
 		},
 		"day": {
-			"bsonType": "string"
+			"bsonType": "string",
+			"title": "日期",
+			"description": "20201103"
+		},
+		"total": {
+			"bsonType": "int",
+			"title": "总销量"
 		},
 		"goods": {
-			"bsonType": "array"
+			"bsonType": "object",
+			"title": "商品-销量"
 		}
 	}
 }

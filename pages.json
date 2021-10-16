@@ -804,12 +804,12 @@
 				"selectedIconPath": "static/tab-cate-current.png",
 				"text": "分类"
 			},
-			{
+			/* {
 				"pagePath": "pages/index/video",
 				"iconPath": "static/tab-play.png",
 				"selectedIconPath": "static/tab-play-current.png",
 				"text": "有妖气"
-			},
+			}, */
 			{
 				"pagePath": "pages/index/cart",
 				"iconPath": "static/tab-cart.png",

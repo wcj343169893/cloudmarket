@@ -1,0 +1,96 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"operater": {
+			"bsonType": "string",
+			"title": "操作员",
+			"description": "操作员",
+			"foreignKey": "uni-id-users._id"
+		},
+		"content": {
+			"bsonType": "string",
+			"title": "内容"
+		},
+		"reply": {
+			"bsonType": "string",
+			"title": "回复",
+			"componentForEdit": {
+				"name": "uni-easyinput",
+				"props": {
+					"type": "textarea"
+				}
+			}
+		},
+		"goods_id": {
+			"bsonType": "string",
+			"title": "商品",
+			"foreignKey": "cloud_goods._id",
+			"enum": {
+				"collection": "cloud_goods",
+				"field": "title as text, _id as value"
+			}
+		},
+		"index": {
+			"bsonType": "int",
+			"title": "索引"
+		},
+		"order_id": {
+			"bsonType": "string",
+			"title": "订单id"
+		},
+		"shopid": {
+			"bsonType": "int",
+			"title": "店铺",
+			"description": "商品店铺",
+			"foreignKey": "cloud_shops.id",
+			"enum": {
+				"collection": "cloud_shops",
+				"field": "name as text, id as value"
+			}
+		},
+		"state": {
+			"bsonType": "int",
+			"title": "是否显示"
+		},
+		"star": {
+			"bsonType": "int",
+			"title": "评分"
+		},
+		"starResult": {
+			"bsonType": "string",
+			"title": "评分内容"
+		},
+		"tags": {
+			"bsonType": "array",
+			"title": "标签"
+		},
+		"user": {
+			"bsonType": "object",
+			"title": "用户信息"
+		}
+	}
+}

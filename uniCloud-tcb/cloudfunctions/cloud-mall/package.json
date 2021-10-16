@@ -23,6 +23,6 @@
 		"printers": "file:../common/printers",
 		"push": "file:../common/push",
 		"uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
-		"unipay": "file:../common/unipay"
+		"uni-pay": "file:../../../uni_modules/uni-pay/uniCloud/cloudfunctions/common/uni-pay"
 	}
 }

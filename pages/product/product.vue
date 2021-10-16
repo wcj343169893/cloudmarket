@@ -364,7 +364,7 @@
 				}
 				if (this.description) {
 					let desMap = [];
-					if (this.description.indexOf(";") != -1) {
+					if (typeof this.description =="string") {
 						//图片字符串
 						this.description.split(';').map(ele => {
 							desMap.push(`<img src="${ele}" style="width:100%;display:block;"/>`);

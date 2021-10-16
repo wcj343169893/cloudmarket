@@ -1,18 +1,20 @@
 {
-	"name": "push",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"dependencies": {
-		"base-common": "file:../base-common",
-		"configs": "file:../configs",
-		"uni-id": "file:../../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
+	"name" : "push",
+	"version" : "1.0.0",
+	"description" : "",
+	"main" : "index.js",
+	"dependencies" : 
+	{
+		"base-common" : "file:../base-common",
+		"configs" : "file:../configs",
+		"uni-id" : "file:../../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
 	},
-	"devDependencies": {},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+	"devDependencies" : {},
+	"scripts" : 
+	{
+		"test" : "echo \"Error: no test specified\" && exit 1"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+	"keywords" : [],
+	"author" : "",
+	"license" : "ISC"
 }

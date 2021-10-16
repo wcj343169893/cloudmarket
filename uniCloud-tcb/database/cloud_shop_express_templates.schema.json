@@ -1,0 +1,67 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"name": "快递运费模板",
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "模板名称"
+		},
+		"type": {
+			"bsonType": "string",
+			"title": "计算类型",
+			"defaultValue": "amount",
+			"enum": [{
+				"text": "数量",
+				"value": "amount"
+			}, {
+				"text": "重量",
+				"value": "weight"
+			}]
+		},
+		"configs": {
+			"bsonType": "array",
+			"title": "详细配置",
+			"properties": {
+				"isDefault": {
+					"bsonType": "bool",
+					"title": "是否默认"
+				},
+				"firstMoney": {
+					"bsonType": "double",
+					"title": "首费"
+				},
+				"firstAmount": {
+					"bsonType": "double",
+					"title": "首件"
+				},
+				"perAmount": {
+					"bsonType": "double",
+					"title": "续件"
+				},
+				"perMoney": {
+					"bsonType": "double",
+					"title": "续费"
+				},
+				"region": {
+					"bsonType": "array",
+					"title": "地区"
+				}
+			}
+		},
+		"status": {
+			"bsonType": "bool",
+			"title": "是否启用"
+		}
+	}
+}

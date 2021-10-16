@@ -70,10 +70,6 @@
 			"title": "子标题",
 			"defaultValue": ""
 		},
-		"categories": {
-			"bsonType": "array",
-			"title": "分类"
-		},
 		"price": {
 			"bsonType": "double",
 			"title": "销售价格",
@@ -88,6 +84,10 @@
 			"bsonType": "int",
 			"title": "月售量",
 			"defaultValue": 0
+		},
+		"categories": {
+			"bsonType": "array",
+			"title": "分类"
 		},
 		"shopid": {
 			"bsonType": "int",
@@ -114,6 +114,19 @@
 			"title": "限购数量",
 			"description": "0不限制",
 			"defaultValue": 0
+		},
+		"isCategoryShow": {
+			"bsonType": "int",
+			"title": "分类是否显示",
+			"description": "0 下架 1 在售",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "下架",
+				"value": 0
+			}, {
+				"text": "在售",
+				"value": 1
+			}]
 		},
 		"isSold": {
 			"bsonType": "int",
@@ -230,6 +243,10 @@
 			"bsonType": "string",
 			"title": "条码"
 		},
+		"offlineTime": {
+			"bsonType": "timestamp",
+			"title": "下线时间"
+		},
 		"imgs": {
 			"bsonType": "array",
 			"title": "轮播图",
@@ -240,6 +257,25 @@
 					"v-model": "formData.imgs",
 					":imageNumber": 8
 				}
+			}
+		},
+		"description": {
+			"bsonType": "array",
+			"title": "详情图",
+			"component": {
+				"name": "cloud-image",
+				"props": {
+					"name": "description",
+					"v-model": "formData.description",
+					":imageNumber": 10
+				}
+			}
+		},
+		"onlineTime": {
+			"bsonType": "timestamp",
+			"description": "上架时间",
+			"forceDefaultValue": {
+				"$env": "now"
 			}
 		}
 	}

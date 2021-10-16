@@ -151,7 +151,7 @@ const model = {
 			//店铺销量
 			shopSales.shops[order.shopid] = cmd.inc(order.cartCount * 1)
 			let dayTime = getDateString();
-			console.log("goods_day_sales",up)
+			console.log("goods_day_sales", up)
 			//商品销量
 			res = await goodsDaySalesCollection.where({
 				day: dayTime
@@ -208,16 +208,33 @@ const model = {
 		console.log("查询到商城退款记录", data.data.length);
 		return data.data;
 	},
+
+	/**
+	 * 退款失败
+	 * @param {Object} refund
+	 */
+	async refundFailed(refund, result) {
+		return orderRefundsCollection.doc(refund._id).update({
+			modified: Date.now(),
+			steps: cmd.unshift({
+				title: refund.message,
+				desc: result.result,
+				time: Date.now()
+			})
+		});
+	},
+
 	/**
 	 * 处理退款成功的订单
 	 */
-	async refundSuccess(refund) {
+	async refundSuccess(refund, result) {
 		let res = await orderRefundsCollection.doc(refund._id).update({
 			refundStatus: "successed",
 			modified: Date.now(),
 			steps: cmd.unshift({
 				title: getStringFormat("order.refundSuccess"),
-				desc: refund.message,
+				desc: result.message,
+				result: result.result,
 				time: Date.now()
 			})
 		});

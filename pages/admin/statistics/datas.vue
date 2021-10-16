@@ -1,11 +1,11 @@
 <template>
 	<view class="container">
-		<view class="menu">
+		<!-- <view class="menu">
 			<view v-for="(item,index) in menus" :key="index" class="item" :class="{'checked':item.checked}">
 				<text>{{item.name}}</text>
 			</view>
-		</view>
-		<overviewPage v-if="menus[0].checked"></overviewPage>
+		</view> -->
+		<overviewPage></overviewPage>
 	</view>
 </template>
 
@@ -49,12 +49,15 @@
 </script>
 
 <style lang="scss" scoped>
-	page,.container{
+	page,
+	.container {
 		background-color: $background-color;
 	}
-	.container{
+
+	.container {
 		padding: 20rpx 0 0;
 	}
+
 	.menu {
 		padding: 0 $page-row-spacing 20rpx;
 		display: flex;

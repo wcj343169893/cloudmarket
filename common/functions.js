@@ -955,7 +955,7 @@ const mapDistance = function(fromLatlng, toLatlng) {
 			if (res.status) {
 				reject();
 			}
-			resolve(res.result);
+			resolve(res.result.rows);
 		})
 		return;
 		//#endif

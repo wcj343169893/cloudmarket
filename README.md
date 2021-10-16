@@ -1,12 +1,13 @@
 ## 云上商城 
-云上商城，是以综合支付及信息服务为服务理念，结合社交元素，为中小企业销售和营销提供全生命周期管理的SAAS商城系统。商户只需进行简单的配置，即可以最低成本快速搭建专属小程序、App、H5。满足实体店铺营销推广需求，抢占线上流量，并为消费者提供良好的购物体验，最终增强商户品牌知名度和客户粘性。
+云上商城是结合uniapp+unicloud+uni-id前后端一体的多商户电商系统，支持发布成APP、h5、小程序，系统根据用户当前定位或者收货地址，匹配最近的一个店铺，为用户提供最方便的服务，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。
+
 
 ### 支持行业
-• 新零售  
 • 社区团购  
 • 国际电商  
 • 生鲜电商  
-• 连锁便利店  
+• 连锁便利店、餐饮店  
+
 
 ### 体验商城前端+移动端后台
 [点此进入app发行页面](https://m3w.cn/xbb)，体验h5，app，微信小程序，包含移动端管理  
@@ -14,10 +15,11 @@
 ![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg) 
 
 ### 更多案例...
-
+![这有米小程序](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3fbab731-e993-47e6-882f-a74e444709a3/f6ce02f9-de81-4c78-b5b1-e30e1ef6f3dc.png?x-oss-process=image/resize,m_fill,w_200,h_200)
+![惠民](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3fbab731-e993-47e6-882f-a74e444709a3/b782fca8-ebaa-4082-8d83-69b599e3f495.png?x-oss-process=image/resize,m_fill,w_200,h_200)
+![大牛家政](https://7463-tcb-mkgeroyc82b684-1d3xg5a2a923f-1304205492.tcb.qcloud.la/image/23.png?imageMogr2/crop/200x200/gravity/center)  
 ![臻品超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/08446f47-6a2e-448d-9362-539dc259ef2a.png?x-oss-process=image/resize,m_fill,w_200,h_200)
 ![逸乐优选](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/40cc50a9-6595-4351-81a8-9db941c2f766.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![万德福超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/b7db532d-e16f-4f1f-923b-f4cb8322afdf.png?x-oss-process=image/resize,m_fill,w_200,h_200)  
 ![良田拾度](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/0268e6df-5db8-4e15-b263-d0dabefb12ff.png?x-oss-process=image/resize,m_fill,w_200,h_200)
 ### pc后台
 [http://xbb.cqsort.com/admin/](http://xbb.cqsort.com/admin/)  
@@ -36,6 +38,9 @@
 
 
 ## 安装使用 (详见[产品手册](https://www.yuque.com/books/share/24ba8cf0-212e-4cbd-9f02-f322d2ddbb58))
+### 需要安装扩展
+h5跨域访问：npm install vue-jsonp，如果无法安装，可以下载[此文件](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/572a63bb-8a90-4249-a209-5af4aa6a15a3.rar)，node_modules解压到项目根目录，![如图](https://7463-tcb-mkgeroyc82b684-1d3xg5a2a923f-1304205492.tcb.qcloud.la/image/QQ截图20210907175754.png)  
+
 ### 微信小程序安装教程：  
 https://v.qq.com/x/page/n3224rpjd2w.html  
 https://v.qq.com/x/page/t3224pz1q7g.html  

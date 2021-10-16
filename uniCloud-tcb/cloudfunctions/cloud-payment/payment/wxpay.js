@@ -27,6 +27,37 @@ const models = {
 		}
 		console.log("requestOptions", requestOptions)
 		try {
+			//简易版XML转Object，只可在微信支付时使用，不支持嵌套
+			uniPayIns.parseXML = function(xml) {
+				const xmlReg = /<(?:xml|root).*?>([\s|\S]*)<\/(?:xml|root)>/
+				const str = xmlReg.exec(xml)[1]
+				const obj = {}
+				const nodeReg = /<(.*?)>(?:<!\[CDATA\[){0,1}(.*?)(?:\]\]>){0,1}<\/.*?>/g
+				let matches = null
+				// eslint-disable-next-line no-cond-assign
+				while ((matches = nodeReg.exec(str))) {
+					obj[matches[1]] = matches[2]
+				}
+				return obj
+			}
+			//格式化
+			uniPayIns._parse = function(xml, apiName, signType) {
+				const json = this.parseXML(xml)
+				console.log("json", json)
+				if (json.return_code === 'FAIL') throw new Error(`${json.return_msg}`)
+				if (apiName !== 'getSandboxKey') {
+					if (json.mch_appid !== this.options.appId) throw new Error('appId不匹配')
+					if (json.mchid !== this.options.mchId) throw new Error('mchId不匹配')
+					// 特殊处理appId
+					json.app_id = json.mch_appid
+					delete json.mch_appid
+				}
+			
+				if (json.result_code === 'FAIL') {
+					throw new Error(`${json.err_code} ${json.err_code_des}`)
+				}
+				return this._normalizeResult(json, apiName)
+			}
 			//必须验证证书
 			const result = await uniPayIns._requestWxpay(requestOptions, 'mmpaymkttransfers', true);
 			console.log(result)

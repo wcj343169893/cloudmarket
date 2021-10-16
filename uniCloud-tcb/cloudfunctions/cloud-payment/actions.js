@@ -164,10 +164,11 @@ const actions = {
 					}, event, context);
 					console.log("支付端口退款成功", order._id, res);
 					//退款处理成功
-					if (res !== false) {
-						order.message = res;
-						res = await orders[model].refundSuccess(order);
-						console.log("订单端口处理结果", res);
+					if (res.code == 0) {
+						let res2 = await orders[model].refundSuccess(order, res);
+						console.log("订单端口处理结果", res2);
+					} else {
+						await orders[model].refundFailed(order, res);
 					}
 				}
 			} else {

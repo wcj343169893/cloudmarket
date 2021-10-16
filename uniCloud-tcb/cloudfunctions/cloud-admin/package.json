@@ -13,6 +13,6 @@
 		"base-common": "file:../common/base-common",
 		"configs": "file:../common/configs",
 		"printers": "file:../common/printers",
-		"uni-id": "file:../common/uni-id"
+		"uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
 	}
 }

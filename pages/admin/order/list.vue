@@ -67,15 +67,14 @@
 			<!-- 未付款 -->
 			<view class="action-box b-t" v-if="item.state == 0">
 				<button class="action-btn warning" @click.stop="editOrderMoney(item)">改价格</button>
-				<button class="action-btn recom" @click.stop="sendPayMessage(item, index)">发送付款提醒</button>
+				<!-- <button class="action-btn recom" @click.stop="sendPayMessage(item, index)">发送付款提醒</button> -->
 			</view>
 			<!-- 已付款 -->
 			<block v-if="item.state == 1">
 				<view class="action-box b-t">
 					<button class="action-btn recom" v-if="item.isCanDelivery"
 						@click.stop="addDelivery(item,index)">确定发货</button>
-					<button class="action-btn recom"
-						@click.stop="addExpress(item,index)">录入单号</button>
+					<button class="action-btn recom" @click.stop="addExpress(item,index)">录入单号</button>
 				</view>
 			</block>
 			<!-- 已发货 -->
@@ -83,8 +82,7 @@
 				<view class="action-box b-t">
 					<button class="action-btn recom" v-if="item.deliveryType == 'selfRaising'"
 						@click.stop="selftakeOrder(item,index)">确定提货</button>
-					<button class="action-btn recom"
-						@click.stop="addExpress(item,index)">录入单号</button>
+					<button class="action-btn recom" @click.stop="addExpress(item,index)">录入单号</button>
 				</view>
 			</block>
 
@@ -99,6 +97,10 @@
 				<expressInput @canceled="closeExpressPopup" @comfirm="comfirmExpress"></expressInput>
 			</view>
 		</uni-popup>
+		<uni-popup ref="totalMoneyPopup" type="dialog">
+			<uni-popup-dialog mode="input" title="设置新价格" placeholder="设置新价格" type="input" message="成功消息"
+				:duration="2000" @confirm="confirmTotalMoneyPopup"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -111,8 +113,14 @@
 		checkDeliveryHour
 	} from '@/common/functions.js';
 	import searchMixin from '../mixin/search.js'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
 		mixins: [searchMixin],
+		components: {
+			uniPopup,
+			uniPopupDialog
+		},
 		data() {
 			return {
 				formData: {},
@@ -187,7 +195,8 @@
 			},
 			//修改订单价格
 			editOrderMoney(item) {
-
+				this.formData = item;
+				this.$refs.totalMoneyPopup.open()
 			},
 			//发送支付提醒
 			sendPayMessage() {},
@@ -259,6 +268,22 @@
 				this.page = 0;
 				this.orderList = [];
 				this.loadData();
+			},
+			confirmTotalMoneyPopup(done, val) {
+				done()
+				if (val < 0) {
+					return false;
+				}
+				orderAdmin("changePrice", {
+					_id: this.formData._id,
+					money: val * 1,
+					shopid: this.formData.shopid
+				}, true).then(res => {
+					uni.showToast({
+						title: '修改价格成功'
+					})
+					this.refreshList();
+				})
 			}
 		}
 	};

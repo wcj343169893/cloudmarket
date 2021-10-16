@@ -183,7 +183,7 @@
 				<block v-else>
 					<view class="weui-flex">
 						<text class="">商品金额</text>
-						<text class="price">{{ info.totalMoney + info.totalDiscount  | toFixed}}</text>
+						<text class="price">{{ info.goodsTotalMoney  | toFixed}}</text>
 					</view>
 				</block>
 				<view class="weui-flex">

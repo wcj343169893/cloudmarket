@@ -334,6 +334,18 @@
 		"printers": {
 			"bsonType": "array",
 			"title": "打印机"
+		},
+		"categories": {
+			"bsonType": "array",
+			"title": "店铺分类"
+		},
+		"serviceArea": {
+			"bsonType": "array",
+			"title": "服务范围"
+		},
+		"operator": {
+			"bsonType": "string",
+			"title": "后台操作人"
 		}
 	}
 }

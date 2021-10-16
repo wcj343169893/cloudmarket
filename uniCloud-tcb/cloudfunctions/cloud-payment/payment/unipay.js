@@ -3,7 +3,7 @@
  * 插件市场导入
  * https://github.com/dcloudio/uniCloud-server-plugin/tree/master/src/entry/uni-pay
  */
-const uniPay = require('unipay');
+const uniPay = require('uni-pay');
 const {
 	getPaymentConfig,
 	getPaymentNotifyUrl,
@@ -101,6 +101,9 @@ const models = {
 		console.log(order)
 		delete order.payInfo;
 		delete order.uid;
+		let message = "";
+		let result = "";
+		let code = 0;
 		let config = getPaymentConfig(payInfo.platform, payInfo.type, true);
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		let payName = payInfo.typeName || payInfo.name;
@@ -112,19 +115,27 @@ const models = {
 			}
 		}
 		try {
-			let res = await uniPayIns.refund(order);
-			console.log("unipay refund", JSON.stringify(res));
+			result = await uniPayIns.refund(order);
+			console.log("unipay refund", result);
 			//return `退款将退回至您的${payname}账户，请注意查收`;
-			return getStringFormat("payment.refundSuccessContent", {
+			message = getStringFormat("payment.refundSuccessContent", {
 				payName
 			});
+			result = JSON.parse(result);
 		} catch (e) {
 			console.log("unipay refund 退款失败");
-			console.log(JSON.stringify(e))
+			console.log(e.message);
+			result = e.message;
+			code = -1;
 		}
-		return getStringFormat("payment.refundFailed", {
+		message = getStringFormat("payment.refundFailed", {
 			payName
 		});
+		return {
+			message,
+			result,
+			code
+		}
 	},
 	/**
 	 * 获取支付信息

@@ -1,13 +1,20 @@
 <template>
 	<view class="container bg-white">
 		<mix-list-avatar title="头像" field="src" :defContent="src"></mix-list-avatar>
-		<mix-list-input title="名称" :defContent="name" field="name" placeholder="请输入名称" @change="changeField"></mix-list-input>
-		<mix-list-input title="电话" type="number" :defContent="mobile" field="mobile" placeholder="请输入电话" @blur="changeField"></mix-list-input>
+		<mix-list-input title="名称" :defContent="name" field="name" placeholder="请输入名称" @change="changeField">
+		</mix-list-input>
+		<mix-list-input title="电话" type="number" :defContent="mobile" field="mobile" placeholder="请输入电话"
+			@blur="changeField"></mix-list-input>
 		<mix-list-input title="地址" type="text" textAlign="content-right light" field="address" :defContent="address"
-		 placeholder="选择详细地址" :disabled="!0" :withLocation="!0" @change="changeAddress"></mix-list-input>
-		<mix-list-avatar title="门头照" :needCut="false" field="head" size="lg" :defContent="head" @change="changeField"></mix-list-avatar>
-		<mix-list-avatar title="内部照" :needCut="false" field="inside" size="lg" :defContent="inside" @change="changeField"></mix-list-avatar>
-		<button class="fixed-add-btn" @click="save">提交申请</button>
+			placeholder="选择详细地址" :disabled="!0" :withLocation="!0" @change="changeAddress"></mix-list-input>
+		<mix-list-avatar title="门头照" :needCut="false" field="head" size="lg" :defContent="head" @change="changeField">
+		</mix-list-avatar>
+		<mix-list-avatar title="内部照" :needCut="false" field="inside" size="lg" :defContent="inside"
+			@change="changeField"></mix-list-avatar>
+		<button class="fixed-add-btn" @click="save" v-if="state==0">提交申请</button>
+		<view class="cover" v-if="state==1">
+			
+		</view>
 	</view>
 </template>
 
@@ -22,6 +29,7 @@
 				address: "",
 				latitude: 0,
 				longitude: 0,
+				state: 0,
 				mobile: "",
 				name: "",
 				src: "",
@@ -85,5 +93,11 @@
 </script>
 
 <style lang="scss">
-
+.cover{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+}
 </style>

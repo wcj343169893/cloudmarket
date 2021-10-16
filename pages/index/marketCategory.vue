@@ -5,10 +5,11 @@
 		<!-- 顶部栏 -->
 		<page-header :showFillView="true" :showLocationView="false"></page-header>
 		<!-- #endif -->
-		<view class="main-category-panel-all" :class="{show:isShowCategoryPanelPre}" @click="closeCategoryPanel()" v-if="isShowCategoryPanel">
+		<view class="main-category-panel-all" :class="{show:isShowCategoryPanelPre}" @click="closeCategoryPanel()"
+			v-if="isShowCategoryPanel">
 			<view class="main-categories" :style="{top: categoryPanelHeight}">
-				<view v-for="(item, index) in categories" :key="index" @click.stop="changeMainCategory(item, index)" class="item"
-				 :class="{ current: item.id == mainCurrentId }" :style="{
+				<view v-for="(item, index) in categories" :key="index" @click.stop="changeMainCategory(item, index)"
+					class="item" :class="{ current: item.id == mainCurrentId }" :style="{
 							width: cateWidth
 						}">
 					<image :src="item.src | thumbImg('80x80')" mode="aspectFill"></image>
@@ -27,10 +28,9 @@
 				}">
 				<scroll-view scroll-with-animation scroll-x class="main-categories" :style="{
 						height: cateScorllHeight
-					}"
-				 :scroll-left="categoryScrollLeft">
-					<view v-for="(item, index) in categories" :key="index" @click="changeMainCategory(item, index)" class="item"
-					 :class="{ current: item.id == mainCurrentId }" :style="{
+					}" :scroll-left="categoryScrollLeft">
+					<view v-for="(item, index) in categories" :key="index" @click="changeMainCategory(item, index)"
+						class="item" :class="{ current: item.id == mainCurrentId }" :style="{
 							width: cateWidth
 						}">
 						<image :src="item.src | thumbImg('80x80')" mode="aspectFill"></image>
@@ -44,14 +44,18 @@
 					}" @click="openCategoryPanel()">
 					<text>全</text>
 					<text>部</text>
-					<text class="yticon" :class="{'icon-xia':!isShowCategoryPanel,'icon-shang':isShowCategoryPanel}"></text>
+					<text class="yticon"
+						:class="{'icon-xia':!isShowCategoryPanel,'icon-shang':isShowCategoryPanel}"></text>
 				</view>
 			</view>
-			<view class="content">
+			<view class="content" :style="{
+					height: goodsHeight
+				}">
 				<scroll-view scroll-with-animation scroll-y class="left-aside" :scroll-top="categoryScrollTop">
 					<view class="left-aside-content">
-						<view v-for="(item, index) in categoryList" :key="index" class="f-item " :class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId ,'b-b':index<categoryList.length-1}"
-						 @click="changeSubCategory(item, index)">
+						<view v-for="(item, index) in categoryList" :key="index" class="f-item "
+							:class="{ active: item.id === currentId, before: item.id === currentBeforeId, after: item.id === currentAfterId ,'b-b':index<categoryList.length-1}"
+							@click="changeSubCategory(item, index)">
 							<text>{{ item.name }}</text>
 						</view>
 						<view class="space" :class="{ after: currentAfterId == 0 }"></view>
@@ -60,8 +64,9 @@
 				<scroll-view scroll-with-animation scroll-y class="right-aside" @scrolltolower="goodsScorllEvent">
 					<view class="sort-bar b-b">
 						<text class="sort-bar-name">{{currentItem.name}}</text>
-						<view class="sort-bar-item center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
-						 :key="index" @click="changeSort(item)">
+						<view class="sort-bar-item center"
+							:class="{active: item.current, last: index === sortList.length-1}"
+							v-for="(item,index) in sortList" :key="index" @click="changeSort(item)">
 							<text>{{ item.name }}</text>
 							<view v-if="item.children.length>1" class="icon-wrap">
 								<text class="yticon icon-shang" :class="{active: item.children[0].current}"></text>
@@ -71,10 +76,12 @@
 					</view>
 					<view class="sort-bar-empty"></view>
 					<view class="loading_empty" v-if="goodsList.length === 0"></view>
-					<view v-for="(item, index) in goodsList" :key="index" class="goodsList" @click="navToGoodsPage(item)">
+					<view v-for="(item, index) in goodsList" :key="index" class="goodsList"
+						@click="navToGoodsPage(item)">
 						<view class="weui-flex">
 							<view class="image-wrapper">
-								<image :src="item.src | thumbImg('120x120')" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+								<image :src="item.src | thumbImg('120x120')" mode="aspectFill" lazy-load="true"
+									@load="imageOnLoad(item)"></image>
 							</view>
 							<view class="desc weui-flex__item">
 								<view class="">
@@ -88,21 +95,25 @@
 									<text class="m-l">好评度{{ item.score * 100 }}%</text>
 								</view>
 								<view class="tags">
-									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag" :class="[tag.type]">{{ tag.text }}</text>
+									<text v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag"
+										:class="[tag.type]">{{ tag.text }}</text>
 								</view>
 								<view class="buttons">
 									<view>
 										<text class="price">{{ item.price }}</text>
-										<text class="price del m-l" v-if="item.originPrice > 0">{{ item.originPrice }}</text>
+										<text class="price del m-l"
+											v-if="item.originPrice > 0">{{ item.originPrice }}</text>
 									</view>
-									<view class="sku_button" v-if="item.yuding || !item.isCanAddToCart"><text class="sku_btn">查看</text></view>
+									<view class="sku_button" v-if="item.yuding || !item.isCanAddToCart"><text
+											class="sku_btn">查看</text></view>
 									<view class="sku_button" v-else-if="item.hasSku">
 										<text class="sub_number" v-if="item.cart > 0">{{ item.cart }}</text>
 										<text class="sku_btn" @click.stop="openSkus(item)">选规格</text>
 									</view>
 									<view class="sku_button" v-else>
 										<text class="sub_number gouwuche" v-if="item.cart > 0">{{ item.cart }}</text>
-										<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(item, 0)"></text>
+										<text class="sku_btn yticon icon-gouwuche_"
+											@click.stop="saveCartAmount(item, 0)"></text>
 									</view>
 								</view>
 							</view>
@@ -134,8 +145,9 @@
 						<text>{{ item.name }}</text>
 					</view>
 					<view class="skuoptions">
-						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item" :class="{ active: item.active == index2, disabled: sname.disabled }"
-						 @click="selectSku(index, index2)">
+						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item"
+							:class="{ active: item.active == index2, disabled: sname.disabled }"
+							@click="selectSku(index, index2)">
 							<text>{{ sname.value }}</text>
 						</view>
 					</view>
@@ -146,10 +158,12 @@
 				<view class="sku_prices_buttons">
 					<view class="sku_prices_buttons__price ">
 						<text class="price">{{ skuGoods.showPrice }}</text>
-						<text class="price del m-l" v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
+						<text class="price del m-l"
+							v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
 					</view>
 					<view class="sku_prices_buttons__btn">
-						<text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(skuGoods, skuGoods.selectedSkuId)"></text>
+						<text class="sku_btn yticon icon-gouwuche_"
+							@click.stop="saveCartAmount(skuGoods, skuGoods.selectedSkuId)"></text>
 					</view>
 				</view>
 			</view>
@@ -205,7 +219,7 @@
 					contentrefresh: "正在加载...",
 					contentnomore: "到底了，看看别的分类吧"
 				},
-				isOpenCategoryOne: false,
+				isOpenCategoryOne: true,
 				sortList: [{
 						name: '销量',
 						children: [{
@@ -295,6 +309,10 @@
 			cateHeight() {
 				return uni.upx2px(this.categoryHeight) + 'px';
 			},
+			goodsHeight() {
+				return (this.systemInfo.safeArea.height - this.systemInfo.statusBarHeight - this.systemInfo
+					.navigationBarHeight - uni.upx2px(this.categoryHeight)) + 'px';
+			},
 			cateScorllHeight() {
 				return uni.upx2px(this.categoryHeight + 30) + 'px';
 			},
@@ -304,8 +322,8 @@
 			contentHeight() {
 				let height = '';
 				//#ifdef MP
-				height = this.systemInfo.windowHeight - this.systemInfo.statusBarHeight - this.systemInfo.navigationBarHeight +
-					'px';
+				height = (this.systemInfo.safeArea.height - this.systemInfo.statusBarHeight - this.systemInfo
+					.navigationBarHeight) + 'px';
 				//#endif
 				return height;
 			}
@@ -499,12 +517,14 @@
 							let key = ele.id + '_' + sku.id;
 							let cartI = 0;
 							//多规格购物车数量统计
-							ele['cart'] += this.skuCart[ele.id][sku.id] = this.cartMap[key] ? parseInt(this.cartMap[key]) : 0;
+							ele['cart'] += this.skuCart[ele.id][sku.id] = this.cartMap[key] ? parseInt(this
+								.cartMap[key]) : 0;
 						});
 					} else {
 						let key = ele.id + '_0';
 						//单品购物车数量
-						ele['cart'] = this.skuCart[ele.id][0] = this.cartMap[key] ? parseInt(this.cartMap[key]) : 0;
+						ele['cart'] = this.skuCart[ele.id][0] = this.cartMap[key] ? parseInt(this.cartMap[key]) :
+							0;
 					}
 				});
 				//console.log(this.goodsList);
@@ -630,7 +650,8 @@
 						if (ind != index) {
 							let joinName = [clickName.value, n2.value].sort().join('&gt;');
 							//不存在组合或者库存不足
-							n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock < 1;
+							n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock <
+								1;
 						}
 					});
 				});
@@ -692,8 +713,9 @@
 						this.isShowCategoryPanelPre = true;
 						this.categoryPanelHeight = this.cateHeight;
 						//#ifdef MP
-						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo.navigationBarHeight + uni.upx2px(
-							this.categoryHeight)) + "px";
+						this.categoryPanelHeight = (this.systemInfo.statusBarHeight + this.systemInfo
+							.navigationBarHeight + uni.upx2px(
+								this.categoryHeight)) + "px";
 						//#endif
 					}, 50);
 				}
@@ -752,6 +774,7 @@
 	.content {
 		height: 80%;
 	}
+
 	/* #endif */
 
 	.left-aside {
@@ -1159,6 +1182,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		flex: 1;
 
 		.main-category-panel {
 			display: flex;
