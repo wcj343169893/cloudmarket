@@ -253,7 +253,7 @@
 			"title": "创建者",
 			"description": "",
 			"foreignKey": "uni-id-users._id",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "uid"
 			}
 		},
@@ -267,7 +267,7 @@
 		"modified": {
 			"bsonType": "timestamp",
 			"description": "修改时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		},

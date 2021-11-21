@@ -21,7 +21,7 @@
 		"modified": {
 			"bsonType": "timestamp",
 			"description": "修改时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		},
@@ -30,7 +30,7 @@
 			"title": "操作员",
 			"description": "操作员",
 			"foreignKey": "uni-id-users._id",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "uid"
 			}
 		},
@@ -274,7 +274,7 @@
 		"onlineTime": {
 			"bsonType": "timestamp",
 			"description": "上架时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		}

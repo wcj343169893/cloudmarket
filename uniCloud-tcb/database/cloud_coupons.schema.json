@@ -135,7 +135,7 @@
 		"modified": {
 			"bsonType": "timestamp",
 			"description": "修改时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		},
