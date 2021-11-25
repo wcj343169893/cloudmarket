@@ -8,6 +8,7 @@ const cmd = db.command;
 const mustLoginActions = {
 	imports: ["*"],
 	setsync: ["*"],
+	miaomaiyun: ["*"],
 }
 const {
 	getConfig
@@ -24,6 +25,7 @@ exports.main = async (event, context) => {
 		Type,
 		timingTriggerConfig
 	} = event;
+	console.log(event)
 	//报表定时器
 	if (Type == "Timer" || timingTriggerConfig) {
 		console.log("定时器", event);
@@ -56,8 +58,9 @@ exports.main = async (event, context) => {
 	if (!module || !action) {
 		return false;
 	}
-	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
-			action))) {
+	if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module]
+			.includes(
+				action))) {
 		let {
 			token
 		} = data;

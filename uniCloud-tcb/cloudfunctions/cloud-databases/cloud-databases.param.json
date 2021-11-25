@@ -3,24 +3,26 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "setsync",
+	"module": "miaomaiyun",
 	"action": "goods",
 	"data": {
 		"token": "DQEBAQUAA4GNADCBiQKBgQCINOLJ1Tv2um/q570F",
 		"module": 123457,
-		"id": "2fd465895fafc49500b4c1e063f2e69f",
 		"data": [{
-				"upc": "7790070411716",
-				"title": "GALLO ORO ARROZ 1KG",
-				"price": 163,
-				"stock": 4
-			},
-			{
-				"upc": "7791200200552",
-				"title": "APERTIVO VERMOUTH CINZANO ROSSO 1LT",
-				"price": 246.99,
-				"stock": 16
-			}
-		]
+			"category_id": 1000002,
+			"category_name": "分类测试",
+			"goods_title": "测试商品",
+			"if_spec": "1",
+			"barcode_id": "1234",
+			"goods_id": 123456,
+			"original_price": 58,
+			"price": 50,
+			"sale_num": 500,
+			"month_sales": 5000,
+			"detial": "http://cdn.cjblog.org/b2878202007231148311028.png;http://cdn.cjblog.org/b2878202007231148311028.png;http://cdn.cjblog.org/b2878202007231148311028.png",
+			"imgs": [
+				"http://cdn.cjblog.org/b2878202007231148311028.png"
+			]
+		}]
 	}
 }
