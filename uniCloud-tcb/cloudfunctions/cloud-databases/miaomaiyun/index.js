@@ -38,8 +38,11 @@ const models = {
 					_id: id,
 					id: cate.id
 				}
+				outData.push(`新增${doc.id}`)
+			} else {
+				outData.push(`更新${doc.id}`)
 			}
-			outData.push(doc.id)
+
 		}
 		return outData;
 	},
@@ -53,6 +56,7 @@ const models = {
 		if (module) {
 			this.shopid = +module;
 		}
+		let outData = []
 		//2级分类
 		for (let i = 0; i < data.length; i++) {
 			let oldCate = data[i];
@@ -76,16 +80,22 @@ const models = {
 					_id: id,
 					id: cate.id
 				}
+				outData.push(`新增${doc.id}`)
+			} else {
+				outData.push(`更新${doc.id}`)
 			}
 			if (oldCate.childs && oldCate.childs.length > 0) {
-				await this.category({
+				let subData = await this.category({
 					data: oldCate.childs,
 					parent_id: doc._id,
 					pid: doc.id
 				})
+				if (subData.length > 0) {
+					outData = outData.concat(subData)
+				}
 			}
 		}
-		return true;
+		return outData;
 	},
 	formatCategory(cate, index, parent_id, pid) {
 		let data = {
@@ -115,9 +125,8 @@ const models = {
 			"autoOffTime": false,
 			"banner": "",
 			"modified": Date.now(),
-			"guarantee_period": "",
 			"categories": [{
-				"id": goods.category_id,
+				"id": +goods.category_id,
 				"isShow": 1,
 				"name": goods.category_name
 			}, ],
@@ -129,7 +138,6 @@ const models = {
 			"isSold": 1,
 			"limit": 0,
 			"manufacture": "",
-			"net_weight": "",
 			"onlySelfTake": 0,
 			"posid": 0,
 			"rate": 1,
@@ -137,33 +145,38 @@ const models = {
 			"score": 1,
 			"share": "",
 			"specsType": "single",
-			"src": goods.imgs ? goods.imgs[0] : "",
 			"stock": 99999999,
-			"storage_condition": "",
 			"subTitle": "",
 			"visite": 1
 		}
 		let fieldMap = {
 			barcode_id: "upc",
 			goods_title: "title",
-			detial: "description",
-			imgs: "imgs",
+			goods_tare: "net_weight",
+			shelf_life: "guarantee_period",
+			keeps: "storage_condition",
+			// detial: "description",
+			// imgs: "imgs",
+
+			img_url: "src"
 		}
 		let numberFieldMap = {
-			original_price: "originPrice",
-			price: "price",
+			retail_price: "originPrice",
+			trade_price: "price",
 			goods_id: "id",
 			sale_num: "stock",
 			month_sales: "monthlySale",
 		}
 		for (let key in fieldMap) {
-			if (fieldMap[key]) {
+			if (goods[key]) {
 				data[fieldMap[key]] = goods[key]
 			}
 		}
 		for (let key in numberFieldMap) {
-			if (numberFieldMap[key]) {
+			if (goods[key]) {
 				data[numberFieldMap[key]] = +goods[key]
+			} else {
+				data[numberFieldMap[key]] = 0
 			}
 		}
 		return data;
