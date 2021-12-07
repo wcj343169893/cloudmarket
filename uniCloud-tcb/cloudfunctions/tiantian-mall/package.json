@@ -1,0 +1,32 @@
+{
+	"name": "tiantian-user",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"cloudfunction-config": {
+		"memorySize": 256,
+		"path": "/http/mall",
+		"timeout": 200,
+		"triggers": [
+			{
+				"config": "18 1 * * * * *",
+				"name": "refund",
+				"type": "timer"
+			}
+		]
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"crypto": "^1.0.1",
+		"md5-node": "^1.0.1",
+		"uni-cloud-router": "file:../../../uni_modules/uni-cloud-router/uniCloud/cloudfunctions/common/uni-cloud-router",
+		"uni-config-center": "file:../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+		"uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
+		"uni-pay": "file:../../../uni_modules/uni-pay/uniCloud/cloudfunctions/common/uni-pay"
+	}
+}

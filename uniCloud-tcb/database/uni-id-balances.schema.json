@@ -1,0 +1,44 @@
+{
+	"bsonType": "object",
+	"required": ["user_id", "amount", "balance"],
+	"permission": {
+		"read": true,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"user_id": {
+			"bsonType": "string",
+			"description": "用户id，参考uni-id-users表"
+		},
+		"amount": {
+			"bsonType": "int",
+			"description": "本次变化的金额"
+		},
+		"type": {
+			"bsonType": "int",
+			"enum": [1, 2],
+			"description": "类型 1:收入 2:支出"
+		},
+		"balance": {
+			"bsonType": "int",
+			"description": "变化后的余额"
+		},
+		"comment": {
+			"bsonType": "string",
+			"description": "备注，说明新增、消费的缘由",
+			"trim": "both"
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

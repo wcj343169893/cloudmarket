@@ -1,0 +1,359 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"address": {
+			"bsonType": "string",
+			"title": "地址",
+			"description": "店铺详细地址"
+		},
+		"addressName": {
+			"bsonType": "string",
+			"title": "地址简称",
+			"description": "店铺地址简称，例如：鸿升大厦"
+		},
+		"banner": {
+			"bsonType": "string",
+			"title": "banner",
+			"description": ""
+		},
+		"currency": {
+			"bsonType": "string",
+			"title": "币种",
+			"description": "",
+			"defaultValue": "cny",
+			"enum": [{
+				"text": "￥人民币",
+				"value": "cny"
+			}, {
+				"text": "A$澳币",
+				"value": "aud"
+			}, {
+				"text": "美金",
+				"value": "usd"
+			}, {
+				"text": "C$加拿大元",
+				"value": "cad"
+			}, {
+				"text": "€欧元",
+				"value": "eur"
+			}, {
+				"text": "£英镑",
+				"value": "gbp"
+			}, {
+				"text": "NZ$新西兰元",
+				"value": "nzd"
+			}, {
+				"text": "JP¥日元",
+				"value": "jpy"
+			}, {
+				"text": "₩韩元",
+				"value": "krw"
+			}]
+		},
+		"delivery": {
+			"bsonType": "object",
+			"title": "配送方式",
+			"properties": {
+				"deliveryDay": {
+					"bsonType": "int",
+					"title": "最多可预订天数",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"deliveryPeriod": {
+					"bsonType": "array",
+					"title": "每日预定时段",
+					"properties": {
+						"begin": {
+							"bsonType": "int",
+							"title": "开始秒数"
+						},
+						"end": {
+							"bsonType": "int",
+							"title": "结束秒数"
+						}
+					}
+				},
+				"freeMoney": {
+					"bsonType": "int",
+					"title": "满金额免运费",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"maxDistance": {
+					"bsonType": "int",
+					"title": "最远服务里程km",
+					"minimum": 1,
+					"maximum": 1000
+				},
+				"minDistance": {
+					"bsonType": "int",
+					"title": "服务里程",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"minPrice": {
+					"bsonType": "int",
+					"title": "起送金额",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"money": {
+					"bsonType": "double",
+					"title": "不满起送金额运费",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"perMoney": {
+					"bsonType": "double",
+					"title": "超里程费",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"time": {
+					"bsonType": "int",
+					"title": "预计送达时间",
+					"minimum": 1,
+					"maximum": 100
+				},
+				"timeStep": {
+					"bsonType": "string",
+					"title": "时段步长",
+					"defaultValue": "1800",
+					"enum": [{
+						"text": "半小时",
+						"value": "1800"
+					}, {
+						"text": "1小时",
+						"value": "3600"
+					}]
+				}
+			}
+		},
+		"deliveryTypes": {
+			"bsonType": "array",
+			"title": "配送方式",
+			"defaultValue": "deliveryHome",
+			"enum": [{
+				"text": "配送到家",
+				"value": "deliveryHome"
+			}, {
+				"text": "到店\/自提点自提",
+				"value": "selfRaising"
+			}]
+		},
+		"exchangeRate": {
+			"bsonType": "double",
+			"title": "汇率",
+			"defaultValue": 1
+		},
+		"goodsCommentTags": {
+			"bsonType": "array",
+			"title": "商品评论标签"
+		},
+		"id": {
+			"bsonType": "int",
+			"title": "店铺编号",
+			"description": "创建自动生成"
+		},
+		"isPrint": {
+			"bsonType": "bool",
+			"title": "是否开启打印",
+			"description": ""
+		},
+		"latitude": {
+			"bsonType": "double",
+			"title": "维度",
+			"description": ""
+		},
+		"longitude": {
+			"bsonType": "double",
+			"title": "经度",
+			"description": ""
+		},
+		"lnglat": {
+			"bsonType": "object",
+			"title": "位置",
+			"description": ""
+		},
+		"monthSale": {
+			"bsonType": "int",
+			"title": "月售",
+			"description": "近30天销售"
+		},
+		"name": {
+			"bsonType": "string",
+			"title": "店铺名称",
+			"description": ""
+		},
+		"notice": {
+			"bsonType": "string",
+			"title": "店铺公告",
+			"description": ""
+		},
+		"online": {
+			"bsonType": "bool",
+			"title": "支付营业",
+			"description": ""
+		},
+		"phone": {
+			"bsonType": "string",
+			"title": "联系电话",
+			"description": ""
+		},
+		"score": {
+			"bsonType": "double",
+			"title": "评分",
+			"description": ""
+		},
+		"searchGoodsKeywords": {
+			"bsonType": "array",
+			"title": "商品搜索词"
+		},
+		"selfRaising": {
+			"bsonType": "object",
+			"title": "自提点",
+			"properties": {
+				"point": {
+					"bsonType": "bool",
+					"title": "开启自提点",
+					"description": "",
+					"defaultValue": false
+				},
+				"distance": {
+					"bsonType": "int",
+					"title": "覆盖半径",
+					"description": "覆盖半径",
+					"defaultValue": 5000
+				}
+			}
+		},
+		"serviceTime": {
+			"bsonType": "string",
+			"title": "服务时间",
+			"description": ""
+		},
+		"src": {
+			"bsonType": "string",
+			"title": "店铺logo",
+			"description": ""
+		},
+		"uid": {
+			"bsonType": "string",
+			"title": "创建者",
+			"description": "",
+			"foreignKey": "uni-id-users._id",
+			"defaultValue": {
+				"$env": "uid"
+			}
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"description": "上传时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"modified": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"selfRaisingPoint": {
+			"bsonType": "bool",
+			"title": "自提点"
+		},
+		"state": {
+			"bsonType": "bool",
+			"title": "是否启用"
+		},
+		"video": {
+			"bsonType": "bool",
+			"title": "是否启用视频"
+		},
+		"dayStatisticsLog": {
+			"bsonType": "string",
+			"title": "统计日期"
+		},
+		"deliverySupportType": {
+			"bsonType": "int",
+			"title": "配送支持类型"
+		},
+		"lastPayTimeMinute": {
+			"bsonType": "int",
+			"title": "支付等待时长（分）"
+		},
+		"hasManjian": {
+			"bsonType": "int",
+			"title": "是否满减"
+		},
+		"stationId": {
+			"bsonType": "int",
+			"title": "分站id"
+		},
+		"perCapita": {
+			"bsonType": "double",
+			"title": "人均消费"
+		},
+		"coupons": {
+			"bsonType": "object",
+			"title": "优惠券"
+		},
+		"goods": {
+			"bsonType": "object",
+			"title": "商品统计"
+		},
+		"order": {
+			"bsonType": "object",
+			"title": "订单统计"
+		},
+		"pages": {
+			"bsonType": "object",
+			"title": "页面配置"
+		},
+		"addressObject": {
+			"bsonType": "object",
+			"title": "地址完整信息"
+		},
+		"manjians": {
+			"bsonType": "array",
+			"title": "满减信息"
+		},
+		"printers": {
+			"bsonType": "array",
+			"title": "打印机"
+		},
+		"categories": {
+			"bsonType": "array",
+			"title": "店铺分类"
+		},
+		"serviceArea": {
+			"bsonType": "array",
+			"title": "服务范围"
+		},
+		"operator": {
+			"bsonType": "string",
+			"title": "后台操作人"
+		},
+		"business_license": {
+			"bsonType": "string",
+			"title": "营业执照"
+		},
+		"food_license": {
+			"bsonType": "string",
+			"title": "食品经营许可"
+		}
+	}
+}
