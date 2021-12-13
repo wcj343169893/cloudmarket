@@ -90,13 +90,14 @@ const models = {
 	//信息统计
 	async statistics(data, context) {
 		let res = await getUserInfo(data.uid, ["id", "order", "nickname", "balance", "admin", "coupons",
-				"score", "count"
+				"score", "count", "mobile",
 			],
 			context.userInfo);
 		if (res.code > 0) {
 			return res;
 		}
 		let info = res.userInfo;
+		info.hasMobile = !!info.mobile;
 		//处理余额为2位小数
 		info.balance = info.balance ? info.balance.toFixed(2) * 1 : 0;
 		//免费开通会员最后期限
