@@ -46,7 +46,9 @@ const models = {
 			nickname: "游客",
 			gender: 3,
 			birthday: ""
-		}, res.userInfo)
+		}, res.userInfo, {
+			hasMobile: !!res.userInfo.mobile
+		})
 		return res.userInfo;
 	},
 	/**
