@@ -124,6 +124,34 @@
 						<text class="yticon icon-you"></text>
 					</view>
 				</view>
+				<view class="" v-if="shopApply && shopApply.length > 0">
+					<!-- 店铺申请列表 -->
+					<view class="title admin-shops">
+						<text>我的门店申请</text>
+					</view>
+					<view v-for="(item,index) in shopApply" :key="index" class="admin-shops b-b">
+						<image :src="item.src | thumbImg('120x120')" mode="aspectFill"
+							@click.stop="navToShopHome(item)">
+						</image>
+						<view class="right">
+							<view class="content">
+								<view class="title clamp">
+									<text>{{item.name}}({{item.id}})</text>
+								</view>
+								<view class="">
+									<text>电话：{{item.phone}}</text>
+								</view>
+								<view class="">
+									<text>{{item.addressName}}</text>
+								</view>
+							</view>
+							<text>审核中</text>
+						</view>
+					</view>
+				</view>
+				<view class="admin-shops flex justify-center" v-if="!admin || admin.length < 20">
+					<button class="cu-btn bg-green" @click="navTo('/pages/index/apply')">商家申请入驻</button>
+				</view>
 			</view>
 			<view class="admin-section" v-if="applyTuanZhang">
 				<block v-if="selfraising && selfraising.length > 0">
@@ -243,6 +271,7 @@
 					refund: 0
 				},
 				admin: [],
+				shopApply: [],
 				selfraising: false,
 				teamTips: "加入团队",
 				moving: false
@@ -348,6 +377,7 @@
 						//会员价格/年费
 						this.vipPrice = res.vipPrice;
 						this.admin = res.admin;
+						this.shopApply = res.shopApply;
 						this.buildUserInfo(res);
 						this.selfraising = res.selfraising;
 						if (res.order) {

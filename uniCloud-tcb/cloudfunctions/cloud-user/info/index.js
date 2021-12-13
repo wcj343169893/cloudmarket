@@ -10,6 +10,7 @@ const {
 	getUserConfig
 } = require('configs');
 const shopCollection = db.collection("cloud_shops");
+const shopApplyCollection = db.collection("cloud_shop_apply");
 const ordersCollection = db.collection("cloud_orders");
 const orderRefundsCollection = db.collection("cloud_order_refunds");
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
@@ -106,6 +107,8 @@ const models = {
 		info.vipPrice = 88;
 		//管理店铺
 		await this.getAdminShop(info);
+		//店铺申请
+		await this.getAdminShopApply(info);
 		//管理的提货点
 		await this.getAdminSelfRaisingPoint(info);
 		//我的订单统计
@@ -389,6 +392,20 @@ const models = {
 				info.admin.push(shop);
 			}
 		}
+	},
+	/**
+	 * 查询店铺入驻申请
+	 * @param {Object} info
+	 */
+	async getAdminShopApply(info) {
+		//查询申请入驻店铺
+		let {
+			data
+		} = await shopApplyCollection.where({
+			uid: info._id,
+			state: 1
+		}).orderBy("id", "desc").get();
+		info.shopApply = data;
 	},
 	async shops(data, context) {
 		const {

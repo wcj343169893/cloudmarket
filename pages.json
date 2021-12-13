@@ -69,38 +69,38 @@
 				"enablePullDownRefresh": true
 			}
 		}, {
-				"path": "pages/index/user",
-				"style": {
-					"enablePullDownRefresh": true,
-					"navigationBarTitleText": "我的",
-					// #ifdef MP
-					"navigationStyle": "custom",
-					// #endif
-					"app-plus": {
-						"bounce": "none",
-						"titleNView": {
-							"type": "transparent",
-							"buttons": [{
-									"fontSrc": "/static/yticon.ttf",
-									"text": "\ue60f",
-									"fontSize": "24",
-									"color": "#303133",
-									"width": "46px",
-									"background": "rgba(0,0,0,0)"
-								},
-								{
-									"fontSrc": "/static/yticon.ttf",
-									"text": "\ue744",
-									"fontSize": "28",
-									"color": "#303133",
-									"background": "rgba(0,0,0,0)",
-									"redDot": true
-								}
-							]
-						}
+			"path": "pages/index/user",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "我的",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60f",
+								"fontSize": "24",
+								"color": "#303133",
+								"width": "46px",
+								"background": "rgba(0,0,0,0)"
+							},
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue744",
+								"fontSize": "28",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"redDot": true
+							}
+						]
 					}
 				}
-			}, {
+			}
+		}, {
 			"path": "pages/public/login",
 			"style": {
 				"navigationBarTitleText": "登录/注册",
@@ -161,6 +161,13 @@
 			"style": {
 				"navigationBarTitleText": "通知"
 			}
+		}, {
+			"path": "pages/index/apply",
+			"style": {
+				"navigationBarTitleText": "申请入驻",
+				"enablePullDownRefresh": false
+			}
+
 		}, {
 			"path": "pages/index/category",
 			"style": {

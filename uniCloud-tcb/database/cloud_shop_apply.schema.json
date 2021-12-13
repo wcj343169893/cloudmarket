@@ -276,7 +276,8 @@
 			"title": "自提点"
 		},
 		"state": {
-			"bsonType": "bool",
+			"bsonType": "int",
+			"description": "状态类型,1审核中，2通过，3拒绝",
 			"title": "是否启用"
 		},
 		"video": {
