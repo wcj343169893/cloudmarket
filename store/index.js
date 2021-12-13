@@ -20,6 +20,7 @@ const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
 		token: '',
+		sessionKey: '',
 		stationId: 0, //分站id
 		shopFixedId: 0, //强制只访问这一个店铺
 		shopId: 0, //分站店铺id，根据收货地址动态设置
@@ -59,6 +60,8 @@ const store = new Vuex.Store({
 		},
 		login(state, provider) {
 			console.log("store login")
+			//微信小程序需要
+			state.sessionKey = provider.sessionKey
 			//state.userInfo = provider;
 			uni.setStorageSync('uniIdToken', provider.token);
 			uni.setStorageSync('uni_id_token', provider.token);

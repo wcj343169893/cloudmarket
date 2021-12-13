@@ -69,25 +69,29 @@
 				<text class="cell-more yticon icon-you"></text>
 			</view>
 			<view class="order-section">
-				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover"
+					:hover-stay-time="50">
 					<text class="yticon icon-daifukuan">
 						<text class="sub" v-if="order.unpaid > 0">{{ order.unpaid }}</text>
 					</text>
 					<text>待付款</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover"
+					:hover-stay-time="50">
 					<text class="yticon icon-yishouhuo">
 						<text class="sub" v-if="order.receive > 0">{{ order.receive }}</text>
 					</text>
 					<text>待收货</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover"
+					:hover-stay-time="50">
 					<text class="yticon icon-shouye">
 						<text class="sub" v-if="order.received > 0">{{ order.received }}</text>
 					</text>
 					<text>待评价</text>
 				</view>
-				<view class="order-item" @click="navTo('/pages/order/refund')" hover-class="common-hover" :hover-stay-time="50">
+				<view class="order-item" @click="navTo('/pages/order/refund')" hover-class="common-hover"
+					:hover-stay-time="50">
 					<text class="yticon icon-shouhoutuikuan">
 						<text class="sub" v-if="order.refund > 0">{{ order.refund }}</text>
 					</text>
@@ -100,7 +104,8 @@
 					<text>我的门店</text>
 				</view>
 				<view v-for="(item,index) in admin" :key="index" class="admin-shops b-b" @click="navToShopAdmin(item)">
-					<image :src="item.src | thumbImg('120x120')" mode="aspectFill" @click.stop="navToShopHome(item)"></image>
+					<image :src="item.src | thumbImg('120x120')" mode="aspectFill" @click.stop="navToShopHome(item)">
+					</image>
 					<view class="right">
 						<view class="content">
 							<view class="title clamp">
@@ -150,12 +155,17 @@
 					</view>
 				</view>
 				<view class="admin-shops flex justify-center" v-if="!admin || admin.length < 20">
-					<button class="cu-btn bg-green" @click="navTo('/pages/index/apply')">商家申请入驻</button>
+					<button v-if="isLogin && !userInfo.hasMobile" open-type="getPhoneNumber"
+						@getphonenumber="getPhoneNumber" class="cu-btn bg-green">
+						商家申请入驻
+					</button>
+					<button class="cu-btn bg-green" v-else @click="navTo('/pages/index/apply')">商家申请入驻</button>
 				</view>
 			</view>
 			<view class="admin-section" v-if="applyTuanZhang">
 				<block v-if="selfraising && selfraising.length > 0">
-					<view v-for="(item,index) in selfraising" :key="index" class="admin-shops b-b" @click="navToSelfRaisingAdmin(item)">
+					<view v-for="(item,index) in selfraising" :key="index" class="admin-shops b-b"
+						@click="navToSelfRaisingAdmin(item)">
 						<image :src="item.src | thumbImg('120x120')" mode="aspectFill"></image>
 						<view class="right">
 							<view class="content">
@@ -190,31 +200,38 @@
 					</view>
 					<scroll-view scroll-x class="h-list">
 						<view v-for="(item, index) in visiteGoodsList" :key="index" class="h-list-image">
-							<image :src="item.src | thumbImg('160x160')" @click="navToGoods(item)" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)"></image>
+							<image :src="item.src | thumbImg('160x160')" @click="navToGoods(item)" mode="aspectFill"
+								lazy-load="true" @load="imageOnLoad(item)"></image>
 						</view>
 					</scroll-view>
 				</block>
 				<!-- <mix-list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></mix-list-cell> -->
-				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="收货地址" @eventClick="navTo('/pages/address/address')"></mix-list-cell>
+				<mix-list-cell icon="icon-dizhi" iconColor="#5fcda2" title="收货地址"
+					@eventClick="navTo('/pages/address/address')"></mix-list-cell>
 				<!-- #ifdef MP -->
-				<mix-list-cell icon="taobaofont icon-share" openType="share" iconColor="#9789f7" title="邀请有礼" tips="邀请好友赢10万大礼"></mix-list-cell>
+				<mix-list-cell icon="taobaofont icon-share" openType="share" iconColor="#9789f7" title="邀请有礼"
+					tips="邀请好友赢10万大礼"></mix-list-cell>
 				<!-- #endif -->
 				<!-- <mix-list-cell icon="icon-tuandui" iconColor="#00aa00" title="团队" :tips="teamTips" @eventClick="joinTeam()"></mix-list-cell> -->
 				<mix-list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></mix-list-cell>
-				<mix-list-cell icon="icon-dianhua-copy" iconColor="#54b4ef" title="联系客服" @eventClick="navTo('/pages/docs/qa')"></mix-list-cell>
+				<mix-list-cell icon="icon-dianhua-copy" iconColor="#54b4ef" title="联系客服"
+					@eventClick="navTo('/pages/docs/qa')"></mix-list-cell>
 				<!-- #ifndef MP -->
 				<!-- 小程序不需要退出登录，更新，缓存等 -->
-				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" @eventClick="navTo('/pages/set/set')"></mix-list-cell>
+				<mix-list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" @eventClick="navTo('/pages/set/set')">
+				</mix-list-cell>
 				<!-- #endif -->
 				<block v-if="userInfo.role">
-					<mix-list-cell v-if="userInfo.role.indexOf('admin') != -1" icon="icon-shezhi1" iconColor="#00aa00" title="系统管理"  @eventClick="navTo('/pages/admin/manager')"></mix-list-cell>
+					<mix-list-cell v-if="userInfo.role.indexOf('admin') != -1" icon="icon-shezhi1" iconColor="#00aa00"
+						title="系统管理" @eventClick="navTo('/pages/admin/manager')"></mix-list-cell>
 				</block>
 			</view>
 		</view>
 		<uni-popup ref="vipPopup" type="center">
 			<view class="vipPopup">
 				<view class="list-cell">
-					<view class="cell-tit"><input type="tel" v-model="vipnumber" placeholder="请输入邀请者会员卡号" maxlength="11" /></view>
+					<view class="cell-tit"><input type="tel" v-model="vipnumber" placeholder="请输入邀请者会员卡号"
+							maxlength="11" /></view>
 					<view class="cell-tit-right"><button type="default" @click="checkVip">确定</button></view>
 				</view>
 			</view>
@@ -222,7 +239,8 @@
 		<uni-popup ref="invitePopup" type="center">
 			<view class="vipPopup">
 				<view class="list-cell">
-					<view class="cell-tit"><input type="tel" v-model="inviteNumber" placeholder="请输入团队编号" maxlength="11" /></view>
+					<view class="cell-tit"><input type="tel" v-model="inviteNumber" placeholder="请输入团队编号"
+							maxlength="11" /></view>
 					<view class="cell-tit-right"><button type="default" @click="addInvite()">确定</button></view>
 				</view>
 			</view>
@@ -547,10 +565,10 @@
 					url: `/pages/admin/admin?shopid=${id}&second=Order&state=${state}`
 				})
 			},
-			navToUserInfo(){
-				if(this.userInfo.isSetNickname){
+			navToUserInfo() {
+				if (this.userInfo.isSetNickname) {
 					this.navTo('/pages/userinfo/userinfo')
-				}else{
+				} else {
 					//没有授权，必须获取用户信息，新接口，需要判断一下
 					wx.getUserProfile({
 						desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
@@ -577,6 +595,26 @@
 			},
 			navToSelfRaisingAdmin(item) {
 				this.navToItem('/pages/selfraisingpoint/admin', item);
+			},
+			/**
+			 * 微信绑定手机号，可能会与之前的账号合并
+			 * @param {Object} e
+			 */
+			getPhoneNumber(e) {
+				console.log('getPhoneNumber', e);
+				if (!e.detail.iv) {
+					this.$api.msg("操作失败，请联系管理员!")
+					return;
+				}
+				cloudUser("info", "weixin_phone", {
+					...e.detail,
+					sessionKey: this.$store.state.sessionKey
+				}).then(res => {
+					//设置成功,刷新用户信息
+					console.log("getPhoneNumber", res)
+					//刷新用户信息
+					this.$store.dispatch('getUserInfo');
+				});
 			},
 			getUserInfo() {
 				this.$store.dispatch('getUserInfo');

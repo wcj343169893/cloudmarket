@@ -61,19 +61,19 @@
 			/**
 			 * 初始化一键登录
 			 */
-			async initUniverify(){
+			async initUniverify() {
 				uni.preLogin({
-				    provider: 'univerify',
-				    success(){  //预登录成功
-				        // 显示一键登录选项
+					provider: 'univerify',
+					success() { //预登录成功
+						// 显示一键登录选项
 						console.log("一键登录初始化成功")
-				    },
-				    fail(res){  // 预登录失败
-				        // 不显示一键登录选项（或置灰）
-				    // 根据错误信息判断失败原因，如有需要可将错误提交给统计服务器
-				        console.log(res.errCode)
-				        console.log(res.errMsg)
-				    }
+					},
+					fail(res) { // 预登录失败
+						// 不显示一键登录选项（或置灰）
+						// 根据错误信息判断失败原因，如有需要可将错误提交给统计服务器
+						console.log(res.errCode)
+						console.log(res.errMsg)
+					}
 				})
 			},
 			/**
@@ -150,16 +150,16 @@
 				let token = uni.getStorageSync("uni_id_token");
 				let tokenExpired = uni.getStorageSync("uni_id_token_expires");
 				console.log(token, tokenExpired)
+				//#ifdef MP
+				//由于微信存在sessionKey，有效期未知，所以这里必须每次打开就登录
+				this.micLogin();
+				//#endif
 				if (token && tokenExpired > new Date().getTime()) {
 					//本地已经登录过，不再调用登录接口，有效期至少保证有1天时间
 					this.checkStoreLogin({
 						"token": token,
 						"tokenExpired": tokenExpired
 					});
-				} else {
-					//#ifdef MP
-					this.micLogin();
-					//#endif
 				}
 				setTimeout(() => {
 					isCheckLogin = true;

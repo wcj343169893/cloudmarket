@@ -453,6 +453,28 @@ const models = {
 		data.coupons = res.total;
 	},
 	/**
+	 * 微信绑定手机号
+	 * @param {Object} data
+	 */
+	async weixin_phone(data) {
+		let res = await uniID.wxBizDataCrypt(data)
+		console.log("解析完成", res)
+		let {
+			phoneNumber,
+			code
+		} = res;
+		if (!phoneNumber) {
+			console.log("手机解析出错")
+			return false;
+		}
+		//直接绑定手机号
+		return await uniID.updateUser({
+			uid: data.uid,
+			mobile_confirmed: 1,
+			mobile: phoneNumber
+		})
+	},
+	/**
 	 * 分页查询优惠券
 	 */
 	async coupons(data) {
