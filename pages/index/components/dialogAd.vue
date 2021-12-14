@@ -56,7 +56,7 @@
 	.ad_dialog {
 		position: fixed;
 		top: 0;
-		z-index: 90;
+		z-index: 990;
 		left: 0;
 		background: rgba(0, 0, 0, 0.26);
 		width: 100%;
