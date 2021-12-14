@@ -155,7 +155,7 @@
         "usingComponents" : true,
         "appid" : "wx59ded2343a9d2e42",
         "setting" : {
-            "urlCheck" : true
+            "urlCheck" : false
         },
         "permission" : {
             "scope.userLocation" : {
