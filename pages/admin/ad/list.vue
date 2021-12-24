@@ -34,9 +34,10 @@
 	import searchMixin from '../mixin/search.js';
 	import adPosition from '../mixin/adPosition.js';
 	export default {
-		mixins: [searchMixin,adPosition],
+		mixins: [searchMixin, adPosition],
 		data() {
 			return {
+				limit: 500, //一次性全部查询出来
 				dataList: {}
 			};
 		},
@@ -48,11 +49,11 @@
 			initData() {
 				for (let key in this.types) {
 					let size = this.typeSies[key];
-					let docWidth=670;
-					let width=docWidth;
-					let height=docWidth/size.width*size.height;
+					let docWidth = 670;
+					let width = docWidth;
+					let height = docWidth / size.width * size.height;
 					this.$set(this.dataList, key, {
-						style:`width:${width}rpx;height:${height}rpx`,
+						style: `width:${width}rpx;height:${height}rpx`,
 						name: this.types[key],
 						data: []
 					})
@@ -100,12 +101,13 @@
 					}
 				});
 			},
-			copy(item){
+			copy(item) {
 				adsAdmin('copy', {
 					_id: item._id,
-				},true).then(res => {
+				}, true).then(res => {
 					this.$api.success("复制成功")
-					let ele = { ...item,
+					let ele = {
+						...item,
 						_id: res.id
 					}
 					this.dataList[item.type].data.push(ele);
