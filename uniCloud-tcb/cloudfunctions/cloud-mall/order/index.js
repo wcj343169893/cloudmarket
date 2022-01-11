@@ -992,6 +992,7 @@ const model = {
 
 					data.yuding = yuding;
 					//购物车总金额=总定金+总尾款
+					ele.totalMoney = Number(data.yuding.price) + Number(data.yuding.finishPaymentPrice);
 					data.totalMoney += Number(data.yuding.price) + Number(data.yuding.finishPaymentPrice);
 					data.goods.push(ele);
 					data.cartCount += ele.amount;
@@ -1238,6 +1239,10 @@ const model = {
 				consuming: endTime - beginTime
 			};
 			console.log("准备订单数据完成", data);
+			delete data.goodsTotalMoney;
+			delete data.goodsTotalMoneyMap;
+			delete data.goodsTotalCategoryMap;
+			delete data.goodsTotalIds;
 			//保存订单
 			let res = await orderCollection.add(data);
 			if (!res.id) {
