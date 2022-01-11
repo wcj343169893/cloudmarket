@@ -154,6 +154,7 @@
 			},
 			del(index) {
 				this.srcList.splice(index, 1)
+				this.$emit('input', this.srcList, this.field);
 			},
 			previewImage(index) {
 				uni.previewImage({
