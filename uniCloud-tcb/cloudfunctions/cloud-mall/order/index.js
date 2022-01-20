@@ -1213,7 +1213,7 @@ const model = {
 				nickname
 			} = context.userInfo;
 			//用户邀请列表
-			data["inviter_uid"] = "";
+			data["inviter_uid"] = [];
 			data["userInfo"] = {
 				id: context.userInfo.id,
 				uid,
