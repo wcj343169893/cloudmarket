@@ -1,6 +1,6 @@
 {
 	"name": "云上商城社区版-线上超市/社区团购(前后端一体)",
-	"version": "2.2.28",
+	"version": "2.2.29",
 	"description": "周边生鲜超市、连锁超市、连锁餐饮，已接入美团配送，简单配置即可投入运营",
 	"main": "main.js",
 	"scripts": {
@@ -25,78 +25,81 @@
 			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/unipay.js",
 			"uniCloud-tcb/cloudfunctions/cloud-payment/payment/wxpay.js",
 			"uniCloud-tcb/cloudfunctions/cloud-admin/index.js",
-			"uniCloud-tcb/cloudfunctions/cloud-admin/shops/index.js"
-        ],
-        "platforms": {
-            "cloud": {
-                "tcb": "y",
-                "aliyun": "y"
-            },
-            "client": {
-                "App": {
-                    "app-vue": "y",
-                    "app-nvue": "n"
-                },
-                "H5-mobile": {
-                    "Safari": "y",
-                    "Android Browser": "y",
-                    "微信浏览器(Android)": "y",
-                    "QQ浏览器(Android)": "y"
-                },
-                "H5-pc": {
-                    "Chrome": "y",
-                    "IE": "u",
-                    "Edge": "y",
-                    "Firefox": "y",
-                    "Safari": "y"
-                },
-                "小程序": {
-                    "微信": "y",
-                    "阿里": "y",
-                    "百度": "y",
-                    "字节跳动": "y",
-                    "QQ": "y"
-                },
-                "快应用": {
-                    "华为": "y",
-                    "联盟": "y"
-                },
-                "Vue": {
-                    "vue2": "y",
-                    "vue3": "u"
-                }
-            }
-        }
+			"uniCloud-tcb/cloudfunctions/cloud-admin/shops/index.js",
+			"uniCloud-tcb/cloudfunctions/tiantian-mall/controller/admin/tian_user_cashouts.js",
+			"uniCloud-tcb/cloudfunctions/tiantian-mall/controller/app.js",
+			"uniCloud-tcb/cloudfunctions/tiantian-mall/middleware/config.js",
+		],
+		"platforms": {
+			"cloud": {
+				"tcb": "y",
+				"aliyun": "y"
+			},
+			"client": {
+				"App": {
+					"app-vue": "y",
+					"app-nvue": "n"
+				},
+				"H5-mobile": {
+					"Safari": "y",
+					"Android Browser": "y",
+					"微信浏览器(Android)": "y",
+					"QQ浏览器(Android)": "y"
+				},
+				"H5-pc": {
+					"Chrome": "y",
+					"IE": "u",
+					"Edge": "y",
+					"Firefox": "y",
+					"Safari": "y"
+				},
+				"小程序": {
+					"微信": "y",
+					"阿里": "y",
+					"百度": "y",
+					"字节跳动": "y",
+					"QQ": "y"
+				},
+				"快应用": {
+					"华为": "y",
+					"联盟": "y"
+				},
+				"Vue": {
+					"vue2": "y",
+					"vue3": "u"
+				}
+			}
+		}
 	},
 	"dependencies": {
 		"vue-jsonp": "^2.0.0"
 	},
-    "id": "junjun-cloudmarket",
-    "displayName": "云上商城-线上超市",
-    "engines": {
-        "HBuilderX": "^3.2.2"
-    },
-    "dcloudext": {
-        "category": [
-            "uniCloud",
-            "云端一体项目模板"
-        ],
-        "sale": {
-            "regular": {
-                "price": "588.00"
-            },
-            "sourcecode": {
-                "price": "1688.00"
-            }
-        },
-        "contact": {
-            "qq": "343169893"
-        },
-        "declaration": {
-            "ads": "无",
-            "data": "插件不采集任何数据",
-            "permissions": "无"
-        },
-        "npmurl": ""
-    }
+	"id": "junjun-cloudmarket",
+	"displayName": "云上商城-线上超市",
+	"engines": {
+		"HBuilderX": "^3.2.2"
+	},
+	"dcloudext": {
+		"category": [
+			"uniCloud",
+			"云端一体项目模板"
+		],
+		"sale": {
+			"regular": {
+				"price": "588.00"
+			},
+			"sourcecode": {
+				"price": "1688.00"
+			}
+		},
+		"contact": {
+			"qq": "343169893"
+		},
+		"declaration": {
+			"ads": "无",
+			"data": "插件不采集任何数据",
+			"permissions": "无"
+		},
+		"npmurl": ""
+	}
 }

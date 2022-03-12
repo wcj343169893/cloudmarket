@@ -260,7 +260,7 @@
 		"created": {
 			"bsonType": "timestamp",
 			"description": "上传时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		},

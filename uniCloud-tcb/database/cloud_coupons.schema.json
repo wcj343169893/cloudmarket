@@ -128,7 +128,7 @@
 		"created": {
 			"bsonType": "timestamp",
 			"description": "创建时间",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "now"
 			}
 		},

@@ -124,7 +124,7 @@
 			"bsonType": "string",
 			"title": "发布文章时IP地址",
 			"description": "发表时 IP 地址",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "clientIP"
 			}
 		},
@@ -139,7 +139,7 @@
 		"last_modify_ip": {
 			"bsonType": "string",
 			"description": "最后修改时 IP 地址",
-			"forceDefaultValue": {
+			"defaultValue": {
 				"$env": "clientIP"
 			}
 		},
