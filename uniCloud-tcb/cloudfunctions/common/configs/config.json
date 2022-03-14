@@ -1,5 +1,5 @@
 {
-	"domain": "http://api.cjblog.org",
+	"domain": "",
 	"notify-floder": "http/market_notify",
 	"tokenSecret": "4e50313a45f5fbe0",
 	"app-plus": {

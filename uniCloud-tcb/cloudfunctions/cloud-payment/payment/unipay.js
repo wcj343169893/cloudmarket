@@ -29,7 +29,7 @@ const models = {
 		}
 		let uniPayIns = uniPay[config["uniPay"]](config);
 		// 支付结果通知地址,经过测试，http地址也能作为通知地址
-		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module);
+		let notifyUrl = getPaymentNotifyUrl(context.PLATFORM, data.provider, data.module, context);
 		let totalFee = parseInt(order.totalMoney * 100);
 		if (order.shop && order.shop.currency != "cny" && order.shop.exchangeRate && order.shop.exchangeRate !=
 			1) {

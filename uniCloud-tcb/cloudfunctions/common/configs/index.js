@@ -23,11 +23,25 @@ const model = {
 	 * @tutorial https://uniapp.dcloud.io/api/plugins/provider?id=getprovider
 	 * @tutorial https://uniapp.dcloud.io/uniCloud/http
 	 */
-	getPaymentNotifyUrl(platform, provider, model) {
+	getPaymentNotifyUrl(platform, provider, model, context) {
+		let domain = config["domain"];
+		if (!domain && context) {
+			//拼接默认域名
+			let {
+				spaceId,
+				provider
+			} = context.SPACEINFO;
+			if (provider == "tencent") {
+				domain = `https://${spaceId}.service.tcloudbase.com`
+			} else if (provider == "aliyun") {
+				//https://3fbab731-e993-47e6-882f-a74e444709a3.bspapp.com
+				domain = `https://${spaceId}.bspapp.com`
+			}
+		}
 		//notify-floder为自定义目录，防止被攻击,建议修改成无意义的字符串，然后在后台云函数那里填写
 		//设置URL的PATH部分:/market_notify，在请求的时候，
 		//支付宝app回调地址为:http://www.mydomain.com/market_notify/app-plus/alipay/mall
-		return [config["domain"], config["notify-floder"], platform, provider, model].join("/");
+		return [domain, config["notify-floder"], platform, provider, model].join("/");
 	},
 	/**
 	 * 返回支付配置
