@@ -37,7 +37,7 @@
 								"fontSize": "27",
 								"color": "#303133",
 								"background": "rgba(0,0,0,0)",
-								"redDot": true
+								"redDot": false
 							}
 						]
 					}
@@ -94,7 +94,7 @@
 								"fontSize": "28",
 								"color": "#303133",
 								"background": "rgba(0,0,0,0)",
-								"redDot": true
+								"redDot": false
 							}
 						]
 					}

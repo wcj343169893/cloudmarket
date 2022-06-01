@@ -1,0 +1,55 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": false, //从后台创建
+		"update": "doc.user_id==auth.uid",
+		"delete": "doc.user_id==auth.uid"
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"user_id": {
+			"bsonType": "string"
+		},
+		"title": {
+			"bsonType": "string",
+			"title": "标题"
+		},
+		"content": {
+			"bsonType": "string",
+			"title": "内容"
+		},
+		"page": {
+			"bsonType": "string",
+			"title": "跳转页面"
+		},
+		"goods": {
+			"bsonType": "object",
+			"title": "商品"
+		},
+		"payload": {
+			"bsonType": "string",
+			"title": "扩展字段"
+		},
+		"status": {
+			"bsonType": "int",
+			"title": "状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "未读",
+				"value": 0
+			}, {
+				"text": "已读",
+				"value": 1
+			}]
+		},
+		"created": {
+			"bsonType": "timestamp",
+			"title": "创建时间"
+		}
+	}
+}

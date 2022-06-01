@@ -18,7 +18,6 @@
             "Payment" : {},
             "Push" : {},
             "Maps" : {},
-            "iBeacon" : {},
             "VideoPlayer" : {},
             "Geolocation" : {},
             "OAuth" : {}
@@ -35,8 +34,6 @@
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
-                    "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>",
                     "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
@@ -53,12 +50,16 @@
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
-                    "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [ "applinks:static-d73fd249-2f15-4133-9d70-e4017004b14c.bspapp.com" ]
+                    }
+                }
+            },
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},
@@ -66,7 +67,7 @@
                     "alipay" : {},
                     "weixin" : {
                         "appid" : "wxa8e2090ff8638329",
-                        "UniversalLinks" : ""
+                        "UniversalLinks" : "https://static-d73fd249-2f15-4133-9d70-e4017004b14c.bspapp.com/uni-universallinks/__UNI__9900639/"
                     }
                 },
                 "speech" : {},
@@ -76,22 +77,18 @@
                 "maps" : {
                     "amap" : {
                         "appkey_ios" : "3d849a7a36b58b5a4f4a0c37d665df85",
-                        "appkey_android" : "e077c938b8359e13eb32920f1693a77d"
+                        "appkey_android" : "4f618ba552c3ba4bf59d68a7ef4f025c"
                     }
                 },
                 "oauth" : {
-                    "weixin" : {
-                        "appid" : "wxa8e2090ff8638329",
-                        "appsecret" : "",
-                        "UniversalLinks" : ""
-                    }
+                    "univerify" : {}
                 },
                 "share" : {},
                 "geolocation" : {
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
                         "appkey_ios" : "3d849a7a36b58b5a4f4a0c37d665df85",
-                        "appkey_android" : "e077c938b8359e13eb32920f1693a77d"
+                        "appkey_android" : "4f618ba552c3ba4bf59d68a7ef4f025c"
                     }
                 }
             },
@@ -182,5 +179,6 @@
         "setting" : {
             "urlCheck" : false
         }
-    }
+    },
+    "_spaceID" : "d73fd249-2f15-4133-9d70-e4017004b14c"
 }

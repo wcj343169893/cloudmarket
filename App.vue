@@ -81,13 +81,31 @@
 			 */
 			async initPush() {
 				console.log('初始化push message');
+				let isMessageClick = false;
 				plus.push.addEventListener('receive', msg => {
-					console.log('receive push message', msg);
-					let data = JSON.parse(msg.payload);
-					console.log('receive push message', data);
+					console.log('收到透传消息', msg);
+					let payload = msg.payload;
+					if (typeof payload === 'string') {
+						msg.payload = JSON.stringify(payload);
+					}
+					//显示未读红点//给消息图标打点点
+					if (msg.payload.notice) {
+						uni.$emit("getNewMessage")
+					}
+					//只有打开APP的状态下，点击通知，跳转到指定页面，否则透传消息早于点击事件
+					if (isMessageClick && msg.payload.page) {
+						//由后台来确定是否需要打开页面这里不需要设置默认打开页面
+						isMessageClick = false;
+						//跳转指定页面
+						uni.navigateTo({
+							url: msg.payload.page
+						})
+					}
 				});
 				plus.push.addEventListener('click', msg => {
 					console.log('click push message', msg);
+					//可能需要调整到指定页面，但是无页面参数
+					isMessageClick = true;
 				});
 				plus.push.getClientInfoAsync(
 					info => {

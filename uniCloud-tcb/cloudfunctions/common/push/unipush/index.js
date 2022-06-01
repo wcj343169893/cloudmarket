@@ -188,14 +188,24 @@ const model = {
 		} = data;
 		let intent =
 			`intent:#Intent;action=android.intent.action.oppopush;launchFlags=0x14000000;package=${packageName};component=${packageName}/io.dcloud.PandoraEntry;S.UP-OL-SU=true;S.title=${title};S.content=${content};S.payload=${payload};end`;
+		// intent：打开应用内特定页面，
+		// url：打开网页地址，
+		// payload：自定义消息内容启动应用，
+		// payload_custom：自定义消息内容不启动应用，
+		// startapp：打开应用首页，
+		// none：纯通知，无后续动作
 		data.push_message = {
 			//"transmission": payload
 			"notification": {
 				title,
 				body: content,
-				channel_level: 3,
-				click_type: "intent",
-				intent: intent
+				channel_level: 4,
+				click_type: "payload",
+				payload: data.payload ? data.payload : JSON.stringify({
+					content,
+					title
+				})
+				// intent: intent
 			}
 		}
 		data.push_channel = {

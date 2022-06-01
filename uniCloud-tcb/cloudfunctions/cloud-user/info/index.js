@@ -301,6 +301,7 @@ const models = {
 			uid: info._id,
 			state: "verifying"
 		})
+		return info["order"];
 	},
 	/**
 	 * 查询店铺订单统计
@@ -428,9 +429,16 @@ const models = {
 	async push(data) {
 		const {
 			uid,
-			appid
+			appid,
+			clientid
 		} = data;
 		delete data.uid;
+		//此设备清楚以前账号的信息
+		await userCollection.where({
+			[`push.${appid}.clientid`]: clientid
+		}).update({
+			[`push.${appid}`]: cmd.remove()
+		})
 		//保存id
 		let result = await uniID.updateUser({
 			uid: uid,
@@ -516,6 +524,40 @@ const models = {
 			return false;
 		}
 		return res.data;
+	},
+	/**
+	 * 注销账户,需满足条件：1账户无余额，2无积分，3无粉丝，4未完成的订单
+	 */
+	async cancellation(data, context) {
+		let res = await getUserInfo(data.uid, [
+			"id", "balance", "score"
+		], context.userInfo);
+
+		let info = res.userInfo
+		console.log("申请注销用户", info)
+		if (info.balance > 0 || info.score > 0) {
+			return {
+				code: 403,
+				msg: "账户存在余额或者积分"
+			}
+		}
+		//我的订单统计
+		let order = await this.getOrderStatistics(info);
+		console.log("用户订单", order)
+		if (order.unpaid > 0 || order.payup > 0 || order.received > 0 || order.refund > 0) {
+			return {
+				code: 403,
+				msg: "账户存在未完成订单"
+			}
+		}
+		await this.save({
+			uid,
+			status: 1
+		})
+		return {
+			code: 0,
+			msg: "申请已通过"
+		}
 	}
 }
 /**

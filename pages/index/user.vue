@@ -254,6 +254,7 @@
 		saveUserInfo,
 		cloudUser
 	} from '@/common/request.js';
+	import tabbarMixin from './mixin/tabbar'
 	import {
 		navToGoodsItemPage
 	} from '@/common/functions.js';
@@ -266,7 +267,7 @@
 		moveY = 0,
 		pageAtTop = true;
 	export default {
-		mixins: [loginMpWx],
+		mixins: [loginMpWx, tabbarMixin],
 		data() {
 			return {
 				isLoaded: false,
@@ -430,11 +431,15 @@
 				} else {
 					this.hasVisiteGoods = false;
 					this.admin = [];
+					this.shopApply = false;
+					this.selfraising = false;
 					this.visiteGoodsList = [];
 					for (let t in this.order) {
 						this.order[t] = 0;
 					}
 					this.teamTips = "加入团队";
+					this.resetTabCartCount();
+					this.buildUserInfo(this.userInfo);
 				}
 			},
 			buildUserInfo(res) {

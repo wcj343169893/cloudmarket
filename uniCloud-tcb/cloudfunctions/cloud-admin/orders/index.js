@@ -16,6 +16,9 @@ const orderRefundsCollection = db.collection("cloud_order_refunds");
 const {
 	print
 } = require('printers');
+const {
+	sendOrderDelivery
+} = require('push');
 const list = async (data, context) => {
 	const {
 		page,
@@ -67,7 +70,8 @@ const list = async (data, context) => {
 	if (key && key.trim().length > 0) {
 		conditions["goods.title"] = new RegExp(key.trim());
 	}
-	let res = await orderCollection.where(conditions).orderBy("id", "desc").skip((page - 1) * limit).limit(limit).field({
+	let res = await orderCollection.where(conditions).orderBy("id", "desc").skip((page - 1) * limit).limit(
+		limit).field({
 		id: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
@@ -182,7 +186,8 @@ const getRefunded = async (data) => {
 	if (state != "all") {
 		condition["state"] = state;
 	}
-	const res = await orderRefundsCollection.where(condition).orderBy("id", "desc").skip((page - 1) * limit).limit(
+	const res = await orderRefundsCollection.where(condition).orderBy("id", "desc").skip((page - 1) * limit)
+		.limit(
 			limit)
 		.get();
 	if (res.data.length == 0) {
@@ -296,6 +301,8 @@ const addExpress = async (data) => {
 		selfRaising: 1,
 		express: 1,
 		state: 1,
+		goods: 1,
+		body: 1,
 		shopid: 1,
 		uid: 1
 	});
@@ -307,6 +314,9 @@ const addExpress = async (data) => {
 	let res = await orderCollection.doc(order._id).update({
 		express: cmd.push(data.express)
 	});
+
+	//告知买家已发货
+	await sendOrderDelivery(order)
 	return res;
 }
 /**
@@ -321,6 +331,8 @@ const addDelivery = async (data) => {
 		selfRaising: 1,
 		state: 1,
 		shopid: 1,
+		body: 1,
+		goods: 1,
 		uid: 1
 	});
 	if (!order) {
@@ -355,6 +367,8 @@ const addDelivery = async (data) => {
 			}
 		}) */
 	}
+	//告知买家已发货
+	await sendOrderDelivery(order)
 	return res;
 }
 /**

@@ -14,10 +14,11 @@
 					<!-- 背景色区域 -->
 					<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 					<!--收货地址-->
-					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address"
-					 @navToAddress="navToAddress"></addressPage>
+					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint"
+						:address="address" @navToAddress="navToAddress"></addressPage>
 					<swiper class="carousel" circular @change="swiperChange">
-						<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToAdPage(item)">
+						<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item"
+							@click="navToAdPage(item)">
 							<image :src="item.src" />
 						</swiper-item>
 					</swiper>
@@ -31,12 +32,13 @@
 				<block v-else>
 					<view class="titleNview-background-tmp"></view>
 					<!--收货地址-->
-					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint" :address="address"
-					 @navToAddress="navToAddress"></addressPage>
+					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint"
+						:address="address" @navToAddress="navToAddress"></addressPage>
 				</block>
 			</view>
 			<!-- 配送口号 -->
-			<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.hasDeliveryHome" @click="navToDocPageByType('app_goods_charge')">
+			<view class="weui-flex kouhao m-t" v-if="shop.id && shop.id > 0 && shop.hasDeliveryHome"
+				@click="navToDocPageByType('app_goods_charge')">
 				<view class="kouhao_item">
 					<text class="yticon icon-chps"></text>
 					<text>最快{{ shop.delivery.time }}分钟送达</text>
@@ -52,8 +54,10 @@
 				</view>
 			</view>
 			<!-- 分类 -->
-			<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]" v-if="recommendCategoriesList.length > 0">
-				<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item" @click="navToCategoryPage(item)">
+			<view class="cate-section m-t" :class="['cs_'+recommendCategoriesList.length]"
+				v-if="recommendCategoriesList.length > 0">
+				<view v-for="(item, index) in recommendCategoriesList" :key="index" class="cate-item"
+					@click="navToCategoryPage(item)">
 					<image :src="item.src | thumbImg('80x80')"></image>
 					<text>{{ item.name }}</text>
 				</view>
@@ -126,8 +130,9 @@
 						<text>{{ item.name }}</text>
 					</view>
 					<view class="skuoptions">
-						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item" :class="{ active: item.active == index2, disabled: sname.disabled }"
-						 @click="selectSku(index, index2)">
+						<view v-for="(sname, index2) in item.child" :key="index2" class="skuoptions__item"
+							:class="{ active: item.active == index2, disabled: sname.disabled }"
+							@click="selectSku(index, index2)">
 							<text>{{ sname.value }}</text>
 						</view>
 					</view>
@@ -138,9 +143,11 @@
 				<view class="sku_prices_buttons">
 					<view class="sku_prices_buttons__price ">
 						<text class="price">{{ skuGoods.showPrice }}</text>
-						<text class="price del m-l" v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
+						<text class="price del m-l"
+							v-if="skuGoods.showOriginPrice > 0">{{ skuGoods.showOriginPrice }}</text>
 					</view>
-					<view class="sku_prices_buttons__btn"><text class="sku_btn yticon icon-gouwuche_" @click.stop="saveCartAmount(skuGoods, skuGoods.selectedSkuId)"></text></view>
+					<view class="sku_prices_buttons__btn"><text class="sku_btn yticon icon-gouwuche_"
+							@click.stop="saveCartAmount(skuGoods, skuGoods.selectedSkuId)"></text></view>
 				</view>
 			</view>
 			<view class="uni-image-close" @click="closeSkuDialog()">
@@ -255,6 +262,10 @@
 				console.log("触发全局退出事件")
 				this.checkLogout();
 			});
+			uni.$on('getNewMessage', () => {
+				console.log("触发全局收到新消息")
+				this.getNewMessage()
+			});
 		},
 		//下拉刷新,不会更新底部附近的店铺
 		onPullDownRefresh() {
@@ -354,10 +365,10 @@
 						updateGoodsTags(item);
 					});
 					uni.setStorage({
-						key:"shop_goods_newest_list",
-						data:this.newestList
+						key: "shop_goods_newest_list",
+						data: this.newestList
 					})
-					console.log("this.newestList",this.newestList)
+					console.log("this.newestList", this.newestList)
 					this.recommendList = res.recommend;
 					this.recommendList.forEach(item => {
 						updateGoodsTags(item);
@@ -373,7 +384,8 @@
 					this.titles = res.titles;
 					if (res.shop) {
 						this.shop = res.shop;
-						this.shop.hasDeliveryHome = res.shop.deliveryTypes && res.shop.deliveryTypes.indexOf('deliveryHome') != -1;
+						this.shop.hasDeliveryHome = res.shop.deliveryTypes && res.shop.deliveryTypes.indexOf(
+							'deliveryHome') != -1;
 						this.searchKeyWords = res.shop.searchGoodsKeywords;
 						//同时写入缓存，在分类页面也能调用
 						uni.setStorage({
@@ -569,7 +581,8 @@
 						if (ind != index) {
 							let joinName = [clickName.value, n2.value].sort().join('&gt;');
 							//不存在组合或者库存不足
-							n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock < 1;
+							n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock <
+							1;
 						}
 					});
 				});
@@ -630,6 +643,17 @@
 						})
 					}, 500)
 				}
+			},
+			getNewMessage() {
+				// #ifdef APP-PLUS
+				//显示红点
+				const pages = getCurrentPages();
+				const page = pages[pages.length - 1];
+				const currentWebview = page.$getAppWebview();
+				currentWebview.showTitleNViewButtonRedDot({
+					index: 1
+				});
+				// #endif
 			}
 		},
 		onShow() {
