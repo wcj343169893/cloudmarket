@@ -1,0 +1,4473 @@
+{
+    "cloud_addresses": {
+        "data": [
+            {
+                "_id": "0288fce75fc2457e006b72227cf9a3dd",
+                "address": "兴星街",
+                "addressName": "好又来",
+                "area": "2",
+                "default": true,
+                "latitude": 29.169351,
+                "longitude": 107.007449,
+                "mobile": "15986613313",
+                "name": "周渝",
+                "uid": "b4f7b7d25fb3775d00b0de4f5d854ee2"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_uid",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_addresses_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_ads": {
+        "data": [
+            {
+                "_id": "0a4429175fd33c9b013e41db6cadc791",
+                "background": "",
+                "docs": {},
+                "goods": {},
+                "link": "",
+                "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                "redirectType": "none",
+                "shopid": 123460,
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/ad_imgs/2020-10-18/3940513752641637.jpg",
+                "type": "home_banner_after_category"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_ads_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_carts": {
+        "data": [
+            {
+                "_id": "00e4692c5f3b8f43000d3c975c93d7bb",
+                "amount": 1,
+                "checked": true,
+                "created": "2020-08-18T08:20:19.657Z",
+                "goods_id": 10040,
+                "modified": "2020-08-18T08:20:19.657Z",
+                "price": 239,
+                "settlement": false,
+                "shopid": 123457,
+                "sku_id": 0,
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-07-04/6586700496492762.jpg",
+                "title": "龙虾波士顿大龙虾鲜活特大波龙奥龙波斯顿海鲜水产活虾500-600g*2",
+                "uid": "d4c8b12b5f3b8f3e001043df2462a57c"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_carts_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_uid",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_companys": {
+        "data": [
+            {
+                "_id": "023ce9555ffd1fca042e2d8569172b20",
+                "bank_name": "",
+                "bank_number": "",
+                "business_license": "",
+                "code": "ddd",
+                "code_type": 1,
+                "created": 1610424266703,
+                "food_license": "",
+                "introduction": "",
+                "legal_persona_license_back": "",
+                "legal_persona_license_front": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/5354186956946752.jpg",
+                "legal_persona_name": "ddd3",
+                "legal_persona_wechat": "ddd",
+                "modified": 1610424266703,
+                "name": "ds",
+                "operater": "21ded5cb5ffc2237049644751ebdfe6a",
+                "phone": "333",
+                "shop_imgs": []
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_code",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "code",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_companys_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "permission": {
+                "create": true,
+                "delete": true,
+                "read": true,
+                "update": true
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "bank_name": {
+                    "bsonType": "string",
+                    "description": "请输入银行",
+                    "title": "收款银行",
+                    "trim": "both"
+                },
+                "bank_number": {
+                    "bsonType": "string",
+                    "description": "请输入卡号",
+                    "title": "收款卡号",
+                    "trim": "both"
+                },
+                "business_license": {
+                    "bsonType": "string",
+                    "description": "营业执照",
+                    "title": "营业执照",
+                    "trim": "both"
+                },
+                "code": {
+                    "bsonType": "string",
+                    "description": "企业代码",
+                    "title": "企业代码",
+                    "trim": "both"
+                },
+                "code_type": {
+                    "bsonType": "int",
+                    "description": "企业代码类型",
+                    "title": "企业代码类型"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "food_license": {
+                    "bsonType": "string",
+                    "description": "食品安全许可证",
+                    "title": "食品安全许可证"
+                },
+                "introduction": {
+                    "bsonType": "string",
+                    "description": "公司简介",
+                    "title": "公司简介",
+                    "trim": "both"
+                },
+                "legal_persona_license_back": {
+                    "bsonType": "string",
+                    "description": "法人身份证反面",
+                    "title": "法人身份证反面"
+                },
+                "legal_persona_license_front": {
+                    "bsonType": "string",
+                    "description": "法人身份证正面",
+                    "title": "法人身份证正面",
+                    "trim": "both"
+                },
+                "legal_persona_name": {
+                    "bsonType": "string",
+                    "description": "法人姓名",
+                    "title": "法人姓名",
+                    "trim": "both"
+                },
+                "legal_persona_wechat": {
+                    "bsonType": "string",
+                    "description": "法人微信",
+                    "title": "法人微信",
+                    "trim": "both"
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "name": {
+                    "bsonType": "string",
+                    "description": "企业名",
+                    "title": "企业名",
+                    "trim": "both"
+                },
+                "operater": {
+                    "bsonType": "string",
+                    "description": "操作员",
+                    "forceDefaultValue": {
+                        "$env": "uid"
+                    },
+                    "foreignKey": "uni-id-users._id",
+                    "title": "操作员"
+                },
+                "phone": {
+                    "bsonType": "string",
+                    "description": "电话",
+                    "title": "电话",
+                    "trim": "both"
+                },
+                "shop_imgs": {
+                    "bsonType": "array",
+                    "description": "店铺图片",
+                    "title": "店铺图片"
+                }
+            },
+            "required": []
+        }
+    },
+    "cloud_coupon_users": {
+        "data": [
+            {
+                "_id": "2424fa985fedcc7d00f3dba41b989424",
+                "amount": 1,
+                "beginTime": 1608619364079,
+                "created": 1609419901900,
+                "days": 3,
+                "endTime": 1609545599999,
+                "goods": [
+                    {
+                        "_id": "b5416b755f523df50123fd631c9c2022",
+                        "autoOffTime": 1609428840000,
+                        "categories": [
+                            {
+                                "id": 1013,
+                                "isShow": 1,
+                                "name": "肉禽蛋",
+                                "pid": 0
+                            }
+                        ],
+                        "id": 10058,
+                        "imgs": [
+                            "http://market.cjblog.org/goods/3924395551899309.jpg",
+                            "http://market.cjblog.org/goods/1258215925552998.jpg",
+                            "http://market.cjblog.org/goods/9680119282941286.jpg",
+                            "http://market.cjblog.org/goods/20542030947132062.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isRecommend": true,
+                        "isSold": 1,
+                        "modified": 1608613863412,
+                        "monthlySale": 5,
+                        "onlySelfTake": "0",
+                        "operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                        "originPrice": 0,
+                        "price": 74,
+                        "saleType": "tuangou",
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "src": "http://market.cjblog.org/goods/8444754049337726.jpg",
+                        "stock": 127,
+                        "subTitle": "",
+                        "title": "发2只正宗土鸡农家散养2年老母鸡新鲜草鸡笨鸡走地鸡柴鸡整只鸡肉",
+                        "tuangou": {
+                            "beginTime": 1608561240000,
+                            "endTime": 1608993240000,
+                            "pickup": 1609425240000,
+                            "price": 59,
+                            "unit": "只"
+                        },
+                        "upc": "6922266465567",
+                        "visite": 15
+                    },
+                    {
+                        "_id": "c54bd3a25f7927cb00d91d380109ef86",
+                        "categories": [
+                            {
+                                "id": 1004,
+                                "isShow": 1,
+                                "name": "大分类一"
+                            },
+                            {
+                                "id": 2002,
+                                "name": "小分类yi"
+                            }
+                        ],
+                        "id": 10102,
+                        "imgs": [
+                            "http://market.cjblog.org/goods/1.1.jpg",
+                            "http://market.cjblog.org/goods/1.2.jpg",
+                            "http://market.cjblog.org/goods/1.3.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isRecommend": true,
+                        "isSold": 1,
+                        "miaosha": {
+                            "beginTime": 1589358599810,
+                            "endTime": 1598889600000,
+                            "id": "5e75bd15b1e402004d1dbbce",
+                            "limit": 2,
+                            "price": "97.79",
+                            "rate": 77,
+                            "sales": 47,
+                            "state": "ended",
+                            "stock": 53
+                        },
+                        "modified": 1604824055479,
+                        "monthlySale": 14,
+                        "onlySelfTake": "0",
+                        "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                        "originPrice": 0,
+                        "price": 127,
+                        "saleType": "normal",
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "src": "http://market.cjblog.org/goods/1.jpg",
+                        "stock": 318,
+                        "subTitle": "",
+                        "title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                        "upc": "",
+                        "visite": 12
+                    }
+                ],
+                "id": "2424fa985fe1bafd005b406f7d6c24b7",
+                "limit": 2,
+                "manjine": {
+                    "amount": 10,
+                    "condition": 100
+                },
+                "memo": "仅限新人可用",
+                "modified": 1609060026617,
+                "price": 10,
+                "shopid": 123457,
+                "state": 0,
+                "stock": 300,
+                "style": "manjine",
+                "title": "新人优惠券",
+                "today": false,
+                "type": 1,
+                "uid": "c89bd61c5fb775cd001512243f82c76f"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_coupon_users_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_coupons": {
+        "data": [
+            {
+                "_id": "73f70d5c5fe195f400505f8e51d732d3",
+                "beginTime": 1608619364079,
+                "endTime": 1640155364000,
+                "goods": [
+                    {
+                        "_id": "73f70d5c5fde123800296d5d25eb9c4f",
+                        "autoOffTime": false,
+                        "categories": [
+                            {
+                                "id": 11315,
+                                "isShow": 1,
+                                "name": "wifi打印机",
+                                "pid": 0
+                            },
+                            {
+                                "checked": true,
+                                "goodsCount": 0,
+                                "id": 11316,
+                                "isShow": 1,
+                                "name": "飞鹅云",
+                                "pid": 11315
+                            }
+                        ],
+                        "default_checked_sku_id": 0,
+                        "id": 24265,
+                        "imgs": [
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/3693379526739694.JPG"
+                        ],
+                        "isCategoryShow": 1,
+                        "isSold": 1,
+                        "modified": 1608881932270,
+                        "monthlySale": 0,
+                        "offlineTime": 1608613984273,
+                        "onlySelfTake": "0",
+                        "operator": "a8831daa5fe586a600b0e54b31e52a53",
+                        "originPrice": 0,
+                        "price": 299,
+                        "saleType": "normal",
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "skuname": [],
+                        "skus": [],
+                        "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/4600701695939712.JPG",
+                        "stock": 5,
+                        "subTitle": "Wifi➕USB ➕滴滴提示音➕手动撕纸",
+                        "title": "飞鹅WIFI美团4G饿了么蓝牙全自动接单神器多平台一体机自切纸飞蛾无线热敏外卖商",
+                        "upc": "",
+                        "visite": 2
+                    },
+                    {
+                        "_id": "c54bd3a25f7927cb00d91d380109ef86",
+                        "categories": [
+                            {
+                                "id": 1004,
+                                "isShow": 1,
+                                "name": "大分类一"
+                            },
+                            {
+                                "id": 2002,
+                                "name": "小分类yi"
+                            }
+                        ],
+                        "id": 10102,
+                        "imgs": [
+                            "http://market.cjblog.org/goods/1.1.jpg",
+                            "http://market.cjblog.org/goods/1.2.jpg",
+                            "http://market.cjblog.org/goods/1.3.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isRecommend": true,
+                        "isSold": 1,
+                        "miaosha": {
+                            "beginTime": 1589358599810,
+                            "endTime": 1598889600000,
+                            "id": "5e75bd15b1e402004d1dbbce",
+                            "limit": 2,
+                            "price": "97.79",
+                            "rate": 77,
+                            "sales": 47,
+                            "state": "ended",
+                            "stock": 53
+                        },
+                        "modified": 1604824055479,
+                        "monthlySale": 14,
+                        "onlySelfTake": "0",
+                        "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                        "originPrice": 0,
+                        "price": 127,
+                        "saleType": "normal",
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "src": "http://market.cjblog.org/goods/1.jpg",
+                        "stock": 318,
+                        "subTitle": "",
+                        "title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                        "upc": "",
+                        "visite": 12
+                    }
+                ],
+                "limit": 2,
+                "manjine": {
+                    "amount": "20",
+                    "condition": "100"
+                },
+                "manshuliang": {
+                    "amount": "5",
+                    "condition": "4"
+                },
+                "memo": "仅限新人可用",
+                "price": 20,
+                "shopid": 123457,
+                "state": 0,
+                "style": "manjine",
+                "title": "新人优惠券",
+                "today": true,
+                "type": 2
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_coupons_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "beginTime",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "endTime",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "beginTime": {
+                    "bsonType": "int",
+                    "title": "开始时间戳"
+                },
+                "endTime": {
+                    "bsonType": "int",
+                    "title": "结束时间戳"
+                },
+                "goods": {
+                    "bsonType": "array",
+                    "title": "商品列表",
+                    "properties": {
+                        "_id": {
+                            "bsonType": "string"
+                        },
+                        "title": {
+                            "bsonType": "string"
+                        }
+                    }
+                },
+                "category": {
+                    "bsonType": "array",
+                    "title": "分类列表",
+                    "properties": {
+                        "_id": {
+                            "bsonType": "string"
+                        },
+                        "title": {
+                            "bsonType": "string"
+                        },
+                        "id": {
+                            "bsonType": "int"
+                        }
+                    }
+                },
+                "limit": {
+                    "bsonType": "int",
+                    "title": "限制领取张数",
+                    "defaultValue": 1
+                },
+                "stock": {
+                    "bsonType": "int",
+                    "title": "总库存",
+                    "defaultValue": 100
+                },
+                "manjine": {
+                    "bsonType": "object",
+                    "title": "金额满减",
+                    "properties": {
+                        "amount": {
+                            "bsonType": "double",
+                            "title": "优惠金额",
+                            "defaultValue": 1
+                        },
+                        "condition": {
+                            "bsonType": "double",
+                            "title": "条件",
+                            "defaultValue": 10
+                        }
+                    }
+                },
+                "manshuliang": {
+                    "bsonType": "object",
+                    "title": "数量满减",
+                    "properties": {
+                        "amount": {
+                            "bsonType": "double",
+                            "title": "优惠金额",
+                            "defaultValue": 1
+                        },
+                        "condition": {
+                            "bsonType": "int",
+                            "title": "条件",
+                            "defaultValue": 10
+                        }
+                    }
+                },
+                "memo": {
+                    "bsonType": "string",
+                    "title": "说明"
+                },
+                "price": {
+                    "bsonType": "double",
+                    "title": "优惠金额",
+                    "defaultValue": 1
+                },
+                "shopid": {
+                    "bsonType": "int",
+                    "title": "店铺id"
+                },
+                "state": {
+                    "bsonType": "int",
+                    "title": "状态",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "草稿箱",
+                            "value": 0
+                        },
+                        {
+                            "text": "已发布",
+                            "value": 1
+                        },
+                        {
+                            "text": "已停用",
+                            "value": 2
+                        }
+                    ]
+                },
+                "title": {
+                    "bsonType": "string",
+                    "title": "标题"
+                },
+                "today": {
+                    "bsonType": "bool",
+                    "title": "是否当日可用"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "创建时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "type": {
+                    "bsonType": "int",
+                    "title": "类型",
+                    "enum": [
+                        {
+                            "text": "商品券",
+                            "value": 1
+                        },
+                        {
+                            "text": "分类券",
+                            "value": 2
+                        },
+                        {
+                            "text": "店铺券",
+                            "value": 3
+                        }
+                    ]
+                },
+                "style": {
+                    "bsonType": "string",
+                    "title": "类型",
+                    "enum": [
+                        {
+                            "text": "满金额减",
+                            "value": "manjine"
+                        },
+                        {
+                            "text": "满数量减",
+                            "value": "manshuliang"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "cloud_documents": {
+        "data": [
+            {
+                "_id": "043ba0325f2e887a0039aeeb71f2f340",
+                "content": "",
+                "created": "2020-08-08T11:11:54.887Z",
+                "modified": "2020-08-08T11:17:12.526Z",
+                "operator": 10000,
+                "pageLink": "/pages/index/fruit",
+                "pageLinkQuery": "",
+                "shopid": 123457,
+                "title": "波士顿龙虾🦞29.9一只，限售85只，每人限购一只",
+                "type": "mp_share"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_documents_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_type",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "type",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_goods": {
+        "data": [
+            {
+                "_id": "023ce95560025b33049c524b50ef2be1",
+                "banner": "",
+                "categories": [
+                    {
+                        "goodsCount": 12,
+                        "id": 12201,
+                        "isRecommend": 0,
+                        "isShow": 1,
+                        "name": "水果",
+                        "pid": 0,
+                        "posid": 0,
+                        "recommendGoods": 3,
+                        "shopid": 123471,
+                        "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg"
+                    },
+                    {
+                        "checked": true,
+                        "goodsCount": 12,
+                        "id": 12202,
+                        "isShow": 1,
+                        "name": "柑橘橙柚",
+                        "pid": 12201,
+                        "shopid": 123471
+                    }
+                ],
+                "comment": [
+                    {
+                        "content": "好吃好吃，小朋友追着要",
+                        "created": "2020-10-22T06:38:08.068Z",
+                        "goods_id": "f1168d5b5f61a8560016628b11a07cef",
+                        "index": 0,
+                        "order_id": "d81cd5415f75cd5000c600677cf3337b",
+                        "shopid": 123457,
+                        "star": 5,
+                        "starResult": "非常好",
+                        "tags": [
+                            "价格便宜",
+                            "买对了"
+                        ],
+                        "user": {
+                            "avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+                            "id": "9ffb2a485f38964200999b1f07cb7b80",
+                            "nickname": "太***公"
+                        }
+                    }
+                ],
+                "commentCount": 1,
+                "commentTagStatics": {
+                    "买对了": 1,
+                    "价格便宜": 1
+                },
+                "created": 1600235606176,
+                "deleteOperator": 10000,
+                "deliveryTags": [],
+                "description": "",
+                "id": 24427,
+                "imgs": [
+                    "http://market.cjblog.org/goods/7367310443436768.jpg",
+                    "http://market.cjblog.org/goods/6710076119047128.jpg",
+                    "http://market.cjblog.org/goods/578660322075573.jpg",
+                    "http://market.cjblog.org/goods/14967188009900378.jpg"
+                ],
+                "isCategoryShow": 1,
+                "isSold": 1,
+                "modified": 1602417767208,
+                "monthlySale": 3,
+                "offlineNotice": "管理员手动下架",
+                "offlineTime": 1610767500311,
+                "onlineTime": 1610767535738,
+                "onlySelfTake": "0",
+                "operator": "023ce9555ff5a7f503955f6c1e57203a",
+                "originId": "f1168d5b5f61a8560016628b11a07cef",
+                "originPrice": 0,
+                "price": 39.8,
+                "revertOperator": 10000,
+                "revertTime": 1593847312528,
+                "saleType": "yuding",
+                "score": 1,
+                "share": "",
+                "shopid": 123471,
+                "src": "http://market.cjblog.org/goods/40080428010563707.jpg",
+                "starStatics": {
+                    "5": 1
+                },
+                "stock": 50,
+                "subTitle": "小明都说好",
+                "title": "广西小小台农芒果10斤新鲜水果无丝小核热带应季青整箱批发当季包邮",
+                "upc": "6901028316989",
+                "visite": 6,
+                "yuding": {
+                    "beginTime": 1593878400000,
+                    "deduction": 10,
+                    "endTime": 1602421140000,
+                    "finalPaymentBeginTime": 1602507780000,
+                    "finalPaymentEndTime": 1602691140000,
+                    "price": 1,
+                    "sales": 3,
+                    "state": "started"
+                }
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_cate",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "categories.id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_miaosha",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "isSold",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "miaosha.beginTime",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "miaosha.stock",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "miaosha.endTime",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_id",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [
+                "title",
+                "price",
+                "shopid",
+                "stock"
+            ],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "operater": {
+                    "bsonType": "string",
+                    "title": "操作员",
+                    "description": "操作员",
+                    "foreignKey": "uni-id-users._id",
+                    "forceDefaultValue": {
+                        "$env": "uid"
+                    }
+                },
+                "id": {
+                    "bsonType": "int",
+                    "title": "编号"
+                },
+                "src": {
+                    "bsonType": "string",
+                    "title": "封面图",
+                    "component": {
+                        "name": "cloud-image",
+                        "props": {
+                            "name": "src",
+                            "v-model": "formData.src"
+                        }
+                    }
+                },
+                "banner": {
+                    "bsonType": "string",
+                    "title": "横图",
+                    "component": {
+                        "name": "cloud-image",
+                        "props": {
+                            "name": "banner",
+                            "v-model": "formData.banner"
+                        }
+                    }
+                },
+                "title": {
+                    "bsonType": "string",
+                    "title": "商品名称",
+                    "defaultValue": ""
+                },
+                "subTitle": {
+                    "bsonType": "string",
+                    "title": "子标题",
+                    "defaultValue": ""
+                },
+                "price": {
+                    "bsonType": "double",
+                    "title": "销售价格",
+                    "defaultValue": 0
+                },
+                "originPrice": {
+                    "bsonType": "double",
+                    "title": "原价",
+                    "defaultValue": 0
+                },
+                "monthlySale": {
+                    "bsonType": "int",
+                    "title": "月售量",
+                    "defaultValue": 0
+                },
+                "categories": {
+                    "bsonType": "array",
+                    "title": "分类"
+                },
+                "shopid": {
+                    "bsonType": "int",
+                    "title": "店铺",
+                    "description": "商品店铺",
+                    "foreignKey": "cloud_shops.id",
+                    "enum": {
+                        "collection": "cloud_shops",
+                        "field": "name as text, id as value"
+                    }
+                },
+                "stock": {
+                    "bsonType": "int",
+                    "title": "剩余库存",
+                    "defaultValue": 100
+                },
+                "visite": {
+                    "bsonType": "int",
+                    "title": "浏览量",
+                    "defaultValue": 0
+                },
+                "limit": {
+                    "bsonType": "int",
+                    "title": "限购数量",
+                    "description": "0不限制",
+                    "defaultValue": 0
+                },
+                "isCategoryShow": {
+                    "bsonType": "int",
+                    "title": "分类是否显示",
+                    "description": "0 下架 1 在售",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "下架",
+                            "value": 0
+                        },
+                        {
+                            "text": "在售",
+                            "value": 1
+                        }
+                    ]
+                },
+                "isSold": {
+                    "bsonType": "int",
+                    "title": "是否销售",
+                    "description": "销售类型：0 下架 1 在售",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "下架",
+                            "value": 0
+                        },
+                        {
+                            "text": "在售",
+                            "value": 1
+                        }
+                    ]
+                },
+                "isLimit": {
+                    "bsonType": "bool",
+                    "title": "是否限购",
+                    "description": "",
+                    "defaultValue": false
+                },
+                "isNewUser": {
+                    "bsonType": "bool",
+                    "title": "是否新用户",
+                    "description": "",
+                    "defaultValue": false
+                },
+                "isRecommend": {
+                    "bsonType": "bool",
+                    "title": "是否推荐",
+                    "description": "",
+                    "defaultValue": false
+                },
+                "posid": {
+                    "bsonType": "int",
+                    "title": "排序",
+                    "defaultValue": 0
+                },
+                "onlySelfTake": {
+                    "bsonType": "int",
+                    "defaultValue": 0,
+                    "title": "仅自提",
+                    "enum": [
+                        {
+                            "text": "否",
+                            "value": 0
+                        },
+                        {
+                            "text": "是",
+                            "value": 1
+                        }
+                    ]
+                },
+                "saleType": {
+                    "bsonType": "string",
+                    "title": "销售类型",
+                    "enum": [
+                        {
+                            "text": "正常销售",
+                            "value": "normal"
+                        },
+                        {
+                            "text": "提前预定",
+                            "value": "yuding"
+                        },
+                        {
+                            "text": "社区团购",
+                            "value": "tuangou"
+                        }
+                    ]
+                },
+                "score": {
+                    "bsonType": "int",
+                    "title": "评分",
+                    "description": "商品评分，1-10",
+                    "defaultValue": 10
+                },
+                "share": {
+                    "bsonType": "string",
+                    "title": "分享词"
+                },
+                "skus": {
+                    "bsonType": "array",
+                    "title": "多规格"
+                },
+                "skuname": {
+                    "bsonType": "array",
+                    "title": "规格名称"
+                },
+                "specsType": {
+                    "bsonType": "string",
+                    "title": "规格类型",
+                    "enum": [
+                        {
+                            "text": "单规格",
+                            "value": "single"
+                        },
+                        {
+                            "text": "多规格",
+                            "value": "multiple"
+                        }
+                    ]
+                },
+                "storage_condition": {
+                    "bsonType": "string",
+                    "title": "储存条件"
+                },
+                "net_weight": {
+                    "bsonType": "string",
+                    "title": "净重"
+                },
+                "manufacture": {
+                    "bsonType": "string",
+                    "title": "生成日期"
+                },
+                "guarantee_period": {
+                    "bsonType": "string",
+                    "title": "保质期"
+                },
+                "tuangou": {
+                    "bsonType": "object",
+                    "title": "团购信息"
+                },
+                "upc": {
+                    "bsonType": "string",
+                    "title": "条码"
+                },
+                "offlineTime": {
+                    "bsonType": "timestamp",
+                    "title": "下线时间"
+                },
+                "imgs": {
+                    "bsonType": "array",
+                    "title": "轮播图",
+                    "component": {
+                        "name": "cloud-image",
+                        "props": {
+                            "name": "imgs",
+                            "v-model": "formData.imgs",
+                            ":imageNumber": 8
+                        }
+                    }
+                },
+                "description": {
+                    "bsonType": "array",
+                    "title": "详情图",
+                    "component": {
+                        "name": "cloud-image",
+                        "props": {
+                            "name": "description",
+                            "v-model": "formData.description",
+                            ":imageNumber": 10
+                        }
+                    }
+                },
+                "onlineTime": {
+                    "bsonType": "timestamp",
+                    "description": "上架时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                }
+            }
+        }
+    },
+    "cloud_goods_activities": {
+        "data": [],
+        "index": [
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "goods_id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_activities_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_goods_categories": {
+        "data": [
+            {
+                "_id": "0288fce75fd74c7401654c8904be6b93",
+                "children": [
+                    {
+                        "id": 11237,
+                        "isRecommend": 1,
+                        "isShow": 1,
+                        "name": "新鲜蔬菜",
+                        "pid": 11236,
+                        "posid": 18,
+                        "shopid": 123457,
+                        "src": "http://cdn.cjblog.org/da5b2202007231154555810.png"
+                    },
+                    {
+                        "id": 11238,
+                        "isRecommend": 1,
+                        "isShow": 1,
+                        "name": "豆品馒头",
+                        "pid": 11236,
+                        "posid": 26,
+                        "shopid": 123457,
+                        "src": "http://cdn.cjblog.org/2dd5e202007231154557495.png"
+                    }
+                ],
+                "id": 11236,
+                "isRecommend": 1,
+                "isShow": 1,
+                "modified": 1615156781430,
+                "name": "蔬菜豆品",
+                "pid": 0,
+                "posid": 14,
+                "shopid": 123457,
+                "src": "http://cdn.cjblog.org/category/01626040176618415.jpg"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "pid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_categories_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_id",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "operater": {
+                    "bsonType": "string",
+                    "title": "操作员",
+                    "description": "操作员",
+                    "foreignKey": "uni-id-users._id",
+                    "forceDefaultValue": {
+                        "$env": "uid"
+                    }
+                },
+                "goodsCount": {
+                    "bsonType": "int",
+                    "defaultValue": 0,
+                    "title": "商品数量"
+                },
+                "id": {
+                    "bsonType": "int",
+                    "title": "编号"
+                },
+                "src": {
+                    "bsonType": "string",
+                    "title": "图片",
+                    "component": {
+                        "name": "cloud-image",
+                        "props": {
+                            "name": "src",
+                            "v-model": "formData.src"
+                        }
+                    }
+                },
+                "isRecommend": {
+                    "bsonType": "int",
+                    "title": "是否推荐",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "否",
+                            "value": 0
+                        },
+                        {
+                            "text": "是",
+                            "value": 1
+                        }
+                    ]
+                },
+                "isShow": {
+                    "bsonType": "int",
+                    "title": "是否显示",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "否",
+                            "value": 0
+                        },
+                        {
+                            "text": "是",
+                            "value": 1
+                        }
+                    ]
+                },
+                "name": {
+                    "bsonType": "string",
+                    "title": "名称"
+                },
+                "parent_id": {
+                    "bsonType": "string",
+                    "title": "父id",
+                    "description": "父id",
+                    "parentKey": "_id"
+                },
+                "posid": {
+                    "bsonType": "int",
+                    "title": "排序，asc"
+                },
+                "recommendGoods": {
+                    "bsonType": "int",
+                    "defaultValue": 0,
+                    "title": "推荐商品数量"
+                },
+                "shopid": {
+                    "bsonType": "int",
+                    "title": "店铺编号",
+                    "foreignKey": "cloud_shops.id",
+                    "enum": {
+                        "collection": "cloud_shops",
+                        "field": "name as text, id as value"
+                    }
+                }
+            }
+        }
+    },
+    "cloud_goods_comments": {
+        "data": [
+            {
+                "_id": "8e5be7055f7d868e0167b642559a9f74",
+                "content": "官方发个哈哈让他柔荑花人太少是个地方官电饭锅十多个电饭锅电饭锅电饭锅闪电估分电饭锅第三个看了看扩扩扩绿军付过打飞机阿拉丁胡椒粉了解到符合了撒电话费",
+                "created": "2020-10-07T09:12:46.557Z",
+                "goods_id": "cb1edbd6b6b149548723380ae750ebc7",
+                "index": 0,
+                "isShow": true,
+                "operater": "79550af2603f0121080650e4033ca98e",
+                "order_id": "d782d4875f76ca4200c1e04368fcf5be",
+                "reply": "感谢您对我们的支持，在您的鼓励和支持下我们会更加努力！期待您的再次光临~~",
+                "shopid": 123457,
+                "star": 5,
+                "starResult": "非常好",
+                "state": 1,
+                "tags": [
+                    "手感舒适",
+                    "很好用",
+                    "包装贴心又环保"
+                ],
+                "user": {
+                    "avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+                    "id": "9ffb2a485f38964200999b1f07cb7b80",
+                    "nickname": "太阳公公"
+                }
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_goods",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "goods_id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_comments_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "operater": {
+                    "bsonType": "string",
+                    "title": "操作员",
+                    "description": "操作员",
+                    "foreignKey": "uni-id-users._id"
+                },
+                "content": {
+                    "bsonType": "string",
+                    "title": "内容"
+                },
+                "reply": {
+                    "bsonType": "string",
+                    "title": "回复",
+                    "componentForEdit": {
+                        "name": "uni-easyinput",
+                        "props": {
+                            "type": "textarea"
+                        }
+                    }
+                },
+                "goods_id": {
+                    "bsonType": "string",
+                    "title": "商品",
+                    "foreignKey": "cloud_goods._id",
+                    "enum": {
+                        "collection": "cloud_goods",
+                        "field": "title as text, _id as value"
+                    }
+                },
+                "index": {
+                    "bsonType": "int",
+                    "title": "索引"
+                },
+                "order_id": {
+                    "bsonType": "string",
+                    "title": "订单id"
+                },
+                "shopid": {
+                    "bsonType": "int",
+                    "title": "店铺",
+                    "description": "商品店铺",
+                    "foreignKey": "cloud_shops.id",
+                    "enum": {
+                        "collection": "cloud_shops",
+                        "field": "name as text, id as value"
+                    }
+                },
+                "state": {
+                    "bsonType": "int",
+                    "title": "是否显示"
+                },
+                "star": {
+                    "bsonType": "int",
+                    "title": "评分"
+                },
+                "starResult": {
+                    "bsonType": "string",
+                    "title": "评分内容"
+                },
+                "tags": {
+                    "bsonType": "array",
+                    "title": "标签"
+                },
+                "user": {
+                    "bsonType": "object",
+                    "title": "用户信息"
+                }
+            }
+        }
+    },
+    "cloud_goods_day_sales": {
+        "data": [
+            {
+                "_id": "023ce9555ff1ea04033a1be61513bbb4",
+                "day": "20220501",
+                "goods": {}
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_goods_day_sales_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_day",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "day",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            }
+        ],
+        "schema": {
+            "name": "",
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "day": {
+                    "bsonType": "string"
+                },
+                "goods": {
+                    "bsonType": "array"
+                }
+            }
+        }
+    },
+    "cloud_goods_deletes": {
+        "data": [
+            {
+                "_id": "60173c665f51c43a00d93f654e1498dd",
+                "categories": [
+                    {
+                        "id": 1013,
+                        "isShow": 1,
+                        "name": "肉禽蛋",
+                        "pid": 0
+                    }
+                ],
+                "created": 1599194170506,
+                "deleteOperator": "ce805e785ff47078035e08f76c1d753c",
+                "deleteTime": 1611827951135,
+                "description": "",
+                "id": 10057,
+                "imgs": [
+                    "http://market.cjblog.org/goods/3924395551899309.jpg",
+                    "http://market.cjblog.org/goods/1258215925552998.jpg",
+                    "http://market.cjblog.org/goods/9680119282941286.jpg",
+                    "http://market.cjblog.org/goods/20542030947132062.jpg"
+                ],
+                "isCategoryShow": 1,
+                "isSold": 0,
+                "modified": 1611031603146,
+                "monthlySale": 3,
+                "offlineNotice": "管理员手动下架",
+                "offlineTime": 1611827944801,
+                "onlineTime": 1611813624566,
+                "operator": "ce805e785ff47078035e08f76c1d753c",
+                "originPrice": 0,
+                "price": 16.4,
+                "score": 1,
+                "shopid": 123457,
+                "src": "http://market.cjblog.org/goods/8444754049337726.jpg",
+                "stock": 555,
+                "title": "同步商品信息----goodsName",
+                "upc": "123456789",
+                "visite": 16
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_goods_deletes_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_goods_shop_day_sales": {
+        "data": [
+            {
+                "_id": "023ce9555ff48d040378d8e138c5bb37",
+                "day": "20220517",
+                "shops": {}
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_goods_shop_day_sales_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_day",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "day",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            }
+        ]
+    },
+    "cloud_goods_special_activities": {
+        "data": [
+            {
+                "_id": "b333e0365f9fe24d002699f81de2b7b1",
+                "banner": "http://market.cjblog.org/goods/1.jpg",
+                "beginTime": 1588313782526,
+                "description": "很便宜便宜很便宜便宜很便宜便宜，很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜很新鲜",
+                "endTime": 1687980992114,
+                "goods": [
+                    {
+                        "_id": "e373396c5f942e3701e7f97c590cbdde",
+                        "banner": "",
+                        "categories": [
+                            {
+                                "id": 1004,
+                                "isShow": 1,
+                                "name": "水果",
+                                "pid": 0
+                            },
+                            {
+                                "checked": true,
+                                "goodsCount": 12,
+                                "id": 2002,
+                                "name": "柑橘橙柚",
+                                "pid": 1004
+                            }
+                        ],
+                        "default_checked_sku_id": 10000,
+                        "deliveryTags": [
+                            "iceNeed",
+                            "package"
+                        ],
+                        "description": "",
+                        "guarantee_period": "15天",
+                        "id": 10108,
+                        "imgs": [],
+                        "isCategoryShow": 1,
+                        "isRecommend": true,
+                        "isSold": 0,
+                        "modified": 1603000559999,
+                        "monthlySale": 0,
+                        "net_weight": "450g",
+                        "onlySelfTake": 1,
+                        "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                        "originPrice": null,
+                        "price": 43.5,
+                        "saleType": "yuding",
+                        "score": 1,
+                        "selected": true,
+                        "service_purpose": "不好吃包赔;假一赔十",
+                        "shopid": 123457,
+                        "skuname": [
+                            "规格",
+                            "口味"
+                        ],
+                        "skus": [
+                            {
+                                "id": 10000,
+                                "name": "配可乐&gt;原味",
+                                "price": 43.5,
+                                "sales": 31,
+                                "stock": 262
+                            },
+                            {
+                                "id": 10001,
+                                "name": "配可乐&gt;草莓味",
+                                "price": 45.5,
+                                "sales": 7,
+                                "stock": 9
+                            },
+                            {
+                                "id": 10002,
+                                "name": "配牛奶&gt;原味",
+                                "price": 44.5,
+                                "sales": 4,
+                                "stock": 186
+                            },
+                            {
+                                "id": 10003,
+                                "name": "配牛奶&gt;草莓味",
+                                "price": 46.5,
+                                "sales": 2,
+                                "stock": 35
+                            }
+                        ],
+                        "src": "http://market.cjblog.org/goods/cheliz.jpg",
+                        "stock": 492,
+                        "storage_condition": "常温",
+                        "subTitle": "",
+                        "title": "四川樱桃汉源套袋黑珍珠大樱桃新鲜汶川车厘子水果包邮",
+                        "upc": "",
+                        "visite": 0,
+                        "yuding": {
+                            "beginTime": 1593792000000,
+                            "deduction": 20,
+                            "endTime": 1594396799000,
+                            "finalPaymentBeginTime": 1594396800000,
+                            "finalPaymentEndTime": 1594655999000,
+                            "price": 1,
+                            "sales": 100,
+                            "sku_ids": [
+                                10001,
+                                10003
+                            ],
+                            "state": "ended"
+                        }
+                    },
+                    {
+                        "_id": "c54bd3a25f7927cb00d91d380109ef86",
+                        "categories": [
+                            {
+                                "id": 1004,
+                                "isShow": 1,
+                                "name": "大分类一"
+                            },
+                            {
+                                "id": 2002,
+                                "name": "小分类yi"
+                            }
+                        ],
+                        "deliveryTags": [],
+                        "description": "",
+                        "id": 10102,
+                        "imgs": [
+                            "http://market.cjblog.org/goods/1.1.jpg",
+                            "http://market.cjblog.org/goods/1.2.jpg",
+                            "http://market.cjblog.org/goods/1.3.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isRecommend": true,
+                        "isSold": 1,
+                        "miaosha": {
+                            "beginTime": 1589358599810,
+                            "endTime": 1598889600000,
+                            "id": "5e75bd15b1e402004d1dbbce",
+                            "limit": 2,
+                            "price": "97.79",
+                            "rate": 77,
+                            "sales": 47,
+                            "state": "ended",
+                            "stock": 53
+                        },
+                        "modified": 1597893312783,
+                        "monthlySale": 7,
+                        "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                        "originPrice": 0,
+                        "price": 127,
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "src": "http://market.cjblog.org/goods/1.jpg",
+                        "stock": 325,
+                        "subTitle": "",
+                        "title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                        "visite": 6
+                    },
+                    {
+                        "_id": "d81cd5415f717ddd00897ff82c136bc0",
+                        "banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+                        "categories": [
+                            {
+                                "id": 10060,
+                                "isShow": 1,
+                                "name": "新分类",
+                                "pid": 0
+                            },
+                            {
+                                "checked": true,
+                                "goodsCount": 0,
+                                "id": 10061,
+                                "name": "推荐",
+                                "pid": 10060
+                            }
+                        ],
+                        "deliveryTags": [],
+                        "description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+                        "guarantee_period": "",
+                        "id": 10077,
+                        "imgs": [
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isRecommend": false,
+                        "isSold": 1,
+                        "modified": 1603457002222,
+                        "monthlySale": 2,
+                        "net_weight": "",
+                        "onlySelfTake": 1,
+                        "operator": "d782d4875f94166b018f2a9a550aa20f",
+                        "originPrice": 0,
+                        "price": 38.8,
+                        "saleType": "tuangou",
+                        "score": 1,
+                        "selected": true,
+                        "service_purpose": "假一赔十",
+                        "shopid": 123457,
+                        "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+                        "stock": 73,
+                        "storage_condition": "常温",
+                        "subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+                        "title": "社区团购商品测试",
+                        "tuangou": {
+                            "beginTime": 1600411800000,
+                            "endTime": 1605843000000,
+                            "pickup": 1605916800000,
+                            "price": 12.8,
+                            "unit": "组"
+                        },
+                        "upc": "",
+                        "visite": 6
+                    },
+                    {
+                        "_id": "e656fa635f656e1f001a733b1cba3434",
+                        "banner": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_banner/2020-09-19/07536244035638218.jpg",
+                        "categories": [
+                            {
+                                "id": 10060,
+                                "isShow": 1,
+                                "name": "新分类",
+                                "pid": 0
+                            },
+                            {
+                                "checked": true,
+                                "goodsCount": 0,
+                                "id": 10061,
+                                "name": "推荐",
+                                "pid": 10060
+                            }
+                        ],
+                        "deliveryTags": [],
+                        "description": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4650779934196414.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/8614342971322257.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/578148701587901.jpg;https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/6816718633839356.jpg",
+                        "id": 10069,
+                        "imgs": [
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/4329206028974204.jpg",
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/11563556899388572.jpg",
+                            "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_imgs/2020-09-18/7221513059851914.jpg"
+                        ],
+                        "isCategoryShow": 1,
+                        "isSold": 0,
+                        "modified": 1600478905032,
+                        "monthlySale": 0,
+                        "onlySelfTake": 1,
+                        "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                        "originPrice": 0,
+                        "price": 38.8,
+                        "saleType": "tuangou",
+                        "score": 1,
+                        "selected": true,
+                        "shopid": 123457,
+                        "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/goods_face/2020-09-18/25307406643192865.jpg",
+                        "stock": 87,
+                        "subTitle": "买到就是赚到，生产日期2020年8月8日，保质期18个月，正宗抗疲劳，熬夜必备",
+                        "title": "社区团购商品测试",
+                        "tuangou": {
+                            "beginTime": 1600411800000,
+                            "endTime": 1600572600000,
+                            "pickup": 1600646400000,
+                            "price": 12.8,
+                            "unit": "组"
+                        },
+                        "upc": "",
+                        "visite": 0
+                    }
+                ],
+                "goodsType": "grid",
+                "operator": "9ffb2a485f38964200999b1f07cb7b80",
+                "shopid": 123457,
+                "title": "苹果特卖会2222"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_special_activities_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_goods_visites": {
+        "data": [
+            {
+                "_id": "00e4692c5f3cc9af0019545727785e48",
+                "goods_id": 10000,
+                "price": 127,
+                "shopid": 123457,
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/images/goods/1.jpg",
+                "time": 1597819311076,
+                "title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                "uid": "943f30245f3cc9a3001ac3047c5901ee"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "goods_id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_goods_visites_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_identity": {
+        "data": [
+            {
+                "_id": "287a53aa61af1e3700e1b051667087ca",
+                "key": "order_yh_20211207",
+                "value": 10000
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_key",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "key",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            },
+            {
+                "IndexName": "cloud_identity_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_message": {
+        "data": [
+            {
+                "_id": "16db756f6295cdb6053be91f57e5fade",
+                "goods": {
+                    "avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/10/4/1601803230699.jpg?imageMogr2/crop/80x80/gravity/center",
+                    "title": "商品标题"
+                },
+                "page": "/pages/order/detail?id=79550af26041fbaa087668155bdf1883",
+                "title": "您的订单已签收",
+                "user_id": "b00064a760403aa90837cda05a7f6c7d"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud-message_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": "doc.user_id==auth.uid",
+                "delete": "doc.user_id==auth.uid"
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "user_id": {
+                    "bsonType": "string"
+                },
+                "title": {
+                    "bsonType": "string",
+                    "title": "标题"
+                },
+                "content": {
+                    "bsonType": "string",
+                    "title": "内容"
+                },
+                "page": {
+                    "bsonType": "string",
+                    "title": "跳转页面"
+                },
+                "goods": {
+                    "bsonType": "object",
+                    "title": "商品"
+                },
+                "payload": {
+                    "bsonType": "string",
+                    "title": "扩展字段"
+                },
+                "status": {
+                    "bsonType": "int",
+                    "title": "状态",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "未读",
+                            "value": 0
+                        },
+                        {
+                            "text": "已读",
+                            "value": 1
+                        }
+                    ]
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "title": "创建时间"
+                }
+            }
+        }
+    },
+    "cloud_order_refunds": {
+        "data": [
+            {
+                "_id": "023ce9555ff93ef903e283af6805d76f",
+                "created": "2021-01-09T05:28:25.952Z",
+                "description": "申请退款",
+                "fee": 0,
+                "goods": {
+                    "_id": "2f6ab8515feea55400e378751b19338f",
+                    "amount": 1,
+                    "cartId": "21ded5cb5ff69ae004185c4823597f62",
+                    "cartPrice": 127,
+                    "categories": [
+                        {
+                            "goodsCount": 12,
+                            "id": 11899,
+                            "isRecommend": 0,
+                            "isShow": 1,
+                            "name": "水果",
+                            "pid": 0,
+                            "posid": 0,
+                            "recommendGoods": 5,
+                            "shopid": 123469,
+                            "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/4477e7a0-8135-11ea-8a36-ebb87efcf8c0.jpg"
+                        },
+                        {
+                            "goodsCount": 12,
+                            "id": 11900,
+                            "isShow": 1,
+                            "name": "柑橘橙柚",
+                            "pid": 11899,
+                            "shopid": 123469
+                        }
+                    ],
+                    "cutPrice": 0,
+                    "discount": 0,
+                    "hasSku": false,
+                    "id": 24363,
+                    "name": "",
+                    "originPrice": 0,
+                    "price": 127,
+                    "rate": 100,
+                    "refundAmount": 0,
+                    "sku_id": 0,
+                    "sku_index": 0,
+                    "src": "http://market.cjblog.org/goods/1.jpg",
+                    "stock": 221,
+                    "title": "北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                    "totalMoney": 127
+                },
+                "id": 10063084,
+                "index": 0,
+                "orderId": "ce805e785ff93eda03c8aa643f111336",
+                "payInfo": {
+                    "callback": "paySuccess",
+                    "module": "mall",
+                    "name": "货到付款",
+                    "outTradeNo": "16101700854412e99e0da5bf62f189",
+                    "platform": "mp-weixin",
+                    "time": "2021-01-09T05:28:05.511Z",
+                    "totalFee": 0,
+                    "tradeStatus": "TRADE_SUCCESS",
+                    "type": "delivery",
+                    "typeName": "",
+                    "uid": "023ce9555ff5a7f503955f6c1e57203a"
+                },
+                "reason": "",
+                "refundApplyAmount": 1,
+                "refundContent": "",
+                "refundImgs": [],
+                "refundMax": 1,
+                "refundReason": "未收到货",
+                "refundType": "退款退货",
+                "shopid": 123469,
+                "state": "verifying",
+                "steps": [
+                    {
+                        "desc": "您的退款已申请成功，待客服审核中",
+                        "time": "2021-01-09T05:28:25.952Z",
+                        "title": "提交申请"
+                    }
+                ],
+                "uid": "023ce9555ff5a7f503955f6c1e57203a"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_order_refunds_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_orders": {
+        "data": [
+            {
+                "_id": "0288fce75fb4a20b00007070406e3172",
+                "address": {},
+                "body": "越南进口香玉芒9斤装当季新鲜水果批发整箱包邮大青皮芒果10配",
+                "cancelStyle": "auto",
+                "cartCount": 1,
+                "created": "2020-11-18T04:24:42.954Z",
+                "deliveryHour": {
+                    "checked": true,
+                    "endTime": 1605677400000,
+                    "id": 1605673800000,
+                    "name": "今天 ",
+                    "number": 1018278038,
+                    "password": "17567670",
+                    "time": "12:30-13:30"
+                },
+                "deliveryType": "selfRaising",
+                "freight": 0,
+                "freightTitle": "免配送费",
+                "goods": [
+                    {
+                        "_id": "9c44bc3a70f04f9f9b9547818a7c2ce9",
+                        "amount": 1,
+                        "cartId": "none",
+                        "cartPrice": 0,
+                        "cutPrice": 0,
+                        "hasSku": true,
+                        "id": 10007,
+                        "name": "配牛奶,草莓味",
+                        "onlySelfTake": "0",
+                        "originPrice": null,
+                        "price": 45.5,
+                        "sales": 21,
+                        "sku_id": 10003,
+                        "sku_index": 3,
+                        "src": "http://market.cjblog.org/goods/mangguo.jpg",
+                        "stock": 74,
+                        "title": "越南进口香玉芒9斤装当季新鲜水果批发整箱包邮大青皮芒果10",
+                        "upc": "6922646113811"
+                    }
+                ],
+                "id": "2020111812244387867731",
+                "inviter_uid": "",
+                "isDelete": 0,
+                "juli": 0,
+                "lastPayTime": 1605673783013,
+                "modified": "2020-11-18T04:31:10.113Z",
+                "platform": "ios,h5",
+                "remark": "",
+                "selfRaising": {
+                    "mobile": "13500135000",
+                    "name": "元旦"
+                },
+                "shop": {
+                    "_id": "faf20935850e4e81a3fc8ce87548948f",
+                    "address": "西城街道办事处渝南大道1号6幢负1-1(泽京时代香格里拉西苑)",
+                    "currency": "cny",
+                    "delivery": {
+                        "deliveryDay": 4,
+                        "deliveryPeriod": [
+                            {
+                                "begin": 28800,
+                                "end": 32400
+                            },
+                            {
+                                "begin": 32400,
+                                "end": 45000
+                            },
+                            {
+                                "begin": 45000,
+                                "end": 48600
+                            },
+                            {
+                                "begin": 48600,
+                                "end": 52200
+                            },
+                            {
+                                "begin": 52200,
+                                "end": 55800
+                            },
+                            {
+                                "begin": 55800,
+                                "end": 59400
+                            },
+                            {
+                                "begin": 59400,
+                                "end": 63000
+                            },
+                            {
+                                "begin": 63000,
+                                "end": 66600
+                            },
+                            {
+                                "begin": 66600,
+                                "end": 70200
+                            },
+                            {
+                                "begin": 70200,
+                                "end": 73800
+                            },
+                            {
+                                "begin": 73800,
+                                "end": 77400
+                            }
+                        ],
+                        "freeMoney": 10,
+                        "maxDistance": 5000,
+                        "minDistance": 5,
+                        "minPrice": 10,
+                        "money": 5,
+                        "perMoney": 1,
+                        "time": 30,
+                        "timeStep": 3600
+                    },
+                    "deliverySupportType": 3,
+                    "deliveryTypes": [
+                        "selfRaising"
+                    ],
+                    "exchangeRate": 1,
+                    "id": 123457,
+                    "latitude": 29.154957,
+                    "longitude": 107.082709,
+                    "name": "渝之道-南川店",
+                    "phone": "18883380303",
+                    "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
+                    "uid": "9ffb2a485f38964200999b1f07cb7b80"
+                },
+                "shopid": 123457,
+                "state": -1,
+                "stockNotEnough": [],
+                "timeConsumingInfo": {
+                    "beginTime": 1605673482836,
+                    "consuming": 177,
+                    "endTime": 1605673483013
+                },
+                "totalDiscount": 0,
+                "totalMoney": 45.5,
+                "uid": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                "userInfo": {
+                    "avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+                    "id": 10446,
+                    "nickname": "太阳公公",
+                    "uid": "b4f7b7d25fb3775d00b0de4f5d854ee2"
+                }
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_shop_state",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_orders_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_outTradeNo",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "outTradeNo",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "isDelete",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_selfraising",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "raisingPoint._id",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "operater": {
+                    "bsonType": "string",
+                    "title": "操作员",
+                    "description": "操作员",
+                    "foreignKey": "uni-id-users._id",
+                    "forceDefaultValue": {
+                        "$env": "uid"
+                    }
+                },
+                "id": {
+                    "bsonType": "int",
+                    "title": "编号"
+                },
+                "address": {
+                    "bsonType": "object",
+                    "title": "地址"
+                },
+                "body": {
+                    "bsonType": "string",
+                    "title": "内容"
+                },
+                "cancelApply": {
+                    "bsonType": "array",
+                    "title": "取消订单请求"
+                },
+                "cancelStyle": {
+                    "bsonType": "string",
+                    "title": "取消类型",
+                    "enum": [
+                        {
+                            "text": "自动",
+                            "value": "auto"
+                        },
+                        {
+                            "text": "用户",
+                            "value": "user"
+                        },
+                        {
+                            "text": "商家",
+                            "value": "shop"
+                        }
+                    ]
+                },
+                "cartCount": {
+                    "bsonType": "int",
+                    "title": "购物车数量"
+                },
+                "deliveryHour": {
+                    "bsonType": "object",
+                    "title": "配送时间"
+                },
+                "deliveryType": {
+                    "bsonType": "string",
+                    "title": "配送方式",
+                    "enum": [
+                        {
+                            "text": "送到家",
+                            "value": "deliveryHome"
+                        },
+                        {
+                            "text": "自提",
+                            "value": "selfRaising"
+                        }
+                    ]
+                },
+                "freight": {
+                    "bsonType": "double",
+                    "title": "运费"
+                },
+                "goods": {
+                    "bsonType": "array",
+                    "title": "商品"
+                },
+                "isDelete": {
+                    "bsonType": "int",
+                    "title": "是否删除",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "否",
+                            "value": 0
+                        },
+                        {
+                            "text": "是",
+                            "value": 1
+                        }
+                    ]
+                },
+                "juli": {
+                    "bsonType": "double",
+                    "title": "距离"
+                },
+                "lastPayTime": {
+                    "bsonType": "timestamp",
+                    "title": "最后支付时间"
+                },
+                "platform": {
+                    "bsonType": "string",
+                    "title": "操作平台"
+                },
+                "remark": {
+                    "bsonType": "string",
+                    "title": "备注"
+                },
+                "shopid": {
+                    "bsonType": "int",
+                    "title": "店铺",
+                    "description": "商品店铺",
+                    "foreignKey": "cloud_shops.id",
+                    "enum": {
+                        "collection": "cloud_shops",
+                        "field": "name as text, id as value"
+                    }
+                },
+                "state": {
+                    "bsonType": "int",
+                    "title": "状态"
+                },
+                "totalDiscount": {
+                    "bsonType": "double",
+                    "title": "优惠金额"
+                },
+                "totalMoney": {
+                    "bsonType": "double",
+                    "title": "总金额"
+                },
+                "uid": {
+                    "bsonType": "string",
+                    "title": "用户",
+                    "description": "用户",
+                    "enum": {
+                        "collection": "uni-id-users",
+                        "field": "_id as value, nickname as text"
+                    },
+                    "foreignKey": "uni-id-users._id"
+                }
+            }
+        }
+    },
+    "cloud_printer_types": {
+        "data": [
+            {
+                "_id": "65825b355f45cf32004af858414ab086",
+                "clientId": "1053604898",
+                "clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+                "module": "yilianyun",
+                "name": "易联云k4"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud-printer-types_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_self_raising_points": {
+        "data": [
+            {
+                "_id": "28ee4e3e601277070185f80619625dc2",
+                "address": "永东茶馆",
+                "approved": {
+                    "123458": {
+                        "operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                        "time": 1606706492247
+                    },
+                    "123460": {
+                        "operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                        "time": 1608022570790
+                    },
+                    "123462": {
+                        "operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                        "time": 1608022779477
+                    }
+                },
+                "commission": 131.25,
+                "created": "2020-11-30T03:21:15.957Z",
+                "head": "",
+                "inside": "",
+                "latitude": 29.1703,
+                "location": {
+                    "coordinates": [
+                        107.008577,
+                        29.1703
+                    ],
+                    "type": "Point"
+                },
+                "longitude": 107.008577,
+                "mobile": "15986613313",
+                "modified": "2020-11-30T03:21:15.957Z",
+                "name": "茶馆",
+                "rate": 2,
+                "rateShop": {
+                    "123458": 12,
+                    "123460": 1,
+                    "123462": 0
+                },
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/11/30/1606706442415.jpg",
+                "state": 1,
+                "uid": "b4f7b7d25fb3775d00b0de4f5d854ee2"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_self_raising_points_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_location",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "location",
+                            "Direction": "2dsphere"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [
+                "address",
+                "latitude",
+                "longitude",
+                "mobile",
+                "name"
+            ],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "address": {
+                    "bsonType": "string",
+                    "title": "地址",
+                    "description": "详细地址"
+                },
+                "latitude": {
+                    "bsonType": "double",
+                    "title": "维度"
+                },
+                "longitude": {
+                    "bsonType": "double",
+                    "title": "经度"
+                },
+                "location": {
+                    "bsonType": "object",
+                    "title": "地理位置",
+                    "description": "经纬度地址"
+                },
+                "mobile": {
+                    "bsonType": "string",
+                    "title": "电话",
+                    "description": ""
+                },
+                "name": {
+                    "bsonType": "string",
+                    "title": "名称"
+                },
+                "src": {
+                    "bsonType": "string",
+                    "title": "封面图",
+                    "description": ""
+                },
+                "uid": {
+                    "bsonType": "string",
+                    "title": "用户",
+                    "description": ""
+                },
+                "rate": {
+                    "bsonType": "int",
+                    "title": "分成比例",
+                    "description": "百分比"
+                },
+                "state": {
+                    "bsonType": "int",
+                    "title": "状态",
+                    "description": "",
+                    "defaultValue": 0,
+                    "enum": [
+                        {
+                            "text": "审核中",
+                            "value": 0
+                        },
+                        {
+                            "text": "通过",
+                            "value": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "cloud_shop_apply": {
+        "data": [
+            {
+                "_id": "287a53aa61b7128d01e386516bd8c33c",
+                "address": "重庆市南川区",
+                "addressName": "廖家沟",
+                "business_license": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/business_license/2021-12-13/9511560158361021.jpg",
+                "created": 1639387788749,
+                "currency": "cny",
+                "deliveryTypes": [
+                    "deliveryHome"
+                ],
+                "exchangeRate": 1,
+                "food_license": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/food_license/2021-12-13/050386315522599645.jpg",
+                "id": 10002,
+                "latitude": 29.18364,
+                "longitude": 107.01172,
+                "modified": 1639387788749,
+                "name": "问问",
+                "phone": "13500135000",
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/src/images/2021/12/13/1639387703713.jpg",
+                "state": 2,
+                "uid": "79550af260496f5e09643ebd09c0a413"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_shop_apply_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": true,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "address": {
+                    "bsonType": "string",
+                    "title": "地址",
+                    "description": "店铺详细地址"
+                },
+                "addressName": {
+                    "bsonType": "string",
+                    "title": "地址简称",
+                    "description": "店铺地址简称，例如：鸿升大厦"
+                },
+                "banner": {
+                    "bsonType": "string",
+                    "title": "banner",
+                    "description": ""
+                },
+                "currency": {
+                    "bsonType": "string",
+                    "title": "币种",
+                    "description": "",
+                    "defaultValue": "cny",
+                    "enum": [
+                        {
+                            "text": "￥人民币",
+                            "value": "cny"
+                        },
+                        {
+                            "text": "A$澳币",
+                            "value": "aud"
+                        },
+                        {
+                            "text": "美金",
+                            "value": "usd"
+                        },
+                        {
+                            "text": "C$加拿大元",
+                            "value": "cad"
+                        },
+                        {
+                            "text": "€欧元",
+                            "value": "eur"
+                        },
+                        {
+                            "text": "£英镑",
+                            "value": "gbp"
+                        },
+                        {
+                            "text": "NZ$新西兰元",
+                            "value": "nzd"
+                        },
+                        {
+                            "text": "JP¥日元",
+                            "value": "jpy"
+                        },
+                        {
+                            "text": "₩韩元",
+                            "value": "krw"
+                        }
+                    ]
+                },
+                "delivery": {
+                    "bsonType": "object",
+                    "title": "配送方式",
+                    "properties": {
+                        "deliveryDay": {
+                            "bsonType": "int",
+                            "title": "最多可预订天数",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "deliveryPeriod": {
+                            "bsonType": "array",
+                            "title": "每日预定时段",
+                            "properties": {
+                                "begin": {
+                                    "bsonType": "int",
+                                    "title": "开始秒数"
+                                },
+                                "end": {
+                                    "bsonType": "int",
+                                    "title": "结束秒数"
+                                }
+                            }
+                        },
+                        "freeMoney": {
+                            "bsonType": "int",
+                            "title": "满金额免运费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "maxDistance": {
+                            "bsonType": "int",
+                            "title": "最远服务里程km",
+                            "minimum": 1,
+                            "maximum": 1000
+                        },
+                        "minDistance": {
+                            "bsonType": "int",
+                            "title": "服务里程",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "minPrice": {
+                            "bsonType": "int",
+                            "title": "起送金额",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "money": {
+                            "bsonType": "double",
+                            "title": "不满起送金额运费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "perMoney": {
+                            "bsonType": "double",
+                            "title": "超里程费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "time": {
+                            "bsonType": "int",
+                            "title": "预计送达时间",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "timeStep": {
+                            "bsonType": "string",
+                            "title": "时段步长",
+                            "defaultValue": "1800",
+                            "enum": [
+                                {
+                                    "text": "半小时",
+                                    "value": "1800"
+                                },
+                                {
+                                    "text": "1小时",
+                                    "value": "3600"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "deliveryTypes": {
+                    "bsonType": "array",
+                    "title": "配送方式",
+                    "defaultValue": "deliveryHome",
+                    "enum": [
+                        {
+                            "text": "配送到家",
+                            "value": "deliveryHome"
+                        },
+                        {
+                            "text": "到店/自提点自提",
+                            "value": "selfRaising"
+                        }
+                    ]
+                },
+                "exchangeRate": {
+                    "bsonType": "double",
+                    "title": "汇率",
+                    "defaultValue": 1
+                },
+                "goodsCommentTags": {
+                    "bsonType": "array",
+                    "title": "商品评论标签"
+                },
+                "id": {
+                    "bsonType": "int",
+                    "title": "店铺编号",
+                    "description": "创建自动生成"
+                },
+                "isPrint": {
+                    "bsonType": "bool",
+                    "title": "是否开启打印",
+                    "description": ""
+                },
+                "latitude": {
+                    "bsonType": "double",
+                    "title": "维度",
+                    "description": ""
+                },
+                "longitude": {
+                    "bsonType": "double",
+                    "title": "经度",
+                    "description": ""
+                },
+                "lnglat": {
+                    "bsonType": "object",
+                    "title": "位置",
+                    "description": ""
+                },
+                "monthSale": {
+                    "bsonType": "int",
+                    "title": "月售",
+                    "description": "近30天销售"
+                },
+                "name": {
+                    "bsonType": "string",
+                    "title": "店铺名称",
+                    "description": ""
+                },
+                "notice": {
+                    "bsonType": "string",
+                    "title": "店铺公告",
+                    "description": ""
+                },
+                "online": {
+                    "bsonType": "bool",
+                    "title": "支付营业",
+                    "description": ""
+                },
+                "phone": {
+                    "bsonType": "string",
+                    "title": "联系电话",
+                    "description": ""
+                },
+                "score": {
+                    "bsonType": "double",
+                    "title": "评分",
+                    "description": ""
+                },
+                "searchGoodsKeywords": {
+                    "bsonType": "array",
+                    "title": "商品搜索词"
+                },
+                "selfRaising": {
+                    "bsonType": "object",
+                    "title": "自提点",
+                    "properties": {
+                        "point": {
+                            "bsonType": "bool",
+                            "title": "开启自提点",
+                            "description": "",
+                            "defaultValue": false
+                        },
+                        "distance": {
+                            "bsonType": "int",
+                            "title": "覆盖半径",
+                            "description": "覆盖半径",
+                            "defaultValue": 5000
+                        }
+                    }
+                },
+                "serviceTime": {
+                    "bsonType": "string",
+                    "title": "服务时间",
+                    "description": ""
+                },
+                "src": {
+                    "bsonType": "string",
+                    "title": "店铺logo",
+                    "description": ""
+                },
+                "uid": {
+                    "bsonType": "string",
+                    "title": "创建者",
+                    "description": "",
+                    "foreignKey": "uni-id-users._id",
+                    "defaultValue": {
+                        "$env": "uid"
+                    }
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "defaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "selfRaisingPoint": {
+                    "bsonType": "bool",
+                    "title": "自提点"
+                },
+                "state": {
+                    "bsonType": "int",
+                    "description": "状态类型,1审核中，2通过，3拒绝",
+                    "title": "是否启用"
+                },
+                "video": {
+                    "bsonType": "bool",
+                    "title": "是否启用视频"
+                },
+                "dayStatisticsLog": {
+                    "bsonType": "string",
+                    "title": "统计日期"
+                },
+                "deliverySupportType": {
+                    "bsonType": "int",
+                    "title": "配送支持类型"
+                },
+                "lastPayTimeMinute": {
+                    "bsonType": "int",
+                    "title": "支付等待时长（分）"
+                },
+                "hasManjian": {
+                    "bsonType": "int",
+                    "title": "是否满减"
+                },
+                "stationId": {
+                    "bsonType": "int",
+                    "title": "分站id"
+                },
+                "perCapita": {
+                    "bsonType": "double",
+                    "title": "人均消费"
+                },
+                "coupons": {
+                    "bsonType": "object",
+                    "title": "优惠券"
+                },
+                "goods": {
+                    "bsonType": "object",
+                    "title": "商品统计"
+                },
+                "order": {
+                    "bsonType": "object",
+                    "title": "订单统计"
+                },
+                "pages": {
+                    "bsonType": "object",
+                    "title": "页面配置"
+                },
+                "addressObject": {
+                    "bsonType": "object",
+                    "title": "地址完整信息"
+                },
+                "manjians": {
+                    "bsonType": "array",
+                    "title": "满减信息"
+                },
+                "printers": {
+                    "bsonType": "array",
+                    "title": "打印机"
+                },
+                "categories": {
+                    "bsonType": "array",
+                    "title": "店铺分类"
+                },
+                "serviceArea": {
+                    "bsonType": "array",
+                    "title": "服务范围"
+                },
+                "operator": {
+                    "bsonType": "string",
+                    "title": "后台操作人"
+                },
+                "business_license": {
+                    "bsonType": "string",
+                    "title": "营业执照"
+                },
+                "food_license": {
+                    "bsonType": "string",
+                    "title": "食品经营许可"
+                }
+            }
+        }
+    },
+    "cloud_shop_comments": {
+        "data": [],
+        "index": [
+            {
+                "IndexName": "cloud_shop_comments_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_shop_express_templates": {
+        "data": [],
+        "index": [
+            {
+                "IndexName": "cloud_shop_express_templates_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "name": "快递运费模板",
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": false,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "name": {
+                    "bsonType": "string",
+                    "title": "模板名称"
+                },
+                "type": {
+                    "bsonType": "string",
+                    "title": "计算类型",
+                    "defaultValue": "amount",
+                    "enum": [
+                        {
+                            "text": "数量",
+                            "value": "amount"
+                        },
+                        {
+                            "text": "重量",
+                            "value": "weight"
+                        }
+                    ]
+                },
+                "configs": {
+                    "bsonType": "array",
+                    "title": "详细配置",
+                    "properties": {
+                        "isDefault": {
+                            "bsonType": "bool",
+                            "title": "是否默认"
+                        },
+                        "firstMoney": {
+                            "bsonType": "double",
+                            "title": "首费"
+                        },
+                        "firstAmount": {
+                            "bsonType": "double",
+                            "title": "首件"
+                        },
+                        "perAmount": {
+                            "bsonType": "double",
+                            "title": "续件"
+                        },
+                        "perMoney": {
+                            "bsonType": "double",
+                            "title": "续费"
+                        },
+                        "region": {
+                            "bsonType": "array",
+                            "title": "地区"
+                        }
+                    }
+                },
+                "status": {
+                    "bsonType": "bool",
+                    "title": "是否启用"
+                }
+            }
+        }
+    },
+    "cloud_shop_statistics": {
+        "data": [
+            {
+                "_id": "023ce95560045f4804c5246d246d25a8",
+                "day": "20210118",
+                "dayIndex": 0,
+                "order": {
+                    "paid": 0,
+                    "users": []
+                },
+                "shopid": 123469,
+                "turnover": 0,
+                "visitor": [
+                    "21ded5cb5ffe633004c7a7bf4243468d"
+                ]
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_shop",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "day",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            },
+            {
+                "IndexName": "cloud_shop_statistics_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_shops": {
+        "data": [
+            {
+                "_id": "381d149061b7171b02527d6b25b063f6",
+                "address": "朝阳区京广商务中心(朝阳门外大街北)",
+                "addressName": "廖家沟",
+                "addressObject": {
+                    "adcode": "110105",
+                    "addres": "北京市朝阳区朝阳门外大街1号",
+                    "city": "北京市",
+                    "city_code": "156110000",
+                    "district": "朝阳区",
+                    "latitude": 39.919958858055814,
+                    "location": {
+                        "coordinates": [
+                            116.46051498413085,
+                            39.919958858055814
+                        ],
+                        "type": "Point"
+                    },
+                    "longitude": 116.46051498413085,
+                    "name": "朝阳区京广商务中心(朝阳门外大街北)",
+                    "nation": "中国",
+                    "nation_code": "156",
+                    "province": "北京市"
+                },
+                "banner": null,
+                "business_license": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/business_license/2021-12-13/9511560158361021.jpg",
+                "created": 1639388955077,
+                "currency": "cny",
+                "delivery": {
+                    "deliveryDay": 4,
+                    "deliveryPeriod": [],
+                    "fastestDeliveryDay": 1,
+                    "freeMoney": 20,
+                    "maxDistance": 5000,
+                    "minDistance": 5,
+                    "minPrice": 20,
+                    "money": 5,
+                    "perMoney": 1,
+                    "time": 30,
+                    "timeStep": 1800
+                },
+                "deliveryTypes": [
+                    "deliveryHome"
+                ],
+                "exchangeRate": 1,
+                "food_license": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/food_license/2021-12-13/050386315522599645.jpg",
+                "id": 10002,
+                "latitude": 39.919958858055814,
+                "lnglat": {
+                    "coordinates": [
+                        116.46051498413085,
+                        39.919958858055814
+                    ],
+                    "type": "Point"
+                },
+                "longitude": 116.46051498413085,
+                "modified": 1639388955077,
+                "name": "问问",
+                "phone": "13500135000",
+                "serviceTime": "早上7点到晚上10点",
+                "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/src/images/2021/12/13/1639387703713.jpg",
+                "state": true,
+                "uid": "79550af260496f5e09643ebd09c0a413"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_lonlat",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "lnglat",
+                            "Direction": "2dsphere"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_shops_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_id",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": true
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                },
+                "address": {
+                    "bsonType": "string",
+                    "title": "地址",
+                    "description": "店铺详细地址"
+                },
+                "addressName": {
+                    "bsonType": "string",
+                    "title": "地址简称",
+                    "description": "店铺地址简称，例如：鸿升大厦"
+                },
+                "banner": {
+                    "bsonType": "string",
+                    "title": "banner",
+                    "description": ""
+                },
+                "currency": {
+                    "bsonType": "string",
+                    "title": "币种",
+                    "description": "",
+                    "defaultValue": "cny",
+                    "enum": [
+                        {
+                            "text": "￥人民币",
+                            "value": "cny"
+                        },
+                        {
+                            "text": "A$澳币",
+                            "value": "aud"
+                        },
+                        {
+                            "text": "美金",
+                            "value": "usd"
+                        },
+                        {
+                            "text": "C$加拿大元",
+                            "value": "cad"
+                        },
+                        {
+                            "text": "€欧元",
+                            "value": "eur"
+                        },
+                        {
+                            "text": "£英镑",
+                            "value": "gbp"
+                        },
+                        {
+                            "text": "NZ$新西兰元",
+                            "value": "nzd"
+                        },
+                        {
+                            "text": "JP¥日元",
+                            "value": "jpy"
+                        },
+                        {
+                            "text": "₩韩元",
+                            "value": "krw"
+                        }
+                    ]
+                },
+                "delivery": {
+                    "bsonType": "object",
+                    "title": "配送方式",
+                    "properties": {
+                        "deliveryDay": {
+                            "bsonType": "int",
+                            "title": "最多可预订天数",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "deliveryPeriod": {
+                            "bsonType": "array",
+                            "title": "每日预定时段",
+                            "properties": {
+                                "begin": {
+                                    "bsonType": "int",
+                                    "title": "开始秒数"
+                                },
+                                "end": {
+                                    "bsonType": "int",
+                                    "title": "结束秒数"
+                                }
+                            }
+                        },
+                        "freeMoney": {
+                            "bsonType": "int",
+                            "title": "满金额免运费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "maxDistance": {
+                            "bsonType": "int",
+                            "title": "最远服务里程km",
+                            "minimum": 1,
+                            "maximum": 1000
+                        },
+                        "minDistance": {
+                            "bsonType": "int",
+                            "title": "服务里程",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "minPrice": {
+                            "bsonType": "int",
+                            "title": "起送金额",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "money": {
+                            "bsonType": "double",
+                            "title": "不满起送金额运费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "perMoney": {
+                            "bsonType": "double",
+                            "title": "超里程费",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "time": {
+                            "bsonType": "int",
+                            "title": "预计送达时间",
+                            "minimum": 1,
+                            "maximum": 100
+                        },
+                        "timeStep": {
+                            "bsonType": "string",
+                            "title": "时段步长",
+                            "defaultValue": "1800",
+                            "enum": [
+                                {
+                                    "text": "半小时",
+                                    "value": "1800"
+                                },
+                                {
+                                    "text": "1小时",
+                                    "value": "3600"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "deliveryTypes": {
+                    "bsonType": "array",
+                    "title": "配送方式",
+                    "defaultValue": "deliveryHome",
+                    "enum": [
+                        {
+                            "text": "配送到家",
+                            "value": "deliveryHome"
+                        },
+                        {
+                            "text": "到店/自提点自提",
+                            "value": "selfRaising"
+                        }
+                    ]
+                },
+                "exchangeRate": {
+                    "bsonType": "double",
+                    "title": "汇率",
+                    "defaultValue": 1
+                },
+                "goodsCommentTags": {
+                    "bsonType": "array",
+                    "title": "商品评论标签"
+                },
+                "id": {
+                    "bsonType": "int",
+                    "title": "店铺编号",
+                    "description": "创建自动生成"
+                },
+                "isPrint": {
+                    "bsonType": "bool",
+                    "title": "是否开启打印",
+                    "description": ""
+                },
+                "latitude": {
+                    "bsonType": "double",
+                    "title": "维度",
+                    "description": ""
+                },
+                "longitude": {
+                    "bsonType": "double",
+                    "title": "经度",
+                    "description": ""
+                },
+                "lnglat": {
+                    "bsonType": "object",
+                    "title": "位置",
+                    "description": ""
+                },
+                "monthSale": {
+                    "bsonType": "int",
+                    "title": "月售",
+                    "description": "近30天销售"
+                },
+                "name": {
+                    "bsonType": "string",
+                    "title": "店铺名称",
+                    "description": ""
+                },
+                "notice": {
+                    "bsonType": "string",
+                    "title": "店铺公告",
+                    "description": ""
+                },
+                "online": {
+                    "bsonType": "bool",
+                    "title": "支付营业",
+                    "description": ""
+                },
+                "phone": {
+                    "bsonType": "string",
+                    "title": "联系电话",
+                    "description": ""
+                },
+                "score": {
+                    "bsonType": "double",
+                    "title": "评分",
+                    "description": ""
+                },
+                "searchGoodsKeywords": {
+                    "bsonType": "array",
+                    "title": "商品搜索词"
+                },
+                "selfRaising": {
+                    "bsonType": "object",
+                    "title": "自提点",
+                    "properties": {
+                        "point": {
+                            "bsonType": "bool",
+                            "title": "开启自提点",
+                            "description": "",
+                            "defaultValue": false
+                        },
+                        "distance": {
+                            "bsonType": "int",
+                            "title": "覆盖半径",
+                            "description": "覆盖半径",
+                            "defaultValue": 5000
+                        }
+                    }
+                },
+                "serviceTime": {
+                    "bsonType": "string",
+                    "title": "服务时间",
+                    "description": ""
+                },
+                "src": {
+                    "bsonType": "string",
+                    "title": "店铺logo",
+                    "description": ""
+                },
+                "uid": {
+                    "bsonType": "string",
+                    "title": "创建者",
+                    "description": "",
+                    "foreignKey": "uni-id-users._id",
+                    "defaultValue": {
+                        "$env": "uid"
+                    }
+                },
+                "created": {
+                    "bsonType": "timestamp",
+                    "description": "上传时间",
+                    "forceDefaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "modified": {
+                    "bsonType": "timestamp",
+                    "description": "修改时间",
+                    "defaultValue": {
+                        "$env": "now"
+                    }
+                },
+                "selfRaisingPoint": {
+                    "bsonType": "bool",
+                    "title": "自提点"
+                },
+                "state": {
+                    "bsonType": "bool",
+                    "title": "是否启用"
+                },
+                "video": {
+                    "bsonType": "bool",
+                    "title": "是否启用视频"
+                },
+                "dayStatisticsLog": {
+                    "bsonType": "string",
+                    "title": "统计日期"
+                },
+                "deliverySupportType": {
+                    "bsonType": "int",
+                    "title": "配送支持类型"
+                },
+                "lastPayTimeMinute": {
+                    "bsonType": "int",
+                    "title": "支付等待时长（分）"
+                },
+                "hasManjian": {
+                    "bsonType": "int",
+                    "title": "是否满减"
+                },
+                "stationId": {
+                    "bsonType": "int",
+                    "title": "分站id"
+                },
+                "perCapita": {
+                    "bsonType": "double",
+                    "title": "人均消费"
+                },
+                "coupons": {
+                    "bsonType": "object",
+                    "title": "优惠券"
+                },
+                "goods": {
+                    "bsonType": "object",
+                    "title": "商品统计"
+                },
+                "order": {
+                    "bsonType": "object",
+                    "title": "订单统计"
+                },
+                "pages": {
+                    "bsonType": "object",
+                    "title": "页面配置"
+                },
+                "addressObject": {
+                    "bsonType": "object",
+                    "title": "地址完整信息"
+                },
+                "manjians": {
+                    "bsonType": "array",
+                    "title": "满减信息"
+                },
+                "printers": {
+                    "bsonType": "array",
+                    "title": "打印机"
+                },
+                "categories": {
+                    "bsonType": "array",
+                    "title": "店铺分类"
+                },
+                "serviceArea": {
+                    "bsonType": "array",
+                    "title": "服务范围"
+                },
+                "operator": {
+                    "bsonType": "string",
+                    "title": "后台操作人"
+                }
+            }
+        }
+    },
+    "cloud_user_balance_logs": {
+        "data": [
+            {
+                "_id": "00e4692c5f3b8095000c76ac0215e555",
+                "balance": 99510.05,
+                "created": "2020-08-18T07:17:41.672Z",
+                "description": "购买:北京北寨红杏5斤包邮正宗平谷金太阳现摘新鲜孕妇水果杏子礼盒装",
+                "money": 97.79,
+                "orderId": "2020081807172805262885",
+                "type": 0,
+                "uid": "9ffb2a485f38964200999b1f07cb7b80"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "index_cash",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "cashout._id",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "cloud_user_balance_logs_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_outRefundNo",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "outRefundNo",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "cloud_user_cashouts": {
+        "data": [
+            {
+                "_id": "28ee4e3e600d3b9000c51bd81a04dcb9",
+                "created": 1611479952229,
+                "money": 1.25,
+                "state": -2,
+                "uid": "21ded5cb5ffc2237049644751ebdfe6a",
+                "user": {
+                    "_id": "21ded5cb5ffc2237049644751ebdfe6a",
+                    "balance": 614.9,
+                    "id": 10530,
+                    "last_login_date": 1611464062175,
+                    "mobile": "15986613315",
+                    "nickname": "游客中心",
+                    "register_date": 1610359351508,
+                    "role": [
+                        "admin"
+                    ],
+                    "wx_openid": {
+                        "mp-weixin": "oXpHq0ASLsN6cYLKaTIYG1dlnGAM"
+                    }
+                }
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_user_cashouts_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_state",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ],
+        "schema": {
+            "bsonType": "object",
+            "required": [],
+            "permission": {
+                "read": true,
+                "create": false,
+                "update": false,
+                "delete": false
+            },
+            "properties": {
+                "_id": {
+                    "description": "ID，系统自动生成"
+                }
+            }
+        }
+    },
+    "cloud_videos": {
+        "data": [
+            {
+                "_id": "0288fce75fd0a22200fb4664423586ff",
+                "content": "好不好玩 刺不刺激 关键是有没有人敢陪你一起骑#高空挑战 @DOU+小助手 #危险动作请勿模仿  https://v.douyin.com/J4ywmFE/ 复制此链接，打开抖音搜索，直接观看视频！",
+                "created": 1607508514240,
+                "duration": 21850,
+                "goods": {
+                    "_id": "6518b7395f58c2c10136ccec371e2d48",
+                    "id": 19540,
+                    "shopid": 123458,
+                    "sku_id": 0,
+                    "src": "https://wdfimg.www.sxwdf.net/uploads/attach/2020/02/20200217/e54958ece44652f6ac742cdbc025ab2c.jpg",
+                    "stock": 76,
+                    "subTitle": "",
+                    "title": "伊利 无菌枕纯牛奶 240ml*16袋/箱"
+                },
+                "height": 1280,
+                "likes": [
+                    "b4f7b7d25fb3775d00b0de4f5d854ee2"
+                ],
+                "originUrl": "https://v.douyin.com/J4ywmFE/",
+                "players": [
+                    "b4f7b7d25fb3775d00b0de4f5d854ee2"
+                ],
+                "poster": "https://p1-dy-ipv6.byteimg.com/img/tos-cn-p-0015/9c4eaa49aa9a4da3942ba2a8274454c8_1606961227~c5_300x400.jpeg?from=2563711402_large",
+                "shopid": 123458,
+                "state": 1,
+                "statistics": {
+                    "like": 1,
+                    "play": 1
+                },
+                "title": "好不好玩 刺不刺激 关键是有没有人敢陪你一起骑#高空挑战 @DOU+小助手 #危险动作请勿模仿",
+                "type": "douyin",
+                "uid": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                "url": "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300f830000bv44fe1vavj5l8e141bg&ratio=720p&line=0",
+                "user": {
+                    "_id": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+                    "avatar": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598667275028.jpg",
+                    "nickname": "太阳公公"
+                },
+                "width": 720
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "cloud_videos_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_u",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "shopid",
+                            "Direction": "1"
+                        },
+                        {
+                            "Name": "uid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            },
+            {
+                "IndexName": "index_state",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "state",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "opendb-admin-log": {
+        "data": []
+    },
+    "opendb-admin-menus": {
+        "data": [
+            {
+                "_id": "0a4429175fd72b08017823df63a0c513",
+                "enable": true,
+                "icon": "cuIcon-shop",
+                "menu_id": "news_management",
+                "name": "新闻管理",
+                "parent_id": "",
+                "permission": [],
+                "sort": 130,
+                "url": ""
+            }
+        ]
+    },
+    "opendb-news-articles": {
+        "data": [
+            {
+                "_id": "73f70d5c5fe9bbab00b2d92136b33504",
+                "article_status": 1,
+                "avatar": "",
+                "category_id": "6127fe145fbf6b2f00671ed91e24ca1e",
+                "comment_count": 0,
+                "comment_status": 0,
+                "content": "<p>wqw111<img src=\"https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/1609487538080481156.png\" alt=\"\" width=\"220\" height=\"286\" /></p>",
+                "excerpt": "222",
+                "is_essence": true,
+                "is_sticky": true,
+                "last_modify_date": 1609688958322,
+                "last_modify_ip": "183.134.63.40",
+                "like_count": 0,
+                "mode": 1,
+                "publish_date": 1609153450807,
+                "publish_ip": "180.106.51.92",
+                "title": "11",
+                "user_id": "d52d5a735fb3776c00bbaf155946385b",
+                "view_count": 0
+            }
+        ]
+    },
+    "opendb-news-categories": {
+        "data": [
+            {
+                "_id": "0bcbdde05fd72a9e0151394d3d3b01a2",
+                "article_count": 11,
+                "create_date": 1606380335569,
+                "description": "企业文化",
+                "icon": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/39359788761610615.jpg",
+                "name": "企业文化",
+                "sort": 1
+            }
+        ]
+    },
+    "opendb-news-comments": {
+        "data": []
+    },
+    "opendb-news-favorite": {
+        "data": []
+    },
+    "opendb-verify-codes": {
+        "data": [
+            {
+                "_id": "0288fce75fc242c1006b51b55fecca8b",
+                "code": "359762",
+                "created_at": 1606566593379,
+                "expired_at": 1606566773379,
+                "ip": "106.92.123.107",
+                "mobile": "15986613315",
+                "state": 1,
+                "type": "login"
+            }
+        ]
+    },
+    "uni-app-version": {
+        "data": [
+            {
+                "_id": "b9c2fcfb5f3ce6270024d84876666d86",
+                "android": {
+                    "note": "集成uni-id",
+                    "title": "云上商城更新",
+                    "url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/ce6177c0-e1f6-11ea-8bd0-2998ac5bbf7e.apk",
+                    "version": "2.0.0"
+                },
+                "appid": "__UNI__9900639",
+                "created": 1595422601616,
+                "ios": {
+                    "version": "1.0"
+                },
+                "name": "Hello uniapp"
+            }
+        ],
+        "index": [
+            {
+                "IndexName": "uni-app-version_openid_index_",
+                "MgoKeySchema": {
+                    "MgoIndexKeys": [
+                        {
+                            "Name": "_openid",
+                            "Direction": "1"
+                        }
+                    ],
+                    "MgoIsUnique": false
+                }
+            }
+        ]
+    },
+    "uni-id-balances": {
+        "data": [
+            {
+                "_id": "381d149061af0ac60112ed3a48586345",
+                "amount": 300,
+                "balance": 300,
+                "comment": "系统充值",
+                "create_date": 1638861510058,
+                "log": {
+                    "operator": "79550af2603f0121080650e4033ca98e"
+                },
+                "type": 1,
+                "user_id": "8937eaa9610c809d02a668bb3e1dcd2b"
+            }
+        ]
+    },
+    "uni-id-log": {
+        "data": [
+            {
+                "_id": "287a53aa61aefe6900dbef1913b88772",
+                "create_date": 1638858345272,
+                "deviceId": "16388489596446298037",
+                "state": 1,
+                "type": "login",
+                "user_id": "79550af2603f0121080650e4033ca98e"
+            }
+        ]
+    },
+    "uni-id-permissions": {
+        "data": [
+            {
+                "_id": "21ded5cb5ff1687c038782a75fc74728",
+                "comment": "",
+                "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+                "permission_id": "ROLE_MANAGE_ADD",
+                "permission_name": "新增角色"
+            }
+        ]
+    },
+    "uni-id-roles": {
+        "data": [
+            {
+                "_id": "ce805e785ff17bf6031575e04521159e",
+                "comment": "",
+                "create_date": 1609661430096,
+                "permission": [
+                    "LOGIN_MANAGE",
+                    "self/changePwd",
+                    "user/login",
+                    "user/logout"
+                ],
+                "role_id": "new_empty",
+                "role_name": "new_empty"
+            }
+        ]
+    },
+    "uni-id-users": {
+        "data": [
+            {
+                "_id": "28ee4e3e604373e4092e550a1c50d024",
+                "admin": [
+                    123457,
+                    123474
+                ],
+                "id": 10558,
+                "last_login_date": 1615215723145,
+                "last_login_ip": "171.212.210.109",
+                "mobile": "18519122543",
+                "mobile_confirmed": 1,
+                "my_invite_code": "RNF3AU",
+                "register_date": 1615033316247,
+                "register_ip": "171.212.139.155",
+                "role": [
+                    "admin"
+                ],
+                "status": 0,
+                "token": [
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyOGVlNGUzZTYwNDM3M2U0MDkyZTU1MGExYzUwZDAyNCIsInJvbGUiOltdLCJwZXJtaXNzaW9uIjpbXSwiY2xpZW50SWQiOiI4ZjhlMzA3ZTVkN2IyNmM3YmIzYzM1MWQ3MzQzNThkZCIsImlhdCI6MTYxNTAzMzMxNiwiZXhwIjoxNjE3NjI1MzE2fQ.IgTzo45HpFDUmVMftSYNZ0DuO_FT8g28rvf1W0YwN3c",
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyOGVlNGUzZTYwNDM3M2U0MDkyZTU1MGExYzUwZDAyNCIsInJvbGUiOlsiYWRtaW4iXSwicGVybWlzc2lvbiI6W10sImNsaWVudElkIjoiNDQzZTVlMWE4YWZkMjBhMGY0ZDM2NzFhODU0YTY1OTgiLCJpYXQiOjE2MTUyMTU3MjMsImV4cCI6MTYxNzgwNzcyM30.0V0uhQ7xd8NBHogxjd3-hpzztxECH6aw4lQRVC6YO0c"
+                ],
+                "username": "18519122543"
+            }
+        ]
+    }
+}

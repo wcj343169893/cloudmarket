@@ -1,0 +1,17 @@
+{
+  "name": "tiantian-export-database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "cloudfunction-config": {
+  	"memorySize": 256,
+  	"timeout": 200,
+  	"runtime": "Nodejs12"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
