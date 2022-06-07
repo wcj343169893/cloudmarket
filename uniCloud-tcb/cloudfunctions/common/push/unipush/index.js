@@ -225,8 +225,8 @@ const model = {
 				payload,
 				"aps": {
 					"alert": {
-						"title": "请填写ios标题",
-						"body": "请填写ios内容"
+						"title": title,
+						"body": content
 					},
 					"content-available": 0,
 					"sound": "pushsound.caf"
