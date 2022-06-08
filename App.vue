@@ -1,4 +1,7 @@
 <script>
+	//#ifdef APP-PLUS
+	import checkUpdate from "@/uni_modules/uni-upgrade-center-app/utils/check-update";
+	//#endif
 	/**
 	 * vuex管理登陆状态，具体可以参考官方登陆模板示例
 	 */
@@ -203,8 +206,8 @@
 			let info = uni.getSystemInfoSync();
 			this.initSize(info);
 			//#ifdef APP-PLUS
-			//检查应用更新，每日一次
-			checkAppUpdate(false, this.systemInfo);
+			//检查应用更新，每日一次，新版本升级程序替换
+			//checkAppUpdate(false, this.systemInfo);
 			//#endif
 			this.loadAdminShopId();
 			let userLocationInfo = uni.getStorageSync('userLocationInfo') || {};
@@ -213,6 +216,10 @@
 			}
 			this.checkLogin();
 			//#ifdef APP-PLUS
+			//检测更新
+			checkUpdate().then(res => {
+				console.log("检查更新结果", res)
+			});
 			//初始化一键登录
 			this.initUniverify();
 			//初始化推送

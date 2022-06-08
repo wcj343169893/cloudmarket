@@ -1,4 +1,10 @@
 {
+	"opendb-app-versions": {
+	    "data": []
+	},
+	"opendb-app-list": {
+	    "data": []
+	},
     "cloud_addresses": {
         "data": [
             {
@@ -4350,39 +4356,6 @@
                 "mobile": "15986613315",
                 "state": 1,
                 "type": "login"
-            }
-        ]
-    },
-    "uni-app-version": {
-        "data": [
-            {
-                "_id": "b9c2fcfb5f3ce6270024d84876666d86",
-                "android": {
-                    "note": "集成uni-id",
-                    "title": "云上商城更新",
-                    "url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/ce6177c0-e1f6-11ea-8bd0-2998ac5bbf7e.apk",
-                    "version": "2.0.0"
-                },
-                "appid": "__UNI__9900639",
-                "created": 1595422601616,
-                "ios": {
-                    "version": "1.0"
-                },
-                "name": "Hello uniapp"
-            }
-        ],
-        "index": [
-            {
-                "IndexName": "uni-app-version_openid_index_",
-                "MgoKeySchema": {
-                    "MgoIndexKeys": [
-                        {
-                            "Name": "_openid",
-                            "Direction": "1"
-                        }
-                    ],
-                    "MgoIsUnique": false
-                }
             }
         ]
     },

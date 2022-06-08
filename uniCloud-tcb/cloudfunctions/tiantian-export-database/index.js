@@ -13,9 +13,9 @@ exports.main = async (event, context) => {
 	 * 导出所有数据的表
 	 */
 	let allDataCollection = [
-		"opendb-admin-menus", 
+		"opendb-admin-menus",
 		"opendb-news-articles", "opendb-news-categories",
-		"uni-id-permissions", "uni-id-roles","cloud_documents","cloud_goods","cloud_shops",
+		"uni-id-permissions", "uni-id-roles", "cloud_documents", "cloud_goods", "cloud_shops",
 	]
 	//默认无数据
 	collections.map(e => {
@@ -37,6 +37,7 @@ const getDataByPage = async (coll, page, limit = 500) => {
 		data
 	} = await db.collection(coll).skip((page - 1) * limit).limit(500).get();
 	if (data.length == limit) {
+		console.log(coll + " page:" + page)
 		data = data.concat(await getDataByPage(coll, page + 1, limit))
 	}
 	return data;
