@@ -3,15 +3,18 @@
 		<!-- #ifndef MP -->
 		<view class="mix-list-cell b-b">
 			<view class="region">
-				<select-options defaultOption="+86" :options="regionOptions" @eventClick="changeRegion"></select-options>
+				<select-options defaultOption="+86" :options="regionOptions" @eventClick="changeRegion">
+				</select-options>
 			</view>
 			<input type="number" maxlength="11" class="cell-content" v-model="mobile" placeholder="输入手机号(新号码自动注册)" />
 		</view>
 		<view class="mix-list-cell b-b">
 			<input type="number" maxlength="6" class="cell-content" v-model="code" placeholder="输入验证码" />
-			<button class="add-btn code" :class="{ disabled: disabled || processing }" @click="getCode()">{{ btnGetCodeText }}</button>
+			<button class="add-btn code" :class="{ disabled: disabled || processing }"
+				@click="getCode()">{{ btnGetCodeText }}</button>
 		</view>
-		<view class="mix-list-cell-buttons"><button class="add-btn" :class="{ disabled: disabledLogin }" @click="btnLogin()">登录</button></view>
+		<view class="mix-list-cell-buttons"><button class="add-btn" :class="{ disabled: disabledLogin }"
+				@click="btnLogin()">登录</button></view>
 		<!-- #endif -->
 		<!-- #ifdef MP -->
 		<view class="mix-list-cell center">
@@ -54,8 +57,10 @@
 		auth
 	} from '@/common/cloud.js';
 	import {
-		navToDocPageByType
+		navToDocPageByType,
+		navToDocWebPage
 	} from '@/common/functions.js';
+	import appconfig from '@/config.js'
 	let weixinAuthService
 	export default {
 		data() {
@@ -222,7 +227,8 @@
 				uni.navigateBack();
 			},
 			navToDocPageByType(type) {
-				navToDocPageByType(type);
+				// navToDocPageByType(type);
+				navToDocWebPage(appconfig.appDocument[type])
 			},
 			changeRegion(val) {
 				console.log("changeRegion", val)
