@@ -14,8 +14,10 @@ exports.main = async (event, context) => {
 	 */
 	let allDataCollection = [
 		"opendb-admin-menus",
-		"opendb-news-articles", "opendb-news-categories",
+		"opendb-news-articles", "opendb-news-categories", "cloud_ads", "cloud_goods_categories",
+		"cloud_identity", "cloud_printer_types",
 		"uni-id-permissions", "uni-id-roles", "cloud_documents", "cloud_goods", "cloud_shops",
+		"cloud_shop_express_templates",
 	]
 	//默认无数据
 	collections.map(e => {
@@ -27,7 +29,7 @@ exports.main = async (event, context) => {
 		console.log(`${coll}导出完成`)
 	}
 	console.log("全部导出完成")
-	fs.writeFileSync('../database/db_init.json', JSON.stringify(origin))
+	fs.writeFileSync(require('path').resolve(__dirname, '../../database/db_init.json'), JSON.stringify(origin))
 	console.log("写入完成")
 	return origin;
 };
