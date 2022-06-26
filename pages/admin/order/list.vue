@@ -70,7 +70,7 @@
 				<!-- <button class="action-btn recom" @click.stop="sendPayMessage(item, index)">发送付款提醒</button> -->
 			</view>
 			<!-- 已付款 -->
-			<block v-if="item.state == 1">
+			<block v-if="item.state == 1 && !item.isRefundAll">
 				<view class="action-box b-t">
 					<button class="action-btn recom" v-if="item.isCanDelivery"
 						@click.stop="addDelivery(item,index)">确定发货</button>

@@ -19,6 +19,9 @@ const {
 const {
 	sendOrderDelivery
 } = require('push');
+const {
+	getConfig
+} = require("configs");
 const list = async (data, context) => {
 	const {
 		page,
@@ -75,6 +78,7 @@ const list = async (data, context) => {
 		id: 1,
 		totalMoney: 1,
 		totalDiscount: 1,
+		isRefundAll: 1,
 		state: 1,
 		created: 1,
 		goods: 1,
@@ -348,6 +352,11 @@ const addDelivery = async (data) => {
 		deliveredUid: data.operator,
 		state: 2
 	};
+	//自动完成收货动作，单位是小时
+	let autoFinish = getConfig("mall").autoFinish;
+	if (autoFinish) {
+		saveData.autoFinishTime = Date.now() + autoFinish * 3600 * 1000
+	}
 	//@todo 如果是单个商品发货，需要对单个商品更新state状态，否则只更新全部
 	let res = await orderCollection.doc(order._id).update(saveData);
 	//更新用户已发货和已收货
@@ -525,10 +534,149 @@ const comment = async (data) => {
 		comment
 	} = data;
 }
+/**
+ * 后台发起退款，直接同意
+ * @param {*} data 
+ */
+const addRefundApply = async (data) => {
+	const {
+		id,
+		item
+	} = data;
+
+	let fields = {
+		state: 1,
+		totalMoney: 1,
+		goods: 1,
+		shopid: 1,
+		shop: 1,
+		payInfo: 1,
+		yuding: 1,
+		refundAmount: 1,
+		refundApply: 1,
+		body: 1,
+		cartCount: 1,
+	};
+	let conditions = {
+		isDelete: 0,
+		_id: id,
+		state: cmd.in([1, 2, 3])
+	};
+	let order = await getOrderById(conditions, fields);
+	if (!order) {
+		data.message = "订单不存在";
+		return false;
+	}
+	let uid = order.uid;
+	if (!item) {
+		//订单直接取消剩下的商品
+		let total = order.totalMoney;
+		if (order.refundAmount) {
+			total = order.totalMoney - order.refundAmount;
+		}
+		let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "订单退款", {}, order, {});
+		return orderCollection.doc(id).update({
+			refundAmount: order.cartCount,
+			isRefundAll: 1
+		});
+	}
+
+	const {
+		index
+	} = item;
+	delete item._id;
+	let goods = order.goods[index];
+	if (!goods.refundAmount) {
+		goods.refundAmount = 0;
+	}
+	if (!item.refundApplyAmount) {
+		item.refundApplyAmount = 1;
+	}
+	//判断申请数量是否合法
+	if ((goods.amount - goods.refundAmount) < item.refundApplyAmount) {
+		data.message = "申请退款数量不合法";
+		return false;
+	}
+	if (goods.isRefunding) {
+		data.message = "正在申请退款";
+		return false;
+	}
+	//将来要减去优惠券分摊部分，这里乘以店铺汇率
+	let exchangeRate = 1;
+	if (order.shop.exchangeRate) {
+		exchangeRate = order.shop.exchangeRate;
+	}
+	let perDiscount = 0;
+	if (goods.discount) {
+		perDiscount = goods.discount / goods.amount;
+	}
+	console.log("addRefundApply", item.refundApplyAmount, exchangeRate, goods.price, perDiscount);
+	let total = parseInt(item.refundApplyAmount * exchangeRate * (goods.price - perDiscount) * 100);
+	let addRefundResult;
+	//预定订单，创建2个退款记录
+	if (order.yuding) {
+		/* addRefundResult = await addOrderRefund(uid, order.yuding.payInfo, order.yuding.price * 100, "申请退款", goods, order,
+			item); */
+		total -= order.yuding.price * exchangeRate * 100;
+		console.log("addRefundResult", addRefundResult);
+	}
+	console.log("addRefundResult 开始 total:", total);
+	addRefundResult = await addOrderRefund(uid, order.payInfo, total, "申请退款", goods, order, item);
+	console.log("addRefundResult", addRefundResult);
+
+	let dataField = {}
+	if (order.refundAmount + item.refundApplyAmount >= order.cartCount) {
+		dataField["isRefundAll"] = 1;
+		console.log("全部退款退货")
+	}
+
+	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
+	return orderCollection.doc(id).update({
+		refundAmount: cmd.inc(item.refundApplyAmount),
+		[`goods.${index}`]: {
+			refundAmount: cmd.inc(item.refundApplyAmount),
+			refundApply: cmd.push(addRefundResult.id)
+		},
+		...dataField
+	});
+}
+/**
+ * 管理员取消订单、取消订单中的某些商品
+ */
+const addOrderRefund = async (uid, payInfo, refundFee, refundDesc, goods, order, item) => {
+	console.log("addOrderRefund", uid, payInfo, refundFee, refundDesc, goods, order, item);
+	let id = await genIdentityId("order_refunds");
+	if (refundFee > payInfo.totalFee) {
+		refundFee = payInfo.totalFee;
+		console.log("退款金额大于实际支付金额", refundFee, payInfo.totalFee)
+	}
+	return await orderRefundsCollection.add({
+		id,
+		orderId: order._id,
+		payInfo,
+		uid: uid,
+		shop: order.shop,
+		shopid: order.shopid,
+		state: "successed", //verifying审核中，successed成功,failed失败
+		fee: refundFee,
+		refundStatus: "paying",
+		description: refundDesc,
+		goods,
+		created: Date.now(),
+		steps: [{
+			title: "退款中",
+			operator: "系统",
+			desc: "您的退款申请已通过，待财务退款中",
+			time: Date.now()
+		}],
+		...item
+	});
+}
 module.exports = {
 	list: list,
 	detail: detail,
 	addDelivery: addDelivery,
+	addRefundApply,
 	addExpress,
 	selftake,
 	selftakebyraising,

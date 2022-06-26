@@ -536,7 +536,7 @@ const model = {
 			orderId: order._id,
 			payInfo,
 			uid: uid,
-			shop:order.shop,
+			shop: order.shop,
 			shopid: order.shopid,
 			state: "verifying", //verifying审核中，successed成功,failed失败
 			fee: refundFee,
@@ -613,7 +613,7 @@ const model = {
 				}
 			}
 			let comm = {
-				state:0,//0未审核，1通过，-1失败
+				state: 0, //0未审核，1通过，-1失败
 				goods_id: g_id,
 				shopid: order.shopid,
 				order_id: order._id,
@@ -1394,7 +1394,9 @@ const model = {
 		return raising;
 	},
 	/**
-	 * 定时器，1.自动取消未付款的订单
+	 * 定时器，
+	 * 1.自动取消未付款的订单
+	 * 2.自动确定收货已发货订单
 	 */
 	async timer() {
 		let time = new Date().getTime();
@@ -1441,6 +1443,31 @@ const model = {
 			}
 			if (couponsIds.length > 0) {
 				await coupons.canceledMany(couponsIds, couponsOriginId);
+			}
+		}
+
+		//2.自动确定收货已发货订单
+		orders = await orderCollection.where({
+			autoFinishTime: cmd.lt(time),
+			state: 2
+		}).field({
+			state: 1,
+			totalMoney: 1,
+			uid: 1,
+			id: 1,
+			raisingPoint: 1,
+			shopid: 1
+		}).get();
+
+		if (orders.length > 0) {
+			for (let i = 0; i < orders.length; i++) {
+				let order = orders[i]
+				//确定收货,资金解冻
+				await orderCollection.doc(order._id).update({
+					state: 3,
+					makesureTime: Date.now()
+				});
+				await this.afterMakesure(order);
 			}
 		}
 	},

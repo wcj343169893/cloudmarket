@@ -2,16 +2,62 @@
 
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 {
-	"module": "statistics",
-	"action": "realtime",
-	"data": {},
+	"module": "orders",
+	"action": "addRefundApply",
+	"data": {
+		"id": "f6e08a646296d0c6061057ef5a0e634e"
+	},
 	"shopid": 123457,
 	"clientInfo": {
-		"PLATFORM": "h5",
+		"PLATFORM": "web",
 		"OS": "ios",
 		"APPID": "__UNI__9900639",
-		"CLIENT_SDK_VERSION": "1.0.0"
+		"DEVICEID": "16562434728019647438",
+		"appId": "__UNI__9900639",
+		"appLanguage": "zh-Hans",
+		"appName": "咕叽农场",
+		"appVersion": "2.0.2",
+		"appVersionCode": "108",
+		"browserName": "safari",
+		"browserVersion": "11.0",
+		"deviceId": "16562434728019647438",
+		"deviceModel": "iPhone",
+		"deviceOrientation": "portrait",
+		"devicePixelRatio": 2,
+		"deviceType": "phone",
+		"hostLanguage": "zh-CN",
+		"hostName": "safari",
+		"hostVersion": "11.0",
+		"osName": "ios",
+		"osVersion": "11.0",
+		"safeArea": {
+			"left": 0,
+			"right": 375,
+			"top": 0,
+			"bottom": 667,
+			"width": 375,
+			"height": 667
+		},
+		"safeAreaInsets": {
+			"top": 0,
+			"right": 0,
+			"bottom": 0,
+			"left": 0
+		},
+		"screenHeight": 667,
+		"screenWidth": 375,
+		"statusBarHeight": 0,
+		"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 HBuilderX",
+		"uniCompileVersion": "3.5.0",
+		"uniPlatform": "web",
+		"uniRuntimeVersion": "3.5.0",
+		"windowBottom": 50,
+		"windowHeight": 617,
+		"windowTop": 0,
+		"windowWidth": 375,
+		"locale": "zh-Hans",
+		"LOCALE": "zh-Hans"
 	},
-	"uniCloudClientInfo": "%7B%22ak%22%3A%22__UNI__9900639%22%2C%22p%22%3A%22i%22%2C%22ut%22%3A%22h5%22%2C%22uuid%22%3A%220c106krgs788vg0jgeauaoo5cme36l8k%22%2C%22fn%22%3A%22cloud-admin%22%2C%22sid%22%3A%22cloud-market-3c5868%22%2C%22pvd%22%3A%22t%22%7D",
-	"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5ZmZiMmE0ODVmMzg5NjQyMDA5OTliMWYwN2NiN2I4MCIsImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2MDI1MDI3NDUsImV4cCI6MTYwNTA5NDc0NX0.vgFCvow1EPwsYN6RwvA1Dvf8AuD1p2X59k7w28ZXA_A"
+	"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJiMDAwNjRhNzYwNDAzYWE5MDgzN2NkYTA1YTdmNmM3ZCIsInJvbGUiOlsiYWRtaW4iXSwicGVybWlzc2lvbiI6W10sImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2NTYyNDM1MDIsImV4cCI6MTY1ODgzNTUwMn0.2chZRKHnk9dLQdU6sEJqkNcErUxPnWKvTkAZhoGBlMM"
 }
+

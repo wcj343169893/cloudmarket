@@ -39,6 +39,8 @@
 					</view>
 				</view>
 				<view class="buttons">
+					<button type="default" v-if="info.state ==1 && !info.refundAmount" class="action-btn"
+						@click="cancelOrder()">取消订单</button>
 					<button type="default" class="action-btn" @click="printTicket">打印小票</button>
 					<block v-if="info.state == 1"><button type="default" class="action-btn" v-if="isCanDelivery"
 							@click="addDelivery(false)">确定发货</button></block>
@@ -116,7 +118,7 @@
 						<view class="">
 							<text>{{ info.address.address }}</text>
 						</view>
-						<view class="flex margin-top-sm">
+						<view class="flex margin-top-sm" v-if="!info.isRefundAll">
 							<button type="default" class="action-btn recom" @click.stop="printExpress">电子面单</button>
 							<button type="default" class="action-btn" @click.stop="addExpress">录入单号</button>
 						</view>
@@ -248,12 +250,16 @@
 											</block>
 										</view>
 									</view>
-									<view class="buttons">
+									<view class="buttons" v-if="!info.isRefundAll">
 										<button type="default" v-if="item.state && item.state == 4" class="action-btn"
 											@click.stop="refundOrder(item)">查看退款申请</button>
+										<block v-if="info.state == 1 && item.isCanDelivery">
+											<button type="warn" class="action-btn "
+												@click.stop="cancelGoods(item)">缺货</button>
+											<button type="default" class="action-btn recom"
+												@click.stop="addDelivery(item)">单独发货</button>
 
-										<button type="default" v-if="info.state == 1 && item.isCanDelivery"
-											class="action-btn" @click.stop="addDelivery(item)">单独发货</button>
+										</block>
 									</view>
 								</view>
 							</view>
@@ -416,7 +422,8 @@
 				//this.moreGoodsCount = res.goods.length - this.maxShowCount;
 				this.goodsCount = res.goods.length;
 				this.info = res;
-				res.goods.forEach(goods => {
+				res.goods.forEach((goods, index) => {
+					goods.index = index;
 					goods.isCanDelivery = goods.amount - (goods.isRefunding ? goods.isRefunding : 0) - (goods
 						.refundAmount ? goods.refundAmount :
 						0) > 0;
@@ -438,6 +445,49 @@
 					title: '请联系管理员!',
 					icon: 'none'
 				});
+			},
+			cancelGoods(item) {
+				uni.showModal({
+					content: "是否确定商品退款?",
+					success: (res) => {
+						if (res.confirm) {
+							orderAdmin("addRefundApply", {
+								id: this.id,
+								item
+							}, true).then(
+								res => {
+									this.$api.msg('取消成功', 2000, false, "success");
+									this.loadData();
+									this.$api.prePage().refreshList();
+								},
+								err => {
+									this.$api.msg('取消失败');
+								}
+							);
+						}
+					}
+				})
+			},
+			cancelOrder() {
+				uni.showModal({
+					content: "是否确定取消订单?",
+					success: (res) => {
+						if (res.confirm) {
+							orderAdmin("addRefundApply", {
+								id: this.id,
+							}, true).then(
+								res => {
+									this.$api.msg('取消成功', 2000, false, "success");
+									this.loadData();
+									this.$api.prePage().refreshList();
+								},
+								err => {
+									this.$api.msg('取消失败');
+								}
+							);
+						}
+					}
+				})
 			},
 			//发货
 			addDelivery(item) {
@@ -677,6 +727,11 @@
 
 		&.recom {
 			background: $base-color;
+			color: #fff;
+		}
+
+		&.warning {
+			background: $font-color-warning;
 			color: #fff;
 		}
 	}

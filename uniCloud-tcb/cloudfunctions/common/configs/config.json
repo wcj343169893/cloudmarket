@@ -2,7 +2,7 @@
 	"domain": "",
 	"notify-floder": "http/market_notify",
 	"tokenSecret": "4e50313a45f5fbe0",
-	"app-plus": {
+	"app": {
 		"payment": {
 			"alipay": {
 				"uniPay": "initAlipay",
@@ -87,7 +87,7 @@
 			}
 		}
 	},
-	"h5": {
+	"web": {
 		"payment": {
 			"balance": {
 				"uniPay": "initBalance",
@@ -105,6 +105,9 @@
 			"clientId": "1053604898",
 			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214"
 		}
+	},
+	"mall": {
+		"autoFinish": 12
 	},
 	"service": {
 		"sms": {
