@@ -18,7 +18,17 @@
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="list-cell b-b" @click="about()" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">关于</text>
+			<text class="cell-tit">关于我们</text>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="list-cell b-b" @click="navToDocPageByType('app_service')" hover-class="cell-hover"
+			:hover-stay-time="50">
+			<text class="cell-tit">服务协议</text>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
+		<view class="list-cell b-b" @click="navToDocPageByType('app_user_private')" hover-class="cell-hover"
+			:hover-stay-time="50">
+			<text class="cell-tit">隐私协议</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="list-cell b-b" @click="cancellation()" hover-class="cell-hover" :hover-stay-time="50">
@@ -34,6 +44,13 @@
 		</view>
 		<!-- #endif -->
 		<view class="list-cell log-out-btn" @click="toLogout"><text class="cell-tit">退出登录</text></view>
+
+		<view class="copyright">
+			<text>Copyright&copy;{{year}}</text>
+			<view class="" style="margin-top: 12rpx;">
+				<text>{{systemInfo.appName}} 版权所有</text>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -43,14 +60,18 @@
 	} from 'vuex';
 	import {
 		checkAppUpdate,
-		navToDocPageByType
+		navToDocPageByType,
+		navToDocWebPage,
+		dateFormat
 	} from '@/common/functions.js';
+	import appconfig from '@/config.js'
 	import {
 		cloudUser
 	} from '@/common/request.js';
 	export default {
 		data() {
 			return {
+				year: "",
 				version: ''
 			};
 		},
@@ -58,6 +79,7 @@
 			// #ifdef APP-PLUS
 			this.version = plus.runtime.version;
 			//#endif
+			this.year = dateFormat(null, "yyyy")
 		},
 		methods: {
 			...mapMutations(['logout']),
@@ -103,6 +125,10 @@
 			},
 			about() {
 				navToDocPageByType("app_about")
+			},
+			navToDocPageByType(type) {
+				// navToDocPageByType(type);
+				navToDocWebPage(appconfig.appDocument[type])
 			},
 			//退出登录
 			toLogout() {
@@ -194,5 +220,11 @@
 		switch {
 			transform: translateX(16upx) scale(0.84);
 		}
+	}
+
+	.copyright {
+		text-align: center;
+		padding-top: 40rpx;
+		color: #aaa;
 	}
 </style>
