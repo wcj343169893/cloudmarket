@@ -2522,7 +2522,7 @@
 			}
 		]
 	},
-	"opendb-admin-menu": {
+	"opendb-admin-menus": {
 		"data": [{
 			"create_date": 1602662469396,
 			"icon": "",
@@ -2559,95 +2559,6 @@
 				}
 			}
 		]
-	},
-	"opendb-admin-storage": {
-		"data": [{
-			"create_date": 1602824704934,
-			"file_id": "cloud://cloud-market-3c5868.636c-cloud-market-3c5868-1302181076/1602824704236.jpg",
-			"name": "8476829525892084.jpg",
-			"size": 136700,
-			"type": "image"
-		}],
-		"index": [{
-				"IndexName": "opendb-admin-storage_openid_index_",
-				"MgoKeySchema": {
-					"MgoIndexKeys": [{
-						"Name": "_openid",
-						"Direction": "1"
-					}],
-					"MgoIsUnique": false
-				}
-			},
-			{
-				"IndexName": "cloud_id",
-				"MgoKeySchema": {
-					"MgoIndexKeys": [{
-						"Name": "cloudID",
-						"Direction": "1"
-					}],
-					"MgoIsUnique": false
-				}
-			},
-			{
-				"IndexName": "name",
-				"MgoKeySchema": {
-					"MgoIndexKeys": [{
-						"Name": "name",
-						"Direction": "1"
-					}],
-					"MgoIsUnique": false
-				}
-			},
-			{
-				"IndexName": "catagory",
-				"MgoKeySchema": {
-					"MgoIndexKeys": [{
-						"Name": "catagory",
-						"Direction": "1"
-					}],
-					"MgoIsUnique": false
-				}
-			},
-			{
-				"IndexName": "create_date",
-				"MgoKeySchema": {
-					"MgoIndexKeys": [{
-						"Name": "create_date",
-						"Direction": "-1"
-					}],
-					"MgoIsUnique": false
-				}
-			}
-		]
-	},
-	"uni-app-version": {
-		"data": [{
-			"android": {
-				"note": "接入uni统计\n解决微信自定义组件运行失败的Bug",
-				"title": "Hello uni-app更新",
-				"url": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/apk/2020-07-04.apk",
-				"version": "1.0.3"
-			},
-			"appid": "__UNI__9900639",
-			"created": 1594036413887,
-			"ios": {
-				"note": "增加权限判断\n实例首页重构为 nvue，提升渲染速度",
-				"title": "Hello uni-app更新",
-				"url": "https://itunes.apple.com/cn/app/hello-uni-app/id1417078253?mt=8",
-				"version": "1.3.4"
-			},
-			"name": "Hello uniapp"
-		}],
-		"index": [{
-			"IndexName": "uni-app-version_openid_index_",
-			"MgoKeySchema": {
-				"MgoIndexKeys": [{
-					"Name": "_openid",
-					"Direction": "1"
-				}],
-				"MgoIsUnique": false
-			}
-		}]
 	},
 	"uni-id-permissions": {
 		"data": [{
