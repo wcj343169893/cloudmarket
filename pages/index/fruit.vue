@@ -293,23 +293,11 @@
 					uni.showLoading({
 						title: "正在定位"
 					})
-					uni.getLocation({
-						type: 'gcj02',
-						success: res => {
-							uni.hideLoading();
-							console.log('获取定位完成', res);
-							this.address = '定位中...';
-							getLocationAddress([res.latitude, res.longitude].join(",")).then(res2 => {
-								console.log("getLocationAddress", res2)
-								this.address = res2.address;
-								this.setUserLocation({
-									id: false,
-									latitude: res.latitude,
-									longitude: res.longitude,
-									name: this.address
-								});
-							})
-							//this.loadData();
+					// #ifdef MP-WEIXIN
+					wx.getFuzzyLocation({
+						type: 'wgs84',
+						success: (e) => {
+							this.getLocationCallback(e)
 						},
 						fail: res => {
 							uni.hideLoading();
@@ -317,8 +305,38 @@
 							console.log('获取定位失败', res.errMsg);
 							this.loadData();
 						}
-					});
+					})
+					// #endif
+					// #ifndef MP-WEIXIN
+					uni.getLocation({
+						success: (e) => {
+							this.getLocationCallback(e)
+						},
+						fail: res => {
+							uni.hideLoading();
+							this.address = '定位失败,将展示默认信息';
+							console.log('获取定位失败', res.errMsg);
+							this.loadData();
+						}
+					})
+					// #endif
 				}
+			},
+			getLocationCallback(res) {
+				uni.hideLoading();
+				console.log('获取定位完成', res);
+				this.address = '定位中...';
+				getLocationAddress([res.latitude, res.longitude].join(",")).then(res2 => {
+					console.log("getLocationAddress", res2)
+					this.address = res2.address;
+					this.setUserLocation({
+						id: false,
+						latitude: res.latitude,
+						longitude: res.longitude,
+						name: this.address
+					});
+				})
+				//this.loadData();
 			},
 			changeLocationInfo(info) {
 				//this.location = info;
@@ -582,7 +600,7 @@
 							let joinName = [clickName.value, n2.value].sort().join('&gt;');
 							//不存在组合或者库存不足
 							n2.disabled = this.skuGoods.skuNameHash.indexOf(joinName) == -1 || n2.stock <
-							1;
+								1;
 						}
 					});
 				});

@@ -150,9 +150,10 @@
 			},
 			async getLocation(isMsg) {
 				//获取当前定位位置
-				uni.getLocation({
-					type: 'gcj02',
-					success: res => {
+				// #ifdef MP-WEIXIN
+				wx.getFuzzyLocation({
+					type: 'wgs84',
+					success: (e) => {
 						console.log('获取定位完成', res);
 						this.latitude = res.latitude;
 						this.longitude = res.longitude;
@@ -169,7 +170,29 @@
 					complete: () => {
 						this.reverseGeocoder();
 					}
-				});
+				})
+				// #endif
+				// #ifndef MP-WEIXIN
+				uni.getLocation({
+					success: (e) => {
+						console.log('获取定位完成', res);
+						this.latitude = res.latitude;
+						this.longitude = res.longitude;
+						if (isMsg) {
+							this.$api.msg('重新定位成功');
+						}
+					},
+					fail: res => {
+						console.log('获取定位失败', res.errMsg);
+						if (isMsg) {
+							this.$api.msg('重新定位失败');
+						}
+					},
+					complete: () => {
+						this.reverseGeocoder();
+					}
+				})
+				// #endif
 			},
 			//地图区域改变
 			onRegionchange(e) {
