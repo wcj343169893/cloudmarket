@@ -514,6 +514,8 @@
 					let beginTime = new Date(dateFormat(this.pickup, 'yyyy/MM/dd')).getTime();
 					baseDay = (beginTime - todayTime) / 1000 / 3600 / 24;
 					day = new Date(this.pickup);
+				} else {
+					day.setDate(day.getDate() + baseDay)
 				}
 				if (baseDay < 0) {
 					baseDay = 0;
