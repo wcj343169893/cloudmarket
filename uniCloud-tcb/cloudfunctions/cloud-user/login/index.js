@@ -23,7 +23,7 @@ const model = {
 			openid,
 			access_token
 		} = data;
-		let configs = getLoginConfig("app-plus", "univerify");
+		let configs = getLoginConfig(context.PLATFORM, "univerify");
 		let res = await uniCloud.getPhoneNumber({
 			provider: 'univerify',
 			apiKey: configs.apiKey, // 在开发者中心开通服务并获取apiKey
@@ -55,7 +55,7 @@ const model = {
 	//登录模块，支持极光一键登录，手机号+验证码登录，微信授权登录
 	async jiguang(data, context) {
 		//只有app端支持极光context.PLATFORM
-		let configs = getLoginConfig("app-plus", "jiguang");
+		let configs = getLoginConfig(context.PLATFORM, "jiguang");
 		//Authorization 在网上可以生成 http://web.chacuo.net/safebasicauth
 		//https://docs.jiguang.cn/jverification/server/rest_api/rest_api_summary/
 		const result = await uniCloud.httpclient.request(configs["url"], {
@@ -233,7 +233,7 @@ const model = {
 		if (res.type == "register" && context.APPID == "__UNI__9900639") {
 			await uniID.updateUser({
 				uid: res.uid,
-				role:["admin"],
+				role: ["admin"],
 				admin: [123457, 123458, 123460]
 			});
 		}
