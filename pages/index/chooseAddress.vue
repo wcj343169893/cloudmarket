@@ -153,7 +153,7 @@
 				// #ifdef MP-WEIXIN
 				wx.getFuzzyLocation({
 					type: 'wgs84',
-					success: (e) => {
+					success: (res) => {
 						console.log('获取定位完成', res);
 						this.latitude = res.latitude;
 						this.longitude = res.longitude;
@@ -174,7 +174,7 @@
 				// #endif
 				// #ifndef MP-WEIXIN
 				uni.getLocation({
-					success: (e) => {
+					success: (res) => {
 						console.log('获取定位完成', res);
 						this.latitude = res.latitude;
 						this.longitude = res.longitude;
