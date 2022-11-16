@@ -15,7 +15,7 @@
 					<view class="titleNview-background" :style="{ backgroundColor: titleNViewBackground }"></view>
 					<!--收货地址-->
 					<addressPage :isSelfRaisingPoint="isSelfRaisingPoint" :raisingPoint="raisingPoint"
-						:address="address" @navToAddress="navToAddress"></addressPage>
+						:address="address" @navToAddress="navToAddress" :shop="shop"></addressPage>
 					<swiper class="carousel" circular @change="swiperChange">
 						<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item"
 							@click="navToAdPage(item)">

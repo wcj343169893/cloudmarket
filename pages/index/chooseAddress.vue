@@ -73,7 +73,21 @@
 				</view>
 			</view>
 		</view>
+		<view class="sec-header"><text>附近店铺</text></view>
+		<view class="">
+			<view class="list b-b" v-for="(item, index) in nearShopList" :key="index" @click="navToShopHome(item)">
+				<view class="wrapper">
+					<view class="address-box">
+						<text class="address">{{ item.name }}</text>
 
+						<text class="distance">{{item.distanceText}}</text>
+					</view>
+					<view class="u-box">
+						<text>{{ item.address }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -83,6 +97,7 @@
 		mapMutations
 	} from 'vuex';
 	import {
+		cloudMall,
 		address
 	} from '@/common/request.js';
 	import {
@@ -104,6 +119,7 @@
 				mapContext: null,
 				searchObj: null,
 				centerMaker: [],
+				nearShopList: [],
 				addressList: [],
 				nearAddressList: [],
 				currentAddress: {
@@ -132,6 +148,7 @@
 			if (this.location && this.location.latitude > 0) {
 				this.latitude = this.location.latitude;
 				this.longitude = this.location.longitude;
+				this.getShopList()
 			}
 			//console.log(this.location);
 		},
@@ -139,7 +156,7 @@
 			_mapCtx = uni.createMapContext('map');
 		},
 		methods: {
-			...mapMutations(['setUserLocation']),
+			...mapMutations(['setUserLocation', 'changeShopId']),
 			async loadData() {
 				address({}, 'list').then(res => {
 					res.forEach(ele => {
@@ -147,6 +164,25 @@
 					});
 					this.addressList = res;
 				});
+			},
+			getShopList() {
+				cloudMall("shop", "getNearList", {
+					latitude: this.latitude,
+					longitude: this.longitude
+				}).then(res => {
+					console.log(res)
+					this.nearShopList = res;
+				})
+			},
+			navToShopHome(item) {
+				item.shopFixedId = item.id;
+				this.changeShopId(item);
+				uni.showToast({
+					title: "切换成功"
+				})
+				uni.switchTab({
+					url: `/pages/index/fruit`
+				})
 			},
 			async getLocation(isMsg) {
 				//获取当前定位位置
@@ -231,13 +267,15 @@
 							address:""
 						}; */
 						this.nearAddressList = [];
-						res.result.pois.map((e) => {
-							this.nearAddressList.push({
-								addressName: e.title,
-								address: e.address,
-								latitude: e.location.lat,
-								longitude: e.location.lng
-							});
+						res.result.pois.map((e, index) => {
+							if (index < 3) {
+								this.nearAddressList.push({
+									addressName: e.title,
+									address: e.address,
+									latitude: e.location.lat,
+									longitude: e.location.lng
+								});
+							}
 						})
 						if (this.nearAddressList.length > 0) {
 							this.currentAddress = this.nearAddressList[0];
@@ -331,6 +369,11 @@
 			color: $font-color-dark;
 			flex: 1;
 		}
+
+		.distance {
+			font-size: 24upx;
+			color: $font-color-light;
+		}
 	}
 
 	.u-box {
@@ -387,7 +430,7 @@
 
 	.map {
 		width: 750rpx;
-		height: 700rpx;
+		height: 600rpx;
 		flex: 1;
 	}
 

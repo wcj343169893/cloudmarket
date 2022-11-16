@@ -1,11 +1,15 @@
 <template>
-	<view class="" @click="navToAddress">
+	<view class="flex" @click="navToAddress">
 		<view class="titleNview-address" v-if="isSelfRaisingPoint">
 			<text class="taobaofont icon-shoplight m-r"></text>
 			<text>{{raisingPoint.name}}</text>
 		</view>
 		<view class="titleNview-address" v-else-if="address != ''">
 			<text>送至:{{ address }}</text>
+		</view>
+		<view class="shop-name" v-if="shop && shop.id">
+			<text>|</text>
+			<text class="name">{{shop.name}}</text>
 		</view>
 	</view>
 </template>
@@ -24,6 +28,12 @@
 				type: String,
 				default: ""
 			},
+			shop: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			},
 			raisingPoint: {
 				type: Object,
 				default: {}
@@ -38,6 +48,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.flex {
+		align-items: center;
+	}
+
 	.titleNview-address {
 		font-size: $font-sm;
 		color: #ffffff;
@@ -46,5 +60,19 @@
 		padding-bottom: 12upx;
 		display: flex;
 		align-items: center;
+	}
+
+	.shop-name {
+		color: #ffffff;
+		font-size: $font-sm;
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding-bottom: 12upx;
+		padding-left: 6upx;
+
+		.name {
+			padding-left: 6upx;
+		}
 	}
 </style>

@@ -3,9 +3,61 @@
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 
 {
-	"module": "category",
-	"action": "cates",
+	"module": "shop",
+	"action": "getNearList",
 	"data": {
-		"id": 123457
+		"latitude": 29.18364,
+		"longitude": 107.01172
+	},
+	"clientInfo": {
+		"PLATFORM": "web",
+		"OS": "ios",
+		"APPID": "__UNI__9900639",
+		"DEVICEID": "16685918383211937111",
+		"scene": 1001,
+		"appId": "__UNI__9900639",
+		"appLanguage": "zh-Hans",
+		"appName": "咕叽农场",
+		"appVersion": "2.0.2",
+		"appVersionCode": "108",
+		"browserName": "safari",
+		"browserVersion": "11.0",
+		"deviceId": "16685918383211937111",
+		"deviceModel": "iPhone",
+		"deviceOrientation": "portrait",
+		"devicePixelRatio": 2,
+		"deviceType": "phone",
+		"hostLanguage": "zh-CN",
+		"hostName": "safari",
+		"hostVersion": "11.0",
+		"osName": "ios",
+		"osVersion": "11.0",
+		"safeArea": {
+			"left": 0,
+			"right": 375,
+			"top": 0,
+			"bottom": 667,
+			"width": 375,
+			"height": 667
+		},
+		"safeAreaInsets": {
+			"top": 0,
+			"right": 0,
+			"bottom": 0,
+			"left": 0
+		},
+		"screenHeight": 667,
+		"screenWidth": 375,
+		"statusBarHeight": 0,
+		"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 HBuilderX",
+		"uniCompileVersion": "3.6.4",
+		"uniPlatform": "web",
+		"uniRuntimeVersion": "3.6.4",
+		"windowBottom": 50,
+		"windowHeight": 617,
+		"windowTop": 0,
+		"windowWidth": 375,
+		"locale": "zh-Hans",
+		"LOCALE": "zh-Hans"
 	}
 }
