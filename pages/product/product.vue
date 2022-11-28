@@ -53,7 +53,7 @@
 				<text class="tit">店铺服务</text>
 				<view class="bz-list con">
 					<block v-for="(ser, serIndex) in globalShopInfo.services" :key="serIndex">
-						<text class="item">·{{ ser }}</text>
+						<view class="item">{{ ser }}</view>
 					</block>
 				</view>
 			</view>

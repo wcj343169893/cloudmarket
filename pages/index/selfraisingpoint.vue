@@ -23,7 +23,8 @@
 			</view>
 		</view>
 		<block v-if="loaded">
-			<takeaddressPage :dataList="nearestData" v-if="nearestData.length>0" @change="setSelfRaisingPoint"></takeaddressPage>
+			<takeaddressPage :dataList="nearestData" v-if="nearestData.length>0" @change="setSelfRaisingPoint">
+			</takeaddressPage>
 			<view class="flex flex-column align-center bg-white padding-xl " v-else>
 				<text>当前定位{{selfraisingDistance | formatDistance}}范围内，</text>
 				<text class="margin-top-xs">没有自提点</text>
@@ -31,7 +32,8 @@
 				<block v-if="applyTuanZhang">
 					<text class="margin-top-xs">或申请成为该位置的团长，</text>
 					<text class="margin-top-xs">足不出户，轻松赚钱！</text>
-					<button class="cu-btn bg-green margin-top" @click="navTo('/pages/selfraisingpoint/add',true)">我要成为团长</button>
+					<button class="cu-btn bg-green margin-top"
+						@click="navTo('/pages/selfraisingpoint/add',true)">我要成为团长</button>
 				</block>
 			</view>
 		</block>
@@ -75,7 +77,8 @@
 			},
 			selfraisingDistance() {
 				//每个店铺可以设置不同的距离
-				if (this.$store.state.globalShopInfo && this.$store.state.globalShopInfo.selfRaising && this.$store.state.globalShopInfo
+				if (this.$store.state.globalShopInfo && this.$store.state.globalShopInfo.selfRaising && this.$store.state
+					.globalShopInfo
 					.selfRaising.distance > 0) {
 					return this.$store.state.globalShopInfo.selfRaising.distance;
 				}
@@ -108,19 +111,19 @@
 				}).then(res => {
 					res.forEach(addr => {
 						addr.isChecked = this.raisingPoint && addr._id == this.raisingPoint._id;
-						addr.juli = "";
+						// addr.juli = "";
 					})
 					this.nearestData = this.nearestData.concat(res);
 					this.loaded = true;
 					if (res.length < this.limit) {
 						this.loadingType = 'noMore';
 					}
-					this.getMapDistance();
+					// this.getMapDistance();
 				}, err => {
 					this.loaded = true;
 					this.loadingType = 'noMore';
 					if (this.page == 1) {
-						this.getMapDistance();
+						// this.getMapDistance();
 					}
 				})
 				if (this.raisingPoint._id) {

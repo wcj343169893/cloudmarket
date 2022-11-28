@@ -20,27 +20,35 @@ const models = {
 		if (!longitude || !latitude) {
 			return false;
 		}
-		let res = await selfraisingCollection.where({
-			location: cmd.geoNear({
-				geometry: new db.Geo.Point(longitude, latitude)
-			})
-		}).field({
-			latitude: 1,
-			longitude: 1,
-			src: 1,
-			mobile: 1,
-			address: 1,
-			rate: 1,
-			state: 1,
-			commission: 1,
-			rateShop: 1,
-			name: 1
-		}).skip((page - 1) * limit).limit(limit).get();
+		let res = await selfraisingCollection.aggregate()
+			.geoNear({
+				distanceField: 'juli', // 输出的每个记录中 distance 即是与给定点的距离
+				spherical: true,
+				near: new db.Geo.Point(longitude, latitude),
+				// query: {
+				// 	docType: 'geoNear',
+				// },
+			}).project({
+				juli: 1,
+				latitude: 1,
+				longitude: 1,
+				src: 1,
+				mobile: 1,
+				address: 1,
+				rate: 1,
+				state: 1,
+				commission: 1,
+				rateShop: 1,
+				name: 1
+			}).skip((page - 1) * limit).limit(limit)
+			.end()
 		if (res.data.length == 0) {
 			return false;
 		}
 		let ids = [];
 		res.data.forEach(se => {
+			//保留整数部分
+			se.juli = se.juli.toFixed()
 			if (se.rateShop && se.rateShop[shopid]) {
 				se.rate = se.rateShop[shopid];
 				delete se.rateShop;

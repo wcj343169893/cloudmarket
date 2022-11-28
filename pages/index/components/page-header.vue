@@ -10,7 +10,7 @@
 			}" :class="{emptyLocation:!showLocationView}"
 		>
 			<view v-if="showLocationView" class="btn center" @click="navToAddress">
-				<text class="yticon icon-icon-test"></text>
+				<text class="yticon icon-icon-test" style="color: #fff;"></text>
 				<view class="msg"></view>
 			</view>
 			<view class="search-wrap center" :style="{ height: customHeight + 'px' }" @click="navTo('/pages/search/search')">

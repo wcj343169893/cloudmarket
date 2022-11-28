@@ -56,7 +56,7 @@
 							</view>
 							<text class="address">
 								<text>{{ raisingPoint.address }}</text>
-								<text v-if="zitiPointJuli > 0" class="m-l">距离:{{ zitiPointJuli | formatDistance}}</text>
+								<!-- <text v-if="zitiPointJuli > 0" class="m-l">距离:{{ zitiPointJuli | formatDistance}}</text> -->
 							</text>
 						</view>
 						<text class="yticon icon-you"></text>
@@ -315,7 +315,6 @@
 				isSubmit: false,
 				yuding: false,
 				addressData: {},
-				isOutOfRange: false,
 				shop: {},
 				juli: 0,
 				zitiJuli: 0,
@@ -341,7 +340,16 @@
 			this.loadData();
 		},
 		computed: {
-			...mapState(['hasLogin', 'shopId', 'stationId', 'location', 'isSelfRaisingPoint', 'raisingPoint'])
+			...mapState(['hasLogin', 'shopId', 'stationId', 'location', 'isSelfRaisingPoint', 'raisingPoint']),
+			isOutOfRange() {
+				if (!this.shop) {
+					return false;
+				}
+				if (this.selfRaising) {
+					return this.zitiPointJuli && this.zitiPointJuli / 1000 > this.shop.delivery.maxDistance
+				}
+				return this.juli / 1000 > this.shop.delivery.maxDistance;
+			}
 		},
 		methods: {
 			async loadData() {
@@ -482,7 +490,6 @@
 						this.juli = juli;
 						console.log('距离：', this.juli);
 						//超出配送范围
-						this.isOutOfRange = this.juli / 1000 > this.shop.delivery.maxDistance;
 						//计算运费
 						this.getFreight();
 					}
@@ -1262,10 +1269,10 @@
 		background: #ffffff;
 		display: flex;
 		height: 500rpx;
-		font-size: $font-base;
+		font-size: 32rpx;
 
 		.days-scroll {
-			width: 360rpx;
+			width: 300rpx;
 			background: #f5f5f5;
 			height: 500rpx;
 			padding-bottom: 30rpx;
@@ -1282,7 +1289,7 @@
 		}
 
 		.hours-scroll {
-			height: 500rpx;
+			flex: 1;
 			padding-bottom: 30rpx;
 
 			.hours {

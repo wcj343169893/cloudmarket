@@ -19,7 +19,7 @@
 					<swiper class="carousel" circular @change="swiperChange">
 						<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item"
 							@click="navToAdPage(item)">
-							<image :src="item.src" />
+							<image :src="item.src" mode="aspectFill" />
 						</swiper-item>
 					</swiper>
 					<!-- 自定义swiper指示器 -->
@@ -357,7 +357,9 @@
 					//广告
 					if (res.ads) {
 						let ads = res.ads;
-						this.titleNViewBackground = ads[0].background;
+						if (ads[0].background) {
+							this.titleNViewBackground = ads[0].background;
+						}
 						this.swiperLength = ads.length;
 						this.carouselList = ads;
 					}
@@ -439,7 +441,9 @@
 			swiperChange(e) {
 				const index = e.detail.current;
 				this.swiperCurrent = index;
-				this.titleNViewBackground = this.carouselList[index].background;
+				if (this.carouselList[index].background) {
+					this.titleNViewBackground = this.carouselList[index].background;
+				}
 			},
 			//广告轮播跳转
 			navToAdPage(item) {
