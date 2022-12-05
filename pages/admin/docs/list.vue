@@ -47,7 +47,7 @@
 				docs: [],
 				loadingType: 'loading',
 				page: 0,
-				limit: 10,
+				limit: 100,
 				loaded: false,
 				isEdit: false
 			};
@@ -152,7 +152,8 @@
 					_id: item._id,
 				}, true).then(res => {
 					this.$api.success("复制成功")
-					let ele = { ...item,
+					let ele = {
+						...item,
 						_id: res.id
 					}
 					this.dataList[item.type].data.push(ele);

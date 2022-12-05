@@ -61,6 +61,7 @@
 				cateImgs: {},
 				changeIconIndex: 0,
 				submit: false,
+				defaultImage: '/static/errorImage.jpg',
 				isLoaded: false
 			};
 		},
@@ -77,7 +78,7 @@
 							if (ele.src && ele.src != '') {
 								this.$set(this.cateImgs, index, ele.src);
 							} else {
-								this.$set(this.cateImgs, index, '/static/errorImage.jpg');
+								this.$set(this.cateImgs, index, this.defaultImage);
 							}
 							if (ele.isShow !== 0) {
 								ele.isShow = 1;
@@ -110,6 +111,7 @@
 					goodsCount: 0,
 					children: []
 				});
+				this.$set(this.cateImgs, this.categoriesData.length - 1, this.defaultImage);
 			},
 			//添加子集
 			addChild(index) {

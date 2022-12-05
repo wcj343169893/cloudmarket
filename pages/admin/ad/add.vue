@@ -39,7 +39,7 @@
 				},
 				rtDef: 'none',
 				link: '',
-				background: '',
+				background: '#54b85d',
 				goods: {},
 				docs: {},
 				src: '',

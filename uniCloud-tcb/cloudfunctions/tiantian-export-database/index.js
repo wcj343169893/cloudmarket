@@ -5,8 +5,48 @@ const db = uniCloud.database();
  * 本地执行云函数，生成db_init.json，外网无法访问
  */
 exports.main = async (event, context) => {
+	// 2022-12-05处理商品、分类、轮播图
+	// return exportFilterData();
+	return exportMallData();
+};
+
+
+/**
+ * 2022-12-05处理商品、分类、轮播图、优惠券
+ */
+const exportMallData = async () => {
+	let origin = require('./db_init_full.json')
+	//只更新这三个表数据
+	let mallCollections = ["cloud_ads", "cloud_goods", "cloud_goods_categories", "cloud_coupons"]
+	for await (let coll of mallCollections) {
+		origin[coll].data = await getDataByPage(coll, 1);
+		console.log(`${coll}导出完成`)
+	}
+	console.log("全部导出完成")
+	fs.writeFileSync(require('path').resolve(__dirname, '../../database/db_init.json'), JSON.stringify(origin))
+	console.log("写入完成")
+	return origin;
+}
+const exportFilterData = async () => {
+	let shopid = 10000
+	let origin = require('./db_init_full.json')
+	let collections = Object.keys(origin);
+	let keepData = ["cloud_ads", "cloud_documents"]
+	for (let coll of keepData) {
+		if (origin[coll]) {
+			let {
+				data
+			} = origin[coll]
+			if (data) {
+				origin[coll].data = data.filter(e => e.shopid == shopid);
+			}
+		}
+	}
+	console.log("全部导出完成")
+	fs.writeFileSync(require('path').resolve(__dirname, '../../database/db_init.json'), JSON.stringify(origin))
+}
+const exortAllData = async () => {
 	let origin = require('./db_init_origin.json')
-	//event为客户端上传的参数
 	let collections = Object.keys(origin);
 
 	/**
@@ -32,7 +72,7 @@ exports.main = async (event, context) => {
 	fs.writeFileSync(require('path').resolve(__dirname, '../../database/db_init.json'), JSON.stringify(origin))
 	console.log("写入完成")
 	return origin;
-};
+}
 
 const getDataByPage = async (coll, page, limit = 500) => {
 	let {

@@ -1,0 +1,4035 @@
+{
+	"opendb-app-versions": {
+		"data": []
+	},
+	"opendb-app-list": {
+		"data": []
+	},
+	"cloud_addresses": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_uid",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_addresses_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_ads": {
+		"data": [{
+			"_id": "1b64dd7b5f8bb68501a850c254cfda6b",
+			"background": "#5ecd67",
+			"link": "/pages/docs/docs?id=0d06a2fd5f24dc6e002fc21d58fc8665",
+			"posid": 3,
+			"shopid": 10000,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/680429a0-639d-11ea-b227-9531cf5e701a.jpg",
+			"docs": {
+				"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+				"checked": false,
+				"numb": 7,
+				"title": "苹果大丰收，库克真应该感谢中国"
+			},
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"redirectType": "docs",
+			"url": ""
+		}, {
+			"_id": "8e5be7055f8bb68801ed44b8167b4c8d",
+			"background": "#58c15e",
+			"link": "/pages/product/product?id=10049",
+			"posid": 2,
+			"shopid": 10000,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+			"goods": {
+				"_id": "8a6c3bf65f51c16e00c8253b00e87d30",
+				"categories": [{
+					"id": 1004,
+					"name": "水果",
+					"pid": 0
+				}, {
+					"checked": true,
+					"goodsCount": 12,
+					"id": 2002,
+					"name": "柑橘橙柚",
+					"pid": 1004
+				}],
+				"id": 10049,
+				"imgs": ["http://market.cjblog.org/goods/7367310443436768.jpg",
+					"http://market.cjblog.org/goods/6710076119047128.jpg",
+					"http://market.cjblog.org/goods/578660322075573.jpg",
+					"http://market.cjblog.org/goods/14967188009900378.jpg"
+				],
+				"isSold": 1,
+				"modified": 1597902231757,
+				"monthlySale": 0,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"originPrice": 0,
+				"price": 39.8,
+				"score": 1,
+				"shopid": 10000,
+				"src": "http://market.cjblog.org/goods/40080428010563707.jpg",
+				"stock": 3,
+				"subTitle": "小明都说好",
+				"title": "广西小台农芒果10斤新鲜水果无丝小核热带应季青整箱批发当季包邮",
+				"visite": 7,
+				"yuding": {
+					"beginTime": 1593878400000,
+					"deduction": 10,
+					"endTime": 1601481599000,
+					"finalPaymentBeginTime": 1601481600000,
+					"finalPaymentEndTime": 1602345599000,
+					"price": 1,
+					"state": "started"
+				},
+				"default_checked_sku_id": 10001,
+				"skuname": ["口味"],
+				"skus": [{
+					"id": 10000,
+					"name": "招牌腊肉",
+					"originPrice": 0,
+					"price": 39.9,
+					"sales": 0,
+					"stock": 50
+				}, {
+					"id": 10001,
+					"name": "风味腊肉",
+					"originPrice": 0,
+					"price": 39.5,
+					"sales": 1,
+					"stock": 49
+				}, {
+					"id": 10002,
+					"name": "腊肠400克",
+					"originPrice": 0,
+					"price": 39.8,
+					"sales": 1,
+					"stock": 49
+				}],
+				"upc": "6901028316989"
+			},
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"redirectType": "goods",
+			"url": "",
+			"type": "home_swiper"
+		}, {
+			"_id": "44b0eba2661040628c60d183aa545e98",
+			"background": "#58c15e",
+			"link": "/pages/product/product?id=10049",
+			"posid": 2,
+			"shopid": 10000,
+			"src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+			"goods": {
+				"_id": "8a6c3bf65f51c16e00c8253b00e87d30",
+				"categories": [{
+					"id": 1004,
+					"name": "水果",
+					"pid": 0
+				}, {
+					"checked": true,
+					"goodsCount": 12,
+					"id": 2002,
+					"name": "柑橘橙柚",
+					"pid": 1004
+				}],
+				"id": 10049,
+				"imgs": ["http://market.cjblog.org/goods/7367310443436768.jpg",
+					"http://market.cjblog.org/goods/6710076119047128.jpg",
+					"http://market.cjblog.org/goods/578660322075573.jpg",
+					"http://market.cjblog.org/goods/14967188009900378.jpg"
+				],
+				"isSold": 1,
+				"modified": 1597902231757,
+				"monthlySale": 0,
+				"operator": "9ffb2a485f38964200999b1f07cb7b80",
+				"originPrice": 0,
+				"price": 39.8,
+				"score": 1,
+				"shopid": 10000,
+				"src": "http://market.cjblog.org/goods/40080428010563707.jpg",
+				"stock": 3,
+				"subTitle": "小明都说好",
+				"title": "广西小台农芒果10斤新鲜水果无丝小核热带应季青整箱批发当季包邮",
+				"visite": 7,
+				"yuding": {
+					"beginTime": 1593878400000,
+					"deduction": 10,
+					"endTime": 1601481599000,
+					"finalPaymentBeginTime": 1601481600000,
+					"finalPaymentEndTime": 1602345599000,
+					"price": 1,
+					"state": "started"
+				},
+				"default_checked_sku_id": 10001,
+				"skuname": ["口味"],
+				"skus": [{
+					"id": 10000,
+					"name": "招牌腊肉",
+					"originPrice": 0,
+					"price": 39.9,
+					"sales": 0,
+					"stock": 50
+				}, {
+					"id": 10001,
+					"name": "风味腊肉",
+					"originPrice": 0,
+					"price": 39.5,
+					"sales": 1,
+					"stock": 49
+				}, {
+					"id": 10002,
+					"name": "腊肠400克",
+					"originPrice": 0,
+					"price": 39.8,
+					"sales": 1,
+					"stock": 49
+				}],
+				"upc": "6901028316989"
+			},
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"redirectType": "goods",
+			"url": "",
+			"type": "home_swiper"
+		}, {
+			"_id": "73f70d5c5fe7ea11009aaa11767c3ae9",
+			"background": "",
+			"docs": {},
+			"goods": {},
+			"link": "/pages/coupons/coupons",
+			"redirectType": "couponsList",
+			"size": {
+				"height": 450,
+				"width": 450
+			},
+			"src": "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/7dcf705b-be02-4db8-927b-b949fb79b4f3.png",
+			"type": "home_dialog",
+			"operator": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+			"shopid": 10000
+		}],
+		"index": [{
+			"IndexName": "cloud_ads_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_carts": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_carts_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_uid",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}, {
+					"Name": "shopid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_companys": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_code",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "code",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_companys_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"permission": {
+				"create": true,
+				"delete": true,
+				"read": true,
+				"update": true
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"bank_name": {
+					"bsonType": "string",
+					"description": "请输入银行",
+					"title": "收款银行",
+					"trim": "both"
+				},
+				"bank_number": {
+					"bsonType": "string",
+					"description": "请输入卡号",
+					"title": "收款卡号",
+					"trim": "both"
+				},
+				"business_license": {
+					"bsonType": "string",
+					"description": "营业执照",
+					"title": "营业执照",
+					"trim": "both"
+				},
+				"code": {
+					"bsonType": "string",
+					"description": "企业代码",
+					"title": "企业代码",
+					"trim": "both"
+				},
+				"code_type": {
+					"bsonType": "int",
+					"description": "企业代码类型",
+					"title": "企业代码类型"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"food_license": {
+					"bsonType": "string",
+					"description": "食品安全许可证",
+					"title": "食品安全许可证"
+				},
+				"introduction": {
+					"bsonType": "string",
+					"description": "公司简介",
+					"title": "公司简介",
+					"trim": "both"
+				},
+				"legal_persona_license_back": {
+					"bsonType": "string",
+					"description": "法人身份证反面",
+					"title": "法人身份证反面"
+				},
+				"legal_persona_license_front": {
+					"bsonType": "string",
+					"description": "法人身份证正面",
+					"title": "法人身份证正面",
+					"trim": "both"
+				},
+				"legal_persona_name": {
+					"bsonType": "string",
+					"description": "法人姓名",
+					"title": "法人姓名",
+					"trim": "both"
+				},
+				"legal_persona_wechat": {
+					"bsonType": "string",
+					"description": "法人微信",
+					"title": "法人微信",
+					"trim": "both"
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"name": {
+					"bsonType": "string",
+					"description": "企业名",
+					"title": "企业名",
+					"trim": "both"
+				},
+				"operater": {
+					"bsonType": "string",
+					"description": "操作员",
+					"forceDefaultValue": {
+						"$env": "uid"
+					},
+					"foreignKey": "uni-id-users._id",
+					"title": "操作员"
+				},
+				"phone": {
+					"bsonType": "string",
+					"description": "电话",
+					"title": "电话",
+					"trim": "both"
+				},
+				"shop_imgs": {
+					"bsonType": "array",
+					"description": "店铺图片",
+					"title": "店铺图片"
+				}
+			},
+			"required": []
+		}
+	},
+	"cloud_coupon_users": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_coupon_users_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_coupons": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_coupons_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}, {
+					"Name": "beginTime",
+					"Direction": "1"
+				}, {
+					"Name": "endTime",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"beginTime": {
+					"bsonType": "int",
+					"title": "开始时间戳"
+				},
+				"endTime": {
+					"bsonType": "int",
+					"title": "结束时间戳"
+				},
+				"goods": {
+					"bsonType": "array",
+					"title": "商品列表",
+					"properties": {
+						"_id": {
+							"bsonType": "string"
+						},
+						"title": {
+							"bsonType": "string"
+						}
+					}
+				},
+				"category": {
+					"bsonType": "array",
+					"title": "分类列表",
+					"properties": {
+						"_id": {
+							"bsonType": "string"
+						},
+						"title": {
+							"bsonType": "string"
+						},
+						"id": {
+							"bsonType": "int"
+						}
+					}
+				},
+				"limit": {
+					"bsonType": "int",
+					"title": "限制领取张数",
+					"defaultValue": 1
+				},
+				"stock": {
+					"bsonType": "int",
+					"title": "总库存",
+					"defaultValue": 100
+				},
+				"manjine": {
+					"bsonType": "object",
+					"title": "金额满减",
+					"properties": {
+						"amount": {
+							"bsonType": "double",
+							"title": "优惠金额",
+							"defaultValue": 1
+						},
+						"condition": {
+							"bsonType": "double",
+							"title": "条件",
+							"defaultValue": 10
+						}
+					}
+				},
+				"manshuliang": {
+					"bsonType": "object",
+					"title": "数量满减",
+					"properties": {
+						"amount": {
+							"bsonType": "double",
+							"title": "优惠金额",
+							"defaultValue": 1
+						},
+						"condition": {
+							"bsonType": "int",
+							"title": "条件",
+							"defaultValue": 10
+						}
+					}
+				},
+				"memo": {
+					"bsonType": "string",
+					"title": "说明"
+				},
+				"price": {
+					"bsonType": "double",
+					"title": "优惠金额",
+					"defaultValue": 1
+				},
+				"shopid": {
+					"bsonType": "int",
+					"title": "店铺id"
+				},
+				"state": {
+					"bsonType": "int",
+					"title": "状态",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "草稿箱",
+						"value": 0
+					}, {
+						"text": "已发布",
+						"value": 1
+					}, {
+						"text": "已停用",
+						"value": 2
+					}]
+				},
+				"title": {
+					"bsonType": "string",
+					"title": "标题"
+				},
+				"today": {
+					"bsonType": "bool",
+					"title": "是否当日可用"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "创建时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"type": {
+					"bsonType": "int",
+					"title": "类型",
+					"enum": [{
+						"text": "商品券",
+						"value": 1
+					}, {
+						"text": "分类券",
+						"value": 2
+					}, {
+						"text": "店铺券",
+						"value": 3
+					}]
+				},
+				"style": {
+					"bsonType": "string",
+					"title": "类型",
+					"enum": [{
+						"text": "满金额减",
+						"value": "manjine"
+					}, {
+						"text": "满数量减",
+						"value": "manshuliang"
+					}]
+				}
+			}
+		}
+	},
+	"cloud_documents": {
+		"data": [{
+			"_id": "043ba0325f2e887a0039aeeb71f2f340",
+			"content": "",
+			"pageLink": "/pages/index/fruit",
+			"pageLinkQuery": "",
+			"title": "波士顿龙虾🦞29.9一只，限售85只，每人限购一只",
+			"type": "mp_share",
+			"operator": 10000,
+			"shopid": 10000,
+			"created": "2020-08-08T11:11:54.887Z",
+			"modified": "2020-08-08T11:17:12.526Z"
+		}, {
+			"_id": "8e5be7055f7bdca90156248a6fb6ad36",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:55:37.569Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "abd27dd45f2e1ca6004121bd628e6849",
+			"content": "",
+			"pageLink": "/pages/index/fruit",
+			"pageLinkQuery": "",
+			"title": "胡萝卜1块一斤，不买后悔一星期",
+			"type": "mp_share",
+			"operator": 10000,
+			"shopid": 10000,
+			"created": "2020-08-08T03:31:50.911Z",
+			"modified": "2020-08-08T10:25:42.000Z"
+		}, {
+			"_id": "d782d4875f93d8e3018d403968b71920",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-24T07:33:55.410Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "e656fa635f7bdccb012b0e121f1b9605",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:11.841Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "1229caae5ef574ae0055cfa40630f5c5",
+			"content": "服务协议正文 ",
+			"shopid": 10000,
+			"title": "服务协议",
+			"type": "app_service"
+		}, {
+			"_id": "b8df3bd65f7bdcc80104b09f5b65159d",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报5",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:08.433Z",
+			"modified": "2020-10-06T03:06:28.825Z",
+			"posid": "5"
+		}, {
+			"_id": "e373396c5f7bdc49011f99f864f04247",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:54:01.318Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "7c59e15d685c4a2d9a5d81376b2dc47f",
+			"content": "Q：是否支持无理由退换货？  \nA：生鲜产品（包括蔬菜水果、鲜蛋肉禽、水产海鲜等）、乳品（鲜奶）因时效性较强，不支持无理由退换货，仅支持质量问题退换货；非生鲜类产品，在未拆封、损坏等不影响二次销售的情况下，支持无理由退换货。  \n\nQ：商品申请退换货时效？  \nA：生鲜商品如有质量问题请于收到商品起24小时内提出退换货申请； 非生鲜类商品自顾客收到商品起48小时内，如符合以下条件，我们将提供退换货服务：  \n（1）商品无损坏、无缺少，不影响二次销售；  \n（2）若您购买的商品有赠品，办理退换货时，须同时将赠品全部退回。  \n\nQ：不支持退换货的情形有哪些？  \nA：（1）参加限时抢购、特价促销的商品，非质量问题不支持退换货；  \n   （2）任何因用户保管储藏导致出现质量问题的商品，商品已使用或损坏等影响二次销售的情况，不支持退换货；  \n   （3）主张实物与网站图片存在一定色差的，不支持退换货；  \n   （4）非所售卖的商品，不支持退换货；  \n   （5）加工类商品、水产类等商品非本身质量问题，不支持退换货；  \n\nQ：是否需要保留原商品？  \nA：申请退款后须完整保留好原商品和小票，如需取货我们将在您选择的取货时间内上门取回，如遇特殊情况可能会延迟上门取货；如无需取回我们会发送短信通知您，感谢您的理解与支持  \n\nQ：是否取货要在原订单地址？  \nA：取货是按照您的订单地址上门取货。  \n\nQ：申请退货时是否需要另行支付运费？  \nA：本APP提供免费上门取货服务。  \n\nQ：购买商品时已支付运费在申请退货时是否退还？  \nA：若用户仅申请部分退款，运费不退还。  \n\nQ：如何取消退换货？  \nA：如果您申请了退换货后，需要取消，请您联系客服为您处理。  ",
+			"shopid": 10000,
+			"title": "退换货原则",
+			"type": "app_goods_charge",
+			"modified": "2020-10-12T07:00:21.730Z",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"posid": 0
+		}, {
+			"_id": "b8df3bd65f7bdccb0104b0bd35af248c",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:11.697Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "cb1a2f465f2552b700391b2f6d894c99",
+			"content": "## 关于我们的一切\n我没就是好好阿雷克斯  \n### 二级菜单\n水电开发水利水电  \n三段论法 上来的 水电费  ",
+			"title": "关于我们",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-08-01T11:32:07.325Z",
+			"modified": "2020-10-06T02:01:45.625Z",
+			"type": "normal"
+		}, {
+			"_id": "e373396c5f7bdcce011fa45e7b95d5f9",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:14.601Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "84e72bb95f24dd00003d654153e96bcd",
+			"content": "央广网北京8月1日消息 据中央广播电视总台中国之声《新闻和报纸摘要》报道，中央人民政府7月29日就香港特别行政区第七届立法会选举推迟有关事宜表明意见。2020-8-1 新闻和报纸摘要全文>>>\n\n《关于香港特别行政区2020年立法会换届选举押后事宜的报告》收悉。中央人民政府对近期",
+			"title": "中央人民政府就香港特别行政区第七届立法会选举推迟有关事宜表明意见",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"modified": "2020-10-06T02:03:06.328Z",
+			"type": "normal"
+		}, {
+			"_id": "a3e75f055ef574c200492faa50335f39",
+			"content": "隐私政策正文 ",
+			"shopid": 10000,
+			"title": "隐私政策",
+			"type": "app_user_private"
+		}, {
+			"_id": "c54bd3a25f7bdcca00f3c42752578f5e",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:10.657Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "d782d4875f7bdcad00ed6d1c65103d2c",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:55:41.255Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}, {
+			"_id": "e656fa635f7bd3f1012ab9f61aa7b7d2",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_about",
+			"operator": "023ce9555ff5a7f503955f6c1e57203a",
+			"shopid": 10000,
+			"created": "2020-10-06T02:18:25.459Z",
+			"modified": "2021-01-07T01:43:18.086Z",
+			"posid": "0"
+		}, {
+			"_id": "0d06a2fd5f24dc6e002fc21d58fc8665",
+			"content": "对于企业来说，这场百年不遇的疫情，其实就是一场大考。\n\n只有在成绩公布的那一天，你才能看清楚这个企业的真正斤两。\n\n事实证明，苹果的确是一个重量级的优等生。\n\n\n美国时间 7 月 30 日，苹果公布了截至 2020 年 6 月 30 日第三财季业绩，这份成绩单可以用一个字来形容：",
+			"title": "苹果大丰收，库克真应该感谢中国",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"modified": "2020-10-06T02:01:53.921Z",
+			"type": "normal"
+		}, {
+			"_id": "b00064a7601277010178142e7e79bb90",
+			"content": "Q：是否支持无理由退换货？  \nA：生鲜产品（包括蔬菜水果、鲜蛋肉禽、水产海鲜等）、乳品（鲜奶）因时效性较强，不支持无理由退换货，仅支持质量问题退换货；非生鲜类产品，在未拆封、损坏等不影响二次销售的情况下，支持无理由退换货。  \n\nQ：商品申请退换货时效？  \nA：生鲜商品如有质量问题请于收到商品起24小时内提出退换货申请； 非生鲜类商品自顾客收到商品起48小时内，如符合以下条件，我们将提供退换货服务：  \n（1）商品无损坏、无缺少，不影响二次销售；  \n（2）若您购买的商品有赠品，办理退换货时，须同时将赠品全部退回。  \n\nQ：不支持退换货的情形有哪些？  \nA：（1）参加限时抢购、特价促销的商品，非质量问题不支持退换货；  \n   （2）任何因用户保管储藏导致出现质量问题的商品，商品已使用或损坏等影响二次销售的情况，不支持退换货；  \n   （3）主张实物与网站图片存在一定色差的，不支持退换货；  \n   （4）非所售卖的商品，不支持退换货；  \n   （5）加工类商品、水产类等商品非本身质量问题，不支持退换货；  \n\nQ：是否需要保留原商品？  \nA：申请退款后须完整保留好原商品和小票，如需取货我们将在您选择的取货时间内上门取回，如遇特殊情况可能会延迟上门取货；如无需取回我们会发送短信通知您，感谢您的理解与支持  \n\nQ：是否取货要在原订单地址？  \nA：取货是按照您的订单地址上门取货。  \n\nQ：申请退货时是否需要另行支付运费？  \nA：本APP提供免费上门取货服务。  \n\nQ：购买商品时已支付运费在申请退货时是否退还？  \nA：若用户仅申请部分退款，运费不退还。  \n\nQ：如何取消退换货？  \nA：如果您申请了退换货后，需要取消，请您联系客服为您处理。  ",
+			"modified": "2020-10-12T07:00:21.730Z",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"posid": 0,
+			"shopid": 10000,
+			"title": "退换货原则",
+			"type": "app_goods_charge"
+		}, {
+			"_id": "d81cd5415f7bdcc600fc00ee5a14cd16",
+			"content": "### Q：怎么举报不良信息？\nA：您好，您可以拨打热线客服电话：400-888888，或者在app中提交",
+			"pageLink": "",
+			"pageLinkQuery": "",
+			"title": "不良信息举报",
+			"type": "app_qa",
+			"operator": "9ffb2a485f38964200999b1f07cb7b80",
+			"shopid": 10000,
+			"created": "2020-10-06T02:56:06.881Z",
+			"modified": "2020-10-06T02:19:59.899Z"
+		}],
+		"index": [{
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_documents_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_type",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "type",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_goods": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_cate",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "categories.id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_miaosha",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "isSold",
+					"Direction": "1"
+				}, {
+					"Name": "miaosha.beginTime",
+					"Direction": "1"
+				}, {
+					"Name": "miaosha.stock",
+					"Direction": "1"
+				}, {
+					"Name": "miaosha.endTime",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_id",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": ["title", "price", "shopid", "stock"],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"operater": {
+					"bsonType": "string",
+					"title": "操作员",
+					"description": "操作员",
+					"foreignKey": "uni-id-users._id",
+					"forceDefaultValue": {
+						"$env": "uid"
+					}
+				},
+				"id": {
+					"bsonType": "int",
+					"title": "编号"
+				},
+				"src": {
+					"bsonType": "string",
+					"title": "封面图",
+					"component": {
+						"name": "cloud-image",
+						"props": {
+							"name": "src",
+							"v-model": "formData.src"
+						}
+					}
+				},
+				"banner": {
+					"bsonType": "string",
+					"title": "横图",
+					"component": {
+						"name": "cloud-image",
+						"props": {
+							"name": "banner",
+							"v-model": "formData.banner"
+						}
+					}
+				},
+				"title": {
+					"bsonType": "string",
+					"title": "商品名称",
+					"defaultValue": ""
+				},
+				"subTitle": {
+					"bsonType": "string",
+					"title": "子标题",
+					"defaultValue": ""
+				},
+				"price": {
+					"bsonType": "double",
+					"title": "销售价格",
+					"defaultValue": 0
+				},
+				"originPrice": {
+					"bsonType": "double",
+					"title": "原价",
+					"defaultValue": 0
+				},
+				"monthlySale": {
+					"bsonType": "int",
+					"title": "月售量",
+					"defaultValue": 0
+				},
+				"categories": {
+					"bsonType": "array",
+					"title": "分类"
+				},
+				"shopid": {
+					"bsonType": "int",
+					"title": "店铺",
+					"description": "商品店铺",
+					"foreignKey": "cloud_shops.id",
+					"enum": {
+						"collection": "cloud_shops",
+						"field": "name as text, id as value"
+					}
+				},
+				"stock": {
+					"bsonType": "int",
+					"title": "剩余库存",
+					"defaultValue": 100
+				},
+				"visite": {
+					"bsonType": "int",
+					"title": "浏览量",
+					"defaultValue": 0
+				},
+				"limit": {
+					"bsonType": "int",
+					"title": "限购数量",
+					"description": "0不限制",
+					"defaultValue": 0
+				},
+				"isCategoryShow": {
+					"bsonType": "int",
+					"title": "分类是否显示",
+					"description": "0 下架 1 在售",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "下架",
+						"value": 0
+					}, {
+						"text": "在售",
+						"value": 1
+					}]
+				},
+				"isSold": {
+					"bsonType": "int",
+					"title": "是否销售",
+					"description": "销售类型：0 下架 1 在售",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "下架",
+						"value": 0
+					}, {
+						"text": "在售",
+						"value": 1
+					}]
+				},
+				"isLimit": {
+					"bsonType": "bool",
+					"title": "是否限购",
+					"description": "",
+					"defaultValue": false
+				},
+				"isNewUser": {
+					"bsonType": "bool",
+					"title": "是否新用户",
+					"description": "",
+					"defaultValue": false
+				},
+				"isRecommend": {
+					"bsonType": "bool",
+					"title": "是否推荐",
+					"description": "",
+					"defaultValue": false
+				},
+				"posid": {
+					"bsonType": "int",
+					"title": "排序",
+					"defaultValue": 0
+				},
+				"onlySelfTake": {
+					"bsonType": "int",
+					"defaultValue": 0,
+					"title": "仅自提",
+					"enum": [{
+						"text": "否",
+						"value": 0
+					}, {
+						"text": "是",
+						"value": 1
+					}]
+				},
+				"saleType": {
+					"bsonType": "string",
+					"title": "销售类型",
+					"enum": [{
+						"text": "正常销售",
+						"value": "normal"
+					}, {
+						"text": "提前预定",
+						"value": "yuding"
+					}, {
+						"text": "社区团购",
+						"value": "tuangou"
+					}]
+				},
+				"score": {
+					"bsonType": "int",
+					"title": "评分",
+					"description": "商品评分，1-10",
+					"defaultValue": 10
+				},
+				"share": {
+					"bsonType": "string",
+					"title": "分享词"
+				},
+				"skus": {
+					"bsonType": "array",
+					"title": "多规格"
+				},
+				"skuname": {
+					"bsonType": "array",
+					"title": "规格名称"
+				},
+				"specsType": {
+					"bsonType": "string",
+					"title": "规格类型",
+					"enum": [{
+						"text": "单规格",
+						"value": "single"
+					}, {
+						"text": "多规格",
+						"value": "multiple"
+					}]
+				},
+				"storage_condition": {
+					"bsonType": "string",
+					"title": "储存条件"
+				},
+				"net_weight": {
+					"bsonType": "string",
+					"title": "净重"
+				},
+				"manufacture": {
+					"bsonType": "string",
+					"title": "生成日期"
+				},
+				"guarantee_period": {
+					"bsonType": "string",
+					"title": "保质期"
+				},
+				"tuangou": {
+					"bsonType": "object",
+					"title": "团购信息"
+				},
+				"upc": {
+					"bsonType": "string",
+					"title": "条码"
+				},
+				"offlineTime": {
+					"bsonType": "timestamp",
+					"title": "下线时间"
+				},
+				"imgs": {
+					"bsonType": "array",
+					"title": "轮播图",
+					"component": {
+						"name": "cloud-image",
+						"props": {
+							"name": "imgs",
+							"v-model": "formData.imgs",
+							":imageNumber": 8
+						}
+					}
+				},
+				"description": {
+					"bsonType": "array",
+					"title": "详情图",
+					"component": {
+						"name": "cloud-image",
+						"props": {
+							"name": "description",
+							"v-model": "formData.description",
+							":imageNumber": 10
+						}
+					}
+				},
+				"onlineTime": {
+					"bsonType": "timestamp",
+					"description": "上架时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				}
+			}
+		}
+	},
+	"cloud_goods_activities": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}, {
+					"Name": "goods_id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_activities_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_goods_categories": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "pid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_categories_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_id",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"operater": {
+					"bsonType": "string",
+					"title": "操作员",
+					"description": "操作员",
+					"foreignKey": "uni-id-users._id",
+					"forceDefaultValue": {
+						"$env": "uid"
+					}
+				},
+				"goodsCount": {
+					"bsonType": "int",
+					"defaultValue": 0,
+					"title": "商品数量"
+				},
+				"id": {
+					"bsonType": "int",
+					"title": "编号"
+				},
+				"src": {
+					"bsonType": "string",
+					"title": "图片",
+					"component": {
+						"name": "cloud-image",
+						"props": {
+							"name": "src",
+							"v-model": "formData.src"
+						}
+					}
+				},
+				"isRecommend": {
+					"bsonType": "int",
+					"title": "是否推荐",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "否",
+						"value": 0
+					}, {
+						"text": "是",
+						"value": 1
+					}]
+				},
+				"isShow": {
+					"bsonType": "int",
+					"title": "是否显示",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "否",
+						"value": 0
+					}, {
+						"text": "是",
+						"value": 1
+					}]
+				},
+				"name": {
+					"bsonType": "string",
+					"title": "名称"
+				},
+				"parent_id": {
+					"bsonType": "string",
+					"title": "父id",
+					"description": "父id",
+					"parentKey": "_id"
+				},
+				"posid": {
+					"bsonType": "int",
+					"title": "排序，asc"
+				},
+				"recommendGoods": {
+					"bsonType": "int",
+					"defaultValue": 0,
+					"title": "推荐商品数量"
+				},
+				"shopid": {
+					"bsonType": "int",
+					"title": "店铺编号",
+					"foreignKey": "cloud_shops.id",
+					"enum": {
+						"collection": "cloud_shops",
+						"field": "name as text, id as value"
+					}
+				}
+			}
+		}
+	},
+	"cloud_goods_comments": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_goods",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "goods_id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_comments_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"operater": {
+					"bsonType": "string",
+					"title": "操作员",
+					"description": "操作员",
+					"foreignKey": "uni-id-users._id"
+				},
+				"content": {
+					"bsonType": "string",
+					"title": "内容"
+				},
+				"reply": {
+					"bsonType": "string",
+					"title": "回复",
+					"componentForEdit": {
+						"name": "uni-easyinput",
+						"props": {
+							"type": "textarea"
+						}
+					}
+				},
+				"goods_id": {
+					"bsonType": "string",
+					"title": "商品",
+					"foreignKey": "cloud_goods._id",
+					"enum": {
+						"collection": "cloud_goods",
+						"field": "title as text, _id as value"
+					}
+				},
+				"index": {
+					"bsonType": "int",
+					"title": "索引"
+				},
+				"order_id": {
+					"bsonType": "string",
+					"title": "订单id"
+				},
+				"shopid": {
+					"bsonType": "int",
+					"title": "店铺",
+					"description": "商品店铺",
+					"foreignKey": "cloud_shops.id",
+					"enum": {
+						"collection": "cloud_shops",
+						"field": "name as text, id as value"
+					}
+				},
+				"state": {
+					"bsonType": "int",
+					"title": "是否显示"
+				},
+				"star": {
+					"bsonType": "int",
+					"title": "评分"
+				},
+				"starResult": {
+					"bsonType": "string",
+					"title": "评分内容"
+				},
+				"tags": {
+					"bsonType": "array",
+					"title": "标签"
+				},
+				"user": {
+					"bsonType": "object",
+					"title": "用户信息"
+				}
+			}
+		}
+	},
+	"cloud_goods_day_sales": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_goods_day_sales_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_day",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "day",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}],
+		"schema": {
+			"name": "",
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"day": {
+					"bsonType": "string"
+				},
+				"goods": {
+					"bsonType": "array"
+				}
+			}
+		}
+	},
+	"cloud_goods_deletes": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_goods_deletes_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_goods_shop_day_sales": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_goods_shop_day_sales_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_day",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "day",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}]
+	},
+	"cloud_goods_special_activities": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_special_activities_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_goods_visites": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}, {
+					"Name": "goods_id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_goods_visites_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_identity": {
+		"data": [{
+			"_id": "287a53aa61af1e3700e1b051667087ca",
+			"key": "order_yh_20211207",
+			"value": 10000
+		}, {
+			"_id": "9f2a34705fdb1161000bbe7f75aac003",
+			"key": "cache_video_owner_b4f7b7d25fb3775d00b0de4f5d854ee2",
+			"data": {
+				"_id": "b4f7b7d25fb3775d00b0de4f5d854ee2",
+				"like": 6,
+				"play": 127
+			},
+			"expires": 1608200307981
+		}, {
+			"_id": "f11f525b5ef98b8a000131654205f85b",
+			"key": "goods",
+			"name": "商品编号",
+			"value": 24763
+		}, {
+			"_id": "1b64dd7b5f94f10701f730d8400d9cb5",
+			"name": "店铺编号",
+			"value": 10001,
+			"key": "shops"
+		}, {
+			"_id": "92f9825ed73843c880194a20c1793e34",
+			"key": "skus",
+			"name": "商品多规格",
+			"value": 1000
+		}, {
+			"_id": "eb0c51035fdb1131000b82a11bb08f37",
+			"key": "cache_video_owner_dd8d23355fb377ff00ba5cc63e2b46e5",
+			"data": {
+				"_id": "dd8d23355fb377ff00ba5cc63e2b46e5",
+				"like": 1,
+				"play": 24
+			},
+			"expires": 1608200321968
+		}, {
+			"_id": "1503f3385f1790ee0065f782131eb074",
+			"key": "goods_categories",
+			"name": "商品分类",
+			"value": 12562
+		}, {
+			"_id": "8e5be7055f85317101aea1dd69a5ea34",
+			"key": "cache_unipush_N5wQHWUKnv8POOTCnGtFU8_token",
+			"data": "fd5119be1d70d46ff6abfd3ef1dc597d18d38eb4e5605be7b4c452601eb73b13",
+			"expires": 1654069161996
+		}, {
+			"_id": "c462c81061a9833e0027ee7027d59770",
+			"key": "shop_apply",
+			"value": 10004
+		}, {
+			"_id": "0d06a2fd5f27b29c00449da06510005a",
+			"name": "订单自提",
+			"value": 1018278163,
+			"key": "order_ziti"
+		}, {
+			"_id": "79550af2605d8ca00c026ada4b8c0c52",
+			"key": "cache_cloud_express_search_75443227406643",
+			"data": {
+				"message": "ok",
+				"nu": "75443227406643",
+				"ischeck": "1",
+				"condition": "F00",
+				"com": "zhongtong",
+				"status": "200",
+				"state": "3",
+				"data": [{
+					"time": "2021-03-11 17:23:53",
+					"ftime": "2021-03-11 17:23:53",
+					"context": "您的快递已签收, 签收人在【黑土共配的南川区兴隆镇共配站SYZ新】(南川区兴隆镇)领取。如有疑问请电联:（15213625785）, 投诉电话:（15213722630）, 您的快递已经妥投。风里来雨里去, 只为客官您满意。上有老下有小, 赏个好评好不好？【请在评价快递员处帮忙点亮五颗星星哦~】"
+				}, {
+					"time": "2021-03-09 17:29:19",
+					"ftime": "2021-03-09 17:29:19",
+					"context": "快件已被【黑土共配的南川区兴隆镇共配站SYZ新】代收，如有问题请电联（15213722630），感谢使用中通快递，期待再次为您服务！"
+				}, {
+					"time": "2021-03-09 16:31:37",
+					"ftime": "2021-03-09 16:31:37",
+					"context": "【重庆南川】 的邢剑桃新账号（15213625785） 正在第1次派件, 请保持电话畅通,并耐心等待（95720为中通快递员外呼专属号码，请放心接听）"
+				}, {
+					"time": "2021-03-09 14:27:38",
+					"ftime": "2021-03-09 14:27:38",
+					"context": "快件已经到达 【重庆南川】"
+				}, {
+					"time": "2021-03-09 05:26:51",
+					"ftime": "2021-03-09 05:26:51",
+					"context": "快件离开 【重庆巴南转运中心】 已发往 【重庆南川】"
+				}, {
+					"time": "2021-03-09 04:22:27",
+					"ftime": "2021-03-09 04:22:27",
+					"context": "快件已经到达 【重庆巴南转运中心】"
+				}, {
+					"time": "2021-03-08 00:17:03",
+					"ftime": "2021-03-08 00:17:03",
+					"context": "快件离开 【虎门中心】 已发往 【重庆巴南转运中心】"
+				}, {
+					"time": "2021-03-08 00:15:12",
+					"ftime": "2021-03-08 00:15:12",
+					"context": "快件已经到达 【虎门中心】"
+				}, {
+					"time": "2021-03-07 23:20:29",
+					"ftime": "2021-03-07 23:20:29",
+					"context": "【福田华强】（0755-33948918） 的 翼盟-103（13302972366） 已揽收"
+				}, {
+					"time": "2021-03-07 20:48:36",
+					"ftime": "2021-03-07 20:48:36",
+					"context": "快件离开 【福田华强】 已发往 【重庆巴南转运中心】"
+				}]
+			},
+			"expires": 1616765183266
+		}, {
+			"_id": "aa133ce55f40c8290016d565265a595e",
+			"key": "cache_yilianyun_1053604898_access_token",
+			"data": "b60cd2e867974507bf2638c94afba478",
+			"expires": 1607608379188
+		}, {
+			"_id": "f3839539a8ee428489fbc3bc5e250166",
+			"value": 10573,
+			"key": "users",
+			"name": "用户编号"
+		}, {
+			"_id": "1b64dd7b5f6ef1de00884bfb6bebb3a0",
+			"name": "订单退款",
+			"value": 10063095,
+			"key": "order_refunds"
+		}, {
+			"_id": "908462d561a6e0ff0116fbf01827584d",
+			"key": "order_yh_20211201",
+			"value": 10006
+		}, {
+			"_id": "e15a7f8330a641b681f967c9e033d22a",
+			"key": "orders",
+			"name": "订单编号",
+			"value": 100098
+		}],
+		"index": [{
+			"IndexName": "index_key",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "key",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}, {
+			"IndexName": "cloud_identity_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_message": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud-message_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": "doc.user_id==auth.uid",
+				"delete": "doc.user_id==auth.uid"
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"user_id": {
+					"bsonType": "string"
+				},
+				"title": {
+					"bsonType": "string",
+					"title": "标题"
+				},
+				"content": {
+					"bsonType": "string",
+					"title": "内容"
+				},
+				"page": {
+					"bsonType": "string",
+					"title": "跳转页面"
+				},
+				"goods": {
+					"bsonType": "object",
+					"title": "商品"
+				},
+				"payload": {
+					"bsonType": "string",
+					"title": "扩展字段"
+				},
+				"status": {
+					"bsonType": "int",
+					"title": "状态",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "未读",
+						"value": 0
+					}, {
+						"text": "已读",
+						"value": 1
+					}]
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"title": "创建时间"
+				}
+			}
+		}
+	},
+	"cloud_order_refunds": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_order_refunds_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_orders": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_shop_state",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_orders_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_outTradeNo",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "outTradeNo",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}, {
+					"Name": "isDelete",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_selfraising",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "raisingPoint._id",
+					"Direction": "1"
+				}, {
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"operater": {
+					"bsonType": "string",
+					"title": "操作员",
+					"description": "操作员",
+					"foreignKey": "uni-id-users._id",
+					"forceDefaultValue": {
+						"$env": "uid"
+					}
+				},
+				"id": {
+					"bsonType": "int",
+					"title": "编号"
+				},
+				"address": {
+					"bsonType": "object",
+					"title": "地址"
+				},
+				"body": {
+					"bsonType": "string",
+					"title": "内容"
+				},
+				"cancelApply": {
+					"bsonType": "array",
+					"title": "取消订单请求"
+				},
+				"cancelStyle": {
+					"bsonType": "string",
+					"title": "取消类型",
+					"enum": [{
+						"text": "自动",
+						"value": "auto"
+					}, {
+						"text": "用户",
+						"value": "user"
+					}, {
+						"text": "商家",
+						"value": "shop"
+					}]
+				},
+				"cartCount": {
+					"bsonType": "int",
+					"title": "购物车数量"
+				},
+				"deliveryHour": {
+					"bsonType": "object",
+					"title": "配送时间"
+				},
+				"deliveryType": {
+					"bsonType": "string",
+					"title": "配送方式",
+					"enum": [{
+						"text": "送到家",
+						"value": "deliveryHome"
+					}, {
+						"text": "自提",
+						"value": "selfRaising"
+					}]
+				},
+				"freight": {
+					"bsonType": "double",
+					"title": "运费"
+				},
+				"goods": {
+					"bsonType": "array",
+					"title": "商品"
+				},
+				"isDelete": {
+					"bsonType": "int",
+					"title": "是否删除",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "否",
+						"value": 0
+					}, {
+						"text": "是",
+						"value": 1
+					}]
+				},
+				"juli": {
+					"bsonType": "double",
+					"title": "距离"
+				},
+				"lastPayTime": {
+					"bsonType": "timestamp",
+					"title": "最后支付时间"
+				},
+				"platform": {
+					"bsonType": "string",
+					"title": "操作平台"
+				},
+				"remark": {
+					"bsonType": "string",
+					"title": "备注"
+				},
+				"shopid": {
+					"bsonType": "int",
+					"title": "店铺",
+					"description": "商品店铺",
+					"foreignKey": "cloud_shops.id",
+					"enum": {
+						"collection": "cloud_shops",
+						"field": "name as text, id as value"
+					}
+				},
+				"state": {
+					"bsonType": "int",
+					"title": "状态"
+				},
+				"totalDiscount": {
+					"bsonType": "double",
+					"title": "优惠金额"
+				},
+				"totalMoney": {
+					"bsonType": "double",
+					"title": "总金额"
+				},
+				"uid": {
+					"bsonType": "string",
+					"title": "用户",
+					"description": "用户",
+					"enum": {
+						"collection": "uni-id-users",
+						"field": "_id as value, nickname as text"
+					},
+					"foreignKey": "uni-id-users._id"
+				}
+			}
+		}
+	},
+	"cloud_printer_types": {
+		"data": [{
+			"_id": "79550af260127707015c3ef23fd570c9",
+			"clientId": "1053604898",
+			"clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+			"module": "yilianyun",
+			"name": "易联云k4"
+		}, {
+			"_id": "f1168d5b5f6184dc00136ab47b828bed",
+			"clientId": "wcj343169893@163.com",
+			"clientSecret": "wHpTQjJAaPjMDmXT",
+			"module": "feieyun",
+			"name": "飞蛾云"
+		}],
+		"index": [{
+			"IndexName": "cloud-printer-types_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_self_raising_points": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_self_raising_points_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_location",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "location",
+					"Direction": "2dsphere"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": ["address", "latitude", "longitude", "mobile", "name"],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"address": {
+					"bsonType": "string",
+					"title": "地址",
+					"description": "详细地址"
+				},
+				"latitude": {
+					"bsonType": "double",
+					"title": "维度"
+				},
+				"longitude": {
+					"bsonType": "double",
+					"title": "经度"
+				},
+				"location": {
+					"bsonType": "object",
+					"title": "地理位置",
+					"description": "经纬度地址"
+				},
+				"mobile": {
+					"bsonType": "string",
+					"title": "电话",
+					"description": ""
+				},
+				"name": {
+					"bsonType": "string",
+					"title": "名称"
+				},
+				"src": {
+					"bsonType": "string",
+					"title": "封面图",
+					"description": ""
+				},
+				"uid": {
+					"bsonType": "string",
+					"title": "用户",
+					"description": ""
+				},
+				"rate": {
+					"bsonType": "int",
+					"title": "分成比例",
+					"description": "百分比"
+				},
+				"state": {
+					"bsonType": "int",
+					"title": "状态",
+					"description": "",
+					"defaultValue": 0,
+					"enum": [{
+						"text": "审核中",
+						"value": 0
+					}, {
+						"text": "通过",
+						"value": 1
+					}]
+				}
+			}
+		}
+	},
+	"cloud_shop_apply": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_shop_apply_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": true,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"address": {
+					"bsonType": "string",
+					"title": "地址",
+					"description": "店铺详细地址"
+				},
+				"addressName": {
+					"bsonType": "string",
+					"title": "地址简称",
+					"description": "店铺地址简称，例如：鸿升大厦"
+				},
+				"banner": {
+					"bsonType": "string",
+					"title": "banner",
+					"description": ""
+				},
+				"currency": {
+					"bsonType": "string",
+					"title": "币种",
+					"description": "",
+					"defaultValue": "cny",
+					"enum": [{
+						"text": "￥人民币",
+						"value": "cny"
+					}, {
+						"text": "A$澳币",
+						"value": "aud"
+					}, {
+						"text": "美金",
+						"value": "usd"
+					}, {
+						"text": "C$加拿大元",
+						"value": "cad"
+					}, {
+						"text": "€欧元",
+						"value": "eur"
+					}, {
+						"text": "£英镑",
+						"value": "gbp"
+					}, {
+						"text": "NZ$新西兰元",
+						"value": "nzd"
+					}, {
+						"text": "JP¥日元",
+						"value": "jpy"
+					}, {
+						"text": "₩韩元",
+						"value": "krw"
+					}]
+				},
+				"delivery": {
+					"bsonType": "object",
+					"title": "配送方式",
+					"properties": {
+						"deliveryDay": {
+							"bsonType": "int",
+							"title": "最多可预订天数",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"deliveryPeriod": {
+							"bsonType": "array",
+							"title": "每日预定时段",
+							"properties": {
+								"begin": {
+									"bsonType": "int",
+									"title": "开始秒数"
+								},
+								"end": {
+									"bsonType": "int",
+									"title": "结束秒数"
+								}
+							}
+						},
+						"freeMoney": {
+							"bsonType": "int",
+							"title": "满金额免运费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"maxDistance": {
+							"bsonType": "int",
+							"title": "最远服务里程km",
+							"minimum": 1,
+							"maximum": 1000
+						},
+						"minDistance": {
+							"bsonType": "int",
+							"title": "服务里程",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"minPrice": {
+							"bsonType": "int",
+							"title": "起送金额",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"money": {
+							"bsonType": "double",
+							"title": "不满起送金额运费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"perMoney": {
+							"bsonType": "double",
+							"title": "超里程费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"time": {
+							"bsonType": "int",
+							"title": "预计送达时间",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"timeStep": {
+							"bsonType": "string",
+							"title": "时段步长",
+							"defaultValue": "1800",
+							"enum": [{
+								"text": "半小时",
+								"value": "1800"
+							}, {
+								"text": "1小时",
+								"value": "3600"
+							}]
+						}
+					}
+				},
+				"deliveryTypes": {
+					"bsonType": "array",
+					"title": "配送方式",
+					"defaultValue": "deliveryHome",
+					"enum": [{
+						"text": "配送到家",
+						"value": "deliveryHome"
+					}, {
+						"text": "到店/自提点自提",
+						"value": "selfRaising"
+					}]
+				},
+				"exchangeRate": {
+					"bsonType": "double",
+					"title": "汇率",
+					"defaultValue": 1
+				},
+				"goodsCommentTags": {
+					"bsonType": "array",
+					"title": "商品评论标签"
+				},
+				"id": {
+					"bsonType": "int",
+					"title": "店铺编号",
+					"description": "创建自动生成"
+				},
+				"isPrint": {
+					"bsonType": "bool",
+					"title": "是否开启打印",
+					"description": ""
+				},
+				"latitude": {
+					"bsonType": "double",
+					"title": "维度",
+					"description": ""
+				},
+				"longitude": {
+					"bsonType": "double",
+					"title": "经度",
+					"description": ""
+				},
+				"lnglat": {
+					"bsonType": "object",
+					"title": "位置",
+					"description": ""
+				},
+				"monthSale": {
+					"bsonType": "int",
+					"title": "月售",
+					"description": "近30天销售"
+				},
+				"name": {
+					"bsonType": "string",
+					"title": "店铺名称",
+					"description": ""
+				},
+				"notice": {
+					"bsonType": "string",
+					"title": "店铺公告",
+					"description": ""
+				},
+				"online": {
+					"bsonType": "bool",
+					"title": "支付营业",
+					"description": ""
+				},
+				"phone": {
+					"bsonType": "string",
+					"title": "联系电话",
+					"description": ""
+				},
+				"score": {
+					"bsonType": "double",
+					"title": "评分",
+					"description": ""
+				},
+				"searchGoodsKeywords": {
+					"bsonType": "array",
+					"title": "商品搜索词"
+				},
+				"selfRaising": {
+					"bsonType": "object",
+					"title": "自提点",
+					"properties": {
+						"point": {
+							"bsonType": "bool",
+							"title": "开启自提点",
+							"description": "",
+							"defaultValue": false
+						},
+						"distance": {
+							"bsonType": "int",
+							"title": "覆盖半径",
+							"description": "覆盖半径",
+							"defaultValue": 5000
+						}
+					}
+				},
+				"serviceTime": {
+					"bsonType": "string",
+					"title": "服务时间",
+					"description": ""
+				},
+				"src": {
+					"bsonType": "string",
+					"title": "店铺logo",
+					"description": ""
+				},
+				"uid": {
+					"bsonType": "string",
+					"title": "创建者",
+					"description": "",
+					"foreignKey": "uni-id-users._id",
+					"defaultValue": {
+						"$env": "uid"
+					}
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"defaultValue": {
+						"$env": "now"
+					}
+				},
+				"selfRaisingPoint": {
+					"bsonType": "bool",
+					"title": "自提点"
+				},
+				"state": {
+					"bsonType": "int",
+					"description": "状态类型,1审核中，2通过，3拒绝",
+					"title": "是否启用"
+				},
+				"video": {
+					"bsonType": "bool",
+					"title": "是否启用视频"
+				},
+				"dayStatisticsLog": {
+					"bsonType": "string",
+					"title": "统计日期"
+				},
+				"deliverySupportType": {
+					"bsonType": "int",
+					"title": "配送支持类型"
+				},
+				"lastPayTimeMinute": {
+					"bsonType": "int",
+					"title": "支付等待时长（分）"
+				},
+				"hasManjian": {
+					"bsonType": "int",
+					"title": "是否满减"
+				},
+				"stationId": {
+					"bsonType": "int",
+					"title": "分站id"
+				},
+				"perCapita": {
+					"bsonType": "double",
+					"title": "人均消费"
+				},
+				"coupons": {
+					"bsonType": "object",
+					"title": "优惠券"
+				},
+				"goods": {
+					"bsonType": "object",
+					"title": "商品统计"
+				},
+				"order": {
+					"bsonType": "object",
+					"title": "订单统计"
+				},
+				"pages": {
+					"bsonType": "object",
+					"title": "页面配置"
+				},
+				"addressObject": {
+					"bsonType": "object",
+					"title": "地址完整信息"
+				},
+				"manjians": {
+					"bsonType": "array",
+					"title": "满减信息"
+				},
+				"printers": {
+					"bsonType": "array",
+					"title": "打印机"
+				},
+				"categories": {
+					"bsonType": "array",
+					"title": "店铺分类"
+				},
+				"serviceArea": {
+					"bsonType": "array",
+					"title": "服务范围"
+				},
+				"operator": {
+					"bsonType": "string",
+					"title": "后台操作人"
+				},
+				"business_license": {
+					"bsonType": "string",
+					"title": "营业执照"
+				},
+				"food_license": {
+					"bsonType": "string",
+					"title": "食品经营许可"
+				}
+			}
+		}
+	},
+	"cloud_shop_comments": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_shop_comments_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_shop_express_templates": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_shop_express_templates_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"name": "快递运费模板",
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": false,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"name": {
+					"bsonType": "string",
+					"title": "模板名称"
+				},
+				"type": {
+					"bsonType": "string",
+					"title": "计算类型",
+					"defaultValue": "amount",
+					"enum": [{
+						"text": "数量",
+						"value": "amount"
+					}, {
+						"text": "重量",
+						"value": "weight"
+					}]
+				},
+				"configs": {
+					"bsonType": "array",
+					"title": "详细配置",
+					"properties": {
+						"isDefault": {
+							"bsonType": "bool",
+							"title": "是否默认"
+						},
+						"firstMoney": {
+							"bsonType": "double",
+							"title": "首费"
+						},
+						"firstAmount": {
+							"bsonType": "double",
+							"title": "首件"
+						},
+						"perAmount": {
+							"bsonType": "double",
+							"title": "续件"
+						},
+						"perMoney": {
+							"bsonType": "double",
+							"title": "续费"
+						},
+						"region": {
+							"bsonType": "array",
+							"title": "地区"
+						}
+					}
+				},
+				"status": {
+					"bsonType": "bool",
+					"title": "是否启用"
+				}
+			}
+		}
+	},
+	"cloud_shop_statistics": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_shop",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "day",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}, {
+			"IndexName": "cloud_shop_statistics_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_shops": {
+		"data": [{
+			"_id": "1526e12a6007de2b002ba36c39ac328e",
+			"longitude": 107.008728,
+			"online": true,
+			"src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
+			"delivery": {
+				"deliveryDay": 4,
+				"freeMoney": 10,
+				"perMoney": 1,
+				"timeStep": 3600,
+				"deliveryPeriod": [{
+					"begin": 28800,
+					"end": 32400
+				}, {
+					"begin": 32400,
+					"end": 45000
+				}, {
+					"begin": 45000,
+					"end": 48600
+				}, {
+					"begin": 48600,
+					"end": 52200
+				}],
+				"maxDistance": 5000,
+				"minDistance": 5,
+				"minPrice": 10,
+				"money": 5,
+				"time": 30
+			},
+			"deliveryTypes": ["deliveryHome", "selfRaising"],
+			"phone": "18883380303",
+			"searchGoodsKeywords": ["车厘子", "杏子", "葡萄"],
+			"stores_id": "10",
+			"video": false,
+			"banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+			"id": 10000,
+			"lnglat": {
+				"type": "Point",
+				"coordinates": [107.008728, 29.139011]
+			},
+			"name": "渝之道-南川店",
+			"pages": {
+				"home": {
+					"limits": {
+						"ads": 5,
+						"category": 10,
+						"miaosha": 2,
+						"newest": 10,
+						"recommend": 4,
+						"tuangou": 3,
+						"yuding": 4
+					},
+					"name": "首页",
+					"titles": {
+						"tuangou": "限时团购",
+						"yuding": "限时预定",
+						"miaosha": "限时抢购",
+						"newest": "鲜货排行",
+						"recommend": "精品中的精品"
+					}
+				}
+			},
+			"printers": [],
+			"currency": "cny",
+			"dayStatisticsLog": "2022-06-01",
+			"goods": {
+				"offline": 0,
+				"online": 0,
+				"shouqin": 0,
+				"yuding": 0,
+				"baokuan": 0,
+				"delete": 0,
+				"miaosha": 0
+			},
+			"isPrint": true,
+			"operator": "b00064a760403aa90837cda05a7f6c7d",
+			"order": {
+				"unpaid": 0,
+				"canceled": 3,
+				"deleted": 0,
+				"delivered": 3,
+				"payup": 16,
+				"received": 0,
+				"refunded": 0,
+				"total": 47
+			},
+			"address": "重庆市南川区",
+			"lastPayTimeMinute": 30,
+			"notice": "2020年12月12日盛大开业",
+			"serviceArea": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[113.90341758728, 22.469178514966],
+						[113.90745162964, 22.47020960449],
+						[113.90839576721, 22.471875194432],
+						[113.91406059265, 22.466481783007],
+						[113.92024040222, 22.469495774099],
+						[113.91500473022, 22.474571821399],
+						[113.92650604248, 22.482026928585],
+						[113.92607688904, 22.478061496006],
+						[113.93955230713, 22.475047691296],
+						[113.95182609558, 22.484723357865],
+						[113.95285606384, 22.505341374315],
+						[113.91603469849, 22.505103491649],
+						[113.91431808472, 22.504151956891],
+						[113.91363143921, 22.502486755311],
+						[113.91551971436, 22.499790672151],
+						[113.91775131226, 22.499314887315],
+						[113.91715049744, 22.497332432882],
+						[113.90899658203, 22.488212776614],
+						[113.9040184021, 22.473540764346],
+						[113.9025592804, 22.469733717971],
+						[113.90341758728, 22.469178514966]
+					]
+				]
+			},
+			"stationId": 0,
+			"goodsCommentTags": ["包装完整", "价格便宜", "品质好", "值得回购", "包装贴心", "很好用", "使用方便", "省心有保障", "结实耐用", "分量足",
+				"手感舒适", "厚实稳当", "性价比高", "量大料足", "物超所值", "口感很棒", "品相俱佳", "买对了", "包装精美", "老板人很好", "送货即时"
+			],
+			"deliverySupportType": 3,
+			"hasManjian": 1,
+			"latitude": 29.139011,
+			"monthSale": 123,
+			"categories": [{
+				"id": 10000,
+				"name": "美食"
+			}, {
+				"id": 1007,
+				"name": "火锅"
+			}, {
+				"id": 10002,
+				"name": "快餐"
+			}],
+			"manjians": [],
+			"selfRaising": {
+				"distance": 5000,
+				"enable": false
+			},
+			"uid": "9ffb2a485f38964200999b1f07cb7b80",
+			"coupons": {
+				"enable": false,
+				"icon": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/29735941826845114.png",
+				"index": 0,
+				"title": "优惠券"
+			},
+			"perCapita": 30,
+			"score": 4.8,
+			"serviceTime": "早上7点到晚上10点",
+			"state": true,
+			"addressName": "三秋村"
+		}],
+		"index": [{
+			"IndexName": "index_lonlat",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "lnglat",
+					"Direction": "2dsphere"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_shops_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_id",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": true
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				},
+				"address": {
+					"bsonType": "string",
+					"title": "地址",
+					"description": "店铺详细地址"
+				},
+				"addressName": {
+					"bsonType": "string",
+					"title": "地址简称",
+					"description": "店铺地址简称，例如：鸿升大厦"
+				},
+				"banner": {
+					"bsonType": "string",
+					"title": "banner",
+					"description": ""
+				},
+				"currency": {
+					"bsonType": "string",
+					"title": "币种",
+					"description": "",
+					"defaultValue": "cny",
+					"enum": [{
+						"text": "￥人民币",
+						"value": "cny"
+					}, {
+						"text": "A$澳币",
+						"value": "aud"
+					}, {
+						"text": "美金",
+						"value": "usd"
+					}, {
+						"text": "C$加拿大元",
+						"value": "cad"
+					}, {
+						"text": "€欧元",
+						"value": "eur"
+					}, {
+						"text": "£英镑",
+						"value": "gbp"
+					}, {
+						"text": "NZ$新西兰元",
+						"value": "nzd"
+					}, {
+						"text": "JP¥日元",
+						"value": "jpy"
+					}, {
+						"text": "₩韩元",
+						"value": "krw"
+					}]
+				},
+				"delivery": {
+					"bsonType": "object",
+					"title": "配送方式",
+					"properties": {
+						"deliveryDay": {
+							"bsonType": "int",
+							"title": "最多可预订天数",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"deliveryPeriod": {
+							"bsonType": "array",
+							"title": "每日预定时段",
+							"properties": {
+								"begin": {
+									"bsonType": "int",
+									"title": "开始秒数"
+								},
+								"end": {
+									"bsonType": "int",
+									"title": "结束秒数"
+								}
+							}
+						},
+						"freeMoney": {
+							"bsonType": "int",
+							"title": "满金额免运费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"maxDistance": {
+							"bsonType": "int",
+							"title": "最远服务里程km",
+							"minimum": 1,
+							"maximum": 1000
+						},
+						"minDistance": {
+							"bsonType": "int",
+							"title": "服务里程",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"minPrice": {
+							"bsonType": "int",
+							"title": "起送金额",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"money": {
+							"bsonType": "double",
+							"title": "不满起送金额运费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"perMoney": {
+							"bsonType": "double",
+							"title": "超里程费",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"time": {
+							"bsonType": "int",
+							"title": "预计送达时间",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"timeStep": {
+							"bsonType": "string",
+							"title": "时段步长",
+							"defaultValue": "1800",
+							"enum": [{
+								"text": "半小时",
+								"value": "1800"
+							}, {
+								"text": "1小时",
+								"value": "3600"
+							}]
+						}
+					}
+				},
+				"deliveryTypes": {
+					"bsonType": "array",
+					"title": "配送方式",
+					"defaultValue": "deliveryHome",
+					"enum": [{
+						"text": "配送到家",
+						"value": "deliveryHome"
+					}, {
+						"text": "到店/自提点自提",
+						"value": "selfRaising"
+					}]
+				},
+				"exchangeRate": {
+					"bsonType": "double",
+					"title": "汇率",
+					"defaultValue": 1
+				},
+				"goodsCommentTags": {
+					"bsonType": "array",
+					"title": "商品评论标签"
+				},
+				"id": {
+					"bsonType": "int",
+					"title": "店铺编号",
+					"description": "创建自动生成"
+				},
+				"isPrint": {
+					"bsonType": "bool",
+					"title": "是否开启打印",
+					"description": ""
+				},
+				"latitude": {
+					"bsonType": "double",
+					"title": "维度",
+					"description": ""
+				},
+				"longitude": {
+					"bsonType": "double",
+					"title": "经度",
+					"description": ""
+				},
+				"lnglat": {
+					"bsonType": "object",
+					"title": "位置",
+					"description": ""
+				},
+				"monthSale": {
+					"bsonType": "int",
+					"title": "月售",
+					"description": "近30天销售"
+				},
+				"name": {
+					"bsonType": "string",
+					"title": "店铺名称",
+					"description": ""
+				},
+				"notice": {
+					"bsonType": "string",
+					"title": "店铺公告",
+					"description": ""
+				},
+				"online": {
+					"bsonType": "bool",
+					"title": "支付营业",
+					"description": ""
+				},
+				"phone": {
+					"bsonType": "string",
+					"title": "联系电话",
+					"description": ""
+				},
+				"score": {
+					"bsonType": "double",
+					"title": "评分",
+					"description": ""
+				},
+				"searchGoodsKeywords": {
+					"bsonType": "array",
+					"title": "商品搜索词"
+				},
+				"selfRaising": {
+					"bsonType": "object",
+					"title": "自提点",
+					"properties": {
+						"point": {
+							"bsonType": "bool",
+							"title": "开启自提点",
+							"description": "",
+							"defaultValue": false
+						},
+						"distance": {
+							"bsonType": "int",
+							"title": "覆盖半径",
+							"description": "覆盖半径",
+							"defaultValue": 5000
+						}
+					}
+				},
+				"serviceTime": {
+					"bsonType": "string",
+					"title": "服务时间",
+					"description": ""
+				},
+				"src": {
+					"bsonType": "string",
+					"title": "店铺logo",
+					"description": ""
+				},
+				"uid": {
+					"bsonType": "string",
+					"title": "创建者",
+					"description": "",
+					"foreignKey": "uni-id-users._id",
+					"defaultValue": {
+						"$env": "uid"
+					}
+				},
+				"created": {
+					"bsonType": "timestamp",
+					"description": "上传时间",
+					"forceDefaultValue": {
+						"$env": "now"
+					}
+				},
+				"modified": {
+					"bsonType": "timestamp",
+					"description": "修改时间",
+					"defaultValue": {
+						"$env": "now"
+					}
+				},
+				"selfRaisingPoint": {
+					"bsonType": "bool",
+					"title": "自提点"
+				},
+				"state": {
+					"bsonType": "bool",
+					"title": "是否启用"
+				},
+				"video": {
+					"bsonType": "bool",
+					"title": "是否启用视频"
+				},
+				"dayStatisticsLog": {
+					"bsonType": "string",
+					"title": "统计日期"
+				},
+				"deliverySupportType": {
+					"bsonType": "int",
+					"title": "配送支持类型"
+				},
+				"lastPayTimeMinute": {
+					"bsonType": "int",
+					"title": "支付等待时长（分）"
+				},
+				"hasManjian": {
+					"bsonType": "int",
+					"title": "是否满减"
+				},
+				"stationId": {
+					"bsonType": "int",
+					"title": "分站id"
+				},
+				"perCapita": {
+					"bsonType": "double",
+					"title": "人均消费"
+				},
+				"coupons": {
+					"bsonType": "object",
+					"title": "优惠券"
+				},
+				"goods": {
+					"bsonType": "object",
+					"title": "商品统计"
+				},
+				"order": {
+					"bsonType": "object",
+					"title": "订单统计"
+				},
+				"pages": {
+					"bsonType": "object",
+					"title": "页面配置"
+				},
+				"addressObject": {
+					"bsonType": "object",
+					"title": "地址完整信息"
+				},
+				"manjians": {
+					"bsonType": "array",
+					"title": "满减信息"
+				},
+				"printers": {
+					"bsonType": "array",
+					"title": "打印机"
+				},
+				"categories": {
+					"bsonType": "array",
+					"title": "店铺分类"
+				},
+				"serviceArea": {
+					"bsonType": "array",
+					"title": "服务范围"
+				},
+				"operator": {
+					"bsonType": "string",
+					"title": "后台操作人"
+				}
+			}
+		}
+	},
+	"cloud_user_balance_logs": {
+		"data": [],
+		"index": [{
+			"IndexName": "index_cash",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "cashout._id",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "cloud_user_balance_logs_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "uid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_outRefundNo",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "outRefundNo",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"cloud_user_cashouts": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_user_cashouts_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_state",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}],
+		"schema": {
+			"bsonType": "object",
+			"required": [],
+			"permission": {
+				"read": true,
+				"create": false,
+				"update": false,
+				"delete": false
+			},
+			"properties": {
+				"_id": {
+					"description": "ID，系统自动生成"
+				}
+			}
+		}
+	},
+	"cloud_videos": {
+		"data": [],
+		"index": [{
+			"IndexName": "cloud_videos_openid_index_",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "_openid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_u",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "shopid",
+					"Direction": "1"
+				}, {
+					"Name": "uid",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}, {
+			"IndexName": "index_state",
+			"MgoKeySchema": {
+				"MgoIndexKeys": [{
+					"Name": "state",
+					"Direction": "1"
+				}],
+				"MgoIsUnique": false
+			}
+		}]
+	},
+	"opendb-admin-log": {
+		"data": []
+	},
+	"opendb-admin-menus": {
+		"data": [{
+			"_id": "0a4429175fd72b08017823df63a0c513",
+			"sort": 130,
+			"url": "",
+			"enable": true,
+			"icon": "cuIcon-shop",
+			"menu_id": "news_management",
+			"name": "新闻管理",
+			"parent_id": "",
+			"permission": []
+		}, {
+			"_id": "21ded5cb5ff17ca8038a05533083a454",
+			"menu_id": "mall_management",
+			"name": "店铺管理",
+			"icon": "cuIcon-shop",
+			"url": "",
+			"sort": 100,
+			"pid": "",
+			"parent_id": "",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "79550af2603daaeb07d6816b464095be",
+			"menu_id": "goods_category_manage",
+			"name": "分类管理",
+			"icon": "cuIcon-shop",
+			"url": "/pages/cloud_goods_categories/tree",
+			"sort": 102,
+			"pid": "28ee4e3e603da9e7085fed6675554a6b",
+			"parent_id": "goods_manage",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "be7fb3985ff1336c02a02ad4426d669b",
+			"enable": true,
+			"menu_id": "system_menu_tree",
+			"name": "菜单管理",
+			"permission": ["MENU_MANAGE", "MENU_MANAGE_LIST", "SYSTEM_MANAGE"],
+			"pid": "0a4429175fd72b08017823d34b7e9897",
+			"url": "/pages/system/menu/list",
+			"icon": "",
+			"parent_id": "system_management",
+			"sort": 1041
+		}, {
+			"_id": "0448022461af0e6d00f8bd9546c780f8",
+			"menu_id": "cloud_shop_apply",
+			"name": "店铺入驻申请",
+			"icon": "uni-icons-pulldown",
+			"url": "/pages/cloud_shop_apply/list",
+			"parent_id": "mall_management",
+			"permission": [],
+			"enable": true,
+			"sort": 103
+		}, {
+			"_id": "0a4429175fd72b08017823e068d9af8e",
+			"enable": true,
+			"permission": [],
+			"pid": "0a4429175fd72b08017823df63a0c513",
+			"sort": 131,
+			"icon": "",
+			"menu_id": "news_article_admin",
+			"name": "文章管理",
+			"parent_id": "news_management",
+			"url": "/pages/opendb-news-articles/list"
+		}, {
+			"_id": "28ee4e3e603a027e07e14abd64926ad4",
+			"menu_id": "cloud_orders",
+			"name": "订单管理",
+			"icon": "cuIcon-shop",
+			"url": "/pages/cloud_orders/list",
+			"sort": 103,
+			"pid": "28ee4e3e603daa340860237849dbe1fb",
+			"parent_id": "order_manage",
+			"permission": ["MALL_MANAGE", "MALL_ORDER_MANAGE", "MALL_ORDER_MANAGE_LIST"],
+			"enable": true
+		}, {
+			"_id": "79550af26041f1480874edb1789b8a7f",
+			"menu_id": "cloud_orders_unpay",
+			"name": "待付款",
+			"icon": "uni-icons-hand-thumbsup",
+			"url": "/pages/cloud_orders/list?state=0",
+			"sort": 101,
+			"pid": "28ee4e3e603daa340860237849dbe1fb",
+			"parent_id": "order_manage",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "be7fb3985ff1663802a55e6679bbb0ec",
+			"menu_id": "display",
+			"name": "总览",
+			"icon": "cuIcon-shop",
+			"url": "/pages/index/index",
+			"pid": "",
+			"parent_id": "",
+			"permission": ["system_manage", "user/login"],
+			"enable": true,
+			"sort": 1
+		}, {
+			"_id": "0a4429175fd72b08017823d34b7e9897",
+			"create_date": 1602662469396,
+			"enable": true,
+			"icon": "uni-icons-gear",
+			"parent_id": "",
+			"sort": 1000,
+			"menu_id": "system_management",
+			"name": "系统管理",
+			"permission": [],
+			"url": ""
+		}, {
+			"_id": "0a4429175fd72b08017823e12ca67f1a",
+			"enable": true,
+			"parent_id": "news_management",
+			"sort": 132,
+			"icon": "",
+			"menu_id": "news_category_admin",
+			"name": "文章分类",
+			"permission": [],
+			"pid": "0a4429175fd72b08017823df63a0c513",
+			"url": "/pages/opendb-news-categories/list"
+		}, {
+			"_id": "28ee4e3e603da9e7085fed6675554a6b",
+			"menu_id": "goods_manage",
+			"name": "商品管理",
+			"icon": "uni-icons-videocam",
+			"url": "",
+			"sort": 101,
+			"pid": "",
+			"parent_id": "",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "b00064a76038d24a07476d865292faf7",
+			"menu_id": "cloud_goods",
+			"name": "商品管理",
+			"icon": "cuIcon-shop",
+			"url": "/pages/cloud_goods/list",
+			"sort": 102,
+			"pid": "28ee4e3e603da9e7085fed6675554a6b",
+			"parent_id": "goods_manage",
+			"permission": ["MALL_GOODS_MANAGE", "MALL_GOODS_MANAGE_LIST", "MALL_MANAGE"],
+			"enable": true
+		}, {
+			"_id": "ce805e785ff178c503150212348ef8e0",
+			"icon": "cuIcon-shop",
+			"parent_id": "mall_management",
+			"pid": "21ded5cb5ff17ca8038a05533083a454",
+			"sort": 100,
+			"url": "/pages/cloud_shops/list",
+			"enable": true,
+			"menu_id": "shop_management",
+			"name": "店铺管理",
+			"permission": ["MALL_MANAGE", "MALL_SHOP_MANAGE", "MALL_SHOP_MANAGE_LIST"]
+		}, {
+			"_id": "0a4429175fd72b08017823d65138046d",
+			"create_date": 1602662469396,
+			"parent_id": "system_management",
+			"permission": ["PERMISSION_MANAGE", "PERMISSION_MANAGE_LIST", "SYSTEM_MANAGE"],
+			"sort": 1030,
+			"url": "/pages/system/permission/tree",
+			"enable": true,
+			"icon": "",
+			"menu_id": "system_permission",
+			"name": "权限管理",
+			"pid": "0a4429175fd72b08017823d34b7e9897"
+		}, {
+			"_id": "21ded5cb5ff13b18038156ec4bb02738",
+			"menu_id": "system_user",
+			"name": "用户管理",
+			"icon": "",
+			"url": "/pages/system/user/list",
+			"sort": 1042,
+			"pid": "0a4429175fd72b08017823d34b7e9897",
+			"parent_id": "system_management",
+			"permission": ["SYSTEM_MANAGE", "USER_MANAGE", "USER_MANAGE_ADD", "USER_MANAGE_EDIT",
+				"system/user/addUser"
+			],
+			"enable": true
+		}, {
+			"_id": "28ee4e3e6041f1f70900beda400ebab7",
+			"menu_id": "cloud_orders_payed",
+			"name": "待发货",
+			"icon": "uni-icons-mail-open-filled",
+			"url": "/pages/cloud_orders/list?state=1",
+			"sort": 102,
+			"pid": "28ee4e3e603daa340860237849dbe1fb",
+			"parent_id": "order_manage",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "b00064a7604731c609226e2a7cb12cce",
+			"menu_id": "cloud_goods_comments",
+			"name": "评论管理",
+			"icon": "uni-icons-loop",
+			"url": "/pages/cloud_goods_comments/list",
+			"sort": 103,
+			"pid": "28ee4e3e603da9e7085fed6675554a6b",
+			"parent_id": "goods_manage",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "0a4429175fd72b08017823d52ff5ee20",
+			"enable": true,
+			"icon": "",
+			"menu_id": "system_role",
+			"parent_id": "system_management",
+			"create_date": 1602662469397,
+			"name": "角色管理",
+			"permission": ["ROLE_MANAGE", "ROLE_MANAGE_LIST", "SYSTEM_MANAGE"],
+			"pid": "0a4429175fd72b08017823d34b7e9897",
+			"sort": 1020,
+			"url": "/pages/system/role/list"
+		}, {
+			"_id": "0a4429175fd72b08017823e22ec2985e",
+			"enable": true,
+			"menu_id": "news_comment_admin",
+			"parent_id": "news_management",
+			"sort": 133,
+			"icon": "",
+			"name": "评论",
+			"permission": [],
+			"pid": "0a4429175fd72b08017823df63a0c513",
+			"url": "/pages/opendb-news-comments/list"
+		}, {
+			"_id": "28ee4e3e603daa340860237849dbe1fb",
+			"menu_id": "order_manage",
+			"name": "订单管理",
+			"icon": "cuIcon-shop",
+			"url": "",
+			"sort": 102,
+			"pid": "",
+			"parent_id": "",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "b00064a760433698089a88f1194c0506",
+			"menu_id": "cloud_self_raising_points",
+			"name": "自提点管理",
+			"icon": "uni-icons-pengyouquan",
+			"url": "/pages/cloud_self_raising_points/list",
+			"sort": 102,
+			"pid": "21ded5cb5ff17ca8038a05533083a454",
+			"parent_id": "mall_management",
+			"permission": [],
+			"enable": true
+		}, {
+			"_id": "058dfefe62a071d807d8d21c759ed02c",
+			"enable": true,
+			"icon": "uni-icons-cloud-upload",
+			"menu_id": "system_update",
+			"name": "升级中心",
+			"parent_id": "system_management",
+			"permission": [],
+			"sort": 1050,
+			"url": "/uni_modules/uni-upgrade-center/pages/version/list",
+			"create_date": 1654682072669
+		}, {
+			"_id": "6d85a2b962a073ca0978af3122dc5aa5",
+			"parent_id": "system_management",
+			"permission": [],
+			"sort": 1043,
+			"url": "/pages/system/app/list",
+			"enable": true,
+			"icon": "uni-icons-email-filled",
+			"menu_id": "app_list",
+			"name": "应用管理"
+		}]
+	},
+	"opendb-news-articles": {
+		"data": []
+	},
+	"opendb-news-categories": {
+		"data": []
+	},
+	"opendb-news-comments": {
+		"data": []
+	},
+	"opendb-news-favorite": {
+		"data": []
+	},
+	"opendb-verify-codes": {
+		"data": []
+	},
+	"uni-id-balances": {
+		"data": []
+	},
+	"uni-id-log": {
+		"data": []
+	},
+	"uni-id-permissions": {
+		"data": [{
+			"_id": "21ded5cb5ff1687c038782a75fc74728",
+			"permission_id": "ROLE_MANAGE_ADD",
+			"permission_name": "新增角色",
+			"parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b433d080a909b47a4c20a",
+			"permission_id": "MALL_GOODS_MANAGE_ADD",
+			"permission_name": "新增商品",
+			"parent_id": "b00064a7603b433d07925fba78380fc9",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b434c080a9287206190cc",
+			"permission_id": "MALL_ORDER_MANAGE_ADD",
+			"permission_name": "新增订单",
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b4540080af19f56eafcfb",
+			"permission_id": "PERMISSION_MANAGE_LIST",
+			"permission_name": "列表权限",
+			"parent_id": "28ee4e3e603b4540080af19c73301590",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e604924a709f26759648415a3",
+			"gen_child": false,
+			"parent_id": "",
+			"permission_id": "111",
+			"permission_name": "1111",
+			"create_date": 1615406247106
+		}, {
+			"_id": "79550af2604924a7095ebfe05b0b83f6",
+			"permission_id": "111_ADD",
+			"permission_name": "新增1111",
+			"parent_id": "28ee4e3e604924a709f26759648415a3",
+			"comment": ""
+		}, {
+			"_id": "a8831daa5ff02cbc0167c866267c480d",
+			"comment": "",
+			"parent_id": "a8831daa5ff02885016775e56bccc0a1",
+			"permission_id": "USER_MANAGE_ADD",
+			"permission_name": "增加用户",
+			"create_date": 1609575612579
+		}, {
+			"_id": "b00064a7603b433d07925fba78380fc9",
+			"gen_child": true,
+			"parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+			"permission_id": "MALL_GOODS_MANAGE",
+			"permission_name": "商品管理",
+			"create_date": 1614496573187
+		}, {
+			"_id": "b00064a7603b45f10792b0ee159d9b57",
+			"gen_child": false,
+			"parent_id": "a8831daa5ff02885016775e56bccc0a1",
+			"permission_id": "USER_MANAGE_LIST",
+			"permission_name": "用户列表",
+			"create_date": 1614497265208
+		}, {
+			"_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+			"comment": "",
+			"gen_child": false,
+			"parent_id": "",
+			"permission_id": "MALL_MANAGE",
+			"permission_name": "市场管理",
+			"create_date": 1609661179867
+		}, {
+			"_id": "023ce9555ff17515032ba51250d38df3",
+			"comment": "",
+			"create_date": 1609659669280,
+			"gen_child": false,
+			"parent_id": "",
+			"permission_id": "LOGIN_MANAGE",
+			"permission_name": "登录必备"
+		}, {
+			"_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+			"gen_child": true,
+			"parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+			"permission_id": "MALL_SHOP_MANAGE",
+			"permission_name": "店铺管理",
+			"create_date": 1614496557637
+		}, {
+			"_id": "28ee4e3e603b434c080a928404c239d1",
+			"gen_child": true,
+			"parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+			"permission_id": "MALL_ORDER_MANAGE",
+			"permission_name": "订单管理",
+			"create_date": 1614496588731
+		}, {
+			"_id": "28ee4e3e603b4516080aecde4c2a91d4",
+			"gen_child": true,
+			"parent_id": "b45a21d55ff160e203675222560028be",
+			"permission_id": "MENU_MANAGE",
+			"permission_name": "菜单管理",
+			"create_date": 1614497046494
+		}, {
+			"_id": "28ee4e3e603b4540080af1a2613c9225",
+			"permission_id": "PERMISSION_MANAGE_DELETE",
+			"permission_name": "删除权限",
+			"parent_id": "28ee4e3e603b4540080af19c73301590",
+			"comment": ""
+		}, {
+			"_id": "79550af26041edc7087484b8155675f8",
+			"gen_child": false,
+			"parent_id": "b00064a7603b433d07925fba78380fc9",
+			"permission_id": "goods/copy",
+			"permission_name": "复制商品",
+			"create_date": 1614933447166
+		}, {
+			"_id": "85ff8afa5ff02cd301373de85259ee6b",
+			"comment": "",
+			"parent_id": "a8831daa5ff02885016775e56bccc0a1",
+			"permission_id": "USER_MANAGE_EDIT",
+			"permission_name": "修改用户",
+			"create_date": 1609575635272
+		}, {
+			"_id": "b00064a7603b432d07925d0e20f7e54a",
+			"permission_id": "MALL_SHOP_MANAGE_EDIT",
+			"permission_name": "修改店铺",
+			"parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b451607929892489c3982",
+			"permission_id": "MENU_MANAGE_EDIT",
+			"permission_name": "修改菜单",
+			"parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+			"comment": ""
+		}, {
+			"_id": "b45a21d55ff160e203675222560028be",
+			"comment": "",
+			"gen_child": false,
+			"parent_id": "",
+			"permission_id": "SYSTEM_MANAGE",
+			"permission_name": "系统管理",
+			"create_date": 1609654498690
+		}, {
+			"_id": "ce805e785ff176480314c6a97e10c3f2",
+			"comment": "",
+			"gen_child": false,
+			"parent_id": "023ce9555ff17515032ba51250d38df3",
+			"permission_id": "user/logout",
+			"permission_name": "退出登录",
+			"create_date": 1609659976327
+		}, {
+			"_id": "21ded5cb5ff1687c038782a929892713",
+			"permission_id": "ROLE_MANAGE_DELETE",
+			"permission_name": "删除角色",
+			"parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b433d080a909d26fd325a",
+			"permission_id": "MALL_GOODS_MANAGE_DELETE",
+			"permission_name": "删除商品",
+			"parent_id": "b00064a7603b433d07925fba78380fc9",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b434c080a92890734270e",
+			"permission_id": "MALL_ORDER_MANAGE_DELETE",
+			"permission_name": "删除订单",
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b4540080af1a130de2285",
+			"permission_id": "PERMISSION_MANAGE_EDIT",
+			"permission_name": "修改权限",
+			"parent_id": "28ee4e3e603b4540080af19c73301590",
+			"comment": ""
+		}, {
+			"_id": "79550af2603b648d078906d97f61990e",
+			"gen_child": false,
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"permission_id": "orders/selftake",
+			"permission_name": "订单自提",
+			"create_date": 1614505101054
+		}, {
+			"_id": "79550af2604924a7095ebfe2360c17c6",
+			"permission_id": "111_DELETE",
+			"permission_name": "删除1111",
+			"parent_id": "28ee4e3e604924a709f26759648415a3",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b432d07925d0d4c2b7271",
+			"permission_id": "MALL_SHOP_MANAGE_ADD",
+			"permission_name": "新增店铺",
+			"parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b45160792989127abc421",
+			"permission_id": "MENU_MANAGE_ADD",
+			"permission_name": "新增菜单",
+			"parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b47700792f1ed2268bae4",
+			"gen_child": false,
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"permission_id": "orders/addDelivery",
+			"permission_name": "订单发货",
+			"create_date": 1614497648841
+		}, {
+			"_id": "ce805e785ff16b460313804d11c668d7",
+			"comment": "",
+			"gen_child": false,
+			"parent_id": "a8831daa5ff02885016775e56bccc0a1",
+			"permission_id": "system/user/addUser",
+			"permission_name": "添加用户api",
+			"create_date": 1609657158372
+		}, {
+			"_id": "21ded5cb5ff1687c038782a86aa46c40",
+			"permission_id": "ROLE_MANAGE_EDIT",
+			"permission_name": "修改角色",
+			"parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b433d080a909c142d1e62",
+			"permission_id": "MALL_GOODS_MANAGE_EDIT",
+			"permission_name": "修改商品",
+			"parent_id": "b00064a7603b433d07925fba78380fc9",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b434c080a92884fe65b16",
+			"permission_id": "MALL_ORDER_MANAGE_EDIT",
+			"permission_name": "修改订单",
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b4540080af1a076bb3664",
+			"permission_id": "PERMISSION_MANAGE_ADD",
+			"permission_name": "新增权限",
+			"parent_id": "28ee4e3e603b4540080af19c73301590",
+			"comment": ""
+		}, {
+			"_id": "79550af2603b45de0784581e3f12af7e",
+			"gen_child": false,
+			"parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+			"permission_id": "ROLE_MANAGE_LIST",
+			"permission_name": "角色列表",
+			"create_date": 1614497246099
+		}, {
+			"_id": "79550af2604924a7095ebfe12a3ea4fe",
+			"permission_id": "111_EDIT",
+			"permission_name": "修改1111",
+			"parent_id": "28ee4e3e604924a709f26759648415a3",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b432d07925d0c44fbc639",
+			"permission_id": "MALL_SHOP_MANAGE_LIST",
+			"permission_name": "列表店铺",
+			"parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b451607929890143e17dd",
+			"permission_id": "MENU_MANAGE_LIST",
+			"permission_name": "列表菜单",
+			"parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b47610792efe67122333f",
+			"gen_child": false,
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"permission_id": "orders/cancel",
+			"permission_name": "取消订单",
+			"create_date": 1614497633092
+		}, {
+			"_id": "ce805e785ff1610903126f63120e0b20",
+			"comment": "登录后台必备",
+			"gen_child": "",
+			"parent_id": "023ce9555ff17515032ba51250d38df3",
+			"permission_id": "user/login",
+			"permission_name": "后台登录api",
+			"create_date": 1609654537208
+		}, {
+			"_id": "21ded5cb5ff1687c038782a61dda74e4",
+			"comment": "",
+			"gen_child": true,
+			"parent_id": "b45a21d55ff160e203675222560028be",
+			"permission_id": "ROLE_MANAGE",
+			"permission_name": "角色管理",
+			"create_date": 1609656444421
+		}, {
+			"_id": "28ee4e3e603b433d080a909a5bf4dbda",
+			"permission_id": "MALL_GOODS_MANAGE_LIST",
+			"permission_name": "列表商品",
+			"parent_id": "b00064a7603b433d07925fba78380fc9",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b434c080a928658c8da50",
+			"permission_id": "MALL_ORDER_MANAGE_LIST",
+			"permission_name": "列表订单",
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"comment": ""
+		}, {
+			"_id": "28ee4e3e603b4540080af19c73301590",
+			"gen_child": true,
+			"parent_id": "b45a21d55ff160e203675222560028be",
+			"permission_id": "PERMISSION_MANAGE",
+			"permission_name": "权限管理",
+			"create_date": 1614497088700
+		}, {
+			"_id": "28ee4e3e603b6479080fba1e053fb98a",
+			"gen_child": false,
+			"parent_id": "28ee4e3e603b434c080a928404c239d1",
+			"permission_id": "orders/printOrder",
+			"permission_name": "打印小票",
+			"create_date": 1614505081651
+		}, {
+			"_id": "79550af2604924a7095ebfdf35de0557",
+			"permission_id": "111_LIST",
+			"permission_name": "列表1111",
+			"parent_id": "28ee4e3e604924a709f26759648415a3",
+			"comment": ""
+		}, {
+			"_id": "a8831daa5ff02885016775e56bccc0a1",
+			"comment": "",
+			"create_date": 1609574533245,
+			"permission_id": "USER_MANAGE",
+			"permission_name": "用户管理",
+			"parent_id": "b45a21d55ff160e203675222560028be"
+		}, {
+			"_id": "b00064a7603b432d07925d0f28c7f705",
+			"permission_id": "MALL_SHOP_MANAGE_DELETE",
+			"permission_name": "删除店铺",
+			"parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+			"comment": ""
+		}, {
+			"_id": "b00064a7603b4516079298935810275e",
+			"permission_id": "MENU_MANAGE_DELETE",
+			"permission_name": "删除菜单",
+			"parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+			"comment": ""
+		}, {
+			"_id": "b45a21d55ff1762f0369e6a30bbdc042",
+			"comment": "",
+			"gen_child": false,
+			"parent_id": "023ce9555ff17515032ba51250d38df3",
+			"permission_id": "self/changePwd",
+			"permission_name": "修改密码",
+			"create_date": 1609659951629
+		}, {
+			"_id": "eb0c51035ff02ce40133abe6059ec477",
+			"comment": "",
+			"parent_id": "a8831daa5ff02885016775e56bccc0a1",
+			"permission_id": "USER_MANAGE_DELETE",
+			"permission_name": "删除用户",
+			"create_date": 1609575652369
+		}]
+	},
+	"uni-id-roles": {
+		"data": [{
+			"_id": "ce805e785ff17bf6031575e04521159e",
+			"comment": "",
+			"permission": ["LOGIN_MANAGE", "self/changePwd", "user/login", "user/logout"],
+			"role_id": "new_empty",
+			"role_name": "new_empty",
+			"create_date": 1609661430096
+		}, {
+			"_id": "21ded5cb5ff041e90368f0a1371575bd",
+			"comment": "",
+			"permission": ["LOGIN_MANAGE", "MALL_GOODS_MANAGE", "MALL_GOODS_MANAGE_ADD",
+				"MALL_GOODS_MANAGE_EDIT", "MALL_GOODS_MANAGE_LIST", "MALL_MANAGE", "MALL_ORDER_MANAGE",
+				"MALL_ORDER_MANAGE_EDIT", "MALL_ORDER_MANAGE_LIST", "MALL_SHOP_MANAGE",
+				"MALL_SHOP_MANAGE_EDIT", "MALL_SHOP_MANAGE_LIST", "orders/addDelivery", "orders/cancel",
+				"orders/printOrder", "orders/selftake", "self/changePwd", "user/login", "user/logout"
+			],
+			"role_id": "godown_keeper",
+			"role_name": "仓库管理员",
+			"create_date": 1609581032695
+		}, {
+			"_id": "21ded5cb5ff15e9103864bab49b455cb",
+			"comment": "",
+			"permission": ["USER_MANAGE", "USER_MANAGE_ADD", "USER_MANAGE_EDIT", "USER_MANAGE_DELETE",
+				"SHOP_MANAGE", "SHOP_MANAGE_ADD", "SHOP_MANAGE_EDIT", "SHOP_MANAGE_DELETE", "GOODS_MANAGE",
+				"GOODS_MANAGE_ADD", "GOODS_MANAGE_EDIT", "GOODS_MANAGE_DELETE", "SYSTEM_MANAGE",
+				"user/login", "ROLE_MANAGE", "ROLE_MANAGE_ADD", "ROLE_MANAGE_EDIT", "ROLE_MANAGE_DELETE",
+				"system/user/addUser", "SYSTEM_LOGIN", "self/changePwd", "user/logout", "MALL_MANAGE"
+			],
+			"role_id": "admin",
+			"role_name": "超级管理员",
+			"create_date": 1609653905258
+		}, {
+			"_id": "a8831daa5fef4efc0159b6d838170d3c",
+			"create_date": 1609518844378,
+			"permission": ["LOGIN_MANAGE", "MALL_GOODS_MANAGE", "MALL_GOODS_MANAGE_ADD",
+				"MALL_GOODS_MANAGE_DELETE", "MALL_GOODS_MANAGE_EDIT", "MALL_GOODS_MANAGE_LIST",
+				"MALL_MANAGE", "MALL_ORDER_MANAGE", "MALL_ORDER_MANAGE_ADD", "MALL_ORDER_MANAGE_DELETE",
+				"MALL_ORDER_MANAGE_EDIT", "MALL_ORDER_MANAGE_LIST", "MALL_SHOP_MANAGE",
+				"MALL_SHOP_MANAGE_ADD", "MALL_SHOP_MANAGE_DELETE", "MALL_SHOP_MANAGE_EDIT",
+				"MALL_SHOP_MANAGE_LIST", "MENU_MANAGE", "MENU_MANAGE_ADD", "MENU_MANAGE_DELETE",
+				"MENU_MANAGE_EDIT", "MENU_MANAGE_LIST", "PERMISSION_MANAGE", "PERMISSION_MANAGE_ADD",
+				"PERMISSION_MANAGE_DELETE", "PERMISSION_MANAGE_EDIT", "PERMISSION_MANAGE_LIST",
+				"ROLE_MANAGE", "ROLE_MANAGE_ADD", "ROLE_MANAGE_DELETE", "ROLE_MANAGE_EDIT",
+				"ROLE_MANAGE_LIST", "SYSTEM_MANAGE", "USER_MANAGE", "USER_MANAGE_ADD", "USER_MANAGE_DELETE",
+				"USER_MANAGE_EDIT", "USER_MANAGE_LIST", "goods/copy", "orders/addDelivery", "orders/cancel",
+				"orders/printOrder", "orders/selftake", "self/changePwd", "system/user/addUser",
+				"user/login", "user/logout"
+			],
+			"role_id": "shop_manager",
+			"role_name": "店长",
+			"comment": "aa"
+		}]
+	},
+	"uni-id-users": {
+		"data": []
+	}
+}
