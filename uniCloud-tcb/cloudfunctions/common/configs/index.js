@@ -35,7 +35,8 @@ const model = {
 				domain = `https://${spaceId}.service.tcloudbase.com`
 			} else if (provider == "aliyun") {
 				//https://3fbab731-e993-47e6-882f-a74e444709a3.bspapp.com
-				domain = `https://${spaceId}.bspapp.com`
+				// domain = `https://${spaceId}.bspapp.com`
+				domain = `https://fc-${spaceId}.next.bspapp.com`
 			}
 		}
 		//notify-floder为自定义目录，防止被攻击,建议修改成无意义的字符串，然后在后台云函数那里填写
