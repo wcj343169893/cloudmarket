@@ -13,14 +13,7 @@
 [点此进入app发行页面](https://m3w.cn/xbb)，体验h5，app，微信小程序，包含移动端管理  
 
 ![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg?x-oss-process=image/resize,m_fill,w_200,h_200) 
-![宴席助理](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-adaad390-fa4a-4f33-b3f2-412eeffa13a0/c53304e4-4e4a-45f9-ba60-4121ac3d1970.jpg?x-oss-process=image/resize,m_fill,w_200,h_200)
 
-### 更多案例...
-![臻品超市](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/08446f47-6a2e-448d-9362-539dc259ef2a.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![逸乐优选](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-422d3d3b-79f1-478a-a104-c12698df5245/40cc50a9-6595-4351-81a8-9db941c2f766.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![这有米小程序](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3fbab731-e993-47e6-882f-a74e444709a3/f6ce02f9-de81-4c78-b5b1-e30e1ef6f3dc.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![惠民](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3fbab731-e993-47e6-882f-a74e444709a3/b782fca8-ebaa-4082-8d83-69b599e3f495.png?x-oss-process=image/resize,m_fill,w_200,h_200)
-![大牛家政](https://7463-tcb-mkgeroyc82b684-1d3xg5a2a923f-1304205492.tcb.qcloud.la/image/23.png?imageMogr2/crop/200x200/gravity/center)
 ### pc后台
 [http://xbb.cqsort.com/admin/](http://xbb.cqsort.com/admin/)  
 测试账户：shop_manager  
