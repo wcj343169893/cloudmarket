@@ -60,7 +60,7 @@ https://v.qq.com/x/page/t3224pz1q7g.html
 5. 修改微信小程序后台“开发管理”--“服务器域名”，填写下方链接，  
 request合法域名  
 ```
-https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.com;https://tcb-api.tencentcloudapi.com;https://at.alicdn.com;  
+https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.com;https://tcb-api.tencentcloudapi.com;https://at.alicdn.com;https://api.next.bspapp.com;   
 ```
 uploadFile合法域名  
 ```

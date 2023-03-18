@@ -1303,6 +1303,10 @@ const model = {
 			});
 		}
 		let delivery = shop.delivery;
+		if (!delivery) {
+			//没有设置配送方式
+			delivery = await this.initShopDelivery(shopid)
+		}
 		let distance = Math.ceil(juli - delivery.minDistance);
 		//是否达到免配送费,但是超过起送距离，也要加运费
 		if (totalMoney >= delivery.freeMoney) {
@@ -1337,6 +1341,38 @@ const model = {
 			freight,
 			freightTitle
 		};
+	},
+	async initShopDelivery(shopid) {
+		let delivery = {
+			"deliveryDay": 4,
+			"freeMoney": 10,
+			"perMoney": 1,
+			"timeStep": 3600,
+			"deliveryPeriod": [{
+				"begin": 28800,
+				"end": 32400
+			}, {
+				"begin": 32400,
+				"end": 45000
+			}, {
+				"begin": 45000,
+				"end": 48600
+			}, {
+				"begin": 48600,
+				"end": 52200
+			}],
+			"maxDistance": 5000,
+			"minDistance": 5,
+			"minPrice": 10,
+			"money": 5,
+			"time": 30
+		}
+		await shopCollection.where({
+			id: shopid
+		}).update({
+			delivery
+		})
+		return delivery;
 	},
 	async getShopInfoById(shopid, fields) {
 		let shopData = await shopCollection.where({
