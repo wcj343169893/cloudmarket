@@ -22,12 +22,15 @@ exports.main = async (event, context) => {
 		action,
 		data,
 		Type,
+		triggerTime,
 		timingTriggerConfig,
 		uniIdToken
 	} = event;
 	//退款定时器
-	if (Type == "Timer" || timingTriggerConfig) {
+	if (Type == "Timer" || timingTriggerConfig || triggerTime) {
 		console.log("退款定时器", event);
+		context.PLATFORM = "web"
+		context.LOCALE = 'zh-Hans'
 		return await actions.refund(event, context);
 	}
 	//token检查，必须登录

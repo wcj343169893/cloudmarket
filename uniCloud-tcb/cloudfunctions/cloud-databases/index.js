@@ -23,14 +23,17 @@ exports.main = async (event, context) => {
 		data,
 		path,
 		Type,
+		triggerTime,
 		timingTriggerConfig
 	} = event;
 	console.log(event)
 	//报表定时器
-	if (Type == "Timer" || timingTriggerConfig) {
+	if (Type == "Timer" || timingTriggerConfig || triggerTime) {
 		console.log("定时器", event);
 		module = "exports";
 		action = "timer";
+		context.PLATFORM = "web"
+		context.LOCALE = 'zh-Hans'
 	} else if (path) {
 		//开启url后，有些通知,不需要登录
 		let paths = path.split("/");

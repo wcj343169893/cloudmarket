@@ -56,10 +56,13 @@ exports.main = async (event, context) => {
 		data,
 		uniIdToken,
 		Type,
+		triggerTime,
 		timingTriggerConfig
 	} = event;
-	if (Type == "Timer" || timingTriggerConfig) {
+	if (Type == "Timer" || timingTriggerConfig || triggerTime) {
 		console.log(event);
+		context.PLATFORM = "web"
+		context.LOCALE = 'zh-Hans'
 		for (let model in modules) {
 			//执行每个模块的定时器
 			if (modules[model]["timer"]) {
@@ -93,8 +96,9 @@ exports.main = async (event, context) => {
 	}
 	let payload;
 	let tokenData = {};
-	if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module].includes(
-			action))) {
+	if (getUserInfoActions[module] && (getUserInfoActions[module].includes("*") || getUserInfoActions[module]
+			.includes(
+				action))) {
 		//仅仅是获得的用户信息，有可能没有
 		payload = await uniID.checkToken(uniIdToken);
 		if (!payload.code) {
@@ -104,8 +108,9 @@ exports.main = async (event, context) => {
 			data.uid = false;
 			context.userInfo = {};
 		}
-	} else if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module].includes(
-			action))) {
+	} else if (mustLoginActions[module] && (mustLoginActions[module].includes("*") || mustLoginActions[module]
+			.includes(
+				action))) {
 		//token检查，必须登录
 		payload = await uniID.checkToken(uniIdToken);
 		if (payload.code && payload.code > 0) {
