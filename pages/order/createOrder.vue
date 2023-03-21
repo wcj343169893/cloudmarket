@@ -342,7 +342,7 @@
 		computed: {
 			...mapState(['hasLogin', 'shopId', 'stationId', 'location', 'isSelfRaisingPoint', 'raisingPoint']),
 			isOutOfRange() {
-				if (!this.shop) {
+				if (!this.shop || !this.shop.delivery) {
 					return false;
 				}
 				if (this.selfRaising) {
