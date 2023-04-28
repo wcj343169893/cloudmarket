@@ -20,11 +20,11 @@ const getModule = (module, subModule) => {
 /**
  * 验证通知签名
  */
-const validateSign = async (event) => {
+const validateSign = async (event,context) => {
 	const {
 		module,
 	} = event;
-	return await getModule(module)["validateSign"](event);
+	return await getModule(module)["validateSign"](event,context);
 }
 /**
  * 处理订阅消息
@@ -37,16 +37,25 @@ const subscribe = async (event) => {
 	} = event;
 	return await getModule(module, "subscribe")[action](data);
 }
-
 /**
- * 增加配送订单
+ * 预下配送单
  */
-const add = async (event) => {
+const preAdd = async (event,context) => {
 	const {
 		module,
 		data
 	} = event;
-	return await getModule(module)["add"](data);
+	return await getModule(module)["preAdd"](data,context);
+}
+/**
+ * 增加配送订单
+ */
+const add = async (event,context) => {
+	const {
+		module,
+		data
+	} = event;
+	return await getModule(module)["add"](data,context);
 }
 /**
  * 更新订单

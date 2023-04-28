@@ -9,14 +9,7 @@
 	"cloudfunction-config": {
 		"memorySize": 256,
 		"path": "/http/mall",
-		"timeout": 200,
-		"triggers": [
-			{
-				"config": "18 1 * * * * *",
-				"name": "refund",
-				"type": "timer"
-			}
-		]
+		"timeout": 200
 	},
 	"keywords": [],
 	"author": "",

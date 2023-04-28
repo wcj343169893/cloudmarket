@@ -7,18 +7,18 @@
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
-		"privacy" : {
-		    "prompt" : "template",
-		    "template" : {
-		        "title" : "服务协议和隐私政策",
-		        "message" : "　　请你务必审慎阅读、充分理解“服务协议”和“隐私政策”各条款，包括但不限于：为了更好的向你提供服务，我们需要收集你的设备标识、操作日志等信息用于分析、优化应用性能。<br/>　　你可阅读<a href=\"https://tian.cqsort.com/markdown-share-docs/93a71d4dbcaaff263e2124ed7a41ab76/\">《服务协议》</a>和<a href=\"https://tian.cqsort.com/markdown-share-docs/dfbd94e4bfac3ab82bf1c7e73e90bb75/\">《隐私政策》</a>了解详细信息。如果你同意，请点击下面按钮开始接受我们的服务。",
-		        "buttonAccept" : "同意",
-		        "buttonRefuse" : "暂不同意"
-		    }
-		},
-		"compatible" : {
-		    "ignoreVersion" : true
-		},
+        "privacy" : {
+            "prompt" : "template",
+            "template" : {
+                "title" : "服务协议和隐私政策",
+                "message" : "　　请你务必审慎阅读、充分理解“服务协议”和“隐私政策”各条款，包括但不限于：为了更好的向你提供服务，我们需要收集你的设备标识、操作日志等信息用于分析、优化应用性能。<br/>　　你可阅读<a href=\"https://tian.cqsort.com/markdown-share-docs/93a71d4dbcaaff263e2124ed7a41ab76/\">《服务协议》</a>和<a href=\"https://tian.cqsort.com/markdown-share-docs/dfbd94e4bfac3ab82bf1c7e73e90bb75/\">《隐私政策》</a>了解详细信息。如果你同意，请点击下面按钮开始接受我们的服务。",
+                "buttonAccept" : "同意",
+                "buttonRefuse" : "暂不同意"
+            }
+        },
+        "compatible" : {
+            "ignoreVersion" : true
+        },
         "usingComponents" : true,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
@@ -163,6 +163,7 @@
         /* 小程序特有相关 */
         "usingComponents" : true,
         "appid" : "wx59ded2343a9d2e42",
+        "lazyCodeLoading" : "requiredComponents",
         "setting" : {
             "urlCheck" : false
         },
@@ -171,7 +172,7 @@
                 "desc" : "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
             }
         },
-		"requiredPrivateInfos": ["chooseLocation", "getFuzzyLocation"]
+        "requiredPrivateInfos" : [ "chooseLocation", "getFuzzyLocation" ]
     },
     "h5" : {
         "title" : "咕叽农场",

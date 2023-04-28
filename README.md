@@ -58,19 +58,19 @@ https://v.qq.com/x/page/t3224pz1q7g.html
 3. 修改后台登录参数unicloud/cloudfunctions/common/uni-config-center/uni-id/config.json中，配置mp-weixin/oauth/weixin的appid和[appsecret](https://mp.weixin.qq.com/wxamp/devprofile/get_profile)，**修改后请上传**
 4. 修改支付参数unicloud/cloudfunctions/common/configs/config.json，配置mp-weixin/payment/wxpay的appId（当前小程序appid）、mchId（微信支付商户号）、key（微信支付v2版的apikey）和pfx（微信支付v2版的证书，.p12文件），此节点下的balance或者delivery可以删除，需要注意标准JSON格式，不然配置不生效，**修改后请上传**
 5. 修改微信小程序后台“开发管理”--“服务器域名”，填写下方链接，  
-request合法域名  
+request合法域名
 ```
-https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.com;https://tcb-api.tencentcloudapi.com;https://at.alicdn.com;https://api.next.bspapp.com;   
+https://api.bspapp.com;https://apis.map.qq.com;https://cos.ap-shanghai.myqcloud.com;https://tcb-api.tencentcloudapi.com;https://at.alicdn.com;https://api.next.bspapp.com;  
 ```
-uploadFile合法域名  
+uploadFile合法域名，阿里云正式版还需要填写“总览”里面的云存储上传域名
 ```
-https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com  
+https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com;https://bsppub.oss-cn-shanghai.aliyuncs.com/;https://file-unirlhsrdn-mp-75aexxx-d2c1-4670-b6f6-377990c3f4d8.oss-cn-zhangjiakou.aliyuncs.com  
 ```
-download合法域名  
+download合法域名，阿里云正式版还需要填写“总览”里面的云存储下载域名
 ```
-https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com  
+https://api.bspapp.com;https://cos.ap-shanghai.myqcloud.com;https://bsppub.oss-cn-shanghai.aliyuncs.com/;https://mp-75aexxx-d2c1-4670-b6f6-377990c3f4d8.cdn.bspapp.com  
 ```
-如果依然报跨域问题，就把报错的域名一并加上 
+如果依然报跨域问题，就把报错的域名一并加上  
 6. 到微信后台[申请小程序接口](https://mp.weixin.qq.com/wxamp/categoryapi/index)，“wx.chooseLocation”，“wx.getFuzzyLocation”
 7. “运行”或者“发布”到微信开发者工具，如果不能成功打开，请按“控制台”指示，安装或者配置开发者工具
 

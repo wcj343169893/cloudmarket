@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "base-common": "file:../base-common",
-    "configs": "file:../configs"
+    "configs": "file:../configs",
+    "uni-config-center": "file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+    "wx-auth": "file:../wx-auth"
   }
 }

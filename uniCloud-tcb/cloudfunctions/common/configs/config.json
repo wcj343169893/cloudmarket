@@ -157,6 +157,12 @@
 			"key": "84Qrm9NwSCTVanyldcak9LJpX",
 			"secret": "XYEUJBWYBEBSVGV81832",
 			"product": false
+		},
+		"shunfeng": {
+			"key": "1660356525",
+			"shop": "3243279847393",
+			"secret": "6585c256576af77fc205b3f219ba0217",
+			"product": false
 		}
 	},
 	"qqmap": {

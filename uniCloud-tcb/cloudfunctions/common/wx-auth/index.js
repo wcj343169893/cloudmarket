@@ -74,33 +74,77 @@ const mpWxGetSessionKey = async (options, context) => {
  * 获取AccessToken
  */
 const getAccessToken = async (options, context) => {
-	const accData = await db.collection('mix-access-token').get();
-	let accInfo = {};
-	if (accData.data.length === 1) {
-		accInfo = accData.data[0]
-		//提前10分钟重新拉取
-		if (accInfo.access_token && accInfo.expires_in * 1000 > +new Date() - accInfo.add_time - 10 * 60 * 1000) {
-			return accInfo.access_token
+	const getConfigs = createConfig({
+		pluginId: 'uni-id', // 插件id, 注意pluginId需和uni-config-center下的目录名一致
+	});
+	const wxConfig = getConfigs.config(`${context.PLATFORM}.oauth.weixin`);
+
+	let key = `uni-id:${context.APPID}:${context.PLATFORM}:access-token`
+	const data = await dbCache(key, async () => {
+		let url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential';
+		url += '&appid=' + wxConfig.appid;
+		url += '&secret=' + wxConfig.appsecret;
+		const res = await uniCloud.httpclient.request(url, {
+			method: 'GET',
+			dataType: 'json'
+		})
+		if (!res.data.access_token) {
+			return false;
+		}
+		return res.data
+	}, 3600)
+	if (data) {
+		return data.access_token
+	}
+	return false;
+}
+
+const dbCache = async (key, data, expires_in = 3600) => {
+	let hasRedis = false;
+	try {
+		uniCloud.redis()
+		hasRedis = true;
+	} catch (e) {
+		//TODO handle the exception
+	}
+	if (hasRedis) {
+		if (!data) {
+			//读取数据
+			data = await uniCloud.redis().get(key)
+			if (data) {
+				return JSON.parse(data)
+			}
+		}
+		//写入缓存
+		if (typeof(data) == "function") {
+			data = await data()
+		}
+		if (data) {
+			await uniCloud.redis().set(key, JSON.stringify(data), "EX", expires_in)
+		}
+		return data;
+	}
+	//数据库缓存
+	if (!data) {
+		const {
+			data: dbData
+		} = await db.collection("opendb-open-data").doc(key).get()
+		//有效缓存
+		if (dbData.length > 0 && dbData[0].expired > Date.now()) {
+			return JSON.parse(dbData[0].value)
 		}
 	}
-	const {
-		appId,
-		secret
-	} = getLoginConfig(context.PLATFORM, "weixin");
-	let url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential';
-	url += '&appid=' + appId;
-	url += '&secret=' + secret;
-	const res = await uniCloud.httpclient.request(url, {
-		method: 'GET',
-		dataType: 'json'
-	})
-	await db.collection('mix-access-token').doc(accInfo._id || '1').set({
-		access_token: res.data.access_token,
-		expires_in: res.data.expires_in,
-		add_time: +new Date()
-	})
-
-	return res.data.access_token;
+	//写入缓存
+	if (typeof(data) == "function") {
+		data = await data()
+	}
+	if (data) {
+		await db.collection("opendb-open-data").doc(key).set({
+			expired: Date.now() + expires_in * 1000,
+			value: JSON.stringify(value)
+		})
+	}
+	return data;
 }
 
 /**
@@ -143,5 +187,6 @@ const WXBizDataCrypt = options => {
 module.exports = {
 	mpWxGetSessionKey,
 	WXBizDataCrypt,
-	getAccessToken
+	getAccessToken,
+	dbCache
 }

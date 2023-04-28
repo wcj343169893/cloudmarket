@@ -593,7 +593,7 @@
 			 */
 			checkCommentStar(item) {
 				//计算好评率
-				if (item.starStatics) {
+				/* if (item.starStatics) {
 					let sum = 0;
 					let good = 0;
 					for (let star in item.starStatics) {
@@ -603,7 +603,7 @@
 						sum += item.starStatics[star];
 					}
 					item.score = good / sum;
-				}
+				} */
 			},
 			checkMiaosha(item) {
 				if (!item.miaosha) {

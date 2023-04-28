@@ -93,7 +93,7 @@ const model = {
 	 * 支付完成后，更新订单信息
 	 * @param {Object} event
 	 */
-	async updatePaymentInfo(event) {
+	async updatePaymentInfo(event,context) {
 		//console.log(event);
 		let time = Date.now();
 		//reserve_
@@ -169,7 +169,7 @@ const model = {
 				riderDelivery.id = await delivery.add({
 					module: order.shop.delivery.thirdPartyModule || "cantingbao",
 					data: order
-				});
+				},context);
 				//如果自己是平台，则需要扣除商家的配送费
 			}
 			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息

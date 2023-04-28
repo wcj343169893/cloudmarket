@@ -15,6 +15,9 @@ const models = {
 		product: false //是否正式环境
 	},
 	name: "cantingbao",
+	async preAdd(){
+		return false;
+	},
 	/**
 	 * 增加新订单
 	 * @param {Object} order

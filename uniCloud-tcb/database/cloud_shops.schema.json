@@ -346,6 +346,14 @@
 		"operator": {
 			"bsonType": "string",
 			"title": "后台操作人"
+		},
+		"business_license": {
+			"bsonType": "string",
+			"title": "营业执照"
+		},
+		"food_license": {
+			"bsonType": "string",
+			"title": "食品经营许可"
 		}
 	}
 }

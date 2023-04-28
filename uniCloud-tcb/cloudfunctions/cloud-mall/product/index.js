@@ -79,15 +79,16 @@ const models = {
 		}
 		//实时查询审核通过的评论
 		data.comment = await this.comment({
-			page:1,
-			limit:2,
-			shopid:data.shopid,
-			goodsid:data._id
+			page: 1,
+			limit: 2,
+			shopid: data.shopid,
+			goodsid: data._id
 		});
 		if (!data.isLimit) {
 			delete data.limit;
 			delete data.isNewUser;
 		}
+		await this.checkCommentStar(data)
 		return data;
 	},
 	//分页查询所有秒杀商品
@@ -118,6 +119,29 @@ const models = {
 			stock: 1
 		}).skip((page - 1) * limit).limit(limit).orderBy("miaosha.beginTime", "desc").get();
 		return result.data;
+	},
+	async checkCommentStar(item) {
+		//计算好评率
+		if (item.starStatics) {
+			let state = Object.keys(item.starStatics).reduce((pre, star) => {
+				if (star > 2) {
+					pre.good += item.starStatics[star]
+				}
+				pre.total += item.starStatics[star]
+				return pre;
+			}, {
+				total: 1,
+				good: 1
+			})
+			let score = (state.good / state.total).toFixed(2);
+			if (!item.score || item.score.toFixed(2) != score) {
+				item.score = score;
+				//更新评分到商品表，方便将来查看
+				await goodsCollection.doc(item._id).update({
+					score: score * 1
+				})
+			}
+		}
 	},
 	async tuangou(data) {
 		const {
@@ -165,7 +189,7 @@ const models = {
 			shopid: shopid,
 			isCategoryShow: 1,
 			isSold: 1,
-			title: new RegExp(key,"i")
+			title: new RegExp(key, "i")
 		}).field({
 			_id: 0,
 			id: 1,
@@ -300,7 +324,7 @@ const models = {
 		} = data;
 		let result = await commentCollection.where({
 			shopid: shopid,
-			state:1,//后台审核通过的评论，可以在前端显示
+			state: 1, //后台审核通过的评论，可以在前端显示
 			goods_id: goodsid,
 		}).skip((page - 1) * limit).limit(limit).orderBy("created", "desc").get();
 		if (result.data.length == 0) {

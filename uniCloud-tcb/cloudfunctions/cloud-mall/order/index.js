@@ -613,7 +613,7 @@ const model = {
 				}
 			}
 			let comm = {
-				state: 0, //0未审核，1通过，-1失败
+				state: 1, //0未审核，1通过，-1失败
 				goods_id: g_id,
 				shopid: order.shopid,
 				order_id: order._id,
@@ -833,6 +833,7 @@ const model = {
 			name: 1,
 			src: 1,
 			address: 1,
+			addressObject: 1,
 			uid: 1,
 			phone: 1,
 			currency: 1,
@@ -1210,13 +1211,15 @@ const model = {
 			let {
 				inviter_uid,
 				avatar,
-				nickname
+				nickname,
+				wx_openid
 			} = context.userInfo;
 			//用户邀请列表
 			data["inviter_uid"] = [];
 			data["userInfo"] = {
 				id: context.userInfo.id,
 				uid,
+				wx_openid,
 				avatar,
 				nickname
 			};
