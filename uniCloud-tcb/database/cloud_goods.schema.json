@@ -191,10 +191,10 @@
 			}]
 		},
 		"score": {
-			"bsonType": "int",
+			"bsonType": "double",
 			"title": "评分",
-			"description": "商品评分，1-100",
-			"defaultValue": 100
+			"description": "商品评分，0.01-1",
+			"defaultValue": 1
 		},
 		"share": {
 			"bsonType": "string",
