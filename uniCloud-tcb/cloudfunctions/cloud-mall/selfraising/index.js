@@ -29,10 +29,10 @@ const models = {
 				spherical: true,
 				near: new db.Geo.Point(longitude, latitude),
 				minDistance: 0,
-				maxDistance: distance
-				// query: {
-				// 	docType: 'geoNear',
-				// },
+				maxDistance: distance,
+				query: {
+					state: 1,
+				},
 			}).project({
 				juli: 1,
 				latitude: 1,
