@@ -15,7 +15,7 @@
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="goods-box-single">
+			<view class="goods-box-single" v-if="item.goods && item.goods._id">
 				<image class="goods-img" :src="item.goods.src | thumbImg('120x120')" mode="aspectFill"></image>
 				<view class="right">
 					<view class="">
@@ -26,6 +26,10 @@
 						<text>{{item.refundApplyAmount}}</text>
 					</view>
 				</view>
+			</view>
+			<view class="goods-box-single" v-else>
+				<text>订单编号:</text>
+				<text>{{item.orderId}}</text>
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>

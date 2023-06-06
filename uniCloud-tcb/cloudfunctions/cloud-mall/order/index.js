@@ -532,6 +532,7 @@ const model = {
 			console.log("退款金额大于实际支付金额", refundFee, payInfo.totalFee)
 		}
 		return await orderRefundsCollection.add({
+			...item,
 			id,
 			orderId: order._id,
 			payInfo,
@@ -548,7 +549,6 @@ const model = {
 				desc: "您的退款已申请成功，待客服审核中",
 				time: Date.now()
 			}],
-			...item
 		});
 	},
 	/**

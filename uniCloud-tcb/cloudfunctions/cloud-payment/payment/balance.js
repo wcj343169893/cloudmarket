@@ -101,11 +101,20 @@ const models = {
 		let money = order.refundFee / 100;
 		let payInfo = order.payInfo;
 		let uid = order.uid;
+		if (!uid) {
+			return {
+				message: "订单异常",
+				code: 0
+			}
+		}
 		//查询是否已经退款
 		let isRefunded = await this.isRefunded(order.outRefundNo);
 		if (isRefunded) {
-			console.log("用户资金已退回", uid);
-			return true;
+			console.log("用户资金已退回", uid, order.outRefundNo);
+			return {
+				message: "订单处理完成",
+				code: 0
+			}
 		}
 		console.log("用户收到退款金额", uid, money);
 		let res = await userCollection.where({
@@ -132,9 +141,13 @@ const models = {
 			refund: cmd.inc(money)
 		});
 		// return `退款将退回至您的${payname}账户，请注意查收`;
-		return getStringFormat("payment.refundSuccessContent", {
+		let message = getStringFormat("payment.refundSuccessContent", {
 			payName
 		});
+		return {
+			message,
+			code: 0
+		}
 	},
 	/**
 	 * 保存用户余额变动日志

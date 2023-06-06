@@ -127,10 +127,10 @@ const models = {
 			console.log(e.message);
 			result = e.message;
 			code = -1;
+			message = getStringFormat("payment.refundFailed", {
+				payName
+			});
 		}
-		message = getStringFormat("payment.refundFailed", {
-			payName
-		});
 		return {
 			message,
 			result,

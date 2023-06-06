@@ -14,13 +14,13 @@
 				<text class="yticon icon-you"></text>
 			</view>
 		</view>
-		<view class="list-cell b-b" @click="changeMobile" hover-class="cell-hover" :hover-stay-time="50">
+<!-- 		<view class="list-cell b-b" @click="changeMobile" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">手机号</text>
 			<view class="cell-more">
 				<text>{{ userInfo.mobile }}</text>
 				<text class="yticon icon-you"></text>
 			</view>
-		</view>
+		</view> -->
 		<!-- #ifndef MP -->
 		<view class="list-cell" @click="bindWx" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">绑定微信账号</text>

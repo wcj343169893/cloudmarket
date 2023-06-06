@@ -555,6 +555,7 @@ const addRefundApply = async (data) => {
 		refundAmount: 1,
 		refundApply: 1,
 		body: 1,
+		uid: 1,
 		cartCount: 1,
 	};
 	let conditions = {
@@ -574,10 +575,11 @@ const addRefundApply = async (data) => {
 		if (order.refundAmount) {
 			total = order.totalMoney - order.refundAmount;
 		}
-		let addRefundResult = await addOrderRefund(uid, order.payInfo, total, "订单退款", {}, order, {});
+		let addRefundResult = await addOrderRefund(uid, order.payInfo, total * 100, "订单退款", {}, order, {});
 		return orderCollection.doc(id).update({
 			refundAmount: order.cartCount,
-			isRefundAll: 1
+			isRefundAll: 1,
+			state: 4
 		});
 	}
 
@@ -628,6 +630,8 @@ const addRefundApply = async (data) => {
 	if (order.refundAmount + item.refundApplyAmount >= order.cartCount) {
 		dataField["isRefundAll"] = 1;
 		console.log("全部退款退货")
+		//已完成
+		dataField["state"] = 4
 	}
 
 	//isRefunding:1,正在退款中,同意之后，更新  refundAmount
@@ -651,6 +655,7 @@ const addOrderRefund = async (uid, payInfo, refundFee, refundDesc, goods, order,
 		console.log("退款金额大于实际支付金额", refundFee, payInfo.totalFee)
 	}
 	return await orderRefundsCollection.add({
+		...item,
 		id,
 		orderId: order._id,
 		payInfo,
@@ -668,8 +673,7 @@ const addOrderRefund = async (uid, payInfo, refundFee, refundDesc, goods, order,
 			operator: "系统",
 			desc: "您的退款申请已通过，待财务退款中",
 			time: Date.now()
-		}],
-		...item
+		}]
 	});
 }
 module.exports = {

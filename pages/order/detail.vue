@@ -20,7 +20,8 @@
 				<view v-if="isYuding && info.state == 0">
 					<text>应付尾款：</text>
 					<text class="price">{{ (info.yuding ? info.yuding.finishPaymentPrice : '') | toFixed }}</text>
-					<text class="m-l">{{ (info.yuding ? info.yuding.finalPaymentBeginTime : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
+					<text
+						class="m-l">{{ (info.yuding ? info.yuding.finalPaymentBeginTime : '') | dateFormat('yyyy-MM-dd hh:mm:ss') }}开始</text>
 				</view>
 				<!-- 退款进度 -->
 				<view class="apply-list" v-if="info.cancelApply">
@@ -39,9 +40,12 @@
 				<block v-if="info.state == 0">
 					<block v-if="isYuding"><button class="action-btn disabled">去支付尾款</button></block>
 				</block>
-				<block v-else-if="info.state == 1"><button type="default" class="action-btn" @click="pusheDelivery">催一催</button></block>
-				<block v-else-if="info.state == 2"><button type="default" class="action-btn" @click="confirmOrder">确定收货</button></block>
-				<block v-else-if="info.state == 3"><button type="default" class="action-btn recom" @click="evaluateOrder">评价一下</button></block>
+				<!-- <block v-else-if="info.state == 1"><button type="default" class="action-btn"
+						@click="pusheDelivery">催一催</button></block> -->
+				<block v-else-if="info.state == 2"><button type="default" class="action-btn"
+						@click="confirmOrder">确定收货</button></block>
+				<block v-else-if="info.state == 3"><button type="default" class="action-btn recom"
+						@click="evaluateOrder">评价一下</button></block>
 				<block v-else>
 					<button type="default" class="action-btn" @click="deleteOrder">删除订单</button>
 					<button type="default" class="action-btn" @click="buyAgain()">再次购买</button>
@@ -93,10 +97,11 @@
 				</view>
 			</view>
 			<block v-if="info.deliveryType == 'selfRaising' && info.payInfo">
-				<tki-qrcode v-if="qrcode.ifShow" cid="qrcode1" ref="qrcode" :val="qrcode.val" :size="qrcode.size" :unit="qrcode.unit"
-				 :background="qrcode.background" :foreground="qrcode.foreground" :pdground="qrcode.pdground" :icon="qrcode.icon"
-				 :iconSize="qrcode.iconsize" :lv="qrcode.lv" :onval="qrcode.onval" :loadMake="qrcode.loadMake" :usingComponents="true"
-				 @result="qrR"></tki-qrcode>
+				<tki-qrcode v-if="qrcode.ifShow" cid="qrcode1" ref="qrcode" :val="qrcode.val" :size="qrcode.size"
+					:unit="qrcode.unit" :background="qrcode.background" :foreground="qrcode.foreground"
+					:pdground="qrcode.pdground" :icon="qrcode.icon" :iconSize="qrcode.iconsize" :lv="qrcode.lv"
+					:onval="qrcode.onval" :loadMake="qrcode.loadMake" :usingComponents="true"
+					@result="qrR"></tki-qrcode>
 				<view class="weui-flex address b-b" v-if="info.deliveryHour">
 					<view class="" style="text-align: center;flex: 1;">
 						<view class="warning">
@@ -119,7 +124,7 @@
 				</view>
 			</block>
 			<block v-else-if="info.address && info.address._id">
-				<view class="weui-flex address b-b" >
+				<view class="weui-flex address b-b">
 					<view><text>收货地址</text></view>
 					<view class="content">
 						<view>
@@ -164,8 +169,9 @@
 						<view class="weui-flex start">
 							<view class="weui-flex-check">
 								<view class="image-wrapper">
-									<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]" mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
-									 @error="onImageError('goodsList', index)"></image>
+									<image :src="item.src | thumbImg('120x120')" :class="[item.loaded]"
+										mode="aspectFill" lazy-load @load="onImageLoad('goodsList', index)"
+										@error="onImageError('goodsList', index)"></image>
 								</view>
 							</view>
 							<view class="desc weui-flex__item">
@@ -189,10 +195,12 @@
 									</view>
 								</view>
 								<view class="buttons">
-									<button type="default" v-if="info.state > 0" class="action-btn" :class="{disabled:!item.canRefund}"
-									 @click.stop="refundOrder(item,index)">申请退款</button>
+									<button type="default" v-if="info.state > 0" class="action-btn"
+										:class="{disabled:!item.canRefund}"
+										@click.stop="refundOrder(item,index)">申请退款</button>
 									<block v-if="isYuding"></block>
-									<block v-else><button type="default" class="action-btn" @click.stop="buyAgain(item)">加购物车</button></block>
+									<block v-else><button type="default" class="action-btn"
+											@click.stop="buyAgain(item)">加购物车</button></block>
 								</view>
 							</view>
 						</view>
@@ -295,15 +303,19 @@
 					<view class="weui-flex b-b">
 						<view><text>退款数量</text></view>
 						<view>
-							<uni-number-box v-if="refundItem.refundMax>1" :min="1" :max="refundItem.refundMax" :stock="refundItem.refundMax"
-							 maxStockNotice="抱歉,最多选择" :keys="refundItem._id" :value="1" @change="changeRefundNumber"></uni-number-box>
+							<uni-number-box v-if="refundItem.refundMax>1" :min="1" :max="refundItem.refundMax"
+								:stock="refundItem.refundMax" maxStockNotice="抱歉,最多选择" :keys="refundItem._id" :value="1"
+								@change="changeRefundNumber"></uni-number-box>
 							<text v-else class="refund-amount">1</text>
 						</view>
 					</view>
 				</view>
-				<mix-list-select title="退款类型" :options="refundTypes" border="b-b" :defaultOption="'1'" @eventClick="changeRefundType"></mix-list-select>
-				<mix-list-select title="退款原因" :options="refundReasons" border="b-b" :defaultOption="'1'" @eventClick="changeRefundReason"></mix-list-select>
-				<mix-list-input title="问题描述" :defContent="refundItem.reason" placeholder="请简要描述" @change="changeRefundContent"></mix-list-input>
+				<mix-list-select title="退款类型" :options="refundTypes" border="b-b" :defaultOption="'1'"
+					@eventClick="changeRefundType"></mix-list-select>
+				<mix-list-select title="退款原因" :options="refundReasons" border="b-b" :defaultOption="'1'"
+					@eventClick="changeRefundReason"></mix-list-select>
+				<mix-list-input title="问题描述" :defContent="refundItem.reason" placeholder="请简要描述"
+					@change="changeRefundContent"></mix-list-input>
 				<view class="mix-list-cell" @click="uploadRefundImgs()">
 					<text class="cell-tit clamp">上传图片</text>
 					<view class="cell-tip">选择图片</view>
@@ -311,7 +323,8 @@
 				</view>
 				<view class="imgs b-b">
 					<scroll-view scroll-x class="h-list" v-if="refundImgs && refundImgs.length > 0">
-						<view v-for="(item, index) in refundImgs" :key="index" class="h-list-image" @click="replaceImg(index)">
+						<view v-for="(item, index) in refundImgs" :key="index" class="h-list-image"
+							@click="replaceImg(index)">
 							<image :src="item" mode="aspectFill"></image>
 						</view>
 					</scroll-view>
@@ -354,9 +367,9 @@
 				stateTip: '',
 				stateContent: '',
 				stateTipColor: '',
-				express:{},
+				express: {},
 				info: {
-					express:[],
+					express: [],
 					shop: {}
 				},
 				isYuding: false,
@@ -472,7 +485,8 @@
 					if (!item.isRefunding) {
 						item.isRefunding = 0;
 					}
-					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding && (!this.info.makesureTime || !this
+					item.canRefund = (item.amount - item.refundAmount) > 0 && !item.isRefunding && (!this.info
+						.makesureTime || !this
 						.afterReceived);
 				})
 				if (this.moreGoodsCount > 0) {
@@ -634,7 +648,7 @@
 					return false;
 				}
 				//至少退一件
-				this.$set(this, "refundItem", {
+				this.refundItem = {
 					_id: item._id,
 					refundApplyAmount: 1,
 					refundMax: item.amount - item.refundAmount,
@@ -644,7 +658,7 @@
 					refundReason: this.refundReasons['1'],
 					refundType: this.refundTypes['1'],
 					refundContent: ""
-				});
+				};
 				console.log(this.refundItem);
 				this.refundImgs = [];
 				//如果购买的是多件，需要选择数量

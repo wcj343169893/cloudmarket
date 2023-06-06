@@ -2,7 +2,7 @@
 
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 {
-	"module": "mall",
+	"timingTriggerConfig": "mall",
 	"action": "info",
 	"data": {
 		"id": "8f75309d62b845780a642405061ff8e2"
