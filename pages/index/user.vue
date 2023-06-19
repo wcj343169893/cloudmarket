@@ -405,7 +405,7 @@
 							for (let t in res.order) {
 								this.order[t] = res.order[t];
 							}
-							this.order.receive = this.order.payup + this.order.delivered;
+							this.order.receive = this.order.payup // + this.order.delivered;
 						} else {
 							for (let t in this.order) {
 								this.order[t] = 0;
