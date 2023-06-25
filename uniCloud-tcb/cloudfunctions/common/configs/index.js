@@ -79,6 +79,13 @@ const model = {
 			} else {
 				delete res.pfx;
 			}
+			if (res.appCertPath && needPfx) {
+				res.appCertPath = path.resolve(__dirname, "cert", res.appCertPath);
+			}
+			if (res.appPrivateKeyPath && needPfx) {
+				res.appPrivateKeyPath = path.resolve(__dirname, "cert", res.appPrivateKeyPath);
+			}
+
 		}
 		paymentConfigTmp[key] = res;
 		return res;

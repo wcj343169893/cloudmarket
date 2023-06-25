@@ -55,6 +55,9 @@
 				"mchId": "1604863346",
 				"sub_appid": false,
 				"sub_mch_id": false,
+				"v3Key":"xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
+				"appCertPath":"apiclient_cert.pem",
+				"appPrivateKeyPath":"apiclient_key.pem",
 				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
 				"pfx": "1604863346_20210304_cert.p12"
 			},
