@@ -447,10 +447,11 @@ const selftake = async (data) => {
 	let res = await orderCollection.doc(order._id).update({
 		receivedTime: Date.now(),
 		receivedUid: data.operator,
-		state: 3
+		autoFinishTime: Date.now(),
+		state: 2
 	});
 	//更新用户已发货和已收货
-	let resUser = await updateUserOrderCount(order.uid, "received", 1, "delivered", order.shopid);
+	// let resUser = await updateUserOrderCount(order.uid, "received", 1, "delivered", order.shopid);
 	return res;
 }
 /**
@@ -470,6 +471,7 @@ const selftakebyraising = async (data) => {
 	}).update({
 		receivedTime: Date.now(),
 		receivedUid: operator,
+		autoFinishTime: Date.now(),
 		state: 2
 	});
 }

@@ -121,7 +121,7 @@ const models = {
 			message = getStringFormat("payment.refundSuccessContent", {
 				payName
 			});
-			result = JSON.parse(result);
+			// result = JSON.parse(result);
 		} catch (e) {
 			console.log("unipay refund 退款失败");
 			console.log(e.message);

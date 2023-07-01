@@ -1498,9 +1498,9 @@ const model = {
 			shopid: 1
 		}).get();
 
-		if (orders.length > 0) {
-			for (let i = 0; i < orders.length; i++) {
-				let order = orders[i]
+		if (orders.data.length > 0) {
+			for (let i = 0; i < orders.data.length; i++) {
+				let order = orders.data[i]
 				//确定收货,资金解冻
 				await orderCollection.doc(order._id).update({
 					state: 3,
