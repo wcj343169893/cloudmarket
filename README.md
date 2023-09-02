@@ -1,5 +1,6 @@
 ## 云上商城 
-云上商城是结合uniapp+unicloud+uni-id前后端一体的多商户电商系统，支持发布成APP、h5、小程序，系统根据用户当前定位或者收货地址，匹配最近的一个店铺，为用户提供最方便的服务，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。
+云上商城是结合uniapp+unicloud+uni-id前后端一体的多商户电商系统，支持发布成APP、h5、小程序，系统根据用户当前定位或者收货地址，匹配最近的一个店铺，为用户提供最方便的服务，类似现有的app，如：盒马鲜生，美团买菜，叮咚买菜，朴朴超市，永辉买菜，平价买菜。   
+更多信息，请查看[文档中心](https://doc.cqsort.com/yunshang/)。  
 
 
 ### 支持行业
@@ -10,15 +11,15 @@
 
 
 ### 体验商城前端+移动端后台
-[点此进入app发行页面](https://m3w.cn/xbb)，体验h5，app，微信小程序，包含移动端管理  
-
-![管理后台](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg?x-oss-process=image/resize,m_fill,w_200,h_200) 
+[客户端演示示例](https://doc.cqsort.com/yunshang/#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F)  
+微信小程序演示  
+![前端](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg?x-oss-process=image/resize,m_fill,w_200,h_200) 
 
 ### pc后台
 [http://xbb.cqsort.com/admin/](http://xbb.cqsort.com/admin/)  
 测试账户：shop_manager  
 测试密码：123456  
-已经完全开源，详见后台插件-[商城后台管理系统](https://ext.dcloud.net.cn/plugin?id=4400)  
+后台已经完全开源，详见后台插件-[商城后台管理系统](https://ext.dcloud.net.cn/plugin?id=4400)  
 
 ### 咨询与售后
 * 交流QQ群1：298724327（已满员）  
@@ -38,14 +39,15 @@
 3. “跳过”在线部署，继续导入HBuilderx
 4. 在导入后的项目中，uniCloud目录右键，选择“云服务空间初始化向导”，再次绑定试用的云空间
 5. 勾选云函数、公共模块、db_init.json后，再“开始部署”，等待自动完成  在自动部署过程中，可能存在一些红色的错误提示，可以再次尝试这个自动安装向导，如果都不能成功，请加群找群主协助解决
-6. 登录测试账号：16612345678，密码：123456
+6. 登录测试账号：16612345678，密码：123456  
+更多信息，请查看[文档中心](https://doc.cqsort.com/yunshang/getstart.html)
 
 ##### 源码安装步骤：  
 1. 插件市场点击“导入源码授权版插件”
 2. 在导入后的项目中，uniCloud目录右键，选择“云服务空间初始化向导”，再次绑定试用的云空间
 3. 勾选云函数、公共模块、db_init.json后，再“开始部署”，等待自动完成  在自动部署过程中，可能存在一些红色的错误提示，可以再次尝试这个自动安装向导，如果都不能成功，请加群找群主协助解决
-4. 登录测试账号：16612345678，密码：123456
-
+4. 登录测试账号：16612345678，密码：123456  
+更多信息，请查看[文档中心](https://doc.cqsort.com/yunshang/getstart.html)
 
 
 
