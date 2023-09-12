@@ -94,8 +94,8 @@ const getInfoByBarcode = async (code) => {
 		secret
 	} = barcodeConfig
 	let data = {}
-	if (type == "roleapi") {
-		const result = await getRollToolApiContent("/barcode/create", key, secret, {
+	if (type == "rollapi") {
+		const result = await getRollToolApiContent("/barcode/goods/details", key, secret, {
 			barcode: code
 		});
 		if (result && result !== true) {
@@ -110,7 +110,7 @@ const getInfoByBarcode = async (code) => {
 			//转化为商品的结构
 			return [{
 				price: Number(result.price),
-				upc,
+				upc: code,
 				title: result.goodsName,
 				net_weight: result.standard,
 			}]
@@ -120,7 +120,7 @@ const getInfoByBarcode = async (code) => {
 }
 const getRollToolApiContent = async (url, key, secret, data = {}, method = "get") => {
 	const res = await uniCloud.httpclient.request("https://www.mxnzp.com/api" + url +
-		`?key=${key}&secret=${secret}`, {
+		`?app_id=${key}&app_secret=${secret}`, {
 			method,
 			data: data,
 			dataType: "json"
