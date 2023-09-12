@@ -843,7 +843,8 @@
 					goodsAdmin("list", {
 						page: 1,
 						limit: 50,
-						upc: val
+						upc: val,
+						state:"search"
 					}, true).then(res => {
 						console.log(res)
 						if (res.length == 1) {

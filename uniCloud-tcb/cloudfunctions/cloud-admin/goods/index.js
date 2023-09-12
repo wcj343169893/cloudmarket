@@ -7,6 +7,9 @@ const goodsDeleteCollection = db.collection("cloud_goods_deletes");
 const {
 	genIdentityId
 } = require('base-common');
+const {
+	getConfig
+} = require("configs");
 const list = async (data, context) => {
 	const {
 		page,
@@ -62,14 +65,78 @@ const list = async (data, context) => {
 	if (state == "delete") {
 		goodsCollection2 = goodsDeleteCollection;
 	}
-	let res = await goodsCollection2.where(conditions).orderBy(...order).skip((page - 1) * limit).limit(limit).field(
-		fields).get();
+	let res = await goodsCollection2.where(conditions).orderBy(...order).skip((page - 1) * limit).limit(limit)
+		.field(
+			fields).get();
 	if (res.data.length == 0) {
 		//表示没有数据，默认提示语，可以省略
 		//data.message = "暂无数据";
+		//TODO 如果只是通过upc查询商品，则可以调用第三方接口查询信息
+		if (state == "search") {
+			return getInfoByBarcode(upc)
+		}
 		return false;
 	}
 	return res.data;
+}
+/**
+ * 调用rollApi接口，官网地址：https://www.mxnzp.com/doc/detail?id=6
+ * 请申请自己的appid，否则无法使用
+ */
+const getInfoByBarcode = async (code) => {
+	let barcodeConfig = getConfig("barcode");
+	if (!barcodeConfig) {
+		return false;
+	}
+	const {
+		type,
+		key,
+		secret
+	} = barcodeConfig
+	let data = {}
+	if (type == "roleapi") {
+		const result = await getRollToolApiContent("/barcode/create", key, secret, {
+			barcode: code
+		});
+		if (result && result !== true) {
+			/* {
+			        "goodsName": "脉动维生素饮料（水蜜桃口味）600ml",
+			        "barcode": "6902538005141",
+			        "price": "3.80",
+			        "brand": "达能",
+			        "supplier": "达能(中国)食品饮料有限公司",
+			        "standard": "600ml"
+			    } */
+			//转化为商品的结构
+			return [{
+				price: Number(result.price),
+				upc,
+				title: result.goodsName,
+				net_weight: result.standard,
+			}]
+		}
+	}
+	return false;
+}
+const getRollToolApiContent = async (url, key, secret, data = {}, method = "get") => {
+	const res = await uniCloud.httpclient.request("https://www.mxnzp.com/api" + url +
+		`?key=${key}&secret=${secret}`, {
+			method,
+			data: data,
+			dataType: "json"
+		});
+	console.log(JSON.stringify(res.data))
+	if (res.data.code == 1) {
+		if (res.data.data) {
+			return res.data.data;
+		}
+		//没有body返回值，默认true，表示请求成功
+		return true;
+	} else {
+		//message = res.data.error_description;
+		console.log(res.data.msg);
+		return false;
+	}
 }
 /**
  * 新增/修改
@@ -113,7 +180,8 @@ const save = async (data, context) => {
 		for (let st of sts) {
 			rmField[st] = cmd.remove();
 		}
-		let res = await goodsCollection.doc(_id).update({ ...rmField,
+		let res = await goodsCollection.doc(_id).update({
+			...rmField,
 			...data
 		});
 		if (res.goodsList == 0) {

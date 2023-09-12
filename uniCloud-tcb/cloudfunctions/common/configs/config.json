@@ -55,9 +55,9 @@
 				"mchId": "1604863346",
 				"sub_appid": false,
 				"sub_mch_id": false,
-				"v3Key":"xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
-				"appCertPath":"apiclient_cert.pem",
-				"appPrivateKeyPath":"apiclient_key.pem",
+				"v3Key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
+				"appCertPath": "apiclient_cert.pem",
+				"appPrivateKeyPath": "apiclient_key.pem",
 				"key": "xQHSfantYNGFZ6pwDLuesv4qGRmWNBnZ",
 				"pfx": "1604863346_20210304_cert.p12"
 			},
@@ -174,6 +174,11 @@
 	},
 	"user": {
 		"autoSetId": true
+	},
+	"barcode": {
+		"type": "rollapi",
+		"key": "toljdhlixqlgxhab",
+		"secret": "UE84L1hwem9XVG1HWkI3R2hWTi9DQT09"
 	},
 	"email": {
 		"transport": {
