@@ -136,3 +136,6 @@ https://v.qq.com/x/page/i3235gxkkpz.html
 [预览字体](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/872f2160-d6e1-11ea-81ea-f115fe74321c.html)  
 [手机淘宝图标库](http://market.cjblog.org/font_2174075_cl718eoy90k/demo_index.html)  
 ```<text class="taobaofont icon-activity"></text>```  
+
+### 优秀小程序推荐
+![宴席助理](https://mp-bd937358-26c6-4f30-b5b7-eebcb8823783.cdn.bspapp.com/VKCEYUGU-bd937358-26c6-4f30-b5b7-eebcb8823783/99cb71630cd0aaa1fbbe23b81511e2b.jpg?x-oss-process=image/resize,m_fill,w_200,h_200)
