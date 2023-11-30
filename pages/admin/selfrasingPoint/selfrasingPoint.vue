@@ -161,7 +161,7 @@
 			},
 			download(item, index, state) {
 				let domain = uni.getStorageSync("web_domain");
-				let url = `${domain}/databases/exports/selfraising?id=${item._id}&state=${state}`;
+				let url = `${domain}/http/databases/exports/selfraising?id=${item._id}&state=${state}`;
 				console.log(url)
 				//#ifdef APP-PLUS
 				uni.setClipboardData({
