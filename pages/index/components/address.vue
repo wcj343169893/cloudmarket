@@ -3,12 +3,9 @@
 		<view class="titleNview-address" v-if="isSelfRaisingPoint">
 			<text class="taobaofont icon-shoplight m-r"></text>
 			<text>{{raisingPoint.name}}</text>
-		</view>
-		<view class="titleNview-address" v-else-if="address != ''">
-			<text>送至:{{ address }}</text>
+			<text>|</text>
 		</view>
 		<view class="shop-name" v-if="shop && shop.id">
-			<text>|</text>
 			<text class="name">{{shop.name}}</text>
 		</view>
 	</view>
