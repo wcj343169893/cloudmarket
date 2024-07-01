@@ -3,13 +3,12 @@
 		<view class="titleNview-address" v-if="isSelfRaisingPoint">
 			<text class="taobaofont icon-shoplight m-r"></text>
 			<text>{{raisingPoint.name}}</text>
-			<text>|</text>
 		</view>
-		<view class="titleNview-address" v-else-if="address != ''">
+		<view class="titleNview-address" v-else-if="address">
 			<text>送至:{{ address }}</text>
-			<text>|</text>
 		</view>
-		<view class="shop-name" v-if="shop && shop.id">
+		<view class="titleNview-address" v-else-if="shop && shop.id">
+			<text class="taobaofont icon-shoplight m-r"></text>
 			<text class="name">{{shop.name}}</text>
 		</view>
 	</view>
@@ -70,10 +69,6 @@
 		display: flex;
 		align-items: center;
 		padding-bottom: 12upx;
-		padding-left: 16upx;
-
-		.name {
-			padding-left: 6upx;
-		}
+		padding-left: 36upx;
 	}
 </style>
