@@ -5,6 +5,10 @@
 			<text>{{raisingPoint.name}}</text>
 			<text>|</text>
 		</view>
+		<view class="titleNview-address" v-else-if="address != ''">
+			<text>送至:{{ address }}</text>
+			<text>|</text>
+		</view>
 		<view class="shop-name" v-if="shop && shop.id">
 			<text class="name">{{shop.name}}</text>
 		</view>
@@ -66,7 +70,7 @@
 		display: flex;
 		align-items: center;
 		padding-bottom: 12upx;
-		padding-left: 6upx;
+		padding-left: 16upx;
 
 		.name {
 			padding-left: 6upx;

@@ -301,7 +301,7 @@
 						},
 						fail: res => {
 							uni.hideLoading();
-							this.address = '定位失败,将展示默认信息';
+							this.address = '';
 							console.log('获取定位失败', res.errMsg);
 							this.loadData();
 						}
@@ -314,7 +314,7 @@
 						},
 						fail: res => {
 							uni.hideLoading();
-							this.address = '定位失败,将展示默认信息';
+							this.address = '';
 							console.log('获取定位失败', res.errMsg);
 							this.loadData();
 						}

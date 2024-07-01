@@ -29,50 +29,6 @@
 				</view>
 			</view>
 		</block>
-		<view class="sec-header"><text>当前地址</text></view>
-		<view class="list b-b" v-if="currentAddress.addressName && currentAddress.addressName.length > 0"
-			@click="checkAddress(currentAddress)">
-			<view class="wrapper">
-				<view class="address-box">
-					<text class="address">{{ currentAddress.addressName }}</text>
-				</view>
-				<view class="u-box">
-					<text>{{ currentAddress.address }}</text>
-				</view>
-			</view>
-			<view class="dingwei" @click.stop="getLocation(true)">
-				<text class="yticon icon-dingwei"></text>
-				<text>重新定位</text>
-			</view>
-		</view>
-		<view class="list b-b" v-else>
-			<view class="wrapper"><text>定位失败</text></view>
-			<view class="dingwei" @click.stop="getLocation(true)">
-				<text class="yticon icon-dingwei"></text>
-				<text>重新定位</text>
-			</view>
-		</view>
-		<view class="">
-			<!-- <map id="map1" ref="map1" :latitude="latitude" :longitude="longitude" :markers="centerMaker" @regionchange="regionchange"
-			 :show-location="show_location" style="width: 100%;height: 300px;"></map> -->
-			<map id="map" class="map" min-scale="10" :scale="17" :show-location="true" :latitude="latitude"
-				:longitude="longitude" @regionchange="onRegionchange">
-				<cover-image class="map-center-icon" src="/static/location-center.png"></cover-image>
-			</map>
-		</view>
-		<view class="sec-header"><text>附近地址</text></view>
-		<view class="">
-			<view class="list b-b" v-for="(item, index) in nearAddressList" :key="index" @click="checkAddress(item)">
-				<view class="wrapper">
-					<view class="address-box">
-						<text class="address">{{ item.addressName }}</text>
-					</view>
-					<view class="u-box">
-						<text>{{ item.address }}</text>
-					</view>
-				</view>
-			</view>
-		</view>
 		<view class="sec-header"><text>附近店铺</text></view>
 		<view class="">
 			<view class="list b-b" v-for="(item, index) in nearShopList" :key="index" @click="navToShopHome(item)">
@@ -142,15 +98,15 @@
 			if (this.hasLogin) {
 				this.loadData();
 			}
-			setTimeout(() => {
-				this.getLocation(false);
-			}, 300);
+			// setTimeout(() => {
+			// 	this.getLocation(false);
+			// }, 300);
 			if (this.location && this.location.latitude > 0) {
 				this.latitude = this.location.latitude;
 				this.longitude = this.location.longitude;
 				this.getShopList()
 			}
-			//console.log(this.location);
+			// console.log(this.location);
 		},
 		created() {
 			_mapCtx = uni.createMapContext('map');
