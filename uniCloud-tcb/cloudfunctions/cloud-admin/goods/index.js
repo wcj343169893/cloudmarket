@@ -246,6 +246,9 @@ const deletes = async (data) => {
 	let goods = oldGoods.data[0];
 	goods.deleteOperator = data.operator; //操作者
 	goods.deleteTime = new Date().getTime(); //操作时间
+	await goodsDeleteCollection.where({
+		_id: data._id
+	}).remove();
 	let res2 = await goodsDeleteCollection.add(goods);
 	console.log("添加删除记录", res2);
 	//移除数据有风险，操作需谨慎
@@ -283,8 +286,16 @@ const reverts = async (data) => {
 	goods.onlineTime = goods.revertTime = new Date().getTime(); //操作时间
 	//移除删除时间
 	delete goods.deleteTime;
-	let res2 = await goodsCollection.add(goods);
-	console.log("恢复商品记录", res2);
+	//判断是否存在，存在则更新，不存在则添加
+	let oldData = await goodsCollection.doc(data._id).get()
+	if (oldData.data && oldData.data.length > 0) {
+		delete goods._id;
+		let res = await goodsCollection.doc(data._id).update(goods);
+		console.log("更新商品记录", res);
+	} else {
+		let res = await goodsCollection.add(goods);
+		console.log("恢复商品记录", res);
+	}
 	//移除数据有风险，操作需谨慎
 	let res = await goodsDeleteCollection.where({
 		_id: data._id,
@@ -378,7 +389,7 @@ const soldOut = async (data) => {
 	}
 	let res = await goodsCollection.doc(data._id).update({
 		isSold: 0,
-		operator: data.operator, //操作者
+		offlineOperator: data.operator, //操作者
 		offlineNotice: "管理员手动下架",
 		offlineTime: new Date().getTime()
 	});
@@ -399,7 +410,7 @@ const soldOutAll = async (data) => {
 	//修改
 	let res = await goodsCollection.where(conditions).update({
 		isSold: 0,
-		operator: data.operator, //操作者
+		offlineOperator: data.operator, //操作者
 		offlineNotice: "管理员手动下架",
 		offlineTime: new Date().getTime()
 	});
@@ -417,7 +428,7 @@ const soldIn = async (data) => {
 	}
 	let res = await goodsCollection.doc(data._id).update({
 		isSold: 1,
-		operator: data.operator, //操作者
+		onlilneOperator: data.operator, //操作者
 		onlineTime: new Date().getTime()
 	});
 	console.log("soldIn", res);
@@ -438,7 +449,7 @@ const soldInAll = async (data) => {
 	//修改
 	let res = await goodsCollection.where(conditions).update({
 		isSold: 1,
-		operator: data.operator, //操作者
+		onlilneOperator: data.operator, //操作者
 		onlineTime: new Date().getTime()
 	});
 	console.log("soldIn", res);
