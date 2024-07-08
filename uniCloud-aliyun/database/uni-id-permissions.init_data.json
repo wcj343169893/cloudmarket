@@ -1,0 +1,399 @@
+[
+  {
+    "_id": "21ded5cb5ff1687c038782a75fc74728",
+    "permission_id": "ROLE_MANAGE_ADD",
+    "permission_name": "新增角色",
+    "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b433d080a909b47a4c20a",
+    "permission_id": "MALL_GOODS_MANAGE_ADD",
+    "permission_name": "新增商品",
+    "parent_id": "b00064a7603b433d07925fba78380fc9",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b434c080a9287206190cc",
+    "permission_id": "MALL_ORDER_MANAGE_ADD",
+    "permission_name": "新增订单",
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b4540080af19f56eafcfb",
+    "permission_id": "PERMISSION_MANAGE_LIST",
+    "permission_name": "列表权限",
+    "parent_id": "28ee4e3e603b4540080af19c73301590",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e604924a709f26759648415a3",
+    "gen_child": false,
+    "parent_id": "",
+    "permission_id": "111",
+    "permission_name": "1111",
+    "create_date": 1615406247106
+  },
+  {
+    "_id": "79550af2604924a7095ebfe05b0b83f6",
+    "permission_id": "111_ADD",
+    "permission_name": "新增1111",
+    "parent_id": "28ee4e3e604924a709f26759648415a3",
+    "comment": ""
+  },
+  {
+    "_id": "a8831daa5ff02cbc0167c866267c480d",
+    "comment": "",
+    "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+    "permission_id": "USER_MANAGE_ADD",
+    "permission_name": "增加用户",
+    "create_date": 1609575612579
+  },
+  {
+    "_id": "b00064a7603b433d07925fba78380fc9",
+    "gen_child": true,
+    "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+    "permission_id": "MALL_GOODS_MANAGE",
+    "permission_name": "商品管理",
+    "create_date": 1614496573187
+  },
+  {
+    "_id": "b00064a7603b45f10792b0ee159d9b57",
+    "gen_child": false,
+    "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+    "permission_id": "USER_MANAGE_LIST",
+    "permission_name": "用户列表",
+    "create_date": 1614497265208
+  },
+  {
+    "_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+    "comment": "",
+    "gen_child": false,
+    "parent_id": "",
+    "permission_id": "MALL_MANAGE",
+    "permission_name": "市场管理",
+    "create_date": 1609661179867
+  },
+  {
+    "_id": "023ce9555ff17515032ba51250d38df3",
+    "comment": "",
+    "create_date": 1609659669280,
+    "gen_child": false,
+    "parent_id": "",
+    "permission_id": "LOGIN_MANAGE",
+    "permission_name": "登录必备"
+  },
+  {
+    "_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+    "gen_child": true,
+    "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+    "permission_id": "MALL_SHOP_MANAGE",
+    "permission_name": "店铺管理",
+    "create_date": 1614496557637
+  },
+  {
+    "_id": "28ee4e3e603b434c080a928404c239d1",
+    "gen_child": true,
+    "parent_id": "be7fb3985ff17afc02a76c5f12c6fcc8",
+    "permission_id": "MALL_ORDER_MANAGE",
+    "permission_name": "订单管理",
+    "create_date": 1614496588731
+  },
+  {
+    "_id": "28ee4e3e603b4516080aecde4c2a91d4",
+    "gen_child": true,
+    "parent_id": "b45a21d55ff160e203675222560028be",
+    "permission_id": "MENU_MANAGE",
+    "permission_name": "菜单管理",
+    "create_date": 1614497046494
+  },
+  {
+    "_id": "28ee4e3e603b4540080af1a2613c9225",
+    "permission_id": "PERMISSION_MANAGE_DELETE",
+    "permission_name": "删除权限",
+    "parent_id": "28ee4e3e603b4540080af19c73301590",
+    "comment": ""
+  },
+  {
+    "_id": "79550af26041edc7087484b8155675f8",
+    "gen_child": false,
+    "parent_id": "b00064a7603b433d07925fba78380fc9",
+    "permission_id": "goods/copy",
+    "permission_name": "复制商品",
+    "create_date": 1614933447166
+  },
+  {
+    "_id": "85ff8afa5ff02cd301373de85259ee6b",
+    "comment": "",
+    "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+    "permission_id": "USER_MANAGE_EDIT",
+    "permission_name": "修改用户",
+    "create_date": 1609575635272
+  },
+  {
+    "_id": "b00064a7603b432d07925d0e20f7e54a",
+    "permission_id": "MALL_SHOP_MANAGE_EDIT",
+    "permission_name": "修改店铺",
+    "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b451607929892489c3982",
+    "permission_id": "MENU_MANAGE_EDIT",
+    "permission_name": "修改菜单",
+    "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+    "comment": ""
+  },
+  {
+    "_id": "b45a21d55ff160e203675222560028be",
+    "comment": "",
+    "gen_child": false,
+    "parent_id": "",
+    "permission_id": "SYSTEM_MANAGE",
+    "permission_name": "系统管理",
+    "create_date": 1609654498690
+  },
+  {
+    "_id": "ce805e785ff176480314c6a97e10c3f2",
+    "comment": "",
+    "gen_child": false,
+    "parent_id": "023ce9555ff17515032ba51250d38df3",
+    "permission_id": "user/logout",
+    "permission_name": "退出登录",
+    "create_date": 1609659976327
+  },
+  {
+    "_id": "21ded5cb5ff1687c038782a929892713",
+    "permission_id": "ROLE_MANAGE_DELETE",
+    "permission_name": "删除角色",
+    "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b433d080a909d26fd325a",
+    "permission_id": "MALL_GOODS_MANAGE_DELETE",
+    "permission_name": "删除商品",
+    "parent_id": "b00064a7603b433d07925fba78380fc9",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b434c080a92890734270e",
+    "permission_id": "MALL_ORDER_MANAGE_DELETE",
+    "permission_name": "删除订单",
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b4540080af1a130de2285",
+    "permission_id": "PERMISSION_MANAGE_EDIT",
+    "permission_name": "修改权限",
+    "parent_id": "28ee4e3e603b4540080af19c73301590",
+    "comment": ""
+  },
+  {
+    "_id": "79550af2603b648d078906d97f61990e",
+    "gen_child": false,
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "permission_id": "orders/selftake",
+    "permission_name": "订单自提",
+    "create_date": 1614505101054
+  },
+  {
+    "_id": "79550af2604924a7095ebfe2360c17c6",
+    "permission_id": "111_DELETE",
+    "permission_name": "删除1111",
+    "parent_id": "28ee4e3e604924a709f26759648415a3",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b432d07925d0d4c2b7271",
+    "permission_id": "MALL_SHOP_MANAGE_ADD",
+    "permission_name": "新增店铺",
+    "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b45160792989127abc421",
+    "permission_id": "MENU_MANAGE_ADD",
+    "permission_name": "新增菜单",
+    "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b47700792f1ed2268bae4",
+    "gen_child": false,
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "permission_id": "orders/addDelivery",
+    "permission_name": "订单发货",
+    "create_date": 1614497648841
+  },
+  {
+    "_id": "ce805e785ff16b460313804d11c668d7",
+    "comment": "",
+    "gen_child": false,
+    "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+    "permission_id": "system/user/addUser",
+    "permission_name": "添加用户api",
+    "create_date": 1609657158372
+  },
+  {
+    "_id": "21ded5cb5ff1687c038782a86aa46c40",
+    "permission_id": "ROLE_MANAGE_EDIT",
+    "permission_name": "修改角色",
+    "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b433d080a909c142d1e62",
+    "permission_id": "MALL_GOODS_MANAGE_EDIT",
+    "permission_name": "修改商品",
+    "parent_id": "b00064a7603b433d07925fba78380fc9",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b434c080a92884fe65b16",
+    "permission_id": "MALL_ORDER_MANAGE_EDIT",
+    "permission_name": "修改订单",
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b4540080af1a076bb3664",
+    "permission_id": "PERMISSION_MANAGE_ADD",
+    "permission_name": "新增权限",
+    "parent_id": "28ee4e3e603b4540080af19c73301590",
+    "comment": ""
+  },
+  {
+    "_id": "79550af2603b45de0784581e3f12af7e",
+    "gen_child": false,
+    "parent_id": "21ded5cb5ff1687c038782a61dda74e4",
+    "permission_id": "ROLE_MANAGE_LIST",
+    "permission_name": "角色列表",
+    "create_date": 1614497246099
+  },
+  {
+    "_id": "79550af2604924a7095ebfe12a3ea4fe",
+    "permission_id": "111_EDIT",
+    "permission_name": "修改1111",
+    "parent_id": "28ee4e3e604924a709f26759648415a3",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b432d07925d0c44fbc639",
+    "permission_id": "MALL_SHOP_MANAGE_LIST",
+    "permission_name": "列表店铺",
+    "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b451607929890143e17dd",
+    "permission_id": "MENU_MANAGE_LIST",
+    "permission_name": "列表菜单",
+    "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b47610792efe67122333f",
+    "gen_child": false,
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "permission_id": "orders/cancel",
+    "permission_name": "取消订单",
+    "create_date": 1614497633092
+  },
+  {
+    "_id": "ce805e785ff1610903126f63120e0b20",
+    "comment": "登录后台必备",
+    "gen_child": "",
+    "parent_id": "023ce9555ff17515032ba51250d38df3",
+    "permission_id": "user/login",
+    "permission_name": "后台登录api",
+    "create_date": 1609654537208
+  },
+  {
+    "_id": "21ded5cb5ff1687c038782a61dda74e4",
+    "comment": "",
+    "gen_child": true,
+    "parent_id": "b45a21d55ff160e203675222560028be",
+    "permission_id": "ROLE_MANAGE",
+    "permission_name": "角色管理",
+    "create_date": 1609656444421
+  },
+  {
+    "_id": "28ee4e3e603b433d080a909a5bf4dbda",
+    "permission_id": "MALL_GOODS_MANAGE_LIST",
+    "permission_name": "列表商品",
+    "parent_id": "b00064a7603b433d07925fba78380fc9",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b434c080a928658c8da50",
+    "permission_id": "MALL_ORDER_MANAGE_LIST",
+    "permission_name": "列表订单",
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "comment": ""
+  },
+  {
+    "_id": "28ee4e3e603b4540080af19c73301590",
+    "gen_child": true,
+    "parent_id": "b45a21d55ff160e203675222560028be",
+    "permission_id": "PERMISSION_MANAGE",
+    "permission_name": "权限管理",
+    "create_date": 1614497088700
+  },
+  {
+    "_id": "28ee4e3e603b6479080fba1e053fb98a",
+    "gen_child": false,
+    "parent_id": "28ee4e3e603b434c080a928404c239d1",
+    "permission_id": "orders/printOrder",
+    "permission_name": "打印小票",
+    "create_date": 1614505081651
+  },
+  {
+    "_id": "79550af2604924a7095ebfdf35de0557",
+    "permission_id": "111_LIST",
+    "permission_name": "列表1111",
+    "parent_id": "28ee4e3e604924a709f26759648415a3",
+    "comment": ""
+  },
+  {
+    "_id": "a8831daa5ff02885016775e56bccc0a1",
+    "comment": "",
+    "create_date": 1609574533245,
+    "permission_id": "USER_MANAGE",
+    "permission_name": "用户管理",
+    "parent_id": "b45a21d55ff160e203675222560028be"
+  },
+  {
+    "_id": "b00064a7603b432d07925d0f28c7f705",
+    "permission_id": "MALL_SHOP_MANAGE_DELETE",
+    "permission_name": "删除店铺",
+    "parent_id": "28ee4e3e603b432d080a8dc8268d9dbe",
+    "comment": ""
+  },
+  {
+    "_id": "b00064a7603b4516079298935810275e",
+    "permission_id": "MENU_MANAGE_DELETE",
+    "permission_name": "删除菜单",
+    "parent_id": "28ee4e3e603b4516080aecde4c2a91d4",
+    "comment": ""
+  },
+  {
+    "_id": "b45a21d55ff1762f0369e6a30bbdc042",
+    "comment": "",
+    "gen_child": false,
+    "parent_id": "023ce9555ff17515032ba51250d38df3",
+    "permission_id": "self/changePwd",
+    "permission_name": "修改密码",
+    "create_date": 1609659951629
+  },
+  {
+    "_id": "eb0c51035ff02ce40133abe6059ec477",
+    "comment": "",
+    "parent_id": "a8831daa5ff02885016775e56bccc0a1",
+    "permission_id": "USER_MANAGE_DELETE",
+    "permission_name": "删除用户",
+    "create_date": 1609575652369
+  }
+]

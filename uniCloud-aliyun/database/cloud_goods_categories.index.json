@@ -1,0 +1,42 @@
+[
+  {
+    "IndexName": "index_shop",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "pid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_goods_categories_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_id",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "IndexName": "index_cash",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "cashout._id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_user_balance_logs_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_u",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "uid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_outRefundNo",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "outRefundNo",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

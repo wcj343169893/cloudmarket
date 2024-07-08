@@ -1,0 +1,70 @@
+[
+  {
+    "IndexName": "index_cate",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "categories.id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_miaosha",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "isSold",
+          "Direction": "1"
+        },
+        {
+          "Name": "miaosha.beginTime",
+          "Direction": "1"
+        },
+        {
+          "Name": "miaosha.stock",
+          "Direction": "1"
+        },
+        {
+          "Name": "miaosha.endTime",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_goods_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_id",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  }
+]

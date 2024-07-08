@@ -1,0 +1,70 @@
+[
+  {
+    "_id": "e0837831638dd6660135d68b4185eb3e",
+    "limit": 1,
+    "price": 20,
+    "state": 1,
+    "stock": 1000,
+    "beginTime": 1670239800000,
+    "endTime": 1701775800000,
+    "goods": [
+      {
+        "_id": "be09d2a0638dd45e016616243a304b32",
+        "autoOffTime": false,
+        "categories": [
+          {
+            "_id": "b17ee42c638d9732017069fb6c045c85",
+            "id": 12566,
+            "isShow": 1,
+            "name": "笔记本",
+            "parent_id": "e1b4a816638d9732011c16037383d166",
+            "pid": 12565
+          },
+          {
+            "_id": "e1b4a816638d9732011c16037383d166",
+            "id": 12565,
+            "isShow": 1,
+            "name": "电脑",
+            "parent_id": "",
+            "pid": 0
+          }
+        ],
+        "id": 24767,
+        "imgs": [
+          "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/8118499232067902.jpg"
+        ],
+        "isCategoryShow": 1,
+        "isSold": 1,
+        "modified": 1670239326757,
+        "monthlySale": 0,
+        "onlySelfTake": "0",
+        "operator": "9890f4c6638d93100181fbad51c3d771",
+        "originPrice": 0,
+        "price": 50,
+        "saleType": "normal",
+        "score": 100,
+        "selected": true,
+        "shopid": 10000,
+        "skus": [],
+        "src": "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/9581409801558958.jpg",
+        "stock": 100,
+        "subTitle": "",
+        "title": "测试普通商品2",
+        "upc": "",
+        "visite": 1
+      }
+    ],
+    "manjine": {
+      "amount": "20",
+      "condition": "100"
+    },
+    "memo": "领取后，当天有效",
+    "shopid": 10000,
+    "style": "manjine",
+    "title": "新人券",
+    "today": false,
+    "type": 1,
+    "created": 1670239846895,
+    "modified": 1670239895140
+  }
+]

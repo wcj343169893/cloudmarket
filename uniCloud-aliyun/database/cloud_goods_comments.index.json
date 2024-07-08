@@ -1,0 +1,26 @@
+[
+  {
+    "IndexName": "index_goods",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "goods_id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_goods_comments_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

@@ -1,0 +1,188 @@
+[
+  {
+    "_id": "1b64dd7b5f8bb68501a850c254cfda6b",
+    "shopid": 10000,
+    "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/680429a0-639d-11ea-b227-9531cf5e701a.jpg",
+    "background": "#5ecd67",
+    "docs": {
+      "title": "不良信息举报",
+      "_id": "8e5be7055f7bdca90156248a6fb6ad36",
+      "checked": false,
+      "numb": 7,
+      "pageLink": "",
+      "type": "app_qa"
+    },
+    "link": "/pages/docs/docs?id=8e5be7055f7bdca90156248a6fb6ad36",
+    "operator": "9890f4c6638d93100181fbad51c3d771",
+    "posid": 3,
+    "url": "",
+    "redirectType": "docs",
+    "size": {
+      "height": 375,
+      "width": 750
+    },
+    "type": "home_swiper"
+  },
+  {
+    "_id": "8e5be7055f8bb68801ed44b8167b4c8d",
+    "operator": "9890f4c6638d93100181fbad51c3d771",
+    "redirectType": "goods",
+    "shopid": 10000,
+    "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+    "type": "home_swiper",
+    "background": "#58c15e",
+    "goods": {
+      "id": 24767,
+      "isSold": 1,
+      "monthlySale": 0,
+      "operator": "9890f4c6638d93100181fbad51c3d771",
+      "originPrice": 0,
+      "price": 50,
+      "_id": "be09d2a0638dd45e016616243a304b32",
+      "default_checked_sku_id": 10001,
+      "src": "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/9581409801558958.jpg",
+      "score": 100,
+      "skuname": [
+        "口味"
+      ],
+      "stock": 100,
+      "title": "测试普通商品2",
+      "upc": "",
+      "visite": 0,
+      "categories": [
+        {
+          "_id": "b17ee42c638d9732017069fb6c045c85",
+          "id": 12566,
+          "isShow": 1,
+          "name": "笔记本",
+          "parent_id": "e1b4a816638d9732011c16037383d166",
+          "pid": 12565
+        },
+        {
+          "_id": "e1b4a816638d9732011c16037383d166",
+          "id": 12565,
+          "isShow": 1,
+          "name": "电脑",
+          "parent_id": "",
+          "pid": 0
+        }
+      ],
+      "imgs": [
+        "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/8118499232067902.jpg"
+      ],
+      "modified": 1670239326757,
+      "subTitle": "",
+      "yuding": {
+        "beginTime": 1593878400000,
+        "deduction": 10,
+        "endTime": 1601481599000,
+        "finalPaymentBeginTime": 1601481600000,
+        "finalPaymentEndTime": 1602345599000,
+        "price": 1,
+        "state": "started"
+      },
+      "shopid": 10000,
+      "skus": [],
+      "autoOffTime": false,
+      "isCategoryShow": 1,
+      "onlySelfTake": "0",
+      "saleType": "normal"
+    },
+    "url": "",
+    "link": "/pages/product/product?id=24767",
+    "posid": 2,
+    "size": {
+      "height": 375,
+      "width": 750
+    }
+  },
+  {
+    "_id": "44b0eba2661040628c60d183aa545e98",
+    "background": "#58c15e",
+    "operator": "9890f4c6638d93100181fbad51c3d771",
+    "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+    "type": "home_swiper",
+    "goods": {
+      "imgs": [
+        "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/8043480860242107.jpg"
+      ],
+      "subTitle": "",
+      "src": "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/image/5593711495197431.jpg",
+      "title": "适用于iphone14promax手机壳新款苹果14pro保护套13超薄磨砂紫色",
+      "_id": "af44222c638d982c001fc8715c8027eb",
+      "default_checked_sku_id": 10001,
+      "modified": 1670238761363,
+      "skuname": [
+        "口味"
+      ],
+      "stock": 100,
+      "visite": 1,
+      "yuding": {
+        "finalPaymentBeginTime": 1601481600000,
+        "finalPaymentEndTime": 1602345599000,
+        "price": 1,
+        "state": "started",
+        "beginTime": 1593878400000,
+        "deduction": 10,
+        "endTime": 1601481599000
+      },
+      "monthlySale": 0,
+      "price": 50,
+      "score": 100,
+      "operator": "9890f4c6638d93100181fbad51c3d771",
+      "originPrice": 100,
+      "shopid": 10000,
+      "skus": [],
+      "upc": "",
+      "categories": [
+        {
+          "_id": "e1b4a816638d9732011c1602312989ca",
+          "id": 12563,
+          "isShow": 1,
+          "name": "手机壳",
+          "parent_id": "371fb7ad638d9732010a9d7d5d73b33f",
+          "pid": 12562
+        },
+        {
+          "_id": "371fb7ad638d9732010a9d7d5d73b33f",
+          "id": 12562,
+          "isShow": 1,
+          "name": "手机配件",
+          "parent_id": "",
+          "pid": 0
+        }
+      ],
+      "id": 24764,
+      "isSold": 1,
+      "autoOffTime": false,
+      "isCategoryShow": 1,
+      "onlySelfTake": "0",
+      "saleType": "normal"
+    },
+    "link": "/pages/product/product?id=24764",
+    "posid": 2,
+    "redirectType": "goods",
+    "shopid": 10000,
+    "url": "",
+    "size": {
+      "height": 375,
+      "width": 750
+    }
+  },
+  {
+    "_id": "73f70d5c5fe7ea11009aaa11767c3ae9",
+    "goods": [],
+    "operator": "9890f4c6638d93100181fbad51c3d771",
+    "size": {
+      "height": 560,
+      "width": 460
+    },
+    "docs": [],
+    "link": "/pages/coupons/coupons",
+    "redirectType": "couponsList",
+    "shopid": 10000,
+    "src": "https://7463-tcb-xvti5lktfqbsadh646a99-f5d32a-1302181076.tcb.qcloud.la/ad_imgs/2022-12-05/49146756786524204.jpg",
+    "type": "home_dialog",
+    "background": ""
+  }
+]

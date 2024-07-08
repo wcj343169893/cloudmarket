@@ -1,0 +1,30 @@
+[
+  {
+    "IndexName": "index_shop",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "day",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "cloud_shop_statistics_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

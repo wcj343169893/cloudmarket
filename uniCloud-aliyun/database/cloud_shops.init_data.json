@@ -1,0 +1,257 @@
+[
+  {
+    "_id": "1526e12a6007de2b002ba36c39ac328e",
+    "longitude": 107.008728,
+    "online": true,
+    "src": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/user/images/2020/8/29/1598701118731.jpg",
+    "delivery": {
+      "deliveryDay": 4,
+      "freeMoney": 10,
+      "perMoney": 1,
+      "timeStep": 3600,
+      "deliveryPeriod": [
+        {
+          "begin": 28800,
+          "end": 32400
+        },
+        {
+          "begin": 32400,
+          "end": 45000
+        },
+        {
+          "begin": 45000,
+          "end": 48600
+        },
+        {
+          "begin": 48600,
+          "end": 52200
+        }
+      ],
+      "maxDistance": 5000,
+      "minDistance": 5,
+      "minPrice": 10,
+      "money": 5,
+      "time": 30
+    },
+    "deliveryTypes": [
+      "deliveryHome",
+      "selfRaising"
+    ],
+    "phone": "18883380303",
+    "searchGoodsKeywords": [
+      "车厘子",
+      "杏子",
+      "葡萄"
+    ],
+    "stores_id": "10",
+    "video": false,
+    "banner": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-market/67fd72e0-639d-11ea-bcc8-e3fd81ebc426.jpg",
+    "id": 10000,
+    "lnglat": {
+      "type": "Point",
+      "coordinates": [
+        107.008728,
+        29.139011
+      ]
+    },
+    "name": "渝之道-南川店",
+    "pages": {
+      "home": {
+        "limits": {
+          "ads": 5,
+          "category": 10,
+          "miaosha": 2,
+          "newest": 10,
+          "recommend": 4,
+          "tuangou": 3,
+          "yuding": 4
+        },
+        "name": "首页",
+        "titles": {
+          "tuangou": "限时团购",
+          "yuding": "限时预定",
+          "miaosha": "限时抢购",
+          "newest": "鲜货排行",
+          "recommend": "精品中的精品"
+        }
+      }
+    },
+    "printers": [],
+    "currency": "cny",
+    "dayStatisticsLog": "2022-06-01",
+    "goods": {
+      "offline": 0,
+      "online": 0,
+      "shouqin": 0,
+      "yuding": 0,
+      "baokuan": 0,
+      "delete": 0,
+      "miaosha": 0
+    },
+    "isPrint": true,
+    "operator": "b00064a760403aa90837cda05a7f6c7d",
+    "order": {
+      "unpaid": 0,
+      "canceled": 3,
+      "deleted": 0,
+      "delivered": 3,
+      "payup": 16,
+      "received": 0,
+      "refunded": 0,
+      "total": 47
+    },
+    "address": "重庆市南川区",
+    "lastPayTimeMinute": 30,
+    "notice": "2020年12月12日盛大开业",
+    "serviceArea": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            113.90341758728,
+            22.469178514966
+          ],
+          [
+            113.90745162964,
+            22.47020960449
+          ],
+          [
+            113.90839576721,
+            22.471875194432
+          ],
+          [
+            113.91406059265,
+            22.466481783007
+          ],
+          [
+            113.92024040222,
+            22.469495774099
+          ],
+          [
+            113.91500473022,
+            22.474571821399
+          ],
+          [
+            113.92650604248,
+            22.482026928585
+          ],
+          [
+            113.92607688904,
+            22.478061496006
+          ],
+          [
+            113.93955230713,
+            22.475047691296
+          ],
+          [
+            113.95182609558,
+            22.484723357865
+          ],
+          [
+            113.95285606384,
+            22.505341374315
+          ],
+          [
+            113.91603469849,
+            22.505103491649
+          ],
+          [
+            113.91431808472,
+            22.504151956891
+          ],
+          [
+            113.91363143921,
+            22.502486755311
+          ],
+          [
+            113.91551971436,
+            22.499790672151
+          ],
+          [
+            113.91775131226,
+            22.499314887315
+          ],
+          [
+            113.91715049744,
+            22.497332432882
+          ],
+          [
+            113.90899658203,
+            22.488212776614
+          ],
+          [
+            113.9040184021,
+            22.473540764346
+          ],
+          [
+            113.9025592804,
+            22.469733717971
+          ],
+          [
+            113.90341758728,
+            22.469178514966
+          ]
+        ]
+      ]
+    },
+    "stationId": 0,
+    "goodsCommentTags": [
+      "包装完整",
+      "价格便宜",
+      "品质好",
+      "值得回购",
+      "包装贴心",
+      "很好用",
+      "使用方便",
+      "省心有保障",
+      "结实耐用",
+      "分量足",
+      "手感舒适",
+      "厚实稳当",
+      "性价比高",
+      "量大料足",
+      "物超所值",
+      "口感很棒",
+      "品相俱佳",
+      "买对了",
+      "包装精美",
+      "老板人很好",
+      "送货即时"
+    ],
+    "deliverySupportType": 3,
+    "hasManjian": 1,
+    "latitude": 29.139011,
+    "monthSale": 123,
+    "categories": [
+      {
+        "id": 10000,
+        "name": "美食"
+      },
+      {
+        "id": 1007,
+        "name": "火锅"
+      },
+      {
+        "id": 10002,
+        "name": "快餐"
+      }
+    ],
+    "manjians": [],
+    "selfRaising": {
+      "distance": 5000,
+      "enable": false
+    },
+    "uid": "9ffb2a485f38964200999b1f07cb7b80",
+    "coupons": {
+      "enable": false,
+      "icon": "https://636c-cloud-market-3c5868-1302181076.tcb.qcloud.la/image/29735941826845114.png",
+      "index": 0,
+      "title": "优惠券"
+    },
+    "perCapita": 30,
+    "score": 4.8,
+    "serviceTime": "早上7点到晚上10点",
+    "state": true,
+    "addressName": "三秋村"
+  }
+]

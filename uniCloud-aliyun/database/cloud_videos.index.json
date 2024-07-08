@@ -1,0 +1,42 @@
+[
+  {
+    "IndexName": "cloud_videos_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_u",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "uid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_state",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "state",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

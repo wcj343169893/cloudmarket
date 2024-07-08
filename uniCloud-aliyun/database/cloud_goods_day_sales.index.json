@@ -1,0 +1,26 @@
+[
+  {
+    "IndexName": "cloud_goods_day_sales_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_day",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "day",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  }
+]

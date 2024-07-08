@@ -1,0 +1,78 @@
+[
+  {
+    "IndexName": "index_shop_state",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "shopid",
+          "Direction": "1"
+        },
+        {
+          "Name": "state",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_orders_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_outTradeNo",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "outTradeNo",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_u",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "uid",
+          "Direction": "1"
+        },
+        {
+          "Name": "isDelete",
+          "Direction": "1"
+        },
+        {
+          "Name": "state",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_selfraising",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "raisingPoint._id",
+          "Direction": "1"
+        },
+        {
+          "Name": "state",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

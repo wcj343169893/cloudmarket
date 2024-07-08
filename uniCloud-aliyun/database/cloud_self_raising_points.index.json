@@ -1,0 +1,26 @@
+[
+  {
+    "IndexName": "cloud_self_raising_points_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_location",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "location",
+          "Direction": "2dsphere"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

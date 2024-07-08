@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "79550af260127707015c3ef23fd570c9",
+    "clientId": "1053604898",
+    "clientSecret": "99817dd9d3f7d0b29c5981ccedd2b214",
+    "module": "yilianyun",
+    "name": "易联云k4"
+  },
+  {
+    "_id": "f1168d5b5f6184dc00136ab47b828bed",
+    "clientId": "wcj343169893@163.com",
+    "clientSecret": "wHpTQjJAaPjMDmXT",
+    "module": "feieyun",
+    "name": "飞蛾云"
+  }
+]

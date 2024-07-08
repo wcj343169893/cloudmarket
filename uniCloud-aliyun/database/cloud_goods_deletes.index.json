@@ -1,0 +1,14 @@
+[
+  {
+    "IndexName": "cloud_goods_deletes_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

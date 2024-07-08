@@ -1,0 +1,38 @@
+[
+  {
+    "IndexName": "index_lonlat",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "lnglat",
+          "Direction": "2dsphere"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "cloud_shops_openid_index_",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "_openid",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "index_id",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        {
+          "Name": "id",
+          "Direction": "1"
+        }
+      ],
+      "MgoIsUnique": true
+    }
+  }
+]
