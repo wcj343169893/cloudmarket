@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "uni-config-center": "file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+    "configs": "file:../configs"
+  }
 }

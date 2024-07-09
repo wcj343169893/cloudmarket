@@ -1,0 +1,10 @@
+{
+  "name": "ttt",
+  "dependencies": {
+    "delivery": "file:../common/delivery",
+    "configs": "file:../common/configs"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

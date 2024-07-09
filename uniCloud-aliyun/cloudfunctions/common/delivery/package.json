@@ -12,7 +12,7 @@
   "dependencies": {
     "base-common": "file:../base-common",
     "configs": "file:../configs",
-    "uni-config-center": "file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
-    "wx-auth": "file:../wx-auth"
+    "wx-auth": "file:../wx-auth",
+    "uni-config-center": "file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center"
   }
 }

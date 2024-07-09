@@ -1,11 +1,6 @@
 'use strict';
-/**
- * 微信相关业务
- */
-const {
-	getLoginConfig
-} = require('configs')
 
+const createConfig = require('uni-config-center');
 const crypto = require('crypto')
 const db = uniCloud.database();
 
@@ -18,6 +13,12 @@ const db = uniCloud.database();
  * @param {String} options.iv 可选
  */
 const mpWxGetSessionKey = async (options, context) => {
+	/**
+	 * 微信相关业务
+	 */
+	const {
+		getLoginConfig
+	} = require("configs")
 	const {
 		code,
 		encryptedData,
@@ -141,7 +142,7 @@ const dbCache = async (key, data, expires_in = 3600) => {
 	if (data) {
 		await db.collection("opendb-open-data").doc(key).set({
 			expired: Date.now() + expires_in * 1000,
-			value: JSON.stringify(value)
+			value: JSON.stringify(data)
 		})
 	}
 	return data;

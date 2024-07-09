@@ -21,9 +21,9 @@
 		}
 	},
 	"mp-weixin": {
-		"oauth": {
-			"weixin": {
-				"appid": "wx59ded2343a9d2e42",
+		"oauth" : {
+			"weixin" : {
+				"appid": "wxcfb12cd3b92a58ed",
 				"appsecret": "fdf6d98cb931eebe9d28665e4d76acb2"
 			}
 		}

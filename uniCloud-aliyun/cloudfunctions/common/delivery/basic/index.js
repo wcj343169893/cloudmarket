@@ -19,6 +19,9 @@ const models = {
 		shop: "",
 		product: false //是否正式环境
 	},
+	context: {
+		PLATFORM: "mp-weixin"
+	},
 	name: "shunfeng",
 	delivery_id: "SFTC",
 	async preAdd(order, context) {
@@ -250,11 +253,14 @@ const models = {
 			data: requestData,
 			dataType: "json"
 		});
-		console.log(JSON.stringify(res.data));
-		if (res.data.resultcode == 0) {
-			return res.data;
+		return this._afterSend(res.data);
+	},
+	_afterSend(data) {
+		console.log(JSON.stringify(data));
+		if (data.resultcode == 0) {
+			return data;
 		}
-		console.log(res.data.resultmsg);
+		console.log(data.resultmsg);
 		return false;
 	},
 	/**
