@@ -19,9 +19,14 @@ const models = {
 	 * 在使用门店相关接口前需要先开通门店权限，开通门店权限前可以使用页面或者使用下面的API开通门店（无加密，可直接调用）。
 	 * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html#_2-1-%E5%BC%80%E9%80%9A%E9%97%A8%E5%BA%97%E6%9D%83%E9%99%90
 	 */
-	async init() {
+	async initShop() {
 		//开通门店权限,每天只能调用10次，系统初始化的时候调用一次就行了
-		return this.send({}, "apply");
+		const appid = this.config.weixin.appid
+		return wxAuth.dbCache("weixin_tongcheng_delivery_" + appid, async () => {
+			console.info("开通门店权限");
+			return this.send({}, "apply");
+		}, 3600 * 24 * 365)
+		// return this.send({}, "apply");
 	},
 	/**
 	 * 创建门店
@@ -30,6 +35,11 @@ const models = {
 	 * @return wx_store_id
 	 */
 	async addShop(shop) {
+		if (shop.wx_store_id) {
+			//更新门店信息
+			return this.updateShop(shop);
+		}
+		await this.initShop();
 		// console.log(shop);
 		let address = parseAddress.parse(shop.address);
 		let data = {
@@ -54,6 +64,32 @@ const models = {
 		}
 		return result;
 	},
+	async updateShop(shop) {
+		let address = parseAddress.parse(shop.address);
+		let data = {
+			keys: {
+				wx_store_id: shop.wx_store_id
+			},
+			content: {
+				store_name: shop.name,
+				order_pattern: 2,
+				service_trans_prefer: "SFTC",
+				address_info: {
+					province: address.province,
+					city: address.city,
+					area: address.area,
+					street: address.street,
+					house: address.house,
+					lat: shop.latitude,
+					lng: shop.longitude,
+					phone: shop.phone,
+				}
+			}
+		}
+		const result = await this.send(data, "updatestore");
+
+		return result;
+	},
 	async getShop(data) {
 		let query = {}
 		if (data.wx_store_id) {
@@ -68,13 +104,91 @@ const models = {
 		return result;
 	},
 	/**
+	 * 增加新订单
+	 * @param {Object} order
+	 * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html#_2-10-%E5%88%9B%E5%BB%BA%E9%85%8D%E9%80%81%E5%8D%95
+	 */
+	async add(order) {
+		//由于配送是实时时间，所以需要用定时器来处理
+		const {
+			shop,
+			address,
+			userInfo,
+			deliveryHour,
+			goods
+		} = order;
+		//判断是否达到配送下单时间
+		if (deliveryHour.id > Date.now() + 30 * 60 * 1000) {
+			return;
+		}
+		let openid = userInfo.wx_openid ? userInfo.wx_openid["mp-weixin"] : "";
+		//物品类型
+		//https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html#_5-%E7%89%A9%E5%93%81%E7%B1%BB%E5%9E%8B%E5%88%97%E8%A1%A8
+		let data = {
+			"wx_store_id": shop.wx_store_id,
+			"store_order_id": order.id,
+			order_seq: order.dayIndex, //用于配送员快速寻找到匹配的商品
+			order_detail_path: "pages/order/detail?id=" + order._id, //物流轨迹页面跳转到商家小程序的订单页面路径参数，期望向用户展示商品订单详情
+			"user_openid": openid,
+			verify_code_type: 0, //0:不生成，1:生成取货码，2:生成收货码，3:两者都生成
+			"user_lng": address.longitude,
+			"user_lat": address.latitude,
+			"user_address": address.address,
+			"user_name": address.name,
+			"user_phone": address.mobile,
+			"callback_url": this.getCallbackUrl(), //回调协议
+			"use_sandbox": this.config.product ? 0 : 1,
+			"cargo": {
+				"cargo_name": goods.map(e => e.title).join(",").substr(0, 30),
+				"cargo_type": 6,
+				"cargo_num": order.goodsTotalAmount,
+				"cargo_price": parseInt(order.totalMoney * 100),
+				"cargo_weight": 500,
+				"item_list": goods.map(e => {
+					return {
+						"item_name": e.title + e.name,
+						"count": e.amount,
+						"item_pic_url": e.src
+					}
+				})
+			}
+		}
+		const result = await this.send(data, "addorder");
+
+		return result;
+	},
+	/**
+	 * 构造回调地址
+	 */
+	getCallbackUrl() {
+		//拼接默认域名
+		//https://fc-mp-9ed4ee2c-a639-46f8-8556-a9a242d272ad.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/weixin
+		const {
+			PLATFORM,
+			appId
+		} = this.context
+		let {
+			spaceId,
+			provider
+		} = this.context.SPACEINFO;
+		if (provider == "tencent") {
+			domain = `https://${spaceId}.service.tcloudbase.com`
+		} else if (provider == "aliyun") {
+			domain = `https://fc-${spaceId}.next.bspapp.com`
+		}
+		//指定回调cloud-mall云函数，package.json的cloudfunction-config.path
+		return [domain, "http/cloud/mall", appId, PLATFORM, "order/dealstate", this.name].join("/");
+	},
+	async mockNotify(data) {
+		const result = await this.send(data, "mocknotify");
+		return result;
+	},
+	/**
 	 * 统一发送接口
 	 * @param {Object} data
 	 * @param {Object} url
 	 */
 	async send(data, url, isTry) {
-		this.config = getDeliveryConfig(this.name);
-		this.config.weixin = this.getWxConfig()
 		//获取access_token
 		const accessToken = await wxAuth.getAccessToken({}, this.context)
 		const baseUrl = this.config.product ? this.productUrl : this.testUrl;
@@ -231,7 +345,7 @@ const models = {
 			// 安全检查，根据业务实际需求判断
 			real_resp["_appid"] != local_appid || // appid不匹配
 			real_resp["_timestamp"] != resp_ts || // timestamp与Wechatmp-TimeStamp不匹配
-			local_ts - real_resp["_timestamp"] > 3000 // 响应数据的时候与当前时间超过5分钟
+			local_ts - real_resp["_timestamp"] > 300 // 响应数据的时候与当前时间超过5分钟
 		) {
 			console.error("安全字段校验失败")
 			return {}
@@ -279,6 +393,7 @@ const models = {
 			data,
 			headers
 		} = resp
+		// console.log(data, headers)
 		const resp_data = JSON.stringify(data)
 
 		const {
@@ -319,7 +434,7 @@ const models = {
 		}
 
 		const payload = `${url}\n${resp_appid}\n${resp_ts}\n${resp_data}`
-		// console.log(payload,signature)
+		console.log(payload, signature)
 		const data_buffer = Buffer.from(payload, 'utf-8')
 		const sig_buffer = Buffer.from(signature, 'base64')
 		// console.log(local_certificate)
@@ -338,11 +453,86 @@ const models = {
 		console.log("验证签名结果", result);
 		return result
 	},
-	getWxConfig() {
-		const getConfigs = createConfig({
-			pluginId: 'uni-id', // 插件id, 注意pluginId需和uni-config-center下的目录名一致
-		});
-		return getConfigs.config(`${this.context.PLATFORM}.oauth.weixin`);
+	/**
+	 * 通知回调方法
+	 * @param {Object} data
+	 */
+	async validateSign(data) {
+		const out = {
+			orderid: data.store_order_id,
+			response: {
+				"return_code": 0,
+				"return_msg": "OK"
+			}
+		}
+		let titles = {
+			"10000": "订单已创建",
+			"20000": "商家取消订单",
+			"20001": "配送方取消订单",
+			"30000": "配送员接单",
+			"40000": "配送员到店",
+			"50000": "配送中",
+			"60000": "配送员撤单",
+			"70000": "配送完成",
+			"90000": "配送异常",
+		}
+		let contents = {
+			"10000": "商家已接单，请耐心等待",
+			"20000": "商家取消订单",
+			"20001": "配送方取消订单",
+			"30000": "配送员已接单，请耐心等待",
+			"40000": "配送员已到店",
+			"50000": "配送中",
+			"60000": "配送员撤单，请联系商家",
+			"70000": "配送完成",
+			"90000": "配送异常",
+		}
+		out.result = {
+			delivery: {
+				state: data.order_status,
+				stateTitle: titles[data.order_status],
+				stateContent: titles[data.order_status],
+			}
+		}
+		// console.log(data);
+		switch (data.order_status) {
+			case 10000:
+				//订单已创建
+				break;
+			case 20000:
+				//商家取消订单
+				break;
+			case 20001:
+				//配送方取消订单
+				break;
+			case 30000:
+				//配送员接单
+				break;
+			case 40000:
+				//配送员到店
+				out.result.state = 2;
+				break;
+			case 50000:
+				//配送中
+				out.result.state = 2;
+				break;
+			case 60000:
+				//配送员撤单
+				break;
+			case 70000:
+				//配送完成
+				out.result.state = 3;
+				break;
+			case 90000:
+				//配送异常
+				break;
+
+			default:
+				break;
+		}
+
+		return out
 	}
+
 }
 module.exports = models;

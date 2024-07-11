@@ -126,14 +126,12 @@ const dbCache = async (key, data, expires_in = 3600) => {
 		return data;
 	}
 	//数据库缓存
-	if (!data) {
-		const {
-			data: dbData
-		} = await db.collection("opendb-open-data").doc(key).get()
-		//有效缓存
-		if (dbData.length > 0 && dbData[0].expired > Date.now()) {
-			return JSON.parse(dbData[0].value)
-		}
+	const {
+		data: dbData
+	} = await db.collection("opendb-open-data").doc(key).get()
+	//有效缓存
+	if (dbData.length > 0 && dbData[0].expired > Date.now()) {
+		return JSON.parse(dbData[0].value)
 	}
 	//写入缓存
 	if (typeof(data) == "function") {

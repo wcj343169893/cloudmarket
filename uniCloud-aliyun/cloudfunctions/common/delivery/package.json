@@ -1,18 +1,1 @@
-{
-  "name": "delivery",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "base-common": "file:../base-common",
-    "configs": "file:../configs",
-    "wx-auth": "file:../wx-auth",
-    "uni-config-center": "file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center"
-  }
-}
+{"name":"delivery","version":"1.0.0","description":"","main":"index.js","scripts":{"test":"echo \"Error: no test specified\" && exit 1"},"keywords":[],"author":"","license":"ISC","dependencies":{"base-common":"file:../base-common","configs":"file:../configs","wx-auth":"file:../wx-auth","uni-config-center":"file:../../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center"}}

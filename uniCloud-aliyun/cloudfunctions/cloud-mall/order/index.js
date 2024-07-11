@@ -1509,18 +1509,32 @@ const model = {
 				await this.afterMakesure(order);
 			}
 		}
+		//3.自动创建配送的订单
+		orders = await orderCollection.where({
+			deliveryType: "deliveryHome",
+			"deliveryHour.id": cmd.lt(time - 30 * 60 * 1000),
+			state: 1,
+			delivery: cmd.exists(false)
+		}).get();
+		if (orders.data.length > 0) {
+			for (let i = 0; i < orders.data.length; i++) {
+				let order = orders.data[i];
+				await delivery.add(order);
+			}
+		}
 	},
 	/**
 	 * 第三方骑手通知地址
 	 * @param {Object} data
 	 * @param {Object} data.module 子模块：餐厅宝
 	 */
-	async dealstate(event) {
+	async dealstate(event, context) {
 		//验证签名，并返回content内容
 		let {
 			orderid,
-			result
-		} = await delivery.validateSign(event);
+			result,
+			response
+		} = await delivery.validateSign(event, context);
 		if (result) {
 			console.log("dealstate", orderid, result)
 			let res = await orderCollection.where({
@@ -1530,9 +1544,11 @@ const model = {
 			if (result.state == 3) {
 				await this.afterMakesureByOrderId(orderid);
 			}
-			return res;
 		}
-		return true;
+		return response ? {
+			code: 200,
+			...response
+		} : {};
 	},
 	getOrderFields() {
 		return {

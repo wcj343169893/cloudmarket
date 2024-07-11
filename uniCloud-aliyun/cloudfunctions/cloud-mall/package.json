@@ -1,7 +1,7 @@
 {
 	"cloudfunction-config": {
 		"memorySize": 256,
-		"path": "",
+		"path": "/http/cloud/mall",
 		"timeout": 10,
 		"triggers": [
 			{

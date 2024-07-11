@@ -49,3 +49,23 @@
 	"_timestamp": 1720511173
 }
 ```
+### 下单成功
+```
+{
+	"errcode": 0,
+	"errmsg": "ok",
+	"appid": "wxcfb12cd3b92a58ed",
+	"wx_store_id": "4000000000013832002",
+	"wx_order_id": "4021150176657802752",
+	"store_order_id": "668f4f05e0ec199b18fe32f8",
+	"service_trans_id": "SFTC",
+	"distance": 4807,
+	"fee": 0,
+	"trans_order_id": "JS4155556257631",
+	"fetch_code": "1175",
+	"order_seq": "2",
+	"_n": "d886bab9c619909ce6eeed5f70fb2839",
+	"_appid": "wxcfb12cd3b92a58ed",
+	"_timestamp": 1720671656
+}
+```

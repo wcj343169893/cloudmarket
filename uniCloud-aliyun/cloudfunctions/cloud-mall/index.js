@@ -74,6 +74,12 @@ exports.main = async (event, context) => {
 	} else if (event.path) {
 		//开启url后，有些通知,不需要登录
 		let paths = event.path.split("/");
+		if (paths[1].indexOf("__UNI__") != -1) {
+			context.APPID = paths[1];
+			context.PLATFORM = paths[2];
+			context.LOCALE = 'zh-Hans'
+			paths = paths.slice(2);
+		}
 		//模块
 		module = paths[1];
 		//action
@@ -90,8 +96,15 @@ exports.main = async (event, context) => {
 			data = Object.assign(data, event.queryStringParameters);
 		}
 		if (event.body) {
-			data = Object.assign(data, querystring.parse(event.body));
+			//如果是json格式，则直接解析
+			if (event.headers["content-type"].indexOf("application/json") != -1) {
+				data = Object.assign(data, JSON.parse(event.body));
+			} else {
+				//如果是form表单提交，则解析成json
+				data = Object.assign(data, querystring.parse(event.body));
+			}
 		}
+		console.log(context);
 		console.log(module, action, data);
 	}
 	let payload;
@@ -157,10 +170,13 @@ exports.main = async (event, context) => {
 			message: "暂无数据",
 			...data
 		};
+	} else if (typeof result == "string") {
+		return result;
 	} else if (result.code > 0) {
 		return {
 			code: 404,
 			message: result.msg || "暂无数据",
+			...result
 		}
 	}
 	return {

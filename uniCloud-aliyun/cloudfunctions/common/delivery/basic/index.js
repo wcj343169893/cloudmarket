@@ -24,6 +24,21 @@ const models = {
 	},
 	name: "shunfeng",
 	delivery_id: "SFTC",
+	async initConfig(context) {
+		//保存用户的环境信息
+		this.context = context;
+		//获取配送的相关配置
+		this.config = getDeliveryConfig(this.name);
+		//获取维修appid和secret
+		this.config.weixin = this.getWxConfig()
+		// console.log(this.config);
+	},
+	getWxConfig() {
+		const getConfigs = createConfig({
+			pluginId: 'uni-id', // 插件id, 注意pluginId需和uni-config-center下的目录名一致
+		});
+		return getConfigs.config(`${this.context.PLATFORM}.oauth.weixin`);
+	},
 	async preAdd(order, context) {
 		this.context = context;
 		this.config = getDeliveryConfig(this.name);

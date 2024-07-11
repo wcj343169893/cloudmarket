@@ -5,14 +5,14 @@ const shopCollection = db.collection("cloud_shops");
 /**
  * 动态加载模块，不需要事先定义
  */
-const getModule = (module, context, subModule) => {
+const getModule = async (module, action, data, context, subModule) => {
 	try {
 		if (!subModule) {
 			subModule = "index";
 		}
 		const model = require(`./${module}/${subModule}`);
-		model.context = context;
-		return model;
+		await model.initConfig(context);
+		return model[action](data);
 	} catch (e) {
 		console.error(e)
 		console.error(`模块${module} ${subModule}不存在`)
@@ -27,7 +27,7 @@ const validateSign = async (event, context) => {
 	const {
 		module,
 	} = event;
-	return await getModule(module, context)["validateSign"](event, context);
+	return await getModule(module, "validateSign", event, context);
 }
 /**
  * 处理订阅消息
@@ -38,7 +38,15 @@ const subscribe = async (event, context) => {
 		action,
 		data
 	} = event;
-	return await getModule(module, context, "subscribe")[action](data, context);
+	return await getModule(module, action, data, context, "subscribe");
+}
+//mockNotify
+const mockNotify = async (event, context) => {
+	const {
+		module,
+		data,
+	} = event;
+	return await getModule(module, "mockNotify", data, context);
 }
 /**
  * 预下配送单
@@ -48,7 +56,7 @@ const preAdd = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["preAdd"](data, context);
+	return await getModule(module, "preAdd", data, context);
 }
 /**
  * 增加配送订单
@@ -58,7 +66,7 @@ const add = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["add"](data, context);
+	return await getModule(module, "add", data, context);
 }
 /**
  * 更新订单
@@ -68,7 +76,7 @@ const update = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["update"](data, context);
+	return await getModule(module, "update", data, context);
 }
 /**
  * 取消配送订单
@@ -78,7 +86,7 @@ const cancel = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["cancel"](data, context);
+	return await getModule(module, "cancel", data, context);
 }
 /**
  * 订单退款
@@ -88,7 +96,7 @@ const refund = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["refund"](data, context);
+	return await getModule(module, "refund", data, context);
 }
 /**
  * 锁定和解锁订单
@@ -98,7 +106,7 @@ const lock = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["lock"](data, context);
+	return await getModule(module, "lock", data, context);
 }
 /**
  * 添加店铺
@@ -108,14 +116,14 @@ const addShop = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["addShop"](data, context);
+	return await getModule(module, "addShop", data, context);
 }
 const getShop = async (event, context) => {
 	const {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["getShop"](data, context);
+	return await getModule(module, "getShop", data, context);
 }
 /**
  * 修改商家是否出餐,会收到一个出餐通知
@@ -125,7 +133,7 @@ const updateShopFlag = async (event, context) => {
 		module,
 		data
 	} = event;
-	return await getModule(module, context)["updateShopFlag"](data, context);
+	return await getModule(module, "updateShopFlag", data, context);
 }
 
 module.exports = {
@@ -138,5 +146,6 @@ module.exports = {
 	update,
 	lock,
 	updateShopFlag,
-	validateSign
+	validateSign,
+	mockNotify
 }
