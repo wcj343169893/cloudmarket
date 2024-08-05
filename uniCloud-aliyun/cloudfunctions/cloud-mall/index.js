@@ -74,11 +74,14 @@ exports.main = async (event, context) => {
 	} else if (event.path) {
 		//开启url后，有些通知,不需要登录
 		let paths = event.path.split("/");
+		context.LOCALE = 'zh-Hans'
 		if (paths[1].indexOf("__UNI__") != -1) {
 			context.APPID = paths[1];
 			context.PLATFORM = paths[2];
-			context.LOCALE = 'zh-Hans'
 			paths = paths.slice(2);
+		} else {
+			context.PLATFORM = "web";
+			context.APPID = "uni-app";
 		}
 		//模块
 		module = paths[1];
@@ -170,7 +173,8 @@ exports.main = async (event, context) => {
 			message: "暂无数据",
 			...data
 		};
-	} else if (typeof result == "string") {
+	} else if (typeof result == "string" && event.path) {
+		//只有第三方通知才会返回字符串，可能是success或者fail
 		return result;
 	} else if (result.code > 0) {
 		return {

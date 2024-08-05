@@ -16,7 +16,7 @@ const models = {
 			100: "同意退款",
 			101: "拒绝退款",
 			254: "已完成",
-			255: "已关闭",
+			255: "已完成",
 		};
 		let contents = {
 			1: "已处理",
@@ -26,13 +26,13 @@ const models = {
 			100: "同意退款",
 			101: "拒绝退款",
 			254: "已完成",
-			255: "已关闭",
+			255: "已完成，如有疑问请联系商家",
 		};
 		let result = {
 			delivery: {
 				state: content.OrderState,
 				stateTitle: titles[content.OrderState],
-				stateContent: titles[contents.OrderState],
+				stateContent: contents[content.OrderState],
 			}
 		}
 		switch (content.OrderState) {
@@ -43,6 +43,7 @@ const models = {
 				result.state = 2;
 				break;
 			case 254:
+			case 255:
 				//代表用户已收货，用户不需要手动点收货
 				result.makesureTime = Date.now();
 				result.makesureUid = "rider";

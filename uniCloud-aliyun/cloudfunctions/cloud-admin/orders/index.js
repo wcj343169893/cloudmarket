@@ -19,6 +19,8 @@ const {
 const {
 	sendOrderDelivery
 } = require('push');
+//骑手接口
+const delivery = require('delivery');
 const {
 	getConfig
 } = require("configs");
@@ -556,8 +558,10 @@ const addRefundApply = async (data) => {
 		yuding: 1,
 		refundAmount: 1,
 		refundApply: 1,
+		delivery: 1,
 		body: 1,
 		uid: 1,
+		id: 1,
 		cartCount: 1,
 	};
 	let conditions = {
@@ -571,6 +575,13 @@ const addRefundApply = async (data) => {
 		return false;
 	}
 	let uid = order.uid;
+	if (order.delivery && order.shop.delivery) {
+		let addCancelDeliveryResult = await delivery.cancel({
+			module: order.shop.delivery.thirdPartyModule || "cantingbao",
+			data: order,
+		});
+		console.log("addCancelDeliveryResult", addCancelDeliveryResult);
+	}
 	if (!item) {
 		//订单直接取消剩下的商品
 		let total = order.totalMoney;
@@ -653,8 +664,8 @@ const addOrderRefund = async (uid, payInfo, refundFee, refundDesc, goods, order,
 	console.log("addOrderRefund", uid, payInfo, refundFee, refundDesc, goods, order, item);
 	let id = await genIdentityId("order_refunds");
 	if (refundFee > payInfo.totalFee) {
-		refundFee = payInfo.totalFee;
 		console.log("退款金额大于实际支付金额", refundFee, payInfo.totalFee)
+		refundFee = payInfo.totalFee;
 	}
 	return await orderRefundsCollection.add({
 		...item,

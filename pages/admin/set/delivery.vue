@@ -3,43 +3,53 @@
 		<mix-list-input title="起送金额" type="digit" :defContent="minPrice" placeholder="请输入" @blur="changeMinPrice">
 			<text class="moreText">元</text>
 		</mix-list-input>
-		<mix-list-input title="不满起送金额运费" type="digit" :defContent="money" placeholder="请输入" @blur="changeMoney"><text class="moreText">元</text></mix-list-input>
-		<mix-list-input title="满金额免运费" type="digit" :defContent="freeMoney" placeholder="请输入" @blur="changeFreeMoney"><text
-			 class="moreText">元</text></mix-list-input>
-		<mix-list-input title="服务里程" type="number" :defContent="minDistance" placeholder="请输入" @blur="changeMinDistance"><text
-			 class="moreText">公里</text></mix-list-input>
-		<mix-list-input title="超里程/公里" type="digit" :defContent="perMoney" placeholder="请输入" @blur="changePerMoney"><text
-			 class="moreText">元</text></mix-list-input>
-		<mix-list-input title="最远服务里程" type="number" :defContent="maxDistance" placeholder="请输入" @blur="changeMaxDistance"><text
-			 class="moreText">公里</text></mix-list-input>
-		<mix-list-input title="预计送达时间" type="number" :defContent="time" placeholder="请输入" @blur="changeTime"><text class="moreText">分钟</text></mix-list-input>
-		<mix-list-input title="最快发货" type="number" :defContent="fastestDeliveryDay" placeholder="请输入" @blur="changeFastestDeliveryDay"><text
-			 class="moreText">天</text></mix-list-input>
-		<mix-list-input title="最多可预订天数" type="number" :defContent="deliveryDay" placeholder="请输入" @blur="changeDeliveryDay"><text
-			 class="moreText">天</text></mix-list-input>
+		<mix-list-input title="不满起送金额运费" type="digit" :defContent="money" placeholder="请输入" @blur="changeMoney"><text
+				class="moreText">元</text></mix-list-input>
+		<mix-list-input title="满金额免运费" type="digit" :defContent="freeMoney" placeholder="请输入"
+			@blur="changeFreeMoney"><text class="moreText">元</text></mix-list-input>
+		<mix-list-input title="服务里程" type="number" :defContent="minDistance" placeholder="请输入"
+			@blur="changeMinDistance"><text class="moreText">公里</text></mix-list-input>
+		<mix-list-input title="超里程/公里" type="digit" :defContent="perMoney" placeholder="请输入"
+			@blur="changePerMoney"><text class="moreText">元</text></mix-list-input>
+		<mix-list-input title="最远服务里程" type="number" :defContent="maxDistance" placeholder="请输入"
+			@blur="changeMaxDistance"><text class="moreText">公里</text></mix-list-input>
+		<mix-list-input title="预计送达时间" type="number" :defContent="time" placeholder="请输入" @blur="changeTime"><text
+				class="moreText">分钟</text></mix-list-input>
+		<mix-list-input title="最快发货" type="number" :defContent="fastestDeliveryDay" placeholder="请输入"
+			@blur="changeFastestDeliveryDay"><text class="moreText">天</text></mix-list-input>
+		<mix-list-input title="最多可预订天数" type="number" :defContent="deliveryDay" placeholder="请输入"
+			@blur="changeDeliveryDay"><text class="moreText">天</text></mix-list-input>
 		<view class="mix-list-cell">
 			<text class="cell-tit clamp">每日预定时段</text>
 			<view class="cell-content">
-				
+
 			</view>
 			<text class="yticon icon-jia2 cell-more" @click="add()"></text>
 		</view>
-		<mix-list-select title="每日预定时段" :options="deliverySteps" :defaultOption="timeStep" @eventClick="changeDeliveryStep"></mix-list-select>
+		<mix-list-select title="每日预定时段" :options="deliverySteps" :defaultOption="timeStep"
+			@eventClick="changeDeliveryStep"></mix-list-select>
 		<view class="deliveryPeriods">
 			<view class="mix-list-cell b-b" v-for="(item,index) in deliveryPeriodHour" :key="index">
-				<text class="cell-content" v-if="item.begin" @click="selectDatePicker('begin',item.begin,index)">{{item.begin}}</text>
+				<text class="cell-content" v-if="item.begin"
+					@click="selectDatePicker('begin',item.begin,index)">{{item.begin}}</text>
 				<text class="cell-content" v-else @click="selectDatePicker('begin','',index)">开始时间</text>
-				<text class="cell-content" v-if="item.end" @click="selectDatePicker('end',item.end,index)">{{item.end}}</text>
+				<text class="cell-content" v-if="item.end"
+					@click="selectDatePicker('end',item.end,index)">{{item.end}}</text>
 				<text class="cell-content" v-else @click="selectDatePicker('end','',index)">结束时间</text>
 				<text class="yticon icon-jia2" v-if="deliveryPeriodHour.length == index + 1" @click="add()"></text>
 				<text class="yticon icon-shanchu4" v-else @click="del(index)"></text>
 			</view>
 		</view>
+		<mix-list-select title="配送方式" :options="thirdPartyDeliverys" :defaultOption="thirdPartyDelivery"
+			@eventClick="changeThirdPartyDelivery"></mix-list-select>
+		<mix-list-select v-if="thirdPartyDelivery==2" title="第三方配送平台" :options="thirdPartyDeliveryPlatforms"
+			:defaultOption="thirdPartyDeliveryPlatform"
+			@eventClick="changeThirdPartyDeliveryPlatform"></mix-list-select>
 		<view class="specsTitlesBtn">
 			<button class="action-btn" @click="btnSave()">保存</button>
 		</view>
-		<bory-dateTimePicker ref='date-time' :datestring="dateString" :indicatorStyle='indicatorStyle' type='hour-minute'
-		 @change='dateTimeChange'></bory-dateTimePicker>
+		<bory-dateTimePicker ref='date-time' :datestring="dateString" :indicatorStyle='indicatorStyle'
+			type='hour-minute' @change='dateTimeChange'></bory-dateTimePicker>
 	</view>
 </template>
 <script>
@@ -49,6 +59,15 @@
 	export default {
 		data() {
 			return {
+				thirdPartyDelivery: 1,
+				thirdPartyDeliverys: {
+					"1": "商家自送",
+					"2": "使用第三方平台",
+				},
+				thirdPartyDeliveryPlatform: "cantingbao",
+				thirdPartyDeliveryPlatforms: {
+					"cantingbao": "餐厅宝",
+				},
 				fastestDeliveryDay: 1,
 				deliveryDay: 4,
 				deliveryPeriodHour: [],
@@ -92,6 +111,12 @@
 						end: this.getTimeStr(e.end)
 					})
 				});
+			},
+			changeThirdPartyDelivery(e) {
+				this.thirdPartyDelivery = +e;
+			},
+			changeThirdPartyDeliveryPlatform(e) {
+				this.thirdPartyDeliveryPlatform = e;
 			},
 			changeMinPrice(e) {
 				this.minPrice = +e;
@@ -155,9 +180,11 @@
 					minDistance: this.minDistance,
 					minPrice: this.minPrice,
 					money: this.money,
-					timeStep:this.timeStep,
+					timeStep: this.timeStep,
 					perMoney: this.perMoney,
-					time: this.time
+					time: this.time,
+					thirdPartyDelivery: this.thirdPartyDelivery,
+					thirdPartyModule: this.thirdPartyDeliveryPlatform
 				};
 				//尽量保证时段不重叠
 				this.deliveryPeriodHour.map(e => {
@@ -173,7 +200,7 @@
 				this.isSubmit = true;
 				shopAdmin("save", {
 					delivery: data
-				},true).then(res => {
+				}, true).then(res => {
 					this.$api.success("修改成功");
 					this.shopInfo["delivery"] = data;
 					uni.setStorage({

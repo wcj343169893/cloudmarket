@@ -6,6 +6,7 @@ const {
 const {
 	getDeliveryConfig
 } = require("configs");
+//回调地址/http/cloud/mall/order/dealstate/cantingbao
 const models = {
 	testUrl: "http://sdk.test.canqu.com.cn/Shop/V1/",
 	productUrl: "http://sdk.canqu.com.cn/Shop/V1/",
@@ -86,7 +87,9 @@ const models = {
 		};
 		//预计送达时间
 		if (order.deliveryHour) {
-			data.ReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.endTime);
+			//data.ReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.endTime);
+			data.StartReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.id);
+			data.EndReachTime = getDateFormat("yyyy-MM-dd hh:mm:ss", order.deliveryHour.endTime);
 		}
 		return data;
 	},

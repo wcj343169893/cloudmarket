@@ -13,8 +13,9 @@
     "base-common": "file:../common/base-common",
     "configs": "file:../common/configs",
     "printers": "file:../common/printers",
+    "push": "file:../common/push",
     "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
-    "push": "file:../common/push"
+    "delivery": "file:../common/delivery"
   },
   "extensions": {}
 }

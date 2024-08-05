@@ -64,7 +64,7 @@ const models = {
 			platform: platform,
 			module: data.module,
 			tradeStatus: "TRADE_SUCCESS",
-			totalFee: parseInt(order.totalMoney * 100),
+			totalFee: Math.round(order.totalMoney * 100),
 			type: this.type,
 			typeName: config.name,
 			name: config.payName,

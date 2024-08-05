@@ -164,7 +164,7 @@ const model = {
 			console.log("saleRes", res);
 			let riderDelivery = {};
 			//商家开启第三方配送功能，并且订单是配送
-			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery) {
+			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery==2) {
 				//设置第三方配送id
 				riderDelivery.id = await delivery.add({
 					module: order.shop.delivery.thirdPartyModule || "cantingbao",

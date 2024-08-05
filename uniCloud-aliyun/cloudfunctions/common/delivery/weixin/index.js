@@ -200,7 +200,8 @@ const models = {
 		// 	"Wechatmp-TimeStamp": requestData.ts,
 		// 	"Wechatmp-Signature": signature,
 		// });
-		// console.log(requestData)
+		console.log(requestData)
+		console.log(signature)
 		const res = await uniCloud.httpclient.request(urlPath + "?access_token=" + accessToken, {
 			method: 'POST',
 			headers: {
@@ -220,7 +221,7 @@ const models = {
 	 * @param {Object} url
 	 */
 	async _afterSend(res, url) {
-		// console.log(res);
+		console.log(res);
 		const {
 			data,
 			headers
@@ -410,7 +411,7 @@ const models = {
 		const resp_serial = headers["wechatmp-serial-deprecated"]
 		//Wechatmp-Signature-Deprecated
 		const resp_signature = headers["wechatmp-signature-deprecated"]
-		// console.log(headers)
+		console.log(headers)
 
 		const local_ts = Math.floor(Date.now() / 1000)
 

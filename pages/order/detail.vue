@@ -40,8 +40,8 @@
 				<block v-if="info.state == 0">
 					<block v-if="isYuding"><button class="action-btn disabled">去支付尾款</button></block>
 				</block>
-				<!-- <block v-else-if="info.state == 1"><button type="default" class="action-btn"
-						@click="pusheDelivery">催一催</button></block> -->
+				<block v-else-if="info.state == 1"><button type="default" class="action-btn"
+						@click="pusheDelivery">催一催</button></block>
 				<block v-else-if="info.state == 2"><button type="default" class="action-btn"
 						@click="confirmOrder">确定收货</button></block>
 				<block v-else-if="info.state == 3"><button type="default" class="action-btn recom"

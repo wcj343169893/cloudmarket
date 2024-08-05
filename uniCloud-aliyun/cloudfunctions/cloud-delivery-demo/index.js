@@ -5,25 +5,24 @@ const delivery = require("delivery");
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', context)
-	return;
 	//mockNotify
-	return delivery.mockNotify({
-		data: {
-			wx_store_id: "4000000000013832002",
-			store_order_id: "2024071111174820041807",
-			order_status: 30000,
-		},
-		module: "weixin"
-	}, context);
+	// return delivery.mockNotify({
+	// 	data: {
+	// 		wx_store_id: "4000000000013832002",
+	// 		store_order_id: "2024071111174820041807",
+	// 		order_status: 30000,
+	// 	},
+	// 	module: "weixin"
+	// }, context);
 	
 	
-	const {
-		data: orderData
-	} = await db.collection('cloud_orders').doc("668f85713d029c65e9daf27b").get();
-	return delivery.add({
-		data: orderData[0],
-		module: "weixin"
-	}, context);
+	// const {
+	// 	data: orderData
+	// } = await db.collection('cloud_orders').doc("668f85713d029c65e9daf27b").get();
+	// return delivery.add({
+	// 	data: orderData[0],
+	// 	module: "weixin"
+	// }, context);
 	return delivery.getShop({
 		data: {},
 		module: "weixin"
