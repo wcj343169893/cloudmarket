@@ -1,12 +1,16 @@
 'use strict';
 const crypto = require('crypto');
 const basic = require("../basic/index.js")
-const parseAddress = require("../basic/parseAddress.js")
+const mapUtil = require("../basic/mapUtil.js")
 const wxAuth = require('wx-auth');
 const createConfig = require('uni-config-center');
 const {
 	getDeliveryConfig
 } = require("configs");
+/**
+ * 微信同城配送
+ * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html
+ */
 const models = {
 	...basic,
 	testUrl: "https://api.weixin.qq.com/cgi-bin/express/intracity/",
@@ -35,13 +39,14 @@ const models = {
 	 * @return wx_store_id
 	 */
 	async addShop(shop) {
-		if (shop.wx_store_id) {
+		if (shop.thirdPartyShopId) {
 			//更新门店信息
 			return this.updateShop(shop);
 		}
 		await this.initShop();
 		// console.log(shop);
-		let address = parseAddress.parse(shop.address);
+		let address = await mapUtil.getLocationAddress(shop);
+		console.log(address);
 		let data = {
 			out_store_id: `${shop.id}`,
 			store_name: shop.name,
@@ -62,13 +67,13 @@ const models = {
 		if (result) {
 			return result.wx_store_id;
 		}
-		return result;
+		return false;
 	},
 	async updateShop(shop) {
-		let address = parseAddress.parse(shop.address);
+		let address = await mapUtil.getLocationAddress(shop);
 		let data = {
 			keys: {
-				wx_store_id: shop.wx_store_id
+				wx_store_id: shop.thirdPartyShopId
 			},
 			content: {
 				store_name: shop.name,
@@ -87,8 +92,7 @@ const models = {
 			}
 		}
 		const result = await this.send(data, "updatestore");
-
-		return result;
+		return shop.thirdPartyShopId;
 	},
 	async getShop(data) {
 		let query = {}
@@ -456,14 +460,15 @@ const models = {
 	},
 	/**
 	 * 通知回调方法
+	 * 回调地址：https://fc-mp-42xxxxx98df5245.next.bspapp.com/http/cloud/mall/__UNI__7A5FE35/mp-weixin/order/dealstate/weixintongcheng
 	 * @param {Object} data
 	 */
 	async validateSign(data) {
 		const out = {
 			orderid: data.store_order_id,
 			response: {
-				"return_code": 0,
-				"return_msg": "OK"
+				return_code: 0,
+				return_msg: "OK"
 			}
 		}
 		let titles = {

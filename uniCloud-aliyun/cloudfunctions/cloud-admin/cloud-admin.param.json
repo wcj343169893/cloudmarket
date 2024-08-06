@@ -2,62 +2,85 @@
 
 // 配置教程参考：https://uniapp.dcloud.net.cn/uniCloud/quickstart?id=runparam
 {
-	"module": "orders",
-	"action": "addRefundApply",
-	"data": {
-		"id": "f6e08a646296d0c6061057ef5a0e634e"
-	},
-	"shopid": 123457,
-	"clientInfo": {
-		"PLATFORM": "web",
-		"OS": "ios",
-		"APPID": "__UNI__9900639",
-		"DEVICEID": "16562434728019647438",
-		"appId": "__UNI__9900639",
-		"appLanguage": "zh-Hans",
-		"appName": "咕叽农场",
-		"appVersion": "2.0.2",
-		"appVersionCode": "108",
-		"browserName": "safari",
-		"browserVersion": "11.0",
-		"deviceId": "16562434728019647438",
-		"deviceModel": "iPhone",
-		"deviceOrientation": "portrait",
-		"devicePixelRatio": 2,
-		"deviceType": "phone",
-		"hostLanguage": "zh-CN",
-		"hostName": "safari",
-		"hostVersion": "11.0",
-		"osName": "ios",
-		"osVersion": "11.0",
-		"safeArea": {
-			"left": 0,
-			"right": 375,
-			"top": 0,
-			"bottom": 667,
-			"width": 375,
-			"height": 667
+		"module": "shops",
+		"action": "save",
+		"data": {
+			"delivery": {
+				"deliveryDay": 4,
+				"fastestDeliveryDay": 1,
+				"freeMoney": 10,
+				"maxDistance": 5000,
+				"minDistance": 5,
+				"minPrice": 0.01,
+				"money": 0.01,
+				"timeStep": 3600,
+				"perMoney": 1,
+				"time": 30,
+				"thirdPartyDelivery": 2,
+				"thirdPartyModule": "weixintongcheng",
+				"deliveryPeriod": [{
+					"begin": 28800,
+					"end": 32400
+				}, {
+					"begin": 32400,
+					"end": 45000
+				}, {
+					"begin": 45000,
+					"end": 48600
+				}, {
+					"begin": 48600,
+					"end": 52200
+				}, {
+					"begin": 52200,
+					"end": 55800
+				}, {
+					"begin": 55800,
+					"end": 59400
+				}, {
+					"begin": 59400,
+					"end": 63000
+				}, {
+					"begin": 63000,
+					"end": 66600
+				}, {
+					"begin": 66600,
+					"end": 70200
+				}, {
+					"begin": 70200,
+					"end": 73800
+				}, {
+					"begin": 73800,
+					"end": 77400
+				}]
+			}
 		},
-		"safeAreaInsets": {
-			"top": 0,
-			"right": 0,
-			"bottom": 0,
-			"left": 0
+		"shopid": 10001,
+		"clientInfo": {
+			"PLATFORM": "web",
+			"OS": "ios",
+			"APPID": "__UNI__9900639",
+			"DEVICEID": "17127125797839046875",
+			"scene": 1001,
+			"appId": "__UNI__9900639",
+			"appLanguage": "zh-Hans",
+			"appName": "咕叽农场",
+			"appVersion": "2.0.2",
+			"appVersionCode": "108",
+			"browserName": "safari",
+			"browserVersion": "11.0",
+			"deviceId": "17127125797839046875",
+			"deviceModel": "iPhone",
+			"deviceType": "phone",
+			"hostName": "safari",
+			"hostVersion": "11.0",
+			"osName": "ios",
+			"osVersion": "11.0",
+			"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 HBuilderX",
+			"uniPlatform": "web",
+			"uniRuntimeVersion": "4.24",
+			"locale": "zh-Hans",
+			"LOCALE": "zh-Hans"
 		},
-		"screenHeight": 667,
-		"screenWidth": 375,
-		"statusBarHeight": 0,
-		"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 HBuilderX",
-		"uniCompileVersion": "3.5.0",
-		"uniPlatform": "web",
-		"uniRuntimeVersion": "3.5.0",
-		"windowBottom": 50,
-		"windowHeight": 617,
-		"windowTop": 0,
-		"windowWidth": 375,
-		"locale": "zh-Hans",
-		"LOCALE": "zh-Hans"
-	},
-	"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJiMDAwNjRhNzYwNDAzYWE5MDgzN2NkYTA1YTdmNmM3ZCIsInJvbGUiOlsiYWRtaW4iXSwicGVybWlzc2lvbiI6W10sImNsaWVudElkIjoiMTg5MzkwMmQ2YWU5MGJkOWIyOTg0MWEyZTZiZmE4MzMiLCJpYXQiOjE2NTYyNDM1MDIsImV4cCI6MTY1ODgzNTUwMn0.2chZRKHnk9dLQdU6sEJqkNcErUxPnWKvTkAZhoGBlMM"
-}
+		"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NmIwM2E1YTJlZWE2NTQ1MWMyMTM4YTkiLCJyb2xlIjpbImFkbWluIl0sInBlcm1pc3Npb24iOltdLCJpYXQiOjE3MjI5MjY5NTEsImV4cCI6MTcyNTUxODk1MX0.aZ9V0l-35WcprA6KR_534yiUDnsq3QPPpArI10oHuPI"
+	}
 

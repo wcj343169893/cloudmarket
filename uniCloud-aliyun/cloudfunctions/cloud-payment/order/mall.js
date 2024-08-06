@@ -167,7 +167,7 @@ const model = {
 			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery==2) {
 				//设置第三方配送id
 				riderDelivery.id = await delivery.add({
-					module: order.shop.delivery.thirdPartyModule || "cantingbao",
+					module: order.shop.delivery.thirdPartyModule,
 					data: order
 				},context);
 				//如果自己是平台，则需要扣除商家的配送费

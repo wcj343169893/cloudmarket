@@ -67,6 +67,8 @@
 				thirdPartyDeliveryPlatform: "cantingbao",
 				thirdPartyDeliveryPlatforms: {
 					"cantingbao": "餐厅宝",
+					"weixintongcheng":"微信同城配送",
+					"weixinjishipeisong":"微信即时配送"
 				},
 				fastestDeliveryDay: 1,
 				deliveryDay: 4,

@@ -91,7 +91,7 @@ const actions = {
 		if (!res) {
 			return false;
 		} else if (res.callback) {
-			return this[res.callback](res, data.module);
+			return this[res.callback](res, data.module, context);
 		}
 		return res;
 	},
@@ -127,7 +127,7 @@ const actions = {
 			res["type"] = provider;
 			res["typeName"] = config.name;
 			res["name"] = payInfo.name;
-			res = await this.paySuccess(res, module);
+			res = await this.paySuccess(res, module, context);
 			console.log("paysuccess result", res)
 		}
 		return "success";
@@ -137,10 +137,10 @@ const actions = {
 	 * @param {Object} data
 	 * @param {Object} module
 	 */
-	async paySuccess(data, module) {
+	async paySuccess(data, module, context) {
 		console.log("开始处理分订单", module);
 		//调用订单处理
-		let result = await orders[module]["updatePaymentInfo"](data);
+		let result = await orders[module]["updatePaymentInfo"](data, context);
 		console.log(result);
 		return result;
 	},

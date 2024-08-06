@@ -23,15 +23,15 @@ exports.main = async (event, context) => {
 	// 	data: orderData[0],
 	// 	module: "weixin"
 	// }, context);
-	return delivery.getShop({
-		data: {},
-		module: "weixin"
-	}, context);
+	// return delivery.getShop({
+	// 	data: {},
+	// 	module: "weixin"
+	// }, context);
 	const {
 		data
 	} = await db.collection('cloud_shops').get();
 	//返回数据给客户端
-	const shop = data[0];
+	const shop = data[1];
 
 	return await delivery.addShop({
 		data: shop,

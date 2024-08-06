@@ -15,6 +15,8 @@ const {
 const {
 	getConfig
 } = require("configs");
+//骑手接口
+const delivery = require('delivery');
 const modules = {
 	/**
 	 * 获取店铺信息
@@ -56,7 +58,7 @@ const modules = {
 	 * 保存店铺信息
 	 * @param {Object} data
 	 */
-	async save(data) {
+	async save(data, context) {
 		let shopid = data.shopid;
 		delete data.shopid;
 		//地址位置，用于定位筛选数据
@@ -64,9 +66,27 @@ const modules = {
 			data.lnglat = new db.Geo.Point(data.longitude, data.latitude);
 		}
 		console.log(data);
-		return await shopCollection.where({
+		let {
+			updated,
+			doc: shop
+		} = await shopCollection.where({
 			id: shopid
-		}).update(data);
+		}).updateAndReturn(data);
+		if (updated && shop) {
+			//修改配送配置或者地址，触发第三方店铺管理
+			if (data.delivery || data.address) {
+				//2=开通第三方配送
+				if (shop.delivery && shop.delivery.thirdPartyDelivery == 2) {
+					//开通门店
+					await delivery.addShop({
+						data: shop,
+						module: shop.delivery.thirdPartyModule
+					}, context)
+				}
+			}
+		}
+
+		return true;
 	},
 	/**
 	 * 查询店铺订单统计

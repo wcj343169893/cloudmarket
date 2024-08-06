@@ -6,8 +6,10 @@ const {
 const {
 	getDeliveryConfig
 } = require("configs");
+const basic = require("../basic/index.js")
 //回调地址/http/cloud/mall/order/dealstate/cantingbao
 const models = {
+	...basic,
 	testUrl: "http://sdk.test.canqu.com.cn/Shop/V1/",
 	productUrl: "http://sdk.canqu.com.cn/Shop/V1/",
 	config: {
@@ -17,6 +19,9 @@ const models = {
 	},
 	name: "cantingbao",
 	async preAdd(){
+		return false;
+	},
+	async addShop(shop) {
 		return false;
 	},
 	/**
@@ -152,7 +157,6 @@ const models = {
 	 * @param {Object} url
 	 */
 	async send(data, url, action, isTry) {
-		this.config = getDeliveryConfig(this.name);
 		console.log(JSON.stringify(data));
 		let content = "";
 		if (data) {
@@ -188,10 +192,10 @@ const models = {
 	},
 	/**
 	 * 验证签名
+	 * 回调地址：https://fc-mp-42xxxxx98df5245.next.bspapp.com/http/cloud/mall/__UNI__7A5FE35/mp-weixin/order/dealstate/cantingbao
 	 * @param {Object} data
 	 */
 	async validateSign(data) {
-		this.config = getDeliveryConfig(this.name);
 		if (data.key != this.config.key) {
 			console.log("key 不一致")
 			data.message = "key 不一致";

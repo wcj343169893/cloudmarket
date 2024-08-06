@@ -7,6 +7,10 @@ const shopCollection = db.collection("cloud_shops");
  */
 const getModule = async (module, action, data, context, subModule) => {
 	try {
+		if (!module) {
+			console.error(`店铺没有设置配送模块`)
+			return false;
+		}
 		if (!subModule) {
 			subModule = "index";
 		}
@@ -109,14 +113,21 @@ const lock = async (event, context) => {
 	return await getModule(module, "lock", data, context);
 }
 /**
- * 添加店铺
+ * 添加/修改店铺
  */
 const addShop = async (event, context) => {
 	const {
 		module,
 		data
 	} = event;
-	return await getModule(module, "addShop", data, context);
+	let res = await getModule(module, "addShop", data, context);
+	if (res && data.thirdPartyShopId != res) {
+		//更新
+		await shopCollection.doc(data._id).update({
+			thirdPartyShopId: res
+		})
+	}
+	return false;
 }
 const getShop = async (event, context) => {
 	const {
