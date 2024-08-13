@@ -26,12 +26,8 @@
 </template>
 
 <script>
-	import uniIcons from '../uni-icons/uni-icons.vue'
 	export default {
 		name: 'UniSteps',
-		components: {
-			uniIcons
-		},
 		props: {
 			direction: {
 				// 排列方向 row column

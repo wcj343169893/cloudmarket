@@ -43,8 +43,8 @@
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
 		<uni-popup ref="ratePopup" type="dialog">
-			<uni-popup-dialog mode="input" title="设置分成比例" placeholder="请输入分成比例" type="input" message="成功消息"
-				:duration="2000" @confirm="confirmRatePopup"></uni-popup-dialog>
+			<uni-popup-dialog mode="input" :focus="false" title="设置分成比例" placeholder="请输入分成比例" type="input"
+				message="成功消息" :duration="2000" @confirm="confirmRatePopup"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -60,15 +60,7 @@
 	import {
 		mapDistance
 	} from '@/common/functions.js';
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
-	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
-	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
-		components: {
-			uniPopup,
-			uniPopupMessage,
-			uniPopupDialog
-		},
 		data() {
 			return {
 				dataList: [],

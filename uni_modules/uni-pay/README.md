@@ -1,43 +1,31 @@
+`uni-pay`已升级为`uni-pay 2.x`，从公共模块升级为包含前端页面、uni-pay-co云对象，让支付更加简单省心 [详情](https://uniapp.dcloud.net.cn/uniCloud/uni-pay.html) 
+
 ## 简介
 
-`uni-pay`为`uniCloud`开发者提供了简单、易用、统一的支付能力封装。让开发者无需研究支付宝、微信等支付平台的后端开发、无需为它们编写不同代码，拿来即用，屏蔽差异。
+支付，重要的变现手段，但开发复杂。在不同端，对接微信支付、支付宝等渠道，前端后端都要写不少代码。
 
-`uni-app`前端已经封装的全端支付 api `uni.requestPayment`，现在服务端也封装好了`uni-pay for uniCloud`，从此开发者可以极快的完成前后一体的支付业务。
+涉及金额可不是小事，生成业务订单、获取收银台、发起支付、支付状态查询、支付异步回调、失败处理、发起退款、退款状态查询、支付统计...众多环节，代码量多，出错率高。
 
-目前已封装 App 端（微信支付和支付宝支付）、微信小程序、支付宝小程序的支付能力。
+为什么不能有一个开源的、高质量的项目？即可以避免大家重复开发，又可以安心使用，不担心自己从头写产生Bug。
 
-`uni-pay`是开源 sdk，可放心使用。本插件还包含示例工程，配置自己在微信和支付宝申请的相关配置后即可运行。
+`uni-pay`应需而生。
 
-对于`uni-pay`还未封装的支付能力，欢迎大家在开源项目上提交pr，共同完善这个开源项目。
+之前`uni-pay 1.x`版本，仅是一个公共模块，它让开发者无需研究支付宝、微信等支付平台的后端开发、无需为它们编写不同代码，拿来即用，屏蔽差异。
 
-详细Api请参考：[uni-pay](https://uniapp.dcloud.io/uniCloud/unipay)
+但开发者还是需要自己编写前端页面和云函数，还是有一定的开发难度和工作量的，特别对于新手来说，门槛高、易出错。
 
-## 示例项目使用说明
+`uni-pay 2.0` 起，补充了前端页面和云对象，让开发者开箱即用。
 
-1. 首先在`cloudfunctions/common/uni-config-center/uni-pay/config.js`内填写各个平台所需的配置。
+**注意：`uni-pay 2` 仍内置了uni-pay公共模块，向下兼容`uni-pay 1.x`，即从`uni-pay 1.x`可以一键升级到`uni-pay 2.x`，且不会对你的老项目造成影响。**
 
-**示例项目已集成[uni-id](https://ext.dcloud.net.cn/plugin?id=2116)，需在`cloudfunctions/common/uni-config-center/uni-id/config.json`内填写支付宝小程序、微信小程序登录相关信息**
+开发者在项目中引入 `uni-pay` 后，微信支付、支付宝支付等功能无需自己再开发。由于源码的开放性和层次结构清晰，有二次开发需求也很方便调整。
 
-如需开通对应平台的支付能力请参考以下文档
+> 下载地址：[https://ext.dcloud.net.cn/plugin?name=uni-pay](https://ext.dcloud.net.cn/plugin?name=uni-pay)
 
-- [支付宝小程序开通支付](https://opendocs.alipay.com/mini/introduce/pay)
-- [App接入支付宝支付](https://opendocs.alipay.com/open/204/105297/)
-- [接入微信支付](https://pay.weixin.qq.com/index.php/apply/applyment_home/guide_normal#none)
+> 开发文档：[https://uniapp.dcloud.io/uniCloud/uni-pay](https://uniapp.dcloud.io/uniCloud/uni-pay)
 
-**注意**
+**线上体验地址**
 
-- 商户认证不支持个人类型的账号。
-- 微信的App支付、小程序支付、H5支付是不同的体系。微信小程序支付在 微信商户平台 申请支付时，选择公众号支付；
+注意：线上体验地址用的是阿里云免费版，免费版请求次数有限，如请求失败为正常现象，可直接导入示例项目绑定自己的空间体验。
 
-2. 在`cloudfunctions`目录右键选择服务空间
-3. 上传公用模块，公用模块用法请参考：[云函数公用模块](https://uniapp.dcloud.io/uniCloud/cf-common)
-4. 上传所有云函数
-5. 在`cloudfunctions/db_init.json`上右键初始化数据库
-6. 在项目内的`manifest.json`内配置App端支付参数或者微信小程序appid，[manifest.json里配置App支付相关参数](https://uniapp.dcloud.io/api/plugins/payment?id=manifestjson%e9%87%8c%e9%85%8d%e7%bd%ae%e7%9b%b8%e5%85%b3%e5%8f%82%e6%95%b0)
-7. 如果是运行到App端请使用云打包制作自定义基座来测试，其他平台直接运行即可
-
-## 支付流程说明
-
-下面的流程图很好的展示了示例项目的支付流程
-
-![](https://img.cdn.aliyun.dcloud.net.cn/uni-app/uniCloud/uni-pay-flow-chart.jpg)
+![](https://f184e7c3-1912-41b2-b81f-435d1b37c7b4.cdn.bspapp.com/VKCEYUGU-f184e7c3-1912-41b2-b81f-435d1b37c7b4/a9489bd6-37d6-4664-9e0b-346f8859534c.png)

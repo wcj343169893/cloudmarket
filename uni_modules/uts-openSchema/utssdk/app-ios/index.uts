@@ -1,0 +1,14 @@
+import { OpenSchema } from '../interface.uts'
+
+export const openSchema: OpenSchema = function(url: string): void {
+	if (typeof url == 'string' && url.length > 0) {
+		let uri = new URL(string = url)
+		if (uri != null && UIApplication.shared.canOpenURL(uri!)) {
+			UIApplication.shared.open(uri!, options = new Map<UIApplication.OpenExternalURLOptionsKey, any>(), completionHandler = null)
+		}else {
+			console.error('url param Error: ', url)
+		}
+	}else {
+		console.error('url param Error: ', url)
+	}
+}

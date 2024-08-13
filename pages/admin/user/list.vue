@@ -4,8 +4,9 @@
 		<view class="top">
 			<!-- 排序 -->
 			<view class="sort-bar row">
-				<view class="sort-bar-item row center" :class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
-				 :key="index" @click="changeSort(item)">
+				<view class="sort-bar-item row center"
+					:class="{active: item.current, last: index === sortList.length-1}" v-for="(item,index) in sortList"
+					:key="index" @click="changeSort(item)">
 					<text>{{ item.name }}</text>
 					<view v-if="item.isPrice" class="icon-wrap">
 						<text class="yticon icon-shang" :class="{active: item.type === 4}"></text>
@@ -46,20 +47,24 @@
 					</view>
 					<view class="">
 						<text>登录时间：</text>
-						<text v-if="item.last_login_date > 0">{{item.last_login_date | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
+						<text
+							v-if="item.last_login_date > 0">{{item.last_login_date | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 						<text v-else>无记录</text>
 					</view>
 					<view class="">
 						<text>注册时间：</text>
-						<text v-if="item.register_date > 0">{{item.register_date | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
+						<text
+							v-if="item.register_date > 0">{{item.register_date | dateFormat('yyyy-MM-dd hh:mm:ss')}}</text>
 						<text v-else>无记录</text>
 					</view>
 					<block v-if="type == 'chooseone'">
-						<view class="flex"><button class="cu-btn margin-tb-sm sm" @click.stop="choose(item)">选择</button></view>
+						<view class="flex"><button class="cu-btn margin-tb-sm sm" @click.stop="choose(item)">选择</button>
+						</view>
 					</block>
 					<block v-else-if="type == 'choosemany'">
 						<view class="flex">
-							<button class="cu-btn bg-green margin-tb-sm sm" v-if="item.selected" @click.stop="select(item)">已选择</button>
+							<button class="cu-btn bg-green margin-tb-sm sm" v-if="item.selected"
+								@click.stop="select(item)">已选择</button>
 							<button class="cu-btn margin-tb-sm sm" v-else @click.stop="select(item)">请选择</button>
 						</view>
 					</block>
@@ -67,14 +72,15 @@
 			</view>
 		</view>
 		<uni-load-more :status="loadingType"></uni-load-more>
-		<uni-fab v-if="state.indexOf('Member') != -1" :content="fab.content" @trigger="fabTrigger" horizontal="right"></uni-fab>
+		<uni-fab v-if="state.indexOf('Member') != -1" :content="fab.content" @trigger="fabTrigger"
+			horizontal="right"></uni-fab>
 		<view class="fixed-area" v-if="type == 'choosemany'">
 			<text>已选择{{selectLength}}人</text>
 			<button class="cu-btn bg-green margin-tb-sm sm margin-left-sm" @click="choosemany()">确定</button>
 		</view>
 		<uni-popup ref="rechargePop" type="dialog">
-			<uni-popup-dialog type="warn" title="账户充值" placeholder="请输入充值金额" mode="input" :before-close="true" @close="close"
-			 @confirm="confirm"></uni-popup-dialog>
+			<uni-popup-dialog type="warn" title="账户充值" :focus="false" placeholder="请输入充值金额" mode="input"
+				:before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -86,12 +92,8 @@
 	} from '@/common/admin_request.js';
 	import searchMixin from '../mixin/search.js'
 
-	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
 		mixins: [searchMixin],
-		components: {
-			uniPopupDialog
-		},
 		data() {
 			return {
 				type: 'normal',
@@ -258,8 +260,7 @@
 			detail(item) {
 				console.log(item)
 			},
-			setNavTitle() {
-			},
+			setNavTitle() {},
 			fabTrigger({
 				index,
 				item
@@ -370,7 +371,7 @@
 		font-size: $font-sm;
 	}
 
-	$width:140rpx;
+	$width: 140rpx;
 
 	.image-content {
 		width: $width;

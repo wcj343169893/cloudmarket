@@ -28,12 +28,8 @@
 </template>
 
 <script>
-	import uniPopup from '../uni-popup/uni-popup.vue'
 	export default {
 		name: 'KXDateTime',
-		components: {
-			uniPopup
-		},
 		props: {
 			time: '',
 			start: '',

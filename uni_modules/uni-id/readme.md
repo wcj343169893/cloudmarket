@@ -1,6 +1,6 @@
-**文档已移至[uni-id文档](https://uniapp.dcloud.net.cn/uniCloud/uni-id)**
+**文档已移至[uni-id文档](https://doc.dcloud.net.cn/uniCloud/uni-id/old.html)**
 
-> 一般uni-id升级大版本时为不兼容更新，从低版本迁移到高版本请参考：[uni-id迁移指南](https://uniapp.dcloud.net.cn/uniCloud/uni-id?id=migration)
+> 一般uni-id升级大版本时为不兼容更新，从低版本迁移到高版本请参考：[uni-id迁移指南](https://doc.dcloud.net.cn/uniCloud/uni-id/old.html#m1to2)
 
 ## 重要升级说明
 

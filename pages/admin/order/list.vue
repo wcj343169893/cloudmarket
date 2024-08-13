@@ -98,7 +98,7 @@
 			</view>
 		</uni-popup>
 		<uni-popup ref="totalMoneyPopup" type="dialog">
-			<uni-popup-dialog mode="input" title="设置新价格" placeholder="设置新价格" type="input" message="成功消息"
+			<uni-popup-dialog mode="input" :focus="false" title="设置新价格" placeholder="设置新价格" type="input" message="成功消息"
 				:duration="2000" @confirm="confirmTotalMoneyPopup"></uni-popup-dialog>
 		</uni-popup>
 	</view>
@@ -113,14 +113,8 @@
 		checkDeliveryHour
 	} from '@/common/functions.js';
 	import searchMixin from '../mixin/search.js'
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
-	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
 		mixins: [searchMixin],
-		components: {
-			uniPopup,
-			uniPopupDialog
-		},
 		data() {
 			return {
 				formData: {},
