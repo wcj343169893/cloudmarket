@@ -43,8 +43,7 @@
 		<mix-list-select title="配送方式" :options="thirdPartyDeliverys" :defaultOption="thirdPartyDelivery"
 			@eventClick="changeThirdPartyDelivery"></mix-list-select>
 		<mix-list-select v-if="thirdPartyDelivery==2" title="第三方配送平台" :options="thirdPartyDeliveryPlatforms"
-			:defaultOption="thirdPartyDeliveryPlatform"
-			@eventClick="changeThirdPartyDeliveryPlatform"></mix-list-select>
+			:defaultOption="thirdPartyModule" @eventClick="changeThirdPartyDeliveryPlatform"></mix-list-select>
 		<view class="specsTitlesBtn">
 			<button class="action-btn" @click="btnSave()">保存</button>
 		</view>
@@ -64,11 +63,13 @@
 					"1": "商家自送",
 					"2": "使用第三方平台",
 				},
-				thirdPartyDeliveryPlatform: "cantingbao",
+				thirdPartyModule: "cantingbao",
 				thirdPartyDeliveryPlatforms: {
 					"cantingbao": "餐厅宝",
-					"weixintongcheng":"微信同城配送",
-					"weixinjishipeisong":"微信即时配送"
+					// #ifdef MP-WEIXIN
+					"weixintongcheng": "微信同城配送",
+					"weixinjishipeisong": "微信即时配送",
+					// #endif
 				},
 				fastestDeliveryDay: 1,
 				deliveryDay: 4,
@@ -118,7 +119,7 @@
 				this.thirdPartyDelivery = +e;
 			},
 			changeThirdPartyDeliveryPlatform(e) {
-				this.thirdPartyDeliveryPlatform = e;
+				this.thirdPartyModule = e;
 			},
 			changeMinPrice(e) {
 				this.minPrice = +e;
@@ -186,7 +187,7 @@
 					perMoney: this.perMoney,
 					time: this.time,
 					thirdPartyDelivery: this.thirdPartyDelivery,
-					thirdPartyModule: this.thirdPartyDeliveryPlatform
+					thirdPartyModule: this.thirdPartyModule
 				};
 				//尽量保证时段不重叠
 				this.deliveryPeriodHour.map(e => {

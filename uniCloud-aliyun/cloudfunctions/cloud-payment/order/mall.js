@@ -268,7 +268,8 @@ const model = {
 			totalDiscount: 1,
 			deduction: 1,
 			freight: 1,
-			cartCount: 1
+			cartCount: 1,
+			userInfo:1
 		};
 	}
 }

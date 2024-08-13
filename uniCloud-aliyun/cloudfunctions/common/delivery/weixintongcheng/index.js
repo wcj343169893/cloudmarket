@@ -121,11 +121,16 @@ const models = {
 			deliveryHour,
 			goods
 		} = order;
-		//判断是否达到配送下单时间
+		//判断是否达到配送下单时间，提前30分钟下单
 		if (deliveryHour.id > Date.now() + 30 * 60 * 1000) {
+			console.log("未到配送时间");
 			return;
 		}
-		let openid = userInfo.wx_openid ? userInfo.wx_openid["mp-weixin"] : "";
+		let openid = userInfo && userInfo.wx_openid ? userInfo.wx_openid["mp-weixin"] : "";
+		if(!openid){
+			console.error("用户openid不存在");
+			return;
+		}
 		//物品类型
 		//https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html#_5-%E7%89%A9%E5%93%81%E7%B1%BB%E5%9E%8B%E5%88%97%E8%A1%A8
 		let data = {
@@ -491,7 +496,7 @@ const models = {
 			"50000": "配送中",
 			"60000": "配送员撤单，请联系商家",
 			"70000": "配送完成",
-			"90000": "配送异常",
+			"90000": "配送异常，请联系商家",
 		}
 		out.result = {
 			delivery: {
@@ -510,13 +515,13 @@ const models = {
 				break;
 			case 20001:
 				//配送方取消订单
+				out.result.state = 3;
 				break;
 			case 30000:
 				//配送员接单
 				break;
 			case 40000:
 				//配送员到店
-				out.result.state = 2;
 				break;
 			case 50000:
 				//配送中
@@ -524,13 +529,11 @@ const models = {
 				break;
 			case 60000:
 				//配送员撤单
-				break;
 			case 70000:
 				//配送完成
-				out.result.state = 3;
-				break;
 			case 90000:
-				//配送异常
+				//配送异常，商家自己处理
+				out.result.state = 3;
 				break;
 
 			default:

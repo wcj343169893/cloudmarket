@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
 	// 		store_order_id: "2024071111174820041807",
 	// 		order_status: 30000,
 	// 	},
-	// 	module: "weixin"
+	// 	module: "weixintongcheng"
 	// }, context);
 	
 	
@@ -21,12 +21,12 @@ exports.main = async (event, context) => {
 	// } = await db.collection('cloud_orders').doc("668f85713d029c65e9daf27b").get();
 	// return delivery.add({
 	// 	data: orderData[0],
-	// 	module: "weixin"
+	// 	module: "weixintongcheng"
 	// }, context);
-	// return delivery.getShop({
-	// 	data: {},
-	// 	module: "weixin"
-	// }, context);
+	return delivery.getShop({
+		data: {},
+		module: "weixintongcheng"
+	}, context);
 	const {
 		data
 	} = await db.collection('cloud_shops').get();
@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
 
 	return await delivery.addShop({
 		data: shop,
-		module: "weixin"
+		module: "weixintongcheng"
 	}, context);
 	//广西壮族自治区南宁市邕宁区百济镇
 	//重庆市渝中区中山四路85号副1-4号
