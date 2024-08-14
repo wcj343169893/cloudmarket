@@ -44,6 +44,15 @@ const modules = {
 		await video.statistics(shop);
 		return shop;
 	},
+	async getById(id) {
+		let res = await shopCollection.where({
+			id
+		}).limit(1).get();
+		if (res.data.length == 0) {
+			return false;
+		}
+		return res.data[0];
+	},
 	/**
 	 * 系统管理面板
 	 * @param {Object} data
@@ -54,6 +63,18 @@ const modules = {
 		await this.getUsersStatistics(data);
 		return data;
 	},
+	/**
+	 * 获取第三方配送公司列表
+	 * @param {Object} data
+	 * @param {Object} context
+	 */
+	async getThirdPartyCompany(data, context) {
+		let shop = await this.getById(data.shopid);
+		return delivery.getShop({
+			data: shop.delivery,
+			module: data.module
+		}, context);
+	}
 	/**
 	 * 保存店铺信息
 	 * @param {Object} data

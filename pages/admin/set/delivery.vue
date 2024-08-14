@@ -44,6 +44,9 @@
 			@eventClick="changeThirdPartyDelivery"></mix-list-select>
 		<mix-list-select v-if="thirdPartyDelivery==2" title="第三方配送平台" :options="thirdPartyDeliveryPlatforms"
 			:defaultOption="thirdPartyModule" @eventClick="changeThirdPartyDeliveryPlatform"></mix-list-select>
+		<mix-list-select v-if="thirdPartyDelivery==2 && thirdPartyModule!='cantingbao'" title="第三方配送公司"
+			:options="thirdPartyDeliveryCompanys" :defaultOption="thirdPartyDeliveryCompany"
+			@eventClick="changeThirdPartyDeliveryCompany"></mix-list-select>
 		<view class="specsTitlesBtn">
 			<button class="action-btn" @click="btnSave()">保存</button>
 		</view>
@@ -70,6 +73,10 @@
 					"weixintongcheng": "微信同城配送",
 					"weixinjishipeisong": "微信即时配送",
 					// #endif
+				},
+				thirdPartyDeliveryCompany: "",
+				thirdPartyDeliveryCompanys: {
+
 				},
 				fastestDeliveryDay: 1,
 				deliveryDay: 4,
@@ -120,6 +127,18 @@
 			},
 			changeThirdPartyDeliveryPlatform(e) {
 				this.thirdPartyModule = e;
+				this.getThirdPartyCompany();
+			},
+			getThirdPartyCompany() {
+				shopAdmin("getThirdPartyCompany", {
+					module: this.thirdPartyModule
+				}).then(res => {
+					this.thirdPartyDeliveryCompany = res.data;
+					this.thirdPartyDeliveryCompanys = res.options;
+				})
+			},
+			changeThirdPartyDeliveryCompany(e) {
+				this.thirdPartyDeliveryCompany = e;
 			},
 			changeMinPrice(e) {
 				this.minPrice = +e;
@@ -187,7 +206,8 @@
 					perMoney: this.perMoney,
 					time: this.time,
 					thirdPartyDelivery: this.thirdPartyDelivery,
-					thirdPartyModule: this.thirdPartyModule
+					thirdPartyModule: this.thirdPartyModule,
+					thirdPartyDeliveryCompany: this.thirdPartyDeliveryCompany
 				};
 				//尽量保证时段不重叠
 				this.deliveryPeriodHour.map(e => {

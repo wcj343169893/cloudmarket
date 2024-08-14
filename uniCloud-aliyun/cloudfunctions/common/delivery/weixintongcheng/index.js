@@ -39,7 +39,7 @@ const models = {
 	 * @return wx_store_id
 	 */
 	async addShop(shop) {
-		if (shop.thirdPartyShopId) {
+		if (shop.delivery.thirdPartyShopId) {
 			//更新门店信息
 			return this.updateShop(shop);
 		}
@@ -65,20 +65,30 @@ const models = {
 		// console.log(data);
 		const result = await this.send(data, "createstore");
 		if (result) {
-			return result.wx_store_id;
+			return {
+				thirdPartyShopId: result.wx_store_id
+			};
 		}
 		return false;
 	},
 	async updateShop(shop) {
 		let address = await mapUtil.getLocationAddress(shop);
+		//默认运费优先
+		let orderPattern = 1;
+		let prefer = "";
+		if (shop.delivery.thirdPartyDeliveryCompany != "JIAGEYOUXIAN") {
+			//运力优先
+			orderPattern = 2;
+			prefer = shop.delivery.thirdPartyDeliveryCompany;
+		}
 		let data = {
 			keys: {
-				wx_store_id: shop.thirdPartyShopId
+				wx_store_id: shop.delivery.thirdPartyShopId
 			},
 			content: {
 				store_name: shop.name,
-				order_pattern: 2,
-				service_trans_prefer: "SFTC",
+				order_pattern: orderPattern,
+				service_trans_prefer: prefer,
 				address_info: {
 					province: address.province,
 					city: address.city,
@@ -92,20 +102,34 @@ const models = {
 			}
 		}
 		const result = await this.send(data, "updatestore");
-		return shop.thirdPartyShopId;
+		return false;
 	},
 	async getShop(data) {
+		let deliveryCompanys = {
+			JIAGEYOUXIAN: "价格优先",
+			DADA: "达达",
+			SFTC: "顺丰同城"
+		};
 		let query = {}
-		if (data.wx_store_id) {
-			query.wx_store_id = data.wx_store_id;
-		} else if (data.out_store_id) {
-			query.out_store_id = data.out_store_id;
+		if (data.thirdPartyShopId) {
+			query.wx_store_id = data.thirdPartyShopId;
+		} else if (data.id) {
+			query.out_store_id = data.id;
 		}
 		const result = await this.send(data, "querystore");
-		if (result) {
-			return result.store_list;
+		let out = {
+			options: deliveryCompanys,
+			data: ""
 		}
-		return result;
+		if (result && result.store_list.length > 0) {
+			let store = result.store_list[0];
+			if (store.order_pattern == 1) {
+				out.data = "JIAGEYOUXIAN";
+			} else {
+				out.data = result.store_list[0].service_trans_prefer;
+			}
+		}
+		return out;
 	},
 	/**
 	 * 增加新订单
@@ -127,7 +151,7 @@ const models = {
 			return;
 		}
 		let openid = userInfo && userInfo.wx_openid ? userInfo.wx_openid["mp-weixin"] : "";
-		if(!openid){
+		if (!openid) {
 			console.error("用户openid不存在");
 			return;
 		}
@@ -209,8 +233,8 @@ const models = {
 		// 	"Wechatmp-TimeStamp": requestData.ts,
 		// 	"Wechatmp-Signature": signature,
 		// });
-		console.log(requestData)
-		console.log(signature)
+		// console.log(requestData)
+		// console.log(signature)
 		const res = await uniCloud.httpclient.request(urlPath + "?access_token=" + accessToken, {
 			method: 'POST',
 			headers: {
@@ -230,7 +254,7 @@ const models = {
 	 * @param {Object} url
 	 */
 	async _afterSend(res, url) {
-		console.log(res);
+		// console.log(res);
 		const {
 			data,
 			headers
@@ -248,7 +272,7 @@ const models = {
 		if (decryptData.errcode == 0) {
 			return decryptData;
 		}
-		console.log(decryptData.errmsg);
+		// console.log(decryptData.errmsg);
 		return false;
 	},
 	/**
@@ -420,7 +444,7 @@ const models = {
 		const resp_serial = headers["wechatmp-serial-deprecated"]
 		//Wechatmp-Signature-Deprecated
 		const resp_signature = headers["wechatmp-signature-deprecated"]
-		console.log(headers)
+		// console.log(headers)
 
 		const local_ts = Math.floor(Date.now() / 1000)
 
@@ -433,7 +457,7 @@ const models = {
 
 		let signature = ''
 		if (local_sn === resp_sn) {
-			console.info("正常证书")
+			// console.info("正常证书")
 			signature = resp_sig
 		} else if (local_sn === resp_serial) {
 			console.warn("平台证书即将过期，请及时更换")
@@ -444,7 +468,7 @@ const models = {
 		}
 
 		const payload = `${url}\n${resp_appid}\n${resp_ts}\n${resp_data}`
-		console.log(payload, signature)
+		// console.log(payload, signature)
 		const data_buffer = Buffer.from(payload, 'utf-8')
 		const sig_buffer = Buffer.from(signature, 'base64')
 		// console.log(local_certificate)

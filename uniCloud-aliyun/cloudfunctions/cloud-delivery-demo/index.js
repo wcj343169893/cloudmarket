@@ -4,7 +4,12 @@ const cmd = db.command;
 const delivery = require("delivery");
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
-	console.log('event : ', context)
+	// console.log('event : ', context)
+	// return delivery.getShop({
+	// 	data: {},
+	// 	module: "weixinjishipeisong"
+	// }, context);
+
 	//mockNotify
 	// return delivery.mockNotify({
 	// 	data: {
@@ -14,8 +19,8 @@ exports.main = async (event, context) => {
 	// 	},
 	// 	module: "weixintongcheng"
 	// }, context);
-	
-	
+
+
 	// const {
 	// 	data: orderData
 	// } = await db.collection('cloud_orders').doc("668f85713d029c65e9daf27b").get();
@@ -24,7 +29,9 @@ exports.main = async (event, context) => {
 	// 	module: "weixintongcheng"
 	// }, context);
 	return delivery.getShop({
-		data: {},
+		data: {
+			id: 10001
+		},
 		module: "weixintongcheng"
 	}, context);
 	const {

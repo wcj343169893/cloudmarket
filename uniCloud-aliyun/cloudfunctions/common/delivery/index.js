@@ -120,14 +120,15 @@ const addShop = async (event, context) => {
 		module,
 		data
 	} = event;
-	let res = await getModule(module, "addShop", data, context);
-	if (res && data.thirdPartyShopId != res) {
-		//更新
-		await shopCollection.doc(data._id).update({
-			thirdPartyShopId: res
-		})
+	let delivery = await getModule(module, "addShop", data, context);
+	if (!delivery) {
+		return false;
 	}
-	return false;
+	//更新
+	await shopCollection.doc(data._id).update({
+		delivery
+	})
+	return true;
 }
 const getShop = async (event, context) => {
 	const {
