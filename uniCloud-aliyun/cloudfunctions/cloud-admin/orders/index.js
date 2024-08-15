@@ -542,7 +542,7 @@ const comment = async (data) => {
  * 后台发起退款，直接同意
  * @param {*} data 
  */
-const addRefundApply = async (data) => {
+const addRefundApply = async (data, context) => {
 	const {
 		id,
 		item
@@ -577,9 +577,9 @@ const addRefundApply = async (data) => {
 	let uid = order.uid;
 	if (order.delivery && order.shop.delivery) {
 		let addCancelDeliveryResult = await delivery.cancel({
-			module: order.shop.delivery.thirdPartyModule || "cantingbao",
+			delivery: order.shop.delivery,
 			data: order,
-		});
+		}, context);
 		console.log("addCancelDeliveryResult", addCancelDeliveryResult);
 	}
 	if (!item) {

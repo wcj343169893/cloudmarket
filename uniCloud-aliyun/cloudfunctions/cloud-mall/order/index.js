@@ -1160,6 +1160,7 @@ const model = {
 			//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 			//备注
 			data["remark"] = event.remark;
+			data["context"] = context;
 			data["created"] = Date.now();
 			data["modified"] = Date.now();
 			//如果是自提，需要生成提货码
@@ -1519,7 +1520,10 @@ const model = {
 		if (orders.data.length > 0) {
 			for (let i = 0; i < orders.data.length; i++) {
 				let order = orders.data[i];
-				await delivery.add(order);
+				await delivery.add({
+					delivery: order.shop.delivery,
+					data: order
+				}, order.context);
 			}
 		}
 	},
@@ -1527,6 +1531,10 @@ const model = {
 	 * 第三方骑手通知地址
 	 * @param {Object} data
 	 * @param {Object} data.module 子模块：餐厅宝
+	 * @link https://fc-mp-42xxxxx98df5245.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/cantingbao
+	 * @link https://fc-mp-42xxxxx98df5245.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/tongcheng
+	 * @link https://fc-mp-42xxxxx98df5245.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/jishi_sftc
+	 * 
 	 */
 	async dealstate(event, context) {
 		//验证签名，并返回content内容

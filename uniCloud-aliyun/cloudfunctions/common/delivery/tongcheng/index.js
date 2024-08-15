@@ -15,8 +15,7 @@ const models = {
 	...basic,
 	testUrl: "https://api.weixin.qq.com/cgi-bin/express/intracity/",
 	productUrl: "https://api.weixin.qq.com/cgi-bin/express/intracity/",
-	name: "weixin",
-	delivery_id: "weixin",
+	name: "tongcheng",
 	encryptType: "AES256",
 	signType: "RSA",
 	/**
@@ -66,10 +65,20 @@ const models = {
 		const result = await this.send(data, "createstore");
 		if (result) {
 			return {
-				thirdPartyShopId: result.wx_store_id
+				thirdPartyShopId: result.wx_store_id,
+				addressInfo: {
+					province: address.province,
+					city: address.city,
+					area: address.area,
+					street: address.street,
+					house: address.house,
+					lat: shop.latitude,
+					lng: shop.longitude,
+					phone: shop.phone,
+				}
 			};
 		}
-		return false;
+		return {};
 	},
 	async updateShop(shop) {
 		let address = await mapUtil.getLocationAddress(shop);
@@ -81,6 +90,16 @@ const models = {
 			orderPattern = 2;
 			prefer = shop.delivery.thirdPartyDeliveryCompany;
 		}
+		let addressInfo = {
+			province: address.province,
+			city: address.city,
+			area: address.area,
+			street: address.street,
+			house: address.house,
+			lat: shop.latitude,
+			lng: shop.longitude,
+			phone: shop.phone,
+		}
 		let data = {
 			keys: {
 				wx_store_id: shop.delivery.thirdPartyShopId
@@ -89,25 +108,18 @@ const models = {
 				store_name: shop.name,
 				order_pattern: orderPattern,
 				service_trans_prefer: prefer,
-				address_info: {
-					province: address.province,
-					city: address.city,
-					area: address.area,
-					street: address.street,
-					house: address.house,
-					lat: shop.latitude,
-					lng: shop.longitude,
-					phone: shop.phone,
-				}
+				address_info: addressInfo
 			}
 		}
 		const result = await this.send(data, "updatestore");
-		return false;
+		return {
+			addressInfo
+		};
 	},
 	async getShop(data) {
 		let deliveryCompanys = {
-			JIAGEYOUXIAN: "价格优先",
-			DADA: "达达",
+			JIAGEYOUXIAN: "优先低价运力",
+			DADA: "达达快送",
 			SFTC: "顺丰同城"
 		};
 		let query = {}

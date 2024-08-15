@@ -13,7 +13,7 @@ const model = {
 		if (!name) {
 			return config;
 		}
-		return config[name];
+		return Object.assign({}, config[name]);
 	},
 	/**
 	 * 支付成功异步通知,返回结果例如：http://www.mydomain.com/market_notify/app-plus/alipay 
@@ -97,13 +97,13 @@ const model = {
 		if (!provider) {
 			return config[platform]["oauth"];
 		}
-		return config[platform]["oauth"][provider];
+		return Object.assign({}, config[platform]["oauth"][provider]);
 	},
 	/**
 	 * 获取打印机配置
 	 */
 	getPrinterConfig(name) {
-		return config["printer"][name];
+		return Object.assign({}, config["printer"][name]);
 	},
 	/**
 	 * 获取发送短信模板id，需要在dc官方报备，否则提示：errCode: 10002 ，errMsg: 短信发送失败：应用名称未报备
@@ -119,7 +119,7 @@ const model = {
 	 */
 	getPushConfig(client) {
 		client = client || "default";
-		return config.push[client];
+		return Object.assign({}, config.push[client]);
 	},
 	/**
 	 * 获取第三方配送配置
@@ -127,13 +127,13 @@ const model = {
 	 */
 	getDeliveryConfig(name) {
 		name = name || "cantingbao";
-		return config.delivery[name];
+		return Object.assign({}, config.delivery[name]);
 	},
 	/**
 	 * 用户中心设置
 	 */
 	getUserConfig() {
-		return config.user;
+		return Object.assign({}, config.user);
 	},
 	/**
 	 * 简单字符串模板，如果模板中找不到对于的字符，则默认源字符串

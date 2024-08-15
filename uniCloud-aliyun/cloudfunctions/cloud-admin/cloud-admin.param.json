@@ -7,17 +7,18 @@
 		"data": {
 			"delivery": {
 				"deliveryDay": 4,
-				"fastestDeliveryDay": 1,
+				"fastestDeliveryDay": 0,
 				"freeMoney": 10,
 				"maxDistance": 5000,
 				"minDistance": 5,
-				"minPrice": 0.01,
-				"money": 0.01,
+				"minPrice": 10,
+				"money": 5,
 				"timeStep": 3600,
 				"perMoney": 1,
 				"time": 30,
 				"thirdPartyDelivery": 2,
-				"thirdPartyModule": "weixintongcheng",
+				"thirdPartyModule": "jishi",
+				"thirdPartyDeliveryCompany": "1660356525",
 				"deliveryPeriod": [{
 					"begin": 28800,
 					"end": 32400
@@ -54,33 +55,31 @@
 				}]
 			}
 		},
-		"shopid": 10001,
+		"shopid": 10000,
 		"clientInfo": {
-			"PLATFORM": "web",
+			"PLATFORM": "mp-weixin",
 			"OS": "ios",
 			"APPID": "__UNI__9900639",
-			"DEVICEID": "17127125797839046875",
+			"DEVICEID": "17198269088692355171",
 			"scene": 1001,
+			"deviceId": "17198269088692355171",
 			"appId": "__UNI__9900639",
-			"appLanguage": "zh-Hans",
 			"appName": "咕叽农场",
 			"appVersion": "2.0.2",
 			"appVersionCode": "108",
-			"browserName": "safari",
-			"browserVersion": "11.0",
-			"deviceId": "17127125797839046875",
-			"deviceModel": "iPhone",
-			"deviceType": "phone",
-			"hostName": "safari",
-			"hostVersion": "11.0",
-			"osName": "ios",
-			"osVersion": "11.0",
-			"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1 HBuilderX",
-			"uniPlatform": "web",
+			"appLanguage": "zh-Hans",
 			"uniRuntimeVersion": "4.24",
+			"uniPlatform": "mp-weixin",
+			"deviceBrand": "devtools",
+			"deviceModel": "iPhone 6/7/8",
+			"deviceType": "phone",
+			"osName": "ios",
+			"osVersion": "10.0.1",
+			"hostVersion": "8.0.5",
+			"hostName": "WeChat",
 			"locale": "zh-Hans",
 			"LOCALE": "zh-Hans"
 		},
-		"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NmIwM2E1YTJlZWE2NTQ1MWMyMTM4YTkiLCJyb2xlIjpbImFkbWluIl0sInBlcm1pc3Npb24iOltdLCJpYXQiOjE3MjI5MjY5NTEsImV4cCI6MTcyNTUxODk1MX0.aZ9V0l-35WcprA6KR_534yiUDnsq3QPPpArI10oHuPI"
+		"uniIdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NmIzMjA0ZDdjOGRlNDQ1YTY0YTYyMzUiLCJyb2xlIjpbImFkbWluIl0sInBlcm1pc3Npb24iOltdLCJpYXQiOjE3MjM2OTI3ODIsImV4cCI6MTcyNjI4NDc4Mn0.WAp9NHGxLvYEXx8UL72-4Wu_nvgA0xqWB5PIlTgL3JQ"
 	}
 

@@ -93,7 +93,7 @@ const model = {
 	 * 支付完成后，更新订单信息
 	 * @param {Object} event
 	 */
-	async updatePaymentInfo(event,context) {
+	async updatePaymentInfo(event, context) {
 		//console.log(event);
 		let time = Date.now();
 		//reserve_
@@ -164,12 +164,12 @@ const model = {
 			console.log("saleRes", res);
 			let riderDelivery = {};
 			//商家开启第三方配送功能，并且订单是配送
-			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery==2) {
+			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery == 2) {
 				//设置第三方配送id
 				riderDelivery.id = await delivery.add({
-					module: order.shop.delivery.thirdPartyModule,
+					delivery: order.shop.delivery,
 					data: order
-				},context);
+				}, context);
 				//如果自己是平台，则需要扣除商家的配送费
 			}
 			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息
@@ -269,7 +269,7 @@ const model = {
 			deduction: 1,
 			freight: 1,
 			cartCount: 1,
-			userInfo:1
+			userInfo: 1
 		};
 	}
 }

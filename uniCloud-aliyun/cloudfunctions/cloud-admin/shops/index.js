@@ -71,10 +71,12 @@ const modules = {
 	async getThirdPartyCompany(data, context) {
 		let shop = await this.getById(data.shopid);
 		return delivery.getShop({
-			data: shop.delivery,
-			module: data.module
+			data: shop,
+			delivery: {
+				thirdPartyModule: data.module
+			}
 		}, context);
-	}
+	},
 	/**
 	 * 保存店铺信息
 	 * @param {Object} data
@@ -101,7 +103,7 @@ const modules = {
 					//开通门店
 					await delivery.addShop({
 						data: shop,
-						module: shop.delivery.thirdPartyModule
+						delivery: shop.delivery
 					}, context)
 				}
 			}

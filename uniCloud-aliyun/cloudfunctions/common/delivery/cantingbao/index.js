@@ -18,10 +18,13 @@ const models = {
 		product: false //是否正式环境
 	},
 	name: "cantingbao",
-	async preAdd(){
+	async preAdd() {
 		return false;
 	},
 	async addShop(shop) {
+		return false;
+	},
+	async getShop(shop) {
 		return false;
 	},
 	/**
@@ -59,7 +62,8 @@ const models = {
 				FoodCount: goods.amount
 			});
 		}
-		let res = await this.send({ ...base,
+		let res = await this.send({
+			...base,
 			...data
 		}, "ClientOrder.ashx", "SendOrderData");
 		if (res) {
@@ -224,7 +228,8 @@ const models = {
 	    3、转换为全小写形式后即获得签名串
 	 */
 	sign(data) {
-		return crypto.createHash('sha1').update([this.config.key, data.content, this.config.secret, data.ts].join("")).digest(
+		return crypto.createHash('sha1').update([this.config.key, data.content, this.config.secret, data.ts].join(
+			"")).digest(
 			'hex').toLowerCase();
 	}
 }

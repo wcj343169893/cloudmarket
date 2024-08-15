@@ -70,8 +70,8 @@
 				thirdPartyDeliveryPlatforms: {
 					"cantingbao": "餐厅宝",
 					// #ifdef MP-WEIXIN
-					"weixintongcheng": "微信同城配送",
-					"weixinjishipeisong": "微信即时配送",
+					"tongcheng": "微信同城配送",
+					"jishi": "微信即时配送",
 					// #endif
 				},
 				thirdPartyDeliveryCompany: "",
@@ -121,6 +121,9 @@
 						end: this.getTimeStr(e.end)
 					})
 				});
+				if (this.thirdPartyModule) {
+					this.getThirdPartyCompany();
+				}
 			},
 			changeThirdPartyDelivery(e) {
 				this.thirdPartyDelivery = +e;
@@ -130,11 +133,14 @@
 				this.getThirdPartyCompany();
 			},
 			getThirdPartyCompany() {
+				this.thirdPartyDeliveryCompany = "";
+				this.thirdPartyDeliveryCompanys = {};
 				shopAdmin("getThirdPartyCompany", {
 					module: this.thirdPartyModule
 				}).then(res => {
 					this.thirdPartyDeliveryCompany = res.data;
 					this.thirdPartyDeliveryCompanys = res.options;
+					console.log(this.thirdPartyDeliveryCompanys)
 				})
 			},
 			changeThirdPartyDeliveryCompany(e) {
