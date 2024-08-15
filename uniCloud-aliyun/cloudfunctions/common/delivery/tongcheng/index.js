@@ -160,12 +160,12 @@ const models = {
 		//判断是否达到配送下单时间，提前30分钟下单
 		if (deliveryHour.id > Date.now() + 30 * 60 * 1000) {
 			console.log("未到配送时间");
-			return;
+			return false;
 		}
 		let openid = userInfo && userInfo.wx_openid ? userInfo.wx_openid["mp-weixin"] : "";
 		if (!openid) {
 			console.error("用户openid不存在");
-			return;
+			return false;
 		}
 		//物品类型
 		//https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/express/business/intracity_service.html#_5-%E7%89%A9%E5%93%81%E7%B1%BB%E5%9E%8B%E5%88%97%E8%A1%A8
@@ -198,16 +198,25 @@ const models = {
 				})
 			}
 		}
-		const result = await this.send(data, "addorder");
-
-		return result;
+		const res = await this.send(data, "addorder");
+		if (res) {
+			return {
+				id: res.trans_order_id,
+				fee: Math.ceil(res.fee / 100),
+				distance: res.distance,
+				pickupCode: res.fetch_code,
+				finishCode: "",
+				duration: 300
+			};
+		}
+		return false;
 	},
 	/**
 	 * 构造回调地址
 	 */
 	getCallbackUrl() {
 		//拼接默认域名
-		//https://fc-mp-9ed4ee2c-a639-46f8-8556-a9a242d272ad.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/weixin
+		//https://fc-mp-9ed4ee2c-a639-46f8-8556-a9a242d272ad.next.bspapp.com/http/cloud/mall/__UNI__7A5FE30/mp-weixin/order/dealstate/tongcheng
 		const {
 			PLATFORM,
 			appId

@@ -68,7 +68,14 @@ const models = {
 		}, "ClientOrder.ashx", "SendOrderData");
 		if (res) {
 			//这里只返回配送订单号，方便查询
-			return res.OrderId;
+			return {
+				id: res.OrderId,
+				fee: 0,
+				distance: 0,
+				pickupCode: "",
+				finishCode: "",
+				duration: 300
+			};
 		}
 		return false;
 	},

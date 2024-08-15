@@ -87,13 +87,14 @@ module.exports = (options) => {
 					data: JSON.stringify(data),
 					expires
 				});
+			}else{
+				//新增
+				await cacheCollection.add({
+					key,
+					data: JSON.stringify(data),
+					expires
+				});
 			}
-			//新增
-			await cacheCollection.add({
-				key,
-				data: JSON.stringify(data),
-				expires
-			});
 			return data;
 		}
 

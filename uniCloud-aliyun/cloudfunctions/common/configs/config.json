@@ -163,13 +163,17 @@
 		},
 		"jishi": {
 			"product": false,
+			"cargo_first_class": "日用百货",
+			"cargo_second_class": "便利店",
 			"UU": {
 				"key": "cc166deb5f484dd9890d94337fc7ce6a",
-				"secret": "db4cf9f3da854a9484f495b789c9bf1e"
+				"secret": "db4cf9f3da854a9484f495b789c9bf1e",
+				"shopNo": "3243279847393"
 			},
 			"SFTC": {
 				"key": "1660356525",
-				"secret": "6585c256576af77fc205b3f219ba0217"
+				"secret": "6585c256576af77fc205b3f219ba0217",
+				"shopNo": "3243279847393"
 			}
 		},
 		"tongcheng": {

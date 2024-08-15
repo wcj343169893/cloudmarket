@@ -162,14 +162,20 @@ const model = {
 				day: dayTime
 			}).update(shopSales);
 			console.log("saleRes", res);
-			let riderDelivery = {};
+			let riderDelivery = {
+				timer: 0
+			};
 			//商家开启第三方配送功能，并且订单是配送
 			if (order.deliveryType == "deliveryHome" && order.shop.delivery.thirdPartyDelivery == 2) {
 				//设置第三方配送id
-				riderDelivery.id = await delivery.add({
+				let deliveryResult = await delivery.add({
 					delivery: order.shop.delivery,
 					data: order
 				}, context);
+				if (deliveryResult) {
+					//配送成功
+					riderDelivery = Object.assign(riderDelivery, deliveryResult)
+				}
 				//如果自己是平台，则需要扣除商家的配送费
 			}
 			//再次更新订单信息，当天付款流水号，是否打印，是否发送新订单信息

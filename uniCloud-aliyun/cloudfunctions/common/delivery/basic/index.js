@@ -103,19 +103,13 @@ const models = {
 	async send(data, url, isTry) {
 		//获取access_token
 		const accessToken = await wxAuth.getAccessToken({}, this.context)
-		console.log(JSON.stringify(data));
-		let requestData = {
-			...data,
-			shopid: this.config.key,
-			openid: this.openid
-		};
-		requestData.delivery_sign = this.sign(requestData);
-		console.log(JSON.stringify(requestData));
+		data.delivery_sign = this.sign(data);
+		console.log(data);
 		let baseUrl = this.config.product ? this.productUrl : this.testUrl;
 		const res = await uniCloud.httpclient.request(baseUrl + url + "?access_token=" + accessToken, {
 			method: 'POST',
-			contentType: "application/json",
-			data: requestData,
+			contentType: "json",
+			data: data,
 			dataType: "json"
 		});
 		return this._afterSend(res.data);

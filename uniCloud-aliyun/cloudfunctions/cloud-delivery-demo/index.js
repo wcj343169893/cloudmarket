@@ -5,12 +5,12 @@ const delivery = require("delivery");
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	// console.log('event : ', context)
-	return delivery.getShop({
-		data: {},
-		delivery: {
-			thirdPartyModule: "jishi"
-		}
-	}, context);
+	// return delivery.getShop({
+	// 	data: {},
+	// 	delivery: {
+	// 		thirdPartyModule: "jishi"
+	// 	}
+	// }, context);
 
 	//mockNotify
 	// return delivery.mockNotify({
@@ -25,42 +25,41 @@ exports.main = async (event, context) => {
 	// }, context);
 
 
-	// const {
-	// 	data: orderData
-	// } = await db.collection('cloud_orders').doc("668f85713d029c65e9daf27b").get();
-	// return delivery.add({
-	// 	data: orderData[0],
-	// 	delivery: {
-	// 	thirdPartyModule: "weixintongcheng"
-	// }
-	// }, context);
-	return delivery.getShop({
-		data: {
-			id: 10001
-		},
-		delivery: {
-			thirdPartyModule: "weixintongcheng"
-		}
-	}, context);
 	const {
-		data
-	} = await db.collection('cloud_shops').get();
-	//返回数据给客户端
-	const shop = data[1];
+		data: orderData
+	} = await db.collection('cloud_orders').doc("66bda39d99c624bed1d8e29c").get();
+	const order = orderData[0];
+	await delivery.add({
+		delivery: order.shop.delivery,
+		data: order
+	}, order.context);
+	// return delivery.getShop({
+	// 	data: {
+	// 		id: 10001
+	// 	},
+	// 	delivery: {
+	// 		thirdPartyModule: "weixintongcheng"
+	// 	}
+	// }, context);
+	// const {
+	// 	data
+	// } = await db.collection('cloud_shops').get();
+	// //返回数据给客户端
+	// const shop = data[1];
 
-	return await delivery.addShop({
-		data: shop,
-		delivery: {
-			thirdPartyModule: "weixintongcheng"
-		}
-	}, context);
+	// return await delivery.addShop({
+	// 	data: shop,
+	// 	delivery: {
+	// 		thirdPartyModule: "weixintongcheng"
+	// 	}
+	// }, context);
 	//广西壮族自治区南宁市邕宁区百济镇
 	//重庆市渝中区中山四路85号副1-4号
 	//广东省深圳市南山区沙河街道明珠街社区银行宿舍3栋沙河街5-2
 	// const address = '广西壮族自治区南宁市邕宁区百济镇';
 	// const parsedAddress = parseAddress.parse(address);
 	// console.log(parsedAddress);
-	return data
+	// return data
 };
 
 const parseAddress = {

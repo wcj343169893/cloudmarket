@@ -5,7 +5,7 @@ const shopCollection = db.collection("cloud_shops");
 const goodsCollection = db.collection('cloud_goods');
 const userBalanceLogCollection = db.collection("cloud_user_balance_logs");
 const identityCollection = db.collection("cloud_identity");
-const cacheCollection = db.collection("cloud_identity");
+const cacheCollection = db.collection("opendb-open-data");
 const shopStatisticsCollection = db.collection("cloud_shop_statistics");
 
 /**
@@ -349,7 +349,8 @@ const getDateFormat = function(fmt, time) {
 	}
 	for (let k in o) {
 		if (new RegExp('(' + k + ')').test(fmt)) {
-			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k])
+				.length)))
 		}
 	}
 	return fmt;
@@ -400,7 +401,7 @@ const filterFields = (event, strinFields, intFields) => {
  * @param {Object} data
  * @param {int} expires 有效期，以秒为单位，默认1小时
  */
-const dbcache = async function(key, data, expires) {
+const dbcache = async function(key, data, expires, dataCallback = false) {
 	//默认增加前缀
 	key = "cache_" + key;
 	let time = new Date().getTime();
@@ -413,28 +414,38 @@ const dbcache = async function(key, data, expires) {
 	}).limit(1).get();
 	if (!data) {
 		if (result.data.length > 0 && result.data[0].expires > time) {
-			return result.data[0].data;
+			return JSON.parse(result.data[0].data);
 		}
 		//没有可用的数据,或者数据过期
-		return false;
+		if (!dataCallback) {
+			return false;
+		}
+		//回调获得需要的数据
+		data = await dataCallback();
+		//没有数据
+		if (!data) {
+			return false;
+		}
 	}
 	//写入
 	expires = !expires ? 3600000 + time : expires * 1000 + time;
 	if (result.data.length > 0) {
 		//修改
-		return await cacheCollection.where({
+		await cacheCollection.where({
 			key: key
 		}).update({
-			data,
+			data: JSON.stringify(data),
+			expires
+		});
+	} else {
+		//新增
+		await cacheCollection.add({
+			key,
+			data: JSON.stringify(data),
 			expires
 		});
 	}
-	//新增
-	return await cacheCollection.add({
-		key,
-		data,
-		expires
-	});
+	return data;
 }
 
 module.exports = {

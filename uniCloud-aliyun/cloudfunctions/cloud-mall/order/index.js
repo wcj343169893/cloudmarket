@@ -1513,17 +1513,30 @@ const model = {
 		//3.自动创建配送的订单
 		orders = await orderCollection.where({
 			deliveryType: "deliveryHome",
+			"shop.delivery.thirdPartyDelivery": 2, //第三方配送
 			"deliveryHour.id": cmd.lt(time - 30 * 60 * 1000),
 			state: 1,
-			delivery: cmd.exists(false)
+			"delivery.timer": cmd.lt(3)
 		}).get();
 		if (orders.data.length > 0) {
 			for (let i = 0; i < orders.data.length; i++) {
 				let order = orders.data[i];
-				await delivery.add({
+				let deliveryResult = await delivery.add({
 					delivery: order.shop.delivery,
 					data: order
 				}, order.context);
+				let delivery = {
+					timer: parseInt(order.delivery.timer) + 1,
+				}
+				if (deliveryResult) {
+					//配送成功
+					delivery = Object.assign(delivery, deliveryResult)
+					//自动下单时间
+					delivery.autoDeliveryTime = Date.now()
+				}
+				await orderCollection.doc(order._id).update({
+					delivery
+				})
 			}
 		}
 	},

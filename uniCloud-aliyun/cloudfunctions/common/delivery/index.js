@@ -10,7 +10,7 @@ const getModule = async (delivery, action, data, context) => {
 		console.error(`店铺没有设置配送模块`)
 		return false;
 	}
-	console.log("getModule", delivery)
+	// console.log("getModule", delivery)
 	const {
 		thirdPartyModule,
 		thirdPartyDeliveryId: deliveryId
@@ -136,7 +136,7 @@ const addShop = async (event, context) => {
 	}
 	//更新
 	await shopCollection.doc(data._id).update({
-		result
+		delivery: result
 	})
 	return true;
 }
