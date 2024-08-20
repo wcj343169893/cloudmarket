@@ -1,0 +1,20 @@
+{
+  "name": "cloud-mp",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "md5-node": "^1.0.1",
+    "base-common": "file:../common/base-common",
+    "delivery": "file:../common/delivery",
+    "uni-cloud-router": "file:../../../uni_modules/uni-cloud-router/uniCloud/cloudfunctions/common/uni-cloud-router",
+    "uni-config-center": "file:../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+    "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
+  },
+  "extensions": {
+    "uni-cloud-redis": {}
+  },
+  "cloudfunction-config": {
+    "memorySize": 256,
+    "path": "/http/cloud/mp",
+    "timeout": 10
+  }
+}

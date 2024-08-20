@@ -27,7 +27,7 @@ exports.main = async (event, context) => {
 
 	const {
 		data: orderData
-	} = await db.collection('cloud_orders').doc("66bda39d99c624bed1d8e29c").get();
+	} = await db.collection('cloud_orders').doc("66bebd65149854502c089a68").get();
 	const order = orderData[0];
 	await delivery.add({
 		delivery: order.shop.delivery,

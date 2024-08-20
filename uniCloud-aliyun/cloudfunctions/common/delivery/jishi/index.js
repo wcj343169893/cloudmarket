@@ -5,6 +5,7 @@ const basic = require("../basic/index.js")
 /**
  * 微信即时配送
  * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/immediate-delivery/api.html
+ * @link https://www.kancloud.cn/yunfuplus/yunfu/2002997#5_37 云浮商城即时配送文档
  */
 const models = {
 	...basic,
@@ -133,7 +134,7 @@ const models = {
 		let addressMapInfo = await mapUtil.getLocationAddress(address);
 		let data = {
 			shopid: this.config.key,
-			shop_order_id: order._id,
+			shop_order_id: order.id,
 			delivery_id: this.delivery_id,
 			openid,
 			//发件人信息，闪送、顺丰同城急送必须填写，美团配送、达达，若传了shop_no的值可不填该字段
@@ -185,12 +186,13 @@ const models = {
 			},
 			shop: {
 				wxa_path: "pages/order/detail?id=" + order._id,
-				detail_list: goods.map(e => {
-					return {
-						goods_name: e.title,
-						goods_img_url: e.src
-					}
-				}),
+				// detail_list: goods.map(e => {
+				// 	return {
+				// 		goods_name: e.title,
+				// 		goods_img_url: e.src
+				// 	}
+				// }),
+				img_url: goods[0].src,
 				goods_name: order.body,
 				goods_count: goods.length,
 				wxa_appid: this.config.weixin.appid
@@ -200,6 +202,85 @@ const models = {
 		}
 		// console.log("data", data);
 		return data;
+	},
+	async validateSign(data) {
+		const out = {
+			orderid: data.shop_order_id,
+			response: {
+				return_code: 0,
+				return_msg: "OK"
+			}
+		}
+		let titles = {
+			"101": "等待分配骑手",
+			"102": "分配骑手成功",
+			"103": "配送完成",
+			"201": "骑手到店开始取货",
+			"202": "取货成功",
+			"203": "配送完成",
+			"204": "配送完成",
+			"205": "配送异常",
+			"301": "配送中",
+			"302": "配送成功",
+			"303": "配送成功",
+			"304": "配送异常",
+			"305": "配送异常",
+			"401": "配送异常",
+			"501": "配送异常",
+			"502": "配送异常",
+		}
+		let contents = {
+			"101": "等待分配骑手",
+			"102": "分配骑手成功",
+			"103": "商家取消订单",
+			"201": "骑手到店开始取货",
+			"202": "取货成功",
+			"203": "取货失败，请联系商家",
+			"204": "取货失败，请联系商家",
+			"205": "取货失败，请联系商家",
+			"301": "配送中",
+			"302": "配送完成",
+			"303": "配送完成",
+			"304": "无法联系收货人，请联系商家",
+			"305": "收货人拒收，请联系商家",
+			"401": "配送异常，请联系商家",
+			"501": "因运力系统原因取消，请联系商家",
+			"502": "因不可抗拒因素，请联系商家",
+		}
+		out.result = {
+			delivery: {
+				state: data.order_status,
+				stateTitle: titles[data.order_status],
+				stateContent: titles[data.order_status],
+			}
+		}
+		// console.log(data);
+		switch (data.order_status) {
+			case 203:
+			case 204:
+			case 205:
+				out.result.state = 3;
+				break;
+			
+			case 202:
+			case 301:
+				//配送方取消订单
+				out.result.state = 2;
+				break;
+			case 302:
+			case 303:
+			case 304:
+			case 305:
+			case 401:
+			case 501:
+			case 502:
+				out.result.state = 3;
+				break;
+			default:
+				break;
+		}
+
+		return out
 	},
 	_afterSend(data) {
 		console.log("_afterSend", JSON.stringify(data));

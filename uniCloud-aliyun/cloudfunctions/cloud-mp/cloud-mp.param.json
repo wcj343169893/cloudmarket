@@ -1,0 +1,23 @@
+{
+    "path": "/__UNI__9900639/mp-weixin/mp/message",
+    "httpMethod": "POST",
+    "headers": {
+      "content-length": "1340",
+      "x-forwarded-for": "172.28.211.99, 100.122.16.99",
+      "pragma": "no-cache",
+      "accept": "*/*",
+      "x-real-ip": "81.69.101.237",
+      "host": "cloudmarket-api.cqsort.com",
+      "content-type": "text/xml",
+      "x-forwarded-by": "172.28.211.114:8000",
+      "user-agent": "Mozilla/4.0"
+    },
+    "queryStringParameters": {
+      "signature": "67869b76656c7083a97f0cfdcf4c48cadc070f22",
+      "timestamp": "1723799679",
+      "nonce": "517463548",
+      "openid": "oMpYy5W_-8U9fpPZnXnwz-VssUwg"
+    },
+    "isBase64Encoded": false,
+    "body": "<xml><ToUserName><![CDATA[gh_ca173e44bc0b]]></ToUserName>\n<FromUserName><![CDATA[oMpYy5W_-8U9fpPZnXnwz-VssUwg]]></FromUserName>\n<CreateTime>1723799679</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[update_waybill_status]]></Event>\n<shopid><![CDATA[1660356525]]></shopid>\n<shop_order_id><![CDATA[66bebd65149854502c089a68]]></shop_order_id>\n<waybill_id><![CDATA[3615029265736886785]]></waybill_id>\n<action_time>1723799679</action_time>\n<order_status>302</order_status>\n<action_msg><![CDATA[]]></action_msg>\n<agent>\n<name><![CDATA[柳聪]]></name>\n<phone><![CDATA[16541639283]]></phone>\n</agent>\n<shop_no><![CDATA[3243279847393]]></shop_no>\n</xml>"
+  }

@@ -1160,7 +1160,11 @@ const model = {
 			//@todo decrStockGoodsSuccess 保存商品每日销量,最好是redis
 			//备注
 			data["remark"] = event.remark;
-			data["context"] = context;
+			data["context"] = {
+				...context,
+				uniIdToken: null,
+				userInfo: null
+			};
 			data["created"] = Date.now();
 			data["modified"] = Date.now();
 			//如果是自提，需要生成提货码
@@ -1525,17 +1529,17 @@ const model = {
 					delivery: order.shop.delivery,
 					data: order
 				}, order.context);
-				let delivery = {
+				let deliveryData = {
 					timer: parseInt(order.delivery.timer) + 1,
 				}
 				if (deliveryResult) {
 					//配送成功
-					delivery = Object.assign(delivery, deliveryResult)
+					deliveryData = Object.assign(deliveryData, deliveryResult)
 					//自动下单时间
-					delivery.autoDeliveryTime = Date.now()
+					deliveryData.autoDeliveryTime = Date.now()
 				}
 				await orderCollection.doc(order._id).update({
-					delivery
+					delivery: deliveryData
 				})
 			}
 		}

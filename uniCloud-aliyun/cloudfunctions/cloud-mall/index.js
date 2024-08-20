@@ -109,6 +109,9 @@ exports.main = async (event, context) => {
 		}
 		console.log(context);
 		console.log(module, action, data);
+	} else if (context.SOURCE == "function") {
+		context = event.context;
+		delete event.context
 	}
 	let payload;
 	let tokenData = {};
