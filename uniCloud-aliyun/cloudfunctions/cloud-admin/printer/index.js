@@ -40,9 +40,20 @@ const modules = {
 	 * @param {Object} data
 	 */
 	async add(data) {
+		//查询店铺信息
+		let res = await shopCollection.where({
+			id: data.shopid
+		}).limit(1).get();
+		if (res.data.length == 0) {
+			//表示没有数据，默认提示语，可以省略
+			//data.message = "暂无数据";
+			return false;
+		}
+		let shop = res.data[0];
+		data.name = shop.name;
 		//调用授权
-		const res = await addPrinter(data);
-		if (!res) {
+		const res2 = await addPrinter(data);
+		if (!res2) {
 			return false;
 		}
 		data.online = true;
@@ -56,7 +67,7 @@ const modules = {
 	//删除指定设备
 	"delete": async (data) => {
 		console.log(data)
-		let printers = await this.getPrinters(data);
+		let printers = await getShopPrinters(data);
 		if (!printers) {
 			return false;
 		}
@@ -80,7 +91,7 @@ const modules = {
 	 * @param {Object} data
 	 */
 	async checkStatus(data) {
-		let printers = await this.getPrinters(data);
+		let printers = await getShopPrinters(data);
 		if (!printers) {
 			return false;
 		}
@@ -100,15 +111,19 @@ const modules = {
 	 * @param {Object} data
 	 */
 	async getPrinters(data) {
-		const shop = await shopCollection.where({
-			id: data.shopid
-		}).field({
-			printers: 1
-		}).limit(1).get();
-		if (shop.data.length == 0 || !shop.data[0].printers || shop.data[0].printers.length == 0) {
-			return false;
-		}
-		return shop.data[0].printers;
+		return getShopPrinters(data);
 	}
 };
 module.exports = modules
+
+const getShopPrinters = async (data)=>{
+	const shop = await shopCollection.where({
+		id: data.shopid
+	}).field({
+		printers: 1
+	}).limit(1).get();
+	if (shop.data.length == 0 || !shop.data[0].printers || shop.data[0].printers.length == 0) {
+		return false;
+	}
+	return shop.data[0].printers;
+}

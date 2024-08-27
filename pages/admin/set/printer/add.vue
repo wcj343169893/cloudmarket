@@ -1,7 +1,8 @@
 <template>
 	<view class="container bg-white">
 		<block v-if="loaded">
-			<mix-list-select border="b-b" @eventClick="changeCategory" title="品牌" :options="categories" :defaultOption="rtDef"></mix-list-select>
+			<mix-list-select border="b-b" @eventClick="changeCategory" title="品牌" :options="categories"
+				:defaultOption="rtDef"></mix-list-select>
 			<mix-list-input :isMust="!0" title="设备号" placeholder="请输入设备号" @change="changeMachine"></mix-list-input>
 			<mix-list-input :isMust="!0" title="秘钥" placeholder="请输入秘钥" @change="changeMsign"></mix-list-input>
 			<view class="specsTitlesBtn submit">
@@ -49,7 +50,6 @@
 			},
 			changeMachine(e) {
 				this.machine = e;
-
 			},
 			changeMsign(e) {
 				this.msign = e;
@@ -58,20 +58,20 @@
 				let data = Object.assign({}, this.categoryMap[this.cateid], {
 					machine: this.machine,
 					msign: this.msign,
-					online:true,
-					enable:true
+					online: true,
+					enable: true
 				})
 				delete data._id;
-				printerAdmin("add", data,true).then(res => {
+				printerAdmin("add", data, true).then(res => {
 					this.$api.success("添加成功");
 					setTimeout(() => {
 						//上一个页面刷新
 						this.$api.prePage().refreshList(data);
 						uni.navigateBack({
-							delta:1
+							delta: 1
 						})
 					}, 2000)
-				},err=>{
+				}, err => {
 					this.$api.msg("添加失败");
 				})
 			}

@@ -29,7 +29,8 @@ const models = {
 	async addPrinter(data) {
 		this.config = data;
 		return await this.send({
-			printerContent: [data.machine, data.msign].join("#"), //打印机编号,
+			printerContent: [data.machine, data.msign, data.name ? data.name : "云上商场"].join(
+			"#"), //打印机编号,
 		}, "Open_printerAddlist");
 	},
 	/**
