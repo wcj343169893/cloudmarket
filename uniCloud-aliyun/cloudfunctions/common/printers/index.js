@@ -65,6 +65,15 @@ const addPrinter = async (data) => {
 	return await getModule(module)["addPrinter"](data);
 }
 /**
+ * 删除打印机
+ */
+const deletePrinter = async (data) => {
+	const {
+		module
+	} = data;
+	return await getModule(module)["deletePrinter"](data);
+}
+/**
  * 获取打印机状态
  */
 const getPrintStatus = async (data) => {
@@ -85,6 +94,7 @@ const println = async (data, config) => {
 }
 module.exports = {
 	addPrinter,
+	deletePrinter,
 	print,
 	println,
 	getPrintStatus

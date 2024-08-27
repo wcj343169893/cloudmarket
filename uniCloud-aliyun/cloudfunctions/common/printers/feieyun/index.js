@@ -35,8 +35,14 @@ const models = {
 	/**
 	 * 删除终端
 	 * @param {Object} data
+	 * @link https://help.feieyun.com/home/doc/zh;nav=1-3
 	 */
-	async deletePrinter(data) {},
+	async deletePrinter(data) {
+		this.config = data;
+		return await this.send({
+			snlist: data.machine, //单个打印机编号,
+		}, "Open_printerDelList");
+	},
 	/**
 	 * 打印文本
 	 * @param {Object} order 订单信息
@@ -62,7 +68,8 @@ const models = {
 			stime: parseInt(new Date().getTime() / 1000)
 		});
 
-		data.sig = crypto.createHash('sha1').update(data.user + this.config.clientSecret + data.stime).digest('hex'); //获取签名
+		data.sig = crypto.createHash('sha1').update(data.user + this.config.clientSecret + data.stime).digest(
+			'hex'); //获取签名
 		const res = await uniCloud.httpclient.request(this.baseUrl, {
 			method: 'POST',
 			data: data,

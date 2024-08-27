@@ -5,6 +5,7 @@ const shopCollection = db.collection("cloud_shops");
 const printerTypesCollection = db.collection("cloud_printer_types");
 const {
 	addPrinter,
+	deletePrinter,
 	getPrintStatus,
 	print
 } = require('printers');
@@ -63,6 +64,11 @@ const modules = {
 		printers = printers.filter(pri => {
 			return pri.module != data.module || pri.machine != data.machine;
 		});
+		//从打印平台删除
+		const res = await deletePrinter(data);
+		if (!res) {
+			return false;
+		}
 		return await shopCollection.where({
 			id: data.shopid
 		}).update({
