@@ -1,20 +1,23 @@
 {
-	"name": "cloud-user",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"dependencies": {
-		"base-common": "file:../common/base-common",
-		"configs": "file:../common/configs",
-		"jsonwebtoken": "^8.5.1",
-		"node-rsa": "^1.1.1",
-		"uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
-	},
-	"devDependencies": {},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+  "name": "cloud-user",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "node-rsa": "^1.1.1",
+    "base-common": "file:../common/base-common",
+    "configs": "file:../common/configs",
+    "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "extensions": {
+    "uni-cloud-sms": {}
+  }
 }

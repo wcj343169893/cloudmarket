@@ -25,5 +25,7 @@
     "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
     "uni-pay": "file:../../../uni_modules/uni-pay/uniCloud/cloudfunctions/common/uni-pay"
   },
-  "extensions": {}
+  "extensions": {
+    "uni-cloud-sms": {}
+  }
 }
