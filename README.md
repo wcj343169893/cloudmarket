@@ -13,22 +13,19 @@
 ### 体验商城前端+移动端后台
 [客户端演示示例](https://doc.cqsort.com/yunshang/#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F)  
 微信小程序演示  
-![前端](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-d73fd249-2f15-4133-9d70-e4017004b14c/22b63100-92b4-494e-b521-e1fc94c5433e.jpg?x-oss-process=image/resize,m_fill,w_200,h_200) 
+![前端](https://doc.cqsort.com/assets/xiaochengxu-rouran-BKgYzdpB.jpeg?x-oss-process=image/resize,m_fill,w_200,h_200) 
 
 ### pc后台
 [http://xbb.cqsort.com/admin/](http://xbb.cqsort.com/admin/)  
 测试账户：shop_manager  
-测试密码：123456  
+测试密码：1-6  
 后台已经完全开源，详见后台插件-[商城后台管理系统](https://ext.dcloud.net.cn/plugin?id=4400)  
 
-### 咨询与售后
-* 交流QQ群1：298724327（已满员）  
-* 交流QQ群2：201826223
-* 如您已购买本产品，请联系作者QQ：343169893   
+### 咨询与售后  
+* 如您已购买本产品，请联系作者
 
 ### 柔然科技承接软件定制开发
 * 联系人：文经理
-* QQ：343169893
 * [柔然科技官网](http://www.cqsort.com/)
 
 
@@ -39,22 +36,19 @@
 3. “跳过”在线部署，继续导入HBuilderx
 4. 在导入后的项目中，uniCloud目录右键，选择“云服务空间初始化向导”，再次绑定试用的云空间
 5. 勾选云函数、公共模块、db_init.json后，再“开始部署”，等待自动完成  在自动部署过程中，可能存在一些红色的错误提示，可以再次尝试这个自动安装向导，如果都不能成功，请加群找群主协助解决
-6. 登录测试账号：16612345678，密码：123456  
+6. 登录测试账号：1661到8，密码：1-6  
 更多信息，请查看[文档中心](https://doc.cqsort.com/yunshang/getstart.html)
 
 ##### 源码安装步骤：  
 1. 插件市场点击“导入源码授权版插件”
 2. 在导入后的项目中，uniCloud目录右键，选择“云服务空间初始化向导”，再次绑定试用的云空间
 3. 勾选云函数、公共模块、db_init.json后，再“开始部署”，等待自动完成  在自动部署过程中，可能存在一些红色的错误提示，可以再次尝试这个自动安装向导，如果都不能成功，请加群找群主协助解决
-4. 登录测试账号：16612345678，密码：123456  
+4. 登录测试账号：1661到8，密码：1-6  
 更多信息，请查看[文档中心](https://doc.cqsort.com/yunshang/getstart.html)
 
 
 
 #### 微信小程序：  
-##### 安装视频：  
-https://v.qq.com/x/page/n3224rpjd2w.html  
-https://v.qq.com/x/page/t3224pz1q7g.html 
 ##### 安装步骤
 1. 首先完成“使用安装”或者“源码安装”
 2. 修改manifest文件，微信小程序配置appid
@@ -108,7 +102,8 @@ https://v.qq.com/x/page/i3235gxkkpz.html
 5. 商品详细信息，加入购物车，立即购买，提前预定，评论
 6. 统一下单模块cloud_payment
 7. 接入第三方配送平台一城飞客，支持：达达，美团、蜂鸟、顺丰、京东、闪送、UU跑腿
-8. 手机号登录、uni一键登录、微信登录  
+8. 接入微信小程序同城配送/即时配送
+9. 手机号登录、uni一键登录、微信登录  
 
 #### 移动端后台（运营人员）  
 1. 商品管理，新增、修改、上架、下架、删除、清理、

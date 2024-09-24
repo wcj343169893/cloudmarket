@@ -162,7 +162,7 @@
     "mp-weixin" : {
         /* 小程序特有相关 */
         "usingComponents" : true,
-        "appid" : "wx59ded2343a9d2e42",
+        "appid" : "wxcfb12cd3b92a58ed",
         "lazyCodeLoading" : "requiredComponents",
         "setting" : {
             "urlCheck" : false
@@ -183,7 +183,7 @@
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
-                    "key" : "ZWYBZ-HOSWD-S2X4S-HHPBQ-YKY7Z-5NFK5"
+                    "key" : "PVQBZ-SNUHF-E7KJ2-J7R5L-ZOZU2-4QBGN"
                 }
             }
         }
