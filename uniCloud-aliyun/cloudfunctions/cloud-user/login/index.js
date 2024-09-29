@@ -26,8 +26,8 @@ const model = {
 		let configs = getLoginConfig(context.PLATFORM, "univerify");
 		let res = await uniCloud.getPhoneNumber({
 			provider: 'univerify',
-			apiKey: configs.apiKey, // 在开发者中心开通服务并获取apiKey
-			apiSecret: configs.apiSecret, // 在开发者中心开通服务并获取apiSecret
+			// apiKey: configs.apiKey, // 在开发者中心开通服务并获取apiKey
+			// apiSecret: configs.apiSecret, // 在开发者中心开通服务并获取apiSecret
 			access_token: access_token,
 			openid: openid
 		})
