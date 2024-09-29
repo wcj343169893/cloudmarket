@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "extensions": {
-    "uni-cloud-sms": {}
+    "uni-cloud-sms": {},
+    "uni-cloud-verify": {}
   }
 }
