@@ -79,8 +79,8 @@
 			<button class="cu-btn bg-green margin-tb-sm sm margin-left-sm" @click="choosemany()">确定</button>
 		</view>
 		<uni-popup ref="rechargePop" type="dialog">
-			<uni-popup-dialog type="warn" title="账户充值" :focus="false" placeholder="请输入充值金额" mode="input"
-				:before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
+			<uni-popup-dialog type="warn" title="账户充值" :focus="false" placeholder="请输入充值金额" mode="input" @close="close"
+				@confirm="confirm"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -216,14 +216,14 @@
 			close(done) {
 				// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 done 才会关闭对话框
 				// ...
-				done()
+				// done()
 			},
 			/**
 			 * 点击确认按钮触发
 			 * @param {Object} done
 			 * @param {Object} value
 			 */
-			confirm(done, value) {
+			confirm(value) {
 				if (this.isSubmit) {
 					return false;
 				}
@@ -250,7 +250,6 @@
 					this.isSubmit = false;
 					this.$api.msg("充值失败！")
 				})
-				done()
 			},
 			tel(phone) {
 				uni.makePhoneCall({

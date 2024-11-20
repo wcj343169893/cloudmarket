@@ -121,12 +121,11 @@
 				this.index = index;
 				this.$refs.ratePopup.open()
 			},
-			confirmRatePopup(done, val) {
+			confirmRatePopup(val) {
 				if (val > 80) {
 					this.$api.msg("分成比例太大");
 					return false;
 				}
-				done();
 				if (val < 0) {
 					val = 0
 				}
