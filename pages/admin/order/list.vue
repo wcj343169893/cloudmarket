@@ -263,8 +263,7 @@
 				this.orderList = [];
 				this.loadData();
 			},
-			confirmTotalMoneyPopup(done, val) {
-				done()
+			confirmTotalMoneyPopup(val) {
 				if (val < 0) {
 					return false;
 				}
