@@ -13,7 +13,7 @@
 		"oauth": {
 			"weixin": {
 				"appid": "wx59ded2343a9d2e42",
-				"appsecret": "fdf6d98c2"
+				"appsecret": "fdf6d98cb931eebe9d28665e4d76acb2"
 			},
 			"apple": {
 				"bundleId": "your APP bundleId"
@@ -24,9 +24,9 @@
 		"oauth" : {
 			"weixin" : {
 				"appid": "wxcfb12cd3b92a58ed",
-				"appsecret": "aaa2dd6fb1458a08fe1",
-				"key":"ic7bh8bgQIxXGXe8LvQoQkCTSEJ6rxEe8",
-				"token":"ic7bh8bgQIxXGXe8LvQoQk"
+				"appsecret": "aaa2dd6fb77ef76fd70b0f1458a08fe1",
+				"key":"ic7bh8bgQ7k6SPG4lhVIxXGXe8LvQoQkCTSEJ6rxEe8",
+				"token":"ic7bh8bgQ7k6SPG4lhVIxXGXe8LvQoQk"
 			}
 		}
 	},
@@ -34,7 +34,7 @@
 		"oauth" : {
 			"weixin" : {
 				"appid": "wxcfb12cd3b92a58ed",
-				"appsecret": "aaa2dd6fb1458a08fe1"
+				"appsecret": "aaa2dd6fb77ef76fd70b0f1458a08fe1"
 			}
 		}
 	},
